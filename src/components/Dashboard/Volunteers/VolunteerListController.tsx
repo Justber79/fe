@@ -32,7 +32,8 @@ export function VolunteerListController({
   opportunityId,
   viewMode,
 }: VolunteerListControllerProps) {
-  const limit = viewMode === "list" ? TABLE_LIMIT : CARD_LIMIT;
+  const isListView = viewMode === "list";
+  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
@@ -60,7 +61,7 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols]);
 
-  if (viewMode === "list") {
+  if (isListView) {
     return (
       <VolunteerTableList
         volunteers={volunteers}
