@@ -75,10 +75,3 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 export const PHONE_NUMBER_REGEX = /^\+[0-9\s]+$/;
 
 export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";
-
-export enum AppointmentLanguages {
-  GERMAN = "german",
-  ENGLISH = "english",
-  ENGLISH_GERMAN = "englishGerman",
-  NO_TRANSLATION = "noTranslation",
-}

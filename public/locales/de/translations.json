@@ -1118,14 +1118,12 @@
         "appointmentTime": "Terminzeit",
         "refugeeNumber": "Geflüchtetennummer",
         "refugeeName": "Name des Geflüchteten",
-        "languageToTranslate": "Zu übersetzende Sprache",
         "refugeeLanguage": "Flüchtlingssprache",
         "appointmentLanguage": "Terminsprache",
         "appointmentLanguageOptions": {
-          "german": "Deutsch",
-          "english": "Englisch",
-          "englishGerman": "Englisch/Deutsch",
-          "noTranslation": "Keine Übersetzung erforderlich"
+          "deutsche": "Deutsch",
+          "englishOk": "Deutsch, Englisch",
+          "noTranslation": "Keine Übersetzung"
         },
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",

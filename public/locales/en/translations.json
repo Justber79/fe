@@ -1117,14 +1117,12 @@
         "appointmentTime": "Appointment time",
         "refugeeNumber": "Refugee number",
         "refugeeName": "Refugee name",
-        "languageToTranslate": "Language to translate",
         "refugeeLanguage": "Refugee language",
         "appointmentLanguage": "Appointment language",
         "appointmentLanguageOptions": {
-          "german": "German",
-          "english": "English",
-          "englishGerman": "English/German",
-          "noTranslation": "No translation needed"
+          "deutsche": "German",
+          "englishOk": "German, English",
+          "noTranslation": "No translation"
         },
         "cancel": "Cancel",
         "saveChanges": "Save changes",

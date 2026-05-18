@@ -42,13 +42,11 @@ export const getInitialFormValues = (
   details: ApiOpportunityAccompanyingDetails | undefined,
 ): AccompanyingDetailsFormData => ({
   appointmentAddress: details?.appointmentAddress || "",
-  appointmentPostcode:
-    (details as ApiOpportunityAccompanyingDetails & { appointmentPostcode?: string })?.appointmentPostcode || "",
+  appointmentPostcode: details?.appointmentPostcode || "",
   appointmentDate: parseDate(details?.appointmentDate),
   appointmentTime: details?.appointmentTime ? utcHhmmToLocal(parseTime(details.appointmentTime)) : "",
   refugeeNumber: details?.refugeeNumber || "",
   refugeeName: details?.refugeeName || "",
-  languagesToTranslate: details?.languageToTranslate !== undefined ? [details.languageToTranslate.toString()] : [],
-  appointmentLanguage:
-    (details as ApiOpportunityAccompanyingDetails & { appointmentLanguage?: string })?.appointmentLanguage || "",
+  refugeeLanguage: details?.refugeeLanguage?.map((lang) => String(lang.id)) ?? [],
+  appointmentLanguage: details?.appointmentLanguage ?? undefined,
 });
