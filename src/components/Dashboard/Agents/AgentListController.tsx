@@ -1,6 +1,7 @@
 import { ApiAgentGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
 import { useEffect } from "react";
+import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { serializeAgentFilters } from "./helpers";
@@ -29,7 +30,7 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, isFiltersOpen, 
     }),
   );
 
-  const { data, count } = useGetQuery<ApiAgentGetList[]>({
+  const { data, count, isLoading } = useGetQuery<ApiAgentGetList[]>({
     queryKey: ["agents"],
     apiPath: `${apiPathAgent}/`,
     params: {
@@ -47,6 +48,8 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, isFiltersOpen, 
   useEffect(() => {
     setNumOfAgents(count);
   }, [count, setNumOfAgents]);
+
+  if (isLoading) return <DashboardListLoading />;
 
   return (
     <AgentCardList

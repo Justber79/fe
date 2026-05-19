@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
+import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder } from "need4deed-sdk";
 import { CardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
-import { VolunteerCardList } from "./VolunteerCardList"; // We will modify this component
+import { VolunteerCardList } from "./VolunteerCardList";
 
 const columns = 3;
 const rows = 3;
@@ -43,7 +44,7 @@ export function VolunteerListController({
     sortOrder,
     filter: serializedFilter,
   };
-  const { data, count } = useGetQuery<ApiVolunteerGetList[]>({
+  const { data, count, isLoading } = useGetQuery<ApiVolunteerGetList[]>({
     queryKey: ["volunteers"],
     apiPath: apiPathVolunteer,
     params,
@@ -54,6 +55,8 @@ export function VolunteerListController({
   useEffect(() => {
     setNumOfVols(count);
   }, [count, setNumOfVols]);
+
+  if (isLoading) return <DashboardListLoading />;
 
   return (
     <VolunteerCardList
