@@ -3,7 +3,7 @@ import { useApiLanguages } from "@/components/Dashboard/Profile/sections/Volunte
 import { useUpdateOpportunityAccompanyingDetails } from "@/hooks/useUpdateOpportunityAccompanyingDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { de, enUS } from "date-fns/locale";
-import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, LangPurpose, Option, TranslatedIntoType } from "need4deed-sdk";
+import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, Option, TranslatedIntoType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
