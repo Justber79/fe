@@ -13,6 +13,7 @@ interface Props<T, K extends DeepKeys<T>> {
   FieldTag: FieldComponent<T, undefined>;
   field: FieldApi<T, K>;
   hiddenChips?: string[];
+  isOneOption?: boolean;
 }
 
 export default function MultipleCheckBoxInputsWithMore<T, K extends DeepKeys<T>>({
@@ -21,6 +22,7 @@ export default function MultipleCheckBoxInputsWithMore<T, K extends DeepKeys<T>>
   FieldTag,
   field,
   hiddenChips = [],
+  isOneOption = false,
 }: Props<T, K>) {
   const { t, i18n } = useTranslation();
   const [numItems, setNumItems] = useState(showFirst);
@@ -53,10 +55,22 @@ export default function MultipleCheckBoxInputsWithMore<T, K extends DeepKeys<T>>
                   <input
                     tabIndex={0}
                     id={`${field.name}${idx}`}
-                    type="checkbox"
+                    type={isOneOption ? "radio" : "checkbox"}
+                    checked={item.selected}
                     onBlur={innerField.handleBlur}
                     onChange={(e) => {
-                      innerField.handleChange(e.target.checked as DeepValue<T, DeepKeys<T>>);
+                      const isChecked = e.target.checked;
+
+                      if (isOneOption && isChecked) {
+                        const currentValues = [...(field.state.value as Selected[])];
+                        const newValues = currentValues.map((loc, i) => ({
+                          ...loc,
+                          selected: i === idx,
+                        }));
+                        field.handleChange(newValues as DeepValue<T, K>);
+                      } else {
+                        innerField.handleChange(isChecked as DeepValue<T, DeepKeys<T>>);
+                      }
                     }}
                   />
                   <label htmlFor={`${field.name}${idx}`}>{item.title[i18n.language as Lang]}</label>

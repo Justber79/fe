@@ -3,15 +3,15 @@ import { useApiLanguages } from "@/components/Dashboard/Profile/sections/Volunte
 import { useUpdateOpportunityAccompanyingDetails } from "@/hooks/useUpdateOpportunityAccompanyingDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { de, enUS } from "date-fns/locale";
-import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, LangPurpose, Option } from "need4deed-sdk";
+import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, LangPurpose, Option, TranslatedIntoType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { EditableSectionProps, EditableSectionRef } from "../shared/types";
+import { localHhmmToUtc } from "@/utils";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
 import { AccompanyingDetailsDisplay } from "./AccompanyingDetailsDisplay";
 import { AccompanyingDetailsEdit } from "./AccompanyingDetailsEdit";
-import { AppointmentLanguages } from "@/config/constants";
 import { getInitialFormValues, getMinAppointmentDate, isAccompanyingType } from "./helpers";
 import { AccompanyingDetailsFormData, accompanyingDetailsSchema } from "./accompanyingDetailsSchema";
 import { Container, NotAccompanyingMessage } from "./styles";
@@ -43,7 +43,7 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
     labelToKey[lang.title] = String(lang.id);
   });
 
-  const appointmentLanguageKeys = Object.values(AppointmentLanguages);
+  const appointmentLanguageKeys = Object.values(TranslatedIntoType);
   const appointmentLanguageKeyToLabel: Record<string, string> = {};
   const appointmentLanguageLabelToKey: Record<string, string> = {};
   appointmentLanguageKeys.forEach((key) => {
@@ -86,10 +86,10 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
           appointmentAddress: values.appointmentAddress,
           appointmentPostcode: values.appointmentPostcode || undefined,
           appointmentDate: values.appointmentDate ? values.appointmentDate.toISOString() : undefined,
-          appointmentTime: values.appointmentTime || undefined,
+          appointmentTime: values.appointmentTime ? localHhmmToUtc(values.appointmentTime) : undefined,
           refugeeNumber: values.refugeeNumber,
           refugeeName: values.refugeeName,
-          languagesToTranslate: values.languagesToTranslate ?? [],
+          refugeeLanguage: (values.refugeeLanguage ?? []).map((id) => ({ id })),
           appointmentLanguage: values.appointmentLanguage || undefined,
         },
       },
@@ -117,10 +117,8 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
     );
   }
 
-  // Refugee language = the language the refugee speaks (LangPurpose.RECIPIENT on the opportunity)
-  const languageLabel = (opportunity.languages ?? [])
-    .filter((lang) => lang.purpose === LangPurpose.RECIPIENT)
-    .map((lang) => lang.title)
+  const languageLabel = (opportunity.accompanyingDetails?.refugeeLanguage ?? [])
+    .map((lang) => keyToLabel[String(lang.id)] || String(lang.id))
     .join(", ");
 
   // appointmentDistrict is server-calculated from postcode — read from API response, never from form state

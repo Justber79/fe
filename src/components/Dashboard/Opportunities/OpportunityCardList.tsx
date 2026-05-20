@@ -5,6 +5,7 @@ import { OpportunityCardListContainer } from "./styles";
 
 type Props = {
   activitiesList?: OptionItem[];
+  districtsList?: OptionItem[];
   opportunities: ApiVolunteerOpportunityGetList[];
   count: number;
   columns: number;
@@ -23,9 +24,10 @@ export function OpportunityCardList({
   setCurrentPage,
   volunteerId,
   activitiesList,
+  districtsList,
 }: Props) {
   const items = opportunities.map((opp) => (
-    <OpportunityCard key={opp.id} opportunity={opp} volunteerId={volunteerId} activitiesList={activitiesList} />
+    <OpportunityCard key={opp.id} opportunity={opp} volunteerId={volunteerId} activitiesList={activitiesList} districtsList={districtsList} />
   ));
 
   return (

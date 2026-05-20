@@ -342,9 +342,18 @@
     },
     "volunteers": {
       "header": "Freiwilligenverzeichnis",
+      "table": {
+        "name": "Name",
+        "type": "Typ",
+        "engagementStatus": "Engagementstatus",
+        "matchingStatus": "Matching-Status",
+        "language": "Sprache",
+        "district": "Bezirk",
+        "email": "E-Mail"
+      },
       "tabs": {
-        "tab1": "TABELLE",
-        "tab2": "KARTE"
+        "tab1": "Liste",
+        "tab2": "Karten"
       },
       "filters": {
         "accompanying": "Begleitung",
@@ -359,7 +368,13 @@
           "vol-new": "Neu",
           "vol-available": "Verfügbar",
           "vol-temp-unavailable": "Vorübergehend nicht verfügbar",
-          "vol-unresponsive": "Reagiert nicht"
+          "vol-unresponsive": "Reagiert nicht",
+          "active": "Aktiv",
+          "inactive": "Inaktiv",
+          "new": "Neu",
+          "available": "Verfügbar",
+          "temporarilyUnavailable": "Vorübergehend nicht verfügbar",
+          "unresponsive": "Reagiert nicht"
         },
         "preferredAv": {
           "header": "Bevorzugte Verfügbarkeit",
@@ -587,7 +602,8 @@
           "email-sent": "E-Mail gesendet",
           "briefed": "Briefing erfolgt",
           "tried-call": "Versucht anzurufen",
-          "not-responding": "Keine Reaktion"
+          "not-responding": "Keine Reaktion",
+          "sms": "SMS"
         },
         "notProvided": "Nicht angegeben",
         "cancel": "Abbrechen",
@@ -606,8 +622,6 @@
         "title": "Freiwilligenprofil",
         "edit": "Bearbeiten",
         "languages": "Sprachen",
-        "mainCommunication": "Hauptkommunikation",
-        "languagesToTranslate": "Sprache zum Übersetzen",
         "availability": "Verfügbarkeit",
         "districts": "Bezirke",
         "volunteerType": "Freiwilligen-Typ",
@@ -727,6 +741,14 @@
         "opp-active": "Aktiv",
         "opp-past": "Vergangen"
       },
+      "matchStatus": {
+        "vol-no-matches": "Keine Zuweisungen",
+        "vol-pending-match": "Zuordnung ausstehend",
+        "vol-matched": "Zugeordnet",
+        "vol-needs-rematch": "Erneute Zuordnung erforderlich",
+        "vol-unmatched": "Nicht zugeordnet",
+        "vol-past": "Vergangen"
+      },
       "type": {
         "accompanying": "Begleitung",
         "regular": "Regelmäßig",
@@ -804,7 +826,7 @@
       "title": "Dokumente",
       "typeOfDocument": "Dokumenttyp",
       "status": "Status",
-      "uploadedOn": "Hochgeladen am",
+      "uploadedOn": "Aktualisiert am",
       "received": "Erhalten",
       "receivedOn": "Erhalten am",
       "actions": "Aktionen",
@@ -1022,15 +1044,16 @@
       "status": {
         "new": "Neu",
         "active": "Aktiv",
+        "inactive": "Inaktiv",
         "past": "Vergangen",
         "searching": "Suchend"
       },
       "matchStatus": {
+        "noMatches": "Keine Zuweisungen",
+        "pendingMatch": "Zuweisung ausstehend",
         "matched": "Gematcht",
         "needRematch": "Neues Matching erforderlich",
         "unmatched": "Nicht gematcht",
-        "noMatches": "Keine Zuweisungen",
-        "pendingMatch": "Zuweisung ausstehend",
         "past": "Vergangen"
       },
       "statusUpdateSuccess": "Status der Möglichkeit erfolgreich aktualisiert",
@@ -1095,14 +1118,12 @@
         "appointmentTime": "Terminzeit",
         "refugeeNumber": "Geflüchtetennummer",
         "refugeeName": "Name des Geflüchteten",
-        "languageToTranslate": "Zu übersetzende Sprache",
         "refugeeLanguage": "Flüchtlingssprache",
         "appointmentLanguage": "Terminsprache",
         "appointmentLanguageOptions": {
-          "german": "Deutsch",
-          "english": "Englisch",
-          "englishGerman": "Englisch/Deutsch",
-          "noTranslation": "Keine Übersetzung erforderlich"
+          "deutsche": "Deutsch",
+          "englishOk": "Deutsch, Englisch",
+          "noTranslation": "Keine Übersetzung"
         },
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
@@ -1235,6 +1256,32 @@
       "futureDateError": "Datum darf nicht in der Zukunft liegen",
       "contactTypeRequired": "Kontaktart ist erforderlich",
       "deletePermissionError": "Sie haben keine Berechtigung, die Kommunikation mit der ID: {{id}} zu löschen."
+    },
+    "calendar": {
+      "createEvent": "Veranstaltung erstellen",
+      "createForm": {
+        "eventTitle": "Veranstaltungstitel",
+        "titleLabel": "Titel des Ehrenamtsangebots",
+        "titlePlaceholder": "Titel",
+        "titleHelper": "z.B. \"Begleitung zur Augenklinik\", \"Basteln & Malen\"",
+        "descriptionLabel": "Beschreibung",
+        "descriptionPlaceholder": "Eine kurze Beschreibung der Veranstaltung",
+        "location": "Standort",
+        "street": "Straßenname",
+        "streetHelper": "z.B. \"Elsenstr.\"",
+        "houseNumber": "Hausnummer",
+        "houseNumberHelper": "z.B. \"87\"",
+        "postcode": "Postleitzahl",
+        "postcodeHelper": "z.B. \"12435\"",
+        "dateTime": "Datum & Uhrzeit",
+        "date": "Termindatum",
+        "time": "Terminzeit",
+        "cancel": "Abbrechen",
+        "back": "Zurück",
+        "next": "Weiter",
+        "submit": "Absenden",
+        "locationHelper": "z.B. Elsenstr., Nr. 87, 12435"
+      }
     }
   },
   "aboutus": {

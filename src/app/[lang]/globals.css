@@ -244,6 +244,7 @@ html {
   --spacing-20: 20px;
   --spacing-24: 24px;
   --spacing-32: 32px;
+  --spacing-40: 40px;
   --spacing-48: 48px;
 
   /* shared borders */
@@ -1613,4 +1614,11 @@ html {
   --editableField-error-color: var(--color-red-600);
   --editableField-error-paddingLeft: 1rem;
   --editableField-errorMessage-paddingLeft: 252px;
+}
+
+:root {
+  /* CreateEvent calendar page */
+  --create-event-progress-height: 6px;
+  --create-event-progress-border-radius: 3px;
+  --create-event-field-label-min-width: 160px;
 }

@@ -1,3 +1,4 @@
+import { TranslatedIntoType } from "need4deed-sdk";
 import { z } from "zod";
 
 const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -14,8 +15,8 @@ export const accompanyingDetailsSchema = z.object({
     }),
   refugeeNumber: z.string().optional(),
   refugeeName: z.string().optional(),
-  languagesToTranslate: z.array(z.string()).optional(),
-  appointmentLanguage: z.string().optional(),
+  refugeeLanguage: z.array(z.string()).optional(),
+  appointmentLanguage: z.nativeEnum(TranslatedIntoType).optional(),
 });
 
 export type AccompanyingDetailsFormData = z.infer<typeof accompanyingDetailsSchema>;

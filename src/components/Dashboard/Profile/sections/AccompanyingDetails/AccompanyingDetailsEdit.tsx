@@ -158,13 +158,9 @@ export const AccompanyingDetailsEdit = ({
         />
 
         <Controller
-          name="languagesToTranslate"
+          name="refugeeLanguage"
           control={control}
-          render={({
-            field,
-          }: {
-            field: ControllerRenderProps<AccompanyingDetailsFormData, "languagesToTranslate">;
-          }) => (
+          render={({ field }: { field: ControllerRenderProps<AccompanyingDetailsFormData, "refugeeLanguage"> }) => (
             <EditableField
               mode="edit"
               type="checkbox-list"
@@ -175,7 +171,7 @@ export const AccompanyingDetailsEdit = ({
                 field.onChange(labels.map((label) => labelToKey[label] || label));
               }}
               options={languageOptions}
-              errorMessage={errors.languagesToTranslate?.message}
+              errorMessage={errors.refugeeLanguage?.message}
             />
           )}
         />

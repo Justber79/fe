@@ -1,7 +1,7 @@
 import { apiPathVolunteer } from "@/config/constants";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import axios from "axios";
-import { DocumentType } from "need4deed-sdk";
+import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 
 type UploadMetaResponse = {
@@ -48,18 +48,9 @@ const deleteDocumentApi = async (volunteerId: number, documentType: DocumentType
   await axios.delete(`${apiPathVolunteer}/${volunteerId}/doc/${documentType}`);
 };
 
-type MarkReceivedPayload = {
-  volunteerId: number;
-  documentType: DocumentType;
-  received: boolean;
-};
-
-const markDocumentReceivedApi = async (
-  volunteerId: number,
-  documentType: DocumentType,
-  received: boolean,
-): Promise<void> => {
-  await axios.patch(`${apiPathVolunteer}/${volunteerId}/doc/${documentType}`, { received });
+type DocStatusPayload = {
+  goodConductCertificate?: DocumentStatusType;
+  measlesVaccination?: DocumentStatusType;
 };
 
 export const useUploadDocument = (volunteerId: number, onSuccess?: () => void) => {
@@ -89,9 +80,10 @@ export const useDeleteDocument = (volunteerId: number, onSuccess?: () => void) =
   });
 };
 
-export const useMarkDocumentReceived = (volunteerId: number) => {
-  return useMutationQuery<MarkReceivedPayload, void>({
-    mutationFn: ({ documentType, received }) => markDocumentReceivedApi(volunteerId, documentType, received),
-    queryKeyToInvalidate: ["volunteerDocuments", volunteerId.toString()],
+export const useUpdateVolunteerDocStatus = (volunteerId: number) => {
+  return useMutationQuery<DocStatusPayload, { message: string; data: ApiVolunteerGet }>({
+    apiPath: `${apiPathVolunteer}/${volunteerId}`,
+    method: "patch",
+    queryKeyToInvalidate: ["volunteer", String(volunteerId)],
   });
 };

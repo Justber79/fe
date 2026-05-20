@@ -342,9 +342,18 @@
     },
     "volunteers": {
       "header": "Volunteer Directory",
+      "table": {
+        "name": "Name",
+        "type": "Type",
+        "engagementStatus": "Engagement Status",
+        "matchingStatus": "Matching Status",
+        "language": "Language",
+        "district": "District",
+        "email": "Email"
+      },
       "tabs": {
-        "tab1": "TABLE VIEW",
-        "tab2": "MAP VIEW"
+        "tab1": "List",
+        "tab2": "Cards"
       },
       "filters": {
         "accompanying": "Accompanying",
@@ -359,7 +368,13 @@
           "vol-new": "New",
           "vol-available": "Available",
           "vol-temp-unavailable": "Temporarily Unavailable",
-          "vol-unresponsive": "Unresponsive"
+          "vol-unresponsive": "Unresponsive",
+          "active": "Active",
+          "inactive": "Inactive",
+          "new": "New",
+          "available": "Available",
+          "temporarilyUnavailable": "Temporarily Unavailable",
+          "unresponsive": "Unresponsive"
         },
         "preferredAv": {
           "header": "Preferred Availability",
@@ -586,7 +601,8 @@
           "email-sent": "Email sent",
           "briefed": "Briefed",
           "tried-call": "Tried to call",
-          "not-responding": "Not responding"
+          "not-responding": "Not responding",
+          "sms": "SMS"
         },
         "notProvided": "Not provided",
         "cancel": "Cancel",
@@ -605,8 +621,6 @@
         "title": "Volunteer profile",
         "edit": "Edit",
         "languages": "Languages",
-        "mainCommunication": "Main communication",
-        "languagesToTranslate": "Language to translate",
         "availability": "Availability",
         "districts": "Districts",
         "volunteerType": "Volunteer type",
@@ -631,7 +645,7 @@
       "title": "Documents",
       "typeOfDocument": "Type of document",
       "status": "Status",
-      "uploadedOn": "Uploaded on",
+      "uploadedOn": "Updated on",
       "received": "Received",
       "receivedOn": "Received on",
       "actions": "Actions",
@@ -769,6 +783,14 @@
         "opp-searching": "Searching",
         "opp-active": "Active",
         "opp-past": "Past"
+      },
+      "matchStatus": {
+        "vol-no-matches": "No matches",
+        "vol-pending-match": "Pending match",
+        "vol-matched": "Matched",
+        "vol-needs-rematch": "Needs rematch",
+        "vol-unmatched": "Unmatched",
+        "vol-past": "Past"
       },
       "type": {
         "accompanying": "Accompanying",
@@ -1021,15 +1043,16 @@
       "status": {
         "new": "New",
         "active": "Active",
+        "inactive": "Inactive",
         "past": "Past",
         "searching": "Searching"
       },
       "matchStatus": {
+        "noMatches": "No matches",
+        "pendingMatch": "Pending match",
         "matched": "Matched",
         "needRematch": "Need rematch",
         "unmatched": "Unmatched",
-        "noMatches": "No matches",
-        "pendingMatch": "Pending match",
         "past": "Past"
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
@@ -1094,14 +1117,12 @@
         "appointmentTime": "Appointment time",
         "refugeeNumber": "Refugee number",
         "refugeeName": "Refugee name",
-        "languageToTranslate": "Language to translate",
         "refugeeLanguage": "Refugee language",
         "appointmentLanguage": "Appointment language",
         "appointmentLanguageOptions": {
-          "german": "German",
-          "english": "English",
-          "englishGerman": "English/German",
-          "noTranslation": "No translation needed"
+          "deutsche": "German",
+          "englishOk": "German, English",
+          "noTranslation": "No translation"
         },
         "cancel": "Cancel",
         "saveChanges": "Save changes",
@@ -1234,6 +1255,32 @@
       "futureDateError": "Date cannot be in the future",
       "contactTypeRequired": "Contact type is required",
       "deletePermissionError": "You do not have permission to delete communication with id: {{id}}."
+    },
+    "calendar": {
+      "createEvent": "Create an event",
+      "createForm": {
+        "eventTitle": "Event Title",
+        "titleLabel": "Title of the voluntary offer",
+        "titlePlaceholder": "Title",
+        "titleHelper": "e.g. \"Escort to the eye clinic\", \"Arts & Crafts\"",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "A short description of the event",
+        "location": "Location",
+        "street": "Street name",
+        "streetHelper": "e.g. \"Elsenstr.\"",
+        "houseNumber": "House number",
+        "houseNumberHelper": "e.g. \"87\"",
+        "postcode": "Postcode",
+        "postcodeHelper": "e.g. \"12435\"",
+        "dateTime": "Date & Time",
+        "date": "Event date",
+        "time": "Event time",
+        "cancel": "Cancel",
+        "back": "Back",
+        "next": "Next",
+        "submit": "Submit",
+        "locationHelper": "e.g. Elsenstr., No. 87, 12435"
+      }
     }
   },
   "aboutus": {

@@ -1,4 +1,14 @@
-import { ConfettiIcon, PersonSimpleWalkIcon, ShootingStarIcon, TranslateIcon } from "@phosphor-icons/react";
+import {
+  ArrowsClockwiseIcon,
+  CheckCircleIcon,
+  ConfettiIcon,
+  HourglassIcon,
+  PersonSimpleWalkIcon,
+  ProhibitInsetIcon,
+  ShootingStarIcon,
+  StopCircleIcon,
+  TranslateIcon,
+} from "@phosphor-icons/react";
 import { format } from "date-fns";
 import { ApiVolunteerOpportunityGetList, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { utcHhmmToLocal } from "@/utils";
@@ -42,6 +52,25 @@ export const statusIconMap: Record<OpportunityStatusType, JSX.Element> = {
     <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.INACTIVE]} />
   ),
   [OpportunityStatusType.PAST]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.PAST]} />,
+};
+
+// TODO: replace string with OpportunityMatchStatusType once SDK PR #89 is merged
+export const matchStatusColorMap: Record<string, string> = {
+  "vol-no-matches": "var(--color-grey-700)",
+  "vol-pending-match": "var(--color-orange-500)",
+  "vol-matched": "var(--color-green-700)",
+  "vol-needs-rematch": "var(--color-red-50)",
+  "vol-unmatched": "var(--color-grey-700)",
+  "vol-past": "var(--color-grey-700)",
+};
+
+export const matchStatusIconMap: Record<string, JSX.Element> = {
+  "vol-no-matches": <ProhibitInsetIcon size={18} color={matchStatusColorMap["vol-no-matches"]} />,
+  "vol-pending-match": <HourglassIcon size={18} color={matchStatusColorMap["vol-pending-match"]} />,
+  "vol-matched": <CheckCircleIcon size={18} color={matchStatusColorMap["vol-matched"]} />,
+  "vol-needs-rematch": <ArrowsClockwiseIcon size={18} color={matchStatusColorMap["vol-needs-rematch"]} />,
+  "vol-unmatched": <ProhibitInsetIcon size={18} color={matchStatusColorMap["vol-unmatched"]} />,
+  "vol-past": <StopCircleIcon size={18} color={matchStatusColorMap["vol-past"]} />,
 };
 
 export const volunteerTypeIconMap: Record<ProfileVolunteeringType, JSX.Element> = {
