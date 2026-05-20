@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
   createEngagementStatusLabelMap,
+  createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
 import { Table, TableBody, TableContainer, TableHeader, TableHeaderCell } from "@/components/core/common/Table";
@@ -34,6 +35,7 @@ export function VolunteerTableList({
 
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
   const typeLabels = useMemo(() => createStatusLabelMap(t), [t]);
+  const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
   const goToPage = (page: number) => {
     if (page > 0 && page <= totalPages) setCurrentPage(page);
@@ -60,6 +62,7 @@ export function VolunteerTableList({
                 isLast={index === volunteers.length - 1}
                 engagementLabels={engagementLabels}
                 typeLabels={typeLabels}
+                matchLabels={matchLabels}
                 opportunityId={opportunityId}
               />
             ))}

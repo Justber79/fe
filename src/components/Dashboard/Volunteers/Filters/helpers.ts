@@ -12,6 +12,13 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
     t(`dashboard.volunteers.filters.${key}`),
   );
 
+  const typeFilters = generateNestedFilterControlItems(
+    filter.type,
+    setFilter,
+    "type",
+    (key) => t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
+  );
+
   const districtFilters = generateNestedFilterControlItems(
     filter[QueryParamsKeys.DISTRICT],
     setFilter,
@@ -35,7 +42,7 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
 
   const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
 
-  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, accompanyingFilter };
+  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, accompanyingFilter, typeFilters };
 };
 
 /**
@@ -77,10 +84,10 @@ export const createSelectedFilterItemsAsFlatArray = (
 ) => {
   const filterItems = createFilterItems(filter, setFilter, t);
 
-  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, accompanyingFilter } = filterItems;
+  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, accompanyingFilter, typeFilters } = filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
-  return [accompanyingFilter, ...districtFilters, ...engagementFilters, ...languageFilters, ...flatAvFilters].filter(
+  return [accompanyingFilter, ...typeFilters, ...districtFilters, ...engagementFilters, ...languageFilters, ...flatAvFilters].filter(
     (f) => f.checked,
   );
 };
