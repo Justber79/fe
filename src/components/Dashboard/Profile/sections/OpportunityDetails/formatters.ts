@@ -3,15 +3,25 @@ import { LanguageObject } from "@/types";
 import { TFunction } from "i18next";
 import { ApiLanguage, Lang, LangPurpose, OptionById } from "need4deed-sdk";
 
-export function formatLanguagesByPurpose(languages: ApiLanguage[], purpose: LangPurpose, t: TFunction): string {
-  const filtered = languages.filter((lang) => lang.purpose === purpose);
+export function formatLanguagesByPurpose(
+  languages: ApiLanguage[],
+  purposes: LangPurpose | LangPurpose[],
+  t: TFunction,
+): string {
+  const purposeSet = new Set(Array.isArray(purposes) ? purposes : [purposes]);
+  const seen = new Set<number>();
+  const filtered = languages.filter((lang) => {
+    if (!purposeSet.has(lang.purpose)) return false;
+    if (seen.has(lang.id)) return false;
+    seen.add(lang.id);
+    return true;
+  });
   if (filtered.length === 0) return EMPTY_PLACEHOLDER_VALUE;
   return filtered
     .map((lang) => {
       const key = `languageNames.${lang.title.toLowerCase()}`;
       const translated = t(key);
-      const hasTranslation = translated !== key;
-      return hasTranslation ? translated : lang.title;
+      return translated !== key ? translated : lang.title;
     })
     .join(", ");
 }
