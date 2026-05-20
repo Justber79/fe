@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   createEngagementStatusLabelMap,
+  createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
 import { createVolunteerTableColumns } from "./volunteerTableColumns";
@@ -32,6 +33,7 @@ export function VolunteerTableList({
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
   const typeLabels = useMemo(() => createStatusLabelMap(t), [t]);
   const columns = useMemo(() => createVolunteerTableColumns(t), [t]);
+  const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
   return (
     <EntityTableList
@@ -44,6 +46,7 @@ export function VolunteerTableList({
           isLast={isLast}
           engagementLabels={engagementLabels}
           typeLabels={typeLabels}
+          matchLabels={matchLabels}
           opportunityId={opportunityId}
         />
       )}

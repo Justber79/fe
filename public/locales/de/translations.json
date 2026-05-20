@@ -400,6 +400,13 @@
             "weekdays": "Wochentage",
             "weekends": "Wochenenden"
           }
+        },
+        "volunteerType_title": "Freiwilligen-Typ",
+        "volunteerType_options": {
+          "accompanying": "Begleitend",
+          "regular": "Regelmäßig",
+          "events": "Veranstaltungen",
+          "regular-accompanying": "Regelmäßig + Begleitend"
         }
       },
       "volunteers": "Freiwillige",
@@ -414,6 +421,13 @@
         "advanced": "Fortgeschritten",
         "fluent": "Fließend",
         "native": "Muttersprache"
+      },
+      "matchStatus": {
+        "vol-no-matches": "Keine Zuweisungen",
+        "vol-pending-match": "Zuordnung ausstehend",
+        "vol-matched": "Zugeordnet",
+        "vol-needs-rematch": "Erneute Zuordnung erforderlich",
+        "vol-past": "Vergangen"
       }
     },
     "home": {

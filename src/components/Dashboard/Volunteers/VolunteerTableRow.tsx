@@ -1,11 +1,12 @@
 "use client";
 
-import type { ApiVolunteerGetList } from "need4deed-sdk";
+import { ApiVolunteerGetList, VolunteerStateMatchType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import type {
   createEngagementStatusLabelMap,
+  createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
 import { TableCell, TableRow } from "@/components/core/common/Table";
@@ -19,14 +20,24 @@ interface TableRowProps {
   isLast: boolean;
   engagementLabels: ReturnType<typeof createEngagementStatusLabelMap>;
   typeLabels: ReturnType<typeof createStatusLabelMap>;
+  matchLabels: ReturnType<typeof createMatchStatusLabelMap>;
   opportunityId?: string;
 }
 
-export function VolunteerTableRow({ volunteer, isLast, engagementLabels, typeLabels, opportunityId }: TableRowProps) {
+export function VolunteerTableRow({
+  volunteer,
+  isLast,
+  engagementLabels,
+  typeLabels,
+  matchLabels,
+  opportunityId,
+}: TableRowProps) {
   const { i18n } = useTranslation();
   const router = useRouter();
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
+  // Cast until SDK PR #99 adds statusMatch to ApiVolunteerGetList
+  const { statusMatch } = volunteer as ApiVolunteerGetList & { statusMatch?: VolunteerStateMatchType };
 
   const languageText =
     languages
@@ -58,7 +69,7 @@ export function VolunteerTableRow({ volunteer, isLast, engagementLabels, typeLab
         {statusEngagement ? engagementLabels[statusEngagement] : "—"}
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} data-testid={`volunteer-match-${id}`}>
-        —
+        {statusMatch ? matchLabels[statusMatch] : "—"}
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.language} data-testid={`volunteer-language-${id}`}>
         {languageText}

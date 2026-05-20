@@ -3,7 +3,7 @@ import { useApiLanguages } from "@/components/Dashboard/Profile/sections/Volunte
 import { useUpdateOpportunityAccompanyingDetails } from "@/hooks/useUpdateOpportunityAccompanyingDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { de, enUS } from "date-fns/locale";
-import { ApiOpportunityGet, TranslatedIntoType } from "need4deed-sdk";
+import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, Option, TranslatedIntoType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -121,6 +121,17 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
     .map((lang) => keyToLabel[String(lang.id)] || String(lang.id))
     .join(", ");
 
+  // appointmentDistrict is server-calculated from postcode — read from API response, never from form state
+  const rawDetails = opportunity.accompanyingDetails as ApiOpportunityAccompanyingDetails & {
+    appointmentPostcode?: string;
+    appointmentDistrict?: Option;
+  };
+  const lang = i18n.language as Lang;
+  const districtTitle =
+    rawDetails?.appointmentDistrict?.title?.[lang] ?? rawDetails?.appointmentDistrict?.title?.de ?? "";
+  const postcode = rawDetails?.appointmentPostcode || "";
+  const postcodeDisplay = postcode && districtTitle ? `${postcode}, ${districtTitle}` : postcode;
+
   return (
     <FormProvider {...methods}>
       <Container data-testid="accompanying-details-container" $isEditing={isEditing}>
@@ -139,7 +150,11 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
             minAppointmentDate={minAppointmentDate}
           />
         ) : (
-          <AccompanyingDetailsDisplay values={formValues} languageLabel={languageLabel} />
+          <AccompanyingDetailsDisplay
+            values={formValues}
+            languageLabel={languageLabel}
+            postcodeDisplay={postcodeDisplay}
+          />
         )}
       </Container>
     </FormProvider>

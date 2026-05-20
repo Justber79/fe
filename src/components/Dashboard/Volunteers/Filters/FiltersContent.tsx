@@ -15,7 +15,7 @@ interface Props {
 export default function FiltersContent({ setFilter, filter }: Props) {
   const { t } = useTranslation();
 
-  const { availabilityFilters, districtFilters, engagementFilters, languageFilters, accompanyingFilter } =
+  const { availabilityFilters, districtFilters, engagementFilters, languageFilters, accompanyingFilter, typeFilters } =
     createFilterItems(filter, setFilter, t);
 
   return (
@@ -43,6 +43,7 @@ export default function FiltersContent({ setFilter, filter }: Props) {
         </AccompanyingFilterHeaderContainer>
       </AccompanyingFilterContainer>
 
+      <AccordionFilter header={t("dashboard.volunteers.filters.volunteerType_title")} items={typeFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.engagement.header")} items={engagementFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />

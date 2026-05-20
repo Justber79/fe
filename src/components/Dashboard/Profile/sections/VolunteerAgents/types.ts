@@ -2,6 +2,7 @@ import {
   ApiVolunteerGetList,
   OpportunityVolunteerStatusType,
   VolunteerStateEngagementType,
+  VolunteerStateMatchType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
 
@@ -18,6 +19,14 @@ export const createEngagementStatusLabelMap = (t: TFunction): Record<VolunteerSt
   [VolunteerStateEngagementType.INACTIVE]: t("dashboard.volunteers.filters.engagement.inactive"),
   [VolunteerStateEngagementType.TEMP_UNAVAILABLE]: t("dashboard.volunteers.filters.engagement.temporarilyUnavailable"),
   [VolunteerStateEngagementType.AVAILABLE]: t("dashboard.volunteers.filters.engagement.available"),
+});
+
+export const createMatchStatusLabelMap = (t: TFunction): Record<VolunteerStateMatchType, string> => ({
+  [VolunteerStateMatchType.NO_MATCHES]: t("dashboard.volunteers.matchStatus.vol-no-matches"),
+  [VolunteerStateMatchType.PENDING_MATCH]: t("dashboard.volunteers.matchStatus.vol-pending-match"),
+  [VolunteerStateMatchType.MATCHED]: t("dashboard.volunteers.matchStatus.vol-matched"),
+  [VolunteerStateMatchType.NEEDS_REMATCH]: t("dashboard.volunteers.matchStatus.vol-needs-rematch"),
+  [VolunteerStateMatchType.PAST]: t("dashboard.volunteers.matchStatus.vol-past"),
 });
 
 export const createStatusLabelMap = (t: TFunction): Record<VolunteerStateTypeType, string> => ({
