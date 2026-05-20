@@ -11,7 +11,7 @@ export function formatLanguagesByPurpose(
   const purposeSet = new Set(Array.isArray(purposes) ? purposes : [purposes]);
   const seen = new Set<number>();
   const filtered = languages.filter((lang) => {
-    if (!purposeSet.has(lang.purpose)) return false;
+    if (!lang.purpose || !purposeSet.has(lang.purpose)) return false;
     if (seen.has(lang.id)) return false;
     seen.add(lang.id);
     return true;
