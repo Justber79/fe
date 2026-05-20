@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathOpportunity, cacheTTL } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
@@ -64,7 +65,7 @@ export function OpportunityListController({
 
   const backendSortOrder = isAppointmentSort(sortOrder) ? SortOrder.NewToOld : (sortOrder as SortOrder);
 
-  const { data, count } = useGetQuery<ApiVolunteerOpportunityGetList[]>({
+  const { data, count, isLoading } = useGetQuery<ApiVolunteerOpportunityGetList[]>({
     queryKey: ["opportunities"],
     apiPath: `${apiPathOpportunity}/`,
     params: {
@@ -84,6 +85,8 @@ export function OpportunityListController({
   useEffect(() => {
     setNumOfOpps(count);
   }, [count, setNumOfOpps]);
+
+  if (isLoading) return <DashboardListLoading />;
 
   return (
     <OpportunityCardList
