@@ -35,7 +35,7 @@ export function Volunteers() {
   const pathname = usePathname();
   const router = useRouter();
   const tabs = [t("dashboard.volunteers.tabs.tab1"), t("dashboard.volunteers.tabs.tab2")];
-  const viewMode: ViewMode = selectedTabIndex === 0 ? "list" : "cards";
+  const viewMode = Object.values(ViewMode)[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
 

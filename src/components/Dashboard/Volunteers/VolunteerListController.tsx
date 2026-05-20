@@ -33,7 +33,7 @@ export function VolunteerListController({
   opportunityId,
   viewMode,
 }: VolunteerListControllerProps) {
-  const isListView = viewMode === "list";
+  const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const serializedFilter = serializeFilters(filter, undefined, false, {

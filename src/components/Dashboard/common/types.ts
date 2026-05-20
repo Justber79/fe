@@ -1,1 +1,5 @@
-export type ViewMode = "cards" | "list" | "map";
+export enum ViewMode {
+  LIST = "list",
+  CARDS = "cards",
+  MAP = "map",
+}
