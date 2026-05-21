@@ -31,7 +31,7 @@ export function getNormalizedAgent(agent: AgentListItem): Omit<
     district: agent.district,
     volunteerSearch: agent.volunteerSearch ?? AgentVolunteerSearchType.NOT_NEEDED,
     trustLevel: agent.trustLevel ? agent.trustLevel : AgentTrustType.UNKNOWN,
-    serviceType: agent.serviceType,
+    serviceType: agent.serviceType ?? undefined,
   };
 }
 
