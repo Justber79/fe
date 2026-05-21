@@ -9,10 +9,10 @@ import { DateFieldRow, Details } from "./styles";
 type Props = {
   values: AccompanyingDetailsFormData;
   languageLabel: string;
-  districtLabel: string;
+  postcodeDisplay: string;
 };
 
-export const AccompanyingDetailsDisplay = ({ values, languageLabel, districtLabel }: Props) => {
+export const AccompanyingDetailsDisplay = ({ values, languageLabel, postcodeDisplay }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -29,17 +29,8 @@ export const AccompanyingDetailsDisplay = ({ values, languageLabel, districtLabe
         mode="display"
         type="text"
         label={t("dashboard.opportunityProfile.accompanyingDetails.appointmentPostcode")}
-        value={values.appointmentPostcode || ""}
+        value={postcodeDisplay}
         setValue={() => {}}
-      />
-
-      <EditableField
-        mode="display"
-        type="radio-list"
-        label={t("dashboard.opportunityProfile.accompanyingDetails.appointmentDistrict")}
-        value={districtLabel}
-        setValue={() => {}}
-        options={[]}
       />
 
       <DateFieldRow data-testid="appointment-date-field">

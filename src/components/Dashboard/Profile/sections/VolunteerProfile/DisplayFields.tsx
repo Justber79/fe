@@ -47,8 +47,7 @@ const BadgeWithCheck = styled.div`
 `;
 
 type Props = {
-  mainCommunication: string;
-  languagesToTranslate: string;
+  languages: string;
   availability: string;
   districts: string;
   volunteerType: string;
@@ -61,8 +60,7 @@ type Props = {
 };
 
 export function DisplayFields({
-  mainCommunication,
-  languagesToTranslate,
+  languages,
   availability,
   districts,
   volunteerType,
@@ -76,13 +74,8 @@ export function DisplayFields({
   return (
     <>
       <FieldRow>
-        <FieldLabel>{t("dashboard.volunteerProfile.profileSection.mainCommunication")}</FieldLabel>
-        <FieldValue>{mainCommunication}</FieldValue>
-      </FieldRow>
-
-      <FieldRow>
-        <FieldLabel>{t("dashboard.volunteerProfile.profileSection.languagesToTranslate")}</FieldLabel>
-        <FieldValue>{languagesToTranslate}</FieldValue>
+        <FieldLabel>{t("dashboard.volunteerProfile.profileSection.languages")}</FieldLabel>
+        <FieldValue>{languages}</FieldValue>
       </FieldRow>
 
       <FieldRow>

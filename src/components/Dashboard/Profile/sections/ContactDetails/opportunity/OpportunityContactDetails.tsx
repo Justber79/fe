@@ -49,6 +49,20 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
         ? [raw as PreferredCommunicationType]
         : [];
 
+    const hasContactData = !!(opportunity.contact.name || opportunity.contact.phone || opportunity.contact.email);
+
+    if (!hasContactData) {
+      const sorted = [...opportunity.comments].sort(
+        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+      );
+      for (const comment of sorted) {
+        const parts = comment.content.split("<|>");
+        if (parts.length >= 5) {
+          return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
+        }
+      }
+    }
+
     // Fields are listed explicitly to stay in sync with OpportunityContactDetailsFormData.
     // If the schema adds or removes fields, update this object accordingly.
     return {
@@ -57,7 +71,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       email: opportunity.contact.email ?? "",
       waysToContact,
     };
-  }, [opportunity.contact]);
+  }, [opportunity.contact, opportunity.comments]);
 
   const methods = useForm<OpportunityContactDetailsFormData>({
     resolver: zodResolver(schema),

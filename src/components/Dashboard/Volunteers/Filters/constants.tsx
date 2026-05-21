@@ -1,18 +1,31 @@
-import { ByDay, OccasionalType, QueryParamsKeys, TimeSlot } from "need4deed-sdk";
+import {
+  ByDay,
+  OccasionalType,
+  QueryParamsKeys,
+  TimeSlot,
+  VolunteerStateEngagementType,
+  VolunteerStateTypeType,
+} from "need4deed-sdk";
 import { CardsFilter } from "./types";
 
 export const defaultVolunteerCardsFilter: CardsFilter = {
   [QueryParamsKeys.SEARCH]: "",
   [QueryParamsKeys.ACCOMPANYING]: false,
+  type: {
+    [VolunteerStateTypeType.ACCOMPANYING]: false,
+    [VolunteerStateTypeType.REGULAR]: false,
+    [VolunteerStateTypeType.EVENTS]: false,
+    [VolunteerStateTypeType.REGULAR_ACCOMPANYING]: false,
+  },
   [QueryParamsKeys.DISTRICT]: {},
   [QueryParamsKeys.LANGUAGE]: {},
   [QueryParamsKeys.ENGAGEMENT]: {
-    new: false,
-    active: false,
-    available: false,
-    temporarilyUnavailable: false,
-    inactive: false,
-    unresponsive: false,
+    [VolunteerStateEngagementType.NEW]: false,
+    [VolunteerStateEngagementType.ACTIVE]: false,
+    [VolunteerStateEngagementType.AVAILABLE]: false,
+    [VolunteerStateEngagementType.TEMP_UNAVAILABLE]: false,
+    [VolunteerStateEngagementType.INACTIVE]: false,
+    [VolunteerStateEngagementType.UNRESPONSIVE]: false,
   },
   [QueryParamsKeys.AVAILABILITY]: {
     times: {

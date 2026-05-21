@@ -3,6 +3,7 @@ import {
   ApiVolunteerGetList,
   VolunteerStateCommunicationType,
   VolunteerStateEngagementType,
+  VolunteerStateMatchType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
@@ -34,10 +35,12 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
   const { id, name, languages, activities, skills, locations, availability, avatarUrl, statusEngagement, statusType } =
     getNormalizedVolunteer(volunteer);
 
-  // TODO: remove cast once SDK adds statusCommunication to ApiVolunteerGetList
-  const { statusCommunication } = volunteer as ApiVolunteerGetList & {
+  // Cast until SDK PR #99 adds statusCommunication and statusMatch to ApiVolunteerGetList
+  const { statusCommunication, statusMatch } = volunteer as ApiVolunteerGetList & {
     statusCommunication?: VolunteerStateCommunicationType;
+    statusMatch?: VolunteerStateMatchType;
   };
+
   const showBriefedCheck = isBriefedAccompanying(statusType as VolunteerStateTypeType, statusCommunication);
 
   const groupedLanguages = groupLanguagesByProficiency(languages);
@@ -86,6 +89,19 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
                 {showBriefedCheck && <CheckCircleIcon size={18} color="var(--color-green-700)" weight="fill" />}
               </TagDiv>
             </>
+          )}
+
+          {statusMatch && (
+            <StatusDiv>
+              <Paragraph
+                fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
+                fontSize="var(--dashboard-volunteers-card-status-fontSize)"
+                lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
+                color={stateMatchColorMap[statusMatch]}
+              >
+                {t(`dashboard.volunteers.matchStatus.${statusMatch}`)}
+              </Paragraph>
+            </StatusDiv>
           )}
         </>
       </StatusTagsDiv>
@@ -140,6 +156,14 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
 export default VolunteerCard;
 
 /* Helper maps */
+
+const stateMatchColorMap: Record<VolunteerStateMatchType, string> = {
+  [VolunteerStateMatchType.NO_MATCHES]: "var(--color-grey-700)",
+  [VolunteerStateMatchType.PENDING_MATCH]: "var(--color-blue-700)",
+  [VolunteerStateMatchType.MATCHED]: "var(--color-green-700)",
+  [VolunteerStateMatchType.NEEDS_REMATCH]: "var(--color-red-700)",
+  [VolunteerStateMatchType.PAST]: "var(--color-grey-500)",
+};
 
 const stateEngagementColorMap: Record<VolunteerStateEngagementType, string> = {
   [VolunteerStateEngagementType.NEW]: "var(--color-red-500)",

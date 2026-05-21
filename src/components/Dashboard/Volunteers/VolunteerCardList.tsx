@@ -17,6 +17,8 @@ interface VolunteerCardListProps {
 const VolunteerCardListContainer = styled.div`
   display: flex;
   justify-content: left;
+  flex: 1;
+  min-width: 0;
 `;
 
 export function VolunteerCardList({

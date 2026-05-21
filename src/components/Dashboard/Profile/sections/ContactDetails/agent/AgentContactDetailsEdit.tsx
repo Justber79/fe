@@ -128,6 +128,20 @@ export const AgentContactDetailsEdit = ({ options, toLabel, toKey, onCancel, onS
             />
           )}
         />
+        <Controller
+          name="address"
+          control={control}
+          render={({ field }: { field: ControllerRenderProps<AgentContactDetailsFormData, "address"> }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t("dashboard.agentProfile.contactDetails.address")}
+              value={field.value ?? ""}
+              setValue={field.onChange}
+              errorMessage={errors.address?.message}
+            />
+          )}
+        />
       </FormDetails>
 
       <ButtonRow>

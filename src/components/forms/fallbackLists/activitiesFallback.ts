@@ -38,11 +38,11 @@ export const activities = [
   },
   {
     id: "Activities-women",
-    title: { en: "Activities for women", de: "Aktivitäten für Frauen*" },
+    title: { en: "Activities for women", de: "Aktivitäten für Frauen" },
   },
   {
     id: "Activities-men",
-    title: { en: "Activities for men", de: "Aktivitäten für Männer*" },
+    title: { en: "Activities for men", de: "Aktivitäten für Männer" },
   },
   { id: "Tutoring", title: { en: "Assist with homework", de: "Nachhilfe" } },
   {
@@ -62,26 +62,26 @@ export const activitiesAccompanying = [
     id: "Accompanying to government appointments",
     title: {
       en: "Accompanying to government appointments",
-      de: "Begleitung: Termine bei Behörden* ",
+      de: "Termine bei Behörden",
     },
   },
   {
     id: "Apartment viewing accompanying",
     title: {
       en: "Apartment viewing accompanying",
-      de: "Begleitung: Wohnungsbesichtigungen",
+      de: "Wohnungsbesichtigungen",
     },
   },
   {
     id: "Schools meetings ccompanying",
     title: {
       en: "Schools meetings ccompanying",
-      de: "Begleitung: Termine in Schulen und Kitas",
+      de: "Termine in Schulen und Kitas",
     },
   },
   { id: "Accompanying", title: { en: "Accompanying", de: "Wegbegleitung" } },
   {
     id: "Accompanying to doctors'",
-    title: { en: "Accompanying to doctors' ", de: "Begleitung: Arzttermine" },
+    title: { en: "Accompanying to doctors'", de: "Arzttermine" },
   },
 ];

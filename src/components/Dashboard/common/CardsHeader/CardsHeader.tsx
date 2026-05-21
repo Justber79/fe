@@ -4,8 +4,7 @@ import { Paragraph } from "../../../styled/text";
 import { Search } from "../../../core/common";
 import FiltersButton from "./FiltersButton";
 import Results from "./Results";
-import SortBy, { OnChangeSortOrder } from "./SortBy";
-import { SortOrder } from "need4deed-sdk";
+import SortBy, { OnChangeSortOrder, SortOption } from "./SortBy";
 import { XIcon } from "@phosphor-icons/react";
 import { FilterItem } from "../CardsFilter/types";
 import { EntityFilterChip } from "./EntityFilterChip";
@@ -40,8 +39,9 @@ type Props = {
   selectedTabIndex: number;
   setSelectedTabIndex: (index: number) => void;
   setIsFiltersOpen: (isOpen: boolean) => void;
-  sortOrder: SortOrder;
+  sortOrder: string;
   onSortOrderChange?: OnChangeSortOrder;
+  extraSortOptions?: SortOption[];
   activeFilters: FilterItem[];
   onClearAllFilters?: () => void;
   entityFilter?: EntityFilter;
@@ -60,6 +60,7 @@ export default function CardsHeader({
   setIsFiltersOpen,
   sortOrder,
   onSortOrderChange,
+  extraSortOptions,
   activeFilters,
   onClearAllFilters,
   entityFilter,
@@ -79,7 +80,7 @@ export default function CardsHeader({
               </TabHeading>
             ))}
           </Tabs>
-          <SortBy sortOrder={sortOrder} onChange={onSortOrderChange} />
+          <SortBy sortOrder={sortOrder} onChange={onSortOrderChange} extraOptions={extraSortOptions} />
         </TabsSectionContainer>
 
         <SearchBarSectionContainer>

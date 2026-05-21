@@ -9,7 +9,7 @@ export const PageContainer = styled.div`
   gap: var(--volunteer-profile-container-gap);
 `;
 
-export const BackLink = styled(Link)`
+const backNavStyles = `
   display: inline-flex;
   align-items: center;
   gap: var(--volunteer-profile-back-link-gap);
@@ -17,4 +17,16 @@ export const BackLink = styled(Link)`
   color: var(--color-midnight);
   text-decoration: none;
   transition: var(--volunteer-profile-back-link-transition);
+`;
+
+export const BackLink = styled(Link)`
+  ${backNavStyles}
+`;
+
+export const BackButton = styled.button`
+  ${backNavStyles}
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 `;

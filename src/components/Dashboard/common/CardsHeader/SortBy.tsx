@@ -42,23 +42,27 @@ const OptionButton = styled.button`
   cursor: pointer;
 `;
 
+export type SortOption = { value: string; label: string };
+
 interface Props {
-  sortOrder: SortOrder;
+  sortOrder: string;
   onChange?: OnChangeSortOrder;
+  extraOptions?: SortOption[];
 }
 
-export type OnChangeSortOrder = (value: SortOrder) => void;
+export type OnChangeSortOrder = (value: string) => void;
 
-export default function SortBy({ onChange, sortOrder }: Props) {
+export default function SortBy({ onChange, sortOrder, extraOptions }: Props) {
   const { t } = useTranslation();
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-  const sortByOptions = [
+  const sortByOptions: SortOption[] = [
     { value: SortOrder.NewToOld, label: t("dashboard.sortBy.newToOld") },
     { value: SortOrder.OldToNew, label: t("dashboard.sortBy.oldToNew") },
+    ...(extraOptions ?? []),
   ];
 
-  const handleChange = (value: SortOrder) => {
+  const handleChange = (value: string) => {
     setIsOptionsVisible(false);
     if (onChange) onChange(value);
   };

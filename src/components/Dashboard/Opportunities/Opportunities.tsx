@@ -23,7 +23,7 @@ export function Opportunities() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
-  const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
+  const [sortOrder, setSortOrder] = useState<string>(SortOrder.NewToOld);
   const [cardsFilter, setCardsFilter] = useState(defaultOpportunityCardsFilter);
   const { data: apiFilterOptions } = useGetQuery<ApiOptionLists>({ queryKey: ["options"], apiPath: apiPathOption });
   const searchParams = useSearchParams();
@@ -42,9 +42,14 @@ export function Opportunities() {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
   };
 
-  const handleSortChange = (order: SortOrder) => {
+  const handleSortChange = (order: string) => {
     setSortOrder(order);
   };
+
+  const extraSortOptions = [
+    { value: "appointment-proximal", label: t("dashboard.sortBy.appointmentProximal") },
+    { value: "appointment-distant", label: t("dashboard.sortBy.appointmentDistant") },
+  ];
 
   const handleFilterUpdate = (
     newFilter: OpportunityCardsFilter | ((prev: OpportunityCardsFilter) => OpportunityCardsFilter),
@@ -98,6 +103,7 @@ export function Opportunities() {
           searchPlaceholder={t("dashboard.opportunities.card.search")}
           sortOrder={sortOrder}
           onSortOrderChange={handleSortChange}
+          extraSortOptions={extraSortOptions}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}

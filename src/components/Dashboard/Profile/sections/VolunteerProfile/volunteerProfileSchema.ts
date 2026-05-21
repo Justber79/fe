@@ -54,7 +54,7 @@ export const createVolunteerProfileSchema = (t: (key: string) => string) => {
     activities: z
       .array(z.string())
       .min(1, t("dashboard.volunteerProfile.profileSection.validation.activitiesRequired")),
-    skills: z.array(z.string()).min(1, t("dashboard.volunteerProfile.profileSection.validation.skillsRequired")),
+    skills: z.array(z.string()),
   });
 };
 

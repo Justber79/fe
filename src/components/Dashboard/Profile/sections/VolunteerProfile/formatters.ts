@@ -2,7 +2,7 @@ import { getScheduleState } from "@/components/forms/utils";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { LanguageLevel, LanguageObject } from "@/types";
 import { TFunction } from "i18next";
-import { ApiVolunteerGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiVolunteerGet, VolunteerStateTypeType } from "need4deed-sdk";
 
 type VolunteerLanguages = ApiVolunteerGet["languages"];
 type VolunteerLocations = ApiVolunteerGet["locations"];
@@ -57,12 +57,9 @@ export function formatLanguagesForDisplay(
   langs: VolunteerLanguages,
   languageIdToTitle: Record<number, string>,
   t: TFunction,
-  purpose?: LangPurpose,
 ): string {
   if (!langs || langs.length === 0) return EMPTY_PLACEHOLDER_VALUE;
-  const filtered = purpose ? langs.filter((lang) => lang.purpose === purpose) : langs;
-  if (filtered.length === 0) return EMPTY_PLACEHOLDER_VALUE;
-  return filtered
+  return langs
     .map((lang) => {
       const localizedTitle = languageIdToTitle[lang.id] || lang.title;
       const proficiencyKey = lang.proficiency?.toLowerCase();

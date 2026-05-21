@@ -47,6 +47,7 @@ export function serializeAgentFilters(
   options?: SerializeFiltersOptions,
 ) {
   const params = new URLSearchParams(searchParams);
+  params.delete("page");
 
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);

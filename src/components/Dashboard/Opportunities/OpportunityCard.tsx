@@ -7,10 +7,12 @@ import { Paragraph } from "@/components/styled/text";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
-import { getActivityTitles, getLanguagesByPurpose, getOptionTitles } from "./helpers";
+import { getActivityTitles, getLanguagesByPurpose } from "./helpers";
 import {
   formatAccompanyingDate,
   formatAvailability,
+  matchStatusColorMap,
+  matchStatusIconMap,
   statusColorMap,
   statusIconMap,
   volunteerTypeIconMap,
@@ -21,9 +23,10 @@ type Props = {
   opportunity: ApiVolunteerOpportunityGetList;
   volunteerId?: string;
   activitiesList?: OptionItem[];
+  districtsList?: OptionItem[];
 };
 
-export function OpportunityCard({ opportunity, volunteerId, activitiesList }: Props) {
+export function OpportunityCard({ opportunity, volunteerId, activitiesList, districtsList }: Props) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
@@ -34,17 +37,22 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList }: Pr
     statusOpportunity,
     languages,
     activities,
-    location,
     availability,
     accompanyingDetails,
+    statusMatch,
+    district,
   } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
+    statusMatch?: string;
+    district?: { id: number };
   };
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
-  const locationTitles = getOptionTitles(location);
   const activityTitles = getActivityTitles(activities, activitiesList);
+  const districtTitle = district?.id
+    ? (districtsList?.find((d) => d.id === district.id)?.title ?? null)
+    : null;
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
@@ -72,6 +80,19 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList }: Pr
               color={statusColorMap[statusOpportunity]}
             >
               {t(`dashboard.opportunities.status.${statusOpportunity}`)}
+            </Paragraph>
+          </StatusDiv>
+        )}
+        {statusMatch && (
+          <StatusDiv>
+            {matchStatusIconMap[statusMatch]}
+            <Paragraph
+              fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
+              fontSize="var(--dashboard-volunteers-card-status-fontSize)"
+              lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
+              color={matchStatusColorMap[statusMatch]}
+            >
+              {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
             </Paragraph>
           </StatusDiv>
         )}
@@ -117,7 +138,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList }: Pr
       </CardDetail>
 
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>
-        {locationTitles.length > 0 && <CardParagraph text={locationTitles.join(", ")} />}
+        {districtTitle && <CardParagraph text={districtTitle} />}
       </CardDetail>
     </Card>
   );

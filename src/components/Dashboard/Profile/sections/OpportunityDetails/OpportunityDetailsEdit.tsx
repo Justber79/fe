@@ -29,12 +29,22 @@ import { createOpportunityDetailsSchema, OpportunityDetailsFormData } from "./op
 import { DateFieldRow, DatePickerContainer, ErrorText, FieldGroup, TimeInput, TimeInputWrapper } from "./styles";
 import { OpportunityWithDetails } from "./types";
 
-function toLangOptionItems(formLangs: { language: string }[], apiLanguages: ApiLanguageOption[], t: TFunction): OptionItem[] {
+function toLangOptionItems(
+  formLangs: { language: string }[],
+  apiLanguages: ApiLanguageOption[],
+  t: TFunction,
+): OptionItem[] {
   return formLangs.flatMap(({ language }) => {
     if (!language) return [];
+    // LanguageFieldRow stores the ID as a string when the user picks from the dropdown
+    const numId = Number(language);
+    if (!isNaN(numId) && numId > 0) {
+      const found = apiLanguages.find((a) => a.id === numId);
+      return found ? [{ id: found.id, title: found.title }] : [];
+    }
+    // languagesToFormValues stores translated names on initial load; reverse the lookup
     const found = apiLanguages.find((a) => {
       if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
-      // languagesToFormValues stores translated names; reverse the lookup to match them
       const key = `languageNames.${a.title.toLowerCase()}`;
       const translated = t(key);
       return translated !== key && translated === language;
@@ -79,14 +89,20 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   }));
 
   const generalLangs = opp.languages.filter((l) => l.purpose === LangPurpose.GENERAL);
-  const recipientLangs = opp.languages.filter((l) => l.purpose === LangPurpose.RECIPIENT);
+  const seenResidents = new Set<number>();
+  const residentsLangs = opp.languages.filter((l) => {
+    if (l.purpose !== LangPurpose.RECIPIENT && l.purpose !== LangPurpose.TRANSLATION) return false;
+    if (seenResidents.has(l.id)) return false;
+    seenResidents.add(l.id);
+    return true;
+  });
 
   const schema = createOpportunityDetailsSchema(t);
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isValid },
   } = useForm<OpportunityDetailsFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -94,7 +110,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
       description: opp.description ?? "",
       numberOfVolunteers: String(opp.numberOfVolunteers ?? ""),
       mainCommunication: languagesToFormValues(generalLangs, t),
-      residentsSpeak: languagesToFormValues(recipientLangs, t),
+      residentsSpeak: languagesToFormValues(residentsLangs, t),
       availability: isEventType ? undefined : apiToFormAvailability(opp.availability),
       eventDate: null,
       eventTime: "",
@@ -314,7 +330,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
           onClick={handleSubmit(onSubmit)}
           width="auto"
           padding="var(--volunteer-profile-section-card-header-button-padding)"
-          disabled={!isDirty || !isValid}
+          disabled={!isValid}
         />
       </FormButtonRow>
     </>

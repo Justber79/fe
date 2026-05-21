@@ -3,7 +3,7 @@
 import { AgentRoles } from "@/config/constants";
 import { useUpdateAgentContact } from "@/hooks/useUpdateAgentContact";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ApiAgentProfileGet } from "../../../types";
@@ -11,6 +11,7 @@ import { FormContainer } from "../../shared/styles";
 import { EditableSectionProps } from "../../shared/types";
 import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
 import { useEnumTranslation } from "../shared";
+import { formatAddress, parseAddress } from "./agentAddressUtils";
 import { AgentContactDetailsDisplay } from "./AgentContactDetailsDisplay";
 import { AgentContactDetailsEdit } from "./AgentContactDetailsEdit";
 import { AgentContactDetailsFormData, createAgentContactDetailsSchema } from "./agentContactDetailsSchema";
@@ -30,7 +31,10 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
   ref,
 ) {
   const { t } = useTranslation();
-  const { mutate: updateAgent, isPending } = useUpdateAgentContact(String(agent?.representative?.id), String(agent?.id));
+  const { mutate: updateAgent, isPending } = useUpdateAgentContact(
+    String(agent?.representative?.id),
+    String(agent?.id),
+  );
   const [isEditing, setIsEditing] = useState(false);
 
   useEditingChangeNotifier(isEditing, onEditingChange);
@@ -42,7 +46,19 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
 
   const schema = createAgentContactDetailsSchema(t);
 
-  const initialFormValues = agent?.representative;
+  const initialFormValues = useMemo(
+    (): AgentContactDetailsFormData => ({
+      firstName: agent?.representative?.firstName ?? "",
+      middleName: agent?.representative?.middleName ?? "",
+      lastName: agent?.representative?.lastName ?? "",
+      role: agent?.representative?.role as AgentContactDetailsFormData["role"],
+      email: agent?.representative?.email ?? "",
+      phone: agent?.representative?.phone ?? "",
+      landline: agent?.representative?.landline ?? "",
+      address: formatAddress(agent?.representative?.address),
+    }),
+    [agent],
+  );
 
   const methods = useForm<AgentContactDetailsFormData>({
     resolver: zodResolver(schema),
@@ -62,13 +78,33 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
   };
 
   const onSubmit = (values: AgentContactDetailsFormData) => {
-    updateAgent(values, {
-      onSuccess: () => {
-        reset(values);
-        setIsEditing(false);
+    const addressData = parseAddress(values.address ?? "");
+    updateAgent(
+      {
+        ...values,
+        address: {
+          id: agent.representative?.address?.id,
+          street: addressData.street,
+          city: addressData.city,
+          postcode: {
+            id: agent.representative?.address?.postcode?.id,
+            code: addressData.postcode,
+          },
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          reset(values);
+          setIsEditing(false);
+        },
+      },
+    );
   };
+
+  useEffect(() => {
+    if (isEditing) return;
+    reset(initialFormValues);
+  }, [initialFormValues, isEditing, reset]);
 
   return (
     <FormProvider {...methods}>

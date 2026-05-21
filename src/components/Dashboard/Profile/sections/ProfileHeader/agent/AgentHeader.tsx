@@ -11,6 +11,7 @@ import {
   createEngagementStatusLabelMap,
   createTrustLevelLabelMap,
   createVolunteerSearchLabelMap,
+  getDistrictLabel,
   TRUST_LEVEL_OPTIONS,
 } from "./constants";
 import { TrustLevelDropdown } from "./TrustLevelDropdown";
@@ -21,7 +22,8 @@ type Props = {
 };
 
 export const AgentHeader = ({ agent }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const districtLabel = getDistrictLabel(agent.district, i18n.language);
   const dialog = useAgentEngagementStatusDialog(agent);
   const { mutate: patchAgent } = useUpdateAgentStatus(agent.id);
 
@@ -72,6 +74,8 @@ export const AgentHeader = ({ agent }: Props) => {
           />
         }
       />
+
+      <StatusRowField title={t("dashboard.agentProfile.district")} showIcon={false} extra={districtLabel} />
     </HeaderCard>
   );
 };

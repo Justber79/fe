@@ -35,8 +35,8 @@ export const Agents = () => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
   };
 
-  const handleSortChange = (order: SortOrder) => {
-    setSortOrder(order);
+  const handleSortChange = (order: string) => {
+    setSortOrder(order as SortOrder);
   };
 
   const handleFilterUpdate = (newFilter: AgentCardsFilter | ((prev: AgentCardsFilter) => AgentCardsFilter)) => {

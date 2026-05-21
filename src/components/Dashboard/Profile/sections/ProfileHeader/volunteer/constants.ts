@@ -1,8 +1,5 @@
 import { TFunction } from "i18next";
-import {
-  VolunteerStateEngagementType,
-  VolunteerStateMatchType,
-} from "need4deed-sdk";
+import { VolunteerStateEngagementType, VolunteerStateMatchType } from "need4deed-sdk";
 
 export const ENGAGEMENT_DESCRIPTION_KEYS: Record<VolunteerStateEngagementType, string> = {
   [VolunteerStateEngagementType.NEW]: "new_description",
@@ -13,12 +10,8 @@ export const ENGAGEMENT_DESCRIPTION_KEYS: Record<VolunteerStateEngagementType, s
   [VolunteerStateEngagementType.UNRESPONSIVE]: "unresponsive_description",
 };
 
-export const createEngagementLabelMap = (
-  t: TFunction,
-): Record<VolunteerStateEngagementType, string> => ({
-  [VolunteerStateEngagementType.NEW]: t(
-    "dashboard.volunteerProfile.volunteerHeader.engagementStatus_options.new",
-  ),
+export const createEngagementLabelMap = (t: TFunction): Record<VolunteerStateEngagementType, string> => ({
+  [VolunteerStateEngagementType.NEW]: t("dashboard.volunteerProfile.volunteerHeader.engagementStatus_options.new"),
   [VolunteerStateEngagementType.ACTIVE]: t(
     "dashboard.volunteerProfile.volunteerHeader.engagementStatus_options.active",
   ),
@@ -36,19 +29,14 @@ export const createEngagementLabelMap = (
   ),
 });
 
-export const createMatchLabelMap = (
-  t: TFunction,
-): Record<VolunteerStateMatchType, string> => ({
-  [VolunteerStateMatchType.NO_MATCHES]: t(
-    "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.noMatches",
-  ),
+export const createMatchLabelMap = (t: TFunction): Record<VolunteerStateMatchType, string> => ({
+  [VolunteerStateMatchType.NO_MATCHES]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.noMatches"),
   [VolunteerStateMatchType.PENDING_MATCH]: t(
     "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.pendingMatch",
   ),
-  [VolunteerStateMatchType.MATCHED]: t(
-    "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.matched",
-  ),
+  [VolunteerStateMatchType.MATCHED]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.matched"),
   [VolunteerStateMatchType.NEEDS_REMATCH]: t(
     "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.needsRematch",
   ),
+  [VolunteerStateMatchType.PAST]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.past"),
 });
