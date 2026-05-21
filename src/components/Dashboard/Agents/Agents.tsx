@@ -17,6 +17,7 @@ import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/he
 import { deserializeAgentFilters, serializeAgentFilters } from "./helpers";
 import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
+import { ViewMode } from "../common/types";
 
 export const Agents = () => {
   const { t } = useTranslation();
@@ -30,6 +31,7 @@ export const Agents = () => {
   const pathname = usePathname();
   const router = useRouter();
   const tabs = [t("dashboard.agents.tabs.tab1"), t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")];
+  const viewMode = Object.values(ViewMode)[selectedTabIndex];
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
@@ -91,6 +93,7 @@ export const Agents = () => {
             isFiltersOpen={isFiltersOpen}
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
+            viewMode={viewMode}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}
