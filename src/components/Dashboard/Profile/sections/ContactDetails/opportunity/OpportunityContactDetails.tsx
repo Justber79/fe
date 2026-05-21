@@ -40,28 +40,23 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
   const schema = createOpportunityContactDetailsSchema(t);
 
   const initialFormValues = useMemo(() => {
+    const sorted = [...opportunity.comments].sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    );
+    for (const comment of sorted) {
+      const parts = comment.content.split("<|>");
+      if (parts.length >= 5) {
+        return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
+      }
+    }
+
     const raw = opportunity.contact.waysToContact;
     const validTypes = new Set<string>(COMMUNICATION_TYPES);
-
     const waysToContact: PreferredCommunicationType[] = Array.isArray(raw)
       ? raw.filter((v): v is PreferredCommunicationType => validTypes.has(v))
       : typeof raw === "string" && validTypes.has(raw)
         ? [raw as PreferredCommunicationType]
         : [];
-
-    const hasContactData = !!(opportunity.contact.name || opportunity.contact.phone || opportunity.contact.email);
-
-    if (!hasContactData) {
-      const sorted = [...opportunity.comments].sort(
-        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-      );
-      for (const comment of sorted) {
-        const parts = comment.content.split("<|>");
-        if (parts.length >= 5) {
-          return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
-        }
-      }
-    }
 
     // Fields are listed explicitly to stay in sync with OpportunityContactDetailsFormData.
     // If the schema adds or removes fields, update this object accordingly.
