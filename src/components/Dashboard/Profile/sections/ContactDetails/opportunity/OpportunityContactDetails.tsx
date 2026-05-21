@@ -1,14 +1,14 @@
 "use client";
-import { useUpdateOpportunityContact } from "@/hooks/useUpdateOpportunityContact";
+import { useCreateComment } from "@/hooks/useCreateComment";
+import { useUpdateComment } from "@/hooks/useUpdateComment";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApiOpportunityGet, PreferredCommunicationType } from "need4deed-sdk";
+import { ApiOpportunityGet } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormContainer } from "../../shared/styles";
 import { EditableSectionProps, EditableSectionRef } from "../../shared/types";
 import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
-import { useEnumTranslation } from "../shared";
 import { OpportunityContactDetailsDisplay } from "./OpportunityContactDetailsDisplay";
 import { OpportunityContactDetailsEdit } from "./OpportunityContactDetailsEdit";
 import {
@@ -20,53 +20,53 @@ type Props = {
   opportunity: ApiOpportunityGet;
 } & EditableSectionProps;
 
-const COMMUNICATION_TYPES = Object.values(PreferredCommunicationType);
-
 export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(function OpportunityContactDetails(
   { opportunity, onEditingChange },
   ref,
 ) {
   const { t } = useTranslation();
-  const { mutate: updateContact, isPending } = useUpdateOpportunityContact(opportunity.id);
   const [isEditing, setIsEditing] = useState(false);
 
   useEditingChangeNotifier(isEditing, onEditingChange);
 
-  const { options, keysToLabels, labelsToKeys } = useEnumTranslation(
-    COMMUNICATION_TYPES,
-    "dashboard.opportunityProfile.contactDetails.waysToContact",
-  );
-
   const schema = createOpportunityContactDetailsSchema(t);
 
+  // All comments that use the <|> delimiter (structural: 5+ parts) sorted oldest-first.
+  // The oldest is the system comment from the public form; any newer one is a coordinator override.
+  const pipedComments = useMemo(
+    () =>
+      [...opportunity.comments]
+        .filter((c) => c.content.split("<|>").length >= 5)
+        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()),
+    [opportunity.comments],
+  );
+
+  // The most recent <|> comment is the active contact data.
+  const latestPipedComment = pipedComments.at(-1);
+
+  // When 2+ <|> comments exist the newest is the coordinator's override — PATCH it on save.
+  // When only 1 exists (system comment) POST a new comment instead.
+  const coordinatorCommentId = pipedComments.length > 1 ? (pipedComments.at(-1)?.id ?? null) : null;
+
+  // Preserve address/plz from the original system comment so they survive coordinator edits.
+  const originalParts = (pipedComments[0]?.content ?? "").split("<|>");
+  const originalAddress = originalParts[2] ?? "";
+  const originalPlz = originalParts[3] ?? "";
+
+  const { mutate: createComment, isPending: isCreating } = useCreateComment(opportunity.id, "opportunity");
+  const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
+    opportunity.id,
+    coordinatorCommentId ?? 0,
+    "opportunity",
+  );
+
   const initialFormValues = useMemo(() => {
-    const sorted = [...opportunity.comments].sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-    );
-    for (const comment of sorted) {
-      const parts = comment.content.split("<|>");
-      if (parts.length >= 5) {
-        return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
-      }
+    if (latestPipedComment) {
+      const parts = latestPipedComment.content.split("<|>");
+      return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "" };
     }
-
-    const raw = opportunity.contact.waysToContact;
-    const validTypes = new Set<string>(COMMUNICATION_TYPES);
-    const waysToContact: PreferredCommunicationType[] = Array.isArray(raw)
-      ? raw.filter((v): v is PreferredCommunicationType => validTypes.has(v))
-      : typeof raw === "string" && validTypes.has(raw)
-        ? [raw as PreferredCommunicationType]
-        : [];
-
-    // Fields are listed explicitly to stay in sync with OpportunityContactDetailsFormData.
-    // If the schema adds or removes fields, update this object accordingly.
-    return {
-      name: opportunity.contact.name ?? "",
-      phone: opportunity.contact.phone ?? "",
-      email: opportunity.contact.email ?? "",
-      waysToContact,
-    };
-  }, [opportunity.contact, opportunity.comments]);
+    return { name: "", phone: "", email: "" };
+  }, [latestPipedComment]);
 
   const methods = useForm<OpportunityContactDetailsFormData>({
     resolver: zodResolver(schema),
@@ -86,18 +86,14 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
   };
 
   const onSubmit = (values: OpportunityContactDetailsFormData) => {
-    updateContact(
-      {
-        contact: {
-          id: opportunity.contact.id,
-          name: values.name,
-          phone: values.phone,
-          email: values.email,
-          waysToContact: values.waysToContact,
-        },
-      },
-      { onSuccess: () => setIsEditing(false) },
-    );
+    const text = `${values.email}<|>${values.name}<|>${originalAddress}<|>${originalPlz}<|>${values.phone}`;
+    const onSuccess = () => setIsEditing(false);
+
+    if (coordinatorCommentId !== null) {
+      updateComment({ text }, { onSuccess });
+    } else {
+      createComment({ text, entityType: "opportunity", entityId: opportunity.id }, { onSuccess });
+    }
   };
 
   useEffect(() => {
@@ -111,15 +107,12 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       <FormContainer data-testid="opportunity-contact-details-container" $isEditing={isEditing}>
         {isEditing ? (
           <OpportunityContactDetailsEdit
-            options={options}
-            keysToLabels={keysToLabels}
-            labelsToKeys={labelsToKeys}
             onCancel={handleCancel}
             onSubmit={handleSubmit(onSubmit)}
-            isPending={isPending}
+            isPending={isCreating || isUpdating}
           />
         ) : (
-          <OpportunityContactDetailsDisplay keysToLabels={keysToLabels} />
+          <OpportunityContactDetailsDisplay />
         )}
       </FormContainer>
     </FormProvider>
