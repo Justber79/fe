@@ -658,6 +658,15 @@
     },
     "agents": {
       "agents": "RAC-Verzeichnis",
+      "table": {
+        "title": "Name",
+        "type": "Typ",
+        "volunteerSearch": "Freiwilligensuche",
+        "district": "Stadtviertel",
+        "activeVolunteers": "Aktive Freiwillige",
+        "numberOfOpportunities": "Anzahl der Möglichkeiten",
+        "email": "E-Mail"
+      },
       "tabs": {
         "tab1": "Liste",
         "tab2": "Karten",
