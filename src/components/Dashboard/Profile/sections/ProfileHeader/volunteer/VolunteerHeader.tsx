@@ -1,8 +1,15 @@
 "use client";
-import { defaultAvatarVolunteerProfile, EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, defaultAvatarVolunteerProfile, EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { useGetQuery } from "@/hooks/useGetQuery";
 import { formatDateTime, getImageUrl } from "@/utils";
 import { CheckCircleIcon } from "@phosphor-icons/react";
-import { ApiVolunteerGet, VolunteerStateEngagementType } from "need4deed-sdk";
+import {
+  ApiOpportunityVolunteerGet,
+  ApiVolunteerGet,
+  OpportunityVolunteerStatusType,
+  VolunteerStateEngagementType,
+  VolunteerStateMatchType,
+} from "need4deed-sdk";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,6 +25,21 @@ import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
 
+function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
+  if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
+  const statuses = opportunities.map((o) => o.status);
+  if (statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)) {
+    return VolunteerStateMatchType.MATCHED;
+  }
+  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PENDING)) {
+    return VolunteerStateMatchType.PENDING_MATCH;
+  }
+  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PAST)) {
+    return VolunteerStateMatchType.PAST;
+  }
+  return VolunteerStateMatchType.NO_MATCHES;
+}
+
 type Props = {
   volunteer: ApiVolunteerGet;
 };
@@ -25,6 +47,15 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
+
+  const { data: opportunitiesData } = useGetQuery<ApiOpportunityVolunteerGet[]>({
+    queryKey: ["volunteer-opportunities", String(volunteer.id)],
+    apiPath: `${apiPathVolunteer}/${volunteer.id}/opportunity-linked`,
+    staleTime: cacheTTL,
+    enabled: !!volunteer.id,
+  });
+
+  const matchStatus = deriveMatchStatus(opportunitiesData ?? []);
 
   const engagementLabelMap = createEngagementLabelMap(t);
   const matchLabelMap = createMatchLabelMap(t);
@@ -68,8 +99,8 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
 
       <StatusRowField
         title={t("dashboard.volunteerProfile.volunteerHeader.matchStatus_title")}
-        status={volunteer.statusMatch}
-        label={volunteer.statusMatch ? matchLabelMap[volunteer.statusMatch] : undefined}
+        status={matchStatus}
+        label={matchLabelMap[matchStatus]}
       />
 
       <StatusRowField
