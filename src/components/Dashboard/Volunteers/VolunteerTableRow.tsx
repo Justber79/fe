@@ -13,6 +13,7 @@ import { TableCell, TableRow } from "@/components/core/common/Table";
 import { CirclePic } from "@/components/styled/img";
 import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
+import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 
 interface TableRowProps {
   volunteer: ApiVolunteerGetList;
@@ -23,7 +24,14 @@ interface TableRowProps {
   opportunityId?: string;
 }
 
-export function VolunteerTableRow({ volunteer, isLast, engagementLabels, typeLabels, matchLabels, opportunityId }: TableRowProps) {
+export function VolunteerTableRow({
+  volunteer,
+  isLast,
+  engagementLabels,
+  typeLabels,
+  matchLabels,
+  opportunityId,
+}: TableRowProps) {
   const { i18n } = useTranslation();
   const router = useRouter();
 
@@ -54,19 +62,19 @@ export function VolunteerTableRow({ volunteer, isLast, engagementLabels, typeLab
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
         <NameText>{name}</NameText>
       </NameCell>
-      <TableCell $width="180px" data-testid={`volunteer-type-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} data-testid={`volunteer-type-${id}`}>
         {statusType ? typeLabels[statusType] : "—"}
       </TableCell>
-      <TableCell $width="200px" data-testid={`volunteer-engagement-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} data-testid={`volunteer-engagement-${id}`}>
         {statusEngagement ? engagementLabels[statusEngagement] : "—"}
       </TableCell>
-      <TableCell $width="140px" data-testid={`volunteer-match-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} data-testid={`volunteer-match-${id}`}>
         {statusMatch ? matchLabels[statusMatch] : "—"}
       </TableCell>
-      <TableCell $width="180px" data-testid={`volunteer-language-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.language} data-testid={`volunteer-language-${id}`}>
         {languageText}
       </TableCell>
-      <TableCell $width="200px" data-testid={`volunteer-district-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.district} data-testid={`volunteer-district-${id}`}>
         {districtText}
       </TableCell>
       <TableCell data-testid={`volunteer-email-${id}`}>—</TableCell>

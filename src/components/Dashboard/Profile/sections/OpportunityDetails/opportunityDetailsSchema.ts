@@ -11,7 +11,6 @@ const languageObjectSchema = z.object({
   level: z.union([z.nativeEnum(LanguageLevel), z.literal("")]),
 });
 
-
 export const createOpportunityDetailsSchema = (t: (key: string) => string) =>
   z.object({
     description: z.string().max(MAX_DESCRIPTION_LENGTH, t(`${i18nPrefix}.descriptionTooLong`)),

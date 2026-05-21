@@ -1,4 +1,11 @@
-import { ByDay, OccasionalType, QueryParamsKeys, TimeSlot, VolunteerStateEngagementType, VolunteerStateTypeType } from "need4deed-sdk";
+import {
+  ByDay,
+  OccasionalType,
+  QueryParamsKeys,
+  TimeSlot,
+  VolunteerStateEngagementType,
+  VolunteerStateTypeType,
+} from "need4deed-sdk";
 import { CardsFilter } from "./types";
 
 export const defaultVolunteerCardsFilter: CardsFilter = {

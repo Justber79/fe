@@ -1,17 +1,16 @@
 "use client";
 
-import { ApiVolunteerGetList } from "need4deed-sdk";
+import type { ApiVolunteerGetList } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
   createEngagementStatusLabelMap,
   createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
-import { Table, TableBody, TableContainer, TableHeader, TableHeaderCell } from "@/components/core/common/Table";
-import PaginationNumbers from "@/components/core/paginatedGrid/PaginationNumbers";
+import { createVolunteerTableColumns } from "./volunteerTableColumns";
 import { VolunteerTableRow } from "./VolunteerTableRow";
+import { EntityTableList } from "../common/EntityTableList";
 
 interface TableListProps {
   volunteers: ApiVolunteerGetList[];
@@ -31,52 +30,31 @@ export function VolunteerTableList({
   opportunityId,
 }: TableListProps) {
   const { t } = useTranslation();
-  const totalPages = Math.ceil(count / itemsPerPage);
-
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
   const typeLabels = useMemo(() => createStatusLabelMap(t), [t]);
+  const columns = useMemo(() => createVolunteerTableColumns(t), [t]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
-  const goToPage = (page: number) => {
-    if (page > 0 && page <= totalPages) setCurrentPage(page);
-  };
-
   return (
-    <Wrapper data-testid="volunteers-table">
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableHeaderCell>{t("dashboard.volunteers.table.name")}</TableHeaderCell>
-            <TableHeaderCell $width="180px">{t("dashboard.volunteers.table.type")}</TableHeaderCell>
-            <TableHeaderCell $width="200px">{t("dashboard.volunteers.table.engagementStatus")}</TableHeaderCell>
-            <TableHeaderCell $width="140px">{t("dashboard.volunteers.table.matchingStatus")}</TableHeaderCell>
-            <TableHeaderCell $width="180px">{t("dashboard.volunteers.table.language")}</TableHeaderCell>
-            <TableHeaderCell $width="200px">{t("dashboard.volunteers.table.district")}</TableHeaderCell>
-            <TableHeaderCell>{t("dashboard.volunteers.table.email")}</TableHeaderCell>
-          </TableHeader>
-          <TableBody>
-            {volunteers.map((volunteer, index) => (
-              <VolunteerTableRow
-                key={volunteer.id}
-                volunteer={volunteer}
-                isLast={index === volunteers.length - 1}
-                engagementLabels={engagementLabels}
-                typeLabels={typeLabels}
-                matchLabels={matchLabels}
-                opportunityId={opportunityId}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />
-    </Wrapper>
+    <EntityTableList
+      columns={columns}
+      data={volunteers}
+      renderRow={(volunteer, isLast) => (
+        <VolunteerTableRow
+          key={volunteer.id}
+          volunteer={volunteer}
+          isLast={isLast}
+          engagementLabels={engagementLabels}
+          typeLabels={typeLabels}
+          matchLabels={matchLabels}
+          opportunityId={opportunityId}
+        />
+      )}
+      count={count}
+      itemsPerPage={itemsPerPage}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      testIdPrefix="volunteers"
+    />
   );
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--opportunities-container-gap);
-  width: 100%;
-`;

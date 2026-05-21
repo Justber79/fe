@@ -12,11 +12,8 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
     t(`dashboard.volunteers.filters.${key}`),
   );
 
-  const typeFilters = generateNestedFilterControlItems(
-    filter.type,
-    setFilter,
-    "type",
-    (key) => t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
+  const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
+    t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
   );
 
   const districtFilters = generateNestedFilterControlItems(
@@ -84,10 +81,16 @@ export const createSelectedFilterItemsAsFlatArray = (
 ) => {
   const filterItems = createFilterItems(filter, setFilter, t);
 
-  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, accompanyingFilter, typeFilters } = filterItems;
+  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, accompanyingFilter, typeFilters } =
+    filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
-  return [accompanyingFilter, ...typeFilters, ...districtFilters, ...engagementFilters, ...languageFilters, ...flatAvFilters].filter(
-    (f) => f.checked,
-  );
+  return [
+    accompanyingFilter,
+    ...typeFilters,
+    ...districtFilters,
+    ...engagementFilters,
+    ...languageFilters,
+    ...flatAvFilters,
+  ].filter((f) => f.checked);
 };

@@ -8,11 +8,11 @@ import { CardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
+import { ViewMode } from "../common/types";
 
 const CARD_COLUMNS = 3;
 const CARD_ROWS = 3;
 const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
-const LIST_TAB_INDEX = 0;
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -21,7 +21,7 @@ interface VolunteerListControllerProps {
   filter: CardsFilter;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
-  selectedTabIndex: number;
+  viewMode: ViewMode;
 }
 
 export function VolunteerListController({
@@ -31,9 +31,9 @@ export function VolunteerListController({
   filter,
   apiFilterOptions,
   opportunityId,
-  selectedTabIndex,
+  viewMode,
 }: VolunteerListControllerProps) {
-  const isListView = selectedTabIndex === LIST_TAB_INDEX;
+  const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const serializedFilter = serializeFilters(filter, undefined, false, {
