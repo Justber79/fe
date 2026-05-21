@@ -55,7 +55,13 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
     enabled: !!volunteer.id,
   });
 
-  const matchStatus = deriveMatchStatus(opportunitiesData ?? []);
+  // While opportunities are loading, fall back to the stored value to avoid
+  // a flash of "No matches". Once loaded, derive from live opportunity statuses
+  // so the badge stays in sync without requiring the BE to update statusMatch.
+  const matchStatus =
+    opportunitiesData !== undefined
+      ? deriveMatchStatus(opportunitiesData)
+      : (volunteer.statusMatch ?? VolunteerStateMatchType.NO_MATCHES);
 
   const engagementLabelMap = createEngagementLabelMap(t);
   const matchLabelMap = createMatchLabelMap(t);
