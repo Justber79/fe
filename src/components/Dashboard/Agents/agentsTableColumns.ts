@@ -25,10 +25,10 @@ export const createAgentTableColumns = (t: TFunction): Column[] => [
     label: t("dashboard.agents.table.activeVolunteers"),
     width: AGENT_COL_WIDTHS.activeVolunteers,
   },
+  { key: "email", label: t("dashboard.agents.table.email"), width: AGENT_COL_WIDTHS.email },
   {
     key: "numOpportunities",
     label: t("dashboard.agents.table.numberOfOpportunities"),
     width: AGENT_COL_WIDTHS.numOpportunities,
   },
-  { key: "email", label: t("dashboard.agents.table.email"), width: AGENT_COL_WIDTHS.email },
 ];

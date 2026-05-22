@@ -42,10 +42,12 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels }: Table
       <TableCell $width={AGENT_COL_WIDTHS.activeVolunteers} data-testid={`agent-active-volunteers-${id}`}>
         {activeVolunteers}
       </TableCell>
+      <TableCell $width={AGENT_COL_WIDTHS.email} data-testid={`agent-email-${id}`}>
+        —
+      </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
         —
       </TableCell>
-      <TableCell data-testid={`agent-email-${id}`}>—</TableCell>
     </ClickableRow>
   );
 }
