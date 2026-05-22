@@ -3,15 +3,11 @@ import { AgentCardList } from "./AgentCardList";
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { apiPathAgent, cacheTTL, TABLE_LIMIT } from "@/config/constants";
+import { apiPathAgent, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
 import { AgentTableList } from "./AgentTableList";
-
-const CARD_COLUMNS = 3;
-const CARD_ROWS = 3;
-const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
 
 type Props = {
   setNumOfAgents: (num: number) => void;
