@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { createAgentTableColumns } from "./agentsTableColumns";
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
-import { createAgentTypeMap, createVolunteerSearchMap } from "./icon";
+import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
 
 interface TableListProps {
   agents: ApiAgentGetList[];

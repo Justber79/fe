@@ -14,7 +14,7 @@ import { TrustLevelDropdown } from "@/components/Dashboard/Profile/sections/Prof
 import { Heading4, Paragraph } from "@/components/styled/text";
 import { useUpdateAgentStatus } from "@/hooks";
 import { getNormalizedAgent } from "./helpers";
-import { createAgentTypeMap, createServiceTypeMap, createVolunteerSearchMap } from "./icon";
+import { createAgentTypeMap, createServiceTypeMap, createVolunteerSearchMap } from "./constants";
 import { StatusBadge } from "../common/StatusBadge";
 import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, DistrictDiv } from "./styles";
 
