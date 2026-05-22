@@ -1,4 +1,4 @@
-import { ApiAgentGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
+import { type ApiAgentGetList, type ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
@@ -7,6 +7,7 @@ import { apiPathAgent, cacheTTL, TABLE_LIMIT } from "@/config/constants";
 import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
+import { AgentTableList } from "./AgentTableList";
 
 const CARD_COLUMNS = 3;
 const CARD_ROWS = 3;
@@ -63,7 +64,15 @@ export const AgentListController = ({
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
-    return <h1>List</h1>;
+    return (
+      <AgentTableList
+        agents={agents}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    );
   }
 
   return (
