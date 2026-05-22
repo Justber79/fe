@@ -1,3 +1,4 @@
+import { PHONE_NUMBER_REGEX } from "@/config/constants";
 import { z } from "zod";
 
 export const createOpportunityContactDetailsSchema = (t: (key: string) => string) => {
@@ -5,7 +6,8 @@ export const createOpportunityContactDetailsSchema = (t: (key: string) => string
     name: z.string().min(1, t("dashboard.opportunityProfile.contactDetails.validation.nameRequired")),
     phone: z
       .string()
-      .min(1, t("dashboard.opportunityProfile.contactDetails.validation.phoneRequired")),
+      .min(1, t("dashboard.opportunityProfile.contactDetails.validation.phoneRequired"))
+      .regex(PHONE_NUMBER_REGEX, t("dashboard.opportunityProfile.contactDetails.validation.phoneInvalid")),
     email: z
       .string()
       .min(1, t("dashboard.opportunityProfile.contactDetails.validation.emailRequired"))
