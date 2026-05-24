@@ -1,6 +1,6 @@
 "use client";
 
-import type { ApiAgentGetList } from "need4deed-sdk";
+import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
@@ -12,13 +12,15 @@ interface TableRowProps {
   isLast: boolean;
   typeLabels: Record<string, string>;
   searchLabels: Record<string, string>;
+  districtsList?: OptionItem[];
 }
 
-export function AgentTableRow({ agent, isLast, typeLabels, searchLabels }: TableRowProps) {
+export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, districtsList }: TableRowProps) {
   const { i18n } = useTranslation();
   const router = useRouter();
 
   const { id, title, type, volunteerSearch, district, activeVolunteers } = agent;
+  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -37,7 +39,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels }: Table
         {searchLabels[volunteerSearch] || volunteerSearch}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.district} data-testid={`agent-district-${id}`}>
-        {district?.title?.[i18n.language as "en" | "de"] || "—"}
+        {districtTitle || "—"}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.activeVolunteers} data-testid={`agent-active-volunteers-${id}`}>
         {activeVolunteers}

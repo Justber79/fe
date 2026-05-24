@@ -2,7 +2,7 @@
 
 import { MapPinIcon } from "@phosphor-icons/react";
 import { AgentTrustLevel } from "@/components/Dashboard/Profile/types/agent";
-import { ApiAgentGetList } from "need4deed-sdk";
+import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { IconDiv } from "@/components/styled/container";
@@ -20,13 +20,15 @@ import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, D
 
 interface Props {
   agent: ApiAgentGetList;
+  districtsList?: OptionItem[];
 }
 
-export const AgentCard = ({ agent }: Props) => {
+export const AgentCard = ({ agent, districtsList }: Props) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
   const { id, title, district, volunteerSearch, serviceType, type, trustLevel } = getNormalizedAgent(agent);
+  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const { mutate: patchAgent } = useUpdateAgentStatus(agent.id);
 
@@ -82,7 +84,7 @@ export const AgentCard = ({ agent }: Props) => {
           <IconDiv size="var(--dashboard-agents-card-detail-icon-size)">
             <MapPinIcon weight="fill" />
           </IconDiv>
-          <Paragraph>{district?.title?.[i18n.language as "en" | "de"]}</Paragraph>
+          <Paragraph>{districtTitle}</Paragraph>
         </DistrictDiv>
       </DistrictContainer>
     </Card>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ApiAgentGetList } from "need4deed-sdk";
+import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { EntityTableList } from "../common/EntityTableList";
 import { useTranslation } from "react-i18next";
 import { createAgentTableColumns } from "./agentsTableColumns";
@@ -14,9 +14,17 @@ interface TableListProps {
   itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
+  districtsList?: OptionItem[];
 }
 
-export function AgentTableList({ agents, count, itemsPerPage, currentPage, setCurrentPage }: TableListProps) {
+export function AgentTableList({
+  agents,
+  count,
+  itemsPerPage,
+  currentPage,
+  setCurrentPage,
+  districtsList,
+}: TableListProps) {
   const { t } = useTranslation();
 
   const columns = useMemo(() => createAgentTableColumns(t), [t]);
@@ -34,6 +42,7 @@ export function AgentTableList({ agents, count, itemsPerPage, currentPage, setCu
           isLast={isLast}
           typeLabels={typeLabels}
           searchLabels={searchLabels}
+          districtsList={districtsList}
         />
       )}
       count={count}

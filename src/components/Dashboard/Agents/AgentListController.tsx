@@ -67,6 +67,7 @@ export const AgentListController = ({
         itemsPerPage={limit}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        districtsList={apiFilterOptions?.district}
       />
     );
   }
@@ -79,6 +80,7 @@ export const AgentListController = ({
       rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
+      districtsList={apiFilterOptions?.district}
     />
   );
 };
