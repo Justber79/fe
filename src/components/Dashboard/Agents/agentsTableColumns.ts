@@ -1,18 +1,18 @@
 import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
+import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 
 export const AGENT_COL_WIDTHS = {
-  title: "200px",
-  type: "180px",
-  volunteerSearch: "200px",
-  district: "200px",
-  activeVolunteers: "140px",
-  numOpportunities: "160px",
-  email: "200px",
+  type: COLUMN_WIDTH.MD,
+  volunteerSearch: COLUMN_WIDTH.LG,
+  district: COLUMN_WIDTH.LG,
+  activeVolunteers: COLUMN_WIDTH.XS,
+  numOpportunities: COLUMN_WIDTH.SM,
+  email: COLUMN_WIDTH.LG,
 };
 
 export const createAgentTableColumns = (t: TFunction): Column[] => [
-  { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_COL_WIDTHS.title },
+  { key: "title", label: t("dashboard.agents.table.title") },
   { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
   {
     key: "volunteerSearch",
@@ -30,5 +30,5 @@ export const createAgentTableColumns = (t: TFunction): Column[] => [
     label: t("dashboard.agents.table.numberOfOpportunities"),
     width: AGENT_COL_WIDTHS.numOpportunities,
   },
-  { key: "email", label: t("dashboard.agents.table.email"), width: AGENT_COL_WIDTHS.email },
+  { key: "email", label: t("dashboard.agents.table.email") },
 ];

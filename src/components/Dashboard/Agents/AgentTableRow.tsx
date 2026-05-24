@@ -33,9 +33,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`agent-row-${id}`}>
-      <TableCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
-        {title}
-      </TableCell>
+      <TableCell data-testid={`agent-title-${id}`}>{title}</TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
         {typeLabels[type] || type}
       </TableCell>
@@ -51,9 +49,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
         0
       </TableCell>
-      <WrapAnywhereCell $width={AGENT_COL_WIDTHS.email} data-testid={`agent-email-${id}`}>
-        {email || "—"}
-      </WrapAnywhereCell>
+      <WrapAnywhereCell data-testid={`agent-email-${id}`}>{email || "—"}</WrapAnywhereCell>
     </ClickableRow>
   );
 }
