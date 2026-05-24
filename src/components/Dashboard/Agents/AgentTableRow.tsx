@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
 import { TableCell, TableRow } from "@/components/core/common/Table";
 import styled from "styled-components";
+import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 
 interface TableRowProps {
   agent: ApiAgentGetList;
@@ -19,7 +20,10 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, title, type, volunteerSearch, district, activeVolunteers } = agent;
+  // TODO: remove cast once codebase migrates to need4deed-sdk@0.0.91+
+  const { id, title, type, volunteerSearch, district, activeVolunteers, email } = agent as ApiAgentGetList & {
+    email?: string;
+  };
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const handleGoToProfile = () => {
@@ -44,12 +48,12 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
       <TableCell $width={AGENT_COL_WIDTHS.activeVolunteers} data-testid={`agent-active-volunteers-${id}`}>
         {activeVolunteers}
       </TableCell>
-      <TableCell $width={AGENT_COL_WIDTHS.email} data-testid={`agent-email-${id}`}>
-        —
-      </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
-        —
+        0
       </TableCell>
+      <WrapAnywhereCell $width={AGENT_COL_WIDTHS.email} data-testid={`agent-email-${id}`}>
+        {email || "—"}
+      </WrapAnywhereCell>
     </ClickableRow>
   );
 }
