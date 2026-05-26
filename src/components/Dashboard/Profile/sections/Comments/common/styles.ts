@@ -257,7 +257,7 @@ export const TagOverlay = styled.div`
   color: var(--color-midnight);
   z-index: 1;
   pointer-events: none;
-  user-selects: none;
+  user-select: none;
   font-style: normal;
   font-weight: var(--font-weight-regular);
   will-change: transform;
@@ -286,19 +286,18 @@ export const AutocompleteContainer = styled.div`
   z-index: 5;
 `;
 
-export const AutocompleteRow = styled.div<{ $isSelected?: boolean }>`
+export const AutocompleteRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: var(--tag-autocomplete-padding);
   font-size: var(--tag-autocomplete-font-size);
   cursor: pointer;
-  user-selects: none;
+  user-select: none;
   width: 100%;
   border-radius: var(--editableField-optionRow-borderRadius);
   transition: background-color 0.2s ease;
   gap: var(--editableField-optionRow-gap);
-  background-color: ${(props) => (props.$isSelected ? "var(--editableField-optionRow-selectedBg)" : "transparent")};
 
   &:hover {
     background-color: var(--color-orchid-light);
