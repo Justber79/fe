@@ -1,21 +1,17 @@
-import { ApiDocumentGet, DocumentType } from "need4deed-sdk";
+import { ApiDocumentGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 
-// TODO: remove cast once SDK is updated to include received and receivedOn (added by BE PR #417)
-export type ApiDocumentGetWithReceived = ApiDocumentGet & {
-  received?: boolean;
-  receivedOn?: string;
-};
-
-export type EnrichedDocument = ApiDocumentGetWithReceived & {
-  nameKey: string;
-  isUploaded: boolean;
+// TODO: remove once SDK >= 0.0.82 is published (BE issue need4deed-org/be#481)
+type ApiVolunteerGet = import("need4deed-sdk").ApiVolunteerGet & {
+  statusVaccinationDate?: Date | null;
+  statusCGCApplicationDate?: Date | null;
+  statusCGCDate?: Date | null;
 };
 
 export type DocumentRow = {
   type: DocumentType;
   nameKey: string;
   isUploaded: boolean;
-  document?: ApiDocumentGetWithReceived;
+  document?: ApiDocumentGet;
   isReceived: boolean;
   receivedAt: Date | null;
 };
@@ -48,19 +44,56 @@ export const extractDocumentUrl = (url: string): string | null => {
   }
 };
 
-export const enrichDocuments = (fetchedDocuments: ApiDocumentGet[]): DocumentRow[] => {
+export const enrichDocuments = (
+  fetchedDocuments: ApiDocumentGet[],
+  volunteer: ApiVolunteerGet,
+  passportReceived: boolean,
+  passportReceivedAt: Date | null,
+): DocumentRow[] => {
   const allTypes = Object.keys(DOCUMENT_NAME_KEYS) as DocumentType[];
 
   return allTypes.map((type) => {
-    // TODO: remove cast once SDK is updated to include received and receivedOn (added by BE PR #417)
-    const document = fetchedDocuments.find((doc) => doc.type === type) as ApiDocumentGetWithReceived | undefined;
+    const document = fetchedDocuments.find((doc) => doc.type === type);
+
+    let isReceived = false;
+    switch (type) {
+      case DocumentType.MEASLES_VACCINATION:
+        isReceived = volunteer.measlesVaccination === DocumentStatusType.YES;
+        break;
+      case DocumentType.CGC:
+        isReceived = volunteer.goodConductCertificate === DocumentStatusType.YES;
+        break;
+      case DocumentType.CGC_APPLICATION:
+        isReceived = volunteer.goodConductCertificate === DocumentStatusType.APPLIED_N4D;
+        break;
+      case DocumentType.PASSPORT_ID:
+        isReceived = passportReceived;
+        break;
+    }
+
+    let receivedAt: Date | null = null;
+    switch (type) {
+      case DocumentType.MEASLES_VACCINATION:
+        receivedAt = volunteer.statusVaccinationDate ? new Date(volunteer.statusVaccinationDate) : null;
+        break;
+      case DocumentType.CGC:
+        receivedAt = volunteer.statusCGCDate ? new Date(volunteer.statusCGCDate) : null;
+        break;
+      case DocumentType.CGC_APPLICATION:
+        receivedAt = volunteer.statusCGCApplicationDate ? new Date(volunteer.statusCGCApplicationDate) : null;
+        break;
+      case DocumentType.PASSPORT_ID:
+        receivedAt = passportReceivedAt;
+        break;
+    }
+
     return {
       type,
       nameKey: DOCUMENT_NAME_KEYS[type],
       isUploaded: !!document,
       document,
-      isReceived: document?.received ?? false,
-      receivedAt: document?.receivedOn ? new Date(document.receivedOn) : null,
+      isReceived,
+      receivedAt,
     };
   });
 };

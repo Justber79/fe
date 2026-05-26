@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 
-import { apiPathVolunteer, cacheTTL } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder } from "need4deed-sdk";
 import { CardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList"; // We will modify this component
+import { VolunteerTableList } from "./VolunteerTableList";
 
-const columns = 3;
-const rows = 3;
-const limit = columns * rows;
+const CARD_COLUMNS = 3;
+const CARD_ROWS = 3;
+const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
+const LIST_TAB_INDEX = 0;
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -18,6 +20,7 @@ interface VolunteerListControllerProps {
   filter: CardsFilter;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
+  selectedTabIndex: number;
 }
 
 export function VolunteerListController({
@@ -27,7 +30,10 @@ export function VolunteerListController({
   filter,
   apiFilterOptions,
   opportunityId,
+  selectedTabIndex,
 }: VolunteerListControllerProps) {
+  const isListView = selectedTabIndex === LIST_TAB_INDEX;
+  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
@@ -38,7 +44,7 @@ export function VolunteerListController({
     serializedFilter.set("opportunity", opportunityId);
   }
   const params = {
-    limit: limit,
+    limit,
     page: currentPage,
     sortOrder,
     filter: serializedFilter,
@@ -55,12 +61,25 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols]);
 
+  if (isListView) {
+    return (
+      <VolunteerTableList
+        volunteers={volunteers}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        opportunityId={opportunityId}
+      />
+    );
+  }
+
   return (
     <VolunteerCardList
       volunteers={volunteers}
       count={count}
-      columns={columns - (isFiltersOpen ? 1 : 0)}
-      rows={rows + (isFiltersOpen ? 1 : 0)}
+      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
+      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       opportunityId={opportunityId}

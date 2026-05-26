@@ -110,6 +110,7 @@ export function Volunteers() {
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             opportunityId={opportunityId}
+            selectedTabIndex={selectedTabIndex}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}

@@ -1,6 +1,6 @@
 "use client";
 import { useVolunteerDocuments } from "@/hooks/useVolunteerDocuments";
-import { ApiVolunteerGet, DocumentType } from "need4deed-sdk";
+import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ import { DocumentTableRow } from "./DocumentTableRow";
 import { ACTION_COLUMN_WIDTH, DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
 import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
-import { useDeleteDocument, useMarkDocumentReceived, useUploadDocument } from "./useDocumentOperations";
+import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
 import { DocumentRow, enrichDocuments, extractDocumentUrl } from "./utils";
 
 type Props = {
@@ -32,21 +32,51 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
   } = useDialogState();
 
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
+  const [passportReceived, setPassportReceived] = useState(false);
+  const [passportReceivedAt, setPassportReceivedAt] = useState<Date | null>(null);
 
   const { data: fetchedDocuments, isLoading, isError } = useVolunteerDocuments(volunteer.id);
 
-  const documentRows = useMemo(() => (fetchedDocuments ? enrichDocuments(fetchedDocuments) : []), [fetchedDocuments]);
-
-  const handleToggleReceived = (type: DocumentType, currentIsReceived: boolean) => {
-    receivedMutation.mutate({ volunteerId: volunteer.id, documentType: type, received: !currentIsReceived });
-  };
+  const documentRows = useMemo(
+    () => (fetchedDocuments ? enrichDocuments(fetchedDocuments, volunteer, passportReceived, passportReceivedAt) : []),
+    [fetchedDocuments, volunteer, passportReceived, passportReceivedAt],
+  );
 
   const uploadMutation = useUploadDocument(volunteer.id, () => closeDialog("upload"));
   const deleteMutation = useDeleteDocument(volunteer.id, () => {
     closeDialog("delete");
     closeDialog("preview");
   });
-  const receivedMutation = useMarkDocumentReceived(volunteer.id);
+  const docStatusMutation = useUpdateVolunteerDocStatus(volunteer.id);
+
+  const handleToggleReceived = (type: DocumentType, currentIsReceived: boolean) => {
+    switch (type) {
+      case DocumentType.MEASLES_VACCINATION:
+        docStatusMutation.mutate({
+          measlesVaccination: currentIsReceived ? DocumentStatusType.NO : DocumentStatusType.YES,
+        });
+        break;
+      case DocumentType.CGC:
+        docStatusMutation.mutate({
+          goodConductCertificate: currentIsReceived ? DocumentStatusType.NO : DocumentStatusType.YES,
+        });
+        break;
+      case DocumentType.CGC_APPLICATION:
+        // If the cert itself is already confirmed (YES), the application stage is superseded — ignore
+        if (volunteer.goodConductCertificate === DocumentStatusType.YES) return;
+        docStatusMutation.mutate({
+          goodConductCertificate: currentIsReceived ? DocumentStatusType.NO : DocumentStatusType.APPLIED_N4D,
+        });
+        break;
+      case DocumentType.PASSPORT_ID:
+        setPassportReceived((prev) => {
+          const next = !prev;
+          setPassportReceivedAt(next ? new Date() : null);
+          return next;
+        });
+        break;
+    }
+  };
 
   const handleConfirmDelete = () => {
     if (deleteDialogDocument) {
