@@ -6,7 +6,6 @@ import { apiPathUser, cacheTTL, defaultAvatarVolunteerProfile } from "@/config/c
 import { AvatarImg } from "../../OpportunityVolunteers/styles";
 import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
-import { useDebounce } from "@/hooks/useDebounce";
 
 type Props = {
   handleTagAdd: (userId: number, username: string) => void;
@@ -21,25 +20,38 @@ export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef
     if (!newCommentText || !textAreaRef?.current) return "";
     const cursorPosition = textAreaRef?.current.selectionStart;
     const textBeforeCaret = newCommentText.substring(0, cursorPosition);
+    if (newCommentText[0] !== "@" && newCommentText.length > 1 && !textBeforeCaret.includes(" @")) return null;
     const lastAtIndex = textBeforeCaret.lastIndexOf("@");
     if (lastAtIndex === -1) return "";
     const textAfterAt = textBeforeCaret.substring(lastAtIndex + 1);
     if (textAfterAt.includes(" ")) return null;
     return textAfterAt.toLowerCase();
-  }, [newCommentText]);
-
-  const debouncedUserFilter = useDebounce(userFilter, 200);
+  }, [newCommentText, textAreaRef]);
 
   const { data: users } = useGetQuery<ApiUserGet[]>({
-    queryKey: ["users", debouncedUserFilter ?? ""],
+    queryKey: ["users"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
-      filter: { search: debouncedUserFilter, role: UserRole.COORDINATOR },
     },
-    enabled: debouncedUserFilter !== null,
+    enabled: userFilter !== null,
     staleTime: cacheTTL,
   });
+
+  const filteredUsers = useMemo(() => {
+    if (userFilter === null) return;
+    return users
+      ?.filter((user) => user.role === UserRole.COORDINATOR)
+      ?.map((user) => {
+        return {
+          id: user.id,
+          fullName: user.fullName,
+          firstName: user.firstName,
+          avatarUrl: user.avatarUrl,
+        };
+      })
+      ?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
+  }, [userFilter, users]);
 
   const handleUserSelect = (userId: number, firstName: string) => {
     handleTagAdd(userId, firstName);
@@ -51,8 +63,8 @@ export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef
 
   useLayoutEffect(() => {
     const el = textAreaRef?.current;
-    if (!el && !debouncedUserFilter) return;
-    const textBeforeCaret = debouncedUserFilter?.substring(0, el?.selectionStart);
+    if (!el && !userFilter) return;
+    const textBeforeCaret = userFilter?.substring(0, el?.selectionStart);
     const lastAtIndex = textBeforeCaret?.lastIndexOf("@");
 
     if (!el) return;
@@ -64,20 +76,20 @@ export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef
       top: caret.top + 20 - el?.scrollTop,
       left: caret.left - el?.scrollLeft,
     });
-  }, [debouncedUserFilter, textAreaRef]);
+  }, [userFilter, textAreaRef]);
 
   return (
-    users &&
-    users?.length > 0 && (
+    filteredUsers &&
+    filteredUsers.length > 0 && (
       <AutocompleteContainer
         style={{
           top: `${coords.top}px`,
           left: `${coords.left}px`,
         }}
       >
-        {users.map((user) => (
+        {filteredUsers?.map((user) => (
           <AutocompleteRow key={user.id} onClick={() => handleUserSelect(user.id, user.firstName)}>
-            <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.fullName} />
+            <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.firstName} />
             <AutocompleteRow>{user.fullName}</AutocompleteRow>
           </AutocompleteRow>
         ))}

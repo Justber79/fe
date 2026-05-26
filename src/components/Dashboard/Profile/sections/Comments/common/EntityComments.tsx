@@ -32,7 +32,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const edit = useCommentEdit();
   const deleteState = useCommentDelete();
   const menu = useCommentMenu();
-  const { renderHighlightedText, showAutocomplete, setShowAutocomplete, handleTagAdd } = useCommentTag(
+  const { renderHighlightedText, showAutocomplete, handleTagAdd, tags, setShowAutocomplete } = useCommentTag(
     newCommentText,
     setNewCommentText,
     textAreaRef,
@@ -51,9 +51,12 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const handleAddComment = () => {
     if (!newCommentText.trim()) return;
 
+    let formattedText = newCommentText;
+    tags.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+
     createComment(
       {
-        text: newCommentText.trim(),
+        text: formattedText.trim(),
         entityType,
         entityId,
       },
@@ -148,6 +151,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
           onKeyPress={handleKeyPress}
           data-testid="comment-textarea"
           onScroll={handleScroll}
+          onClick={() => setShowAutocomplete(false)}
         />
       </NewCommentSection>
       <AddCommentButton

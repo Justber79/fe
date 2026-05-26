@@ -270,7 +270,6 @@ export const TagOverlay = styled.div`
     margin: 0;
     border: none;
     -webkit-text-stroke: var(--tag-text-stroke);
-    border-radius: var(--border-radius-xs);
   }
 `;
 
@@ -294,7 +293,7 @@ export const AutocompleteRow = styled.div<{ $isSelected?: boolean }>`
   padding: var(--tag-autocomplete-padding);
   font-size: var(--tag-autocomplete-font-size);
   cursor: pointer;
-  user-select: none;
+  user-selects: none;
   width: 100%;
   border-radius: var(--editableField-optionRow-borderRadius);
   transition: background-color 0.2s ease;

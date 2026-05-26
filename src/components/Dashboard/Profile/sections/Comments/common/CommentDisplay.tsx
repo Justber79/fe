@@ -22,7 +22,7 @@ type Props = {
 
 export function CommentDisplay({ commentId, content, menu }: Props) {
   const { t } = useTranslation();
-  const { renderHighlightedText } = useCommentTag(content, () => null, null, [4, 6, 67]);
+  const { renderHighlightedText } = useCommentTag(content);
 
   return (
     <>
