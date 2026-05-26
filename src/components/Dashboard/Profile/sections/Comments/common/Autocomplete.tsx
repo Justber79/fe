@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AutocompleteContainer, AutocompleteRow } from "./styles";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useGetQuery } from "@/hooks";
@@ -11,10 +11,21 @@ type Props = {
   handleTagAdd: (userId: number, username: string) => void;
   newCommentText: string;
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
+  activeRowIndex: number;
+  setFilteredListLength: (length: number) => void;
+  setOnSelectTrigger: (callback: (() => void) | null) => void;
 };
 
-export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef }: Props) {
+export default function Autocomplete({
+  handleTagAdd,
+  newCommentText,
+  textAreaRef,
+  activeRowIndex,
+  setFilteredListLength,
+  setOnSelectTrigger,
+}: Props) {
   const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const userFilter = useMemo(() => {
     if (!newCommentText || !textAreaRef?.current) return "";
@@ -53,6 +64,44 @@ export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef
       ?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
   }, [userFilter, users]);
 
+  useEffect(() => {
+    if (!filteredUsers) return;
+    setFilteredListLength(filteredUsers?.length);
+    return () => setFilteredListLength(0);
+  }, [filteredUsers, setFilteredListLength]);
+
+  useEffect(() => {
+    if (!filteredUsers) return;
+    const activeUser = filteredUsers[activeRowIndex];
+    if (activeUser) {
+      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.firstName));
+    } else {
+      setOnSelectTrigger(null);
+    }
+    return () => setOnSelectTrigger(null);
+  }, [filteredUsers, activeRowIndex, setOnSelectTrigger]);
+
+  useEffect(() => {
+    if (!containerRef.current || filteredUsers?.length === 0) return;
+
+    const container = containerRef.current;
+
+    const activeChild = container.children[activeRowIndex] as HTMLElement;
+
+    if (!activeChild) return;
+
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+    const elemTop = activeChild.offsetTop;
+    const elemBottom = elemTop + activeChild.offsetHeight;
+
+    if (elemBottom > containerBottom) {
+      container.scrollTop = elemBottom - container.clientHeight;
+    } else if (elemTop < containerTop) {
+      container.scrollTop = elemTop;
+    }
+  }, [activeRowIndex, filteredUsers]);
+
   const handleUserSelect = (userId: number, firstName: string) => {
     handleTagAdd(userId, firstName);
   };
@@ -82,17 +131,33 @@ export default function Autocomplete({ handleTagAdd, newCommentText, textAreaRef
     filteredUsers &&
     filteredUsers.length > 0 && (
       <AutocompleteContainer
+        ref={containerRef}
+        role="listbox"
+        aria-label="User mentions options"
         style={{
           top: `${coords.top}px`,
           left: `${coords.left}px`,
         }}
       >
-        {filteredUsers?.map((user) => (
-          <AutocompleteRow key={user.id} onClick={() => handleUserSelect(user.id, user.firstName)}>
-            <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.firstName} />
-            <AutocompleteRow>{user.fullName}</AutocompleteRow>
-          </AutocompleteRow>
-        ))}
+        {filteredUsers?.map((user, index) => {
+          const isActive = index === activeRowIndex;
+
+          return (
+            <AutocompleteRow
+              key={user.id}
+              role="option"
+              aria-selected={isActive}
+              onClick={() => handleUserSelect(user.id, user.firstName)}
+              style={{
+                backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
+                cursor: "pointer",
+              }}
+            >
+              <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.firstName} />
+              <span>{user.fullName}</span>
+            </AutocompleteRow>
+          );
+        })}
       </AutocompleteContainer>
     )
   );

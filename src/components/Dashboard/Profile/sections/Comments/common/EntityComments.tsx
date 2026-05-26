@@ -32,11 +32,17 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const edit = useCommentEdit();
   const deleteState = useCommentDelete();
   const menu = useCommentMenu();
-  const { renderHighlightedText, showAutocomplete, handleTagAdd, tags, setShowAutocomplete } = useCommentTag(
-    newCommentText,
-    setNewCommentText,
-    textAreaRef,
-  );
+  const {
+    renderHighlightedText,
+    showAutocomplete,
+    handleTagAdd,
+    tags,
+    setShowAutocomplete,
+    activeRowIndex,
+    setFilteredListLength,
+    setOnSelectTrigger,
+    handleKeyDown,
+  } = useCommentTag(newCommentText, setNewCommentText, textAreaRef);
 
   const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
     entityId,
@@ -67,6 +73,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (showAutocomplete) return;
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleAddComment();
@@ -140,7 +147,14 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       ))}
       <NewCommentSection>
         {showAutocomplete && (
-          <Autocomplete handleTagAdd={handleTagAdd} newCommentText={newCommentText} textAreaRef={textAreaRef} />
+          <Autocomplete
+            handleTagAdd={handleTagAdd}
+            newCommentText={newCommentText}
+            textAreaRef={textAreaRef}
+            activeRowIndex={activeRowIndex}
+            setFilteredListLength={setFilteredListLength}
+            setOnSelectTrigger={setOnSelectTrigger}
+          />
         )}
         <TagOverlay ref={overlayRef}>{renderHighlightedText()}</TagOverlay>
         <TextArea
@@ -149,6 +163,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
           onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           data-testid="comment-textarea"
           onScroll={handleScroll}
           onClick={() => setShowAutocomplete(false)}

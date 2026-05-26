@@ -10,6 +10,9 @@ export function useCommentTag(
 ) {
   const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [activeRowIndex, setActiveRowIndex] = useState(0);
+  const [filteredListLength, setFilteredListLength] = useState(0);
+  const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
   const { data: users } = useGetQuery<ApiUserGet[]>({
     queryKey: ["users"],
@@ -19,6 +22,10 @@ export function useCommentTag(
     },
     staleTime: cacheTTL,
   });
+
+  useEffect(() => {
+    setActiveRowIndex(0);
+  }, [value]);
 
   const renderHighlightedText = useCallback(() => {
     if (!value) return null;
@@ -80,6 +87,24 @@ export function useCommentTag(
     setShowAutocomplete(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!showAutocomplete || filteredListLength === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveRowIndex((prev) => (prev + 1) % filteredListLength);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveRowIndex((prev) => (prev - 1 + filteredListLength) % filteredListLength);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (onSelectTrigger) onSelectTrigger();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setShowAutocomplete(false);
+    }
+  };
+
   useEffect(() => {
     if (!textAreaRef?.current) return;
 
@@ -116,5 +141,9 @@ export function useCommentTag(
     setShowAutocomplete,
     handleTagAdd,
     tags,
+    activeRowIndex,
+    setFilteredListLength,
+    setOnSelectTrigger,
+    handleKeyDown,
   };
 }
