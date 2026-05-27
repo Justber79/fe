@@ -10,7 +10,7 @@ import {
   TranslateIcon,
 } from "@phosphor-icons/react";
 import { format } from "date-fns";
-import { ApiVolunteerOpportunityGetList, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
+import { ApiVolunteerOpportunityGetList, OpportunityMatchStatusType, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { utcHhmmToLocal } from "@/utils";
 import { JSX } from "react";
 
@@ -54,7 +54,7 @@ export const statusIconMap: Record<OpportunityStatusType, JSX.Element> = {
   [OpportunityStatusType.PAST]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.PAST]} />,
 };
 
-export const matchStatusColorMap: Record<string, string> = {
+export const matchStatusColorMap: Record<OpportunityMatchStatusType, string> = {
   "opp-vol-no-matches": "var(--color-grey-700)",
   "opp-vol-pending-match": "var(--color-orange-500)",
   "opp-vol-matched": "var(--color-green-700)",
@@ -63,7 +63,7 @@ export const matchStatusColorMap: Record<string, string> = {
   "opp-vol-past": "var(--color-grey-700)",
 };
 
-export const matchStatusIconMap: Record<string, JSX.Element> = {
+export const matchStatusIconMap: Record<OpportunityMatchStatusType, JSX.Element> = {
   "opp-vol-no-matches": <ProhibitInsetIcon size={18} color={matchStatusColorMap["opp-vol-no-matches"]} />,
   "opp-vol-pending-match": <HourglassIcon size={18} color={matchStatusColorMap["opp-vol-pending-match"]} />,
   "opp-vol-matched": <CheckCircleIcon size={18} color={matchStatusColorMap["opp-vol-matched"]} />,
