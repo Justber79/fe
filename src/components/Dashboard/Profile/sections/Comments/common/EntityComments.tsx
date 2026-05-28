@@ -67,7 +67,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
         taggedUserIds.push(tag.id);
       }
     });
-
     createComment(
       {
         text: formattedText.trim(),
@@ -104,7 +103,9 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     updateComment(
       { text: formattedText.trim() },
       {
-        onSuccess: () => edit.cancelEdit(),
+        onSuccess: () => {
+          edit.cancelEdit();
+        },
       },
     );
   };
