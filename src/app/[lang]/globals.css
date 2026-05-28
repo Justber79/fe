@@ -508,6 +508,9 @@ html {
   --custom-px-17: 17px;
   --zero: 0px;
 
+  /* entity table */
+  --entity-table-gap: var(--spacing-16);
+
   /* volunteer header */
   --volunteer-header-label-width: 214px;
 }

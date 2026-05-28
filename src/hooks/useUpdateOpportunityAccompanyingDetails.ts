@@ -6,7 +6,6 @@ export type OpportunityAccompanyingDetailsUpdateData = {
   accompanyingDetails: {
     appointmentAddress?: string;
     appointmentPostcode?: string;
-    appointmentDistrict?: string;
     appointmentDate?: string;
     appointmentTime?: string;
     refugeeNumber?: string;

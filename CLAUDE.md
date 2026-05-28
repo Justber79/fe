@@ -85,3 +85,9 @@ Both live in `src/hooks/`. Many resource-specific hooks wrap these (e.g. `useGet
 Branch: `yourname/feature-name` (e.g. `alex/deed-card-component`)
 
 Commit prefixes: 🎨 style · 🐛 fix · ✨ feature · 📝 docs · ♻️ refactor · 🔥 remove
+
+## API contract
+
+The runtime contract is at https://app.need4deed.org/swagger/json
+
+The transpile time contract is at SDK (`yarn upgrade need4deed-sdk --latest`)

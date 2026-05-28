@@ -401,6 +401,13 @@
             "weekdays": "Weekdays",
             "weekends": "Weekends"
           }
+        },
+        "volunteerType_title": "Volunteer type",
+        "volunteerType_options": {
+          "accompanying": "Accompanying",
+          "regular": "Regular",
+          "events": "Events",
+          "regular-accompanying": "Regular + Accompanying"
         }
       },
       "volunteers": "Volunteers",
@@ -415,6 +422,13 @@
         "advanced": "Advanced",
         "fluent": "Fluent",
         "native": "Native"
+      },
+      "matchStatus": {
+        "vol-no-matches": "No matches",
+        "vol-pending-match": "Pending match",
+        "vol-matched": "Matched",
+        "vol-needs-rematch": "Needs rematch",
+        "vol-past": "Past"
       }
     },
     "home": {

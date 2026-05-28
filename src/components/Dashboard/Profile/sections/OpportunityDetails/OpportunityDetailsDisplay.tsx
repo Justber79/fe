@@ -23,7 +23,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const isEventType = opp.volunteerType === VolunteerStateTypeType.EVENTS;
 
   const mainCommunication = formatLanguagesByPurpose(opp.languages, LangPurpose.GENERAL, t);
-  const residentsSpeak = formatLanguagesByPurpose(opp.languages, LangPurpose.RECIPIENT, t);
+  const residentsSpeak = formatLanguagesByPurpose(opp.languages, [LangPurpose.RECIPIENT, LangPurpose.TRANSLATION], t);
   const schedule = formatAvailability(opp.availability, t);
   const activities = extractOptionTitles(opp.activities, lang);
   const skills = extractOptionTitles(opp.skills, lang);

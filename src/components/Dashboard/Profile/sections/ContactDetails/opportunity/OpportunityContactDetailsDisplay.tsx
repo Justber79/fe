@@ -1,15 +1,10 @@
 import { EditableField } from "@/components/EditableField/EditableField";
-import { PreferredCommunicationType } from "need4deed-sdk";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../../shared/styles";
 import { OpportunityContactDetailsFormData } from "./opportunityContactDetailsSchema";
 
-type Props = {
-  keysToLabels: (keys: PreferredCommunicationType[]) => string[];
-};
-
-export const OpportunityContactDetailsDisplay = ({ keysToLabels }: Props) => {
+export const OpportunityContactDetailsDisplay = () => {
   const { t } = useTranslation();
   const { watch } = useFormContext<OpportunityContactDetailsFormData>();
   const values = watch();
@@ -38,15 +33,6 @@ export const OpportunityContactDetailsDisplay = ({ keysToLabels }: Props) => {
         label={t("dashboard.opportunityProfile.contactDetails.email")}
         value={values.email}
         setValue={() => {}}
-      />
-
-      <EditableField
-        mode="display"
-        type="checkbox-list"
-        label={t("dashboard.opportunityProfile.contactDetails.waysToContact.label")}
-        value={keysToLabels(values.waysToContact ?? [])}
-        setValue={() => {}}
-        options={[]}
       />
     </FormDetails>
   );
