@@ -89,14 +89,20 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   }));
 
   const generalLangs = opp.languages.filter((l) => l.purpose === LangPurpose.GENERAL);
-  const recipientLangs = opp.languages.filter((l) => l.purpose === LangPurpose.RECIPIENT);
+  const seenResidents = new Set<number>();
+  const residentsLangs = opp.languages.filter((l) => {
+    if (l.purpose !== LangPurpose.RECIPIENT && l.purpose !== LangPurpose.TRANSLATION) return false;
+    if (seenResidents.has(l.id)) return false;
+    seenResidents.add(l.id);
+    return true;
+  });
 
   const schema = createOpportunityDetailsSchema(t);
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isValid },
   } = useForm<OpportunityDetailsFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -104,7 +110,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
       description: opp.description ?? "",
       numberOfVolunteers: String(opp.numberOfVolunteers ?? ""),
       mainCommunication: languagesToFormValues(generalLangs, t),
-      residentsSpeak: languagesToFormValues(recipientLangs, t),
+      residentsSpeak: languagesToFormValues(residentsLangs, t),
       availability: isEventType ? undefined : apiToFormAvailability(opp.availability),
       eventDate: null,
       eventTime: "",
@@ -324,7 +330,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
           onClick={handleSubmit(onSubmit)}
           width="auto"
           padding="var(--volunteer-profile-section-card-header-button-padding)"
-          disabled={!isDirty || !isValid}
+          disabled={!isValid}
         />
       </FormButtonRow>
     </>

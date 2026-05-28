@@ -11,32 +11,16 @@ const languageObjectSchema = z.object({
   level: z.union([z.nativeEnum(LanguageLevel), z.literal("")]),
 });
 
-const languagesValidator = (t: (key: string) => string) =>
-  z.array(languageObjectSchema).superRefine((languages, ctx) => {
-    const hasCompleteRow = languages.some((lang) => lang.language !== "");
-    if (!hasCompleteRow) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: t(`${i18nPrefix}.languageRequired`),
-      });
-    }
-  });
-
 export const createOpportunityDetailsSchema = (t: (key: string) => string) =>
   z.object({
-    description: z
-      .string()
-      .min(1, t(`${i18nPrefix}.descriptionRequired`))
-      .max(MAX_DESCRIPTION_LENGTH, t(`${i18nPrefix}.descriptionTooLong`)),
-    numberOfVolunteers: z.string().refine((val) => val !== "" && val !== "0", {
-      message: t(`${i18nPrefix}.numberOfVolunteersRequired`),
-    }),
-    mainCommunication: languagesValidator(t),
-    residentsSpeak: languagesValidator(t),
+    description: z.string().max(MAX_DESCRIPTION_LENGTH, t(`${i18nPrefix}.descriptionTooLong`)),
+    numberOfVolunteers: z.string(),
+    mainCommunication: z.array(languageObjectSchema),
+    residentsSpeak: z.array(languageObjectSchema),
     availability: z.custom<Availability>().nullable().optional(),
     eventDate: z.date().nullable().optional(),
     eventTime: z.string().optional(),
-    activities: z.array(z.string()).min(1, t(`${i18nPrefix}.activitiesRequired`)),
+    activities: z.array(z.string()),
     skills: z.array(z.string()),
   });
 

@@ -9,9 +9,10 @@ import { DateFieldRow, Details } from "./styles";
 type Props = {
   values: AccompanyingDetailsFormData;
   languageLabel: string;
+  postcodeDisplay: string;
 };
 
-export const AccompanyingDetailsDisplay = ({ values, languageLabel }: Props) => {
+export const AccompanyingDetailsDisplay = ({ values, languageLabel, postcodeDisplay }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -28,7 +29,7 @@ export const AccompanyingDetailsDisplay = ({ values, languageLabel }: Props) => 
         mode="display"
         type="text"
         label={t("dashboard.opportunityProfile.accompanyingDetails.appointmentPostcode")}
-        value={values.appointmentPostcode || ""}
+        value={postcodeDisplay}
         setValue={() => {}}
       />
 

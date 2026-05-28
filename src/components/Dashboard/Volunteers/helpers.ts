@@ -77,6 +77,11 @@ export function serializeFilters(
   if (filter.accompanying) params.set(QueryParamsKeys.ACCOMPANYING, "true");
   else params.delete(QueryParamsKeys.ACCOMPANYING);
 
+  params.delete("type");
+  Object.entries(filter.type).forEach(([key, value]) => {
+    if (value === true) params.append("type", key);
+  });
+
   // 2. Clear all existing 'district' params
   params.delete(QueryParamsKeys.DISTRICT);
   Object.entries(filter.district).forEach(([key, value]) => {
@@ -143,6 +148,13 @@ export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: R
   if (queryAccompanying === "true") {
     newFilter.accompanying = true;
   }
+
+  const queryTypes = searchParams.getAll("type");
+  queryTypes.forEach((t) => {
+    if (newFilter.type[t] !== undefined) {
+      newFilter.type[t] = true;
+    }
+  });
 
   const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
   queryDistricts.forEach((d) => {
