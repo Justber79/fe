@@ -58,7 +58,7 @@ export function useCommentTag(
         const user = users?.find((u) => u.id === Number(userId));
         elements.push(
           <span key={`db-tag-${userId}-${idx}`} className="tag">
-            {`@${user?.fullName || "user"}`}
+            {`@${user?.fullName.replace(" ", "") || "user"}`}
           </span>,
         );
       } else {
@@ -75,16 +75,16 @@ export function useCommentTag(
     return elements;
   }, [value, tags, users]);
 
-  const handleTagAdd = (userId: number, firstName: string) => {
+  const handleTagAdd = (userId: number, fullName: string) => {
     if (!value || !textAreaRef?.current) return null;
     const cursorPosition = textAreaRef.current.selectionStart;
     const textBeforeCaret = value.substring(0, cursorPosition);
     const textAfterCaret = value.substring(cursorPosition);
     const lastAtIndex = textBeforeCaret.lastIndexOf("@");
 
-    const newText = textBeforeCaret.substring(0, lastAtIndex) + `@${firstName} ` + textAfterCaret;
+    const newText = textBeforeCaret.substring(0, lastAtIndex) + `@${fullName} ` + textAfterCaret;
     setNewCommentText?.(newText);
-    setTags((prev) => [...prev, { id: userId, name: firstName }]);
+    setTags((prev) => [...prev, { id: userId, name: fullName }]);
     setShowAutocomplete(false);
   };
 

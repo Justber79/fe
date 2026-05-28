@@ -8,7 +8,7 @@ import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
 
 type Props = {
-  handleTagAdd: (userId: number, username: string) => void;
+  handleTagAdd: (userId: number, fullName: string) => void;
   newCommentText: string;
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
   activeRowIndex: number;
@@ -57,7 +57,6 @@ export default function Autocomplete({
         return {
           id: user.id,
           fullName: user.fullName,
-          firstName: user.firstName,
           avatarUrl: user.avatarUrl,
         };
       })
@@ -74,7 +73,7 @@ export default function Autocomplete({
     if (!filteredUsers) return;
     const activeUser = filteredUsers[activeRowIndex];
     if (activeUser) {
-      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.firstName));
+      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replace(" ", "")));
     } else {
       setOnSelectTrigger(null);
     }
@@ -102,8 +101,8 @@ export default function Autocomplete({
     }
   }, [activeRowIndex, filteredUsers]);
 
-  const handleUserSelect = (userId: number, firstName: string) => {
-    handleTagAdd(userId, firstName);
+  const handleUserSelect = (userId: number, fullName: string) => {
+    handleTagAdd(userId, fullName.replace(" ", ""));
   };
 
   const resolvedAvatarUrl = (url: string) => {
@@ -146,13 +145,13 @@ export default function Autocomplete({
               key={user.id}
               role="option"
               aria-selected={isActive}
-              onClick={() => handleUserSelect(user.id, user.firstName)}
+              onClick={() => handleUserSelect(user.id, user.fullName)}
               style={{
                 backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
                 cursor: "pointer",
               }}
             >
-              <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.firstName} />
+              <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.fullName} />
               <span>{user.fullName}</span>
             </AutocompleteRow>
           );
