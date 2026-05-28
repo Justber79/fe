@@ -100,7 +100,8 @@ export const NewCommentSection = styled.div`
   padding: 0;
   gap: var(--spacing-16);
   width: 100%;
-  height: 200px;
+  min-height: 200px;
+  max-height: 300px;
   overflow-y: hidden;
   align-self: stretch;
   border: var(--border-width-thin) solid var(--color-grey-200);
