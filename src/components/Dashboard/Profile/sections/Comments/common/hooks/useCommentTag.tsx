@@ -21,7 +21,7 @@ export function useCommentTag(
       sortOrder: SortOrder.NewToOld,
     },
     staleTime: cacheTTL,
-    enabled: !!setNewCommentText && showAutocomplete,
+    enabled: !!setNewCommentText,
   });
 
   useEffect(() => {

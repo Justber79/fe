@@ -105,6 +105,9 @@ export const NewCommentSection = styled.div`
   align-self: stretch;
   border: var(--border-width-thin) solid var(--color-grey-200);
   border-radius: var(--border-radius-small);
+  &:focus-within {
+    border-color: var(--color-midnight);
+  }
 `;
 
 export const TextArea = styled.textarea`
