@@ -7,7 +7,11 @@ type CreateCommentData = {
   text: string;
   entityType: EntityTableName | string;
   entityId: Id;
+<<<<<<< HEAD
   taggedPersonIds?: number[];
+=======
+  taggedUserIds?: number[];
+>>>>>>> 87900d0 (adds taggedUserIds to create comment req body)
 };
 
 export const useCreateComment = (entityId: Id, entityType: EntityType = "volunteer") => {
