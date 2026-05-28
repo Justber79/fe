@@ -59,16 +59,26 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     if (!newCommentText.trim()) return;
 
     let formattedText = newCommentText;
-    tags.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+    const taggedUserIds: number[] = [];
+
+    tags.forEach((tag) => {
+      formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
+        taggedUserIds.push(tag.id);
+      }
+    });
 
     createComment(
       {
         text: formattedText.trim(),
         entityType,
         entityId,
+        taggedUserIds,
       },
       {
-        onSuccess: () => setNewCommentText(""),
+        onSuccess: () => {
+          setNewCommentText("");
+        },
       },
     );
   };
