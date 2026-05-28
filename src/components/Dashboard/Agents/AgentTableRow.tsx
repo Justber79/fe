@@ -47,7 +47,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
         {activeVolunteers}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
-        0
+        {"—"}
       </TableCell>
       <WrapAnywhereCell data-testid={`agent-email-${id}`}>{email || "—"}</WrapAnywhereCell>
     </ClickableRow>

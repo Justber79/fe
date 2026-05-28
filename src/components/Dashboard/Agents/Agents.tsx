@@ -31,7 +31,8 @@ export const Agents = () => {
   const pathname = usePathname();
   const router = useRouter();
   const tabs = [t("dashboard.agents.tabs.tab1"), t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")];
-  const viewMode = Object.values(ViewMode)[selectedTabIndex];
+  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.LIST;
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));

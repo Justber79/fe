@@ -67,7 +67,7 @@ export const AgentListController = ({
         itemsPerPage={limit}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        districtsList={apiFilterOptions?.district}
+        districtsList={apiFilterOptions?.district ?? undefined}
       />
     );
   }
