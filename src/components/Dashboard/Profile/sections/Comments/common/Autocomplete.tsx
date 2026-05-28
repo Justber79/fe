@@ -112,11 +112,10 @@ export default function Autocomplete({
 
   useLayoutEffect(() => {
     const el = textAreaRef?.current;
-    if (!el && !userFilter) return;
-    const textBeforeCaret = userFilter?.substring(0, el?.selectionStart);
+    if (!el || userFilter === null) return;
+    const textBeforeCaret = el.value.substring(0, el.selectionStart);
     const lastAtIndex = textBeforeCaret?.lastIndexOf("@");
 
-    if (!el) return;
     const positioningIndex = lastAtIndex !== -1 ? lastAtIndex : el.selectionStart;
 
     const caret = getCaretCoordinates(el, positioningIndex ?? 0);
