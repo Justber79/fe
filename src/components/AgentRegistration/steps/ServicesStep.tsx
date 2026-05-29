@@ -1,0 +1,94 @@
+"use client";
+import { ApiOptionLists, AgentServiceType, EntityTableName } from "need4deed-sdk";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
+import { AgentRegistrationData } from "../types";
+
+const CheckboxGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--color-midnight);
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-aubergine);
+    cursor: pointer;
+  }
+`;
+
+type Props = {
+  data: AgentRegistrationData;
+  onChange: (fields: Partial<AgentRegistrationData>) => void;
+  optionLists?: ApiOptionLists;
+};
+
+export function ServicesStep({ data, onChange, optionLists }: Props) {
+  const { t } = useTranslation();
+  const languages = optionLists?.[EntityTableName.LANGUAGE] ?? [];
+
+  const toggleService = (service: AgentServiceType) => {
+    const updated = data.services.includes(service)
+      ? data.services.filter((s) => s !== service)
+      : [...data.services, service];
+    onChange({ services: updated });
+  };
+
+  const toggleLanguage = (id: number) => {
+    const updated = data.clientLanguageIds.includes(id)
+      ? data.clientLanguageIds.filter((l) => l !== id)
+      : [...data.clientLanguageIds, id];
+    onChange({ clientLanguageIds: updated });
+  };
+
+  return (
+    <div>
+      <StepTitle>{t("agentRegistration.steps.services.title")}</StepTitle>
+      <StepDescription>{t("agentRegistration.steps.services.description")}</StepDescription>
+
+      <FieldWrapper>
+        <FieldLabel>{t("agentRegistration.fields.services")}</FieldLabel>
+        <CheckboxGrid>
+          {Object.values(AgentServiceType).map((service) => (
+            <CheckboxLabel key={service}>
+              <input
+                type="checkbox"
+                checked={data.services.includes(service)}
+                onChange={() => toggleService(service)}
+              />
+              {t(`dashboard.agents.filters.services.${service}`, { defaultValue: service })}
+            </CheckboxLabel>
+          ))}
+        </CheckboxGrid>
+      </FieldWrapper>
+
+      {languages.length > 0 && (
+        <FieldWrapper>
+          <FieldLabel>{t("agentRegistration.fields.clientLanguages")}</FieldLabel>
+          <CheckboxGrid>
+            {languages.map((lang) => (
+              <CheckboxLabel key={lang.id}>
+                <input
+                  type="checkbox"
+                  checked={data.clientLanguageIds.includes(lang.id)}
+                  onChange={() => toggleLanguage(lang.id)}
+                />
+                {lang.title}
+              </CheckboxLabel>
+            ))}
+          </CheckboxGrid>
+        </FieldWrapper>
+      )}
+    </div>
+  );
+}
