@@ -753,15 +753,16 @@
         "opp-new": "Neu",
         "opp-searching": "Suche läuft",
         "opp-active": "Aktiv",
+        "opp-inactive": "Inaktiv",
         "opp-past": "Vergangen"
       },
       "matchStatus": {
-        "vol-no-matches": "Keine Zuweisungen",
-        "vol-pending-match": "Zuordnung ausstehend",
-        "vol-matched": "Zugeordnet",
-        "vol-needs-rematch": "Erneute Zuordnung erforderlich",
-        "vol-unmatched": "Nicht zugeordnet",
-        "vol-past": "Vergangen"
+        "opp-vol-no-matches": "Keine Zuweisungen",
+        "opp-vol-pending-match": "Zuordnung ausstehend",
+        "opp-vol-matched": "Zugeordnet",
+        "opp-vol-needs-rematch": "Erneute Zuordnung erforderlich",
+        "opp-vol-unmatched": "Nicht zugeordnet",
+        "opp-vol-past": "Vergangen"
       },
       "type": {
         "accompanying": "Begleitung",
