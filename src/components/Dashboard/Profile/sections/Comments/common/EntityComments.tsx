@@ -42,6 +42,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     setFilteredListLength,
     setOnSelectTrigger,
     handleKeyDown,
+    initTags,
   } = useCommentTag(newCommentText, setNewCommentText, textAreaRef);
 
   const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
@@ -87,9 +88,11 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
   const handleSaveEdit = () => {
     if (!edit.editText.trim() || !edit.editingCommentId) return;
-
+    const currentTags = initTags(edit.editText);
+    let formattedText = edit.editText;
+    currentTags?.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
     updateComment(
-      { text: edit.editText.trim() },
+      { text: formattedText.trim() },
       {
         onSuccess: () => edit.cancelEdit(),
       },

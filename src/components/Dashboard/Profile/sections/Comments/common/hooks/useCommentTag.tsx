@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect } from "react";
 
 export function useCommentTag(
   value: string,
-  setNewCommentText?: React.Dispatch<React.SetStateAction<string>>,
+  setNewCommentText?: (text: string) => void,
   textAreaRef?: React.RefObject<HTMLTextAreaElement | null> | null,
 ) {
   const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
@@ -106,6 +106,43 @@ export function useCommentTag(
     }
   };
 
+  const convertDbTextToEditable = useCallback(
+    (text: string): string => {
+      if (!text || !users) return text;
+      return text.replace(/<@(\d+)>/g, (match, userId) => {
+        const user = users.find((u) => u.id === Number(userId));
+        return user ? `@${user.fullName.replace(" ", "")}` : "@user";
+      });
+    },
+    [users],
+  );
+
+  const initTags = (value: string) => {
+    if (!value || !users) return;
+    const regexTag = /(<@\d+>)|((?<=^|\s)@[\w\s]+?)(?=\s|$)/g;
+    const matches = Array.from(value.matchAll(regexTag));
+    const freshlyFoundTags: { id: number; name: string }[] = [];
+
+    matches.forEach((match) => {
+      const username = match[0];
+      const user = users.find((u) => `@${u.fullName.replace(" ", "")}` === username);
+      if (user) {
+        const cleanName = user.fullName.replace(/\s/g, "");
+        freshlyFoundTags.push({ id: user.id, name: cleanName });
+      }
+    });
+    if (freshlyFoundTags.length > 0) {
+      setTags((prev) => {
+        const updated = [...prev];
+        freshlyFoundTags.forEach((newTag) => {
+          updated.push(newTag);
+        });
+        return updated;
+      });
+    }
+    return freshlyFoundTags;
+  };
+
   useEffect(() => {
     if (!textAreaRef?.current) return;
 
@@ -146,5 +183,7 @@ export function useCommentTag(
     setFilteredListLength,
     setOnSelectTrigger,
     handleKeyDown,
+    convertDbTextToEditable,
+    initTags,
   };
 }

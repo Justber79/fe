@@ -1,5 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { CommentEditButtons, EditCancelButton, EditSaveButton, TextArea } from "./styles";
+import {
+  CommentEditButtons,
+  EditCancelButton,
+  EditSaveButton,
+  NewCommentSection,
+  TagOverlay,
+  TextArea,
+} from "./styles";
+import { useCommentTag } from "./hooks/useCommentTag";
+import { useEffect, useRef } from "react";
+import Autocomplete from "./Autocomplete";
 
 type EditState = {
   text: string;
@@ -18,15 +28,55 @@ type Props = {
 
 export function CommentEdit({ commentId, edit }: Props) {
   const { t } = useTranslation();
+  const editTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const editOverlayRef = useRef<HTMLDivElement>(null);
+  const {
+    showAutocomplete,
+    handleTagAdd,
+    activeRowIndex,
+    setFilteredListLength,
+    setOnSelectTrigger,
+    renderHighlightedText,
+    setShowAutocomplete,
+    convertDbTextToEditable,
+    handleKeyDown,
+  } = useCommentTag(edit.text, edit.onTextChange, editTextAreaRef);
+
+  const handleScroll = () => {
+    if (!editTextAreaRef?.current || !editOverlayRef?.current) return;
+    editOverlayRef.current.style.transform = `translateY(-${editTextAreaRef.current.scrollTop}px)`;
+  };
+
+  useEffect(() => {
+    const sanitisedText = convertDbTextToEditable(edit.text);
+    edit.onTextChange(sanitisedText);
+  }, []);
 
   return (
     <>
-      <TextArea
-        value={edit.text}
-        onChange={(e) => edit.onTextChange(e.target.value)}
-        onKeyPress={edit.onKeyPress}
-        data-testid={`edit-comment-textarea-${commentId}`}
-      />
+      <NewCommentSection>
+        {showAutocomplete && (
+          <Autocomplete
+            handleTagAdd={handleTagAdd}
+            newCommentText={edit.text}
+            textAreaRef={editTextAreaRef}
+            activeRowIndex={activeRowIndex}
+            setFilteredListLength={setFilteredListLength}
+            setOnSelectTrigger={setOnSelectTrigger}
+          />
+        )}
+        <TagOverlay ref={editOverlayRef}>{renderHighlightedText()}</TagOverlay>
+        <TextArea
+          ref={editTextAreaRef}
+          value={edit.text}
+          onChange={(e) => edit.onTextChange(e.target.value)}
+          onKeyPress={edit.onKeyPress}
+          onKeyDown={handleKeyDown}
+          data-testid={`edit-comment-textarea-${commentId}`}
+          onScroll={handleScroll}
+          onClick={() => setShowAutocomplete(false)}
+        />
+      </NewCommentSection>
       <CommentEditButtons>
         <EditCancelButton onClick={edit.onCancel} data-testid={`cancel-edit-${commentId}`}>
           {t("dashboard.commentsSection.cancelEdit")}
