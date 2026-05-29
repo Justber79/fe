@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/core/button";
-import { apiPathAgent, apiPathLogin, apiPathOption, LOGGED_IN_COOKIE } from "@/config/constants";
+import { apiPathAgent, apiPathLogin, apiPathOption, apiPathUser, LOGGED_IN_COOKIE } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
@@ -8,116 +8,29 @@ import { ApiOptionLists, UserRole } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import { validateStep } from "./helpers";
 import { ProgressBar } from "./ProgressBar";
 import { AccountStep } from "./steps/AccountStep";
 import { AddressStep } from "./steps/AddressStep";
 import { OrgInfoStep } from "./steps/OrgInfoStep";
 import { ReviewStep } from "./steps/ReviewStep";
 import { ServicesStep } from "./steps/ServicesStep";
+import {
+  Actions,
+  Card,
+  ErrorBanner,
+  PageSubtitle,
+  PageTitle,
+  SuccessText,
+  SuccessTitle,
+  SuccessWrapper,
+  Wrapper,
+} from "./styled";
 import { AgentRegistrationData, defaultAgentRegistrationData, TOTAL_STEPS } from "./types";
 
-// NOTE: The following BE changes are required before this flow is fully functional:
+// NOTE: Two BE changes are required before this flow is fully functional:
 // 1. POST /api/user must allow role: "agent" (currently only "user" | "admin" are permitted)
 // 2. POST /api/agent endpoint must be created (currently only GET/PATCH/DELETE exist)
-const API_PATH_USER = "/api/user";
-
-const Wrapper = styled.div`
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 48px 16px;
-  background: var(--layout-static-page-background-default, #f8f6f8);
-`;
-
-const Card = styled.div`
-  background: var(--color-white);
-  border-radius: 16px;
-  padding: 40px;
-  width: 100%;
-  max-width: 560px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-`;
-
-const PageTitle = styled.h1`
-  font-size: 1.625rem;
-  font-weight: 700;
-  color: var(--color-midnight);
-  margin: 0 0 4px;
-`;
-
-const PageSubtitle = styled.p`
-  font-size: 0.9375rem;
-  color: var(--color-grey-500);
-  margin: 0 0 32px;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-  gap: 12px;
-`;
-
-const ErrorBanner = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  font-size: 0.9375rem;
-  color: #dc2626;
-`;
-
-const SuccessWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 0;
-  text-align: center;
-`;
-
-const SuccessTitle = styled.h2`
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: var(--color-midnight);
-`;
-
-const SuccessText = styled.p`
-  font-size: 0.9375rem;
-  color: var(--color-grey-500);
-`;
-
-function validateStep(step: number, data: AgentRegistrationData, t: (k: string) => string) {
-  const errors: Partial<Record<keyof AgentRegistrationData, string>> = {};
-  const required = t("form.error.required");
-
-  if (step === 1) {
-    if (!data.firstName.trim()) errors.firstName = required;
-    if (!data.lastName.trim()) errors.lastName = required;
-    if (!data.email.trim()) errors.email = required;
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = t("form.error.email");
-    if (!data.password) errors.password = required;
-    else if (data.password.length < 8) errors.password = t("agentRegistration.errors.passwordTooShort");
-    if (!data.confirmPassword) errors.confirmPassword = required;
-    else if (data.password !== data.confirmPassword) errors.confirmPassword = t("agentRegistration.errors.passwordMismatch");
-  }
-
-  if (step === 2) {
-    if (!data.organizationName.trim()) errors.organizationName = required;
-    if (!data.organizationType) errors.organizationType = required;
-  }
-
-  if (step === 3) {
-    if (!data.addressStreet.trim()) errors.addressStreet = required;
-    if (!data.addressPostcode.trim()) errors.addressPostcode = required;
-  }
-
-  return errors;
-}
 
 export function AgentRegistration() {
   const { t } = useTranslation();
@@ -147,15 +60,13 @@ export function AgentRegistration() {
   };
 
   const handleNext = () => {
-    if (step < TOTAL_STEPS) {
-      const stepErrors = validateStep(step, formData, t);
-      if (Object.keys(stepErrors).length > 0) {
-        setErrors(stepErrors);
-        return;
-      }
-      setErrors({});
-      setStep((s) => s + 1);
+    const stepErrors = validateStep(step, formData, t);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
     }
+    setErrors({});
+    setStep((s) => s + 1);
   };
 
   const handleBack = () => {
@@ -168,9 +79,7 @@ export function AgentRegistration() {
     setIsSubmitting(true);
 
     try {
-      // Step 1: create user account with role "agent"
-      // BE requirement: POST /api/user must allow role: "agent"
-      await axios.post(API_PATH_USER, {
+      await axios.post(apiPathUser, {
         email: formData.email,
         password: formData.password,
         role: UserRole.AGENT,
@@ -180,15 +89,12 @@ export function AgentRegistration() {
         },
       });
 
-      // Step 2: auto-login to obtain session cookie
       await axios.post(apiPathLogin, {
         email: formData.email,
         password: formData.password,
       });
       document.cookie = LOGGED_IN_COOKIE;
 
-      // Step 3: create agent profile
-      // BE requirement: POST /api/agent endpoint must be implemented
       await axios.post(apiPathAgent, {
         title: formData.organizationName,
         type: formData.organizationType || undefined,
@@ -203,14 +109,13 @@ export function AgentRegistration() {
 
       setIsSuccess(true);
       setTimeout(() => {
-        const { language } = i18next;
-        router.push(`/${language}/dashboard`);
+        router.push(`/${i18next.language}/dashboard`);
       }, 3000);
     } catch (err) {
       let message = t("message.errorGeneric");
       if (axios.isAxiosError(err)) {
         const data = err.response?.data as { message?: string } | undefined;
-        message = data?.message || message;
+        message = data?.message ?? message;
       }
       setSubmitError(message);
     } finally {

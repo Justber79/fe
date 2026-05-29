@@ -1,7 +1,7 @@
 "use client";
-import { AgentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { AGENT_TYPE_LABELS } from "../helpers";
 import { StepDescription, StepTitle } from "../styled";
 import { AgentRegistrationData } from "../types";
 
@@ -31,22 +31,9 @@ const ReviewValue = styled.dd`
   margin: 0;
 `;
 
-const AGENT_TYPE_LABELS: Record<AgentType, string> = {
-  [AgentType.AE]: "AE",
-  [AgentType.GU1]: "GU1",
-  [AgentType.GU2]: "GU2",
-  [AgentType.GU2_PLUS]: "GU2+",
-  [AgentType.GU3]: "GU3",
-  [AgentType.NU]: "NU",
-  [AgentType.ASOG]: "ASOG",
-  [AgentType.COUNSELING_CENTER]: "Counseling Center",
-  [AgentType.TANDEM]: "Tandem",
-  [AgentType.MULTIPLE_SOCIAL_SUPPORT]: "Multiple Social Support",
-};
-
-interface Props {
+type Props = {
   data: AgentRegistrationData;
-}
+};
 
 export function ReviewStep({ data }: Props) {
   const { t } = useTranslation();

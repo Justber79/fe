@@ -1,5 +1,74 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px;
+  background: var(--layout-static-page-background-default, #f8f6f8);
+`;
+
+export const Card = styled.div`
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+`;
+
+export const PageTitle = styled.h1`
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--color-midnight);
+  margin: 0 0 4px;
+`;
+
+export const PageSubtitle = styled.p`
+  font-size: 0.9375rem;
+  color: var(--color-grey-500);
+  margin: 0 0 32px;
+`;
+
+export const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  gap: 12px;
+`;
+
+export const ErrorBanner = styled.div`
+  background: var(--color-error-light, #fef2f2);
+  border: 1px solid var(--color-error-border, #fecaca);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.9375rem;
+  color: var(--color-error, #dc2626);
+`;
+
+export const SuccessWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+  text-align: center;
+`;
+
+export const SuccessTitle = styled.h2`
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-midnight);
+`;
+
+export const SuccessText = styled.p`
+  font-size: 0.9375rem;
+  color: var(--color-grey-500);
+`;
+
 export const StepTitle = styled.h2`
   font-size: 1.375rem;
   font-weight: 700;
@@ -26,9 +95,9 @@ export const FieldLabel = styled.label`
   color: var(--color-midnight);
 `;
 
-interface SelectProps {
+type SelectProps = {
   $hasError: boolean;
-}
+};
 
 export const StyledSelect = styled.select<SelectProps>`
   color: var(--color-midnight);

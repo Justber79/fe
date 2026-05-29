@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { AgentRegistrationData } from "../types";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
 
-interface Props {
+type Props = {
   data: AgentRegistrationData;
   onChange: (fields: Partial<AgentRegistrationData>) => void;
   errors: Partial<Record<keyof AgentRegistrationData, string>>;
-}
+};
 
 export function AccountStep({ data, onChange, errors }: Props) {
   const { t } = useTranslation();

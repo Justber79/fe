@@ -2,26 +2,14 @@
 import { FormInput } from "@/components/core/common";
 import { AgentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
+import { AGENT_TYPE_LABELS } from "../helpers";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect, StyledTextarea } from "../styled";
 import { AgentRegistrationData } from "../types";
 
-interface Props {
+type Props = {
   data: AgentRegistrationData;
   onChange: (fields: Partial<AgentRegistrationData>) => void;
   errors: Partial<Record<keyof AgentRegistrationData, string>>;
-}
-
-const AGENT_TYPE_LABELS: Record<AgentType, string> = {
-  [AgentType.AE]: "AE",
-  [AgentType.GU1]: "GU1",
-  [AgentType.GU2]: "GU2",
-  [AgentType.GU2_PLUS]: "GU2+",
-  [AgentType.GU3]: "GU3",
-  [AgentType.NU]: "NU",
-  [AgentType.ASOG]: "ASOG",
-  [AgentType.COUNSELING_CENTER]: "Counseling Center",
-  [AgentType.TANDEM]: "Tandem",
-  [AgentType.MULTIPLE_SOCIAL_SUPPORT]: "Multiple Social Support",
 };
 
 export function OrgInfoStep({ data, onChange, errors }: Props) {

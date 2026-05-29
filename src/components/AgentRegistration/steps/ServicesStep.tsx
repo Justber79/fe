@@ -27,11 +27,11 @@ const CheckboxLabel = styled.label`
   }
 `;
 
-interface Props {
+type Props = {
   data: AgentRegistrationData;
   onChange: (fields: Partial<AgentRegistrationData>) => void;
   optionLists?: ApiOptionLists;
-}
+};
 
 export function ServicesStep({ data, onChange, optionLists }: Props) {
   const { t } = useTranslation();

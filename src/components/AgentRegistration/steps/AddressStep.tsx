@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect } from "../styled";
 import { AgentRegistrationData } from "../types";
 
-interface Props {
+type Props = {
   data: AgentRegistrationData;
   onChange: (fields: Partial<AgentRegistrationData>) => void;
   errors: Partial<Record<keyof AgentRegistrationData, string>>;
   optionLists?: ApiOptionLists;
-}
+};
 
 export function AddressStep({ data, onChange, errors, optionLists }: Props) {
   const { t } = useTranslation();
