@@ -1,15 +1,12 @@
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathOpportunity, cacheTTL } from "@/config/constants";
+import { apiPathOpportunity, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
-
-const columns = 3;
-const rows = 3;
-const limit = columns * rows;
+import { ViewMode } from "../common/types";
 
 const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
@@ -42,6 +39,7 @@ type Props = {
   filter: OpportunityCardsFilter;
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
+  viewMode: ViewMode;
 };
 
 export function OpportunityListController({
@@ -51,8 +49,11 @@ export function OpportunityListController({
   filter,
   apiFilterOptions,
   volunteerId,
+  viewMode,
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
+  const isListView = viewMode === ViewMode.LIST;
+  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
     serializeToIDs: true,
@@ -88,14 +89,18 @@ export function OpportunityListController({
 
   if (isLoading) return <DashboardListLoading />;
 
+  if (isListView) {
+    return <h1>Opportunities list</h1>;
+  }
+
   return (
     <OpportunityCardList
       activitiesList={apiFilterOptions?.activity ?? undefined}
       districtsList={apiFilterOptions?.district ?? undefined}
       opportunities={opportunities}
       count={count}
-      columns={columns - (isFiltersOpen ? 1 : 0)}
-      rows={rows + (isFiltersOpen ? 1 : 0)}
+      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
+      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       volunteerId={volunteerId}

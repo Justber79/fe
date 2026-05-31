@@ -76,3 +76,7 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 export const PHONE_NUMBER_REGEX = /^\+[0-9\s]+$/;
 
 export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";
+
+export const CARD_COLUMNS = 3;
+export const CARD_ROWS = 3;
+export const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
