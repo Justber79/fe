@@ -770,6 +770,19 @@
         "events": "Veranstaltungen",
         "regular-accompanying": "Regelmäßig + Begleitung"
       },
+      "table": {
+        "title": "Titel",
+        "type": "Typ",
+        "currentStatus": "Aktueller Status",
+        "matchingStatus": "Matching-Status",
+        "languages": "Sprachen",
+        "activities": "Aktivitäten",
+        "district": "Bezirk",
+        "schedule": "Zeitplan",
+        "volunteersNeeded": "Anzahl der Freiwilligen",
+        "agentName": "Agent"
+      },
+
       "card": {
         "mainCommunication": "Hauptkommunikation",
         "residentsSpeak": "Bewohner sprechen",
