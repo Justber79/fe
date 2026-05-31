@@ -1,6 +1,6 @@
 "use client";
 
-import { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
+import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { EntityTableList } from "../common/EntityTableList";
