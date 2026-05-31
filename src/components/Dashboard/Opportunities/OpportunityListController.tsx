@@ -7,7 +7,7 @@ import { OpportunityCardsFilter } from "./Filters/types";
 import { serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
-import { OpportunityTableList } from "./OpportunitiesTableList";
+import { OpportunityTableList } from "./OpportunityTableList";
 
 const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];

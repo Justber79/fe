@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { EntityTableList } from "../common/EntityTableList";
 import { createOpportunityTableColumns } from "./opportunitiesTableColumns";
-import { OpportunityTableRow } from "./OpportunitiesTableRow";
+import { OpportunityTableRow } from "./OpportunityTableRow";
 
 interface TableListProps {
   opportunities: ApiVolunteerOpportunityGetList[];
