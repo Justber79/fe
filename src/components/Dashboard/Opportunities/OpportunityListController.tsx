@@ -7,6 +7,7 @@ import { OpportunityCardsFilter } from "./Filters/types";
 import { serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
+import { OpportunityTableList } from "./OpportunitiesTableList";
 
 const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
@@ -90,7 +91,17 @@ export function OpportunityListController({
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
-    return <h1>Opportunities list</h1>;
+    return (
+      <OpportunityTableList
+        opportunities={opportunities}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        districtsList={apiFilterOptions?.district ?? undefined}
+        activitiesList={apiFilterOptions?.activity ?? undefined}
+      />
+    );
   }
 
   return (
