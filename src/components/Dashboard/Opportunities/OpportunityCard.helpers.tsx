@@ -10,7 +10,12 @@ import {
   TranslateIcon,
 } from "@phosphor-icons/react";
 import { format } from "date-fns";
-import { ApiVolunteerOpportunityGetList, OpportunityMatchStatusType, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
+import {
+  ApiVolunteerOpportunityGetList,
+  OpportunityMatchStatusType,
+  OpportunityStatusType,
+  ProfileVolunteeringType,
+} from "need4deed-sdk";
 import { utcHhmmToLocal } from "@/utils";
 import { JSX } from "react";
 
@@ -22,8 +27,8 @@ export function formatAvailability(availability: ApiVolunteerOpportunityGetList[
 }
 
 export function formatAccompanyingDate(details?: {
-  appointmentDate?: string;
-  appointmentTime?: string;
+  appointmentDate?: string | null;
+  appointmentTime?: string | null;
 }): string | null {
   if (!details?.appointmentDate) return null;
 
