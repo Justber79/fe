@@ -52,9 +52,9 @@ export function OpportunityTableRow({ opportunity, isLast, activitiesList, distr
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`opportunity-row-${id}`}>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
+      <TitleCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
         {title}
-      </TableCell>
+      </TitleCell>
       <TableCell $width={OPPORTUNITY_COL_WIDTHS.volunteerType} data-testid={`opportunity-volunteer-type-${id}`}>
         {t(`dashboard.opportunities.type.${volunteerType}`)}
       </TableCell>
@@ -95,4 +95,8 @@ const ClickableRow = styled(TableRow)`
   &:hover {
     background: var(--color-pink-50);
   }
+`;
+
+const TitleCell = styled(TableCell)`
+  overflow-wrap: anywhere;
 `;
