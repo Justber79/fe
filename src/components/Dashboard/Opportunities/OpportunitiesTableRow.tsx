@@ -80,7 +80,7 @@ export function OpportunityTableRow({ opportunity, isLast, activitiesList, distr
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        {numberOfVolunteers}
+        {numberOfVolunteers ?? "—"}
       </TableCell>
       <TableCell $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
         {agentTitle || "—"}
