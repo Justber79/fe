@@ -5,6 +5,7 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
 import { ShootingStarIcon } from "@phosphor-icons/react";
 import { ApiOpportunityGet } from "need4deed-sdk";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, StatusRowField } from "../common";
@@ -16,23 +17,8 @@ type Props = {
   opportunity: ApiOpportunityGet;
 };
 
-const MatchStatusBadge = styled.div<{ $color: string }>`
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-4);
-  padding: var(--spacing-12);
-  border-radius: var(--border-radius-xs);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-24);
-  letter-spacing: var(--letter-spacing-tight);
-  width: fit-content;
-  background-color: var(--color-grey-50);
-  color: ${({ $color }) => $color};
-`;
-
 export const OpportunityHeader = ({ opportunity }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dialog = useOpportunityStatusDialog(opportunity);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
@@ -79,6 +65,42 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         status={opportunity.volunteerType}
         label={opportunity.volunteerType ? volunteerTypeLabelMap[opportunity.volunteerType] : undefined}
       />
+
+      {opportunity.agent?.id && (
+        <StatusRowField
+          title={t("dashboard.opportunityProfile.agent")}
+          extra={
+            <AgentLink href={`/${i18n.language}/dashboard/agents/${opportunity.agent.id}`}>
+              {opportunity.agent.name}
+            </AgentLink>
+          }
+        />
+      )}
     </HeaderCard>
   );
 };
+
+const MatchStatusBadge = styled.div<{ $color: string }>`
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-12);
+  border-radius: var(--border-radius-xs);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-24);
+  letter-spacing: var(--letter-spacing-tight);
+  width: fit-content;
+  background-color: var(--color-grey-50);
+  color: ${({ $color }) => $color};
+`;
+
+const AgentLink = styled(Link)`
+  color: var(--color-blue-700);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;

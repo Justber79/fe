@@ -1055,6 +1055,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
+      "agent": "Agent",
       "status": {
         "new": "New",
         "active": "Active",
