@@ -21,7 +21,6 @@ export const apiPathPerson = `/${apiPrefix}/person/`;
 export const apiPathOrganization = `/${apiPrefix}/organization/`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL;
 export const cacheTTL = 1000 * 60 * 5; // 5 minutes
-export const TABLE_LIMIT = 20;
 
 export enum ScreenTypes {
   MOBILE = "mobile",
@@ -76,3 +75,8 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
 export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";
+
+export const TABLE_LIMIT = 20;
+export const CARD_COLUMNS = 3;
+export const CARD_ROWS = 3;
+export const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;

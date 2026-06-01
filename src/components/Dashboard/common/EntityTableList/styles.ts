@@ -1,3 +1,4 @@
+import { TableCell } from "@/components/core/common/Table/styles";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -5,4 +6,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: var(--entity-table-gap);
   width: 100%;
+`;
+
+export const WrapAnywhereCell = styled(TableCell)`
+  overflow-wrap: anywhere;
 `;

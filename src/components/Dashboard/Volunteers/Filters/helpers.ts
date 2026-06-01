@@ -80,11 +80,7 @@ export const createSelectedFilterItemsAsFlatArray = (
   const { districtFilters, engagementFilters, languageFilters, availabilityFilters, typeFilters } = filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
-  return [
-    ...typeFilters,
-    ...districtFilters,
-    ...engagementFilters,
-    ...languageFilters,
-    ...flatAvFilters,
-  ].filter((f) => f.checked);
+  return [...typeFilters, ...districtFilters, ...engagementFilters, ...languageFilters, ...flatAvFilters].filter(
+    (f) => f.checked,
+  );
 };

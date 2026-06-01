@@ -1,15 +1,13 @@
-import { ApiAgentGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
+import { type ApiAgentGetList, type ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { apiPathAgent, cacheTTL } from "@/config/constants";
+import { apiPathAgent, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
-
-const columns = 3;
-const rows = 3;
-const limit = columns * rows;
+import { ViewMode } from "../common/types";
+import { AgentTableList } from "./AgentTableList";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
@@ -18,10 +16,20 @@ type Props = {
   filter: AgentCardsFilter;
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
+  viewMode: ViewMode;
 };
 
-export const AgentListController = ({ setNumOfAgents, sortOrder, isFiltersOpen, filter, apiFilterOptions }: Props) => {
+export const AgentListController = ({
+  setNumOfAgents,
+  sortOrder,
+  isFiltersOpen,
+  filter,
+  apiFilterOptions,
+  viewMode,
+}: Props) => {
   const { currentPage, setCurrentPage } = usePageParam();
+  const isListView = viewMode === ViewMode.LIST;
+  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
   const serializedFilter = new URLSearchParams(
     serializeAgentFilters(filter, undefined, false, {
@@ -51,14 +59,28 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, isFiltersOpen, 
 
   if (isLoading) return <DashboardListLoading />;
 
+  if (isListView) {
+    return (
+      <AgentTableList
+        agents={agents}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        districtsList={apiFilterOptions?.district ?? undefined}
+      />
+    );
+  }
+
   return (
     <AgentCardList
       agents={agents}
       count={count}
-      columns={columns - (isFiltersOpen ? 1 : 0)}
-      rows={rows + (isFiltersOpen ? 1 : 0)}
+      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
+      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
+      districtsList={apiFilterOptions?.district ?? undefined}
     />
   );
 };
