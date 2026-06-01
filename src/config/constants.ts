@@ -15,6 +15,7 @@ export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
 export const apiPathOption = `/${apiPrefix}/option`;
 export const apiPathOpportunityVolunteer = `/${apiPrefix}/opportunity-volunteer`;
+export const apiPathUser = `/${apiPrefix}/user`;
 export const apiPathMe = `/${apiPrefix}/user/me`;
 export const apiPathPerson = `/${apiPrefix}/person/`;
 export const apiPathOrganization = `/${apiPrefix}/organization/`;
@@ -72,6 +73,6 @@ export const EMPTY_PLACEHOLDER_VALUE = "–";
 
 export const MAX_DESCRIPTION_LENGTH = 500;
 
-export const PHONE_NUMBER_REGEX = /^\+[0-9\s]+$/;
+export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
 export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";

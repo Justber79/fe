@@ -753,15 +753,16 @@
         "opp-new": "Neu",
         "opp-searching": "Suche läuft",
         "opp-active": "Aktiv",
+        "opp-inactive": "Inaktiv",
         "opp-past": "Vergangen"
       },
       "matchStatus": {
-        "vol-no-matches": "Keine Zuweisungen",
-        "vol-pending-match": "Zuordnung ausstehend",
-        "vol-matched": "Zugeordnet",
-        "vol-needs-rematch": "Erneute Zuordnung erforderlich",
-        "vol-unmatched": "Nicht zugeordnet",
-        "vol-past": "Vergangen"
+        "opp-vol-no-matches": "Keine Zuweisungen",
+        "opp-vol-pending-match": "Zuordnung ausstehend",
+        "opp-vol-matched": "Zugeordnet",
+        "opp-vol-needs-rematch": "Erneute Zuordnung erforderlich",
+        "opp-vol-unmatched": "Nicht zugeordnet",
+        "opp-vol-past": "Vergangen"
       },
       "type": {
         "accompanying": "Begleitung",
@@ -1055,6 +1056,7 @@
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
       "matchingStatus": "Matching-Status",
+      "agent": "Träger",
       "status": {
         "new": "Neu",
         "active": "Aktiv",
@@ -1247,7 +1249,8 @@
         "signal": "Signal",
         "email": "E-Mail",
         "sms": "SMS",
-        "voicenote": "Sprachnachricht"
+        "voicenote": "Sprachnachricht",
+        "videoCall": "Videoanruf"
       },
       "notesPlaceholder": "Fügen Sie Notizen zu dieser Kommunikation hinzu...",
       "cancel": "Abbrechen",
@@ -1809,5 +1812,63 @@
     "urdu": "Urdu",
     "vietnamese": "Vietnamesisch",
     "other": "Andere"
+  },
+  "agentRegistration": {
+    "title": "Ihre Organisation registrieren",
+    "subtitle": "Erstellen Sie ein Konto, um sich mit Ehrenamtlichen in Berlin zu vernetzen.",
+    "step": "Schritt",
+    "next": "Weiter",
+    "back": "Zurück",
+    "submit": "Konto erstellen",
+    "optional": "optional",
+    "steps": {
+      "account": {
+        "title": "Ihr Konto",
+        "description": "Geben Sie Ihre persönlichen Daten ein, um ein Login zu erstellen."
+      },
+      "orgInfo": {
+        "title": "Ihre Organisation",
+        "description": "Erzählen Sie uns von Ihrer Unterkunft."
+      },
+      "address": {
+        "title": "Standort",
+        "description": "Wo befindet sich Ihre Einrichtung?"
+      },
+      "services": {
+        "title": "Leistungen & Sprachen",
+        "description": "Welche Leistungen bieten Sie an und welche Sprachen sprechen die Bewohnenden?"
+      },
+      "review": {
+        "title": "Überprüfung",
+        "description": "Bitte überprüfen Sie Ihre Angaben vor dem Absenden."
+      }
+    },
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "organizationName": "Name der Organisation",
+      "organizationType": "Art der Organisation",
+      "selectOrganizationType": "Typ auswählen…",
+      "about": "Über Ihre Einrichtung",
+      "aboutPlaceholder": "Beschreiben Sie kurz Ihre Einrichtung und die angebotene Unterstützung.",
+      "website": "Website",
+      "addressStreet": "Straße und Hausnummer",
+      "addressPostcode": "Postleitzahl",
+      "district": "Bezirk",
+      "selectDistrict": "Bezirk auswählen…",
+      "services": "Angebotene Leistungen",
+      "clientLanguages": "Von Bewohnenden gesprochene Sprachen"
+    },
+    "errors": {
+      "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
+      "passwordMismatch": "Die Passwörter stimmen nicht überein"
+    },
+    "success": {
+      "title": "Registrierung erfolgreich!",
+      "description": "Ihr Konto wurde erstellt. Sie werden in Kürze zur Anmeldeseite weitergeleitet."
+    }
   }
 }
