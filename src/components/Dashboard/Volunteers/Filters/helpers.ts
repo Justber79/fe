@@ -1,6 +1,6 @@
 import { TFunction } from "i18next";
 import { Availability, CardsFilter } from "./types";
-import { generateFilterControlItem, generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
+import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
 import { SelectionMap, SetFilter } from "../../common/CardsFilter/types";
 import { QueryParamsKeys } from "need4deed-sdk";
 
@@ -8,10 +8,6 @@ import { QueryParamsKeys } from "need4deed-sdk";
  * Creates filter items for districts, languages, engagement, and availability.
  */
 export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<CardsFilter>, t: TFunction) => {
-  const accompanyingFilter = generateFilterControlItem(filter, setFilter, QueryParamsKeys.ACCOMPANYING, (key) =>
-    t(`dashboard.volunteers.filters.${key}`),
-  );
-
   const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
     t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
   );
@@ -39,7 +35,7 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
 
   const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
 
-  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, accompanyingFilter, typeFilters };
+  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, typeFilters };
 };
 
 /**
@@ -81,12 +77,10 @@ export const createSelectedFilterItemsAsFlatArray = (
 ) => {
   const filterItems = createFilterItems(filter, setFilter, t);
 
-  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, accompanyingFilter, typeFilters } =
-    filterItems;
+  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, typeFilters } = filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
   return [
-    accompanyingFilter,
     ...typeFilters,
     ...districtFilters,
     ...engagementFilters,

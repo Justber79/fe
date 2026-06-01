@@ -5,7 +5,6 @@ export type Availability = ScheduleFilter;
 
 export interface CardsFilter {
   [QueryParamsKeys.SEARCH]: string;
-  [QueryParamsKeys.ACCOMPANYING]: boolean;
   [QueryParamsKeys.ENGAGEMENT]: SelectionMap;
   [QueryParamsKeys.AVAILABILITY]: Availability;
   [QueryParamsKeys.DISTRICT]: SelectionMap;
