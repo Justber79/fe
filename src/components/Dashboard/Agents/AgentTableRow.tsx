@@ -20,10 +20,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  // TODO: remove cast once codebase migrates to need4deed-sdk@0.0.91+
-  const { id, title, type, volunteerSearch, district, activeVolunteers, email } = agent as ApiAgentGetList & {
-    email?: string;
-  };
+  const { id, title, type, volunteerSearch, district, activeVolunteers, email } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const handleGoToProfile = () => {

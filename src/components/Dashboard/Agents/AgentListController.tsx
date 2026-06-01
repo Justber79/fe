@@ -80,7 +80,7 @@ export const AgentListController = ({
       rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
-      districtsList={apiFilterOptions?.district}
+      districtsList={apiFilterOptions?.district ?? undefined}
     />
   );
 };

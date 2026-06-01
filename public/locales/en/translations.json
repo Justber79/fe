@@ -805,15 +805,16 @@
         "opp-new": "New",
         "opp-searching": "Searching",
         "opp-active": "Active",
+        "opp-inactive": "Inactive",
         "opp-past": "Past"
       },
       "matchStatus": {
-        "vol-no-matches": "No matches",
-        "vol-pending-match": "Pending match",
-        "vol-matched": "Matched",
-        "vol-needs-rematch": "Needs rematch",
-        "vol-unmatched": "Unmatched",
-        "vol-past": "Past"
+        "opp-vol-no-matches": "No matches",
+        "opp-vol-pending-match": "Pending match",
+        "opp-vol-matched": "Matched",
+        "opp-vol-needs-rematch": "Needs rematch",
+        "opp-vol-unmatched": "Unmatched",
+        "opp-vol-past": "Past"
       },
       "type": {
         "accompanying": "Accompanying",
@@ -1063,6 +1064,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
+      "agent": "Agent",
       "status": {
         "new": "New",
         "active": "Active",
@@ -1255,7 +1257,8 @@
         "signal": "Signal",
         "email": "E-mail",
         "sms": "SMS",
-        "voicenote": "Voicenote"
+        "voicenote": "Voicenote",
+        "videoCall": "Video call"
       },
       "notesPlaceholder": "Add notes about this communication...",
       "cancel": "Cancel",
@@ -1450,5 +1453,63 @@
     "urdu": "Urdu",
     "vietnamese": "Vietnamese",
     "other": "Other"
+  },
+  "agentRegistration": {
+    "title": "Register your organisation",
+    "subtitle": "Create an account to connect with volunteers in Berlin.",
+    "step": "Step",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Create account",
+    "optional": "optional",
+    "steps": {
+      "account": {
+        "title": "Your account",
+        "description": "Enter your personal details to create a login."
+      },
+      "orgInfo": {
+        "title": "Your organisation",
+        "description": "Tell us about your accommodation centre."
+      },
+      "address": {
+        "title": "Location",
+        "description": "Where is your centre located?"
+      },
+      "services": {
+        "title": "Services & languages",
+        "description": "What services do you offer and which languages do residents speak?"
+      },
+      "review": {
+        "title": "Review",
+        "description": "Please check your details before submitting."
+      }
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "organizationName": "Organisation name",
+      "organizationType": "Organisation type",
+      "selectOrganizationType": "Select type…",
+      "about": "About your centre",
+      "aboutPlaceholder": "Briefly describe your centre and the support you offer.",
+      "website": "Website",
+      "addressStreet": "Street address",
+      "addressPostcode": "Postcode",
+      "district": "District",
+      "selectDistrict": "Select district…",
+      "services": "Services provided",
+      "clientLanguages": "Languages spoken by residents"
+    },
+    "errors": {
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "success": {
+      "title": "Registration successful!",
+      "description": "Your account has been created. You will be redirected to the login page shortly."
+    }
   }
 }

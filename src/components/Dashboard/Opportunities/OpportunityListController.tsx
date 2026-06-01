@@ -86,8 +86,8 @@ export function OpportunityListController({
 
   return (
     <OpportunityCardList
-      activitiesList={apiFilterOptions?.activity}
-      districtsList={apiFilterOptions?.district}
+      activitiesList={apiFilterOptions?.activity ?? undefined}
+      districtsList={apiFilterOptions?.district ?? undefined}
       opportunities={opportunities}
       count={count}
       columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
