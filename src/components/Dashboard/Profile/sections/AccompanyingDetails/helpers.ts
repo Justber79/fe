@@ -23,7 +23,7 @@ export const getMinAppointmentDate = (): Date => {
   return date;
 };
 
-export const parseDate = (date: Date | string | undefined): Date | null => {
+export const parseDate = (date: Date | string | undefined | null): Date | null => {
   if (!date) return null;
   const parsed = date instanceof Date ? date : new Date(date);
   return isNaN(parsed.getTime()) ? null : parsed;
