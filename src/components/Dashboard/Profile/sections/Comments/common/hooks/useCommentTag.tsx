@@ -58,7 +58,7 @@ export function useCommentTag(
         const user = users?.find((u) => u.id === Number(userId));
         elements.push(
           <span key={`db-tag-${userId}-${idx}`} className="tag">
-            {`@${user?.fullName.replace(" ", "") || "user"}`}
+            {`@${user?.fullName.replaceAll(/ /g, "") || "user"}`}
           </span>,
         );
       } else {
@@ -111,7 +111,7 @@ export function useCommentTag(
       if (!text || !users) return text;
       return text.replace(/<@(\d+)>/g, (match, userId) => {
         const user = users.find((u) => u.id === Number(userId));
-        return user ? `@${user.fullName.replace(" ", "")}` : "@user";
+        return user ? `@${user.fullName.replaceAll(/ /g, "")}` : "@user";
       });
     },
     [users],
@@ -125,7 +125,7 @@ export function useCommentTag(
 
     matches.forEach((match) => {
       const username = match[0];
-      const user = users.find((u) => `@${u.fullName.replace(" ", "")}` === username);
+      const user = users.find((u) => `@${u.fullName.replaceAll(/ /g, "")}` === username);
       if (user) {
         const cleanName = user.fullName.replace(/\s/g, "");
         freshlyFoundTags.push({ id: user.id, name: cleanName });

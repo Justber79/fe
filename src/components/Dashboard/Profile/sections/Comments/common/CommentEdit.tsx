@@ -50,7 +50,7 @@ export function CommentEdit({ commentId, edit }: Props) {
   useEffect(() => {
     const sanitisedText = convertDbTextToEditable(edit.text);
     edit.onTextChange(sanitisedText);
-  }, []);
+  }, [convertDbTextToEditable]);
 
   return (
     <>

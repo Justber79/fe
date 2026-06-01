@@ -73,7 +73,7 @@ export default function Autocomplete({
     if (!filteredUsers) return;
     const activeUser = filteredUsers[activeRowIndex];
     if (activeUser) {
-      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replace(" ", "")));
+      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, "")));
     } else {
       setOnSelectTrigger(null);
     }
@@ -102,7 +102,7 @@ export default function Autocomplete({
   }, [activeRowIndex, filteredUsers]);
 
   const handleUserSelect = (userId: number, fullName: string) => {
-    handleTagAdd(userId, fullName.replace(" ", ""));
+    handleTagAdd(userId, fullName.replaceAll(/ /g, ""));
   };
 
   const resolvedAvatarUrl = (url: string) => {
