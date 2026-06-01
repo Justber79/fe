@@ -1248,7 +1248,8 @@
         "signal": "Signal",
         "email": "E-mail",
         "sms": "SMS",
-        "voicenote": "Voicenote"
+        "voicenote": "Voicenote",
+        "videoCall": "Video call"
       },
       "notesPlaceholder": "Add notes about this communication...",
       "cancel": "Cancel",
