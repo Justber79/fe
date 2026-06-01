@@ -1,6 +1,6 @@
 import { apiPathUser, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
-import { ApiUserGet, SortOrder } from "need4deed-sdk";
+import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useState, useCallback, useEffect } from "react";
 
 export function useCommentTag(
@@ -15,10 +15,11 @@ export function useCommentTag(
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
   const { data: users } = useGetQuery<ApiUserGet[]>({
-    queryKey: ["users"],
+    queryKey: ["users", "coordinators"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
+      filter: { role: UserRole.COORDINATOR },
     },
     staleTime: cacheTTL,
     enabled: !!setNewCommentText,

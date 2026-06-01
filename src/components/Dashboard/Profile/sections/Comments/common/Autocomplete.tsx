@@ -40,7 +40,7 @@ export default function Autocomplete({
   }, [newCommentText, textAreaRef]);
 
   const { data: users } = useGetQuery<ApiUserGet[]>({
-    queryKey: ["users"],
+    queryKey: ["users", "coordinators"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
