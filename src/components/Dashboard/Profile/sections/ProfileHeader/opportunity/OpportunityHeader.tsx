@@ -18,16 +18,6 @@ type Props = {
   opportunity: OpportunityWithMatch;
 };
 
-const AgentLink = styled(Link)`
-  color: var(--color-blue-700);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 export const OpportunityHeader = ({ opportunity }: Props) => {
   const { t, i18n } = useTranslation();
   const dialog = useOpportunityStatusDialog(opportunity);
@@ -82,3 +72,13 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
     </HeaderCard>
   );
 };
+
+const AgentLink = styled(Link)`
+  color: var(--color-blue-700);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
