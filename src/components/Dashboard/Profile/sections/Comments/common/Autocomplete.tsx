@@ -44,6 +44,7 @@ export default function Autocomplete({
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
+      filter: { role: UserRole.COORDINATOR },
     },
     enabled: userFilter !== null,
     staleTime: cacheTTL,
@@ -51,16 +52,7 @@ export default function Autocomplete({
 
   const filteredUsers = useMemo(() => {
     if (userFilter === null) return;
-    return users
-      ?.filter((user) => user.role === UserRole.COORDINATOR)
-      ?.map((user) => {
-        return {
-          id: user.id,
-          fullName: user.fullName,
-          avatarUrl: user.avatarUrl,
-        };
-      })
-      ?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
+    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
   }, [userFilter, users]);
 
   useEffect(() => {

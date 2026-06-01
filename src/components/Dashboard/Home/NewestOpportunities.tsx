@@ -19,8 +19,8 @@ export function NewestOpportunities() {
     },
     staleTime: cacheTTL,
   });
-  const activitiesList = apiFilterOptions?.activity;
-  const districtsList = apiFilterOptions?.district;
+  const activitiesList = apiFilterOptions?.activity ?? undefined;
+  const districtsList = apiFilterOptions?.district ?? undefined;
 
   if (isLoading) {
     return <Heading4>{t("dashboard.home.content.loading")}</Heading4>;

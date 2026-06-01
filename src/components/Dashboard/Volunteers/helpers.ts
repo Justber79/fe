@@ -74,9 +74,6 @@ export function serializeFilters(
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);
 
-  if (filter.accompanying) params.set(QueryParamsKeys.ACCOMPANYING, "true");
-  else params.delete(QueryParamsKeys.ACCOMPANYING);
-
   params.delete("type");
   Object.entries(filter.type).forEach(([key, value]) => {
     if (value === true) params.append("type", key);
@@ -142,11 +139,6 @@ export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: R
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) {
     newFilter.search = search;
-  }
-
-  const queryAccompanying = searchParams.get(QueryParamsKeys.ACCOMPANYING);
-  if (queryAccompanying === "true") {
-    newFilter.accompanying = true;
   }
 
   const queryTypes = searchParams.getAll("type");

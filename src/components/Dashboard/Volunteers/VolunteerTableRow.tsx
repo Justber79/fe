@@ -1,9 +1,5 @@
 "use client";
 
-import { ApiVolunteerGetList, VolunteerStateMatchType } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import type {
   createEngagementStatusLabelMap,
   createMatchStatusLabelMap,
@@ -13,6 +9,10 @@ import { TableCell, TableRow } from "@/components/core/common/Table";
 import { CirclePic } from "@/components/styled/img";
 import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
+import { ApiVolunteerGetList } from "need4deed-sdk";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 
 interface TableRowProps {
@@ -37,7 +37,7 @@ export function VolunteerTableRow({
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
   // Cast until SDK PR #99 adds statusMatch to ApiVolunteerGetList
-  const { statusMatch } = volunteer as ApiVolunteerGetList & { statusMatch?: VolunteerStateMatchType };
+  const { statusMatch, email } = volunteer as ApiVolunteerGetList;
 
   const languageText =
     languages
@@ -77,7 +77,7 @@ export function VolunteerTableRow({
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} data-testid={`volunteer-district-${id}`}>
         {districtText}
       </TableCell>
-      <TableCell data-testid={`volunteer-email-${id}`}>—</TableCell>
+      <TableCell data-testid={`volunteer-email-${id}`}>{email || "—"}</TableCell>
     </ClickableRow>
   );
 }

@@ -10,7 +10,12 @@ import {
   TranslateIcon,
 } from "@phosphor-icons/react";
 import { format } from "date-fns";
-import { ApiVolunteerOpportunityGetList, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
+import {
+  ApiVolunteerOpportunityGetList,
+  OpportunityMatchStatusType,
+  OpportunityStatusType,
+  ProfileVolunteeringType,
+} from "need4deed-sdk";
 import { utcHhmmToLocal } from "@/utils";
 import { JSX } from "react";
 
@@ -54,23 +59,22 @@ export const statusIconMap: Record<OpportunityStatusType, JSX.Element> = {
   [OpportunityStatusType.PAST]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.PAST]} />,
 };
 
-// TODO: replace string with OpportunityMatchStatusType once SDK PR #89 is merged
-export const matchStatusColorMap: Record<string, string> = {
-  "vol-no-matches": "var(--color-grey-700)",
-  "vol-pending-match": "var(--color-orange-500)",
-  "vol-matched": "var(--color-green-700)",
-  "vol-needs-rematch": "var(--color-red-50)",
-  "vol-unmatched": "var(--color-grey-700)",
-  "vol-past": "var(--color-grey-700)",
+export const matchStatusColorMap: Record<OpportunityMatchStatusType, string> = {
+  "opp-vol-no-matches": "var(--color-grey-700)",
+  "opp-vol-pending-match": "var(--color-orange-500)",
+  "opp-vol-matched": "var(--color-green-700)",
+  "opp-vol-needs-rematch": "var(--color-red-50)",
+  "opp-vol-unmatched": "var(--color-grey-700)",
+  "opp-vol-past": "var(--color-grey-700)",
 };
 
-export const matchStatusIconMap: Record<string, JSX.Element> = {
-  "vol-no-matches": <ProhibitInsetIcon size={18} color={matchStatusColorMap["vol-no-matches"]} />,
-  "vol-pending-match": <HourglassIcon size={18} color={matchStatusColorMap["vol-pending-match"]} />,
-  "vol-matched": <CheckCircleIcon size={18} color={matchStatusColorMap["vol-matched"]} />,
-  "vol-needs-rematch": <ArrowsClockwiseIcon size={18} color={matchStatusColorMap["vol-needs-rematch"]} />,
-  "vol-unmatched": <ProhibitInsetIcon size={18} color={matchStatusColorMap["vol-unmatched"]} />,
-  "vol-past": <StopCircleIcon size={18} color={matchStatusColorMap["vol-past"]} />,
+export const matchStatusIconMap: Record<OpportunityMatchStatusType, JSX.Element> = {
+  "opp-vol-no-matches": <ProhibitInsetIcon size={18} color={matchStatusColorMap["opp-vol-no-matches"]} />,
+  "opp-vol-pending-match": <HourglassIcon size={18} color={matchStatusColorMap["opp-vol-pending-match"]} />,
+  "opp-vol-matched": <CheckCircleIcon size={18} color={matchStatusColorMap["opp-vol-matched"]} />,
+  "opp-vol-needs-rematch": <ArrowsClockwiseIcon size={18} color={matchStatusColorMap["opp-vol-needs-rematch"]} />,
+  "opp-vol-unmatched": <ProhibitInsetIcon size={18} color={matchStatusColorMap["opp-vol-unmatched"]} />,
+  "opp-vol-past": <StopCircleIcon size={18} color={matchStatusColorMap["opp-vol-past"]} />,
 };
 
 export const volunteerTypeIconMap: Record<ProfileVolunteeringType, JSX.Element> = {

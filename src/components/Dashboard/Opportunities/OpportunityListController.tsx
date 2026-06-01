@@ -1,15 +1,11 @@
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathOpportunity, cacheTTL } from "@/config/constants";
+import { apiPathOpportunity, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
-
-const columns = 3;
-const rows = 3;
-const limit = columns * rows;
 
 const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
@@ -69,7 +65,7 @@ export function OpportunityListController({
     queryKey: ["opportunities"],
     apiPath: `${apiPathOpportunity}/`,
     params: {
-      limit,
+      limit: CARD_LIMIT,
       page: currentPage,
       sortOrder: backendSortOrder,
       filter: serializedFilter,
@@ -90,12 +86,12 @@ export function OpportunityListController({
 
   return (
     <OpportunityCardList
-      activitiesList={apiFilterOptions?.activity}
-      districtsList={apiFilterOptions?.district}
+      activitiesList={apiFilterOptions?.activity ?? undefined}
+      districtsList={apiFilterOptions?.district ?? undefined}
       opportunities={opportunities}
       count={count}
-      columns={columns - (isFiltersOpen ? 1 : 0)}
-      rows={rows + (isFiltersOpen ? 1 : 0)}
+      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
+      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       volunteerId={volunteerId}
