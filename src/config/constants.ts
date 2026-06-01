@@ -73,6 +73,6 @@ export const EMPTY_PLACEHOLDER_VALUE = "–";
 
 export const MAX_DESCRIPTION_LENGTH = 500;
 
-export const PHONE_NUMBER_REGEX = /^\+[0-9\s]+$/;
+export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
 export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";
