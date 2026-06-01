@@ -1,12 +1,13 @@
 import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
+import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 
 export const VOLUNTEER_COL_WIDTHS = {
-  type: "180px",
-  engagement: "200px",
-  matching: "140px",
-  language: "180px",
-  district: "200px",
+  type: COLUMN_WIDTH.MD,
+  engagement: COLUMN_WIDTH.LG,
+  matching: COLUMN_WIDTH.SM,
+  language: COLUMN_WIDTH.MD,
+  district: COLUMN_WIDTH.LG,
 };
 
 export const createVolunteerTableColumns = (t: TFunction): Column[] => [

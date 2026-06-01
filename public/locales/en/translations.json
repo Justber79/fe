@@ -701,6 +701,15 @@
     },
     "agents": {
       "agents": "RAC Directory",
+      "table": {
+        "title": "Name",
+        "type": "Type",
+        "volunteerSearch": "Volunteer Search",
+        "district": "District",
+        "activeVolunteers": "Active Volunteers",
+        "numberOfOpportunities": "Number of Opportunities",
+        "email": "Email"
+      },
       "tabs": {
         "tab1": "List",
         "tab2": "Cards",
@@ -1067,6 +1076,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
+      "agent": "Agent",
       "status": {
         "new": "New",
         "active": "Active",
@@ -1259,7 +1269,8 @@
         "signal": "Signal",
         "email": "E-mail",
         "sms": "SMS",
-        "voicenote": "Voicenote"
+        "voicenote": "Voicenote",
+        "videoCall": "Video call"
       },
       "notesPlaceholder": "Add notes about this communication...",
       "cancel": "Cancel",

@@ -71,7 +71,7 @@ export function OpportunityListController({
     queryKey: ["opportunities"],
     apiPath: `${apiPathOpportunity}/`,
     params: {
-      limit,
+      limit: CARD_LIMIT,
       page: currentPage,
       sortOrder: backendSortOrder,
       filter: serializedFilter,

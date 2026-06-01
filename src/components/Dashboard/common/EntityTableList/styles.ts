@@ -1,3 +1,4 @@
+import { TableCell } from "@/components/core/common/Table/styles";
 import styled from "styled-components";
 import { Table, TableContainer } from "@/components/core/common/Table";
 
@@ -15,4 +16,8 @@ export const ScrollableTableContainer = styled(TableContainer)`
 export const ScrollableTable = styled(Table)`
   width: max-content;
   min-width: 100%;
+`;
+
+export const WrapAnywhereCell = styled(TableCell)`
+  overflow-wrap: anywhere;
 `;

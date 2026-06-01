@@ -8,11 +8,13 @@ export function getContactTypeLabel(t: TFunction, contactType: ContactType): str
     [ContactType.TEXT_EMAIL]: "dashboard.communicationSection.contactTypes.textedOrEmailed",
     [ContactType.OTHER]: "dashboard.communicationSection.contactTypes.other",
   };
-  return t(map[contactType] || `dashboard.communicationSection.contactTypes.${contactType.toLowerCase()}`, { defaultValue: contactType });
+  return t(map[contactType] || `dashboard.communicationSection.contactTypes.${contactType.toLowerCase()}`, {
+    defaultValue: contactType,
+  });
 }
 
 export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethodType): string {
-   const map: Record<string, string> = {
+  const map: Record<string, string> = {
     [ContactMethodType.PHONE]: "dashboard.communicationSection.platformOptions.phoneNumber",
     [ContactMethodType.TELEGRAM]: "dashboard.communicationSection.platformOptions.telegram",
     [ContactMethodType.WHATSAPP]: "dashboard.communicationSection.platformOptions.whatsapp",
@@ -20,26 +22,28 @@ export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethod
     [ContactMethodType.EMAIL]: "dashboard.communicationSection.platformOptions.email",
     [ContactMethodType.SMS]: "dashboard.communicationSection.platformOptions.sms",
     [ContactMethodType.VOICENOTE]: "dashboard.communicationSection.platformOptions.voicenote",
+    [ContactMethodType.VIDEO_CALL]: "dashboard.communicationSection.platformOptions.videoCall",
   };
-  return t(map[contactMethod] || `dashboard.communicationSection.platformOptions.${contactMethod.toLowerCase()}`, { defaultValue: contactMethod });
+  return t(map[contactMethod] || `dashboard.communicationSection.platformOptions.${contactMethod.toLowerCase()}`, {
+    defaultValue: contactMethod,
+  });
 }
 
 export function getCommunicationTypeLabel(t: TFunction, communicationType: CommunicationType): string {
-    const map: Record<string, string> = {
+  const map: Record<string, string> = {
     [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
     [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
     [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
     [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
     [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
   };
-  return t(map[communicationType] || `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`, { defaultValue: communicationType });
+  return t(
+    map[communicationType] || `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`,
+    { defaultValue: communicationType },
+  );
 }
 
-export function getDisplayLabel(
-  t: TFunction,
-  contactType: ContactType,
-  communicationType?: CommunicationType,
-): string {
+export function getDisplayLabel(t: TFunction, contactType: ContactType, communicationType?: CommunicationType): string {
   if (contactType === ContactType.OTHER && communicationType) {
     return getCommunicationTypeLabel(t, communicationType);
   }

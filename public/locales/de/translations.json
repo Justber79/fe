@@ -658,6 +658,15 @@
     },
     "agents": {
       "agents": "RAC-Verzeichnis",
+      "table": {
+        "title": "Name",
+        "type": "Typ",
+        "volunteerSearch": "Freiwilligensuche",
+        "district": "Bezirk",
+        "activeVolunteers": "Aktive Freiwillige",
+        "numberOfOpportunities": "Anzahl der Möglichkeiten",
+        "email": "E-Mail"
+      },
       "tabs": {
         "tab1": "Liste",
         "tab2": "Karten",
@@ -1069,6 +1078,7 @@
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
       "matchingStatus": "Matching-Status",
+      "agent": "Träger",
       "status": {
         "new": "Neu",
         "active": "Aktiv",
@@ -1261,7 +1271,8 @@
         "signal": "Signal",
         "email": "E-Mail",
         "sms": "SMS",
-        "voicenote": "Sprachnachricht"
+        "voicenote": "Sprachnachricht",
+        "videoCall": "Videoanruf"
       },
       "notesPlaceholder": "Fügen Sie Notizen zu dieser Kommunikation hinzu...",
       "cancel": "Abbrechen",

@@ -53,9 +53,7 @@ export function ReviewStep({ data }: Props) {
       key: t("agentRegistration.fields.services"),
       value:
         data.services.length > 0
-          ? data.services
-              .map((s) => t(`dashboard.agents.filters.services.${s}`, { defaultValue: s }))
-              .join(", ")
+          ? data.services.map((s) => t(`dashboard.agents.filters.services.${s}`, { defaultValue: s })).join(", ")
           : "—",
     },
   ];

@@ -10,7 +10,6 @@ import { CardsFilter } from "./types";
 
 export const defaultVolunteerCardsFilter: CardsFilter = {
   [QueryParamsKeys.SEARCH]: "",
-  [QueryParamsKeys.ACCOMPANYING]: false,
   type: {
     [VolunteerStateTypeType.ACCOMPANYING]: false,
     [VolunteerStateTypeType.REGULAR]: false,

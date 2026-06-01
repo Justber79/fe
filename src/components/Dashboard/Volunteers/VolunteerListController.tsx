@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathVolunteer, cacheTTL, TABLE_LIMIT } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder } from "need4deed-sdk";
 import { CardsFilter } from "./Filters/types";
@@ -9,10 +9,6 @@ import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
-
-const CARD_COLUMNS = 3;
-const CARD_ROWS = 3;
-const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
