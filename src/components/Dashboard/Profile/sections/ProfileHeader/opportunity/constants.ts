@@ -1,5 +1,7 @@
 import { TFunction } from "i18next";
-import { OpportunityStatusType } from "need4deed-sdk";
+import { OpportunityMatchStatusType, OpportunityStatusType } from "need4deed-sdk";
+
+export type { OpportunityMatchStatusType };
 
 export enum OpportunityManualStatusType {
   NEW = "opp-new",
@@ -31,4 +33,13 @@ export const createOpportunityStatusLabelMap = (t: TFunction): Record<Opportunit
   [OpportunityManualStatusType.NEW]: t("dashboard.opportunityProfile.statusModal.options.new"),
   [OpportunityManualStatusType.SEARCHING]: t("dashboard.opportunityProfile.statusModal.options.searching"),
   [OpportunityManualStatusType.INACTIVE]: t("dashboard.opportunityProfile.statusModal.options.inactive"),
+});
+
+export const createOpportunityMatchLabelMap = (t: TFunction): Record<OpportunityMatchStatusType, string> => ({
+  [OpportunityMatchStatusType.NO_MATCHES]: t("dashboard.opportunityProfile.matchStatus.noMatches"),
+  [OpportunityMatchStatusType.PENDING_MATCH]: t("dashboard.opportunityProfile.matchStatus.pendingMatch"),
+  [OpportunityMatchStatusType.MATCHED]: t("dashboard.opportunityProfile.matchStatus.matched"),
+  [OpportunityMatchStatusType.NEEDS_REMATCH]: t("dashboard.opportunityProfile.matchStatus.needRematch"),
+  [OpportunityMatchStatusType.UNMATCHED]: t("dashboard.opportunityProfile.matchStatus.unmatched"),
+  [OpportunityMatchStatusType.PAST]: t("dashboard.opportunityProfile.matchStatus.past"),
 });

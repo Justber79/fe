@@ -1,5 +1,4 @@
 import { PHONE_NUMBER_REGEX } from "@/config/constants";
-import { PreferredCommunicationType } from "need4deed-sdk";
 import { z } from "zod";
 
 export const createOpportunityContactDetailsSchema = (t: (key: string) => string) => {
@@ -13,9 +12,6 @@ export const createOpportunityContactDetailsSchema = (t: (key: string) => string
       .string()
       .min(1, t("dashboard.opportunityProfile.contactDetails.validation.emailRequired"))
       .email(t("dashboard.opportunityProfile.contactDetails.validation.emailInvalid")),
-    waysToContact: z
-      .array(z.enum(Object.values(PreferredCommunicationType)))
-      .min(1, t("dashboard.opportunityProfile.contactDetails.validation.waysToContactRequired")),
   });
 };
 

@@ -23,6 +23,7 @@ export const createAgentContactDetailsSchema = (t: (key: string) => string) => {
       .regex(PHONE_NUMBER_REGEX, t("dashboard.agentProfile.contactDetails.validation.landlineInvalid"))
       .optional()
       .or(z.literal("")),
+    address: z.string().optional().or(z.literal("")),
   });
 };
 

@@ -71,6 +71,8 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
       {
         person: {
           ...volunteer.person,
+          phone: values.phone,
+          email: values.email,
           address: {
             id: volunteer.person.address?.id,
             street: addressData.street,

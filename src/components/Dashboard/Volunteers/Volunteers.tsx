@@ -21,6 +21,7 @@ import {
   serializeFilters,
 } from "./helpers";
 import { VolunteerListController } from "./VolunteerListController";
+import { ViewMode } from "../common/types";
 
 export function Volunteers() {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export function Volunteers() {
   const pathname = usePathname();
   const router = useRouter();
   const tabs = [t("dashboard.volunteers.tabs.tab1"), t("dashboard.volunteers.tabs.tab2")];
-
+  const viewMode = Object.values(ViewMode)[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
 
@@ -42,8 +43,8 @@ export function Volunteers() {
     handleFilterUpdate((prev) => ({ ...prev, [QueryParamsKeys.SEARCH]: searchInput }));
   };
 
-  const handleSortChange = (sortOrder: SortOrder) => {
-    setSortOrder(sortOrder);
+  const handleSortChange = (sortOrder: string) => {
+    setSortOrder(sortOrder as SortOrder);
   };
 
   const handleFilterUpdate = (newFilter: CardsFilter | ((prev: CardsFilter) => CardsFilter)) => {
@@ -110,6 +111,7 @@ export function Volunteers() {
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             opportunityId={opportunityId}
+            viewMode={viewMode}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}

@@ -80,7 +80,7 @@ export function Header({
       )}
 
       {user && (
-        <Link href={`/${i18n.language}/dashboard/home`} style={{ textDecoration: "none" }}>
+        <Link href={`/${i18n.language}/dashboard`} style={{ textDecoration: "none" }}>
           <MenuItem text={t("dashboard.header.button.dashboard")} color={menuItemColor} />
         </Link>
       )}

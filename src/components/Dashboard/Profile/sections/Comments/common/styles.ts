@@ -63,6 +63,7 @@ export const CommentText = styled.div`
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-midnight);
   align-self: stretch;
+  white-space: pre-wrap;
 `;
 
 export const MenuAction = styled.button`

@@ -19,13 +19,20 @@ export function NewestOpportunities() {
     },
     staleTime: cacheTTL,
   });
-  const activitiesList = apiFilterOptions?.activity;
+  const activitiesList = apiFilterOptions?.activity ?? undefined;
+  const districtsList = apiFilterOptions?.district ?? undefined;
 
   if (isLoading) {
     return <Heading4>{t("dashboard.home.content.loading")}</Heading4>;
   }
 
   return opportunities?.map((opp) => (
-    <OpportunityCard key={opp.id} opportunity={opp} volunteerId={undefined} activitiesList={activitiesList} />
+    <OpportunityCard
+      key={opp.id}
+      opportunity={opp}
+      volunteerId={undefined}
+      activitiesList={activitiesList}
+      districtsList={districtsList}
+    />
   ));
 }

@@ -35,6 +35,8 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   const initialFormValues = {
     ...details,
+    website: details?.website || "",
+    operator: details?.operator || agent.operator || "",
     clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
   };
 

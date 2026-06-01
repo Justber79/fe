@@ -146,17 +146,28 @@ export default function AddOpportunity() {
             name="email"
             FieldTag={formOpportunity.Field}
             label={t("form.addOpportunity.fields.contactGroup.email.label")}
-            onChangeValidator={({ value }) => {
-              if (!value) {
-                return t("form.error.required");
-              }
-              if (!validateEmail(value as string)) {
-                return t("form.error.email");
-              }
-              return undefined;
-            }}
-            onChangeAsyncValidator={({ value }) => {
-              return validateRACEmail(value as string, t("form.error.badEmail"));
+            validators={{
+              onChange: ({ value }) => {
+                if (!value) {
+                  return t("form.error.required");
+                }
+                if (!validateEmail(value as string)) {
+                  return t("form.error.email");
+                }
+                return undefined;
+              },
+              onChangeAsync: ({ value }) => {
+                return validateRACEmail(value as string, t("form.error.badEmail"));
+              },
+              onSubmit: ({ value }) => {
+                if (!value) {
+                  return t("form.error.required");
+                }
+                if (!validateEmail(value as string)) {
+                  return t("form.error.email");
+                }
+                return undefined;
+              },
             }}
           />
           <SimpleInputField<OpportunityData>
@@ -396,6 +407,36 @@ export default function AddOpportunity() {
                       return undefined;
                     }}
                   />
+                  <formOpportunity.Field
+                    name="locations"
+                    validators={{
+                      onBlur: ({ value }) => isSelected(value, t("form.error.location")),
+                    }}
+                  >
+                    {(field) => {
+                      return (
+                        <fieldset>
+                          <HeaderWithHelp
+                            className={style["form-chiplist-header-within-group"]}
+                            classNamePopup={style["form-help"]}
+                          >
+                            {t("form.addOpportunity.fields.aaGroup.locations.header")}
+                          </HeaderWithHelp>
+                          <WithParentRef
+                            className={`${style["form-chip-list"]} ${style["form-pick"]}`}
+                            onFocus={() => setTimeout(field.handleBlur, 0)}
+                          >
+                            <MultipleCheckBoxInputsWithMore<OpportunityData, "locations">
+                              FieldTag={formOpportunity.Field}
+                              field={field}
+                              isOneOption
+                            />
+                            <FieldInfo field={field} />
+                          </WithParentRef>
+                        </fieldset>
+                      );
+                    }}
+                  </formOpportunity.Field>
                   <SimpleInputField<OpportunityData>
                     name="aaInformation"
                     FieldTag={formOpportunity.Field}
@@ -435,6 +476,7 @@ export default function AddOpportunity() {
                             <MultipleCheckBoxInputsWithMore<OpportunityData, "locations">
                               FieldTag={formOpportunity.Field}
                               field={field}
+                              isOneOption
                             />
                             <FieldInfo field={field} />
                           </WithParentRef>

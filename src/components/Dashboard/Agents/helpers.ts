@@ -28,10 +28,10 @@ export function getNormalizedAgent(agent: AgentListItem): Omit<
   return {
     ...agent,
     type: agent.type,
-    district: agent.district,
+    district: agent.district ?? undefined,
     volunteerSearch: agent.volunteerSearch ?? AgentVolunteerSearchType.NOT_NEEDED,
     trustLevel: agent.trustLevel ? agent.trustLevel : AgentTrustType.UNKNOWN,
-    serviceType: agent.serviceType,
+    serviceType: agent.serviceType ?? undefined,
   };
 }
 
@@ -47,6 +47,7 @@ export function serializeAgentFilters(
   options?: SerializeFiltersOptions,
 ) {
   const params = new URLSearchParams(searchParams);
+  params.delete("page");
 
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);

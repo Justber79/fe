@@ -1,0 +1,101 @@
+"use client";
+
+import type {
+  createEngagementStatusLabelMap,
+  createMatchStatusLabelMap,
+  createStatusLabelMap,
+} from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
+import { TableCell, TableRow } from "@/components/core/common/Table";
+import { CirclePic } from "@/components/styled/img";
+import { defaultAvatarURL } from "@/config/constants";
+import { getImageUrl } from "@/utils";
+import { ApiVolunteerGetList } from "need4deed-sdk";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
+
+interface TableRowProps {
+  volunteer: ApiVolunteerGetList;
+  isLast: boolean;
+  engagementLabels: ReturnType<typeof createEngagementStatusLabelMap>;
+  typeLabels: ReturnType<typeof createStatusLabelMap>;
+  matchLabels: ReturnType<typeof createMatchStatusLabelMap>;
+  opportunityId?: string;
+}
+
+export function VolunteerTableRow({
+  volunteer,
+  isLast,
+  engagementLabels,
+  typeLabels,
+  matchLabels,
+  opportunityId,
+}: TableRowProps) {
+  const { i18n } = useTranslation();
+  const router = useRouter();
+
+  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
+  // Cast until SDK PR #99 adds statusMatch to ApiVolunteerGetList
+  const { statusMatch, email } = volunteer as ApiVolunteerGetList;
+
+  const languageText =
+    languages
+      .map((language) => language.title)
+      .filter(Boolean)
+      .join(", ") || "—";
+  const districtText =
+    locations
+      .map((location) => (typeof location === "string" ? location : location?.title))
+      .filter(Boolean)
+      .join(", ") || "—";
+
+  const handleGoToProfile = () => {
+    if (!id) return;
+    const params = opportunityId ? `?opportunity=${opportunityId}` : "";
+    router.push(`/${i18n.language}/dashboard/volunteers/${id}${params}`);
+  };
+
+  return (
+    <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
+      <NameCell data-testid={`volunteer-name-${id}`}>
+        <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
+        <NameText>{name}</NameText>
+      </NameCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} data-testid={`volunteer-type-${id}`}>
+        {statusType ? typeLabels[statusType] : "—"}
+      </TableCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} data-testid={`volunteer-engagement-${id}`}>
+        {statusEngagement ? engagementLabels[statusEngagement] : "—"}
+      </TableCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} data-testid={`volunteer-match-${id}`}>
+        {statusMatch ? matchLabels[statusMatch] : "—"}
+      </TableCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.language} data-testid={`volunteer-language-${id}`}>
+        {languageText}
+      </TableCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.district} data-testid={`volunteer-district-${id}`}>
+        {districtText}
+      </TableCell>
+      <TableCell data-testid={`volunteer-email-${id}`}>{email || "—"}</TableCell>
+    </ClickableRow>
+  );
+}
+
+const ClickableRow = styled(TableRow)`
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-pink-50);
+  }
+`;
+
+const NameCell = styled(TableCell)`
+  overflow: hidden;
+`;
+
+const NameText = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

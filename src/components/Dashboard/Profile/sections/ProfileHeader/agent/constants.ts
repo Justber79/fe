@@ -1,5 +1,7 @@
+import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { TFunction } from "i18next";
-import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch } from "../../../types/agent";
+import { Lang } from "need4deed-sdk";
+import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch, ApiAgentProfileGet } from "../../../types/agent";
 
 export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> => ({
   [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
@@ -37,3 +39,8 @@ export const createTrustLevelLabelMap = (t: TFunction): Record<AgentTrustLevel, 
   [AgentTrustLevel.LOW]: t("dashboard.agentProfile.status.trustLevel.low"),
   [AgentTrustLevel.HIGH]: t("dashboard.agentProfile.status.trustLevel.high"),
 });
+
+export const getDistrictLabel = (district: ApiAgentProfileGet["district"], language: string): string => {
+  const { title } = district || {};
+  return title?.[language as Lang] ?? title?.en ?? EMPTY_PLACEHOLDER_VALUE;
+};

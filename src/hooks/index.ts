@@ -1,4 +1,5 @@
 export * from "./useClickOutside";
+export * from "./usePageParam";
 export * from "./useGetOpportunity";
 export * from "./useGetVolunteer";
 export * from "./useGetQuery";

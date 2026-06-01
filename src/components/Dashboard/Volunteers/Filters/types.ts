@@ -10,6 +10,7 @@ export interface CardsFilter {
   [QueryParamsKeys.AVAILABILITY]: Availability;
   [QueryParamsKeys.DISTRICT]: SelectionMap;
   [QueryParamsKeys.LANGUAGE]: SelectionMap;
+  type: SelectionMap;
 }
 
 export type CardFilterKeys = keyof CardsFilter;

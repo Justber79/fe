@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { apiPathVolunteer, cacheTTL } from "@/config/constants";
-import { useGetQuery } from "@/hooks";
+import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
+import { apiPathVolunteer, cacheTTL, TABLE_LIMIT } from "@/config/constants";
+import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder } from "need4deed-sdk";
 import { CardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
-import { VolunteerCardList } from "./VolunteerCardList"; // We will modify this component
+import { VolunteerCardList } from "./VolunteerCardList";
+import { VolunteerTableList } from "./VolunteerTableList";
+import { ViewMode } from "../common/types";
 
-const columns = 3;
-const rows = 3;
-const limit = columns * rows;
+const CARD_COLUMNS = 3;
+const CARD_ROWS = 3;
+const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -18,6 +21,7 @@ interface VolunteerListControllerProps {
   filter: CardsFilter;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
+  viewMode: ViewMode;
 }
 
 export function VolunteerListController({
@@ -27,8 +31,11 @@ export function VolunteerListController({
   filter,
   apiFilterOptions,
   opportunityId,
+  viewMode,
 }: VolunteerListControllerProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const isListView = viewMode === ViewMode.LIST;
+  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
+  const { currentPage, setCurrentPage } = usePageParam();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
@@ -38,12 +45,12 @@ export function VolunteerListController({
     serializedFilter.set("opportunity", opportunityId);
   }
   const params = {
-    limit: limit,
+    limit,
     page: currentPage,
     sortOrder,
     filter: serializedFilter,
   };
-  const { data, count } = useGetQuery<ApiVolunteerGetList[]>({
+  const { data, count, isLoading } = useGetQuery<ApiVolunteerGetList[]>({
     queryKey: ["volunteers"],
     apiPath: apiPathVolunteer,
     params,
@@ -55,12 +62,27 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols]);
 
+  if (isLoading) return <DashboardListLoading />;
+
+  if (isListView) {
+    return (
+      <VolunteerTableList
+        volunteers={volunteers}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        opportunityId={opportunityId}
+      />
+    );
+  }
+
   return (
     <VolunteerCardList
       volunteers={volunteers}
       count={count}
-      columns={columns - (isFiltersOpen ? 1 : 0)}
-      rows={rows + (isFiltersOpen ? 1 : 0)}
+      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
+      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       opportunityId={opportunityId}
