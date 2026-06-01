@@ -4,12 +4,14 @@ import { AgentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { AGENT_TYPE_LABELS } from "../helpers";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect, StyledTextarea } from "../styled";
-import { AgentRegistrationData } from "../types";
+import { AgentRegistrationData, ProfileCompletionData } from "../types";
+
+type OrgData = Pick<AgentRegistrationData | ProfileCompletionData, "organizationName" | "organizationType" | "about" | "website">;
 
 type Props = {
-  data: AgentRegistrationData;
-  onChange: (fields: Partial<AgentRegistrationData>) => void;
-  errors: Partial<Record<keyof AgentRegistrationData, string>>;
+  data: OrgData;
+  onChange: (fields: Partial<OrgData>) => void;
+  errors: Partial<Record<string, string>>;
 };
 
 export function OrgInfoStep({ data, onChange, errors }: Props) {
