@@ -28,6 +28,7 @@ export function EntityTableList<T extends { id: string | number }>({
             {columns.map((col) => (
               <TableHeaderCell key={col.key} $width={col.width}>
                 {col.label}
+                {col.headerAction}
               </TableHeaderCell>
             ))}
           </TableHeader>

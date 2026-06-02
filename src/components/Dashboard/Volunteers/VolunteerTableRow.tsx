@@ -35,9 +35,7 @@ export function VolunteerTableRow({
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
-  // Cast until SDK PR #99 adds statusMatch to ApiVolunteerGetList
-  const { statusMatch, email } = volunteer as ApiVolunteerGetList;
+  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations, statusMatch, email } = volunteer;
 
   const languageText =
     languages
@@ -58,7 +56,7 @@ export function VolunteerTableRow({
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
-      <NameCell data-testid={`volunteer-name-${id}`}>
+      <NameCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
         <NameText>{name}</NameText>
       </NameCell>

@@ -11,6 +11,8 @@ import {
 import { createVolunteerTableColumns } from "./volunteerTableColumns";
 import { VolunteerTableRow } from "./VolunteerTableRow";
 import { EntityTableList } from "../common/EntityTableList";
+import { CopyButton } from "../common/CopyButton";
+import { copyEmails } from "../common/copyEmails";
 
 interface TableListProps {
   volunteers: ApiVolunteerGetList[];
@@ -32,7 +34,12 @@ export function VolunteerTableList({
   const { t } = useTranslation();
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
   const typeLabels = useMemo(() => createStatusLabelMap(t), [t]);
-  const columns = useMemo(() => createVolunteerTableColumns(t), [t]);
+  const columns = useMemo(() => {
+    const copyButton = (
+      <CopyButton onClick={() => copyEmails(volunteers.map((volunteer) => volunteer.email).filter(Boolean))} />
+    );
+    return createVolunteerTableColumns(t, copyButton);
+  }, [t, volunteers]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
   return (
