@@ -3,19 +3,22 @@ import { useCreateComment } from "@/hooks/useCreateComment";
 import { useUpdateComment } from "@/hooks/useUpdateComment";
 import { useUpdateOpportunityContact } from "@/hooks/useUpdateOpportunityContact";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApiOpportunityGet } from "need4deed-sdk";
+import { ApiOpportunityGet, PreferredCommunicationType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormContainer } from "../../shared/styles";
 import { EditableSectionProps, EditableSectionRef } from "../../shared/types";
 import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
+import { useEnumTranslation } from "../shared";
 import { OpportunityContactDetailsDisplay } from "./OpportunityContactDetailsDisplay";
 import { OpportunityContactDetailsEdit } from "./OpportunityContactDetailsEdit";
 import {
   createOpportunityContactDetailsSchema,
   OpportunityContactDetailsFormData,
 } from "./opportunityContactDetailsSchema";
+
+const WAYS_TO_CONTACT_TYPES = Object.values(PreferredCommunicationType);
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -31,6 +34,11 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
   useEditingChangeNotifier(isEditing, onEditingChange);
 
   const schema = createOpportunityContactDetailsSchema(t);
+
+  const { options, keysToLabels, labelsToKeys } = useEnumTranslation(
+    WAYS_TO_CONTACT_TYPES,
+    "dashboard.opportunityProfile.contactDetails.waysToContact",
+  );
 
   // Piped comments (<|> delimiter) are used as fallback for opportunities
   // that predate the contact API (opportunity.contact).
@@ -60,13 +68,14 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
         name: contactFromApi?.name ?? "",
         phone: contactFromApi?.phone ?? "",
         email: contactFromApi?.email ?? "",
+        waysToContact: contactFromApi?.waysToContact ?? [],
       };
     }
     if (latestPipedComment) {
       const parts = latestPipedComment.content.split("<|>");
-      return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "" };
+      return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
     }
-    return { name: "", phone: "", email: "" };
+    return { name: "", phone: "", email: "", waysToContact: [] };
   }, [contactFromApi, latestPipedComment]);
 
   const { mutate: updateContact, isPending: isUpdating } = useUpdateOpportunityContact(opportunity.id);
@@ -101,7 +110,15 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
     // Fall back to piped comment for legacy opportunities without a linked Person.
     if (contactFromApi?.id) {
       updateContact(
-        { contact: { id: contactFromApi.id, name: values.name, phone: values.phone, email: values.email } },
+        {
+          contact: {
+            id: contactFromApi.id,
+            name: values.name,
+            phone: values.phone,
+            email: values.email,
+            waysToContact: values.waysToContact ?? [],
+          },
+        },
         { onSuccess },
       );
       return;
@@ -126,12 +143,15 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       <FormContainer data-testid="opportunity-contact-details-container" $isEditing={isEditing}>
         {isEditing ? (
           <OpportunityContactDetailsEdit
+            options={options}
+            keysToLabels={keysToLabels}
+            labelsToKeys={labelsToKeys}
             onCancel={handleCancel}
             onSubmit={handleSubmit(onSubmit)}
             isPending={isUpdating || isCreating || isUpdatingComment}
           />
         ) : (
-          <OpportunityContactDetailsDisplay />
+          <OpportunityContactDetailsDisplay keysToLabels={keysToLabels} />
         )}
       </FormContainer>
     </FormProvider>
