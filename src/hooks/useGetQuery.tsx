@@ -6,12 +6,12 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
-const fetchData = async <T,>(apiPath: string, params: Params) => {
+export const fetchData = async <T,>(apiPath: string, params: Params) => {
   const response: AxiosResponse<ApiResponse<T>> = await axios.get(apiPath, { params });
   return response.data;
 };
 
-const getReducedFilter = (filter?: FilterParam) => {
+export const getReducedFilter = (filter?: FilterParam) => {
   if (!filter) return;
 
   let reducedFilter: Record<string, unknown> = {};
