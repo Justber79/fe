@@ -14,7 +14,7 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
-import { apiPathPerson, apiPathUser } from "@/config/constants";
+import { apiPathUser } from "@/config/constants";
 
 type Props = {
   entityId: Id;
