@@ -63,6 +63,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     let formattedText = newCommentText;
     const taggedUserIds: number[] = [];
+    let taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
