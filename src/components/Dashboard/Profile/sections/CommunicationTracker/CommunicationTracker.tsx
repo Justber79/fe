@@ -19,7 +19,7 @@ import {
   ActionButton,
 } from "@/components/core/common/Table";
 import { CommunicationTableContainer } from "./styles";
-import { formatDate, getDisplayLabel, getContactMethodLabel } from "./utils/translations";
+import { formatDate, getDisplayLabel, getContactMethodLabel, getLoggedByLabel } from "./utils/translations";
 
 type Props = {
   entityId: number;
@@ -35,6 +35,7 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
   ref,
 ) {
   const { t } = useTranslation();
+  // true = only fetch when the user is logged in (has auth cookie)
   const currentUser = useCurrentUser(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiCommunicationGet | undefined>(undefined);
@@ -75,11 +76,6 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
 
   const cancelDelete = () => {
     setDeleteConfirmEntry(null);
-  };
-
-  const getLoggedByLabel = (userId: number): string => {
-    if (currentUser && userId === currentUser.id) return currentUser.fullName;
-    return `#${userId}`;
   };
 
   const handleSave = (data: Partial<ApiCommunicationGet>) => {
@@ -145,7 +141,7 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
                     {formatDate(entry.date)}
                   </TableCell>
                   <TableCell $width="140px" $noWrap>
-                    {getLoggedByLabel(entry.userId)}
+                    {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
                   </TableCell>
                   <ActionCell>
                     <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
