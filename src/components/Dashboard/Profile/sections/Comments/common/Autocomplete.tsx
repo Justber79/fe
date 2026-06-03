@@ -14,6 +14,7 @@ type Props = {
   activeRowIndex: number;
   setFilteredListLength: (length: number) => void;
   setOnSelectTrigger: (callback: (() => void) | null) => void;
+  users: ApiUserGet[] | undefined;
 };
 
 export default function Autocomplete({
@@ -23,6 +24,7 @@ export default function Autocomplete({
   activeRowIndex,
   setFilteredListLength,
   setOnSelectTrigger,
+  users,
 }: Props) {
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,17 +40,6 @@ export default function Autocomplete({
     if (textAfterAt.includes(" ")) return null;
     return textAfterAt.toLowerCase();
   }, [newCommentText, textAreaRef]);
-
-  const { data: users } = useGetQuery<ApiUserGet[]>({
-    queryKey: ["users", "coordinators"],
-    apiPath: apiPathUser,
-    params: {
-      sortOrder: SortOrder.NewToOld,
-      filter: { role: UserRole.COORDINATOR },
-    },
-    enabled: userFilter !== null,
-    staleTime: cacheTTL,
-  });
 
   const filteredUsers = useMemo(() => {
     if (userFilter === null) return;

@@ -186,5 +186,6 @@ export function useCommentTag(
     handleKeyDown,
     convertDbTextToEditable,
     initTags,
+    users,
   };
 }

@@ -43,6 +43,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     setOnSelectTrigger,
     handleKeyDown,
     initTags,
+    users,
   } = useCommentTag(newCommentText, setNewCommentText, textAreaRef);
 
   const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
@@ -157,6 +158,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
             activeRowIndex={activeRowIndex}
             setFilteredListLength={setFilteredListLength}
             setOnSelectTrigger={setOnSelectTrigger}
+            users={users}
           />
         )}
         <TagOverlay ref={overlayRef}>{renderHighlightedText()}</TagOverlay>
