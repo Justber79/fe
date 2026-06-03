@@ -14,6 +14,7 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
+import { apiPathPerson, apiPathUser } from "@/config/constants";
 
 type Props = {
   entityId: Id;
@@ -56,11 +57,12 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
   const sortedComments = comments.slice().reverse();
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (!newCommentText.trim()) return;
 
     let formattedText = newCommentText;
     const taggedUserIds: number[] = [];
+    let taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
@@ -68,12 +70,27 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
         taggedUserIds.push(tag.id);
       }
     });
+
+    if (taggedUserIds.length) {
+      const promiseArray = taggedUserIds.map(async (id) => {
+        try {
+          const response = await fetch(`${apiPathUser}/${id}`);
+          const data = await response.json();
+          return data.data.personId;
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
+      });
+      const resolvedPersonIds = await Promise.all(promiseArray);
+      taggedPersonIds = resolvedPersonIds?.filter((id) => id !== null);
+    }
     createComment(
       {
         text: formattedText.trim(),
         entityType,
         entityId,
-        taggedUserIds,
+        taggedPersonIds,
       },
       {
         onSuccess: () => {
@@ -96,13 +113,38 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     overlayRef.current.style.transform = `translateY(-${textAreaRef.current.scrollTop}px)`;
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!edit.editText.trim() || !edit.editingCommentId) return;
+
     const currentTags = initTags(edit.editText);
+    const taggedUserIds: number[] = [];
+    let taggedPersonIds: number[] = [];
+
     let formattedText = edit.editText;
-    currentTags?.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+    currentTags?.forEach((tag) => {
+      formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
+        taggedUserIds.push(tag.id);
+      }
+    });
+
+    if (taggedUserIds.length) {
+      const promiseArray = taggedUserIds.map(async (id) => {
+        try {
+          const response = await fetch(`${apiPathUser}/${id}`);
+          const data = await response.json();
+          return data.data.personId;
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
+      });
+      const resolvedPersonIds = await Promise.all(promiseArray);
+      taggedPersonIds = resolvedPersonIds?.filter((id) => id !== null);
+    }
     updateComment(
-      { text: formattedText.trim() },
+      { text: formattedText.trim(), taggedPersonIds },
+
       {
         onSuccess: () => {
           edit.cancelEdit();

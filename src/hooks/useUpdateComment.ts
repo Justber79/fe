@@ -5,6 +5,7 @@ import { Id } from "need4deed-sdk";
 
 type UpdateCommentData = {
   text: string;
+  taggedPersonIds: number[];
 };
 
 export const useUpdateComment = (entityId: Id, commentId: number, entityType: EntityType = "volunteer") => {
