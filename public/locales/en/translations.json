@@ -823,6 +823,18 @@
         "events": "Events",
         "regular-accompanying": "Regular + Accompanying"
       },
+      "table": {
+        "title": "Title",
+        "type": "Type",
+        "currentStatus": "Current Status",
+        "matchingStatus": "Matching Status",
+        "languages": "Languages",
+        "activities": "Activities",
+        "district": "District",
+        "schedule": "Schedule",
+        "volunteersNeeded": "Volunteers Needed",
+        "agentName": "Agent"
+      },
       "card": {
         "mainCommunication": "Main communication",
         "residentsSpeak": "Residents speak",

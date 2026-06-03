@@ -27,8 +27,8 @@ export function formatAvailability(availability: ApiVolunteerOpportunityGetList[
 }
 
 export function formatAccompanyingDate(details?: {
-  appointmentDate?: string;
-  appointmentTime?: string;
+  appointmentDate?: string | null;
+  appointmentTime?: string | null;
 }): string | null {
   if (!details?.appointmentDate) return null;
 
