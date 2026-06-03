@@ -80,3 +80,5 @@ export const TABLE_LIMIT = 20;
 export const CARD_COLUMNS = 3;
 export const CARD_ROWS = 3;
 export const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
+
+export const MAX_PAGE_LIMIT = 120;

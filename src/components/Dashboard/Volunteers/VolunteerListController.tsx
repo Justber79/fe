@@ -9,7 +9,7 @@ import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
-import useCopyVolunteerEmails from "@/hooks/useCopyVolunteerEmails";
+import { useCopyVolunteerEmails } from "@/hooks/useCopyVolunteerEmails";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;

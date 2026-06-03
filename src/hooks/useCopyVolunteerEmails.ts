@@ -1,4 +1,4 @@
-import { apiPathVolunteer } from "@/config/constants";
+import { apiPathVolunteer, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiVolunteerGetList, Lang } from "need4deed-sdk";
 import { fetchData, getReducedFilter } from "./useGetQuery";
@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams) {
+export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { lang } = useParams<{ lang: Lang }>();
@@ -19,7 +19,7 @@ export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams
       queryKey: ["volunteer-emails", serializedFilter.toString(), page],
       queryFn: () =>
         fetchData<ApiVolunteerGetList[]>(`${apiPathVolunteer}/`, {
-          limit: 120,
+          limit: MAX_PAGE_LIMIT,
           page,
           filter: getReducedFilter(serializedFilter),
           language: lang,
@@ -46,7 +46,7 @@ export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams
 
   async function fetchAllFilteredEmails(): Promise<string[]> {
     const first = await fetchEmailPage(1);
-    const totalPages = Math.ceil(first.count / 120);
+    const totalPages = Math.ceil(first.count / MAX_PAGE_LIMIT);
     if (totalPages <= 1) return first.emails;
 
     const restPages = await Promise.all(Array.from({ length: totalPages - 1 }, (_, i) => fetchEmailPage(i + 2)));
@@ -54,4 +54,4 @@ export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams
   }
 
   return { handleCopyEmails, isCopying };
-}
+};
