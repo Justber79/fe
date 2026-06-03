@@ -17,6 +17,7 @@ import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
 import { deserializeOpportunityFilters, serializeOpportunityFilters } from "./helpers";
 import { OpportunityListController } from "./OpportunityListController";
 import { ContentRow, OpportunitiesContainer } from "./styles";
+import { ViewMode } from "../common/types";
 
 export function Opportunities() {
   const { t } = useTranslation();
@@ -34,6 +35,8 @@ export function Opportunities() {
     t("dashboard.opportunities.tabs.tab2"),
     t("dashboard.opportunities.tabs.tab3"),
   ];
+  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.LIST;
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
@@ -117,6 +120,7 @@ export function Opportunities() {
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             volunteerId={volunteerId}
+            viewMode={viewMode}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}
