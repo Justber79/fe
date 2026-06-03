@@ -17,7 +17,6 @@ export function useCommentEdit(): UseCommentEditReturn {
   const [originalEditText, setOriginalEditText] = useState("");
 
   const startEdit = (commentId: number, currentText: string) => {
-    console.log("startEdit", currentText);
     setEditingCommentId(commentId);
     setEditText(currentText);
     setOriginalEditText(currentText);
