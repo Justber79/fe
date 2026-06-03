@@ -22,7 +22,7 @@ export function useCommentTag(
       filter: { role: UserRole.COORDINATOR },
     },
     staleTime: cacheTTL,
-    enabled: !!setNewCommentText && showAutocomplete,
+    enabled: !!setNewCommentText,
   });
 
   useEffect(() => {
