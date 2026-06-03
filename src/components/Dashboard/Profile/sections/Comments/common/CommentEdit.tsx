@@ -40,6 +40,7 @@ export function CommentEdit({ commentId, edit }: Props) {
     setShowAutocomplete,
     convertDbTextToEditable,
     handleKeyDown,
+    users,
   } = useCommentTag(edit.text, edit.onTextChange, editTextAreaRef);
 
   const handleScroll = () => {
@@ -63,6 +64,7 @@ export function CommentEdit({ commentId, edit }: Props) {
             activeRowIndex={activeRowIndex}
             setFilteredListLength={setFilteredListLength}
             setOnSelectTrigger={setOnSelectTrigger}
+            users={users}
           />
         )}
         <TagOverlay ref={editOverlayRef}>{renderHighlightedText()}</TagOverlay>

@@ -1,8 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AutocompleteContainer, AutocompleteRow } from "./styles";
-import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
-import { useGetQuery } from "@/hooks";
-import { apiPathUser, cacheTTL, defaultAvatarVolunteerProfile } from "@/config/constants";
+import { ApiUserGet } from "need4deed-sdk";
+import { defaultAvatarVolunteerProfile } from "@/config/constants";
 import { AvatarImg } from "../../OpportunityVolunteers/styles";
 import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
