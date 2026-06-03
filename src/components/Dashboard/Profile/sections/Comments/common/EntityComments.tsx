@@ -15,10 +15,14 @@ import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } 
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { apiPathUser } from "@/config/constants";
 =======
 import { apiPathPerson, apiPathUser } from "@/config/constants";
 >>>>>>> 9bd2fe0 (gets personId and adds them to comment POST & PATCH)
+=======
+import { apiPathUser } from "@/config/constants";
+>>>>>>> d31340a (removes console log)
 
 type Props = {
   entityId: Id;
