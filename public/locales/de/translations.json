@@ -351,6 +351,11 @@
         "district": "Bezirk",
         "email": "E-Mail"
       },
+      "copyEmails": {
+        "tooltip": "Alle E-Mails kopieren",
+        "success": "{{count}} E-Mails kopiert",
+        "error": "E-Mails konnten nicht kopiert werden, bitte Filter eingrenzen"
+      },
       "tabs": {
         "tab1": "Liste",
         "tab2": "Karten"

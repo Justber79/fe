@@ -6,8 +6,10 @@ import { useParams } from "next/navigation";
 import { copyEmails } from "@/components/Dashboard/common/copyEmails";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { lang } = useParams<{ lang: Lang }>();
   const [isCopying, setIsCopying] = useState(false);
@@ -34,8 +36,9 @@ export default function useCopyVolunteerEmails(serializedFilter: URLSearchParams
     try {
       const emails = await fetchAllFilteredEmails();
       await copyEmails(emails);
+      toast.success(t("dashboard.volunteers.copyEmails.success", { count: emails.length }));
     } catch {
-      toast.error("Couldn't copy emails, try narrowing the filter");
+      toast.error(t("dashboard.volunteers.copyEmails.error"));
     } finally {
       setIsCopying(false);
     }

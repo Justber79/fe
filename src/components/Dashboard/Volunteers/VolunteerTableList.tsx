@@ -38,7 +38,14 @@ export function VolunteerTableList({
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
   const typeLabels = useMemo(() => createStatusLabelMap(t), [t]);
   const columns = useMemo(() => {
-    const copyButton = <CopyButton onClick={() => onCopyEmails()} disabled={isCopying} />;
+    const copyButton = (
+      <CopyButton
+        onClick={() => onCopyEmails()}
+        disabled={isCopying}
+        tooltipText={t("dashboard.volunteers.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.volunteers.copyEmails.tooltip")}
+      />
+    );
     return createVolunteerTableColumns(t, copyButton);
   }, [t, onCopyEmails, isCopying]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);

@@ -351,6 +351,11 @@
         "district": "District",
         "email": "Email"
       },
+      "copyEmails": {
+        "tooltip": "Copy all emails",
+        "success": "Copied {{count}} emails",
+        "error": "Couldn't copy emails, try narrowing the filter"
+      },
       "tabs": {
         "tab1": "List",
         "tab2": "Cards"
