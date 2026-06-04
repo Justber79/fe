@@ -105,6 +105,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     const currentTags = initTags(edit.editText);
     const taggedUserIds: number[] = [];
+
     let formattedText = edit.editText;
     currentTags?.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
