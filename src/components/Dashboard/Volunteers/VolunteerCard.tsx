@@ -20,7 +20,7 @@ import { getImageUrl } from "@/utils";
 import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
 import { formatAvailabilityItem } from "../Profile/sections/VolunteerProfile/formatters";
 import CardDetail from "./CardDetail";
-import { getNormalizedVolunteer, groupLanguagesByProficiency } from "./helpers";
+import { getFirstName, getNormalizedVolunteer, groupLanguagesByProficiency, truncateList } from "./helpers";
 import { IconName } from "./icon";
 
 interface Props {
@@ -43,7 +43,7 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
 
   const showBriefedCheck = isBriefedAccompanying(statusType as VolunteerStateTypeType, statusCommunication);
 
-  const groupedLanguages = groupLanguagesByProficiency(languages);
+  const groupedLanguages = groupLanguagesByProficiency(languages).slice(0, 2);
 
   const availabilities = availability
     .filter((a): a is typeof a & { day: string; daytime: string } => Boolean(a.day && a.daytime))
@@ -113,7 +113,7 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
           fontSize="var(--dashboard-volunteers-card-profile-fontSize)"
           lineheight="var(--dashboard-volunteers-card-profile-lineHeight)"
         >
-          {name}
+          {getFirstName(name)}
         </Paragraph>
       </ProfileDiv>
 
@@ -147,7 +147,7 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.preferredDistricts")} iconName={IconName.MapPin}>
-        <CardParagraph text={locations.join(", ")} />
+        <CardParagraph text={truncateList(locations, 2)} />
       </CardDetail>
     </Card>
   );
