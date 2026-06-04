@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
+import { getFirstName, getTopLanguages, truncateList } from "./helpers";
 
 interface TableRowProps {
   volunteer: ApiVolunteerGetList;
@@ -37,16 +38,14 @@ export function VolunteerTableRow({
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations, statusMatch, email } = volunteer;
 
+  const topLangs = getTopLanguages(languages, 2);
   const languageText =
-    languages
-      .map((language) => language.title)
-      .filter(Boolean)
-      .join(", ") || "—";
-  const districtText =
-    locations
-      .map((location) => (typeof location === "string" ? location : location?.title))
-      .filter(Boolean)
-      .join(", ") || "—";
+    truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
+
+  const districtTitles = locations
+    .map((loc) => (typeof loc === "string" ? loc : loc?.title))
+    .filter(Boolean) as string[];
+  const districtText = truncateList(districtTitles, 2) || "—";
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -58,24 +57,26 @@ export function VolunteerTableRow({
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
       <NameCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
-        <NameText>{name}</NameText>
+        <NameText>{getFirstName(name)}</NameText>
       </NameCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} data-testid={`volunteer-type-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap data-testid={`volunteer-type-${id}`}>
         {statusType ? typeLabels[statusType] : "—"}
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} data-testid={`volunteer-engagement-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} $noWrap data-testid={`volunteer-engagement-${id}`}>
         {statusEngagement ? engagementLabels[statusEngagement] : "—"}
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} data-testid={`volunteer-match-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} $noWrap data-testid={`volunteer-match-${id}`}>
         {statusMatch ? matchLabels[statusMatch] : "—"}
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.language} data-testid={`volunteer-language-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.language} $noWrap data-testid={`volunteer-language-${id}`}>
         {languageText}
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.district} data-testid={`volunteer-district-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
         {districtText}
       </TableCell>
-      <TableCell data-testid={`volunteer-email-${id}`}>{email || "—"}</TableCell>
+      <TableCell $noWrap data-testid={`volunteer-email-${id}`}>
+        {email || "—"}
+      </TableCell>
     </ClickableRow>
   );
 }

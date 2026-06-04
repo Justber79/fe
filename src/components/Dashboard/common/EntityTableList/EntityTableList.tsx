@@ -1,7 +1,7 @@
 "use client";
 
-import { Table, TableBody, TableContainer, TableHeader, TableHeaderCell } from "@/components/core/common/Table";
-import { Wrapper } from "./styles";
+import { TableBody, TableHeader, TableHeaderCell } from "@/components/core/common/Table";
+import { ScrollableTable, ScrollableTableContainer, Wrapper } from "./styles";
 import { EntityTableListProps } from "./types";
 import PaginationNumbers from "@/components/core/paginatedGrid/PaginationNumbers";
 
@@ -22,8 +22,8 @@ export function EntityTableList<T extends { id: string | number }>({
 
   return (
     <Wrapper data-testid={`${testIdPrefix}-table`}>
-      <TableContainer>
-        <Table>
+      <ScrollableTableContainer>
+        <ScrollableTable>
           <TableHeader>
             {columns.map((col) => (
               <TableHeaderCell key={col.key} $width={col.width}>
@@ -33,8 +33,8 @@ export function EntityTableList<T extends { id: string | number }>({
             ))}
           </TableHeader>
           <TableBody>{data.map((item, index) => renderRow(item, index === data.length - 1))}</TableBody>
-        </Table>
-      </TableContainer>
+        </ScrollableTable>
+      </ScrollableTableContainer>
       <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />
     </Wrapper>
   );

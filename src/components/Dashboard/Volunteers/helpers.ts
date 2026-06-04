@@ -191,6 +191,31 @@ function getTitleFromOptionItem(optionItem: OptionItem): string {
   return optionItem.title;
 }
 
+export function getFirstName(fullName: string): string {
+  return fullName.split(" ")[0];
+}
+
+export function truncateList(items: string[], max: number): string {
+  if (items.length <= max) return items.join(", ");
+  return `${items.slice(0, max).join(", ")} +${items.length - max}`;
+}
+
+export function getTopLanguages(languages: ApiLanguage[], max = 2): string[] {
+  const order = [
+    LangProficiency.NATIVE,
+    LangProficiency.FLUENT,
+    LangProficiency.ADVANCED,
+    LangProficiency.INTERMEDIATE,
+    LangProficiency.BEGINNER,
+  ];
+  const rank = (p: LangProficiency | undefined) => (p !== undefined ? order.indexOf(p) : order.length);
+  return [...languages]
+    .sort((a, b) => rank(a.proficiency) - rank(b.proficiency))
+    .map((l) => l.title)
+    .filter(Boolean)
+    .slice(0, max);
+}
+
 export function getNormalizedVolunteer(volunteer: ApiVolunteerGetList): Omit<
   ApiVolunteerGetList,
   "activities" | "skills" | "locations"
