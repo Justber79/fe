@@ -14,24 +14,8 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { apiPathUser } from "@/config/constants";
-<<<<<<< HEAD
-=======
-import { apiPathPerson, apiPathUser } from "@/config/constants";
->>>>>>> 9bd2fe0 (gets personId and adds them to comment POST & PATCH)
-=======
-import { apiPathUser } from "@/config/constants";
->>>>>>> d31340a (removes console log)
-=======
-import axios, { AxiosResponse } from "axios";
-import { toast } from "react-toastify";
-=======
->>>>>>> 89ae0e4 (adds axios fetch, local loading state, and abstracts userfetch wi helper)
 import { getPersonIds } from "./helpers";
->>>>>>> 7e8a5c5 (adds axios fetch, local loading state, and abstracts userfetch wi helper)
 
 type Props = {
   entityId: Id;
@@ -80,7 +64,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     let formattedText = newCommentText;
     const taggedUserIds: number[] = [];
-    // let taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
@@ -89,23 +72,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    // if (taggedUserIds.length) {
-    //   const promiseArray = taggedUserIds.map(async (id) => {
-    //     setIsTagFetch(true);
-    //     try {
-    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
-    //       return response.data.personId;
-    //     } catch (err) {
-    //       console.error(err);
-    //       toast.error("dashboard.commentsSection.errorTagging");
-    //       return null;
-    //     } finally {
-    //       setIsTagFetch(false);
-    //     }
-    //   });
-    //   const resolvedPersonIds = await Promise.all(promiseArray);
-    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
-    // }
     const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     createComment(
       {
@@ -140,7 +106,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     const currentTags = initTags(edit.editText);
     const taggedUserIds: number[] = [];
-    // let taggedPersonIds: number[] = [];
 
     let formattedText = edit.editText;
     currentTags?.forEach((tag) => {
@@ -150,23 +115,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    // if (taggedUserIds.length) {
-    //   const promiseArray = taggedUserIds.map(async (id) => {
-    //     setIsTagFetch(true);
-    //     try {
-    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
-    //       return response.data.personId;
-    //     } catch (err) {
-    //       console.error(err);
-    //       toast.error("dashboard.commentsSection.errorTagging");
-    //       return null;
-    //     } finally {
-    //       setIsTagFetch(false);
-    //     }
-    //   });
-    //   const resolvedPersonIds = await Promise.all(promiseArray);
-    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
-    // }
     const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     updateComment(
       { text: formattedText.trim(), taggedPersonIds },
