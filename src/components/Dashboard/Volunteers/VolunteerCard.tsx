@@ -20,7 +20,7 @@ import { getImageUrl } from "@/utils";
 import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
 import { formatAvailabilityItem } from "../Profile/sections/VolunteerProfile/formatters";
 import CardDetail from "./CardDetail";
-import { getFirstName, getNormalizedVolunteer, groupLanguagesByProficiency, truncateList } from "./helpers";
+import { getFirstName, getTopLanguages, getNormalizedVolunteer, truncateList } from "./helpers";
 import { IconName } from "./icon";
 
 interface Props {
@@ -43,11 +43,16 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
 
   const showBriefedCheck = isBriefedAccompanying(statusType as VolunteerStateTypeType, statusCommunication);
 
-  const groupedLanguages = groupLanguagesByProficiency(languages).slice(0, 2);
+  const MAX_CARD_ITEMS = 2;
 
-  const availabilities = availability
+  const topLanguages = getTopLanguages(languages, MAX_CARD_ITEMS);
+  const languageOverflow = languages.length - topLanguages.length;
+
+  const allAvailabilities = availability
     .filter((a): a is typeof a & { day: string; daytime: string } => Boolean(a.day && a.daytime))
     .map((a) => formatAvailabilityItem(a.day, a.daytime, t));
+  const availabilities = allAvailabilities.slice(0, MAX_CARD_ITEMS);
+  const availabilityOverflow = allAvailabilities.length - availabilities.length;
 
   const handleCardClick = () => {
     if (!id) return;
@@ -118,16 +123,13 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
       </ProfileDiv>
 
       <CardDetail header={t("dashboard.volunteers.languages")} iconName={IconName.Translate}>
-        {groupedLanguages.map(({ proficiency, list }) => (
-          <LanguageDetailContainer key={proficiency}>
-            <CardParagraph text={`${t(`dashboard.volunteers.langProficiency.${proficiency}`)}:`} isBold />
-            <CardParagraph text={`${list.join(", ")}`} />
-          </LanguageDetailContainer>
-        ))}
+        <CardParagraph
+          text={topLanguages.join(", ") + (languageOverflow > 0 ? ` +${languageOverflow}` : "") || "—"}
+        />
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>
-        <Tags tags={activities as unknown as string[]} />
+        <Tags tags={activities as unknown as string[]} max={MAX_CARD_ITEMS} />
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.skillsExperience")} iconName={IconName.Wrench}>
@@ -135,6 +137,7 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
           tags={skills as unknown as string[]}
           backgroundColor="var(--color-white)"
           icon={<CheckIcon size={18} />}
+          max={MAX_CARD_ITEMS}
         />
       </CardDetail>
 
@@ -144,10 +147,11 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
             <CardParagraph text={a} />
           </LanguageDetailContainer>
         ))}
+        {availabilityOverflow > 0 && <CardParagraph text={`+${availabilityOverflow}`} />}
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.preferredDistricts")} iconName={IconName.MapPin}>
-        <CardParagraph text={truncateList(locations, 2)} />
+        <CardParagraph text={truncateList(locations, MAX_CARD_ITEMS) || "—"} />
       </CardDetail>
     </Card>
   );
