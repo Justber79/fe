@@ -63,7 +63,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     let formattedText = newCommentText;
     const taggedUserIds: number[] = [];
-    // let taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
@@ -72,23 +71,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    // if (taggedUserIds.length) {
-    //   const promiseArray = taggedUserIds.map(async (id) => {
-    //     setIsTagFetch(true);
-    //     try {
-    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
-    //       return response.data.personId;
-    //     } catch (err) {
-    //       console.error(err);
-    //       toast.error("dashboard.commentsSection.errorTagging");
-    //       return null;
-    //     } finally {
-    //       setIsTagFetch(false);
-    //     }
-    //   });
-    //   const resolvedPersonIds = await Promise.all(promiseArray);
-    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
-    // }
     const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     createComment(
       {
@@ -123,8 +105,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     const currentTags = initTags(edit.editText);
     const taggedUserIds: number[] = [];
-    // let taggedPersonIds: number[] = [];
-
     let formattedText = edit.editText;
     currentTags?.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
@@ -133,23 +113,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    // if (taggedUserIds.length) {
-    //   const promiseArray = taggedUserIds.map(async (id) => {
-    //     setIsTagFetch(true);
-    //     try {
-    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
-    //       return response.data.personId;
-    //     } catch (err) {
-    //       console.error(err);
-    //       toast.error("dashboard.commentsSection.errorTagging");
-    //       return null;
-    //     } finally {
-    //       setIsTagFetch(false);
-    //     }
-    //   });
-    //   const resolvedPersonIds = await Promise.all(promiseArray);
-    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
-    // }
     const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     updateComment(
       { text: formattedText.trim(), taggedPersonIds },
