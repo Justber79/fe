@@ -44,6 +44,9 @@ export function VolunteerListController({
     limit,
     page: currentPage,
     sortOrder,
+    // Table renders only languages + locations; card renders all collections.
+    // Tell the backend so it loads (and returns) only the needed relations.
+    listType: isListView ? "table" : "card",
     filter: serializedFilter,
   };
   const { data, count, isLoading } = useGetQuery<ApiVolunteerGetList[]>({
