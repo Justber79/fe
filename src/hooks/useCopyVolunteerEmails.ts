@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ApiVolunteerGetList, Lang } from "need4deed-sdk";
 import { fetchData, getReducedFilter } from "./useGetQuery";
 import { useParams } from "next/navigation";
-import { copyEmails } from "@/components/Dashboard/common/copyEmails";
+import { copyEmails } from "@/utils/copyEmails";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,7 @@ export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
   async function fetchEmailPage(page: number) {
     const res = await queryClient.fetchQuery({
       queryKey: ["volunteer-emails", serializedFilter.toString(), page],
+      staleTime: 0,
       queryFn: () =>
         fetchData<ApiVolunteerGetList[]>(`${apiPathVolunteer}/`, {
           limit: MAX_PAGE_LIMIT,
@@ -26,7 +27,7 @@ export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
         }),
     });
     return {
-      emails: res.data.map((volunteer) => volunteer.email).filter(Boolean),
+      emails: res.data.map((volunteer) => volunteer.email).filter((e): e is string => Boolean(e)),
       count: res.count,
     };
   }

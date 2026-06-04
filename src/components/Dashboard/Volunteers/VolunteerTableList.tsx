@@ -40,7 +40,7 @@ export function VolunteerTableList({
   const columns = useMemo(() => {
     const copyButton = (
       <CopyButton
-        onClick={() => onCopyEmails()}
+        onClick={onCopyEmails}
         disabled={isCopying}
         tooltipText={t("dashboard.volunteers.copyEmails.tooltip")}
         ariaLabel={t("dashboard.volunteers.copyEmails.tooltip")}
