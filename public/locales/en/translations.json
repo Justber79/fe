@@ -919,6 +919,7 @@
       "commentUpdated": "Comment updated successfully",
       "saveEdit": "Save",
       "cancelEdit": "Cancel",
+      "errorTagging": "Error occurred on tagging. Users not tagged",
       "deleteDialog": {
         "title": "Delete comment?",
         "message": "{{authorName}}'s comment will be permanently deleted.",

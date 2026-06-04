@@ -921,6 +921,7 @@
       "commentUpdated": "Kommentar erfolgreich aktualisiert",
       "saveEdit": "Speichern",
       "cancelEdit": "Abbrechen",
+      "errorTagging": "Fehler beim Taggen. Benutzer nicht getaggt.",
       "deleteDialog": {
         "title": "Kommentar löschen?",
         "message": "{{authorName}}s Kommentar wird unwiderruflich gelöscht.",

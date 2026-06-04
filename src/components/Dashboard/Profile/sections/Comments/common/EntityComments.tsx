@@ -14,15 +14,7 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { apiPathUser } from "@/config/constants";
-=======
-import { apiPathPerson, apiPathUser } from "@/config/constants";
->>>>>>> 9bd2fe0 (gets personId and adds them to comment POST & PATCH)
-=======
-import { apiPathUser } from "@/config/constants";
->>>>>>> d31340a (removes console log)
+import { getPersonIds } from "./helpers";
 
 type Props = {
   entityId: Id;
@@ -35,6 +27,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const { t } = useTranslation();
   const { mutate: createComment, isPending: isCreating } = useCreateComment(entityId, entityType);
   const [newCommentText, setNewCommentText] = useState("");
+  const [isTagFetch, setIsTagFetch] = useState(false);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +63,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     let formattedText = newCommentText;
     const taggedUserIds: number[] = [];
-    let taggedPersonIds: number[] = [];
+    // let taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
@@ -79,20 +72,24 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    if (taggedUserIds.length) {
-      const promiseArray = taggedUserIds.map(async (id) => {
-        try {
-          const response = await fetch(`${apiPathUser}/${id}`);
-          const data = await response.json();
-          return data.data.personId;
-        } catch (err) {
-          console.error(err);
-          return null;
-        }
-      });
-      const resolvedPersonIds = await Promise.all(promiseArray);
-      taggedPersonIds = resolvedPersonIds?.filter((id) => id !== null);
-    }
+    // if (taggedUserIds.length) {
+    //   const promiseArray = taggedUserIds.map(async (id) => {
+    //     setIsTagFetch(true);
+    //     try {
+    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
+    //       return response.data.personId;
+    //     } catch (err) {
+    //       console.error(err);
+    //       toast.error("dashboard.commentsSection.errorTagging");
+    //       return null;
+    //     } finally {
+    //       setIsTagFetch(false);
+    //     }
+    //   });
+    //   const resolvedPersonIds = await Promise.all(promiseArray);
+    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
+    // }
+    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     createComment(
       {
         text: formattedText.trim(),
@@ -126,7 +123,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
     const currentTags = initTags(edit.editText);
     const taggedUserIds: number[] = [];
-    let taggedPersonIds: number[] = [];
+    // let taggedPersonIds: number[] = [];
 
     let formattedText = edit.editText;
     currentTags?.forEach((tag) => {
@@ -136,20 +133,24 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       }
     });
 
-    if (taggedUserIds.length) {
-      const promiseArray = taggedUserIds.map(async (id) => {
-        try {
-          const response = await fetch(`${apiPathUser}/${id}`);
-          const data = await response.json();
-          return data.data.personId;
-        } catch (err) {
-          console.error(err);
-          return null;
-        }
-      });
-      const resolvedPersonIds = await Promise.all(promiseArray);
-      taggedPersonIds = resolvedPersonIds?.filter((id) => id !== null);
-    }
+    // if (taggedUserIds.length) {
+    //   const promiseArray = taggedUserIds.map(async (id) => {
+    //     setIsTagFetch(true);
+    //     try {
+    //       const response: AxiosResponse<ApiUserGet> = await axios.get(`${apiPathUser}/${id}`);
+    //       return response.data.personId;
+    //     } catch (err) {
+    //       console.error(err);
+    //       toast.error("dashboard.commentsSection.errorTagging");
+    //       return null;
+    //     } finally {
+    //       setIsTagFetch(false);
+    //     }
+    //   });
+    //   const resolvedPersonIds = await Promise.all(promiseArray);
+    //   taggedPersonIds = resolvedPersonIds?.filter((id): id is number => id !== null);
+    // }
+    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     updateComment(
       { text: formattedText.trim(), taggedPersonIds },
 
@@ -189,6 +190,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
             text: edit.editText,
             canSave: edit.canSave,
             isUpdating,
+            isTagFetch,
             onTextChange: edit.updateEditText,
             onKeyPress: (e) => edit.handleKeyPress(e, handleSaveEdit),
             onSave: handleSaveEdit,
@@ -237,7 +239,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       </NewCommentSection>
       <AddCommentButton
         onClick={handleAddComment}
-        disabled={!newCommentText.trim() || isCreating}
+        disabled={!newCommentText.trim() || isCreating || isTagFetch}
         data-testid="add-comment-button"
       >
         {t("dashboard.commentsSection.addComment")}
