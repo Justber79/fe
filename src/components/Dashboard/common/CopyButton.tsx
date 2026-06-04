@@ -1,5 +1,5 @@
-import { ActionButtonWithTooltip } from "../Profile/sections/VolunteerProfileDocument/ActionButtonWithTooltip";
 import Copy from "@/components/svg/Copy";
+import { ActionButtonWithTooltip } from "./ActionButtonWithTooltip";
 
 interface CopyButtonProps {
   onClick: () => void;

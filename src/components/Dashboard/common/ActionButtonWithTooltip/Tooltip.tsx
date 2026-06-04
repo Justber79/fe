@@ -58,11 +58,7 @@ export function Tooltip({ text, children }: Props) {
   }, [visible]);
 
   return (
-    <TooltipContainer
-      ref={containerRef}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-    >
+    <TooltipContainer ref={containerRef} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
       {children}
       <TooltipText $visible={visible} style={{ left: `${position.left}px`, top: `${position.top}px` }}>
         {text}
