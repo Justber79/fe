@@ -197,15 +197,17 @@ export function getFirstName(fullName: string): string {
 
 export function truncateList(items: string[], max: number): string {
   if (items.length <= max) return items.join(", ");
-  const shown = items.slice(0, max).join(", ");
-  return `${shown} +${items.length - max}`;
+  return `${items.slice(0, max).join(", ")} +${items.length - max}`;
 }
 
 export function getTopLanguages(languages: ApiLanguage[], max = 2): string[] {
   const order = [LangProficiency.NATIVE, LangProficiency.FLUENT, LangProficiency.ADVANCED, LangProficiency.INTERMEDIATE, LangProficiency.BEGINNER];
   const rank = (p: LangProficiency | undefined) => (p !== undefined ? order.indexOf(p) : order.length);
-  const ordered = [...languages].sort((a, b) => rank(a.proficiency) - rank(b.proficiency));
-  return ordered.map((l) => l.title).filter(Boolean).slice(0, max);
+  return [...languages]
+    .sort((a, b) => rank(a.proficiency) - rank(b.proficiency))
+    .map((l) => l.title)
+    .filter(Boolean)
+    .slice(0, max);
 }
 
 export function getNormalizedVolunteer(volunteer: ApiVolunteerGetList): Omit<
