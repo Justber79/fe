@@ -14,7 +14,6 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
-import { apiPathUser } from "@/config/constants";
 import { getPersonIds } from "./helpers";
 
 type Props = {
