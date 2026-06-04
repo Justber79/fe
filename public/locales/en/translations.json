@@ -354,7 +354,7 @@
       "copyEmails": {
         "tooltip": "Copy all emails",
         "success": "Copied {{count}} emails",
-        "error": "Couldn't copy emails, try narrowing the filter"
+        "genericError": "Something went wrong. Please try again."
       },
       "tabs": {
         "tab1": "List",

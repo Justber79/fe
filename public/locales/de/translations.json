@@ -354,7 +354,7 @@
       "copyEmails": {
         "tooltip": "Alle E-Mails kopieren",
         "success": "{{count}} E-Mails kopiert",
-        "error": "E-Mails konnten nicht kopiert werden, bitte Filter eingrenzen"
+        "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       },
       "tabs": {
         "tab1": "Liste",

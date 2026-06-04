@@ -7,6 +7,7 @@ import { copyEmails } from "@/utils/copyEmails";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
   const { t } = useTranslation();
@@ -38,8 +39,17 @@ export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
       const emails = await fetchAllFilteredEmails();
       await copyEmails(emails);
       toast.success(t("dashboard.volunteers.copyEmails.success", { count: emails.length }));
-    } catch {
-      toast.error(t("dashboard.volunteers.copyEmails.error"));
+    } catch (error: unknown) {
+      let message = t("dashboard.volunteers.copyEmails.genericError");
+      if (axios.isAxiosError(error)) {
+        const serverMessage = error.response?.data;
+        if (typeof serverMessage === "string" && serverMessage) {
+          message = serverMessage;
+        } else if (typeof serverMessage?.message === "string" && serverMessage.message) {
+          message = serverMessage.message;
+        }
+      }
+      toast.error(message);
     } finally {
       setIsCopying(false);
     }
