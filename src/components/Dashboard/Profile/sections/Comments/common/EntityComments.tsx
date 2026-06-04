@@ -3,7 +3,7 @@ import { EntityType } from "@/components/Dashboard/Profile/types/types";
 import { useCreateComment } from "@/hooks/useCreateComment";
 import { useDeleteComment } from "@/hooks/useDeleteComment";
 import { useUpdateComment } from "@/hooks/useUpdateComment";
-import { ApiPersonGet, ApiUserGet, Id, TimedText } from "need4deed-sdk";
+import { Id, TimedText } from "need4deed-sdk";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Comment } from "./Comment";
@@ -14,6 +14,7 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import { apiPathUser } from "@/config/constants";
@@ -27,6 +28,8 @@ import { apiPathUser } from "@/config/constants";
 =======
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+=======
+>>>>>>> 89ae0e4 (adds axios fetch, local loading state, and abstracts userfetch wi helper)
 import { getPersonIds } from "./helpers";
 >>>>>>> 7e8a5c5 (adds axios fetch, local loading state, and abstracts userfetch wi helper)
 
