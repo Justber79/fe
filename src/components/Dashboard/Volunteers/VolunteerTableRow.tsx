@@ -45,7 +45,17 @@ export function VolunteerTableRow({
   const districtTitles = locations
     .map((loc) => (typeof loc === "string" ? loc : loc?.title))
     .filter(Boolean) as string[];
-  const districtText = truncateList(districtTitles, 2) || "—";
+  const abbreviatedDistricts = districtTitles.map((title) => {
+    if (title.includes("-")) {
+      const abbreviation = title
+        .split("-")
+        .map((word) => word.trim()[0])
+        .join("-");
+      return abbreviation.toUpperCase();
+    }
+    return title;
+  });
+  const districtText = truncateList(abbreviatedDistricts, 1) || "—";
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -74,7 +84,7 @@ export function VolunteerTableRow({
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
         <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
-      <TableCell $noWrap data-testid={`volunteer-email-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.email} $noWrap data-testid={`volunteer-email-${id}`}>
         <TruncatedText>{email || "—"}</TruncatedText>
       </TableCell>
     </ClickableRow>
