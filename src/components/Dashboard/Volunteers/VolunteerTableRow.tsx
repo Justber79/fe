@@ -36,11 +36,11 @@ export function VolunteerTableRow({
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
-  const { statusMatch, email } = volunteer as ApiVolunteerGetList;
+  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations, statusMatch, email } = volunteer;
 
   const topLangs = getTopLanguages(languages, 2);
-  const languageText = truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
+  const languageText =
+    truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
 
   const districtTitles = locations
     .map((loc) => (typeof loc === "string" ? loc : loc?.title))
@@ -55,7 +55,7 @@ export function VolunteerTableRow({
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
-      <NameCell data-testid={`volunteer-name-${id}`}>
+      <NameCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
         <NameText>{getFirstName(name)}</NameText>
       </NameCell>
@@ -74,7 +74,9 @@ export function VolunteerTableRow({
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
         {districtText}
       </TableCell>
-      <TableCell $noWrap data-testid={`volunteer-email-${id}`}>{email || "—"}</TableCell>
+      <TableCell $noWrap data-testid={`volunteer-email-${id}`}>
+        {email || "—"}
+      </TableCell>
     </ClickableRow>
   );
 }

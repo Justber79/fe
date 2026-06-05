@@ -123,9 +123,7 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
       </ProfileDiv>
 
       <CardDetail header={t("dashboard.volunteers.languages")} iconName={IconName.Translate}>
-        <CardParagraph
-          text={topLanguages.join(", ") + (languageOverflow > 0 ? ` +${languageOverflow}` : "") || "—"}
-        />
+        <CardParagraph text={topLanguages.join(", ") + (languageOverflow > 0 ? ` +${languageOverflow}` : "") || "—"} />
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>

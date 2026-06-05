@@ -35,9 +35,7 @@ export function Tags({ tags, backgroundColor = defaultBGColor, icon, max }: Prop
           <ActivitySpan color={bgTextColorMap[backgroundColor]}>{tag}</ActivitySpan>
         </Tag>
       ))}
-      {overflow > 0 && (
-        <OverflowTag>+{overflow}</OverflowTag>
-      )}
+      {overflow > 0 && <OverflowTag>+{overflow}</OverflowTag>}
     </TagsContainer>
   );
 }

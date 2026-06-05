@@ -201,7 +201,13 @@ export function truncateList(items: string[], max: number): string {
 }
 
 export function getTopLanguages(languages: ApiLanguage[], max = 2): string[] {
-  const order = [LangProficiency.NATIVE, LangProficiency.FLUENT, LangProficiency.ADVANCED, LangProficiency.INTERMEDIATE, LangProficiency.BEGINNER];
+  const order = [
+    LangProficiency.NATIVE,
+    LangProficiency.FLUENT,
+    LangProficiency.ADVANCED,
+    LangProficiency.INTERMEDIATE,
+    LangProficiency.BEGINNER,
+  ];
   const rank = (p: LangProficiency | undefined) => (p !== undefined ? order.indexOf(p) : order.length);
   return [...languages]
     .sort((a, b) => rank(a.proficiency) - rank(b.proficiency))
