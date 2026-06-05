@@ -76,7 +76,7 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
       testId="volunteer-header"
       avatar={
         <AvatarContainer>
-          {/* <Image src={avatarUrl} alt={volunteer.person.firstName} fill style={{ objectFit: "cover" }} /> */}
+          <Image src={avatarUrl} alt={volunteer.person.firstName} fill style={{ objectFit: "cover" }} />
         </AvatarContainer>
       }
       title={fullName}
