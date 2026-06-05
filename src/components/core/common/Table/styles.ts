@@ -104,3 +104,16 @@ export const ActionButton = styled.button`
     opacity: var(--opacity-hover);
   }
 `;
+
+export const ClickableRow = styled(TableRow)`
+  cursor: pointer;
+  &:hover {
+    background: var(--color-pink-50);
+  }
+`;
+
+export const TruncatedText = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

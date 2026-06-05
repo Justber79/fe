@@ -5,14 +5,13 @@ import type {
   createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
-import { TableCell, TableRow } from "@/components/core/common/Table";
+import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
 import { CirclePic } from "@/components/styled/img";
 import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
 import { ApiVolunteerGetList } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
 
@@ -90,16 +89,3 @@ export function VolunteerTableRow({
     </ClickableRow>
   );
 }
-
-const ClickableRow = styled(TableRow)`
-  cursor: pointer;
-  &:hover {
-    background: var(--color-pink-50);
-  }
-`;
-
-const TruncatedText = styled.span`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
