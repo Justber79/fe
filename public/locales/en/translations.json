@@ -333,6 +333,7 @@
   },
   "dashboard": {
     "common": {
+      "loading": "Loading...",
       "datePrefix": {
         "appliedOn": "Applied on",
         "matchedOn": "Matched on",

@@ -31,6 +31,7 @@
     "react-icons": "^5.5.0",
     "react-toastify": "^11.0.5",
     "styled-components": "^6.1.19",
+    "textarea-caret": "^3.1.0",
     "ts-type-safe": "^1.5.0",
     "zod": "^4.1.13"
   },
@@ -40,6 +41,7 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "^19",
     "@types/react-toastify": "^4.1.0",
+    "@types/textarea-caret": "^3.0.4",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "husky": "^9.1.7",

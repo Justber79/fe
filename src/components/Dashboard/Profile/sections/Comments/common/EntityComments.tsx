@@ -4,14 +4,16 @@ import { useCreateComment } from "@/hooks/useCreateComment";
 import { useDeleteComment } from "@/hooks/useDeleteComment";
 import { useUpdateComment } from "@/hooks/useUpdateComment";
 import { Id, TimedText } from "need4deed-sdk";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Comment } from "./Comment";
 import { DeleteCommentDialog } from "./DeleteCommentDialog";
 import { useCommentDelete } from "./hooks/useCommentDelete";
 import { useCommentEdit } from "./hooks/useCommentEdit";
 import { useCommentMenu } from "./hooks/useCommentMenu";
-import { AddCommentButton, Container, NewCommentSection, TextArea } from "./styles";
+import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
+import { useCommentTag } from "./hooks/useCommentTag";
+import Autocomplete from "./Autocomplete";
 
 type Props = {
   entityId: Id;
@@ -24,10 +26,25 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const { t } = useTranslation();
   const { mutate: createComment, isPending: isCreating } = useCreateComment(entityId, entityType);
   const [newCommentText, setNewCommentText] = useState("");
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const edit = useCommentEdit();
   const deleteState = useCommentDelete();
   const menu = useCommentMenu();
+  const {
+    renderHighlightedText,
+    showAutocomplete,
+    handleTagAdd,
+    tags,
+    setShowAutocomplete,
+    activeRowIndex,
+    setFilteredListLength,
+    setOnSelectTrigger,
+    handleKeyDown,
+    initTags,
+    users,
+  } = useCommentTag(newCommentText, setNewCommentText, textAreaRef);
 
   const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
     entityId,
@@ -42,9 +59,12 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const handleAddComment = () => {
     if (!newCommentText.trim()) return;
 
+    let formattedText = newCommentText;
+    tags.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+
     createComment(
       {
-        text: newCommentText.trim(),
+        text: formattedText.trim(),
         entityType,
         entityId,
       },
@@ -55,17 +75,25 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (showAutocomplete) return;
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleAddComment();
     }
   };
 
+  const handleScroll = () => {
+    if (!textAreaRef?.current || !overlayRef?.current) return;
+    overlayRef.current.style.transform = `translateY(-${textAreaRef.current.scrollTop}px)`;
+  };
+
   const handleSaveEdit = () => {
     if (!edit.editText.trim() || !edit.editingCommentId) return;
-
+    const currentTags = initTags(edit.editText);
+    let formattedText = edit.editText;
+    currentTags?.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
     updateComment(
-      { text: edit.editText.trim() },
+      { text: formattedText.trim() },
       {
         onSuccess: () => edit.cancelEdit(),
       },
@@ -89,7 +117,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     deleteState.openDeleteDialog(commentId, authorName);
     menu.closeMenu();
   };
-
   return (
     <Container data-testid={testId}>
       {sortedComments.map((comment) => (
@@ -122,24 +149,38 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
           }}
         />
       ))}
-
       <NewCommentSection>
+        {showAutocomplete && (
+          <Autocomplete
+            handleTagAdd={handleTagAdd}
+            newCommentText={newCommentText}
+            textAreaRef={textAreaRef}
+            activeRowIndex={activeRowIndex}
+            setFilteredListLength={setFilteredListLength}
+            setOnSelectTrigger={setOnSelectTrigger}
+            users={users}
+          />
+        )}
+        <TagOverlay ref={overlayRef}>{renderHighlightedText()}</TagOverlay>
         <TextArea
+          ref={textAreaRef}
           placeholder={t("dashboard.commentsSection.placeholder")}
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
           onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           data-testid="comment-textarea"
+          onScroll={handleScroll}
+          onClick={() => setShowAutocomplete(false)}
         />
-        <AddCommentButton
-          onClick={handleAddComment}
-          disabled={!newCommentText.trim() || isCreating}
-          data-testid="add-comment-button"
-        >
-          {t("dashboard.commentsSection.addComment")}
-        </AddCommentButton>
       </NewCommentSection>
-
+      <AddCommentButton
+        onClick={handleAddComment}
+        disabled={!newCommentText.trim() || isCreating}
+        data-testid="add-comment-button"
+      >
+        {t("dashboard.commentsSection.addComment")}
+      </AddCommentButton>
       <DeleteCommentDialog
         isOpen={deleteState.deleteDialogOpen}
         authorName={deleteState.deleteAuthorName}

@@ -27,7 +27,13 @@ export function OpportunityCardList({
   districtsList,
 }: Props) {
   const items = opportunities.map((opp) => (
-    <OpportunityCard key={opp.id} opportunity={opp} volunteerId={volunteerId} activitiesList={activitiesList} districtsList={districtsList} />
+    <OpportunityCard
+      key={opp.id}
+      opportunity={opp}
+      volunteerId={volunteerId}
+      activitiesList={activitiesList}
+      districtsList={districtsList}
+    />
   ));
 
   return (

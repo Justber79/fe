@@ -50,9 +50,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
-  const districtTitle = district?.id
-    ? (districtsList?.find((d) => d.id === district.id)?.title ?? null)
-    : null;
+  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
