@@ -55,27 +55,27 @@ export function VolunteerTableRow({
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
-      <NameCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
-        <NameText>{getFirstName(name)}</NameText>
-      </NameCell>
+        <TruncatedText>{getFirstName(name)}</TruncatedText>
+      </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap data-testid={`volunteer-type-${id}`}>
-        {statusType ? typeLabels[statusType] : "—"}
+        <TruncatedText>{statusType ? typeLabels[statusType] : "—"}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} $noWrap data-testid={`volunteer-engagement-${id}`}>
-        {statusEngagement ? engagementLabels[statusEngagement] : "—"}
+        <TruncatedText>{statusEngagement ? engagementLabels[statusEngagement] : "—"}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} $noWrap data-testid={`volunteer-match-${id}`}>
-        {statusMatch ? matchLabels[statusMatch] : "—"}
+        <TruncatedText>{statusMatch ? matchLabels[statusMatch] : "—"}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.language} $noWrap data-testid={`volunteer-language-${id}`}>
-        {languageText}
+        <TruncatedText>{languageText}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
-        {districtText}
+        <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
       <TableCell $noWrap data-testid={`volunteer-email-${id}`}>
-        {email || "—"}
+        <TruncatedText>{email || "—"}</TruncatedText>
       </TableCell>
     </ClickableRow>
   );
@@ -83,17 +83,12 @@ export function VolunteerTableRow({
 
 const ClickableRow = styled(TableRow)`
   cursor: pointer;
-
   &:hover {
     background: var(--color-pink-50);
   }
 `;
 
-const NameCell = styled(TableCell)`
-  overflow: hidden;
-`;
-
-const NameText = styled.span`
+const TruncatedText = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -75,7 +75,7 @@ export const TableCell = styled.div<{ $width?: string; $maxWidth?: string; $alig
   ${(props) => props.$width && `width: ${props.$width};`}
   ${(props) => props.$maxWidth && `max-width: ${props.$maxWidth};`}
   ${(props) => props.$align && `justify-content: ${props.$align};`}
-  ${(props) => props.$noWrap && `white-space: nowrap;`}
+  ${(props) => props.$noWrap && `white-space: nowrap; overflow: hidden;`}
   flex: ${(props) => (props.$width ? "none" : props.$maxWidth ? "1 1 auto" : "1")};
 
   &:last-child {
