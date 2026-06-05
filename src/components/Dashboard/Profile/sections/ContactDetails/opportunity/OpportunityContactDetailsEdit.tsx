@@ -1,17 +1,28 @@
 import Button from "@/components/core/button/Button/Button";
 import { EditableField } from "@/components/EditableField/EditableField";
+import { PreferredCommunicationType } from "need4deed-sdk";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../../shared/styles";
 import { OpportunityContactDetailsFormData } from "./opportunityContactDetailsSchema";
 
 type Props = {
+  options: string[];
+  keysToLabels: (keys: PreferredCommunicationType[]) => string[];
+  labelsToKeys: (labels: (string | number)[]) => PreferredCommunicationType[];
   onCancel: () => void;
   onSubmit: () => void;
   isPending: boolean;
 };
 
-export const OpportunityContactDetailsEdit = ({ onCancel, onSubmit, isPending }: Props) => {
+export const OpportunityContactDetailsEdit = ({
+  options,
+  keysToLabels,
+  labelsToKeys,
+  onCancel,
+  onSubmit,
+  isPending,
+}: Props) => {
   const { t } = useTranslation();
   const {
     control,
@@ -62,6 +73,21 @@ export const OpportunityContactDetailsEdit = ({ onCancel, onSubmit, isPending }:
               value={field.value}
               setValue={field.onChange}
               errorMessage={errors.email?.message}
+            />
+          )}
+        />
+        <Controller
+          name="waysToContact"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="checkbox-list"
+              label={t("dashboard.opportunityProfile.contactDetails.waysToContact.label")}
+              value={keysToLabels(field.value ?? [])}
+              setValue={(value) => field.onChange(labelsToKeys(Array.isArray(value) ? value : [value]))}
+              options={options}
+              errorMessage={errors.waysToContact?.message}
             />
           )}
         />
