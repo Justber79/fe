@@ -67,7 +67,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "" };
     }
     return { name: "", phone: "", email: "" };
-  }, [hasApiContact, contactFromApi, latestPipedComment]);
+  }, [contactFromApi, latestPipedComment]);
 
   const { mutate: updateContact, isPending: isUpdating } = useUpdateOpportunityContact(opportunity.id);
   const { mutate: createComment, isPending: isCreating } = useCreateComment(opportunity.id, "opportunity");
