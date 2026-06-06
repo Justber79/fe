@@ -447,7 +447,7 @@
         "home": "Startseite",
         "volunteers": "Freiwillige",
         "opportunities": "Möglichkeiten",
-        "agents": "NGOs",
+        "agents": "Einrichtungen/Projekte",
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
@@ -664,7 +664,7 @@
       }
     },
     "agents": {
-      "agents": "NGO-Verzeichnis",
+      "agents": "Einrichtungs-/Projektverzeichnis",
       "table": {
         "title": "Name",
         "type": "Typ",
@@ -796,7 +796,7 @@
         "district": "Bezirk",
         "schedule": "Zeitplan",
         "volunteersNeeded": "Anzahl der Freiwilligen",
-        "agentName": "NGO"
+        "agentName": "Einrichtung/Projekt"
       },
 
       "card": {
@@ -961,7 +961,7 @@
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
     "agentProfile": {
-      "agentProfile": "NGO-Profil",
+      "agentProfile": "Einrichtungs-/Projektprofil",
       "registeredSince": "Registriert seit",
       "engagementStatus": "Engagement-Status",
       "serviceType": "Dienstleistungsart",
@@ -1004,14 +1004,14 @@
         "title": "Engagement-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
-          "unresponsive_description": "Diese NGO antwortet nicht.",
+          "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Diese NGO arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
       },
-      "statusUpdateSuccess": "NGO-Status erfolgreich aktualisiert",
+      "statusUpdateSuccess": "Status der Einrichtung/des Projekts erfolgreich aktualisiert",
       "contactDetails": {
         "title": "Kontaktdaten",
         "fullName": "Name",
@@ -1085,7 +1085,7 @@
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
       "matchingStatus": "Matching-Status",
-      "agent": "NGO",
+      "agent": "Einrichtung/Projekt",
       "status": {
         "new": "Neu",
         "active": "Aktiv",
