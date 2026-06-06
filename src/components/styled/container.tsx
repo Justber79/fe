@@ -59,10 +59,20 @@ export const DashboardBaseContainer = styled.div`
     calc(var(--dashboard-navigation-bar-container-width) + 16px),
     calc((100% - var(--dashboard-base-container-width)) / 2)
   );
-  margin-right: auto;
+  margin-right: max(16px, calc((100% - var(--dashboard-base-container-width)) / 2));
   max-width: var(--dashboard-base-container-width);
   padding-top: var(--dashboard-base-container-padding-top);
   padding-bottom: var(--dashboard-base-container-padding-bottom);
+
+  /* On mobile the navigation bar moves to the bottom of the screen, so the
+     content no longer needs a left offset but does need bottom clearance. */
+  @media (max-width: 767px) {
+    margin-left: 16px;
+    margin-right: 16px;
+    padding-bottom: calc(
+      var(--dashboard-base-container-padding-bottom) + var(--dashboard-navigation-bar-mobile-height)
+    );
+  }
 `;
 
 export const OverlayingSectionContainer = styled(SectionContainer)`
