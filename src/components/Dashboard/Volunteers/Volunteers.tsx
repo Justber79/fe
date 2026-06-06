@@ -139,4 +139,9 @@ const ContentRow = styled.div`
   flex-direction: row;
   align-items: flex-start;
   gap: var(--dashboard-volunteers-container-gap);
+
+  /* Let the filters panel wrap to its own full-width row on narrow viewports (#534). */
+  @media (max-width: 1023px) {
+    flex-wrap: wrap;
+  }
 `;

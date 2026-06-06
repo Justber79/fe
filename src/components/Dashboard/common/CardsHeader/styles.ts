@@ -64,6 +64,10 @@ export const SearchBarSectionContainer = styled.div`
   display: flex;
   flex-direction: var(--opportunities-header-searchbar-flex-direction);
   gap: var(--filters-search-bar-section-container-gap);
+  /* The search bar is capped at min(630px, 100%) of this row, which leaves no
+     room for the filters button on mid-size viewports — let it wrap below
+     instead of overflowing the viewport (#534). */
+  flex-wrap: wrap;
 `;
 
 type TabHeadingProps = {
