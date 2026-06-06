@@ -3,9 +3,9 @@ import { ApiOptionLists, AgentServiceType, EntityTableName } from "need4deed-sdk
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
-import { AgentRegistrationData, ProfileCompletionData } from "../types";
+import { ProfileCompletionData } from "../types";
 
-type ServicesData = Pick<AgentRegistrationData | ProfileCompletionData, "services" | "clientLanguageIds">;
+type ServicesData = Pick<ProfileCompletionData, "services" | "clientLanguageIds">;
 
 const CheckboxGrid = styled.div`
   display: grid;

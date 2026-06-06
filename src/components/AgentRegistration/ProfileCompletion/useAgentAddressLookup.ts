@@ -17,7 +17,7 @@ export function useAgentAddressLookup(addressStreet: string) {
     params: {
       limit: 10,
       page: 1,
-      search: debouncedAddress,
+      filter: { search: debouncedAddress },
     },
     staleTime: cacheTTL,
     enabled,

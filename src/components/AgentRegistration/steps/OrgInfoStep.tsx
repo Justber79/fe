@@ -4,9 +4,9 @@ import { AgentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { AGENT_TYPE_LABELS } from "../helpers";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect, StyledTextarea } from "../styled";
-import { AgentRegistrationData, ProfileCompletionData } from "../types";
+import { ProfileCompletionData } from "../types";
 
-type OrgData = Pick<AgentRegistrationData | ProfileCompletionData, "organizationName" | "organizationType" | "about" | "website">;
+type OrgData = Pick<ProfileCompletionData, "organizationName" | "organizationType" | "about" | "website">;
 
 type Props = {
   data: OrgData;

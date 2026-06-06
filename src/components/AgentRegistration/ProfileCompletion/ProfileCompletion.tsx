@@ -88,7 +88,7 @@ export function ProfileCompletion() {
     update({
       organizationName: matched.title,
       organizationType: matched.type,
-      districtId: matched.district?.id ?? null,
+      districtId: matched.district?.id != null ? Number(matched.district.id) : null,
     });
   };
 

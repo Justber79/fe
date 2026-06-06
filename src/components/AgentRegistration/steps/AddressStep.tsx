@@ -3,9 +3,9 @@ import { FormInput } from "@/components/core/common";
 import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect } from "../styled";
-import { AgentRegistrationData, ProfileCompletionData } from "../types";
+import { ProfileCompletionData } from "../types";
 
-type AddressData = Pick<AgentRegistrationData | ProfileCompletionData, "addressStreet" | "addressPostcode" | "districtId">;
+type AddressData = Pick<ProfileCompletionData, "addressStreet" | "addressPostcode" | "districtId">;
 
 type Props = {
   data: AddressData;
