@@ -447,7 +447,7 @@
         "home": "Home",
         "volunteers": "Volunteers",
         "opportunities": "Opportunities",
-        "agents": "Agents",
+        "agents": "NGOs",
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
@@ -707,7 +707,7 @@
       }
     },
     "agents": {
-      "agents": "RAC Directory",
+      "agents": "NGO Directory",
       "table": {
         "title": "Name",
         "type": "Type",
@@ -839,7 +839,7 @@
         "district": "District",
         "schedule": "Schedule",
         "volunteersNeeded": "Volunteers Needed",
-        "agentName": "Agent"
+        "agentName": "NGO"
       },
       "card": {
         "mainCommunication": "Main communication",
@@ -959,7 +959,7 @@
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
     "agentProfile": {
-      "agentProfile": "Agent's profile",
+      "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
       "engagementStatus": "Engagement status",
       "serviceType": "Service Type",
@@ -1002,14 +1002,14 @@
         "title": "Change engagement status",
         "options": {
           "unresponsive": "Unresponsive",
-          "unresponsive_description": "This agent does not respond.",
+          "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
-          "inactive_description": "This agent does not work with the organization anymore."
+          "inactive_description": "This NGO does not work with the organization anymore."
         },
         "cancel": "Cancel",
         "save": "Save"
       },
-      "statusUpdateSuccess": "Agent status updated successfully",
+      "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
         "fullName": "Name",
@@ -1083,7 +1083,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
-      "agent": "Agent",
+      "agent": "NGO",
       "status": {
         "new": "New",
         "active": "Active",
