@@ -16,5 +16,6 @@ export const DashboardContentContainer = styled.div`
 
 export const DashboardCardContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: var(--dashboard-home-container-gap);
 `;
