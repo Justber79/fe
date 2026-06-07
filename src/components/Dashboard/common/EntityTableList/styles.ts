@@ -6,9 +6,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--entity-table-gap);
-  /* Fill the content row, but allow shrinking when the filters panel is open
-     (the table scrolls horizontally inside ScrollableTableContainer). A fixed
-     min-width pushed the filters panel off-screen (#534). */
   flex: 1;
   min-width: 0;
 `;

@@ -29,8 +29,6 @@ const BarContainer = styled.div`
   border-bottom-right-radius: var(--dashboard-navigation-bar-border-radius);
   padding: var(--dashboard-navigation-bar-padding);
 
-  /* On mobile the sidebar becomes a bottom navigation bar so it no longer
-     overlaps the page content (issue #534). */
   @media (max-width: 767px) {
     flex-direction: row;
     justify-content: space-around;

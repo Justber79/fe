@@ -24,8 +24,6 @@ const FiltersContainer = styled.div`
   background: var(--color-pink-50);
   border-bottom-left-radius: var(--filters-container-border-radius);
 
-  /* On narrow viewports there is no room next to the list: span the full
-     width and appear above the list, right below the FILTERS button (#534). */
   @media (max-width: 1023px) {
     width: 100%;
     order: -1;

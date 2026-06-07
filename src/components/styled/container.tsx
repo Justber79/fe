@@ -64,8 +64,6 @@ export const DashboardBaseContainer = styled.div`
   padding-top: var(--dashboard-base-container-padding-top);
   padding-bottom: var(--dashboard-base-container-padding-bottom);
 
-  /* On mobile the navigation bar moves to the bottom of the screen, so the
-     content no longer needs a left offset but does need bottom clearance. */
   @media (max-width: 767px) {
     margin-left: 16px;
     margin-right: 16px;
