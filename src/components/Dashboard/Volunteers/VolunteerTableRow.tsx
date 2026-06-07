@@ -15,6 +15,8 @@ import { useTranslation } from "react-i18next";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
 import { CopyEmail } from "../common/CopyEmail";
+import { CheckCircleIcon } from "@phosphor-icons/react";
+import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
 
 interface TableRowProps {
   volunteer: ApiVolunteerGetList;
@@ -36,7 +38,18 @@ export function VolunteerTableRow({
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations, statusMatch, email } = volunteer;
+  const {
+    id,
+    name,
+    avatarUrl,
+    statusEngagement,
+    statusType,
+    languages,
+    locations,
+    statusMatch,
+    email,
+    statusCommunication,
+  } = volunteer;
 
   const topLangs = getTopLanguages(languages, 2);
   const languageText =
@@ -56,6 +69,7 @@ export function VolunteerTableRow({
     return title;
   });
   const districtText = truncateList(abbreviatedDistricts, 1) || "—";
+  const showBriefedCheck = isBriefedAccompanying(statusType, statusCommunication ?? undefined);
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -69,8 +83,11 @@ export function VolunteerTableRow({
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
         <TruncatedText>{getFirstName(name)}</TruncatedText>
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap data-testid={`volunteer-type-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap $align="space-between" data-testid={`volunteer-type-${id}`}>
         <TruncatedText>{statusType ? typeLabels[statusType] : "—"}</TruncatedText>
+        {showBriefedCheck && (
+          <CheckCircleIcon size={18} color="var(--color-green-700)" weight="fill" style={{ flexShrink: 0 }} />
+        )}
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} $noWrap data-testid={`volunteer-engagement-${id}`}>
         <TruncatedText>{statusEngagement ? engagementLabels[statusEngagement] : "—"}</TruncatedText>
