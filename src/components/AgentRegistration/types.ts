@@ -6,15 +6,6 @@ export interface AgentRegistrationData {
   email: string;
   password: string;
   confirmPassword: string;
-  organizationName: string;
-  organizationType: AgentType | "";
-  about: string;
-  website: string;
-  addressStreet: string;
-  addressPostcode: string;
-  districtId: number | null;
-  services: AgentServiceType[];
-  clientLanguageIds: number[];
 }
 
 export const defaultAgentRegistrationData: AgentRegistrationData = {
@@ -23,15 +14,31 @@ export const defaultAgentRegistrationData: AgentRegistrationData = {
   email: "",
   password: "",
   confirmPassword: "",
+};
+
+export const TOTAL_STEPS = 1;
+export const TOTAL_COMPLETION_STEPS = 3;
+
+export interface ProfileCompletionData {
+  addressStreet: string;
+  addressPostcode: string;
+  districtId: number | null;
+  organizationName: string;
+  organizationType: AgentType | "";
+  about: string;
+  website: string;
+  services: AgentServiceType[];
+  clientLanguageIds: number[];
+}
+
+export const defaultProfileCompletionData: ProfileCompletionData = {
+  addressStreet: "",
+  addressPostcode: "",
+  districtId: null,
   organizationName: "",
   organizationType: "",
   about: "",
   website: "",
-  addressStreet: "",
-  addressPostcode: "",
-  districtId: null,
   services: [],
   clientLanguageIds: [],
 };
-
-export const TOTAL_STEPS = 5;
