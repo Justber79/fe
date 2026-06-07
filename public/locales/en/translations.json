@@ -354,7 +354,10 @@
       },
       "copyEmails": {
         "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
         "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
         "genericError": "Something went wrong. Please try again."
       },
       "tabs": {

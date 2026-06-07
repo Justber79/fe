@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
+import { CopyEmail } from "../common/CopyEmail";
 
 interface TableRowProps {
   volunteer: ApiVolunteerGetList;
@@ -83,8 +84,14 @@ export function VolunteerTableRow({
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
         <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.email} $noWrap data-testid={`volunteer-email-${id}`}>
+      <TableCell
+        $width={VOLUNTEER_COL_WIDTHS.email}
+        $noWrap
+        $align="space-between"
+        data-testid={`volunteer-email-${id}`}
+      >
         <TruncatedText>{email || "—"}</TruncatedText>
+        {email && <CopyEmail email={email} name={name} />}
       </TableCell>
     </ClickableRow>
   );
