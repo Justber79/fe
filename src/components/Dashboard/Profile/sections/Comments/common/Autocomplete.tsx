@@ -87,7 +87,7 @@ export default function Autocomplete({
     handleTagAdd(userId, fullName.replaceAll(/ /g, ""));
   };
 
-  const resolvedAvatarUrl = (url: string) => {
+  const resolvedAvatarUrl = (url: string | null | undefined) => {
     return getImageUrl(url || defaultAvatarVolunteerProfile);
   };
 
