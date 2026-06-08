@@ -5,11 +5,12 @@ import { ReactNode } from "react";
 
 export const VOLUNTEER_COL_WIDTHS = {
   name: COLUMN_WIDTH.SM,
-  type: COLUMN_WIDTH.SM,
+  type: COLUMN_WIDTH.LG,
   engagement: COLUMN_WIDTH.LG,
   matching: COLUMN_WIDTH.SM,
   language: COLUMN_WIDTH.MD,
-  district: COLUMN_WIDTH.MD,
+  district: COLUMN_WIDTH.SM,
+  email: COLUMN_WIDTH.XXXL,
 };
 
 export const createVolunteerTableColumns = (t: TFunction, copyButton: ReactNode): Column[] => [
@@ -26,6 +27,7 @@ export const createVolunteerTableColumns = (t: TFunction, copyButton: ReactNode)
   {
     key: "email",
     label: t("dashboard.volunteers.table.email"),
+    width: VOLUNTEER_COL_WIDTHS.email,
     headerAction: copyButton,
   },
 ];
