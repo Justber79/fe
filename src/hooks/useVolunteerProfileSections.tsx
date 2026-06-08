@@ -15,15 +15,17 @@ import { VolunteerProfileDocument } from "@/components/Dashboard/Profile/section
 import { IconName } from "@/components/Dashboard/Profile/types";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
-import { ApiVolunteerGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
+import { ApiVolunteerGet, OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useCurrentUser } from "./useCurrentUser";
 
 export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefined) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const user = useCurrentUser();
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const volunteerProfileRef = useRef<VolunteerProfileRef>(null);
@@ -48,6 +50,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   if (!volunteer) return null;
 
   const volunteerFullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
+  const isNGO = user?.role === UserRole.AGENT;
 
   const handleSuggestConfirm = () => {
     if (!opportunityId) return;
@@ -60,23 +63,13 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
 
   const sections: SectionCardProps[] = [
     {
-      iconName: IconName.ChatsCircle,
-      title: t("dashboard.volunteerProfile.contactDetailsTitle"),
-      ...(!isContactEditing && {
-        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
-        onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
-      }),
-      subComponent: (
-        <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
-      ),
-    },
-    {
       iconName: IconName.UserCircle,
       title: t("dashboard.volunteerProfile.volunteerProfile"),
-      ...(!isProfileEditing && {
-        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
-        onHeaderButtonClick: () => volunteerProfileRef.current?.handleEditClick(),
-      }),
+      ...(!isProfileEditing &&
+        !isNGO && {
+          headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
+          onHeaderButtonClick: () => volunteerProfileRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <VolunteerProfile
           ref={volunteerProfileRef}
@@ -118,11 +111,6 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       ),
     },
     {
-      iconName: IconName.ChatCircleDots,
-      title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
-      subComponent: <Comments volunteer={volunteer} />,
-    },
-    {
       iconName: IconName.Gift,
       title: t("dashboard.appreciationSection.title"),
       headerButtonName: t("dashboard.appreciationSection.addNew"),
@@ -140,6 +128,25 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       subComponent: <div>Activity Log sub-component. to be replaced...</div>,
     },
   ];
+
+  if (!isNGO) {
+    sections.unshift({
+      iconName: IconName.ChatsCircle,
+      title: t("dashboard.volunteerProfile.contactDetailsTitle"),
+      ...(!isContactEditing && {
+        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
+        onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
+      }),
+      subComponent: (
+        <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
+      ),
+    });
+    sections.push({
+      iconName: IconName.ChatCircleDots,
+      title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
+      subComponent: <Comments volunteer={volunteer} />,
+    });
+  }
 
   return {
     sections,

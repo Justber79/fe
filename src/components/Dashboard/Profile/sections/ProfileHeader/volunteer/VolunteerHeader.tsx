@@ -28,7 +28,9 @@ import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
   if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
   const statuses = opportunities.map((o) => o.status);
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)) {
+  if (
+    statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)
+  ) {
     return VolunteerStateMatchType.MATCHED;
   }
   if (statuses.some((s) => s === OpportunityVolunteerStatusType.PENDING)) {
@@ -62,7 +64,9 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const showBriefedCheck = isBriefedAccompanying(volunteer.statusType, volunteer.statusCommunication);
 
-  const fullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
+  const fullName = volunteer.person.lastName
+    ? `${volunteer.person.firstName} ${volunteer.person.lastName}`
+    : volunteer.person.firstName;
   const avatarUrl = getImageUrl(volunteer.person.avatarUrl || defaultAvatarVolunteerProfile);
   const subtitle = `${t("dashboard.volunteerProfile.volunteerHeader.volunteer_since")} ${formatDateTime(volunteer.createdAt)}`;
 
@@ -74,7 +78,7 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
       testId="volunteer-header"
       avatar={
         <AvatarContainer>
-          <Image src={avatarUrl} alt={volunteer.person.firstName} fill style={{ objectFit: "cover" }} />
+          {/* <Image src={avatarUrl} alt={volunteer.person.firstName} fill style={{ objectFit: "cover" }} /> */}
         </AvatarContainer>
       }
       title={fullName}
