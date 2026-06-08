@@ -125,11 +125,16 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
         )}
       </CardDetail>
 
-      {activityTitles.length > 0 && (
-        <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>
-          <Tags tags={activityTitles} />
-        </CardDetail>
-      )}
+      {activityTitles.length > 0 &&
+        (isAccompanying ? (
+          <CardDetail header={t("dashboard.opportunities.type.accompanying")} iconName={IconName.PersonSimpleWalk}>
+            <CardParagraph text={activityTitles.join(", ")} />
+          </CardDetail>
+        ) : (
+          <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>
+            <Tags tags={activityTitles} />
+          </CardDetail>
+        ))}
 
       <CardDetail header={t("dashboard.opportunities.dateOfAppointment")} iconName={IconName.CalendarDots}>
         {scheduleText && <CardParagraph text={scheduleText} />}

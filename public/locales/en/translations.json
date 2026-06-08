@@ -1260,6 +1260,7 @@
       "whatPlatform": "What platform did you use?",
       "howDidYouSend": "How did you send your message?",
       "contactMethodLabel": "Contact method",
+      "loggedBy": "By",
       "contactMethodRequired": "Contact method*",
       "communicationTypeRequired": "Communication type*",
       "communicationTypes": {
