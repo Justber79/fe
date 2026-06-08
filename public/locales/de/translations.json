@@ -1265,6 +1265,7 @@
       "whatPlatform": "Welche Plattform haben Sie verwendet?",
       "howDidYouSend": "Wie haben Sie Ihre Nachricht gesendet?",
       "contactMethodLabel": "Kontaktmethode",
+      "loggedBy": "Von",
       "contactMethodRequired": "Kontaktmethode*",
       "communicationTypeRequired": "Kommunikationstyp*",
       "communicationTypes": {
