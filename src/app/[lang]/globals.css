@@ -581,7 +581,6 @@ html {
   --dashboard-volunteers-card-paragraph-fontWeight-bold: 500;
   --dashboard-volunteers-card-paragraph-fontSize: 16px;
   --dashboard-volunteers-card-paragraph-lineHeight: 16px;
-  --dashboard-volunteers-card-paragraph-lineHeight: 16px;
   --dashboard-volunteers-filters-accompanying-header-container-gap: 8px;
   --dashboard-login-container-height: 944px;
   --dashboard-login-content-container-width: min(638px, calc(100vw - 32px));
@@ -599,7 +598,6 @@ html {
   --filters-description-line-height: 20px;
   --filters-description-letter-spacing: 0.5%;
   --filters-accordion-group-options-gap: 16px;
-  --filters-accordion-group-options-gap: 16px;
   --filters-search-bar-section-container-gap: 16px;
   --filters-search-bar-width: min(630px, 100%);
   --filters-clear-all-button-height: 44px;
@@ -611,7 +609,7 @@ html {
   --cards-header-filter-item-border-radius: 32px;
   --cards-header-filter-item-padding: 12px;
   --cards-header-filter-item-font-size: 16px;
-  --cards-header-filter-item-font-weight: 400px;
+  --cards-header-filter-item-font-weight: 400;
   --cards-header-filter-item-icon-div-size: 28px;
   --cards-header-filter-item-icon-div-border-radius: 14px;
   --opportunity-filter-chip-bg: var(--color-midnight);
@@ -649,7 +647,7 @@ html {
   --volunteer-profile-opportunities-tab-count-badge-background: var(--color-papaya);
   --volunteer-profile-opportunities-tab-count-badge-color: var(--color-white);
   --volunteer-profile-opportunities-tab-count-badge-font-size: 11px;
-  --volunteer-profile-opportunities-tab-count-badge-font-weight: var(--font-weight-semibold);
+  --volunteer-profile-opportunities-tab-count-badge-font-weight: var(--font-weight-semi-bold);
   --volunteer-profile-opportunities-tab-count-badge-line-height: 1;
   --volunteer-profile-opportunities-accordion-container-padding: 24px;
   --volunteer-profile-opportunities-accordion-container-border-radius: 24px;
