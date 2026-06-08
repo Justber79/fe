@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate, formatAvailability } from "./OpportunityCard.helpers";
+import { formatAccompanyingDate } from "./OpportunityCard.helpers";
 import { getLanguagesByPurpose } from "./helpers";
+import { formatAvailability } from "../Profile/sections/VolunteerProfile/formatters";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -37,7 +38,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
     : availability?.length
-      ? formatAvailability(availability)
+      ? formatAvailability(availability, t)
       : null;
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
@@ -51,7 +52,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
         <TruncatedText>{title}</TruncatedText>
       </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.schedule} data-testid={`opportunity-schedule-${id}`}>
+      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.schedule} data-testid={`opportunity-schedule-${id}`}>
         <TruncatedText>{scheduleText || "—"}</TruncatedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
