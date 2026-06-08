@@ -196,6 +196,11 @@ html {
   --comments-menu-item-font-weight: var(--font-weight-regular);
   --comments-menu-item-danger-font-weight: var(--font-weight-semi-bold);
 
+  /* user tags */
+  --tag-text-stroke: 0.5px var(--color-midnight);
+  --tag-autocomplete-padding: 5px;
+  --tag-autocomplete-font-size: 1.05rem;
+
   /* icon */
   --icon-color: var(--color-papaya);
   --icon-size-24: 24px;

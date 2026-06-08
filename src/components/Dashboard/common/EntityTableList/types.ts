@@ -4,6 +4,7 @@ export interface Column {
   key: string;
   label: string;
   width?: string;
+  headerAction?: ReactNode;
 }
 
 export interface EntityTableListProps<T extends { id: string | number }> {

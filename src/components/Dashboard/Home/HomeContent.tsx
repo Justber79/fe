@@ -1,9 +1,11 @@
+"use client";
 import { Heading2, Heading3 } from "@/components/styled/text";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { CreateOpportunityButton } from "./CreateOpportunityButton";
 import { NewestOpportunities } from "./NewestOpportunities";
 import { NewestVolunteers } from "./NewestVolunteers";
 import { DashboardCardContainer, DashboardContentContainer } from "./styles";
-import { useTranslation } from "react-i18next";
 import { NewestTaggedComments } from "./NewestTaggedComments";
 
 export default function DashboardHomeContent() {
@@ -11,6 +13,7 @@ export default function DashboardHomeContent() {
   return (
     <DashboardContentContainer>
       <Heading2>{t("dashboard.home.content.header")}</Heading2>
+      <CreateOpportunityButton />
       <Heading3>{t("dashboard.home.content.newTags")}</Heading3>
       <NewestTaggedComments />
       <Heading3>{t("dashboard.home.content.newOpportunities")}</Heading3>

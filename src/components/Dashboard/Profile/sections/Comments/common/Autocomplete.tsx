@@ -1,0 +1,144 @@
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { AutocompleteContainer, AutocompleteRow } from "./styles";
+import { ApiUserGet } from "need4deed-sdk";
+import { defaultAvatarVolunteerProfile } from "@/config/constants";
+import { AvatarImg } from "../../OpportunityVolunteers/styles";
+import { getImageUrl } from "@/utils";
+import getCaretCoordinates from "textarea-caret";
+
+type Props = {
+  handleTagAdd: (userId: number, fullName: string) => void;
+  newCommentText: string;
+  textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
+  activeRowIndex: number;
+  setFilteredListLength: (length: number) => void;
+  setOnSelectTrigger: (callback: (() => void) | null) => void;
+  users: ApiUserGet[] | undefined;
+};
+
+export default function Autocomplete({
+  handleTagAdd,
+  newCommentText,
+  textAreaRef,
+  activeRowIndex,
+  setFilteredListLength,
+  setOnSelectTrigger,
+  users,
+}: Props) {
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const userFilter = useMemo(() => {
+    if (!newCommentText || !textAreaRef?.current) return "";
+    const cursorPosition = textAreaRef?.current.selectionStart;
+    const textBeforeCaret = newCommentText.substring(0, cursorPosition);
+    if (newCommentText[0] !== "@" && newCommentText.length > 1 && !textBeforeCaret.includes(" @")) return null;
+    const lastAtIndex = textBeforeCaret.lastIndexOf("@");
+    if (lastAtIndex === -1) return "";
+    const textAfterAt = textBeforeCaret.substring(lastAtIndex + 1);
+    if (textAfterAt.includes(" ")) return null;
+    return textAfterAt.toLowerCase();
+  }, [newCommentText, textAreaRef]);
+
+  const filteredUsers = useMemo(() => {
+    if (userFilter === null) return;
+    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
+  }, [userFilter, users]);
+
+  useEffect(() => {
+    if (!filteredUsers) return;
+    setFilteredListLength(filteredUsers?.length);
+    return () => setFilteredListLength(0);
+  }, [filteredUsers, setFilteredListLength]);
+
+  useEffect(() => {
+    if (!filteredUsers) return;
+    const activeUser = filteredUsers[activeRowIndex];
+    if (activeUser) {
+      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, "")));
+    } else {
+      setOnSelectTrigger(null);
+    }
+    return () => setOnSelectTrigger(null);
+  }, [filteredUsers, activeRowIndex, setOnSelectTrigger]);
+
+  useEffect(() => {
+    if (!containerRef.current || filteredUsers?.length === 0) return;
+
+    const container = containerRef.current;
+
+    const activeChild = container.children[activeRowIndex] as HTMLElement;
+
+    if (!activeChild) return;
+
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+    const elemTop = activeChild.offsetTop;
+    const elemBottom = elemTop + activeChild.offsetHeight;
+
+    if (elemBottom > containerBottom) {
+      container.scrollTop = elemBottom - container.clientHeight;
+    } else if (elemTop < containerTop) {
+      container.scrollTop = elemTop;
+    }
+  }, [activeRowIndex, filteredUsers]);
+
+  const handleUserSelect = (userId: number, fullName: string) => {
+    handleTagAdd(userId, fullName.replaceAll(/ /g, ""));
+  };
+
+  const resolvedAvatarUrl = (url: string | null | undefined) => {
+    return getImageUrl(url || defaultAvatarVolunteerProfile);
+  };
+
+  useLayoutEffect(() => {
+    const el = textAreaRef?.current;
+    if (!el || userFilter === null) return;
+    const textBeforeCaret = el.value.substring(0, el.selectionStart);
+    const lastAtIndex = textBeforeCaret?.lastIndexOf("@");
+
+    const positioningIndex = lastAtIndex !== -1 ? lastAtIndex : el.selectionStart;
+
+    const caret = getCaretCoordinates(el, positioningIndex ?? 0);
+
+    setCoords({
+      top: caret.top + 20 - el?.scrollTop,
+      left: caret.left - el?.scrollLeft,
+    });
+  }, [userFilter, textAreaRef]);
+
+  return (
+    filteredUsers &&
+    filteredUsers.length > 0 && (
+      <AutocompleteContainer
+        ref={containerRef}
+        role="listbox"
+        aria-label="User mentions options"
+        style={{
+          top: `${coords.top}px`,
+          left: `${coords.left}px`,
+        }}
+      >
+        {filteredUsers?.map((user, index) => {
+          const isActive = index === activeRowIndex;
+
+          return (
+            <AutocompleteRow
+              key={user.id}
+              role="option"
+              aria-selected={isActive}
+              onClick={() => handleUserSelect(user.id, user.fullName)}
+              style={{
+                backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
+                cursor: "pointer",
+              }}
+            >
+              <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.fullName} />
+              <span>{user.fullName}</span>
+            </AutocompleteRow>
+          );
+        })}
+      </AutocompleteContainer>
+    )
+  );
+}

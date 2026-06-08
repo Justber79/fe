@@ -5,16 +5,18 @@ import type {
   createMatchStatusLabelMap,
   createStatusLabelMap,
 } from "@/components/Dashboard/Profile/sections/VolunteerAgents/types";
-import { TableCell, TableRow } from "@/components/core/common/Table";
+import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
 import { CirclePic } from "@/components/styled/img";
 import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
 import { ApiVolunteerGetList } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
+import { CopyEmail } from "../common/CopyEmail";
+import { CheckCircleIcon } from "@phosphor-icons/react";
+import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
 
 interface TableRowProps {
   volunteer: ApiVolunteerGetList;
@@ -36,16 +38,38 @@ export function VolunteerTableRow({
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
-  const { statusMatch, email } = volunteer as ApiVolunteerGetList;
+  const {
+    id,
+    name,
+    avatarUrl,
+    statusEngagement,
+    statusType,
+    languages,
+    locations,
+    statusMatch,
+    email,
+    statusCommunication,
+  } = volunteer;
 
   const topLangs = getTopLanguages(languages, 2);
-  const languageText = truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
+  const languageText =
+    truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
 
   const districtTitles = locations
     .map((loc) => (typeof loc === "string" ? loc : loc?.title))
     .filter(Boolean) as string[];
-  const districtText = truncateList(districtTitles, 2) || "—";
+  const abbreviatedDistricts = districtTitles.map((title) => {
+    if (title.includes("-")) {
+      const abbreviation = title
+        .split("-")
+        .map((word) => word.trim()[0])
+        .join("-");
+      return abbreviation.toUpperCase();
+    }
+    return title;
+  });
+  const districtText = truncateList(abbreviatedDistricts, 1) || "—";
+  const showBriefedCheck = isBriefedAccompanying(statusType, statusCommunication ?? undefined);
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -55,44 +79,37 @@ export function VolunteerTableRow({
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
-      <NameCell data-testid={`volunteer-name-${id}`}>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
-        <NameText>{getFirstName(name)}</NameText>
-      </NameCell>
-      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap data-testid={`volunteer-type-${id}`}>
-        {statusType ? typeLabels[statusType] : "—"}
+        <TruncatedText>{getFirstName(name)}</TruncatedText>
+      </TableCell>
+      <TableCell $width={VOLUNTEER_COL_WIDTHS.type} $noWrap $align="space-between" data-testid={`volunteer-type-${id}`}>
+        <TruncatedText>{statusType ? typeLabels[statusType] : "—"}</TruncatedText>
+        {showBriefedCheck && (
+          <CheckCircleIcon size={18} color="var(--color-green-700)" weight="fill" style={{ flexShrink: 0 }} />
+        )}
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.engagement} $noWrap data-testid={`volunteer-engagement-${id}`}>
-        {statusEngagement ? engagementLabels[statusEngagement] : "—"}
+        <TruncatedText>{statusEngagement ? engagementLabels[statusEngagement] : "—"}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.matching} $noWrap data-testid={`volunteer-match-${id}`}>
-        {statusMatch ? matchLabels[statusMatch] : "—"}
+        <TruncatedText>{statusMatch ? matchLabels[statusMatch] : "—"}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.language} $noWrap data-testid={`volunteer-language-${id}`}>
-        {languageText}
+        <TruncatedText>{languageText}</TruncatedText>
       </TableCell>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
-        {districtText}
+        <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
-      <TableCell $noWrap data-testid={`volunteer-email-${id}`}>{email || "—"}</TableCell>
+      <TableCell
+        $width={VOLUNTEER_COL_WIDTHS.email}
+        $noWrap
+        $align="space-between"
+        data-testid={`volunteer-email-${id}`}
+      >
+        <TruncatedText>{email || "—"}</TruncatedText>
+        {email && <CopyEmail email={email} name={name} />}
+      </TableCell>
     </ClickableRow>
   );
 }
-
-const ClickableRow = styled(TableRow)`
-  cursor: pointer;
-
-  &:hover {
-    background: var(--color-pink-50);
-  }
-`;
-
-const NameCell = styled(TableCell)`
-  overflow: hidden;
-`;
-
-const NameText = styled.span`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;

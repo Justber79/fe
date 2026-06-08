@@ -1,4 +1,5 @@
 import { useCommunicationTracker } from "@/hooks/useCommunicationTracker";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
 import { ApiCommunicationGet, ApiVolunteerCommunicationPost, ApiVolunteerCommunicationPatch } from "need4deed-sdk";
 import { EntityType } from "@/components/Dashboard/Profile/types";
@@ -18,7 +19,7 @@ import {
   ActionButton,
 } from "@/components/core/common/Table";
 import { CommunicationTableContainer } from "./styles";
-import { formatDate, getDisplayLabel, getContactMethodLabel } from "./utils/translations";
+import { formatDate, getDisplayLabel, getContactMethodLabel, getLoggedByLabel } from "./utils/translations";
 
 type Props = {
   entityId: number;
@@ -34,6 +35,8 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
   ref,
 ) {
   const { t } = useTranslation();
+  // true = only fetch when the user is logged in (has auth cookie)
+  const currentUser = useCurrentUser(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiCommunicationGet | undefined>(undefined);
   const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiCommunicationGet | null>(null);
@@ -121,6 +124,7 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
                 {t("dashboard.communicationSection.contactMethodLabel")}
               </TableHeaderCell>
               <TableHeaderCell $width="152px">{t("dashboard.communicationSection.date")}</TableHeaderCell>
+              <TableHeaderCell $width="140px">{t("dashboard.communicationSection.loggedBy")}</TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
             </TableHeader>
@@ -135,6 +139,9 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
                   <TableCell $maxWidth="310px">{getContactMethodLabel(t, entry.contactMethod)}</TableCell>
                   <TableCell $width="152px" $noWrap>
                     {formatDate(entry.date)}
+                  </TableCell>
+                  <TableCell $width="140px" $noWrap>
+                    {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
                   </TableCell>
                   <ActionCell>
                     <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>

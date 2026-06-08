@@ -2,12 +2,7 @@
 import Button from "@/components/core/button/Button/Button";
 import { useUpdateVolunteerProfile } from "@/hooks/useUpdateVolunteerProfile";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ApiVolunteerGet,
-  Lang,
-  VolunteerStateCommunicationType,
-  VolunteerStateTypeType,
-} from "need4deed-sdk";
+import { ApiVolunteerGet, Lang, VolunteerStateCommunicationType, VolunteerStateTypeType } from "need4deed-sdk";
 import { isBriefedAccompanying } from "../ProfileHeader/common";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -157,11 +152,7 @@ export const VolunteerProfile = forwardRef<VolunteerProfileRef, Props>(function 
           />
         ) : (
           <DisplayFields
-            languages={formatLanguagesForDisplay(
-              volunteer.languages,
-              languageMapping.idToTitle,
-              t,
-            )}
+            languages={formatLanguagesForDisplay(volunteer.languages, languageMapping.idToTitle, t)}
             availability={formatAvailability(volunteer.availability, t)}
             districts={formatLocationsForDisplay(volunteer.locations)}
             volunteerType={getVolunteerTypeLabel(volunteer.statusType, t)}

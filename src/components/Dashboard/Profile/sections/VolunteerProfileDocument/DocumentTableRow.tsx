@@ -1,9 +1,9 @@
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { DownloadSimple, Eye, Trash, UploadSimple } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
-import { ActionButtonWithTooltip } from "./ActionButtonWithTooltip";
 import { ActionCell, Cell, ReceivedCell, ReceivedCheckbox, StatusBadge, TableRow } from "./styles";
 import { DocumentRow } from "./utils";
+import { ActionButtonWithTooltip } from "@/components/Dashboard/common/ActionButtonWithTooltip";
 
 type Props = {
   documentRow: DocumentRow;

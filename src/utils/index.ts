@@ -19,7 +19,6 @@ export function localHhmmToUtc(hhmm: string): string {
   return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
 }
 
-
 export function getDateLocalTooUTC(dateStr: string | undefined) {
   if (!dateStr) return undefined;
 

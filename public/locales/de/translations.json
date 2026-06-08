@@ -333,6 +333,7 @@
   },
   "dashboard": {
     "common": {
+      "loading": "Wird geladen...",
       "datePrefix": {
         "appliedOn": "Beworben am",
         "matchedOn": "Zugeordnet am",
@@ -350,6 +351,14 @@
         "language": "Sprache",
         "district": "Bezirk",
         "email": "E-Mail"
+      },
+      "copyEmails": {
+        "tooltip": "Alle E-Mails kopieren",
+        "tooltipSingle": "E-Mail kopieren",
+        "success": "{{count}} E-Mails kopiert",
+        "successSingle": "E-Mail kopiert",
+        "copyAriaSingle": "E-Mail von {{name}} kopieren",
+        "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       },
       "tabs": {
         "tab1": "Liste",
@@ -444,12 +453,13 @@
         "home": "Startseite",
         "volunteers": "Freiwillige",
         "opportunities": "Möglichkeiten",
-        "agents": "Akteure",
+        "agents": "Einrichtungen/Projekte",
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
         "profile": "Profil"
-      }
+      },
+      "createOpportunity": "Neue Möglichkeit erstellen"
     },
     "found": "gefunden",
     "searchPlaceHolder": "Freiwillige suchen",
@@ -660,7 +670,7 @@
       }
     },
     "agents": {
-      "agents": "RAC-Verzeichnis",
+      "agents": "Einrichtungs-/Projektverzeichnis",
       "table": {
         "title": "Name",
         "type": "Typ",
@@ -792,7 +802,7 @@
         "district": "Bezirk",
         "schedule": "Zeitplan",
         "volunteersNeeded": "Anzahl der Freiwilligen",
-        "agentName": "Agent"
+        "agentName": "Einrichtung/Projekt"
       },
 
       "card": {
@@ -957,7 +967,7 @@
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
     "agentProfile": {
-      "agentProfile": "Profil des Agenten",
+      "agentProfile": "Einrichtungs-/Projektprofil",
       "registeredSince": "Registriert seit",
       "engagementStatus": "Engagement-Status",
       "serviceType": "Dienstleistungsart",
@@ -1000,14 +1010,14 @@
         "title": "Engagement-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
-          "unresponsive_description": "Dieser Agent antwortet nicht.",
+          "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Dieser Agent arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
       },
-      "statusUpdateSuccess": "Agent-Status erfolgreich aktualisiert",
+      "statusUpdateSuccess": "Status der Einrichtung/des Projekts erfolgreich aktualisiert",
       "contactDetails": {
         "title": "Kontaktdaten",
         "fullName": "Name",
@@ -1081,7 +1091,7 @@
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
       "matchingStatus": "Matching-Status",
-      "agent": "Träger",
+      "agent": "Einrichtung/Projekt",
       "status": {
         "new": "Neu",
         "active": "Aktiv",
@@ -1258,6 +1268,7 @@
       "whatPlatform": "Welche Plattform haben Sie verwendet?",
       "howDidYouSend": "Wie haben Sie Ihre Nachricht gesendet?",
       "contactMethodLabel": "Kontaktmethode",
+      "loggedBy": "Von",
       "contactMethodRequired": "Kontaktmethode*",
       "communicationTypeRequired": "Kommunikationstyp*",
       "communicationTypes": {
@@ -1324,6 +1335,17 @@
         "submit": "Absenden",
         "locationHelper": "z.B. Elsenstr., Nr. 87, 12435"
       }
+    },
+    "newOpportunity": {
+      "title": "Neue Möglichkeit",
+      "subtitle": "Füllen Sie die Details aus. Sie können alles nach der Erstellung bearbeiten.",
+      "fields": {
+        "title": "Titel der Möglichkeit",
+        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene"
+      },
+      "contactSection": "Kontaktdaten",
+      "agentSection": "Ihre Organisation",
+      "submit": "Möglichkeit erstellen"
     }
   },
   "aboutus": {
@@ -1889,11 +1911,24 @@
     },
     "errors": {
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
-      "passwordMismatch": "Die Passwörter stimmen nicht überein"
+      "passwordMismatch": "Die Passwörter stimmen nicht überein",
+      "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
       "description": "Ihr Konto wurde erstellt. Sie werden in Kürze zur Anmeldeseite weitergeleitet."
+    },
+    "checkEmail": {
+      "title": "Prüfen Sie Ihre E-Mail",
+      "description": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Klicken Sie darauf, um die Einrichtung Ihres Kontos fortzusetzen."
+    },
+    "completion": {
+      "title": "Konto-Einrichtung abschließen",
+      "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
+      "matchFound": "Wir haben eine Organisation gefunden, die zu dieser Adresse passt: {{name}}. Möchten Sie diese verwenden?",
+      "useThisOrg": "Ja, diese verwenden",
+      "skip": "Nein, manuell eingeben",
+      "matched": "Organisation gefunden: {{name}}"
     }
   }
 }

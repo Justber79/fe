@@ -4,8 +4,7 @@ import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
-import { TableCell, TableRow } from "@/components/core/common/Table";
-import styled from "styled-components";
+import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 
 interface TableRowProps {
@@ -50,11 +49,3 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
     </ClickableRow>
   );
 }
-
-const ClickableRow = styled(TableRow)`
-  cursor: pointer;
-
-  &:hover {
-    background: var(--color-pink-50);
-  }
-`;
