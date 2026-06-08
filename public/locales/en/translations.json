@@ -352,6 +352,14 @@
         "district": "District",
         "email": "Email"
       },
+      "copyEmails": {
+        "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
+        "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
+        "genericError": "Something went wrong. Please try again."
+      },
       "tabs": {
         "tab1": "List",
         "tab2": "Cards"
@@ -442,12 +450,13 @@
         "home": "Home",
         "volunteers": "Volunteers",
         "opportunities": "Opportunities",
-        "agents": "Agents",
+        "agents": "NGOs",
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
         "profile": "Profile"
-      }
+      },
+      "createOpportunity": "Create New Opportunity"
     },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
@@ -701,7 +710,7 @@
       }
     },
     "agents": {
-      "agents": "RAC Directory",
+      "agents": "NGO Directory",
       "table": {
         "title": "Name",
         "type": "Type",
@@ -833,7 +842,7 @@
         "district": "District",
         "schedule": "Schedule",
         "volunteersNeeded": "Volunteers Needed",
-        "agentName": "Agent"
+        "agentName": "NGO"
       },
       "card": {
         "mainCommunication": "Main communication",
@@ -954,7 +963,7 @@
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
     "agentProfile": {
-      "agentProfile": "Agent's profile",
+      "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
       "engagementStatus": "Engagement status",
       "serviceType": "Service Type",
@@ -997,14 +1006,14 @@
         "title": "Change engagement status",
         "options": {
           "unresponsive": "Unresponsive",
-          "unresponsive_description": "This agent does not respond.",
+          "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
-          "inactive_description": "This agent does not work with the organization anymore."
+          "inactive_description": "This NGO does not work with the organization anymore."
         },
         "cancel": "Cancel",
         "save": "Save"
       },
-      "statusUpdateSuccess": "Agent status updated successfully",
+      "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
         "fullName": "Name",
@@ -1078,7 +1087,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
-      "agent": "Agent",
+      "agent": "NGO",
       "status": {
         "new": "New",
         "active": "Active",
@@ -1255,6 +1264,7 @@
       "whatPlatform": "What platform did you use?",
       "howDidYouSend": "How did you send your message?",
       "contactMethodLabel": "Contact method",
+      "loggedBy": "By",
       "contactMethodRequired": "Contact method*",
       "communicationTypeRequired": "Communication type*",
       "communicationTypes": {
@@ -1321,6 +1331,17 @@
         "submit": "Submit",
         "locationHelper": "e.g. Elsenstr., No. 87, 12435"
       }
+    },
+    "newOpportunity": {
+      "title": "New Opportunity",
+      "subtitle": "Fill in the details. You can edit everything after creating it.",
+      "fields": {
+        "title": "Opportunity title",
+        "titlePlaceholder": "e.g. German tutoring for adults"
+      },
+      "contactSection": "Contact details",
+      "agentSection": "Your organisation",
+      "submit": "Create opportunity"
     }
   },
   "aboutus": {
@@ -1519,11 +1540,24 @@
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
-      "passwordMismatch": "Passwords do not match"
+      "passwordMismatch": "Passwords do not match",
+      "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address."
     },
     "success": {
       "title": "Registration successful!",
       "description": "Your account has been created. You will be redirected to the login page shortly."
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "description": "We sent a confirmation link to your email address. Click it to continue setting up your account."
+    },
+    "completion": {
+      "title": "Finish setting up your account",
+      "subtitle": "Tell us about your organisation.",
+      "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
+      "useThisOrg": "Yes, use this",
+      "skip": "No, enter manually",
+      "matched": "Organisation matched: {{name}}"
     }
   }
 }

@@ -1,4 +1,11 @@
-import { CalendarDotsIcon, MapPinIcon, ShootingStarIcon, TranslateIcon, WrenchIcon } from "@phosphor-icons/react";
+import {
+  CalendarDotsIcon,
+  MapPinIcon,
+  PersonSimpleWalkIcon,
+  ShootingStarIcon,
+  TranslateIcon,
+  WrenchIcon,
+} from "@phosphor-icons/react";
 import { JSX } from "react";
 
 export enum IconName {
@@ -7,6 +14,7 @@ export enum IconName {
   Wrench = "wrench",
   CalendarDots = "calendarDots",
   MapPin = "mapPin",
+  PersonSimpleWalk = "personSimpleWalk",
 }
 
 type IconMap = {
@@ -19,4 +27,5 @@ export const iconNameMap: IconMap = {
   [IconName.Wrench]: <WrenchIcon />,
   [IconName.CalendarDots]: <CalendarDotsIcon />,
   [IconName.MapPin]: <MapPinIcon />,
+  [IconName.PersonSimpleWalk]: <PersonSimpleWalkIcon />,
 };

@@ -1,5 +1,5 @@
-import { AgentType } from "need4deed-sdk";
-import { AgentRegistrationData } from "./types";
+import { AgentServiceType, AgentType } from "need4deed-sdk";
+import { AgentRegistrationData, ProfileCompletionData } from "./types";
 
 export const AGENT_TYPE_LABELS: Record<AgentType, string> = {
   [AgentType.AE]: "AE",
@@ -12,6 +12,19 @@ export const AGENT_TYPE_LABELS: Record<AgentType, string> = {
   [AgentType.COUNSELING_CENTER]: "Counseling Center",
   [AgentType.TANDEM]: "Tandem",
   [AgentType.MULTIPLE_SOCIAL_SUPPORT]: "Multiple Social Support",
+};
+
+export const AGENT_SERVICE_LABELS: Record<AgentServiceType, string> = {
+  [AgentServiceType.CHILDCARE]: "Childcare",
+  [AgentServiceType.WELFARE]: "Welfare",
+  [AgentServiceType.CONSULTATION]: "Consultation",
+  [AgentServiceType.VOLUNTARY_SUPPORT]: "Voluntary Support",
+  [AgentServiceType.TANDEM]: "Tandem",
+  [AgentServiceType.SPORT]: "Sport",
+  [AgentServiceType.TUTORING]: "Tutoring",
+  [AgentServiceType.REFUGEE_ACCOMMODATION]: "Refugee Accommodation",
+  [AgentServiceType.JOB_COACHING]: "Job Coaching",
+  [AgentServiceType.YOUTH]: "Youth",
 };
 
 export function validateStep(
@@ -34,14 +47,25 @@ export function validateStep(
       errors.confirmPassword = t("agentRegistration.errors.passwordMismatch");
   }
 
+  return errors;
+}
+
+export function validateCompletionStep(
+  step: number,
+  data: ProfileCompletionData,
+  t: (k: string) => string,
+): Partial<Record<keyof ProfileCompletionData, string>> {
+  const errors: Partial<Record<keyof ProfileCompletionData, string>> = {};
+  const required = t("form.error.required");
+
+  if (step === 1) {
+    if (!data.addressStreet.trim()) errors.addressStreet = required;
+    if (!data.addressPostcode.trim()) errors.addressPostcode = required;
+  }
+
   if (step === 2) {
     if (!data.organizationName.trim()) errors.organizationName = required;
     if (!data.organizationType) errors.organizationType = required;
-  }
-
-  if (step === 3) {
-    if (!data.addressStreet.trim()) errors.addressStreet = required;
-    if (!data.addressPostcode.trim()) errors.addressPostcode = required;
   }
 
   return errors;

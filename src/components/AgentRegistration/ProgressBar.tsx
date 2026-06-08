@@ -1,7 +1,6 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { TOTAL_STEPS } from "./types";
 
 const Container = styled.div`
   display: flex;
@@ -34,18 +33,19 @@ const Segment = styled.div<SegmentProps>`
 
 interface Props {
   currentStep: number;
+  totalSteps: number;
 }
 
-export function ProgressBar({ currentStep }: Props) {
+export function ProgressBar({ currentStep, totalSteps }: Props) {
   const { t } = useTranslation();
 
   return (
     <Container>
       <StepLabel>
-        {t("agentRegistration.step")} {currentStep} / {TOTAL_STEPS}
+        {t("agentRegistration.step")} {currentStep} / {totalSteps}
       </StepLabel>
       <Track>
-        {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+        {Array.from({ length: totalSteps }, (_, i) => (
           <Segment key={i} $active={i < currentStep} />
         ))}
       </Track>

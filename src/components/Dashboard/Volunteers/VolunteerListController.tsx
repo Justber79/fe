@@ -9,6 +9,7 @@ import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
+import { useCopyVolunteerEmails } from "@/hooks/useCopyVolunteerEmails";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -44,6 +45,9 @@ export function VolunteerListController({
     limit,
     page: currentPage,
     sortOrder,
+    // Table renders only languages + locations; card renders all collections.
+    // Tell the backend so it loads (and returns) only the needed relations.
+    listType: isListView ? "table" : "card",
     filter: serializedFilter,
   };
   const { data, count, isLoading } = useGetQuery<ApiVolunteerGetList[]>({
@@ -53,6 +57,7 @@ export function VolunteerListController({
     staleTime: cacheTTL,
   });
   const volunteers = data || [];
+  const { handleCopyEmails, isCopying } = useCopyVolunteerEmails(serializedFilter);
 
   useEffect(() => {
     setNumOfVols(count);
@@ -69,6 +74,8 @@ export function VolunteerListController({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         opportunityId={opportunityId}
+        onCopyEmails={handleCopyEmails}
+        isCopying={isCopying}
       />
     );
   }

@@ -51,3 +51,8 @@ export function getDisplayLabel(t: TFunction, contactType: ContactType, communic
 }
 
 export { formatDate } from "../../shared/utils/formatDate";
+
+export function getLoggedByLabel(userId: number, currentUser?: { id: number; fullName: string } | null): string {
+  if (currentUser && userId === currentUser.id) return currentUser.fullName || `#${userId}`;
+  return `#${userId}`;
+}
