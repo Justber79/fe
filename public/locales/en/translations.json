@@ -834,14 +834,11 @@
       },
       "table": {
         "title": "Title",
-        "type": "Type",
-        "currentStatus": "Current Status",
         "matchingStatus": "Matching Status",
         "languages": "Languages",
-        "activities": "Activities",
         "district": "District",
         "schedule": "Schedule",
-        "volunteersNeeded": "Volunteers Needed",
+        "volunteersNeeded": "Needed",
         "agentName": "NGO"
       },
       "card": {
