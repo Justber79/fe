@@ -354,7 +354,10 @@
       },
       "copyEmails": {
         "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
         "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
         "genericError": "Something went wrong. Please try again."
       },
       "tabs": {
@@ -1261,6 +1264,7 @@
       "whatPlatform": "What platform did you use?",
       "howDidYouSend": "How did you send your message?",
       "contactMethodLabel": "Contact method",
+      "loggedBy": "By",
       "contactMethodRequired": "Contact method*",
       "communicationTypeRequired": "Communication type*",
       "communicationTypes": {

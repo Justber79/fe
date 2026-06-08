@@ -26,7 +26,7 @@ export function EntityTableList<T extends { id: string | number }>({
         <ScrollableTable>
           <TableHeader>
             {columns.map((col) => (
-              <TableHeaderCell key={col.key} $width={col.width}>
+              <TableHeaderCell key={col.key} $width={col.width} $align="space-between">
                 {col.label}
                 {col.headerAction}
               </TableHeaderCell>
