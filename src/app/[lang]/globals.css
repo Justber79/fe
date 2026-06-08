@@ -1300,6 +1300,13 @@ html {
     --dashboard-navigation-bar-option-text-size: 14px;
     --dashboard-navigation-bar-option-text-letter-spacing: 0.14px;
 
+    --dashboard-notification-badge-container-bottom: 10px;
+    --dashboard-notification-circle-border-radius: 20px;
+    --dashboard-notification-circle-padding: 0.1rem 0.5rem;
+    --dashboard-notification-font-size: 0.85rem;
+    --dashboard-notification-background-color: var(--color-red-600);
+    --dashboard-notification-text-color: var(--color-white);
+
     --dashboard-cards-header-result-sortBy-gap: 20px;
     --dashboard-cards-header-sortBy-container-gap: 4px;
     --dashboard-cards-header-sortBy-options-gap: 6px;
