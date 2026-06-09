@@ -28,6 +28,20 @@ const BarContainer = styled.div`
   border-top-right-radius: var(--dashboard-navigation-bar-border-radius);
   border-bottom-right-radius: var(--dashboard-navigation-bar-border-radius);
   padding: var(--dashboard-navigation-bar-padding);
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: var(--dashboard-navigation-bar-mobile-height);
+    gap: 4px;
+    padding: 8px 4px;
+    border-radius: var(--dashboard-navigation-bar-border-radius) var(--dashboard-navigation-bar-border-radius) 0 0;
+    overflow-x: auto;
+  }
 `;
 
 const Option = styled.div`

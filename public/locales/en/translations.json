@@ -354,7 +354,10 @@
       },
       "copyEmails": {
         "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
         "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
         "genericError": "Something went wrong. Please try again."
       },
       "tabs": {
@@ -439,6 +442,9 @@
     "home": {
       "content": {
         "header": "Dashboard Home",
+        "newTags": "Newest Tags",
+        "taggedComment": "{{user}} tagged you in {{entityType}}: {{entityTitle}}",
+        "noTaggedComments": "You are currently not tagged in any comments",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
         "loading": "Loading..."
@@ -447,7 +453,7 @@
         "home": "Home",
         "volunteers": "Volunteers",
         "opportunities": "Opportunities",
-        "agents": "Agents",
+        "agents": "NGOs",
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
@@ -707,7 +713,7 @@
       }
     },
     "agents": {
-      "agents": "RAC Directory",
+      "agents": "NGO Directory",
       "table": {
         "title": "Name",
         "type": "Type",
@@ -799,7 +805,15 @@
       "schedule": "Schedule",
       "district": "District",
       "dateOfAppointment": "Date Of Appointment",
-      "description": "Description"
+      "description": "Description",
+      "pendingMemberships": {
+        "title": "Pending join requests ({{count}})",
+        "requestsToJoin": "requests to join {{org}}",
+        "approve": "Approve",
+        "reject": "Reject",
+        "approved": "Join request approved",
+        "rejected": "Join request rejected"
+      }
     },
     "opportunities": {
       "opportunities": "Opportunities",
@@ -839,7 +853,7 @@
         "district": "District",
         "schedule": "Schedule",
         "volunteersNeeded": "Volunteers Needed",
-        "agentName": "Agent"
+        "agentName": "NGO"
       },
       "card": {
         "mainCommunication": "Main communication",
@@ -919,6 +933,7 @@
       "commentUpdated": "Comment updated successfully",
       "saveEdit": "Save",
       "cancelEdit": "Cancel",
+      "errorTagging": "Error occurred on tagging. Users not tagged",
       "deleteDialog": {
         "title": "Delete comment?",
         "message": "{{authorName}}'s comment will be permanently deleted.",
@@ -959,7 +974,7 @@
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
     "agentProfile": {
-      "agentProfile": "Agent's profile",
+      "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
       "engagementStatus": "Engagement status",
       "serviceType": "Service Type",
@@ -1002,14 +1017,14 @@
         "title": "Change engagement status",
         "options": {
           "unresponsive": "Unresponsive",
-          "unresponsive_description": "This agent does not respond.",
+          "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
-          "inactive_description": "This agent does not work with the organization anymore."
+          "inactive_description": "This NGO does not work with the organization anymore."
         },
         "cancel": "Cancel",
         "save": "Save"
       },
-      "statusUpdateSuccess": "Agent status updated successfully",
+      "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
         "fullName": "Name",
@@ -1083,7 +1098,7 @@
       "postedOn": "Posted on",
       "currentStatus": "Current status",
       "matchingStatus": "Matching status",
-      "agent": "Agent",
+      "agent": "NGO",
       "status": {
         "new": "New",
         "active": "Active",
@@ -1260,6 +1275,7 @@
       "whatPlatform": "What platform did you use?",
       "howDidYouSend": "How did you send your message?",
       "contactMethodLabel": "Contact method",
+      "loggedBy": "By",
       "contactMethodRequired": "Contact method*",
       "communicationTypeRequired": "Communication type*",
       "communicationTypes": {
@@ -1536,7 +1552,8 @@
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
-      "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address."
+      "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
+      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
     },
     "success": {
       "title": "Registration successful!",
@@ -1552,7 +1569,14 @@
       "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
       "useThisOrg": "Yes, use this",
       "skip": "No, enter manually",
-      "matched": "Organisation matched: {{name}}"
+      "matched": "Organisation matched: {{name}}",
+      "titleTaken": "An organisation with this name already exists.",
+      "joinInstead": "Join it instead",
+      "requestToJoin": "Request to join"
+    },
+    "pending": {
+      "title": "Join request submitted",
+      "description": "An administrator will review your request to join this organisation. You'll get access once it's approved."
     }
   }
 }

@@ -354,7 +354,10 @@
       },
       "copyEmails": {
         "tooltip": "Alle E-Mails kopieren",
+        "tooltipSingle": "E-Mail kopieren",
         "success": "{{count}} E-Mails kopiert",
+        "successSingle": "E-Mail kopiert",
+        "copyAriaSingle": "E-Mail von {{name}} kopieren",
         "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       },
       "tabs": {
@@ -439,6 +442,9 @@
     "home": {
       "content": {
         "header": "Dashboard Startseite",
+        "newTags": "Neueste Tags",
+        "taggedComment": "{{user}} hat dich in {{entityType}}: {{entityTitle}} markiert",
+        "noTaggedComments": "Du bist derzeit in keinen Kommentaren markiert",
         "newOpportunities": "Neueste Möglichkeiten",
         "newVolunteers": "Neueste Freiwillige",
         "loading": "Wird geladen..."
@@ -447,7 +453,7 @@
         "home": "Startseite",
         "volunteers": "Freiwillige",
         "opportunities": "Möglichkeiten",
-        "agents": "Akteure",
+        "agents": "Einrichtungen/Projekte",
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
@@ -664,7 +670,7 @@
       }
     },
     "agents": {
-      "agents": "RAC-Verzeichnis",
+      "agents": "Einrichtungs-/Projektverzeichnis",
       "table": {
         "title": "Name",
         "type": "Typ",
@@ -756,7 +762,15 @@
       "schedule": "Zeitplan",
       "district": "Stadtviertel",
       "dateOfAppointment": "Termindatum",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "pendingMemberships": {
+        "title": "Ausstehende Beitrittsanfragen ({{count}})",
+        "requestsToJoin": "möchte {{org}} beitreten",
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "approved": "Beitrittsanfrage genehmigt",
+        "rejected": "Beitrittsanfrage abgelehnt"
+      }
     },
     "opportunities": {
       "opportunities": "Möglichkeiten",
@@ -796,9 +810,8 @@
         "district": "Bezirk",
         "schedule": "Zeitplan",
         "volunteersNeeded": "Anzahl der Freiwilligen",
-        "agentName": "Agent"
+        "agentName": "Einrichtung/Projekt"
       },
-
       "card": {
         "mainCommunication": "Hauptkommunikation",
         "residentsSpeak": "Bewohner sprechen",
@@ -921,6 +934,7 @@
       "commentUpdated": "Kommentar erfolgreich aktualisiert",
       "saveEdit": "Speichern",
       "cancelEdit": "Abbrechen",
+      "errorTagging": "Fehler beim Taggen. Benutzer nicht getaggt.",
       "deleteDialog": {
         "title": "Kommentar löschen?",
         "message": "{{authorName}}s Kommentar wird unwiderruflich gelöscht.",
@@ -961,7 +975,7 @@
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
     "agentProfile": {
-      "agentProfile": "Profil des Agenten",
+      "agentProfile": "Einrichtungs-/Projektprofil",
       "registeredSince": "Registriert seit",
       "engagementStatus": "Engagement-Status",
       "serviceType": "Dienstleistungsart",
@@ -1004,14 +1018,14 @@
         "title": "Engagement-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
-          "unresponsive_description": "Dieser Agent antwortet nicht.",
+          "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Dieser Agent arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
       },
-      "statusUpdateSuccess": "Agent-Status erfolgreich aktualisiert",
+      "statusUpdateSuccess": "Status der Einrichtung/des Projekts erfolgreich aktualisiert",
       "contactDetails": {
         "title": "Kontaktdaten",
         "fullName": "Name",
@@ -1085,7 +1099,7 @@
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
       "matchingStatus": "Matching-Status",
-      "agent": "Träger",
+      "agent": "Einrichtung/Projekt",
       "status": {
         "new": "Neu",
         "active": "Aktiv",
@@ -1262,6 +1276,7 @@
       "whatPlatform": "Welche Plattform haben Sie verwendet?",
       "howDidYouSend": "Wie haben Sie Ihre Nachricht gesendet?",
       "contactMethodLabel": "Kontaktmethode",
+      "loggedBy": "Von",
       "contactMethodRequired": "Kontaktmethode*",
       "communicationTypeRequired": "Kommunikationstyp*",
       "communicationTypes": {
@@ -1905,7 +1920,8 @@
     "errors": {
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
       "passwordMismatch": "Die Passwörter stimmen nicht überein",
-      "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation."
+      "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation.",
+      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
@@ -1921,7 +1937,14 @@
       "matchFound": "Wir haben eine Organisation gefunden, die zu dieser Adresse passt: {{name}}. Möchten Sie diese verwenden?",
       "useThisOrg": "Ja, diese verwenden",
       "skip": "Nein, manuell eingeben",
-      "matched": "Organisation gefunden: {{name}}"
+      "matched": "Organisation gefunden: {{name}}",
+      "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
+      "joinInstead": "Stattdessen beitreten",
+      "requestToJoin": "Beitritt anfragen"
+    },
+    "pending": {
+      "title": "Beitrittsanfrage gesendet",
+      "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
     }
   }
 }

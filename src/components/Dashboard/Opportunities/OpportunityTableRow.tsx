@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { getActivityTitles, getLanguagesByPurpose } from "./helpers";
-import { TableCell, TableRow } from "@/components/core/common/Table";
+import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { formatAccompanyingDate, formatAvailability } from "./OpportunityCard.helpers";
 
@@ -89,14 +89,6 @@ export function OpportunityTableRow({ opportunity, isLast, activitiesList, distr
     </ClickableRow>
   );
 }
-
-const ClickableRow = styled(TableRow)`
-  cursor: pointer;
-
-  &:hover {
-    background: var(--color-pink-50);
-  }
-`;
 
 const TitleCell = styled(TableCell)`
   overflow-wrap: anywhere;

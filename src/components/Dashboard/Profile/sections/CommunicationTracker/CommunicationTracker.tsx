@@ -1,19 +1,13 @@
 import { useCommunicationTracker } from "@/hooks/useCommunicationTracker";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
-import {
-  ApiCommunicationGet,
-  ApiVolunteerCommunicationPost,
-  ApiVolunteerCommunicationPatch,
-} from "need4deed-sdk";
+import { ApiCommunicationGet, ApiVolunteerCommunicationPost, ApiVolunteerCommunicationPatch } from "need4deed-sdk";
 import { EntityType } from "@/components/Dashboard/Profile/types";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommunicationDialog } from "./CommunicationDialog";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
-import {
-  SectionWrapper,
-  SectionEmptyState,
-} from "../shared/styles";
+import { SectionWrapper, SectionEmptyState } from "../shared/styles";
 import {
   Table,
   TableHeader,
@@ -25,7 +19,7 @@ import {
   ActionButton,
 } from "@/components/core/common/Table";
 import { CommunicationTableContainer } from "./styles";
-import { formatDate, getDisplayLabel, getContactMethodLabel } from "./utils/translations";
+import { formatDate, getDisplayLabel, getContactMethodLabel, getLoggedByLabel } from "./utils/translations";
 
 type Props = {
   entityId: number;
@@ -36,18 +30,21 @@ export type CommunicationTrackerRef = {
   handleAddNew: () => void;
 };
 
-export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(function CommunicationTracker({ entityId, entityType }, ref) {
+export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(function CommunicationTracker(
+  { entityId, entityType },
+  ref,
+) {
   const { t } = useTranslation();
+  // true = only fetch when the user is logged in (has auth cookie)
+  const currentUser = useCurrentUser(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiCommunicationGet | undefined>(undefined);
   const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiCommunicationGet | null>(null);
 
-  const {
-    communications,
-    createCommunication,
-    updateCommunication,
-    deleteCommunication,
-  } = useCommunicationTracker(entityId, entityType);
+  const { communications, createCommunication, updateCommunication, deleteCommunication } = useCommunicationTracker(
+    entityId,
+    entityType,
+  );
 
   const handleAddNew = () => {
     setEditingEntry(undefined);
@@ -83,26 +80,29 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
 
   const handleSave = (data: Partial<ApiCommunicationGet>) => {
     if (!data.contactType || !data.contactMethod || !data.date) {
-        return;
+      return;
     }
 
     if (data.id) {
-        const payload: ApiVolunteerCommunicationPatch = {
-            contactType: data.contactType,
-            contactMethod: data.contactMethod,
-            communicationType: data.communicationType!,
-            date: data.date,
-        };
-      updateCommunication({ id: data.id, data: payload }, {
-        onSuccess: () => setIsDialogOpen(false),
-      });
+      const payload: ApiVolunteerCommunicationPatch = {
+        contactType: data.contactType,
+        contactMethod: data.contactMethod,
+        communicationType: data.communicationType!,
+        date: data.date,
+      };
+      updateCommunication(
+        { id: data.id, data: payload },
+        {
+          onSuccess: () => setIsDialogOpen(false),
+        },
+      );
     } else {
-        const payload: ApiVolunteerCommunicationPost = {
-            contactType: data.contactType,
-            contactMethod: data.contactMethod,
-            communicationType: data.communicationType!,
-            date: data.date,
-          };
+      const payload: ApiVolunteerCommunicationPost = {
+        contactType: data.contactType,
+        contactMethod: data.contactMethod,
+        communicationType: data.communicationType!,
+        date: data.date,
+      };
       createCommunication(payload, {
         onSuccess: () => setIsDialogOpen(false),
       });
@@ -110,7 +110,7 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
   };
 
   return (
-    <SectionWrapper data-testid="communication-tracker-container">
+    <SectionWrapper data-testid="communication-tracker-container" id={"communication-tracker-container"}>
       {communications.length === 0 ? (
         <SectionEmptyState data-testid="empty-state">
           {t("dashboard.communicationSection.emptyState", "No communications recorded yet")}
@@ -120,19 +120,29 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
           <Table>
             <TableHeader>
               <TableHeaderCell>{t("dashboard.communicationSection.typeOfContact")}</TableHeaderCell>
-              <TableHeaderCell $maxWidth="310px">{t("dashboard.communicationSection.contactMethodLabel")}</TableHeaderCell>
+              <TableHeaderCell $maxWidth="310px">
+                {t("dashboard.communicationSection.contactMethodLabel")}
+              </TableHeaderCell>
               <TableHeaderCell $width="152px">{t("dashboard.communicationSection.date")}</TableHeaderCell>
+              <TableHeaderCell $width="140px">{t("dashboard.communicationSection.loggedBy")}</TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
             </TableHeader>
             <TableBody>
               {communications.map((entry, index) => (
-                <TableRow key={entry.id} $isLast={index === communications.length - 1} data-testid={`communication-row-${entry.id}`}>
-                  <TableCell>
-                    {getDisplayLabel(t, entry.contactType, entry.communicationType)}
-                  </TableCell>
+                <TableRow
+                  key={entry.id}
+                  $isLast={index === communications.length - 1}
+                  data-testid={`communication-row-${entry.id}`}
+                >
+                  <TableCell>{getDisplayLabel(t, entry.contactType, entry.communicationType)}</TableCell>
                   <TableCell $maxWidth="310px">{getContactMethodLabel(t, entry.contactMethod)}</TableCell>
-                  <TableCell $width="152px" $noWrap>{formatDate(entry.date)}</TableCell>
+                  <TableCell $width="152px" $noWrap>
+                    {formatDate(entry.date)}
+                  </TableCell>
+                  <TableCell $width="140px" $noWrap>
+                    {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
+                  </TableCell>
                   <ActionCell>
                     <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
                       <PencilSimple size={20} weight="regular" />
