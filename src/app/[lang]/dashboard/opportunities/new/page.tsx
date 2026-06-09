@@ -1,3 +1,4 @@
+"use client";
 import { DashboardLayout } from "@/components/Layout";
 import { NewOpportunity } from "@/components/Dashboard/NewOpportunity";
 

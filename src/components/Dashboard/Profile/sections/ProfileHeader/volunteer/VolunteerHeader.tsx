@@ -28,7 +28,9 @@ import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
   if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
   const statuses = opportunities.map((o) => o.status);
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)) {
+  if (
+    statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)
+  ) {
     return VolunteerStateMatchType.MATCHED;
   }
   if (statuses.some((s) => s === OpportunityVolunteerStatusType.PENDING)) {
