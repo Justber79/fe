@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate } from "./OpportunityCard.helpers";
-import { getLanguagesByPurpose } from "./helpers";
+import { formatAccompanyingDate, getLanguagesByPurpose } from "./helpers";
 import { formatAvailability } from "../Profile/sections/VolunteerProfile/formatters";
 
 interface TableRowProps {
@@ -64,7 +63,6 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
         <TruncatedText>{districtTitle || "—"}</TruncatedText>
       </TableCell>
-
       <TableCell
         $noWrap
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}

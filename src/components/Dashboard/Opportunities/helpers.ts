@@ -10,6 +10,8 @@ import {
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
 import { OpportunityCardsFilter } from "./Filters/types";
+import { format } from "date-fns";
+import { utcHhmmToLocal } from "@/utils";
 
 interface SerializeFiltersOptions {
   serializeToIDs?: boolean;
@@ -156,4 +158,17 @@ export function getActivityTitles(activities: OptionById[], activityList: Option
     .map((act) => activityMap.get(String(act.id)))
     .filter((title): title is string => Boolean(title))
     .map(cleanActivityTitle);
+}
+
+export function formatAccompanyingDate(details?: {
+  appointmentDate?: string | null;
+  appointmentTime?: string | null;
+}): string | null {
+  if (!details?.appointmentDate) return null;
+
+  const date = new Date(details.appointmentDate);
+  const formattedDate = isNaN(date.getTime()) ? details.appointmentDate : format(date, "dd.MM.yyyy");
+  const formattedTime = details.appointmentTime ? utcHhmmToLocal(details.appointmentTime) : null;
+
+  return [formattedDate, formattedTime].filter(Boolean).join(" ");
 }

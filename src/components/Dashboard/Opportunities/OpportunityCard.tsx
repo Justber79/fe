@@ -1,15 +1,13 @@
 import { ApiVolunteerOpportunityGetList, LangPurpose, OptionItem, ProfileVolunteeringType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-
 import { Tags } from "@/components/core/common";
 import { Paragraph } from "@/components/styled/text";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
-import { getActivityTitles, getLanguagesByPurpose } from "./helpers";
+import { formatAccompanyingDate, getActivityTitles, getLanguagesByPurpose } from "./helpers";
 import {
-  formatAccompanyingDate,
   formatAvailability,
   matchStatusColorMap,
   matchStatusIconMap,
