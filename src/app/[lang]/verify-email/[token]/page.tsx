@@ -26,7 +26,9 @@ export default function Page() {
           const pendingRole = getCookie("n4d_pending_role");
           if (pendingRole === "agent") {
             document.cookie = "n4d_pending_role=; path=/; max-age=0";
-            router.push(`/${lang}/register/agent/complete`);
+            // Forward the verify token — the agent form uses it as the
+            // querystring auth for POST /agent/register.
+            router.push(`/${lang}/register/agent/complete?token=${encodeURIComponent(token)}`);
           } else {
             router.push(`/${lang}/dashboard`);
           }

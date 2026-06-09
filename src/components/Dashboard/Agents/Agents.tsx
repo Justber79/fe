@@ -2,6 +2,7 @@
 
 import { DashboardLayout } from "@/components/Layout";
 import { AgentListController } from "./AgentListController";
+import { PendingMemberships } from "./PendingMemberships";
 import { AgentsContainer, ContentRow } from "./styles";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
@@ -87,6 +88,7 @@ export const Agents = () => {
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
         />
+        <PendingMemberships />
         <ContentRow>
           <AgentListController
             setNumOfAgents={setNumOfAgents}

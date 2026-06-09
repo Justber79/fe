@@ -110,7 +110,7 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
   };
 
   return (
-    <SectionWrapper data-testid="communication-tracker-container">
+    <SectionWrapper data-testid="communication-tracker-container" id={"communication-tracker-container"}>
       {communications.length === 0 ? (
         <SectionEmptyState data-testid="empty-state">
           {t("dashboard.communicationSection.emptyState", "No communications recorded yet")}
