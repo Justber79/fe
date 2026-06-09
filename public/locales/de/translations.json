@@ -762,7 +762,15 @@
       "schedule": "Zeitplan",
       "district": "Stadtviertel",
       "dateOfAppointment": "Termindatum",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "pendingMemberships": {
+        "title": "Ausstehende Beitrittsanfragen ({{count}})",
+        "requestsToJoin": "möchte {{org}} beitreten",
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "approved": "Beitrittsanfrage genehmigt",
+        "rejected": "Beitrittsanfrage abgelehnt"
+      }
     },
     "opportunities": {
       "opportunities": "Möglichkeiten",

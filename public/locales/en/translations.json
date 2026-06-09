@@ -805,7 +805,15 @@
       "schedule": "Schedule",
       "district": "District",
       "dateOfAppointment": "Date Of Appointment",
-      "description": "Description"
+      "description": "Description",
+      "pendingMemberships": {
+        "title": "Pending join requests ({{count}})",
+        "requestsToJoin": "requests to join {{org}}",
+        "approve": "Approve",
+        "reject": "Reject",
+        "approved": "Join request approved",
+        "rejected": "Join request rejected"
+      }
     },
     "opportunities": {
       "opportunities": "Opportunities",

@@ -15,6 +15,7 @@ export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
 export const apiPathAgentMe = `/${apiPrefix}/agent/me`;
 export const apiPathAgentRegister = `/${apiPrefix}/agent/register`;
+export const apiPathAgentMembership = `/${apiPrefix}/agent/membership`;
 export const apiPathOption = `/${apiPrefix}/option`;
 export const apiPathOpportunityVolunteer = `/${apiPrefix}/opportunity-volunteer`;
 export const apiPathUser = `/${apiPrefix}/user`;
