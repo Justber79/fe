@@ -5,7 +5,13 @@ import { apiPathAgentRegister, apiPathOption, LOGGED_IN_COOKIE } from "@/config/
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
-import { AgentMembershipStatus, ApiAgentRegister, ApiAgentRegisterNew, ApiOptionLists } from "need4deed-sdk";
+import {
+  AgentMembershipStatus,
+  ApiAgentRegister,
+  ApiAgentRegisterNew,
+  ApiAgentRegisterResponse,
+  ApiOptionLists,
+} from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -94,8 +100,11 @@ export function ProfileCompletion() {
     setSubmitError(null);
     setIsSubmitting(true);
     try {
-      const { data } = await axios.post(`${apiPathAgentRegister}?token=${encodeURIComponent(token)}`, body);
-      const status = data?.data?.membershipStatus as AgentMembershipStatus | undefined;
+      const { data } = await axios.post<{ message: string; data: ApiAgentRegisterResponse }>(
+        `${apiPathAgentRegister}?token=${encodeURIComponent(token)}`,
+        body,
+      );
+      const status = data?.data?.membershipStatus;
       if (status === AgentMembershipStatus.PENDING) {
         setPending(true);
         return;

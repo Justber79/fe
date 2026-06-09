@@ -2,8 +2,9 @@
 import { Button } from "@/components/core/button";
 import { apiPathAgentMembership } from "@/config/constants";
 import { useGetQuery, useMutationQuery } from "@/hooks";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import axios from "axios";
-import { AgentMembershipStatus, ApiAgentMembership } from "need4deed-sdk";
+import { AgentMembershipStatus, ApiAgentMembership, UserRole } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { Actions, Meta, Panel, Row, Title } from "./styled";
 
@@ -15,10 +16,16 @@ const PENDING_KEY = ["agent-memberships", "pending"];
 export function PendingMemberships() {
   const { t } = useTranslation();
 
+  // Moderation is COORDINATOR/ADMIN-only on the backend — gate the fetch by role
+  // so non-privileged viewers of the Agents page don't trigger a 401 + toast.
+  const user = useCurrentUser(true);
+  const canModerate = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
+
   const { data } = useGetQuery<ApiAgentMembership[]>({
     queryKey: PENDING_KEY,
     apiPath: `${apiPathAgentMembership}?status=${AgentMembershipStatus.PENDING}`,
     addLang: false,
+    enabled: canModerate,
   });
 
   const approve = useMutationQuery<number, unknown>({
@@ -35,7 +42,7 @@ export function PendingMemberships() {
   });
 
   const memberships = data ?? [];
-  if (memberships.length === 0) return null;
+  if (!canModerate || memberships.length === 0) return null;
 
   const busy = approve.isPending || reject.isPending;
 
