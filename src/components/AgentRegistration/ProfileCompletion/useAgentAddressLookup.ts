@@ -4,6 +4,9 @@ import { useGetQuery } from "@/hooks";
 import { ApiAgentGetList } from "need4deed-sdk";
 import { useState } from "react";
 
+// Powers the self-registration picker: as the user types their street, look up
+// existing agents at a matching address so they can JOIN their org instead of
+// creating a duplicate. Backed by GET /agent?filter[street]=.
 export function useAgentAddressLookup(addressStreet: string) {
   const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null);
   const [dismissedAddress, setDismissedAddress] = useState<string | null>(null);
@@ -12,12 +15,12 @@ export function useAgentAddressLookup(addressStreet: string) {
   const enabled = debouncedAddress.length >= 5;
 
   const { data: matches, isLoading } = useGetQuery<ApiAgentGetList[]>({
-    queryKey: ["agents", "address-lookup", debouncedAddress],
+    queryKey: ["agents", "street-lookup", debouncedAddress],
     apiPath: `${apiPathAgent}/`,
     params: {
       limit: 10,
       page: 1,
-      filter: { search: debouncedAddress },
+      filter: { street: debouncedAddress },
     },
     staleTime: cacheTTL,
     enabled,
@@ -39,5 +42,14 @@ export function useAgentAddressLookup(addressStreet: string) {
     setSelectedAgentId(null);
   };
 
-  return { matched, isMatch, showBanner, isLoading: enabled && isLoading, confirmMatch, dismissMatch };
+  return {
+    matched,
+    matches: enabled ? (matches ?? []) : [],
+    selectedAgentId,
+    isMatch,
+    showBanner,
+    isLoading: enabled && isLoading,
+    confirmMatch,
+    dismissMatch,
+  };
 }
