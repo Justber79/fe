@@ -8,9 +8,9 @@ export const AGENT_COL_WIDTHS = {
   type: COLUMN_WIDTH.MD,
   volunteerSearch: COLUMN_WIDTH.LG,
   district: COLUMN_WIDTH.MD,
-  activeVolunteers: COLUMN_WIDTH.XS,
-  numOpportunities: COLUMN_WIDTH.SM,
-  email: COLUMN_WIDTH.XXL,
+  activeVolunteers: COLUMN_WIDTH.XXXS,
+  numOpportunities: COLUMN_WIDTH.XXXS,
+  email: COLUMN_WIDTH.XL,
 };
 
 export const createAgentTableColumns = (t: TFunction, copyButton: ReactNode): Column[] => [

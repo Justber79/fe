@@ -719,8 +719,8 @@
         "type": "Type",
         "volunteerSearch": "Volunteer Search",
         "district": "District",
-        "activeVolunteers": "Active Volunteers",
-        "numberOfOpportunities": "Number of Opportunities",
+        "activeVolunteers": "Act. Vol.",
+        "numberOfOpportunities": "# Opps",
         "email": "Email"
       },
       "tabs": {

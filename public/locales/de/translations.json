@@ -676,8 +676,8 @@
         "type": "Typ",
         "volunteerSearch": "Freiwilligensuche",
         "district": "Bezirk",
-        "activeVolunteers": "Aktive Freiwillige",
-        "numberOfOpportunities": "Anzahl der Möglichkeiten",
+        "activeVolunteers": "Akt. Frw.",
+        "numberOfOpportunities": "Anz. Mögl.",
         "email": "E-Mail"
       },
       "tabs": {
