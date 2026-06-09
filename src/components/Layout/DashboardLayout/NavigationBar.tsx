@@ -75,7 +75,7 @@ interface StyledParagraphProps {
 
 const StyledParagraph = ({ label, isSelected }: StyledParagraphProps) => {
   return (
-    <Paragraph
+    <NavLabel
       color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"}
       fontSize="var(--dashboard-navigation-bar-option-text-size)"
       fontWeight="var(--dashboard-navigation-bar-option-text-weight)"
@@ -84,9 +84,16 @@ const StyledParagraph = ({ label, isSelected }: StyledParagraphProps) => {
       margin="auto"
     >
       {label}
-    </Paragraph>
+    </NavLabel>
   );
 };
+
+const NavLabel = styled(Paragraph)`
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  width: 100%;
+`;
 
 interface BarOptions {
   label: string;
