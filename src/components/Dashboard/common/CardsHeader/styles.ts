@@ -64,6 +64,7 @@ export const SearchBarSectionContainer = styled.div`
   display: flex;
   flex-direction: var(--opportunities-header-searchbar-flex-direction);
   gap: var(--filters-search-bar-section-container-gap);
+  flex-wrap: wrap;
 `;
 
 type TabHeadingProps = {
