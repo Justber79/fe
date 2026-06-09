@@ -13,7 +13,7 @@ type Props = {
   activeRowIndex: number;
   setFilteredListLength: (length: number) => void;
   setOnSelectTrigger: (callback: (() => void) | null) => void;
-  users: ApiUserGet[] | undefined;
+  users?: ApiUserGet[] | undefined;
 };
 
 export default function Autocomplete({
@@ -133,7 +133,7 @@ export default function Autocomplete({
                 cursor: "pointer",
               }}
             >
-              <AvatarImg src={resolvedAvatarUrl(user.avatarUrl)} alt={user.fullName} />
+              <AvatarImg src={resolvedAvatarUrl(user?.avatarUrl as string)} alt={user.fullName} />
               <span>{user.fullName}</span>
             </AutocompleteRow>
           );
