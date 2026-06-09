@@ -12,6 +12,10 @@ import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/cons
 import { OpportunityCardsFilter } from "./Filters/types";
 import { format } from "date-fns";
 import { utcHhmmToLocal } from "@/utils";
+import { TFunction } from "i18next";
+import { ApiVolunteerOpportunityGetList } from "need4deed-sdk";
+
+type Availability = ApiVolunteerOpportunityGetList["availability"];
 
 interface SerializeFiltersOptions {
   serializeToIDs?: boolean;
@@ -171,4 +175,28 @@ export function formatAccompanyingDate(details?: {
   const formattedTime = details.appointmentTime ? utcHhmmToLocal(details.appointmentTime) : null;
 
   return [formattedDate, formattedTime].filter(Boolean).join(" ");
+}
+
+export function formatSchedule(availability: Availability, t: TFunction): string {
+  if (!availability?.length) return "—";
+
+  const groups = new Map<string, string[]>();
+  for (const a of availability) {
+    if (!a.day) continue;
+    const day =
+      a.day === "occasionally"
+        ? t("dashboard.volunteers.filters.preferredAv.occasional.header")
+        : t(`dashboard.volunteers.filters.preferredAv.days.${a.day}`);
+    const time = a.daytime || "";
+    if (!groups.has(time)) groups.set(time, []);
+    groups.get(time)!.push(day);
+  }
+
+  return Array.from(groups.entries())
+    .map(([time, days]) => {
+      if (time === "weekdays" || time === "weekends") return t(`form.schedule.${time}`);
+      const d = days.join(" & ");
+      return time ? `${d}, ${time}` : d;
+    })
+    .join("; ");
 }

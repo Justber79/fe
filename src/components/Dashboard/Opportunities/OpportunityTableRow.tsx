@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate, getLanguagesByPurpose } from "./helpers";
-import { formatAvailability } from "../Profile/sections/VolunteerProfile/formatters";
+import { formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -37,7 +36,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
     : availability?.length
-      ? formatAvailability(availability, t)
+      ? formatSchedule(availability, t)
       : null;
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
