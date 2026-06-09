@@ -128,13 +128,16 @@ export function ProfileCompletion() {
   const submitJoin = (agentId: number) => submit({ agentId });
 
   const handleSubmit = () => {
+    // Joining an existing agent submits only { agentId } — the create-form
+    // (street/postcode/org) validation must not run, or the missing postcode
+    // blocks the join.
+    if (selectedAgentId) {
+      submitJoin(selectedAgentId);
+      return;
+    }
     const stepErrors = validateCompletionStep(step, formData, t);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
-      return;
-    }
-    if (selectedAgentId) {
-      submitJoin(selectedAgentId);
       return;
     }
     submit({ agent: buildNewAgent(formData) });
