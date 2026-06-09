@@ -23,4 +23,9 @@ const FiltersContainer = styled.div`
   align-self: flex-start;
   background: var(--color-pink-50);
   border-bottom-left-radius: var(--filters-container-border-radius);
+
+  @media (max-width: 1023px) {
+    width: 100%;
+    order: -1;
+  }
 `;

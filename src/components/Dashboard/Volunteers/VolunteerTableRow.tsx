@@ -62,6 +62,7 @@ export function VolunteerTableRow({
     if (title.includes("-")) {
       const abbreviation = title
         .split("-")
+        .filter((word) => word.trim())
         .map((word) => word.trim()[0])
         .join("-");
       return abbreviation.toUpperCase();
