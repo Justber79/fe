@@ -8,7 +8,7 @@ import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
 import { AgentTableList } from "./AgentTableList";
-import { useCopyAgentsEmails } from "@/hooks/useCopyAgentsEmails";
+import { useCopyEmails } from "@/hooks/useCopyEmails";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
@@ -53,7 +53,7 @@ export const AgentListController = ({
   });
 
   const agents: ApiAgentGetList[] = data || [];
-  const { handleCopyEmails, isCopying } = useCopyAgentsEmails(serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathAgent, "agents-emails", serializedFilter);
 
   useEffect(() => {
     setNumOfAgents(count);

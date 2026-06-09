@@ -1,6 +1,6 @@
-import { apiPathVolunteer, MAX_PAGE_LIMIT } from "@/config/constants";
+import { MAX_PAGE_LIMIT } from "@/config/constants";
 import { useQueryClient } from "@tanstack/react-query";
-import { ApiVolunteerGetList, Lang } from "need4deed-sdk";
+import { Lang } from "need4deed-sdk";
 import { fetchData, getReducedFilter } from "./useGetQuery";
 import { useParams } from "next/navigation";
 import { copyEmails } from "@/utils/copyEmails";
@@ -9,7 +9,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
-export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
+type EmailRecord = { email?: string | null };
+
+export const useCopyEmails = (apiPath: string, cacheKey: string, serializedFilter: URLSearchParams) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { lang } = useParams<{ lang: Lang }>();
@@ -17,10 +19,10 @@ export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
 
   async function fetchEmailPage(page: number) {
     const res = await queryClient.fetchQuery({
-      queryKey: ["volunteer-emails", serializedFilter.toString(), page],
+      queryKey: [cacheKey, serializedFilter.toString(), page],
       staleTime: 0,
       queryFn: () =>
-        fetchData<ApiVolunteerGetList[]>(`${apiPathVolunteer}/`, {
+        fetchData<EmailRecord[]>(`${apiPath}/`, {
           limit: MAX_PAGE_LIMIT,
           page,
           filter: getReducedFilter(serializedFilter),
@@ -28,7 +30,7 @@ export const useCopyVolunteerEmails = (serializedFilter: URLSearchParams) => {
         }),
     });
     return {
-      emails: res.data.map((volunteer) => volunteer.email).filter((e): e is string => Boolean(e)),
+      emails: res.data.map((item) => item.email).filter((e): e is string => Boolean(e)),
       count: res.count,
     };
   }

@@ -9,7 +9,7 @@ import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
-import { useCopyVolunteerEmails } from "@/hooks/useCopyVolunteerEmails";
+import { useCopyEmails } from "@/hooks/useCopyEmails";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -57,7 +57,7 @@ export function VolunteerListController({
     staleTime: cacheTTL,
   });
   const volunteers = data || [];
-  const { handleCopyEmails, isCopying } = useCopyVolunteerEmails(serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", serializedFilter);
 
   useEffect(() => {
     setNumOfVols(count);
