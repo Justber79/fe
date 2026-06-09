@@ -7,6 +7,7 @@ import { createAgentTableColumns } from "./agentsTableColumns";
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
 import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
+import { CopyButton } from "../common/CopyButton";
 
 interface TableListProps {
   agents: ApiAgentGetList[];
@@ -15,6 +16,8 @@ interface TableListProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
+  onCopyEmails: () => void;
+  isCopying: boolean;
 }
 
 export function AgentTableList({
@@ -24,10 +27,23 @@ export function AgentTableList({
   currentPage,
   setCurrentPage,
   districtsList,
+  onCopyEmails,
+  isCopying,
 }: TableListProps) {
   const { t } = useTranslation();
 
-  const columns = useMemo(() => createAgentTableColumns(t), [t]);
+  const columns = useMemo(() => {
+    const copyButton = (
+      <CopyButton
+        onClick={onCopyEmails}
+        disabled={isCopying}
+        tooltipText={t("dashboard.volunteers.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.volunteers.copyEmails.tooltip")}
+      />
+    );
+    return createAgentTableColumns(t, copyButton);
+  }, [t, onCopyEmails, isCopying]);
+
   const typeLabels = useMemo(() => createAgentTypeMap(t), [t]);
   const searchLabels = useMemo(() => createVolunteerSearchMap(t), [t]);
 
