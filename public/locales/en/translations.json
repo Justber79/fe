@@ -1572,7 +1572,11 @@
       "matched": "Organisation matched: {{name}}",
       "titleTaken": "An organisation with this name already exists.",
       "joinInstead": "Join it instead",
-      "requestToJoin": "Request to join"
+      "requestToJoin": "Request to join",
+      "joinTitle": "Join an existing organisation",
+      "joiningOrg": "You're requesting to join {{name}}.",
+      "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
+      "createInstead": "Not your organisation? Create a new one"
     },
     "pending": {
       "title": "Join request submitted",

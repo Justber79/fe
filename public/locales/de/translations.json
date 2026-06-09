@@ -1940,7 +1940,11 @@
       "matched": "Organisation gefunden: {{name}}",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "joinInstead": "Stattdessen beitreten",
-      "requestToJoin": "Beitritt anfragen"
+      "requestToJoin": "Beitritt anfragen",
+      "joinTitle": "Einer bestehenden Organisation beitreten",
+      "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
+      "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
+      "createInstead": "Nicht deine Organisation? Neue erstellen"
     },
     "pending": {
       "title": "Beitrittsanfrage gesendet",

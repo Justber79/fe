@@ -75,7 +75,7 @@ export function ProfileCompletion() {
     apiPath: apiPathOption,
   });
 
-  const { matched, selectedAgentId, isMatch, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
+  const { matched, selectedAgent, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
   );
@@ -131,8 +131,8 @@ export function ProfileCompletion() {
     // Joining an existing agent submits only { agentId } — the create-form
     // (street/postcode/org) validation must not run, or the missing postcode
     // blocks the join.
-    if (selectedAgentId) {
-      submitJoin(selectedAgentId);
+    if (selectedAgent) {
+      submitJoin(selectedAgent.id);
       return;
     }
     const stepErrors = validateCompletionStep(step, formData, t);
@@ -173,7 +173,7 @@ export function ProfileCompletion() {
 
   // A picked agent (or accepted title conflict) is a JOIN: submit the membership
   // request directly without the create-only org/services steps.
-  const isJoining = !!selectedAgentId;
+  const isJoining = !!selectedAgent;
   const isLastStep = step === TOTAL_COMPLETION_STEPS;
 
   return (
@@ -200,42 +200,48 @@ export function ProfileCompletion() {
           </MatchBanner>
         )}
 
-        {step === 1 && (
-          <div>
-            <StepTitle>{t("agentRegistration.steps.address.title")}</StepTitle>
-            <StepDescription>{t("agentRegistration.steps.address.description")}</StepDescription>
-            <FieldWrapper>
-              <FieldLabel>{t("agentRegistration.fields.addressStreet")}</FieldLabel>
-              <FormInput
-                value={formData.addressStreet}
-                onInputChange={(v) => update({ addressStreet: v })}
-                placeHolder={t("agentRegistration.fields.addressStreet")}
-                errors={errors.addressStreet ? [errors.addressStreet] : []}
-              />
-              {showBanner && (
-                <MatchBanner $matched={false}>
-                  <span>{t("agentRegistration.completion.matchFound", { name: matched!.title })}</span>
-                  <MatchActions>
-                    <SmallButton $primary onClick={confirmMatch}>
-                      {t("agentRegistration.completion.useThisOrg")}
-                    </SmallButton>
-                    <SmallButton onClick={dismissMatch}>{t("agentRegistration.completion.skip")}</SmallButton>
-                  </MatchActions>
-                </MatchBanner>
-              )}
-              {isMatch && (
-                <MatchBanner $matched>
-                  <CheckMark>✓</CheckMark>
-                  <span>{t("agentRegistration.completion.matched", { name: matched?.title })}</span>
-                </MatchBanner>
-              )}
-            </FieldWrapper>
-            {/* Joining an existing org: address is theirs, no need to re-enter the rest. */}
-            {!isJoining && (
+        {step === 1 &&
+          (isJoining ? (
+            // Picked an existing org: this is a membership request, not an edit.
+            // Show a clear read-only confirmation + an undo back to creating.
+            <div>
+              <StepTitle>{t("agentRegistration.completion.joinTitle")}</StepTitle>
+              <MatchBanner $matched>
+                <CheckMark>✓</CheckMark>
+                <span>{t("agentRegistration.completion.joiningOrg", { name: selectedAgent?.title })}</span>
+              </MatchBanner>
+              <StepDescription>{t("agentRegistration.completion.joinDescription")}</StepDescription>
+              <MatchActions>
+                <SmallButton onClick={dismissMatch}>{t("agentRegistration.completion.createInstead")}</SmallButton>
+              </MatchActions>
+            </div>
+          ) : (
+            <div>
+              <StepTitle>{t("agentRegistration.steps.address.title")}</StepTitle>
+              <StepDescription>{t("agentRegistration.steps.address.description")}</StepDescription>
+              <FieldWrapper>
+                <FieldLabel>{t("agentRegistration.fields.addressStreet")}</FieldLabel>
+                <FormInput
+                  value={formData.addressStreet}
+                  onInputChange={(v) => update({ addressStreet: v })}
+                  placeHolder={t("agentRegistration.fields.addressStreet")}
+                  errors={errors.addressStreet ? [errors.addressStreet] : []}
+                />
+                {showBanner && (
+                  <MatchBanner $matched={false}>
+                    <span>{t("agentRegistration.completion.matchFound", { name: matched!.title })}</span>
+                    <MatchActions>
+                      <SmallButton $primary onClick={confirmMatch}>
+                        {t("agentRegistration.completion.useThisOrg")}
+                      </SmallButton>
+                      <SmallButton onClick={dismissMatch}>{t("agentRegistration.completion.skip")}</SmallButton>
+                    </MatchActions>
+                  </MatchBanner>
+                )}
+              </FieldWrapper>
               <AddressStep data={formData} onChange={update} errors={errors} optionLists={optionLists} hideStreet />
-            )}
-          </div>
-        )}
+            </div>
+          ))}
 
         {!isJoining && step === 2 && <OrgInfoStep data={formData} onChange={update} errors={errors} />}
         {!isJoining && step === 3 && <ServicesStep data={formData} onChange={update} optionLists={optionLists} />}
