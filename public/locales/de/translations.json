@@ -442,6 +442,9 @@
     "home": {
       "content": {
         "header": "Dashboard Startseite",
+        "newTags": "Neueste Tags",
+        "taggedComment": "{{user}} hat dich in {{entityType}}: {{entityTitle}} markiert",
+        "noTaggedComments": "Du bist derzeit in keinen Kommentaren markiert",
         "newOpportunities": "Neueste Möglichkeiten",
         "newVolunteers": "Neueste Freiwillige",
         "loading": "Wird geladen..."

@@ -53,14 +53,13 @@ export function ProfileCompletion() {
     apiPath: apiPathOption,
   });
 
-  const { matched, isMatch, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
-    formData.addressStreet,
-  );
+  const { matched, isMatch, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(formData.addressStreet);
 
-  const { mutate: createAgent, isPending, error: mutationError } = useMutationQuery<
-    CreateAgentBody,
-    { message: string; data: ApiAgentGet }
-  >({
+  const {
+    mutate: createAgent,
+    isPending,
+    error: mutationError,
+  } = useMutationQuery<CreateAgentBody, { message: string; data: ApiAgentGet }>({
     apiPath: `${apiPathAgent}/`,
     method: "post",
     queryKeyToInvalidate: ["agents"],
@@ -169,13 +168,7 @@ export function ProfileCompletion() {
                 </MatchBanner>
               )}
             </FieldWrapper>
-            <AddressStep
-              data={formData}
-              onChange={update}
-              errors={errors}
-              optionLists={optionLists}
-              hideStreet
-            />
+            <AddressStep data={formData} onChange={update} errors={errors} optionLists={optionLists} hideStreet />
           </div>
         )}
 

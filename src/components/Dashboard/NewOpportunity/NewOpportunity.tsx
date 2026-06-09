@@ -43,7 +43,7 @@ export function NewOpportunity() {
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [prefilled, setPrefilled] = useState(false);
   useEffect(() => {
@@ -54,10 +54,11 @@ export function NewOpportunity() {
     setPrefilled(true);
   }, [agent, prefilled]);
 
-  const { mutate: createOpportunity, isPending, error } = useMutationQuery<
-    CreateOpportunityBody,
-    { message: string; data: ApiOpportunityGet }
-  >({
+  const {
+    mutate: createOpportunity,
+    isPending,
+    error,
+  } = useMutationQuery<CreateOpportunityBody, { message: string; data: ApiOpportunityGet }>({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
     onSuccessCallback: (response) => {
