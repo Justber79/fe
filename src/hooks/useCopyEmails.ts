@@ -40,9 +40,9 @@ export const useCopyEmails = (apiPath: string, cacheKey: string, serializedFilte
     try {
       const emails = await fetchAllFilteredEmails();
       await copyEmails(emails);
-      toast.success(t("dashboard.volunteers.copyEmails.success", { count: emails.length }));
+      toast.success(t("dashboard.common.copyEmails.success", { count: emails.length }));
     } catch (error: unknown) {
-      let message = t("dashboard.volunteers.copyEmails.genericError");
+      let message = t("dashboard.common.copyEmails.genericError");
       if (axios.isAxiosError(error)) {
         const serverMessage = error.response?.data;
         if (typeof serverMessage === "string" && serverMessage) {

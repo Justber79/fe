@@ -339,6 +339,14 @@
         "matchedOn": "Zugeordnet am",
         "activeSince": "Aktiv seit",
         "pastSince": "Vergangen seit"
+      },
+      "copyEmails": {
+        "tooltip": "Alle E-Mails kopieren",
+        "tooltipSingle": "E-Mail kopieren",
+        "success": "{{count}} E-Mails kopiert",
+        "successSingle": "E-Mail kopiert",
+        "copyAriaSingle": "E-Mail von {{name}} kopieren",
+        "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       }
     },
     "volunteers": {
@@ -351,14 +359,6 @@
         "language": "Sprache",
         "district": "Bezirk",
         "email": "E-Mail"
-      },
-      "copyEmails": {
-        "tooltip": "Alle E-Mails kopieren",
-        "tooltipSingle": "E-Mail kopieren",
-        "success": "{{count}} E-Mails kopiert",
-        "successSingle": "E-Mail kopiert",
-        "copyAriaSingle": "E-Mail von {{name}} kopieren",
-        "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       },
       "tabs": {
         "tab1": "Liste",

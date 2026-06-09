@@ -37,8 +37,8 @@ export function AgentTableList({
       <CopyButton
         onClick={onCopyEmails}
         disabled={isCopying}
-        tooltipText={t("dashboard.volunteers.copyEmails.tooltip")}
-        ariaLabel={t("dashboard.volunteers.copyEmails.tooltip")}
+        tooltipText={t("dashboard.common.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.common.copyEmails.tooltip")}
       />
     );
     return createAgentTableColumns(t, copyButton);
