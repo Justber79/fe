@@ -1316,6 +1316,10 @@ html {
     --dashboard-home-container-gap: 20px;
     --dashboard-home-container-min-height: 300px;
 
+    --tag-row-padding: 1rem 2rem;
+    --tag-row-border-radius: 10px;
+    --tag-row-max-height: 225px;
+
     --search-container-height: 64px;
     --search-container-border-radius: 160px;
     --search-container-padding: 0 32px;

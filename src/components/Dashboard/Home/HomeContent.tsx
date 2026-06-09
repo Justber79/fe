@@ -6,6 +6,7 @@ import { CreateOpportunityButton } from "./CreateOpportunityButton";
 import { NewestOpportunities } from "./NewestOpportunities";
 import { NewestVolunteers } from "./NewestVolunteers";
 import { DashboardCardContainer, DashboardContentContainer } from "./styles";
+import { NewestTaggedComments } from "./NewestTaggedComments";
 
 export default function DashboardHomeContent() {
   const { t } = useTranslation();
@@ -13,6 +14,8 @@ export default function DashboardHomeContent() {
     <DashboardContentContainer>
       <Heading2>{t("dashboard.home.content.header")}</Heading2>
       <CreateOpportunityButton />
+      <Heading3>{t("dashboard.home.content.newTags")}</Heading3>
+      <NewestTaggedComments />
       <Heading3>{t("dashboard.home.content.newOpportunities")}</Heading3>
       <DashboardCardContainer>
         <NewestOpportunities />

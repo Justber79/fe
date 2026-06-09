@@ -442,6 +442,9 @@
     "home": {
       "content": {
         "header": "Dashboard Home",
+        "newTags": "Newest Tags",
+        "taggedComment": "{{user}} tagged you in {{entityType}}: {{entityTitle}}",
+        "noTaggedComments": "You are currently not tagged in any comments",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
         "loading": "Loading..."
