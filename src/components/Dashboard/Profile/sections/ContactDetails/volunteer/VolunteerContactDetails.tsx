@@ -1,7 +1,7 @@
 "use client";
 import { useUpdateVolunteerContact } from "@/hooks/useUpdateVolunteerContact";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApiVolunteerGet, VolunteerCommunicationType } from "need4deed-sdk";
+import { VolunteerCommunicationType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -13,9 +13,10 @@ import { formatAddress, parseAddress } from "./volunteerAddressUtils";
 import { createVolunteerContactDetailsSchema, VolunteerContactDetailsFormData } from "./volunteerContactDetailsSchema";
 import { VolunteerContactDetailsDisplay } from "./VolunteerContactDetailsDisplay";
 import { VolunteerContactDetailsEdit } from "./VolunteerContactDetailsEdit";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiVolunteerGet;
+  volunteer: ApiSecuredVolunteerGet;
 } & EditableSectionProps;
 
 const COMMUNICATION_TYPES = Object.values(VolunteerCommunicationType);
@@ -41,7 +42,7 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
     (): VolunteerContactDetailsFormData => ({
       phone: volunteer.person.phone ?? "",
       email: volunteer.person.email ?? "",
-      address: formatAddress(volunteer.person.address),
+      address: volunteer.person.address ? formatAddress(volunteer.person?.address) : "",
       preferredCommunicationType: volunteer.preferredCommunicationType ?? [],
     }),
     [volunteer],
@@ -74,7 +75,7 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
           phone: values.phone,
           email: values.email,
           address: {
-            id: volunteer.person.address?.id,
+            id: volunteer.person.address ? volunteer.person.address?.id : 0,
             street: addressData.street,
             city: addressData.city,
             postcode: { code: addressData.postcode },

@@ -5,7 +5,6 @@ import { formatDateTime, getImageUrl } from "@/utils";
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import {
   ApiOpportunityVolunteerGet,
-  ApiVolunteerGet,
   OpportunityVolunteerStatusType,
   VolunteerStateEngagementType,
   VolunteerStateMatchType,
@@ -24,6 +23,7 @@ import {
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
   if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
@@ -43,7 +43,7 @@ function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): Volunte
 }
 
 type Props = {
-  volunteer: ApiVolunteerGet;
+  volunteer: ApiSecuredVolunteerGet;
 };
 
 export const VolunteerHeader = ({ volunteer }: Props) => {

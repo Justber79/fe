@@ -1,6 +1,6 @@
 "use client";
 import { useVolunteerDocuments } from "@/hooks/useVolunteerDocuments";
-import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
+import { DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -13,9 +13,10 @@ import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
 import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
 import { DocumentRow, enrichDocuments, extractDocumentUrl } from "./utils";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiVolunteerGet;
+  volunteer: ApiSecuredVolunteerGet;
 };
 
 export function VolunteerProfileDocument({ volunteer }: Props) {

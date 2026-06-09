@@ -1,10 +1,11 @@
-import { ApiOpportunityGet, ApiVolunteerGet } from "need4deed-sdk";
+import { ApiOpportunityGet } from "need4deed-sdk";
 import { ApiAgentProfileGet } from "./agent";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 export type EntityType = "volunteer" | "opportunity" | "agent";
 
 export type ProfileEntityProps =
-  | { volunteer: ApiVolunteerGet; opportunity?: never; agent?: never }
+  | { volunteer: ApiSecuredVolunteerGet; opportunity?: never; agent?: never }
   | { opportunity: ApiOpportunityGet; volunteer?: never; agent?: never }
   | { agent: ApiAgentProfileGet; volunteer?: never; opportunity?: never };
 
@@ -43,4 +44,3 @@ export enum IconName {
   UsersThree = "usersThree",
   Wrench = "wrench",
 }
-

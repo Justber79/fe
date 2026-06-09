@@ -15,13 +15,14 @@ import { VolunteerProfileDocument } from "@/components/Dashboard/Profile/section
 import { IconName } from "@/components/Dashboard/Profile/types";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
-import { ApiVolunteerGet, OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
+import { OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "./useCurrentUser";
+import { ApiSecuredVolunteerGet } from "./api/types";
 
-export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefined) => {
+export const useVolunteerProfileSections = (volunteer: ApiSecuredVolunteerGet | undefined) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();

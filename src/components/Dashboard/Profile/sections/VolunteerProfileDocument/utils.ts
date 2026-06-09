@@ -1,11 +1,5 @@
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 import { ApiDocumentGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
-
-// TODO: remove once SDK >= 0.0.82 is published (BE issue need4deed-org/be#481)
-type ApiVolunteerGet = import("need4deed-sdk").ApiVolunteerGet & {
-  statusVaccinationDate?: Date | null;
-  statusCGCApplicationDate?: Date | null;
-  statusCGCDate?: Date | null;
-};
 
 export type DocumentRow = {
   type: DocumentType;
@@ -46,7 +40,7 @@ export const extractDocumentUrl = (url: string): string | null => {
 
 export const enrichDocuments = (
   fetchedDocuments: ApiDocumentGet[],
-  volunteer: ApiVolunteerGet,
+  volunteer: ApiSecuredVolunteerGet,
   passportReceived: boolean,
   passportReceivedAt: Date | null,
 ): DocumentRow[] => {

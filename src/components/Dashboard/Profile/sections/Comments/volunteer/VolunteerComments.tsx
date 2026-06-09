@@ -1,9 +1,9 @@
 "use client";
-import { ApiVolunteerGet } from "need4deed-sdk";
 import { EntityComments } from "../common";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiVolunteerGet;
+  volunteer: ApiSecuredVolunteerGet;
 };
 
 export function VolunteerComments({ volunteer }: Props) {

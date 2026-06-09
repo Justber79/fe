@@ -1,14 +1,15 @@
 import { useUpdateVolunteerStatus, VolunteerStatusUpdateData } from "@/hooks/useUpdateVolunteerStatus";
-import { ApiVolunteerGet, VolunteerStateEngagementType } from "need4deed-sdk";
+import { VolunteerStateEngagementType } from "need4deed-sdk";
 import { useState } from "react";
 import { useStatusDialog, UseStatusDialogReturn } from "../common/useStatusDialog";
+import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 export type UseEngagementStatusDialogReturn = UseStatusDialogReturn<VolunteerStateEngagementType> & {
   dateReturn: Date | undefined;
   setDateReturn: (date: Date | undefined) => void;
 };
 
-export const useEngagementStatusDialog = (volunteer: ApiVolunteerGet): UseEngagementStatusDialogReturn => {
+export const useEngagementStatusDialog = (volunteer: ApiSecuredVolunteerGet): UseEngagementStatusDialogReturn => {
   const { mutate: updateStatus } = useUpdateVolunteerStatus(volunteer.id);
   const initialDate = volunteer.dateReturn ? new Date(volunteer.dateReturn) : undefined;
 
@@ -16,8 +17,7 @@ export const useEngagementStatusDialog = (volunteer: ApiVolunteerGet): UseEngage
 
   const isSaveDisabled = (selected: VolunteerStateEngagementType, original: VolunteerStateEngagementType) =>
     selected === original &&
-    (selected !== VolunteerStateEngagementType.TEMP_UNAVAILABLE ||
-      dateReturn?.getTime() === initialDate?.getTime());
+    (selected !== VolunteerStateEngagementType.TEMP_UNAVAILABLE || dateReturn?.getTime() === initialDate?.getTime());
 
   const onSave = (status: VolunteerStateEngagementType, { onSuccess }: { onSuccess: () => void }) => {
     const payload: VolunteerStatusUpdateData = {
