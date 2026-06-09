@@ -6,7 +6,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--entity-table-gap);
-  min-width: 85%;
+  flex: 1;
+  min-width: 0;
 `;
 
 export const ScrollableTableContainer = styled(TableContainer)`
