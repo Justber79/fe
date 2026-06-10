@@ -7,7 +7,7 @@ import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
 
 type Props = {
-  handleTagAdd: (userId: number, fullName: string) => void;
+  handleTagAdd: (userId: number, fullName: string, personId: number) => void;
   newCommentText: string;
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
   activeRowIndex: number;
@@ -55,7 +55,10 @@ export default function Autocomplete({
     if (!filteredUsers) return;
     const activeUser = filteredUsers[activeRowIndex];
     if (activeUser) {
-      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, "")));
+      setOnSelectTrigger(
+        () => () =>
+          handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, ""), activeUser.personId as number),
+      );
     } else {
       setOnSelectTrigger(null);
     }
@@ -83,8 +86,8 @@ export default function Autocomplete({
     }
   }, [activeRowIndex, filteredUsers]);
 
-  const handleUserSelect = (userId: number, fullName: string) => {
-    handleTagAdd(userId, fullName.replaceAll(/ /g, ""));
+  const handleUserSelect = (userId: number, fullName: string, personId: number) => {
+    handleTagAdd(userId, fullName.replaceAll(/ /g, ""), personId);
   };
 
   const resolvedAvatarUrl = (url: string | null | undefined) => {
@@ -127,7 +130,7 @@ export default function Autocomplete({
               key={user.id}
               role="option"
               aria-selected={isActive}
-              onClick={() => handleUserSelect(user.id, user.fullName)}
+              onClick={() => handleUserSelect(user.id, user.fullName, user.personId as number)}
               style={{
                 backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
                 cursor: "pointer",
