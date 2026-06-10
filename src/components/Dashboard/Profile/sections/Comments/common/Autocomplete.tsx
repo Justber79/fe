@@ -42,7 +42,7 @@ export default function Autocomplete({
 
   const filteredUsers = useMemo(() => {
     if (userFilter === null) return;
-    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
+    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter) && user?.personId != null);
   }, [userFilter, users]);
 
   useEffect(() => {
@@ -55,10 +55,10 @@ export default function Autocomplete({
     if (!filteredUsers) return;
     const activeUser = filteredUsers[activeRowIndex];
     if (activeUser) {
-      setOnSelectTrigger(
-        () => () =>
-          handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, ""), activeUser.personId as number),
-      );
+      setOnSelectTrigger(() => () => {
+        if (activeUser.personId == null) return;
+        handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, ""), activeUser.personId);
+      });
     } else {
       setOnSelectTrigger(null);
     }
@@ -130,7 +130,10 @@ export default function Autocomplete({
               key={user.id}
               role="option"
               aria-selected={isActive}
-              onClick={() => handleUserSelect(user.id, user.fullName, user.personId as number)}
+              onClick={() => {
+                if (user.personId == null) return;
+                handleUserSelect(user.id, user.fullName, user.personId);
+              }}
               style={{
                 backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
                 cursor: "pointer",

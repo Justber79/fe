@@ -14,7 +14,7 @@ export function useCommentTag(
   const [filteredListLength, setFilteredListLength] = useState(0);
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
-  const { data: users } = useGetQuery<ApiUserGet[]>({
+  const { data: users, isLoading: isUsersLoading } = useGetQuery<ApiUserGet[]>({
     queryKey: ["users", "coordinators"],
     apiPath: apiPathUser,
     params: {
@@ -112,7 +112,7 @@ export function useCommentTag(
       if (!text || !users) return text;
       return text.replace(/<@(\d+)>/g, (match, userId) => {
         const user = users.find((u) => u.id === Number(userId));
-        return user ? `@${user.fullName.replaceAll(/ /g, "")}` : "@user";
+        return user ? `@${user.fullName.replaceAll(/ /g, "")}` : `@user:${userId}`;
       });
     },
     [users],
@@ -120,16 +120,19 @@ export function useCommentTag(
 
   const initTags = (value: string) => {
     if (!value || !users) return;
-    const regexTag = /(<@\d+>)|((?<=^|\s)@[\w\s]+?)(?=\s|$)/g;
+    const regexTag = /(<@\d+>)|((?<=^|\s)@[\w\s]+?(?::\d+)?)(?=\s|$)/g;
     const matches = Array.from(value.matchAll(regexTag));
     const freshlyFoundTags: { id: number; name: string; personId: number }[] = [];
 
     matches.forEach((match) => {
       const username = match[0];
       const user = users.find((u) => `@${u.fullName.replaceAll(/ /g, "")}` === username);
-      if (user) {
+      if (user && user.personId) {
         const cleanName = user.fullName.replace(/\s/g, "");
-        freshlyFoundTags.push({ id: user.id, name: cleanName, personId: user.personId as number });
+        freshlyFoundTags.push({ id: user.id, name: cleanName, personId: user.personId });
+      } else if (username.startsWith("@user:")) {
+        const extractedId = Number(username.split(":")[1]);
+        freshlyFoundTags.push({ id: extractedId, name: "user", personId: -1 });
       }
     });
     if (freshlyFoundTags.length > 0) {
@@ -187,5 +190,6 @@ export function useCommentTag(
     convertDbTextToEditable,
     initTags,
     users,
+    isUsersLoading,
   };
 }

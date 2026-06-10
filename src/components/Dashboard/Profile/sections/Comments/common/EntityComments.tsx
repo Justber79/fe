@@ -44,6 +44,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     handleKeyDown,
     initTags,
     users,
+    isUsersLoading,
   } = useCommentTag(newCommentText, setNewCommentText, textAreaRef);
 
   const { mutate: updateComment, isPending: isUpdating } = useUpdateComment(
@@ -150,6 +151,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
             text: edit.editText,
             canSave: edit.canSave,
             isUpdating,
+            isUsersLoading,
             onTextChange: edit.updateEditText,
             onKeyPress: (e) => edit.handleKeyPress(e, handleSaveEdit),
             onSave: handleSaveEdit,
@@ -198,7 +200,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       </NewCommentSection>
       <AddCommentButton
         onClick={handleAddComment}
-        disabled={!newCommentText.trim() || isCreating}
+        disabled={!newCommentText.trim() || isCreating || isUsersLoading}
         data-testid="add-comment-button"
       >
         {t("dashboard.commentsSection.addComment")}
