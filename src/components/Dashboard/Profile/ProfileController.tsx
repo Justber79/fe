@@ -16,9 +16,6 @@ type Props = {
 };
 
 export const ProfileController = ({ entityId, entityType }: Props) => {
-  const EntityController = CONTROLLER_MAP[entityType] as React.ComponentType<{
-    entityId: string;
-  }>;
-
+  const EntityController = CONTROLLER_MAP[entityType];
   return <EntityController entityId={entityId} />;
 };

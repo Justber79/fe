@@ -1,6 +1,6 @@
 "use client";
-import { EntityComments } from "../common";
 import { ApiVolunteerGet } from "need4deed-sdk";
+import { EntityComments } from "../common";
 
 type Props = {
   volunteer: ApiVolunteerGet;
