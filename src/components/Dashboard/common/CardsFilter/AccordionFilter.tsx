@@ -31,9 +31,9 @@ export default function AccordionFilter({ header, items, groupedItems, groupedIt
 
   return (
     <FilterContainer>
-      <FilterHeaderContainer>
+      <FilterHeaderContainer type="button" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
         <Heading4 color="var(--color-midnight)">{header}</Heading4>
-        <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled onClick={() => setIsOpen(!isOpen)} />
+        <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled />
       </FilterHeaderContainer>
 
       {isOpen && items && (
@@ -90,10 +90,15 @@ const FilterContainer = styled.div`
   gap: var(--opportunities-filters-content-filter-container-gap);
 `;
 
-const FilterHeaderContainer = styled.div`
+const FilterHeaderContainer = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
   border-top: var(--opportunities-filters-content-accordion-header-border-top) solid var(--color-orchid);
   padding-top: var(--opportunities-filters-content-accordion-header-padding-top);
 `;
