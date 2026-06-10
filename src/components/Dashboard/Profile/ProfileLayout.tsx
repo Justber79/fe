@@ -2,19 +2,17 @@
 import { DashboardLayout } from "@/components/Layout";
 import { ProfileController } from "./ProfileController";
 import { EntityType } from "./types/types";
-import { ApiResponse } from "@/hooks/api/types";
 
-interface ProfileLayoutProps<T> {
+interface ProfileLayoutProps {
   entityId: string;
   entityType: EntityType;
-  secureData?: ApiResponse<T> | null;
 }
 
-export default function ProfileLayout<T>({ entityId, entityType, secureData }: ProfileLayoutProps<T>) {
+export default function ProfileLayout({ entityId, entityType }: ProfileLayoutProps) {
   const backgroundColor = "var(--layout-static-page-background-default)";
   return (
     <DashboardLayout background={backgroundColor}>
-      <ProfileController entityId={entityId} entityType={entityType} secureData={secureData} />
+      <ProfileController entityId={entityId} entityType={entityType} />
     </DashboardLayout>
   );
 }

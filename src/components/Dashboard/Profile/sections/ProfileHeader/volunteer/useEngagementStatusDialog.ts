@@ -1,15 +1,14 @@
 import { useUpdateVolunteerStatus, VolunteerStatusUpdateData } from "@/hooks/useUpdateVolunteerStatus";
-import { VolunteerStateEngagementType } from "need4deed-sdk";
+import { ApiVolunteerGet, VolunteerStateEngagementType } from "need4deed-sdk";
 import { useState } from "react";
 import { useStatusDialog, UseStatusDialogReturn } from "../common/useStatusDialog";
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 export type UseEngagementStatusDialogReturn = UseStatusDialogReturn<VolunteerStateEngagementType> & {
   dateReturn: Date | undefined;
   setDateReturn: (date: Date | undefined) => void;
 };
 
-export const useEngagementStatusDialog = (volunteer: ApiSecuredVolunteerGet): UseEngagementStatusDialogReturn => {
+export const useEngagementStatusDialog = (volunteer: ApiVolunteerGet): UseEngagementStatusDialogReturn => {
   const { mutate: updateStatus } = useUpdateVolunteerStatus(volunteer.id);
   const initialDate = volunteer.dateReturn ? new Date(volunteer.dateReturn) : undefined;
 

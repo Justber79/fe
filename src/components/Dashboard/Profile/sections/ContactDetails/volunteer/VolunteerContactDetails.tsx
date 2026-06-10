@@ -1,7 +1,7 @@
 "use client";
 import { useUpdateVolunteerContact } from "@/hooks/useUpdateVolunteerContact";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VolunteerCommunicationType } from "need4deed-sdk";
+import { ApiVolunteerGet, VolunteerCommunicationType } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -13,10 +13,9 @@ import { formatAddress, parseAddress } from "./volunteerAddressUtils";
 import { createVolunteerContactDetailsSchema, VolunteerContactDetailsFormData } from "./volunteerContactDetailsSchema";
 import { VolunteerContactDetailsDisplay } from "./VolunteerContactDetailsDisplay";
 import { VolunteerContactDetailsEdit } from "./VolunteerContactDetailsEdit";
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiSecuredVolunteerGet;
+  volunteer: ApiVolunteerGet;
 } & EditableSectionProps;
 
 const COMMUNICATION_TYPES = Object.values(VolunteerCommunicationType);

@@ -2,7 +2,7 @@
 import Button from "@/components/core/button/Button/Button";
 import { useUpdateVolunteerProfile } from "@/hooks/useUpdateVolunteerProfile";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lang, VolunteerStateCommunicationType, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiVolunteerGet, Lang, VolunteerStateCommunicationType, VolunteerStateTypeType } from "need4deed-sdk";
 import { isBriefedAccompanying } from "../ProfileHeader/common";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,10 +29,9 @@ import {
   transformLanguagesToApi,
 } from "./transformers";
 import { createVolunteerProfileSchema, VolunteerProfileFormData } from "./volunteerProfileSchema";
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiSecuredVolunteerGet;
+  volunteer: ApiVolunteerGet;
 } & EditableSectionProps;
 
 export type VolunteerProfileRef = EditableSectionRef;

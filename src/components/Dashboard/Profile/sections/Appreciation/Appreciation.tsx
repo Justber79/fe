@@ -2,7 +2,12 @@ import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { useAppreciationTracker } from "@/hooks/useAppreciationTracker";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
-import { ApiAppreciationGet, ApiAppreciationPost, VolunteerStateAppreciationType } from "need4deed-sdk";
+import {
+  ApiAppreciationGet,
+  ApiAppreciationPost,
+  ApiVolunteerGet,
+  VolunteerStateAppreciationType,
+} from "need4deed-sdk";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppreciationDialog } from "./AppreciationDialog";
@@ -21,10 +26,9 @@ import {
 } from "@/components/core/common/Table";
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 type Props = {
-  volunteer: ApiSecuredVolunteerGet;
+  volunteer: ApiVolunteerGet;
 };
 
 export type AppreciationRef = {

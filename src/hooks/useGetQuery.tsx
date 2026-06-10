@@ -31,7 +31,7 @@ export const getReducedFilter = (filter?: FilterParam) => {
   return reducedFilter;
 };
 
-export interface ApiResponse<T> {
+interface ApiResponse<T> {
   message: string;
   data: T;
   count: number;
@@ -45,14 +45,13 @@ interface Params {
   sortOrder?: SortOrder;
   filter?: FilterParam;
 }
-interface UseGetQuery<T> {
+interface UseGetQuery {
   apiPath: string;
   queryKey: string[];
   params?: Params;
   staleTime?: number;
   enabled?: boolean;
   addLang?: boolean;
-  initialData?: ApiResponse<T>;
 }
 
 // The generic custom hook with pagination-sort-language params
@@ -63,8 +62,7 @@ export const useGetQuery = <T,>({
   staleTime,
   enabled,
   addLang = true,
-  initialData,
-}: UseGetQuery<T>) => {
+}: UseGetQuery) => {
   const { t } = useTranslation();
   const { lang } = useParams<{ lang: Lang }>();
   if (addLang) {
@@ -77,7 +75,6 @@ export const useGetQuery = <T,>({
     queryFn: () => fetchData<T>(apiPath, params),
     staleTime,
     enabled,
-    initialData,
   });
 
   // Display a toast message when an error occurs

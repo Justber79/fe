@@ -1,5 +1,4 @@
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
-import { ApiDocumentGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
+import { ApiDocumentGet, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 
 export type DocumentRow = {
   type: DocumentType;
@@ -40,7 +39,7 @@ export const extractDocumentUrl = (url: string): string | null => {
 
 export const enrichDocuments = (
   fetchedDocuments: ApiDocumentGet[],
-  volunteer: ApiSecuredVolunteerGet,
+  volunteer: ApiVolunteerGet,
   passportReceived: boolean,
   passportReceivedAt: Date | null,
 ): DocumentRow[] => {

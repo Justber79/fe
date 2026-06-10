@@ -1,14 +1,13 @@
 import { TFunction } from "i18next";
-import { ApiLanguage, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiLanguage, ApiVolunteerGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
 import { apiToFormAvailability } from "./availabilityUtils";
 import { LEVEL_TO_PROFICIENCY } from "./constants";
 import { formatActivities, formatDistricts, formatLanguages, formatSkills, getVolunteerTypeLabel } from "./formatters";
 import { Mapping } from "./mappingUtils";
 import { VolunteerProfileFormData } from "./volunteerProfileSchema";
-import { ApiSecuredVolunteerGet } from "@/hooks/api/types";
 
 export function createFormDefaultValues(
-  volunteer: ApiSecuredVolunteerGet,
+  volunteer: ApiVolunteerGet,
   languageMapping: Mapping,
   districtMapping: Mapping,
   activityMapping: Mapping,
