@@ -10,7 +10,7 @@ type AgentSearchMatch = { id: number; title: string };
 // creating a duplicate. Backed by the token-gated GET /agent/register/search
 // (the COORDINATOR-only GET /agent is not available to a registrant).
 export function useAgentAddressLookup(addressStreet: string, token: string | null) {
-  const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<AgentSearchMatch | null>(null);
   const [dismissedAddress, setDismissedAddress] = useState<string | null>(null);
   const debouncedAddress = useDebounce(addressStreet.trim(), 400);
 
@@ -29,22 +29,22 @@ export function useAgentAddressLookup(addressStreet: string, token: string | nul
   const matched = enabled && matches && matches.length > 0 ? matches[0] : null;
 
   const isDismissed = dismissedAddress === debouncedAddress;
-  const isMatch = !!matched && selectedAgentId === matched.id;
+  const isMatch = !!matched && selectedAgent?.id === matched.id;
   const showBanner = !!matched && !isMatch && !isDismissed;
 
   const confirmMatch = () => {
-    if (matched) setSelectedAgentId(matched.id);
+    if (matched) setSelectedAgent(matched);
   };
 
   const dismissMatch = () => {
     setDismissedAddress(debouncedAddress);
-    setSelectedAgentId(null);
+    setSelectedAgent(null);
   };
 
   return {
     matched,
     matches: enabled ? (matches ?? []) : [],
-    selectedAgentId,
+    selectedAgent,
     isMatch,
     showBanner,
     confirmMatch,
