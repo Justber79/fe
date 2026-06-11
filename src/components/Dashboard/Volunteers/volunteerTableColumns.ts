@@ -31,9 +31,3 @@ export const createVolunteerTableColumns = (t: TFunction, copyButton: ReactNode)
     headerAction: copyButton,
   },
 ];
-
-export const createReadOnlyVolunteerTableColumns = (t: TFunction): Column[] => [
-  { key: "title", label: t("dashboard.agents.table.title") },
-  { key: "type", label: t("dashboard.agents.table.type"), width: VOLUNTEER_COL_WIDTHS.type },
-  { key: "district", label: t("dashboard.agents.table.district"), width: VOLUNTEER_COL_WIDTHS.district },
-];
