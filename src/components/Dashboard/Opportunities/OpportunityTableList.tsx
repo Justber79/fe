@@ -4,8 +4,10 @@ import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { EntityTableList } from "../common/EntityTableList";
-import { createOpportunityTableColumns } from "./opportunitiesTableColumns";
+import { createOpportunityTableColumns, createReadOnlyAgentTableColumns } from "./opportunitiesTableColumns";
 import { OpportunityTableRow } from "./OpportunityTableRow";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { OpportunityReadOnlyTableRow } from "./OpportunityReadOnlyTableRow";
 
 interface TableListProps {
   opportunities: ApiVolunteerOpportunityGetList[];
@@ -27,22 +29,32 @@ export function OpportunityTableList({
   activitiesList,
 }: TableListProps) {
   const { t } = useTranslation();
+  const { isAuthorized } = useCurrentUser();
 
   const columns = useMemo(() => createOpportunityTableColumns(t), [t]);
-
+  const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   return (
     <EntityTableList
-      columns={columns}
+      columns={isAuthorized ? columns : readOnlyColumns}
       data={opportunities}
-      renderRow={(opportunity, isLast) => (
-        <OpportunityTableRow
-          key={opportunity.id}
-          opportunity={opportunity}
-          isLast={isLast}
-          districtsList={districtsList}
-          activitiesList={activitiesList}
-        />
-      )}
+      renderRow={(opportunity, isLast) =>
+        isAuthorized ? (
+          <OpportunityTableRow
+            key={opportunity.id}
+            opportunity={opportunity}
+            isLast={isLast}
+            districtsList={districtsList}
+            activitiesList={activitiesList}
+          />
+        ) : (
+          <OpportunityReadOnlyTableRow
+            key={opportunity.id}
+            opportunity={opportunity}
+            isLast={isLast}
+            districtsList={districtsList}
+          />
+        )
+      }
       count={count}
       itemsPerPage={itemsPerPage}
       currentPage={currentPage}

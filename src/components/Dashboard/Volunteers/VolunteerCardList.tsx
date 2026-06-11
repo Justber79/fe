@@ -3,6 +3,8 @@ import { PaginatedGrid } from "@/components/core/paginatedGrid";
 import VolunteerCard from "./VolunteerCard";
 import { ApiVolunteerGetList } from "need4deed-sdk";
 import styled from "styled-components";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { VolunteerReadOnlyCard } from "./VolunteerReadOnlyCard";
 
 interface VolunteerCardListProps {
   volunteers: ApiVolunteerGetList[];
@@ -30,9 +32,14 @@ export function VolunteerCardList({
   setCurrentPage,
   opportunityId,
 }: VolunteerCardListProps) {
-  const items = volunteers.map((volunteer) => (
-    <VolunteerCard key={volunteer.id} volunteer={volunteer} opportunityId={opportunityId} />
-  ));
+  const { isAuthorized } = useCurrentUser();
+  const items = volunteers.map((volunteer) =>
+    isAuthorized ? (
+      <VolunteerCard key={volunteer.id} volunteer={volunteer} opportunityId={opportunityId} />
+    ) : (
+      <VolunteerReadOnlyCard key={volunteer.id} volunteer={volunteer} />
+    ),
+  );
 
   return (
     <VolunteerCardListContainer>

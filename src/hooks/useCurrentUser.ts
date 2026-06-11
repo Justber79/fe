@@ -1,7 +1,7 @@
 import { apiPathMe, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
-import { ApiUserGet } from "need4deed-sdk";
+import { ApiUserGet, UserRole } from "need4deed-sdk";
 
 export const useCurrentUser = (enabled?: boolean) => {
   const hasAuthHint = getCookie("is_logged_in") === "true";
@@ -13,5 +13,7 @@ export const useCurrentUser = (enabled?: boolean) => {
     enabled: hasAuthHint && enabled,
   });
 
-  return data;
+  const isAuthorized = data?.role === UserRole.ADMIN || UserRole.COORDINATOR;
+
+  return { ...data, isAuthorized } as ApiUserGet & { isAuthorized: boolean };
 };

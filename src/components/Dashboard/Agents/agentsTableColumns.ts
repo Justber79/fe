@@ -32,3 +32,9 @@ export const createAgentTableColumns = (t: TFunction): Column[] => [
   },
   { key: "email", label: t("dashboard.agents.table.email") },
 ];
+
+export const createReadOnlyAgentTableColumns = (t: TFunction): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title") },
+  { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
+  { key: "district", label: t("dashboard.agents.table.district"), width: AGENT_COL_WIDTHS.district },
+];

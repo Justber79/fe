@@ -2,6 +2,8 @@ import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { PaginatedGrid } from "@/components/core/paginatedGrid";
 import { AgentCard } from "./AgentCard";
 import { AgentCardListContainer } from "./styles";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { AgentReadOnlyCard } from "./AgentReadOnlyCard";
 
 type Props = {
   agents: ApiAgentGetList[];
@@ -14,7 +16,15 @@ type Props = {
 };
 
 export function AgentCardList({ agents, count, columns, rows, currentPage, setCurrentPage, districtsList }: Props) {
-  const items = agents.map((agent) => <AgentCard key={agent.id} agent={agent} districtsList={districtsList} />);
+  const { isAuthorized } = useCurrentUser();
+
+  const items = agents.map((agent) =>
+    isAuthorized ? (
+      <AgentCard key={agent.id} agent={agent} districtsList={districtsList} />
+    ) : (
+      <AgentReadOnlyCard key={agent.id} agent={agent} districtsList={districtsList} />
+    ),
+  );
 
   return (
     <AgentCardListContainer data-testid="agent-card-list">

@@ -39,3 +39,9 @@ export const createOpportunityTableColumns = (t: TFunction): Column[] => [
   },
   { key: "agentTitle", label: t("dashboard.opportunities.table.agentName"), width: OPPORTUNITY_COL_WIDTHS.agentTitle },
 ];
+
+export const createReadOnlyAgentTableColumns = (t: TFunction): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title") },
+  { key: "type", label: t("dashboard.agents.table.type"), width: OPPORTUNITY_COL_WIDTHS.volunteerType },
+  { key: "district", label: t("dashboard.agents.table.district"), width: OPPORTUNITY_COL_WIDTHS.district },
+];

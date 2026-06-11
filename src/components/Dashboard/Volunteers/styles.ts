@@ -1,33 +1,10 @@
-import styled from "styled-components";
-
 import { BaseCard } from "@/components/styled/container";
-
-export const OpportunitiesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--dashboard-volunteers-container-gap);
-`;
-
-export const ContentRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: var(--dashboard-volunteers-container-gap);
-
-  @media (max-width: 1023px) {
-    flex-wrap: wrap;
-  }
-`;
-
-export const OpportunityCardListContainer = styled.div`
-  display: flex;
-  justify-content: left;
-`;
+import styled from "styled-components";
 
 export const Card = styled(BaseCard)<{ $cursor?: string }>`
   background-color: var(--color-orchid-subtle);
   width: var(--dashboard-volunteers-card-width);
-  min-height: var(--dashboard-volunteers-card-height);
+  height: var(--dashboard-volunteers-card-height);
   gap: var(--dashboard-volunteers-card-gap);
   padding: var(--dashboard-volunteers-card-padding);
   transition:
@@ -73,14 +50,14 @@ export const TagDiv = styled.div`
   gap: var(--dashboard-volunteers-card-tag-div-gap);
 `;
 
-export const TitleParagraph = styled.p`
-  font-weight: var(--dashboard-volunteers-card-profile-fontWeight);
-  font-size: var(--dashboard-volunteers-card-profile-fontSize);
-  line-height: var(--dashboard-volunteers-card-profile-lineHeight);
-  margin: 0;
+export const ProfileDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--dashboard-volunteers-card-profile-div-gap);
 `;
 
-export const LanguageRow = styled.div`
+export const LanguageDetailContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: var(--dashboard-volunteers-card-detail-gap);
