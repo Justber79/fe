@@ -117,3 +117,7 @@ export const TruncatedText = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+
+export const WrappedText = styled.span`
+  overflow-wrap: anywhere;
+`;

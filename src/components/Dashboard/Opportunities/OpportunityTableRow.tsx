@@ -4,7 +4,7 @@ import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
 import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { ClickableRow, TableCell, TruncatedText } from "@/components/core/common/Table";
+import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
 
@@ -47,11 +47,11 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`opportunity-row-${id}`}>
-      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
-        <TruncatedText>{title}</TruncatedText>
+      <TableCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
+        <WrappedText>{title}</WrappedText>
       </TableCell>
-      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.schedule} data-testid={`opportunity-schedule-${id}`}>
-        <TruncatedText>{scheduleText || "—"}</TruncatedText>
+      <TableCell $width={OPPORTUNITY_COL_WIDTHS.schedule} data-testid={`opportunity-schedule-${id}`}>
+        <WrappedText>{scheduleText || "—"}</WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
         <TruncatedText>{t(`dashboard.opportunities.matchStatus.${statusMatch}`)}</TruncatedText>
