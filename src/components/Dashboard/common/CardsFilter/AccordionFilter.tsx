@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Heading4, Paragraph } from "@/components/styled/text";
+import { ButtonSpan, Paragraph } from "@/components/styled/text";
 import CircleArrow from "@/components/svg/CircleArrow";
 import { Checkbox, CheckboxProps, CheckButton } from "@/components/core/button";
 
@@ -32,7 +32,9 @@ export default function AccordionFilter({ header, items, groupedItems, groupedIt
   return (
     <FilterContainer>
       <FilterHeaderContainer type="button" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
-        <Heading4 color="var(--color-midnight)">{header}</Heading4>
+        <ButtonSpan color="var(--color-midnight)" fontSize="20px" fontWeight={600}>
+          {header}
+        </ButtonSpan>
         <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled />
       </FilterHeaderContainer>
 
