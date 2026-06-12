@@ -6,7 +6,6 @@ import {
   ApiVolunteerOpportunityGet,
   OpportunityVolunteerStatusType,
   VolunteerStateCommunicationType,
-  VolunteerStateTypeType,
 } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -42,10 +41,7 @@ export const AccordionVolunteer = ({
   const { statusCommunication } = volunteer as ApiVolunteerOpportunityGet & {
     statusCommunication?: VolunteerStateCommunicationType;
   };
-  const showBriefedCheck = isBriefedAccompanying(
-    volunteeringType as unknown as VolunteerStateTypeType,
-    statusCommunication,
-  );
+  const showBriefedCheck = isBriefedAccompanying(volunteeringType, statusCommunication);
 
   const handleGoToProfile = () => {
     router.push(`/${i18n.language}/dashboard/volunteers/${volunteerId}`);
