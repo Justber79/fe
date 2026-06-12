@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next";
 import { EntityTableList } from "../common/EntityTableList";
 import { createOpportunityTableColumns, createReadOnlyAgentTableColumns } from "./opportunitiesTableColumns";
 import { OpportunityTableRow } from "./OpportunityTableRow";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { OpportunityReadOnlyTableRow } from "./OpportunityReadOnlyTableRow";
+import { useAuth } from "@/hooks/useAuth";
 
 interface TableListProps {
   opportunities: ApiVolunteerOpportunityGetList[];
@@ -29,7 +29,7 @@ export function OpportunityTableList({
   activitiesList,
 }: TableListProps) {
   const { t } = useTranslation();
-  const { isAuthorized } = useCurrentUser();
+  const isAuthorized = useAuth();
 
   const columns = useMemo(() => createOpportunityTableColumns(t), [t]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);

@@ -2,8 +2,8 @@ import { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
 import { PaginatedGrid } from "@/components/core/paginatedGrid";
 import { OpportunityCard } from "./OpportunityCard";
 import { OpportunityCardListContainer } from "./styles";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { OpportunityReadOnlyCard } from "./OpportunityReadOnlyCard";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
   activitiesList?: OptionItem[];
@@ -28,7 +28,7 @@ export function OpportunityCardList({
   activitiesList,
   districtsList,
 }: Props) {
-  const { isAuthorized } = useCurrentUser();
+  const isAuthorized = useAuth();
 
   const items = opportunities.map((opp) =>
     isAuthorized ? (

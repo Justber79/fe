@@ -7,8 +7,8 @@ import { createAgentTableColumns, createReadOnlyAgentTableColumns } from "./agen
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
 import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { AgentReadOnlyTableRow } from "./AgentReadOnlyTableRow";
+import { useAuth } from "@/hooks/useAuth";
 
 interface TableListProps {
   agents: ApiAgentGetList[];
@@ -28,7 +28,7 @@ export function AgentTableList({
   districtsList,
 }: TableListProps) {
   const { t } = useTranslation();
-  const { isAuthorized } = useCurrentUser();
+  const isAuthorized = useAuth();
 
   const columns = useMemo(() => createAgentTableColumns(t), [t]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
@@ -65,6 +65,7 @@ export function AgentTableList({
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       testIdPrefix="agents"
+      noFixedWidth={!isAuthorized}
     />
   );
 }

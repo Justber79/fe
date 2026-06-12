@@ -14,6 +14,7 @@ export function EntityTableList<T extends { id: string | number }>({
   currentPage,
   setCurrentPage,
   testIdPrefix,
+  noFixedWidth = false,
 }: EntityTableListProps<T>) {
   const totalPages = Math.ceil(count / itemsPerPage);
   const goToPage = (page: number) => {
@@ -26,7 +27,7 @@ export function EntityTableList<T extends { id: string | number }>({
         <ScrollableTable>
           <TableHeader>
             {columns.map((col) => (
-              <TableHeaderCell key={col.key} $width={col.width} $align="space-between">
+              <TableHeaderCell key={col.key} $width={noFixedWidth ? "" : col.width} $align="space-between">
                 {col.label}
                 {col.headerAction}
               </TableHeaderCell>
