@@ -24,6 +24,7 @@ import {
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
   if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
@@ -49,6 +50,7 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
+  const isAuthorized = useAuth();
 
   const { data: opportunitiesData } = useGetQuery<ApiOpportunityVolunteerGet[]>({
     queryKey: ["volunteer-opportunities", String(volunteer.id)],
@@ -64,7 +66,7 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const showBriefedCheck = isBriefedAccompanying(volunteer.statusType, volunteer.statusCommunication);
 
-  const fullName = volunteer.person.lastName
+  const fullName = isAuthorized
     ? `${volunteer.person.firstName} ${volunteer.person.lastName}`
     : volunteer.person.firstName;
   const avatarUrl = getImageUrl(volunteer.person.avatarUrl || defaultAvatarVolunteerProfile);
