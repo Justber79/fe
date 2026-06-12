@@ -10,6 +10,8 @@ export const useAuth = () => {
   useEffect(() => {
     const userIsAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
     if (userIsAuthorized) setIsAuthorized(true);
+
+    return () => setIsAuthorized(false);
   }, [user]);
 
   return isAuthorized;
