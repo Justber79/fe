@@ -14,6 +14,7 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
+import { getPersonIds } from "./helpers";
 
 type Props = {
   entityId: Id;
@@ -26,6 +27,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const { t } = useTranslation();
   const { mutate: createComment, isPending: isCreating } = useCreateComment(entityId, entityType);
   const [newCommentText, setNewCommentText] = useState("");
+  const [isTagFetch, setIsTagFetch] = useState(false);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -56,20 +58,31 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
   const sortedComments = comments.slice().reverse();
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (!newCommentText.trim()) return;
 
     let formattedText = newCommentText;
-    tags.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+    const taggedUserIds: number[] = [];
 
+    tags.forEach((tag) => {
+      formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
+        taggedUserIds.push(tag.id);
+      }
+    });
+
+    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     createComment(
       {
         text: formattedText.trim(),
         entityType,
         entityId,
+        taggedPersonIds,
       },
       {
-        onSuccess: () => setNewCommentText(""),
+        onSuccess: () => {
+          setNewCommentText("");
+        },
       },
     );
   };
@@ -87,15 +100,28 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     overlayRef.current.style.transform = `translateY(-${textAreaRef.current.scrollTop}px)`;
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!edit.editText.trim() || !edit.editingCommentId) return;
+
     const currentTags = initTags(edit.editText);
+    const taggedUserIds: number[] = [];
+
     let formattedText = edit.editText;
-    currentTags?.forEach((tag) => (formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`)));
+    currentTags?.forEach((tag) => {
+      formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
+        taggedUserIds.push(tag.id);
+      }
+    });
+
+    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     updateComment(
-      { text: formattedText.trim() },
+      { text: formattedText.trim(), taggedPersonIds },
+
       {
-        onSuccess: () => edit.cancelEdit(),
+        onSuccess: () => {
+          edit.cancelEdit();
+        },
       },
     );
   };
@@ -128,6 +154,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
             text: edit.editText,
             canSave: edit.canSave,
             isUpdating,
+            isTagFetch,
             onTextChange: edit.updateEditText,
             onKeyPress: (e) => edit.handleKeyPress(e, handleSaveEdit),
             onSave: handleSaveEdit,
@@ -176,7 +203,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       </NewCommentSection>
       <AddCommentButton
         onClick={handleAddComment}
-        disabled={!newCommentText.trim() || isCreating}
+        disabled={!newCommentText.trim() || isCreating || isTagFetch}
         data-testid="add-comment-button"
       >
         {t("dashboard.commentsSection.addComment")}

@@ -16,5 +16,32 @@ export const DashboardContentContainer = styled.div`
 
 export const DashboardCardContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: var(--dashboard-home-container-gap);
+`;
+
+export const TagContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--dashboard-home-container-gap);
+  overflow-y: scroll;
+  max-height: var(--tag-row-max-height);
+`;
+
+export const TagRow = styled.div`
+  background-color: var(--color-orchid-subtle);
+  border-radius: var(--tag-row-border-radius);
+  & h4 {
+    margin: 0;
+  }
+  & a {
+    display: flex;
+    gap: var(--dashboard-home-container-gap);
+    align-items: center;
+    text-decoration: none;
+    padding: var(--tag-row-padding);
+  }
+  &:hover {
+    background-color: var(--color-orchid);
+  }
 `;

@@ -63,7 +63,7 @@ export const OpportunityVolunteers = ({ opportunityId }: { opportunityId: Id }) 
   }
 
   return (
-    <OpportunityVolunteersContainer data-testid="opportunity-volunteers">
+    <OpportunityVolunteersContainer data-testid="opportunity-volunteers" id={"opportunity-volunteers-container"}>
       <Tabs tabs={tabs} selectedTabIndex={selectedTabIndex} setSelectedTabIndex={setSelectedTabIndex} />
       {visibleItems.length === 0 ? (
         <SectionEmptyState data-testid="volunteers-empty-state">
