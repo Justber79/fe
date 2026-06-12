@@ -12,7 +12,8 @@ export const MatchBanner = styled.div<MatchBannerProps>`
   border-radius: 8px;
   margin-top: 8px;
   font-size: 0.9375rem;
-  background: ${({ $matched }) => ($matched ? "var(--color-success-light, #f0fdf4)" : "var(--color-orchid-light, #faf5ff)")};
+  background: ${({ $matched }) =>
+    $matched ? "var(--color-success-light, #f0fdf4)" : "var(--color-orchid-light, #faf5ff)"};
   border: 1px solid ${({ $matched }) => ($matched ? "var(--color-success-border, #bbf7d0)" : "var(--color-grey-200)")};
   color: var(--color-midnight);
 `;

@@ -442,6 +442,9 @@
     "home": {
       "content": {
         "header": "Dashboard Home",
+        "newTags": "Newest Tags",
+        "taggedComment": "{{user}} tagged you in {{entityType}}: {{entityTitle}}",
+        "noTaggedComments": "You are currently not tagged in any comments",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
         "loading": "Loading..."
@@ -802,7 +805,15 @@
       "schedule": "Schedule",
       "district": "District",
       "dateOfAppointment": "Date Of Appointment",
-      "description": "Description"
+      "description": "Description",
+      "pendingMemberships": {
+        "title": "Pending join requests ({{count}})",
+        "requestsToJoin": "requests to join {{org}}",
+        "approve": "Approve",
+        "reject": "Reject",
+        "approved": "Join request approved",
+        "rejected": "Join request rejected"
+      }
     },
     "opportunities": {
       "opportunities": "Opportunities",
@@ -922,6 +933,7 @@
       "commentUpdated": "Comment updated successfully",
       "saveEdit": "Save",
       "cancelEdit": "Cancel",
+      "errorTagging": "Error occurred on tagging. Users not tagged",
       "deleteDialog": {
         "title": "Delete comment?",
         "message": "{{authorName}}'s comment will be permanently deleted.",
@@ -1540,7 +1552,8 @@
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
-      "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address."
+      "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
+      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
     },
     "success": {
       "title": "Registration successful!",
@@ -1556,7 +1569,18 @@
       "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
       "useThisOrg": "Yes, use this",
       "skip": "No, enter manually",
-      "matched": "Organisation matched: {{name}}"
+      "matched": "Organisation matched: {{name}}",
+      "titleTaken": "An organisation with this name already exists.",
+      "joinInstead": "Join it instead",
+      "requestToJoin": "Request to join",
+      "joinTitle": "Join an existing organisation",
+      "joiningOrg": "You're requesting to join {{name}}.",
+      "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
+      "createInstead": "Not your organisation? Create a new one"
+    },
+    "pending": {
+      "title": "Join request submitted",
+      "description": "An administrator will review your request to join this organisation. You'll get access once it's approved."
     }
   }
 }

@@ -139,4 +139,8 @@ const ContentRow = styled.div`
   flex-direction: row;
   align-items: flex-start;
   gap: var(--dashboard-volunteers-container-gap);
+
+  @media (max-width: 1023px) {
+    flex-wrap: wrap;
+  }
 `;
