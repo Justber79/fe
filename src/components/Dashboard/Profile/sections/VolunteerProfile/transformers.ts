@@ -46,16 +46,16 @@ export function mapToApiItems(ids: string[], mapping: { idToTitle: Record<number
 
 type FormLanguage = VolunteerProfileFormData["languages"][number];
 
-export function transformLanguagesToApi(languages: VolunteerProfileFormData["languages"], languageMapping: Mapping) {
+export function transformLanguagesToApi(
+  languages: VolunteerProfileFormData["languages"],
+  languageMapping: Mapping,
+): ApiLanguage[] {
   return languages
     .filter((lang): lang is FormLanguage & { level: LanguageLevel } => Boolean(lang.language && lang.level))
-    .map(
-      (lang) =>
-        ({
-          id: parseInt(lang.language, 10),
-          title: languageMapping.idToTitle[parseInt(lang.language, 10)] || "",
-          proficiency: LEVEL_TO_PROFICIENCY[lang.level],
-          purpose: lang.purpose ?? LangPurpose.GENERAL,
-        }) as ApiLanguage,
-    );
+    .map((lang) => ({
+      id: parseInt(lang.language, 10),
+      title: languageMapping.idToTitle[parseInt(lang.language, 10)] || "",
+      proficiency: LEVEL_TO_PROFICIENCY[lang.level],
+      purpose: lang.purpose ?? LangPurpose.GENERAL,
+    }));
 }
