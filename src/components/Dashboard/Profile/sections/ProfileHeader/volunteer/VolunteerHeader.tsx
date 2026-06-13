@@ -50,7 +50,8 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
-  const isAuthorized = useAuth();
+  const { isAuthorized, isOwnProfile } = useAuth();
+  const hasEditingRights = isAuthorized || isOwnProfile;
 
   const { data: opportunitiesData } = useGetQuery<ApiOpportunityVolunteerGet[]>({
     queryKey: ["volunteer-opportunities", String(volunteer.id)],
@@ -66,7 +67,7 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const showBriefedCheck = isBriefedAccompanying(volunteer.statusType, volunteer.statusCommunication);
 
-  const fullName = isAuthorized
+  const fullName = hasEditingRights
     ? `${volunteer.person.firstName} ${volunteer.person.lastName}`
     : volunteer.person.firstName;
   const avatarUrl = getImageUrl(volunteer.person.avatarUrl || defaultAvatarVolunteerProfile);
@@ -97,9 +98,11 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
           )
         }
         action={
-          <EditButton onClick={dialog.openDialog}>
-            {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
-          </EditButton>
+          isAuthorized && (
+            <EditButton onClick={dialog.openDialog}>
+              {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
+            </EditButton>
+          )
         }
       />
 

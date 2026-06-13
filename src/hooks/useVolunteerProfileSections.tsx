@@ -25,7 +25,8 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isAuthorized = useAuth();
+  const { isAuthorized, isOwnProfile } = useAuth(volunteer?.person.id);
+  const hasEditingRights = isAuthorized || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const volunteerProfileRef = useRef<VolunteerProfileRef>(null);
@@ -65,7 +66,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       iconName: IconName.UserCircle,
       title: t("dashboard.volunteerProfile.volunteerProfile"),
       ...(!isProfileEditing &&
-        isAuthorized && {
+        hasEditingRights && {
           headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
           onHeaderButtonClick: () => volunteerProfileRef.current?.handleEditClick(),
         }),
@@ -80,7 +81,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      ...(isAuthorized && {
+      ...(hasEditingRights && {
         headerButtonName: opportunityId
           ? t("dashboard.volunteerProfile.suggestButtonName")
           : t("dashboard.volunteerProfile.findOppButtonName"),
@@ -105,7 +106,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ChatsTeardrop,
       title: t("dashboard.communicationSection.title"),
-      ...(isAuthorized && {
+      ...(hasEditingRights && {
         headerButtonName: t("dashboard.communicationSection.addNew"),
         onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
       }),
@@ -116,7 +117,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.Gift,
       title: t("dashboard.appreciationSection.title"),
-      ...(isAuthorized && {
+      ...(hasEditingRights && {
         headerButtonName: t("dashboard.appreciationSection.addNew"),
         onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
       }),
@@ -129,7 +130,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     },
   ];
 
-  if (isAuthorized) {
+  if (hasEditingRights) {
     sections.unshift({
       iconName: IconName.ChatsCircle,
       title: t("dashboard.volunteerProfile.contactDetailsTitle"),
@@ -141,6 +142,9 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
         <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
       ),
     });
+  }
+
+  if (isAuthorized) {
     sections.push(
       {
         iconName: IconName.ClipboardText,
