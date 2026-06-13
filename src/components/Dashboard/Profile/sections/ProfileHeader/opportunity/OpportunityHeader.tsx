@@ -12,12 +12,14 @@ import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, Sta
 import { ChangeOpportunityStatusDialog } from "./ChangeOpportunityStatusDialog";
 import { createOpportunityStatusLabelMap } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
   opportunity: ApiOpportunityGet;
 };
 
 export const OpportunityHeader = ({ opportunity }: Props) => {
+  const { isAuthorized } = useAuth();
   const { t, i18n } = useTranslation();
   const dialog = useOpportunityStatusDialog(opportunity);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
@@ -43,7 +45,11 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         title={t("dashboard.opportunityProfile.currentStatus")}
         status={dialog.selected}
         label={statusLabelMap[dialog.selected]}
-        action={<EditButton onClick={dialog.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>}
+        action={
+          isAuthorized && (
+            <EditButton onClick={dialog.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
+          )
+        }
       />
 
       <StatusRowField
