@@ -43,7 +43,7 @@ export function VolunteerTableList({
         onClick={onCopyEmails}
         disabled={isCopying}
         tooltipText={t("dashboard.common.copyEmails.tooltip")}
-        ariaLabel={t("dashboard.common.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.common.copyEmails.copyAriaAllVolunteers")}
       />
     );
     return createVolunteerTableColumns(t, copyButton);

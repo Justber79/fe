@@ -346,6 +346,8 @@
         "success": "Copied {{count}} emails",
         "successSingle": "Email copied",
         "copyAriaSingle": "Copy email of {{name}}",
+        "copyAriaAllAgents": "Copy all NGO emails",
+        "copyAriaAllVolunteers": "Copy all volunteer emails",
         "genericError": "Something went wrong. Please try again."
       }
     },

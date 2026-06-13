@@ -22,7 +22,7 @@ export const useCopyEmails = (apiPath: string, cacheKey: string, serializedFilte
       queryKey: [cacheKey, serializedFilter.toString(), page],
       staleTime: 0,
       queryFn: () =>
-        fetchData<EmailRecord[]>(`${apiPath}/`, {
+        fetchData<EmailRecord[]>(apiPath, {
           limit: MAX_PAGE_LIMIT,
           page,
           filter: getReducedFilter(serializedFilter),

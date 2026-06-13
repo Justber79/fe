@@ -53,7 +53,7 @@ export const AgentListController = ({
   });
 
   const agents: ApiAgentGetList[] = data || [];
-  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathAgent, "agents-emails", serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(`${apiPathAgent}/`, "agents-emails", serializedFilter);
 
   useEffect(() => {
     setNumOfAgents(count);

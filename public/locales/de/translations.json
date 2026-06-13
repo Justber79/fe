@@ -346,6 +346,8 @@
         "success": "{{count}} E-Mails kopiert",
         "successSingle": "E-Mail kopiert",
         "copyAriaSingle": "E-Mail von {{name}} kopieren",
+        "copyAriaAllAgents": "Alle E-Mails der Einrichtungen/Projekte kopieren",
+        "copyAriaAllVolunteers": "Alle E-Mails der Freiwilligen kopieren",
         "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       }
     },
