@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Heading4, Paragraph } from "@/components/styled/text";
+import { ButtonSpan, Paragraph } from "@/components/styled/text";
 import CircleArrow from "@/components/svg/CircleArrow";
 import { Checkbox, CheckboxProps, CheckButton } from "@/components/core/button";
 
@@ -31,9 +31,11 @@ export default function AccordionFilter({ header, items, groupedItems, groupedIt
 
   return (
     <FilterContainer>
-      <FilterHeaderContainer>
-        <Heading4 color="var(--color-midnight)">{header}</Heading4>
-        <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled onClick={() => setIsOpen(!isOpen)} />
+      <FilterHeaderContainer type="button" aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
+        <ButtonSpan color="var(--color-midnight)" fontSize="20px" fontWeight={600}>
+          {header}
+        </ButtonSpan>
+        <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled />
       </FilterHeaderContainer>
 
       {isOpen && items && (
@@ -90,10 +92,15 @@ const FilterContainer = styled.div`
   gap: var(--opportunities-filters-content-filter-container-gap);
 `;
 
-const FilterHeaderContainer = styled.div`
+const FilterHeaderContainer = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
   border-top: var(--opportunities-filters-content-accordion-header-border-top) solid var(--color-orchid);
   padding-top: var(--opportunities-filters-content-accordion-header-padding-top);
 `;
