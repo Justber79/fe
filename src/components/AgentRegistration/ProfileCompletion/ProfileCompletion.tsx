@@ -78,6 +78,7 @@ export function ProfileCompletion() {
   const { matched, selectedAgent, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
+    (m) => update({ addressStreet: m.title }),
   );
 
   const update = (fields: Partial<ProfileCompletionData>) => {
