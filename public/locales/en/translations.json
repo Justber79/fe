@@ -1582,5 +1582,9 @@
       "title": "Join request submitted",
       "description": "An administrator will review your request to join this organisation. You'll get access once it's approved."
     }
+  },
+  "formInput": {
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   }
 }
