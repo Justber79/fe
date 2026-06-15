@@ -47,10 +47,13 @@ type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
 
 // Several SDK enums share the same underlying string values (e.g. "new", "active",
 // "pending-match"). Object literals with computed duplicate keys are a TS error, so
-// the SDK entries are built with Object.fromEntries — arrays have no such restriction and
+// the SDK entries are built from pairs — arrays have no such restriction and
 // the last entry for a given key wins, matching the original intended behaviour.
 // OpportunityManualStatusType values are unique ("opp-*") and use a typed Record
 // to preserve exhaustiveness checking.
+
+const fromPairs = <K extends string, V>(pairs: readonly (readonly [K, V])[]): Record<K, V> =>
+  Object.fromEntries(pairs) as Record<K, V>;
 
 const manualStatusColorMap: Record<OpportunityManualStatusType, string> = {
   [OpportunityManualStatusType.NEW]: "var(--color-violet-100)",
@@ -59,7 +62,7 @@ const manualStatusColorMap: Record<OpportunityManualStatusType, string> = {
 };
 
 export const statusColorMap: Record<StatusValue, string> = {
-  ...(Object.fromEntries([
+  ...fromPairs<SdkStatusValue, string>([
     [VolunteerStateEngagementType.ACTIVE, "var(--color-green-100)"],
     [VolunteerStateEngagementType.AVAILABLE, "var(--color-violet-100)"],
     [VolunteerStateEngagementType.TEMP_UNAVAILABLE, "var( --color-red-50)"],
@@ -100,7 +103,7 @@ export const statusColorMap: Record<StatusValue, string> = {
     [AgentEngagementStatusType.ACTIVE, "var(--color-green-100)"],
     [AgentEngagementStatusType.INACTIVE, "var(--color-grey-50)"],
     [AgentEngagementStatusType.UNRESPONSIVE, "var(--color-grey-50)"],
-  ]) as Record<SdkStatusValue, string>),
+  ]),
   ...manualStatusColorMap,
 };
 
@@ -111,7 +114,7 @@ const manualStatusIconMap: Record<OpportunityManualStatusType, IconComponent> = 
 };
 
 export const statusIconMap: Record<StatusValue, IconComponent> = {
-  ...(Object.fromEntries([
+  ...fromPairs<SdkStatusValue, IconComponent>([
     [VolunteerStateEngagementType.ACTIVE, ChartLineIcon],
     [VolunteerStateEngagementType.AVAILABLE, CalendarBlankIcon],
     [VolunteerStateEngagementType.TEMP_UNAVAILABLE, CalendarXIcon],
@@ -152,6 +155,6 @@ export const statusIconMap: Record<StatusValue, IconComponent> = {
     [AgentEngagementStatusType.ACTIVE, ChartLineIcon],
     [AgentEngagementStatusType.INACTIVE, StopCircleIcon],
     [AgentEngagementStatusType.UNRESPONSIVE, PhoneXIcon],
-  ]) as unknown as Record<SdkStatusValue, IconComponent>),
+  ]),
   ...manualStatusIconMap,
 };

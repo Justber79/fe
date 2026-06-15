@@ -105,8 +105,9 @@ export const ActionButton = styled.button`
   }
 `;
 
-export const ClickableRow = styled(TableRow)`
-  cursor: pointer;
+export const ClickableRow = styled(TableRow)<{ $cursor?: string }>`
+  cursor: ${(props) => props.$cursor || "pointer"};
+
   &:hover {
     background: var(--color-pink-50);
   }
