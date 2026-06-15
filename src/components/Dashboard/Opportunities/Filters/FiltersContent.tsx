@@ -13,7 +13,7 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter }: Props) {
   const { t } = useTranslation();
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const { districtFilters, languageFilters, statusFilters, typeFilters, activityFilters, availabilityFilters } =
     createOpportunityFilterItems(filter, setFilter, t);

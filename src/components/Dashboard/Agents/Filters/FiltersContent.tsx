@@ -13,7 +13,7 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter }: Props) {
   const { t } = useTranslation();
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const { districtFilters, volunteerSearchFilters, typeFilters, engagementStatusFilters, servicesFilters } =
     createAgentFilterItems(filter, setFilter, t);

@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function AgentCardList({ agents, count, columns, rows, currentPage, setCurrentPage, districtsList }: Props) {
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const items = agents.map((agent) =>
     isAuthorized ? (

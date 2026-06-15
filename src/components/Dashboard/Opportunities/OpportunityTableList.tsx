@@ -29,7 +29,7 @@ export function OpportunityTableList({
   activitiesList,
 }: TableListProps) {
   const { t } = useTranslation();
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const columns = useMemo(() => createOpportunityTableColumns(t), [t]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);

@@ -28,7 +28,7 @@ export function AgentTableList({
   districtsList,
 }: TableListProps) {
   const { t } = useTranslation();
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const columns = useMemo(() => createAgentTableColumns(t), [t]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);

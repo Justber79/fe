@@ -28,7 +28,7 @@ export function OpportunityCardList({
   activitiesList,
   districtsList,
 }: Props) {
-  const isAuthorized = useAuth();
+  const { isAuthorized } = useAuth();
 
   const items = opportunities.map((opp) =>
     isAuthorized ? (
