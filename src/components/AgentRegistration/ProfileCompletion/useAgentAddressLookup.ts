@@ -9,7 +9,11 @@ type AgentSearchMatch = { id: number; title: string };
 // existing agents at a matching address so they can JOIN their org instead of
 // creating a duplicate. Backed by the token-gated GET /agent/register/search
 // (the COORDINATOR-only GET /agent is not available to a registrant).
-export function useAgentAddressLookup(addressStreet: string, token: string | null) {
+export function useAgentAddressLookup(
+  addressStreet: string,
+  token: string | null,
+  onConfirm?: (matched: AgentSearchMatch) => void,
+) {
   const [selectedAgent, setSelectedAgent] = useState<AgentSearchMatch | null>(null);
   const [dismissedAddress, setDismissedAddress] = useState<string | null>(null);
   const debouncedAddress = useDebounce(addressStreet.trim(), 400);
@@ -33,7 +37,9 @@ export function useAgentAddressLookup(addressStreet: string, token: string | nul
   const showBanner = !!matched && !isMatch && !isDismissed;
 
   const confirmMatch = () => {
-    if (matched) setSelectedAgent(matched);
+    if (!matched) return;
+    setSelectedAgent(matched);
+    onConfirm?.(matched);
   };
 
   const dismissMatch = () => {

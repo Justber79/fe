@@ -12,7 +12,7 @@ import { getImageUrl } from "@/utils";
 import { ApiVolunteerGetList } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { VOLUNTEER_COL_WIDTHS } from "./volunteerTableColumns";
+import { getVolunteerColWidths } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
 import { CopyEmail } from "../common/CopyEmail";
 import { CheckCircleIcon } from "@phosphor-icons/react";
@@ -25,6 +25,7 @@ interface TableRowProps {
   typeLabels: ReturnType<typeof createStatusLabelMap>;
   matchLabels: ReturnType<typeof createMatchStatusLabelMap>;
   opportunityId?: string;
+  canSeeContactColumns: boolean;
 }
 
 export function VolunteerTableRow({
@@ -34,9 +35,11 @@ export function VolunteerTableRow({
   typeLabels,
   matchLabels,
   opportunityId,
+  canSeeContactColumns,
 }: TableRowProps) {
   const { i18n } = useTranslation();
   const router = useRouter();
+  const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
   const {
     id,
@@ -102,15 +105,17 @@ export function VolunteerTableRow({
       <TableCell $width={VOLUNTEER_COL_WIDTHS.district} $noWrap data-testid={`volunteer-district-${id}`}>
         <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
-      <TableCell
-        $width={VOLUNTEER_COL_WIDTHS.email}
-        $noWrap
-        $align="space-between"
-        data-testid={`volunteer-email-${id}`}
-      >
-        <TruncatedText>{email || "—"}</TruncatedText>
-        {email && <CopyEmail email={email} name={name} />}
-      </TableCell>
+      {canSeeContactColumns && (
+        <TableCell
+          $width={VOLUNTEER_COL_WIDTHS.email}
+          $noWrap
+          $align="space-between"
+          data-testid={`volunteer-email-${id}`}
+        >
+          <TruncatedText>{email || "—"}</TruncatedText>
+          {email && <CopyEmail email={email} name={name} />}
+        </TableCell>
+      )}
     </ClickableRow>
   );
 }
