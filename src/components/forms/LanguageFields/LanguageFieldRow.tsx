@@ -22,11 +22,11 @@ type Props = {
 
 const languageLevels: LanguageLevel[] = [LanguageLevel.NATIVE, LanguageLevel.FLUENT, LanguageLevel.INTERMEDIATE];
 
-const levelToI18nKey: LanguageLevel = {
+const levelToI18nKey: Record<LanguageLevel, string> = {
   [LanguageLevel.NATIVE]: "languagesNative",
   [LanguageLevel.FLUENT]: "languagesFluent",
   [LanguageLevel.INTERMEDIATE]: "languagesIntermediate",
-} as unknown as LanguageLevel;
+};
 
 export function LanguageFieldRow({
   language,
@@ -58,7 +58,8 @@ export function LanguageFieldRow({
             {t("form.becomeVolunteer.fields.languages.chooseLanguage")}
           </option>
           <option key={language.id} value={language.language}>
-            {availableLanguages.find((item) => String(item.id) === language.language)?.title[i18n.language as Lang] ?? language.language}
+            {availableLanguages.find((item) => String(item.id) === language.language)?.title[i18n.language as Lang] ??
+              language.language}
           </option>
           {availableLanguages.map((item) => (
             <option
@@ -84,7 +85,7 @@ export function LanguageFieldRow({
             </option>
             {languageLevels.map((level) => (
               <option key={level} value={level}>
-                {t(`form.becomeVolunteer.fields.languages.${levelToI18nKey[level as unknown as number]}.header`)}
+                {t(`form.becomeVolunteer.fields.languages.${levelToI18nKey[level]}.header`)}
               </option>
             ))}
           </select>
