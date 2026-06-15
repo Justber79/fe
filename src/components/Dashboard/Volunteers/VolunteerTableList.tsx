@@ -22,6 +22,7 @@ interface TableListProps {
   opportunityId?: string;
   onCopyEmails: () => void;
   isCopying: boolean;
+  canSeeContactColumns: boolean;
 }
 
 export function VolunteerTableList({
@@ -33,6 +34,7 @@ export function VolunteerTableList({
   opportunityId,
   onCopyEmails,
   isCopying,
+  canSeeContactColumns,
 }: TableListProps) {
   const { t } = useTranslation();
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
@@ -46,8 +48,8 @@ export function VolunteerTableList({
         ariaLabel={t("dashboard.volunteers.copyEmails.tooltip")}
       />
     );
-    return createVolunteerTableColumns(t, copyButton);
-  }, [t, onCopyEmails, isCopying]);
+    return createVolunteerTableColumns(t, copyButton, canSeeContactColumns);
+  }, [t, onCopyEmails, isCopying, canSeeContactColumns]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
   return (
@@ -63,6 +65,7 @@ export function VolunteerTableList({
           typeLabels={typeLabels}
           matchLabels={matchLabels}
           opportunityId={opportunityId}
+          canSeeContactColumns={canSeeContactColumns}
         />
       )}
       count={count}
