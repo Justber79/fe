@@ -11,6 +11,12 @@ export const AGENT_COL_WIDTHS = {
   email: COLUMN_WIDTH.LG,
 };
 
+export const AGENT_READ_ONLY_COL_WIDTHS = {
+  title: COLUMN_WIDTH.XXXL,
+  type: COLUMN_WIDTH.XXXL,
+  district: COLUMN_WIDTH.XXXL,
+};
+
 export const createAgentTableColumns = (t: TFunction): Column[] => [
   { key: "title", label: t("dashboard.agents.table.title") },
   { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
@@ -31,4 +37,10 @@ export const createAgentTableColumns = (t: TFunction): Column[] => [
     width: AGENT_COL_WIDTHS.numOpportunities,
   },
   { key: "email", label: t("dashboard.agents.table.email") },
+];
+
+export const createReadOnlyAgentTableColumns = (t: TFunction): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_READ_ONLY_COL_WIDTHS.title },
+  { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_READ_ONLY_COL_WIDTHS.type },
+  { key: "district", label: t("dashboard.agents.table.district"), width: AGENT_READ_ONLY_COL_WIDTHS.district },
 ];

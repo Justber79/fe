@@ -15,6 +15,14 @@ export const OPPORTUNITY_COL_WIDTHS = {
   agentTitle: COLUMN_WIDTH.MD,
 };
 
+export const OPPORTUNITY_READ_ONLY_COL_WIDTHS = {
+  title: COLUMN_WIDTH.XXXL,
+  volunteerType: COLUMN_WIDTH.XXXL,
+  statusMatch: COLUMN_WIDTH.XXXL,
+  languages: COLUMN_WIDTH.XXXL,
+  district: COLUMN_WIDTH.XXXL,
+};
+
 export const createOpportunityTableColumns = (t: TFunction): Column[] => [
   { key: "title", label: t("dashboard.opportunities.table.title"), width: OPPORTUNITY_COL_WIDTHS.title },
   { key: "volunteerType", label: t("dashboard.opportunities.table.type"), width: OPPORTUNITY_COL_WIDTHS.volunteerType },
@@ -38,4 +46,20 @@ export const createOpportunityTableColumns = (t: TFunction): Column[] => [
     width: OPPORTUNITY_COL_WIDTHS.numberOfVolunteers,
   },
   { key: "agentTitle", label: t("dashboard.opportunities.table.agentName"), width: OPPORTUNITY_COL_WIDTHS.agentTitle },
+];
+
+export const createReadOnlyAgentTableColumns = (t: TFunction): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title"), width: OPPORTUNITY_READ_ONLY_COL_WIDTHS.title },
+  { key: "type", label: t("dashboard.agents.table.type"), width: OPPORTUNITY_READ_ONLY_COL_WIDTHS.volunteerType },
+  {
+    key: "statusMatch",
+    label: t("dashboard.opportunities.table.matchingStatus"),
+    width: OPPORTUNITY_READ_ONLY_COL_WIDTHS.statusMatch,
+  },
+  {
+    key: "languages",
+    label: t("dashboard.opportunities.table.languages"),
+    width: OPPORTUNITY_READ_ONLY_COL_WIDTHS.languages,
+  },
+  { key: "district", label: t("dashboard.agents.table.district"), width: OPPORTUNITY_READ_ONLY_COL_WIDTHS.district },
 ];
