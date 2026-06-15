@@ -127,16 +127,11 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>
-        <Tags tags={activities as unknown as string[]} max={MAX_CARD_ITEMS} />
+        <Tags tags={activities} max={MAX_CARD_ITEMS} />
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.skillsExperience")} iconName={IconName.Wrench}>
-        <Tags
-          tags={skills as unknown as string[]}
-          backgroundColor="var(--color-white)"
-          icon={<CheckIcon size={18} />}
-          max={MAX_CARD_ITEMS}
-        />
+        <Tags tags={skills} backgroundColor="var(--color-white)" icon={<CheckIcon size={18} />} max={MAX_CARD_ITEMS} />
       </CardDetail>
 
       <CardDetail header={t("dashboard.volunteers.preferredAvailability")} iconName={IconName.CalendarDots}>

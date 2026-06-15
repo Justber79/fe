@@ -8,11 +8,11 @@ interface Props<TFilter> {
   filter: TFilter;
 }
 
-export default function ClearAllFilters<TFilter>({ setFilter, filter }: Props<TFilter>) {
+export default function ClearAllFilters<TFilter extends object>({ setFilter, filter }: Props<TFilter>) {
   const { t } = useTranslation();
 
   const handleClick = () => {
-    const clearFilter = getClearFilter(filter as object) as unknown as TFilter;
+    const clearFilter = getClearFilter(filter);
     setFilter(clearFilter);
   };
 
