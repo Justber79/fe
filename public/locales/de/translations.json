@@ -1950,5 +1950,9 @@
       "title": "Beitrittsanfrage gesendet",
       "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
     }
+  },
+  "formInput": {
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
   }
 }
