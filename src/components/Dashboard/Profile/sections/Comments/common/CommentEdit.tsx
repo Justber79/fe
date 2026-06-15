@@ -15,7 +15,6 @@ type EditState = {
   text: string;
   canSave: boolean;
   isUpdating: boolean;
-  isUsersLoading: boolean;
   onTextChange: (text: string) => void;
   onKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSave: () => void;
@@ -86,7 +85,7 @@ export function CommentEdit({ commentId, edit }: Props) {
         </EditCancelButton>
         <EditSaveButton
           onClick={edit.onSave}
-          disabled={!edit.canSave || edit.isUpdating || edit.isUsersLoading}
+          disabled={!edit.canSave || edit.isUpdating}
           data-testid={`save-edit-${commentId}`}
         >
           {t("dashboard.commentsSection.saveEdit")}

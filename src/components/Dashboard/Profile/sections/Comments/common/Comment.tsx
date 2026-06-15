@@ -9,7 +9,6 @@ type EditState = {
   text: string;
   canSave: boolean;
   isUpdating: boolean;
-  isUsersLoading: boolean;
   onTextChange: (text: string) => void;
   onKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSave: () => void;
