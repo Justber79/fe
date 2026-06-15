@@ -9,14 +9,12 @@ import {
   StopCircleIcon,
   TranslateIcon,
 } from "@phosphor-icons/react";
-import { format } from "date-fns";
 import {
   ApiVolunteerOpportunityGetList,
   OpportunityMatchStatusType,
   OpportunityStatusType,
   ProfileVolunteeringType,
 } from "need4deed-sdk";
-import { utcHhmmToLocal } from "@/utils";
 import { JSX } from "react";
 
 export function formatAvailability(availability: ApiVolunteerOpportunityGetList["availability"]): string {
@@ -24,19 +22,6 @@ export function formatAvailability(availability: ApiVolunteerOpportunityGetList[
   if (!first) return "";
   const parts = [first.day, first.daytime].filter(Boolean);
   return parts.join(", ");
-}
-
-export function formatAccompanyingDate(details?: {
-  appointmentDate?: string | null;
-  appointmentTime?: string | null;
-}): string | null {
-  if (!details?.appointmentDate) return null;
-
-  const date = new Date(details.appointmentDate);
-  const formattedDate = isNaN(date.getTime()) ? details.appointmentDate : format(date, "dd.MM.yyyy");
-  const formattedTime = details.appointmentTime ? utcHhmmToLocal(details.appointmentTime) : null;
-
-  return [formattedDate, formattedTime].filter(Boolean).join(" ");
 }
 
 export const statusColorMap: Record<OpportunityStatusType, string> = {

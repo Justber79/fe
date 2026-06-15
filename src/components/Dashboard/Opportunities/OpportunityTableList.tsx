@@ -16,7 +16,6 @@ interface TableListProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
-  activitiesList?: OptionItem[];
 }
 
 export function OpportunityTableList({
@@ -26,7 +25,6 @@ export function OpportunityTableList({
   currentPage,
   setCurrentPage,
   districtsList,
-  activitiesList,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
@@ -44,7 +42,6 @@ export function OpportunityTableList({
             opportunity={opportunity}
             isLast={isLast}
             districtsList={districtsList}
-            activitiesList={activitiesList}
           />
         ) : (
           <OpportunityReadOnlyTableRow

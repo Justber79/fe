@@ -1,4 +1,5 @@
 export const COLUMN_WIDTH = {
+  XXS: "120px",
   XS: "140px",
   SM: "160px",
   MD: "180px",
