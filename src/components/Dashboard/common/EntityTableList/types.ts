@@ -16,4 +16,5 @@ export interface EntityTableListProps<T extends { id: string | number }> {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   testIdPrefix: string;
+  noFixedWidth?: boolean;
 }

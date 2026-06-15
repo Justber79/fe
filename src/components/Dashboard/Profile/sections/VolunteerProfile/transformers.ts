@@ -1,5 +1,6 @@
 import { TFunction } from "i18next";
 import { ApiLanguage, ApiVolunteerGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { LanguageLevel } from "@/types";
 import { apiToFormAvailability } from "./availabilityUtils";
 import { LEVEL_TO_PROFICIENCY } from "./constants";
 import { formatActivities, formatDistricts, formatLanguages, formatSkills, getVolunteerTypeLabel } from "./formatters";
@@ -43,16 +44,18 @@ export function mapToApiItems(ids: string[], mapping: { idToTitle: Record<number
     .filter((item) => !isNaN(item.id) && item.id > 0);
 }
 
-export function transformLanguagesToApi(languages: VolunteerProfileFormData["languages"], languageMapping: Mapping) {
+type FormLanguage = VolunteerProfileFormData["languages"][number];
+
+export function transformLanguagesToApi(
+  languages: VolunteerProfileFormData["languages"],
+  languageMapping: Mapping,
+): ApiLanguage[] {
   return languages
-    .filter((lang) => lang.language && lang.level)
-    .map(
-      (lang) =>
-        ({
-          id: parseInt(lang.language, 10),
-          title: languageMapping.idToTitle[parseInt(lang.language, 10)] || "",
-          proficiency: LEVEL_TO_PROFICIENCY[lang.level as unknown as number],
-          purpose: lang.purpose ?? LangPurpose.GENERAL,
-        }) as ApiLanguage,
-    );
+    .filter((lang): lang is FormLanguage & { level: LanguageLevel } => Boolean(lang.language && lang.level))
+    .map((lang) => ({
+      id: parseInt(lang.language, 10),
+      title: languageMapping.idToTitle[parseInt(lang.language, 10)] || "",
+      proficiency: LEVEL_TO_PROFICIENCY[lang.level],
+      purpose: lang.purpose ?? LangPurpose.GENERAL,
+    }));
 }
