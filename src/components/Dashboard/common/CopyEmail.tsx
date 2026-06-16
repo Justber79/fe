@@ -17,9 +17,9 @@ export function CopyEmail({ email, name }: CopyEmailProps) {
     setIsCopying(true);
     try {
       await copyEmails([email]);
-      toast.success(t("dashboard.volunteers.copyEmails.successSingle"));
+      toast.success(t("dashboard.common.copyEmails.successSingle"));
     } catch {
-      toast.error(t("dashboard.volunteers.copyEmails.genericError"));
+      toast.error(t("dashboard.common.copyEmails.genericError"));
     } finally {
       setIsCopying(false);
     }
@@ -30,8 +30,8 @@ export function CopyEmail({ email, name }: CopyEmailProps) {
       <CopyButton
         onClick={handleCopyEmail}
         disabled={isCopying}
-        tooltipText={t("dashboard.volunteers.copyEmails.tooltipSingle")}
-        ariaLabel={t("dashboard.volunteers.copyEmails.copyAriaSingle", { name })}
+        tooltipText={t("dashboard.common.copyEmails.tooltipSingle")}
+        ariaLabel={t("dashboard.common.copyEmails.copyAriaSingle", { name })}
       />
     </span>
   );
