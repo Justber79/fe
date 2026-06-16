@@ -86,3 +86,12 @@ export const LanguageRow = styled.div`
   flex-direction: row;
   gap: var(--dashboard-volunteers-card-detail-gap);
 `;
+
+export const MatchedBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  background: var(--color-green-100);
+  border-radius: var(--border-radius-xs);
+  padding: var(--spacing-12);
+`;
