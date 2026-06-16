@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/core/button";
-import { apiPathUser, LOGGED_IN_COOKIE } from "@/config/constants";
+import { apiPathUser } from "@/config/constants";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
 import { useState } from "react";
@@ -71,7 +71,6 @@ export function AgentRegistration() {
         },
       });
 
-      document.cookie = LOGGED_IN_COOKIE;
       document.cookie = PENDING_ROLE_COOKIE;
       setIsSuccess(true);
     } catch (err) {

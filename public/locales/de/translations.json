@@ -762,7 +762,15 @@
       "schedule": "Zeitplan",
       "district": "Stadtviertel",
       "dateOfAppointment": "Termindatum",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "pendingMemberships": {
+        "title": "Ausstehende Beitrittsanfragen ({{count}})",
+        "requestsToJoin": "möchte {{org}} beitreten",
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "approved": "Beitrittsanfrage genehmigt",
+        "rejected": "Beitrittsanfrage abgelehnt"
+      }
     },
     "opportunities": {
       "opportunities": "Möglichkeiten",
@@ -794,17 +802,13 @@
       },
       "table": {
         "title": "Titel",
-        "type": "Typ",
-        "currentStatus": "Aktueller Status",
         "matchingStatus": "Matching-Status",
         "languages": "Sprachen",
-        "activities": "Aktivitäten",
         "district": "Bezirk",
         "schedule": "Zeitplan",
-        "volunteersNeeded": "Anzahl der Freiwilligen",
+        "volunteersNeeded": "Benötigt",
         "agentName": "Einrichtung/Projekt"
       },
-
       "card": {
         "mainCommunication": "Hauptkommunikation",
         "residentsSpeak": "Bewohner sprechen",
@@ -927,6 +931,7 @@
       "commentUpdated": "Kommentar erfolgreich aktualisiert",
       "saveEdit": "Speichern",
       "cancelEdit": "Abbrechen",
+      "errorTagging": "Fehler beim Taggen. Benutzer nicht getaggt.",
       "deleteDialog": {
         "title": "Kommentar löschen?",
         "message": "{{authorName}}s Kommentar wird unwiderruflich gelöscht.",
@@ -1912,7 +1917,8 @@
     "errors": {
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
       "passwordMismatch": "Die Passwörter stimmen nicht überein",
-      "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation."
+      "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation.",
+      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
@@ -1928,7 +1934,22 @@
       "matchFound": "Wir haben eine Organisation gefunden, die zu dieser Adresse passt: {{name}}. Möchten Sie diese verwenden?",
       "useThisOrg": "Ja, diese verwenden",
       "skip": "Nein, manuell eingeben",
-      "matched": "Organisation gefunden: {{name}}"
+      "matched": "Organisation gefunden: {{name}}",
+      "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
+      "joinInstead": "Stattdessen beitreten",
+      "requestToJoin": "Beitritt anfragen",
+      "joinTitle": "Einer bestehenden Organisation beitreten",
+      "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
+      "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
+      "createInstead": "Nicht deine Organisation? Neue erstellen"
+    },
+    "pending": {
+      "title": "Beitrittsanfrage gesendet",
+      "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
     }
+  },
+  "formInput": {
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
   }
 }

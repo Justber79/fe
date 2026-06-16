@@ -14,6 +14,8 @@ export const apiPathAuthEmailDomain = `/${apiPrefix}/auth-email-domain/`;
 export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
 export const apiPathAgentMe = `/${apiPrefix}/agent/me`;
+export const apiPathAgentRegister = `/${apiPrefix}/agent/register`;
+export const apiPathAgentMembership = `/${apiPrefix}/agent/membership`;
 export const apiPathOption = `/${apiPrefix}/option`;
 export const apiPathOpportunityVolunteer = `/${apiPrefix}/opportunity-volunteer`;
 export const apiPathUser = `/${apiPrefix}/user`;
@@ -75,7 +77,9 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 
 export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
-export const LOGGED_IN_COOKIE = "is_logged_in=true; path=/; max-age=6000; SameSite=Lax; Secure";
+export const AUTH_HINT_COOKIE_NAME = "is_logged_in";
+export const AUTH_HINT_COOKIE_ATTRS = "path=/; SameSite=Lax; Secure";
+export const AUTH_HINT_MAX_AGE = 6000;
 
 export const TABLE_LIMIT = 20;
 export const CARD_COLUMNS = 3;

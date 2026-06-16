@@ -61,7 +61,7 @@ export function Volunteers() {
   };
 
   const handleClearAllFilters = () => {
-    const cleared = getClearFilter(cardsFilter) as unknown as CardsFilter;
+    const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
     router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
   };
@@ -139,4 +139,8 @@ const ContentRow = styled.div`
   flex-direction: row;
   align-items: flex-start;
   gap: var(--dashboard-volunteers-container-gap);
+
+  @media (max-width: 1023px) {
+    flex-wrap: wrap;
+  }
 `;

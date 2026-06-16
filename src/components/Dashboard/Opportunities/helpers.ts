@@ -10,6 +10,12 @@ import {
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
 import { OpportunityCardsFilter } from "./Filters/types";
+import { format } from "date-fns";
+import { utcHhmmToLocal } from "@/utils";
+import { TFunction } from "i18next";
+import { ApiVolunteerOpportunityGetList } from "need4deed-sdk";
+
+type Availability = ApiVolunteerOpportunityGetList["availability"];
 
 interface SerializeFiltersOptions {
   serializeToIDs?: boolean;
@@ -156,4 +162,41 @@ export function getActivityTitles(activities: OptionById[], activityList: Option
     .map((act) => activityMap.get(String(act.id)))
     .filter((title): title is string => Boolean(title))
     .map(cleanActivityTitle);
+}
+
+export function formatAccompanyingDate(details?: {
+  appointmentDate?: string | null;
+  appointmentTime?: string | null;
+}): string | null {
+  if (!details?.appointmentDate) return null;
+
+  const date = new Date(details.appointmentDate);
+  const formattedDate = isNaN(date.getTime()) ? details.appointmentDate : format(date, "dd.MM.yyyy");
+  const formattedTime = details.appointmentTime ? utcHhmmToLocal(details.appointmentTime) : null;
+
+  return [formattedDate, formattedTime].filter(Boolean).join(" ");
+}
+
+export function formatSchedule(availability: Availability, t: TFunction): string {
+  if (!availability?.length) return "—";
+
+  const groups = new Map<string, string[]>();
+  for (const a of availability) {
+    if (!a.day) continue;
+    const day =
+      a.day === "occasionally"
+        ? t("dashboard.volunteers.filters.preferredAv.occasional.header")
+        : t(`dashboard.volunteers.filters.preferredAv.days.${a.day}`);
+    const time = a.daytime || "";
+    if (!groups.has(time)) groups.set(time, []);
+    groups.get(time)!.push(day);
+  }
+
+  return Array.from(groups.entries())
+    .map(([time, days]) => {
+      if (time === "weekdays" || time === "weekends") return t(`form.schedule.${time}`);
+      const d = days.join(" & ");
+      return time ? `${d}, ${time}` : d;
+    })
+    .join("; ");
 }
