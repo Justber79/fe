@@ -14,6 +14,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { ElementType } from "react";
 import { useTranslation } from "react-i18next";
+import { NotificationBadge } from "./NotificationBadge";
 
 const BarContainer = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ interface IconDivProps {
 
 const IconDiv = styled.div<IconDivProps>`
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: var(--dashboard-navigation-bar-option-icon-div-size);
@@ -164,6 +166,7 @@ export default function NavigationBar() {
             }}
           >
             <IconDiv $isSelected={isSelected}>
+              {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
               {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||
                 (text && <StyledParagraph isSelected={isSelected} label={text} />)}
             </IconDiv>
