@@ -5,10 +5,10 @@ import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 export const OPPORTUNITY_COL_WIDTHS = {
   title: COLUMN_WIDTH.LG,
   schedule: COLUMN_WIDTH.LG,
-  statusMatch: COLUMN_WIDTH.MD,
+  statusMatch: COLUMN_WIDTH.SM,
   languages: COLUMN_WIDTH.MD,
   district: COLUMN_WIDTH.XL,
-  numberOfVolunteers: COLUMN_WIDTH.XXS,
+  numberOfVolunteers: COLUMN_WIDTH.XS,
   agentTitle: COLUMN_WIDTH.XL,
 };
 
