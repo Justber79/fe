@@ -68,6 +68,7 @@ export function AgentRegistration() {
         person: {
           firstName: formData.firstName,
           lastName: formData.lastName,
+          phone: formData.phone,
         },
       });
 
