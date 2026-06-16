@@ -9,9 +9,10 @@ const i18nPrefix = "dashboard.agentProfile.organisationDetails";
 
 type Props = {
   rawClientLanguages?: Array<{ id: number; title: string }>;
+  address?: string;
 };
 
-export const OrganisationDetailsDisplay = ({ rawClientLanguages }: Props) => {
+export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Props) => {
   const { t } = useTranslation();
   const { watch } = useFormContext<OrganisationDetailsFormData>();
   const values = watch();
@@ -36,7 +37,7 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages }: Props) => {
         mode="display"
         type="text"
         label={t(`${i18nPrefix}.address`)}
-        value={values.address}
+        value={address ?? ""}
         setValue={() => {}}
       />
       <EditableField

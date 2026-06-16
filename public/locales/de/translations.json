@@ -1082,7 +1082,9 @@
           "required": "Dieses Feld ist erforderlich",
           "websiteInvalid": "Webseite muss mit http:// oder https:// beginnen",
           "clientLanguagesRequired": "Mindestens eine Sprache ist erforderlich"
-        }
+        },
+        "addressStreet": "Straße",
+        "addressPostcode": "PLZ"
       },
       "opportunitiesSec": {
         "postOpportunity": "Möglichkeit posten",

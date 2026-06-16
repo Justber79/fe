@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { FormContainer } from "../shared/styles";
 import { EditableSectionProps, EditableSectionRef } from "../shared/types";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
-import { apiLanguagesToFormValues, toLanguagesForForm } from "./formatters";
+import { apiLanguagesToFormValues, parseAddress, toLanguagesForForm } from "./formatters";
 import { OrganisationDetailsDisplay } from "./OrganisationDetailsDisplay";
 import { OrganisationDetailsEdit } from "./OrganisationDetailsEdit";
 import { createOrganisationDetailsSchema, OrganisationDetailsFormData } from "./organisationDetailsSchema";
@@ -33,11 +33,14 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
   const languagesForForm = toLanguagesForForm(apiLanguages, i18n.language);
   const schema = createOrganisationDetailsSchema(t);
 
+  const { street, postcode } = parseAddress(details?.address || "");
   const initialFormValues = {
     ...details,
     website: details?.website || "",
     operator: details?.operator || agent.operator || "",
     clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
+    addressStreet: street,
+    addressPostcode: postcode,
   };
 
   const methods = useForm<OrganisationDetailsFormData>({
@@ -59,7 +62,12 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   const onSubmit = (values: OrganisationDetailsFormData) => {
     updateOrganization(
-      { about: values.about, website: values.website },
+      {
+        about: values.about,
+        website: values.website,
+        addressStreet: values.addressStreet,
+        addressPostcode: values.addressPostcode,
+      },
       {
         onSuccess: () => {
           reset(values);
@@ -79,7 +87,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
             onSubmit={handleSubmit(onSubmit)}
           />
         ) : (
-          <OrganisationDetailsDisplay rawClientLanguages={details?.clientLanguages} />
+          <OrganisationDetailsDisplay rawClientLanguages={details?.clientLanguages} address={details?.address} />
         )}
       </FormContainer>
     </FormProvider>
