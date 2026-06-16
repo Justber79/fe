@@ -7,6 +7,7 @@ import { createAgentTableColumns, createReadOnlyAgentTableColumns } from "./agen
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
 import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
+import { CopyButton } from "../common/CopyButton";
 import { AgentReadOnlyTableRow } from "./AgentReadOnlyTableRow";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -17,6 +18,8 @@ interface TableListProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
+  onCopyEmails: () => void;
+  isCopying: boolean;
 }
 
 export function AgentTableList({
@@ -26,11 +29,23 @@ export function AgentTableList({
   currentPage,
   setCurrentPage,
   districtsList,
+  onCopyEmails,
+  isCopying,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
 
-  const columns = useMemo(() => createAgentTableColumns(t), [t]);
+  const columns = useMemo(() => {
+    const copyButton = (
+      <CopyButton
+        onClick={onCopyEmails}
+        disabled={isCopying}
+        tooltipText={t("dashboard.common.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.common.copyEmails.copyAriaAllAgents")}
+      />
+    );
+    return createAgentTableColumns(t, copyButton);
+  }, [t, onCopyEmails, isCopying]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   const typeLabels = useMemo(() => createAgentTypeMap(t), [t]);
   const searchLabels = useMemo(() => createVolunteerSearchMap(t), [t]);

@@ -24,6 +24,7 @@ import {
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
   if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
@@ -49,6 +50,8 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
+  const { isAuthorized, isOwnProfile } = useAuth();
+  const hasEditingRights = isAuthorized || isOwnProfile;
 
   const { data: opportunitiesData } = useGetQuery<ApiOpportunityVolunteerGet[]>({
     queryKey: ["volunteer-opportunities", String(volunteer.id)],
@@ -64,7 +67,9 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const showBriefedCheck = isBriefedAccompanying(volunteer.statusType, volunteer.statusCommunication);
 
-  const fullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
+  const fullName = hasEditingRights
+    ? `${volunteer.person.firstName} ${volunteer.person.lastName}`
+    : volunteer.person.firstName;
   const avatarUrl = getImageUrl(volunteer.person.avatarUrl || defaultAvatarVolunteerProfile);
   const subtitle = `${t("dashboard.volunteerProfile.volunteerHeader.volunteer_since")} ${formatDateTime(volunteer.createdAt)}`;
 
@@ -93,9 +98,11 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
           )
         }
         action={
-          <EditButton onClick={dialog.openDialog}>
-            {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
-          </EditButton>
+          isAuthorized && (
+            <EditButton onClick={dialog.openDialog}>
+              {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
+            </EditButton>
+          )
         }
       />
 

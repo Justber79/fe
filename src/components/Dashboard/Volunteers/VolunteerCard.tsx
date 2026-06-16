@@ -229,6 +229,7 @@ const Card = styled(BaseCard)`
 const StatusTagsDiv = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--dashboard-volunteers-card-status-tags-div-gap);
   margin-top: var(--dashboard-volunteers-card-status-tags-div-margin-top);
 `;

@@ -339,6 +339,16 @@
         "matchedOn": "Matched on",
         "activeSince": "Active since",
         "pastSince": "Past since"
+      },
+      "copyEmails": {
+        "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
+        "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
+        "copyAriaAllAgents": "Copy all NGO emails",
+        "copyAriaAllVolunteers": "Copy all volunteer emails",
+        "genericError": "Something went wrong. Please try again."
       }
     },
     "volunteers": {
@@ -351,14 +361,6 @@
         "language": "Language",
         "district": "District",
         "email": "Email"
-      },
-      "copyEmails": {
-        "tooltip": "Copy all emails",
-        "tooltipSingle": "Copy email",
-        "success": "Copied {{count}} emails",
-        "successSingle": "Email copied",
-        "copyAriaSingle": "Copy email of {{name}}",
-        "genericError": "Something went wrong. Please try again."
       },
       "tabs": {
         "tab1": "List",
@@ -845,14 +847,11 @@
       },
       "table": {
         "title": "Title",
-        "type": "Type",
-        "currentStatus": "Current Status",
         "matchingStatus": "Matching Status",
         "languages": "Languages",
-        "activities": "Activities",
         "district": "District",
         "schedule": "Schedule",
-        "volunteersNeeded": "Volunteers Needed",
+        "volunteersNeeded": "Needed",
         "agentName": "NGO"
       },
       "card": {
