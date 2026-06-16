@@ -18,6 +18,7 @@ const SearchContainer = styled.div<SearchContainerProps>`
   border-radius: var(--search-container-border-radius);
   align-items: center;
   padding: var(--search-container-padding);
+  cursor: text;
 `;
 
 const StyledInput = styled.input`
@@ -48,6 +49,7 @@ export function Search({
   debounceTime = 500,
 }: Props) {
   const [inputValue, setInputValue] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Use useCallback to ensure the debounced function is stable
@@ -87,8 +89,8 @@ export function Search({
   }, []);
 
   return (
-    <SearchContainer width={width} $backgroundColor={backgroundColor}>
-      <StyledInput placeholder={placeHolder} value={inputValue} onChange={handleInputChange} />
+    <SearchContainer width={width} $backgroundColor={backgroundColor} onClick={() => inputRef.current?.focus()}>
+      <StyledInput ref={inputRef} placeholder={placeHolder} value={inputValue} onChange={handleInputChange} />
       <MagnifyingGlassIcon size={32} />
     </SearchContainer>
   );

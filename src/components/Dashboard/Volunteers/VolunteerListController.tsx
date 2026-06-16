@@ -3,13 +3,14 @@ import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { ApiOptionLists, ApiVolunteerGetList, SortOrder } from "need4deed-sdk";
+import { ApiOptionLists, ApiVolunteerGetList, SortOrder, UserRole } from "need4deed-sdk";
 import { CardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
 import { useCopyVolunteerEmails } from "@/hooks/useCopyVolunteerEmails";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -58,6 +59,8 @@ export function VolunteerListController({
   });
   const volunteers = data || [];
   const { handleCopyEmails, isCopying } = useCopyVolunteerEmails(serializedFilter);
+  const user = useCurrentUser();
+  const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
   useEffect(() => {
     setNumOfVols(count);
@@ -76,6 +79,7 @@ export function VolunteerListController({
         opportunityId={opportunityId}
         onCopyEmails={handleCopyEmails}
         isCopying={isCopying}
+        canSeeContactColumns={canSeeContactColumns}
       />
     );
   }

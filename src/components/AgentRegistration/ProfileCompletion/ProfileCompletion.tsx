@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/core/button";
 import { FormInput } from "@/components/core/common";
-import { apiPathAgentRegister, apiPathOption, LOGGED_IN_COOKIE } from "@/config/constants";
+import { apiPathAgentRegister, apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
@@ -13,7 +13,7 @@ import {
   ApiOptionLists,
 } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validateCompletionStep } from "../helpers";
 import { ProgressBar } from "../ProgressBar";
@@ -38,6 +38,7 @@ import {
 import { defaultProfileCompletionData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
 import { CheckMark, MatchBanner, MatchActions, SmallButton } from "./styled";
 import { useAgentAddressLookup } from "./useAgentAddressLookup";
+import { setAuthHint } from "@/utils/helpers";
 
 function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
   return {
@@ -69,6 +70,7 @@ export function ProfileCompletion() {
   // When a CREATE collides with an existing title, the API returns its id so we
   // can offer to JOIN it instead.
   const [titleConflictAgentId, setTitleConflictAgentId] = useState<number | null>(null);
+  const errorBannerRef = useRef<HTMLDivElement>(null);
 
   const { data: optionLists } = useGetQuery<ApiOptionLists>({
     queryKey: ["options"],
@@ -78,7 +80,19 @@ export function ProfileCompletion() {
   const { matched, selectedAgent, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
+    (m) => update({ addressStreet: m.title }),
   );
+
+  const showSubmitError = useCallback((message: string) => {
+    setSubmitError(message);
+    requestAnimationFrame(() => {
+      errorBannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!token) showSubmitError(t("agentRegistration.errors.missingToken"));
+  }, [token, t, showSubmitError]);
 
   const update = (fields: Partial<ProfileCompletionData>) => {
     setFormData((prev) => ({ ...prev, ...fields }));
@@ -94,7 +108,7 @@ export function ProfileCompletion() {
 
   const submit = async (body: ApiAgentRegister) => {
     if (!token) {
-      setSubmitError(t("agentRegistration.errors.missingToken"));
+      showSubmitError(t("agentRegistration.errors.missingToken"));
       return;
     }
     setSubmitError(null);
@@ -109,7 +123,7 @@ export function ProfileCompletion() {
         setPending(true);
         return;
       }
-      document.cookie = LOGGED_IN_COOKIE;
+      setAuthHint();
       router.push(`/${i18next.language}/dashboard`);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
@@ -117,7 +131,7 @@ export function ProfileCompletion() {
         setTitleConflictAgentId(conflictAgentId ?? null);
         return;
       }
-      setSubmitError(t("message.errorGeneric"));
+      showSubmitError(t("message.errorGeneric"));
     } finally {
       setIsSubmitting(false);
     }
@@ -175,6 +189,7 @@ export function ProfileCompletion() {
   // request directly without the create-only org/services steps.
   const isJoining = !!selectedAgent;
   const isLastStep = step === TOTAL_COMPLETION_STEPS;
+  const tokenMissing = !token;
 
   return (
     <Wrapper>
@@ -184,7 +199,7 @@ export function ProfileCompletion() {
 
         {!isJoining && <ProgressBar currentStep={step} totalSteps={TOTAL_COMPLETION_STEPS} />}
 
-        {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
+        {submitError && <ErrorBanner ref={errorBannerRef}>{submitError}</ErrorBanner>}
 
         {titleConflictAgentId !== null && (
           <MatchBanner $matched={false}>
@@ -266,7 +281,7 @@ export function ProfileCompletion() {
               backgroundcolor="var(--color-aubergine)"
               textColor="var(--color-white)"
               onClick={handleSubmit}
-              disabled={isSubmitting}
+              disabled={isSubmitting || tokenMissing}
             />
           ) : (
             <Button
@@ -274,6 +289,7 @@ export function ProfileCompletion() {
               backgroundcolor="var(--color-aubergine)"
               textColor="var(--color-white)"
               onClick={handleNext}
+              disabled={tokenMissing}
             />
           )}
         </Actions>

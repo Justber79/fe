@@ -1,4 +1,10 @@
-import { cloudfrontURL, supportedLangs } from "@/config/constants";
+import {
+  AUTH_HINT_COOKIE_ATTRS,
+  AUTH_HINT_COOKIE_NAME,
+  AUTH_HINT_MAX_AGE,
+  cloudfrontURL,
+  supportedLangs,
+} from "@/config/constants";
 
 export function isEnumValue<E>(enumObject: object, value: E) {
   return typeof enumObject === "object" ? Object.values(enumObject).includes(value) : false;
@@ -27,4 +33,12 @@ export const getCookie = (name: string): string | undefined => {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(";").shift();
   return undefined;
+};
+
+export const setAuthHint = (): void => {
+  document.cookie = `${AUTH_HINT_COOKIE_NAME}=true; max-age=${AUTH_HINT_MAX_AGE}; ${AUTH_HINT_COOKIE_ATTRS}`;
+};
+
+export const clearAuthHint = (): void => {
+  document.cookie = `${AUTH_HINT_COOKIE_NAME}=; max-age=0; ${AUTH_HINT_COOKIE_ATTRS}`;
 };

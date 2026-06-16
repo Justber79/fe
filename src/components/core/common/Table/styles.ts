@@ -105,8 +105,9 @@ export const ActionButton = styled.button`
   }
 `;
 
-export const ClickableRow = styled(TableRow)`
-  cursor: pointer;
+export const ClickableRow = styled(TableRow)<{ $cursor?: string }>`
+  cursor: ${(props) => props.$cursor || "pointer"};
+
   &:hover {
     background: var(--color-pink-50);
   }
@@ -116,4 +117,8 @@ export const TruncatedText = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+`;
+
+export const WrappedText = styled.span`
+  overflow-wrap: anywhere;
 `;

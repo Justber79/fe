@@ -31,8 +31,8 @@ export const DAY_ENUM_TO_STRING: Record<ByDay, string> = {
   [ByDay.SU]: "Sunday",
 };
 
-export const LEVEL_TO_PROFICIENCY: LanguageLevel = {
+export const LEVEL_TO_PROFICIENCY: Record<LanguageLevel, LangProficiency> = {
   [LanguageLevel.NATIVE]: LangProficiency.NATIVE,
   [LanguageLevel.FLUENT]: LangProficiency.FLUENT,
   [LanguageLevel.INTERMEDIATE]: LangProficiency.INTERMEDIATE,
-} as unknown as LanguageLevel;
+};

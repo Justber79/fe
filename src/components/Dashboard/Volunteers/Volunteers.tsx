@@ -61,7 +61,7 @@ export function Volunteers() {
   };
 
   const handleClearAllFilters = () => {
-    const cleared = getClearFilter(cardsFilter) as unknown as CardsFilter;
+    const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
     router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
   };
