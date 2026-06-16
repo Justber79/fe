@@ -1,7 +1,7 @@
 "use client";
 
 import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
-import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
+import { LangPurpose, OpportunityMatchStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
@@ -42,14 +42,10 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
       : null;
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
-  // the BE list returns "opp-vol-no-matches"
-  // for every opportunity. `volunteerNames` is correct
-  // so matched is derived it from it. Switch to statusMatch once fixed.
-  const isMatched = (volunteerNames?.length ?? 0) > 0;
-  const matchedNames = (volunteerNames ?? [])
-    .map((name) => name.split(" ")[0])
-    .filter(Boolean)
-    .join(", ");
+  const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
+  const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
+  const matchedNames = firstNames.length > 1 ? `${firstNames[0]} +${firstNames.length - 1}` : (firstNames[0] ?? "");
+  const statusLabel = t(`dashboard.opportunities.matchStatus.${statusMatch}`);
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -65,11 +61,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         <WrappedText>{scheduleText || "—"}</WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
-        {isMatched ? (
-          <MatchedBadge>{t("dashboard.opportunities.matchStatus.opp-vol-matched")}</MatchedBadge>
-        ) : (
-          <TruncatedText>{t(`dashboard.opportunities.matchStatus.${statusMatch}`)}</TruncatedText>
-        )}
+        {isMatched ? <MatchedBadge>{statusLabel}</MatchedBadge> : <TruncatedText>{statusLabel}</TruncatedText>}
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
         <TruncatedText>{mainCommunication || "—"}</TruncatedText>
