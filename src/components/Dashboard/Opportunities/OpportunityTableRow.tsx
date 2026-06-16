@@ -42,6 +42,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
       : null;
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
+  // the BE list returns "opp-vol-no-matches"
+  // for every opportunity. `volunteerNames` is correct
+  // so matched is derived it from it. Switch to statusMatch once fixed.
   const isMatched = (volunteerNames?.length ?? 0) > 0;
   const matchedNames = (volunteerNames ?? [])
     .map((name) => name.split(" ")[0])
