@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/core/button";
 import { FormInput } from "@/components/core/common";
-import { apiPathAgentRegister, apiPathOption, LOGGED_IN_COOKIE } from "@/config/constants";
+import { apiPathAgentRegister, apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
@@ -38,6 +38,7 @@ import {
 import { defaultProfileCompletionData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
 import { CheckMark, MatchBanner, MatchActions, SmallButton } from "./styled";
 import { useAgentAddressLookup } from "./useAgentAddressLookup";
+import { setAuthHint } from "@/utils/helpers";
 
 function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
   return {
@@ -122,7 +123,7 @@ export function ProfileCompletion() {
         setPending(true);
         return;
       }
-      document.cookie = LOGGED_IN_COOKIE;
+      setAuthHint();
       router.push(`/${i18next.language}/dashboard`);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {

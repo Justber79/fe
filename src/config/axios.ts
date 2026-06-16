@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { clearAuthHint } from "@/utils/helpers";
 import { apiPathAuthRefresh } from "./constants";
 
 let isRefreshing = false;
@@ -66,6 +67,8 @@ axios.interceptors.response.use(
     } catch (refreshError: unknown) {
       // If refresh fails, process queue with error and redirect to login
       processQueue(refreshError, null);
+
+      clearAuthHint();
 
       // Only redirect if we aren't already on the login page to avoid loops
       if (!(window.location.pathname.includes("login") || window.location.pathname.includes("forms"))) {
