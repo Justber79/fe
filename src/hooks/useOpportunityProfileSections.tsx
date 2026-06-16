@@ -15,11 +15,14 @@ import { ApiOpportunityGet, OpportunityVolunteerStatusType, VolunteerStateTypeTy
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "./useAuth";
 
 export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | undefined) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.contact.id);
+  const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
   const racRef = useRef<EditableSectionRef>(null);
@@ -65,10 +68,11 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     {
       iconName: IconName.Wrench,
       title: t("dashboard.opportunityProfile.opportunityDetails.title"),
-      ...(!isOppDetailsEditing && {
-        headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-        onHeaderButtonClick: () => opportunityDetailsRef.current?.handleEditClick(),
-      }),
+      ...(!isOppDetailsEditing &&
+        hasEditingRights && {
+          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+          onHeaderButtonClick: () => opportunityDetailsRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <OpportunityDetails
           ref={opportunityDetailsRef}
@@ -78,76 +82,85 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       ),
     },
     {
-      iconName: IconName.ChatsCircle,
-      title: t("dashboard.opportunityProfile.contactDetailsTitle"),
-      ...(!isContactEditing && {
-        headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-        onHeaderButtonClick: () => opportunityContactDetailsRef.current?.handleEditClick(),
-      }),
-      subComponent: (
-        <ContactDetails
-          ref={opportunityContactDetailsRef}
-          opportunity={opportunity}
-          onEditingChange={handleContactEditingChange}
-        />
-      ),
-    },
-    {
       iconName: IconName.House,
       title: t("dashboard.opportunityProfile.racTitle"),
-      ...(!isRacEditing && {
-        headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-        onHeaderButtonClick: () => racRef.current?.handleEditClick(),
-      }),
+      ...(!isRacEditing &&
+        hasEditingRights && {
+          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+          onHeaderButtonClick: () => racRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <RefugeeAccommodationCentre ref={racRef} opportunity={opportunity} onEditingChange={handleRacEditingChange} />
       ),
     },
-    {
-      iconName: IconName.Users,
-      title: t("dashboard.opportunityProfile.accompanyingDetailsTitle"),
-      ...(isAccompanyingType &&
-        !isAccompanyingEditing && {
+  ];
+
+  if (hasEditingRights) {
+    sections.push(
+      {
+        iconName: IconName.Users,
+        title: t("dashboard.opportunityProfile.accompanyingDetailsTitle"),
+        ...(isAccompanyingType &&
+          !isAccompanyingEditing && {
+            headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+            onHeaderButtonClick: () => accompanyingDetailsRef.current?.handleEditClick?.(),
+          }),
+        subComponent: (
+          <AccompanyingDetails
+            ref={accompanyingDetailsRef}
+            opportunity={opportunity}
+            onEditingChange={handleAccompanyingEditingChange}
+          />
+        ),
+      },
+      {
+        iconName: IconName.UsersThree,
+        title: t("dashboard.opportunityProfile.volunteersSec.title"),
+        headerButtonName: volunteerId
+          ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
+          : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
+        onHeaderButtonClick: volunteerId
+          ? () => setIsSuggestDialogOpen(true)
+          : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        subComponent: (
+          <>
+            <OpportunityVolunteers opportunityId={opportunity.id} />
+            {isSuggestDialogOpen && (
+              <SuggestDialog
+                opportunityName={opportunity.title}
+                volunteerName={volunteer?.name}
+                onCancel={() => setIsSuggestDialogOpen(false)}
+                onConfirm={handleSuggestConfirm}
+              />
+            )}
+          </>
+        ),
+      },
+      {
+        iconName: IconName.ChatsCircle,
+        title: t("dashboard.opportunityProfile.contactDetailsTitle"),
+        ...(!isContactEditing && {
           headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-          onHeaderButtonClick: () => accompanyingDetailsRef.current?.handleEditClick?.(),
+          onHeaderButtonClick: () => opportunityContactDetailsRef.current?.handleEditClick(),
         }),
-      subComponent: (
-        <AccompanyingDetails
-          ref={accompanyingDetailsRef}
-          opportunity={opportunity}
-          onEditingChange={handleAccompanyingEditingChange}
-        />
-      ),
-    },
-    {
-      iconName: IconName.UsersThree,
-      title: t("dashboard.opportunityProfile.volunteersSec.title"),
-      headerButtonName: volunteerId
-        ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
-        : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
-      onHeaderButtonClick: volunteerId
-        ? () => setIsSuggestDialogOpen(true)
-        : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
-      subComponent: (
-        <>
-          <OpportunityVolunteers opportunityId={opportunity.id} />
-          {isSuggestDialogOpen && (
-            <SuggestDialog
-              opportunityName={opportunity.title}
-              volunteerName={volunteer?.name}
-              onCancel={() => setIsSuggestDialogOpen(false)}
-              onConfirm={handleSuggestConfirm}
-            />
-          )}
-        </>
-      ),
-    },
-    {
+        subComponent: (
+          <ContactDetails
+            ref={opportunityContactDetailsRef}
+            opportunity={opportunity}
+            onEditingChange={handleContactEditingChange}
+          />
+        ),
+      },
+    );
+  }
+
+  if (isAuthorized) {
+    sections.push({
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${commentsCount}`,
       subComponent: <Comments opportunity={opportunity} />,
-    },
-  ];
+    });
+  }
 
   return {
     sections,

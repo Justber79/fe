@@ -11,6 +11,17 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "TSAsExpression > TSAsExpression > TSUnknownKeyword",
+          message: "Avoid 'as unknown as' double assertions; fix the types instead.",
+        },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

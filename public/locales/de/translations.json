@@ -804,14 +804,11 @@
       },
       "table": {
         "title": "Titel",
-        "type": "Typ",
-        "currentStatus": "Aktueller Status",
         "matchingStatus": "Matching-Status",
         "languages": "Sprachen",
-        "activities": "Aktivitäten",
         "district": "Bezirk",
         "schedule": "Zeitplan",
-        "volunteersNeeded": "Anzahl der Freiwilligen",
+        "volunteersNeeded": "Benötigt",
         "agentName": "Einrichtung/Projekt"
       },
       "card": {
@@ -1952,5 +1949,9 @@
       "title": "Beitrittsanfrage gesendet",
       "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
     }
+  },
+  "formInput": {
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
   }
 }

@@ -16,8 +16,7 @@ export const useEngagementStatusDialog = (volunteer: ApiVolunteerGet): UseEngage
 
   const isSaveDisabled = (selected: VolunteerStateEngagementType, original: VolunteerStateEngagementType) =>
     selected === original &&
-    (selected !== VolunteerStateEngagementType.TEMP_UNAVAILABLE ||
-      dateReturn?.getTime() === initialDate?.getTime());
+    (selected !== VolunteerStateEngagementType.TEMP_UNAVAILABLE || dateReturn?.getTime() === initialDate?.getTime());
 
   const onSave = (status: VolunteerStateEngagementType, { onSuccess }: { onSuccess: () => void }) => {
     const payload: VolunteerStatusUpdateData = {

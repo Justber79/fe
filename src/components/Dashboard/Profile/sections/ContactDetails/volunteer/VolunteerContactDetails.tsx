@@ -41,7 +41,7 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
     (): VolunteerContactDetailsFormData => ({
       phone: volunteer.person.phone ?? "",
       email: volunteer.person.email ?? "",
-      address: formatAddress(volunteer.person.address),
+      address: volunteer.person.address ? formatAddress(volunteer.person?.address) : "",
       preferredCommunicationType: volunteer.preferredCommunicationType ?? [],
     }),
     [volunteer],
@@ -74,7 +74,7 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
           phone: values.phone,
           email: values.email,
           address: {
-            id: volunteer.person.address?.id,
+            id: volunteer.person.address ? volunteer.person.address?.id : 0,
             street: addressData.street,
             city: addressData.city,
             postcode: { code: addressData.postcode },

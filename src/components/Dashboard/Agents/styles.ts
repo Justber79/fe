@@ -23,7 +23,7 @@ export const AgentCardListContainer = styled.div`
   justify-content: left;
 `;
 
-export const Card = styled(BaseCard)`
+export const Card = styled(BaseCard)<{ $cursor?: string }>`
   background-color: var(--color-orchid-subtle);
   background-color: var(--color-orchid-subtle);
   width: var(--dashboard-agents-card-width);
@@ -33,7 +33,7 @@ export const Card = styled(BaseCard)`
   transition:
     transform 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
-  cursor: pointer;
+  cursor: ${(props) => props.$cursor || "pointer"};
 
   &:hover {
     background-color: var(--color-orchid);
