@@ -9,7 +9,7 @@ import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
-import { useCopyVolunteerEmails } from "@/hooks/useCopyVolunteerEmails";
+import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface VolunteerListControllerProps {
@@ -58,7 +58,7 @@ export function VolunteerListController({
     staleTime: cacheTTL,
   });
   const volunteers = data || [];
-  const { handleCopyEmails, isCopying } = useCopyVolunteerEmails(serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", serializedFilter);
   const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 

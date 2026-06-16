@@ -12,10 +12,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppreciationDialog } from "./AppreciationDialog";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
-import {
-  SectionWrapper,
-  SectionEmptyState,
-} from "../shared/styles";
+import { SectionWrapper, SectionEmptyState } from "../shared/styles";
 import { AppreciationTableContainer, StatusBadge } from "./styles";
 import {
   Table,
@@ -44,12 +41,9 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
   const [editingEntry, setEditingEntry] = useState<ApiAppreciationGet | undefined>(undefined);
   const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiAppreciationGet | null>(null);
 
-  const {
-    appreciations,
-    createAppreciation,
-    updateAppreciation,
-    deleteAppreciation,
-  } = useAppreciationTracker(volunteer.id);
+  const { appreciations, createAppreciation, updateAppreciation, deleteAppreciation } = useAppreciationTracker(
+    volunteer.id,
+  );
 
   const handleAddNew = () => {
     setEditingEntry(undefined);
@@ -90,10 +84,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
         dateDue: data.dateDue,
         dateDelivery: data.dateDelivery,
       };
-      updateAppreciation(
-        { id: data.id, data: payload },
-        { onSuccess: () => setIsDialogOpen(false) },
-      );
+      updateAppreciation({ id: data.id, data: payload }, { onSuccess: () => setIsDialogOpen(false) });
     } else {
       const payload: ApiAppreciationPost = {
         title: data.title,
@@ -120,22 +111,14 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
   return (
     <SectionWrapper data-testid="appreciation-container">
       {appreciations.length === 0 ? (
-        <SectionEmptyState data-testid="empty-state">
-          {t("dashboard.appreciationSection.emptyState")}
-        </SectionEmptyState>
+        <SectionEmptyState data-testid="empty-state">{t("dashboard.appreciationSection.emptyState")}</SectionEmptyState>
       ) : (
         <AppreciationTableContainer data-testid="appreciations-table">
           <Table>
             <TableHeader>
-              <TableHeaderCell>
-                {t("dashboard.appreciationSection.typeOfAppreciation")}
-              </TableHeaderCell>
-              <TableHeaderCell $width="227px">
-                {t("dashboard.appreciationSection.status")}
-              </TableHeaderCell>
-              <TableHeaderCell $width="146px">
-                {t("dashboard.appreciationSection.receivedOn")}
-              </TableHeaderCell>
+              <TableHeaderCell>{t("dashboard.appreciationSection.typeOfAppreciation")}</TableHeaderCell>
+              <TableHeaderCell $width="227px">{t("dashboard.appreciationSection.status")}</TableHeaderCell>
+              <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.receivedOn")}</TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
             </TableHeader>
@@ -148,26 +131,18 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
                 >
                   <TableCell>{getAppreciationTypeLabel(t, entry.title)}</TableCell>
                   <TableCell $width="227px">
-                    <StatusBadge $status={getStatus(entry)}>
-                      {getStatusLabel(entry)}
-                    </StatusBadge>
+                    <StatusBadge $status={getStatus(entry)}>{getStatusLabel(entry)}</StatusBadge>
                   </TableCell>
                   <TableCell $width="146px" $noWrap>
                     {entry.dateDelivery ? formatDate(entry.dateDelivery) : <EmptyPlaceholder />}
                   </TableCell>
                   <ActionCell>
-                    <ActionButton
-                      onClick={() => handleEdit(entry)}
-                      data-testid={`edit-button-${entry.id}`}
-                    >
+                    <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
                       <PencilSimple size={20} weight="regular" />
                     </ActionButton>
                   </ActionCell>
                   <ActionCell>
-                    <ActionButton
-                      onClick={() => handleDelete(entry)}
-                      data-testid={`delete-button-${entry.id}`}
-                    >
+                    <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
                       <Trash size={20} weight="regular" />
                     </ActionButton>
                   </ActionCell>

@@ -8,6 +8,7 @@ import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
 import { AgentTableList } from "./AgentTableList";
+import { useCopyEmails } from "@/hooks/useCopyEmails";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
@@ -52,6 +53,7 @@ export const AgentListController = ({
   });
 
   const agents: ApiAgentGetList[] = data || [];
+  const { handleCopyEmails, isCopying } = useCopyEmails(`${apiPathAgent}/`, "agents-emails", serializedFilter);
 
   useEffect(() => {
     setNumOfAgents(count);
@@ -68,6 +70,8 @@ export const AgentListController = ({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         districtsList={apiFilterOptions?.district ?? undefined}
+        onCopyEmails={handleCopyEmails}
+        isCopying={isCopying}
       />
     );
   }
