@@ -37,6 +37,7 @@ import { AvailabilityGrid } from "@/components/forms/AvailabilityGrid/Availabili
 import { LanguageFields } from "@/components/forms/LanguageFields";
 import { apiPathOpportunity, DashboardRoutes, MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
+import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2, Heading4 } from "@/components/styled/text";
 import { ShootingStarIcon, ArrowLeftIcon } from "@phosphor-icons/react";
@@ -129,6 +130,7 @@ function buildCreatePayload(
   apiSkills: ApiLanguageOption[],
   lang: string,
   t: TFunction,
+  agentId: number,
 ): OpportunityFormDataWithAgentSubmitter {
   const isEvent = headerData.volunteerType === VolunteerStateTypeType.EVENTS;
   const isAccompanying = headerData.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
@@ -173,7 +175,7 @@ function buildCreatePayload(
     category: "",
     category_id: "",
     language: lang as `${Lang}`,
-    agent_id: null,
+    agent_id: agentId,
     submitted_by_id: null,
     last_edited_time_notion: null,
   };
@@ -390,6 +392,7 @@ export function NewOpportunity() {
   const lang = i18n.language;
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
+  const { agent, isLoading: agentLoading } = useGetCurrentAgent();
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
 
   const { data: apiLanguages = [] } = useApiLanguages();
@@ -471,6 +474,8 @@ export function NewOpportunity() {
   });
 
   const onSubmit = (headerData: HeaderFormData) => {
+    // Don't create an opportunity that isn't linked to its agent.
+    if (!agent?.id) return;
     const payload = buildCreatePayload(
       headerData,
       detailsMethods.getValues(),
@@ -480,6 +485,7 @@ export function NewOpportunity() {
       apiSkills,
       lang,
       t,
+      agent.id,
     );
     createOpportunity(payload);
   };
@@ -586,7 +592,7 @@ export function NewOpportunity() {
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
           onClick={handleHeaderSubmit(onSubmit)}
-          disabled={isPending}
+          disabled={isPending || agentLoading || !agent}
         />
       </SaveRow>
     </PageContainer>
