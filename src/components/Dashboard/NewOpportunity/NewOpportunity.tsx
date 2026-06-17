@@ -1,182 +1,215 @@
 "use client";
-import { Button } from "@/components/core/button";
-import { FormInput } from "@/components/core/common";
-import { apiPathOpportunity, DashboardRoutes } from "@/config/constants";
+import { EditableField } from "@/components/EditableField/EditableField";
+import { SectionCard } from "@/components/Dashboard/Profile/common/SectionCard";
+import { useEnumTranslation } from "@/components/Dashboard/Profile/sections/ContactDetails/shared";
+import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
+import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
+import { IconName } from "@/components/Dashboard/Profile/types";
+import Button from "@/components/core/button/Button/Button";
+import { apiPathOpportunity, DashboardRoutes, PHONE_NUMBER_REGEX } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
-import { ApiOpportunityGet } from "need4deed-sdk";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Heading2 } from "@/components/styled/text";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
+import { ApiOpportunityGet, PreferredCommunicationType } from "need4deed-sdk";
 import i18next from "i18next";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-  AgentInfo,
-  AgentLabel,
-  AgentRow,
-  AgentValue,
-  Card,
-  ErrorBanner,
-  FieldLabel,
-  FieldWrapper,
-  PageSubtitle,
-  PageTitle,
-  SectionTitle,
-  Wrapper,
-} from "./styled";
+import styled from "styled-components";
+import { z } from "zod";
+
+const WAYS_TO_CONTACT_TYPES = Object.values(PreferredCommunicationType);
+
+const createSchema = (t: (key: string) => string) =>
+  z.object({
+    title: z.string().min(1, t("form.error.required")),
+    name: z.string().min(1, t("dashboard.opportunityProfile.contactDetails.validation.nameRequired")),
+    phone: z
+      .string()
+      .min(1, t("dashboard.opportunityProfile.contactDetails.validation.phoneRequired"))
+      .regex(PHONE_NUMBER_REGEX, t("dashboard.opportunityProfile.contactDetails.validation.phoneInvalid")),
+    email: z
+      .string()
+      .min(1, t("dashboard.opportunityProfile.contactDetails.validation.emailRequired"))
+      .email(t("dashboard.opportunityProfile.contactDetails.validation.emailInvalid")),
+    waysToContact: z.array(z.nativeEnum(PreferredCommunicationType)).optional(),
+  });
+
+type FormData = z.infer<ReturnType<typeof createSchema>>;
 
 type CreateOpportunityBody = {
   title: string;
-  contact: {
-    name: string;
-    phone: string;
-    email: string;
-  };
+  contact: { name: string; phone: string; email: string };
   agentId?: number;
 };
 
 export function NewOpportunity() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { agent, isLoading: agentLoading } = useGetCurrentAgent();
+  const { agent } = useGetCurrentAgent();
+  const { options, keysToLabels, labelsToKeys } = useEnumTranslation(
+    WAYS_TO_CONTACT_TYPES,
+    "dashboard.opportunityProfile.contactDetails.waysToContact",
+  );
 
-  const [title, setTitle] = useState("");
-  const [contactName, setContactName] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const [prefilled, setPrefilled] = useState(false);
-  useEffect(() => {
-    if (!agent?.representative || prefilled) return;
-    setContactName(agent.representative.firstName ?? "");
-    setContactPhone(agent.representative.phone ?? "");
-    setContactEmail(agent.representative.email ?? "");
-    setPrefilled(true);
-  }, [agent, prefilled]);
+  const methods = useForm<FormData>({
+    resolver: zodResolver(createSchema(t)),
+    mode: "onChange",
+    defaultValues: { title: "", name: "", phone: "", email: "", waysToContact: [] },
+  });
 
   const {
-    mutate: createOpportunity,
-    isPending,
-    error,
-  } = useMutationQuery<CreateOpportunityBody, { message: string; data: ApiOpportunityGet }>({
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = methods;
+
+  useEffect(() => {
+    if (!agent?.representative) return;
+    const rep = agent.representative;
+    reset(
+      { title: "", name: rep.firstName ?? "", phone: rep.phone ?? "", email: rep.email ?? "", waysToContact: [] },
+      { keepDirtyValues: true },
+    );
+  }, [agent, reset]);
+
+  const { mutate: createOpportunity, isPending } = useMutationQuery<
+    CreateOpportunityBody,
+    { message: string; data: ApiOpportunityGet }
+  >({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
     onSuccessCallback: (response) => {
       const id = response?.data?.id;
-      if (id) {
-        router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
-      }
+      if (id) router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
     },
   });
 
-  const validate = () => {
-    const next: Record<string, string> = {};
-    const required = t("form.error.required");
-    if (!title.trim()) next.title = required;
-    if (!contactName.trim()) next.contactName = required;
-    if (!contactEmail.trim()) next.contactEmail = required;
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) next.contactEmail = t("form.error.email");
-    if (!contactPhone.trim()) next.contactPhone = required;
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
-  const handleSubmit = () => {
-    if (!validate()) return;
+  const onSubmit = (values: FormData) => {
     createOpportunity({
-      title: title.trim(),
-      contact: {
-        name: contactName.trim(),
-        phone: contactPhone.trim(),
-        email: contactEmail.trim(),
-      },
+      title: values.title,
+      contact: { name: values.name, phone: values.phone, email: values.email },
       agentId: agent?.id,
     });
   };
 
   return (
-    <Wrapper>
-      <Card>
-        <PageTitle>{t("dashboard.newOpportunity.title")}</PageTitle>
-        <PageSubtitle>{t("dashboard.newOpportunity.subtitle")}</PageSubtitle>
+    <PageContainer>
+      <BackButton onClick={() => router.back()}>
+        <ArrowLeftIcon size={24} />
+        {t("dashboard.volunteerProfile.backToDashboard")}
+      </BackButton>
 
-        {error && <ErrorBanner>{t("message.errorGeneric")}</ErrorBanner>}
+      <Heading2>{t("dashboard.newOpportunity.title")}</Heading2>
 
-        <FieldWrapper>
-          <FieldLabel>{t("dashboard.newOpportunity.fields.title")}</FieldLabel>
-          <FormInput
-            value={title}
-            onInputChange={setTitle}
-            placeHolder={t("dashboard.newOpportunity.fields.titlePlaceholder")}
-            errors={errors.title ? [errors.title] : []}
-          />
-        </FieldWrapper>
-
-        <SectionTitle>{t("dashboard.newOpportunity.contactSection")}</SectionTitle>
-
-        <FieldWrapper>
-          <FieldLabel>{t("dashboard.opportunityProfile.contactDetails.name")}</FieldLabel>
-          <FormInput
-            value={contactName}
-            onInputChange={setContactName}
-            placeHolder="—"
-            errors={errors.contactName ? [errors.contactName] : []}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <FieldLabel>{t("dashboard.opportunityProfile.contactDetails.email")}</FieldLabel>
-          <FormInput
-            type="email"
-            value={contactEmail}
-            onInputChange={setContactEmail}
-            placeHolder="—"
-            errors={errors.contactEmail ? [errors.contactEmail] : []}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <FieldLabel>{t("dashboard.opportunityProfile.contactDetails.phone")}</FieldLabel>
-          <FormInput
-            value={contactPhone}
-            onInputChange={setContactPhone}
-            placeHolder="—"
-            errors={errors.contactPhone ? [errors.contactPhone] : []}
-          />
-        </FieldWrapper>
-
-        {!agentLoading && agent && (
-          <>
-            <SectionTitle>{t("dashboard.newOpportunity.agentSection")}</SectionTitle>
-            <AgentInfo>
-              <AgentRow>
-                <AgentLabel>{t("dashboard.agentProfile.organisationDetails.title")}</AgentLabel>
-                <AgentValue>{agent.title}</AgentValue>
-              </AgentRow>
-              {agent.agentDetails?.address && (
-                <AgentRow>
-                  <AgentLabel>{t("agentRegistration.fields.addressStreet")}</AgentLabel>
-                  <AgentValue>{agent.agentDetails.address}</AgentValue>
-                </AgentRow>
-              )}
-              {agent.district && (
-                <AgentRow>
-                  <AgentLabel>{t("agentRegistration.fields.district")}</AgentLabel>
-                  <AgentValue>{agent.district.title?.toString()}</AgentValue>
-                </AgentRow>
-              )}
-            </AgentInfo>
-          </>
-        )}
-
-        <Button
-          text={t("dashboard.newOpportunity.submit")}
-          backgroundcolor="var(--color-aubergine)"
-          textColor="var(--color-white)"
-          onClick={handleSubmit}
-          disabled={isPending}
+      <FormProvider {...methods}>
+        <SectionCard
+          iconName={IconName.Wrench}
+          title={t("dashboard.newOpportunity.fields.title")}
+          subComponent={
+            <FormDetails>
+              <Controller
+                name="title"
+                control={control}
+                render={({ field }) => (
+                  <EditableField
+                    mode="edit"
+                    type="text"
+                    label={t("dashboard.newOpportunity.fields.title")}
+                    value={field.value}
+                    setValue={field.onChange}
+                    errorMessage={errors.title?.message}
+                  />
+                )}
+              />
+            </FormDetails>
+          }
         />
-      </Card>
-    </Wrapper>
+
+        <SectionCard
+          iconName={IconName.ChatsCircle}
+          title={t("dashboard.opportunityProfile.contactDetailsTitle")}
+          subComponent={
+            <FormDetails>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <EditableField
+                    mode="edit"
+                    type="text"
+                    label={t("dashboard.opportunityProfile.contactDetails.name")}
+                    value={field.value}
+                    setValue={field.onChange}
+                    errorMessage={errors.name?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <EditableField
+                    mode="edit"
+                    type="text"
+                    label={t("dashboard.opportunityProfile.contactDetails.phone")}
+                    value={field.value}
+                    setValue={field.onChange}
+                    errorMessage={errors.phone?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <EditableField
+                    mode="edit"
+                    type="text"
+                    label={t("dashboard.opportunityProfile.contactDetails.email")}
+                    value={field.value}
+                    setValue={field.onChange}
+                    errorMessage={errors.email?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="waysToContact"
+                control={control}
+                render={({ field }) => (
+                  <EditableField
+                    mode="edit"
+                    type="checkbox-list"
+                    label={t("dashboard.opportunityProfile.contactDetails.waysToContact.label")}
+                    value={keysToLabels(field.value ?? [])}
+                    setValue={(value) => field.onChange(labelsToKeys(Array.isArray(value) ? value : [value]))}
+                    options={options}
+                  />
+                )}
+              />
+            </FormDetails>
+          }
+        />
+
+        <SaveRow>
+          <Button
+            text={t("dashboard.newOpportunity.submit")}
+            backgroundcolor="var(--color-aubergine)"
+            textColor="var(--color-white)"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isPending || !isValid}
+          />
+        </SaveRow>
+      </FormProvider>
+    </PageContainer>
   );
 }
+
+const SaveRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
