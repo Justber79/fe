@@ -15,8 +15,3 @@ export const apiLanguagesToFormValues = (langs?: Array<{ id: number; title: stri
 
 export const clientLanguagesToDisplay = (langs?: Array<{ id: number; title: string }>): string =>
   langs?.map((lang) => lang.title).join(", ") ?? "";
-
-export function parseAddress(formatted: string): { street: string; postcode: string } {
-  const match = formatted.match(/^(.+),\s*(\d{5})/);
-  return match ? { street: match[1].trim(), postcode: match[2] } : { street: "", postcode: "" };
-}

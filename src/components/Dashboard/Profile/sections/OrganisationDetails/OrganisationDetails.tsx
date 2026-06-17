@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { FormContainer } from "../shared/styles";
 import { EditableSectionProps, EditableSectionRef } from "../shared/types";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
-import { apiLanguagesToFormValues, parseAddress, toLanguagesForForm } from "./formatters";
+import { apiLanguagesToFormValues, toLanguagesForForm } from "./formatters";
 import { OrganisationDetailsDisplay } from "./OrganisationDetailsDisplay";
 import { OrganisationDetailsEdit } from "./OrganisationDetailsEdit";
 import { createOrganisationDetailsSchema, OrganisationDetailsFormData } from "./organisationDetailsSchema";
@@ -33,14 +33,13 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
   const languagesForForm = toLanguagesForForm(apiLanguages, i18n.language);
   const schema = createOrganisationDetailsSchema(t);
 
-  const { street, postcode } = parseAddress(details?.address || "");
   const initialFormValues = {
     ...details,
     website: details?.website || "",
     operator: details?.operator || agent.operator || "",
     clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
-    addressStreet: street,
-    addressPostcode: postcode,
+    addressStreet: details?.addressStreet ?? "",
+    addressPostcode: details?.addressPostcode ?? "",
   };
 
   const methods = useForm<OrganisationDetailsFormData>({
