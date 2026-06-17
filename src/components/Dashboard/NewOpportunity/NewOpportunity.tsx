@@ -1,52 +1,407 @@
 "use client";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { SectionCard } from "@/components/Dashboard/Profile/common/SectionCard";
+import {
+  apiToFormAvailability,
+  formToApiAvailability,
+} from "@/components/Dashboard/Profile/sections/VolunteerProfile/availabilityUtils";
+import {
+  ApiLanguageOption,
+  useApiActivities,
+  useApiLanguages,
+  useApiSkills,
+} from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
+import {
+  createOpportunityDetailsSchema,
+  OpportunityDetailsFormData,
+} from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
+import {
+  AccompanyingDetailsFormData,
+  accompanyingDetailsSchema,
+} from "@/components/Dashboard/Profile/sections/AccompanyingDetails/accompanyingDetailsSchema";
+import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
+import {
+  Card,
+  IconContainer,
+  ProfileContent,
+  ProfileInfo,
+  StatusSection,
+  TitleSection,
+} from "@/components/Dashboard/Profile/sections/ProfileHeader/common/profileHeaderStyles";
+import { createVolunteerTypeLabelMap } from "@/components/Dashboard/Profile/sections/ProfileHeader/common/labelMaps";
 import Button from "@/components/core/button/Button/Button";
-import { apiPathOpportunity, DashboardRoutes } from "@/config/constants";
+import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
+import { ErrorMessage } from "@/components/core/common";
+import { AvailabilityGrid } from "@/components/forms/AvailabilityGrid/AvailabilityGrid";
+import { LanguageFields } from "@/components/forms/LanguageFields";
+import { apiPathOpportunity, DashboardRoutes, MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
+import { localHhmmToUtc } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Heading2 } from "@/components/styled/text";
+import { Heading2, Heading4 } from "@/components/styled/text";
+import { ShootingStarIcon } from "@phosphor-icons/react";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
-import { ApiOpportunityGet } from "need4deed-sdk";
+import axios from "axios";
+import { de, enUS } from "date-fns/locale";
+import { TFunction } from "i18next";
+import { ApiOpportunityGet, Lang, OptionItem, TranslatedIntoType, VolunteerStateTypeType } from "need4deed-sdk";
 import i18next from "i18next";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { z } from "zod";
 
-const createSchema = (t: (key: string) => string) =>
+// ─── Types ──────────────────────────────────────────────────────────────────
+
+const SELECTABLE_VOLUNTEER_TYPES = [
+  VolunteerStateTypeType.REGULAR,
+  VolunteerStateTypeType.ACCOMPANYING,
+  VolunteerStateTypeType.EVENTS,
+] as const;
+
+type SelectableVolunteerType = (typeof SELECTABLE_VOLUNTEER_TYPES)[number];
+
+const createHeaderSchema = (t: (key: string) => string) =>
   z.object({
     title: z.string().min(1, t("form.error.required")),
+    volunteerType: z.enum([
+      VolunteerStateTypeType.REGULAR,
+      VolunteerStateTypeType.ACCOMPANYING,
+      VolunteerStateTypeType.EVENTS,
+    ]),
   });
 
-type FormData = z.infer<ReturnType<typeof createSchema>>;
+type HeaderFormData = z.infer<ReturnType<typeof createHeaderSchema>>;
 
 type CreateOpportunityBody = {
   title: string;
+  volunteerType: SelectableVolunteerType;
   agentId?: number;
 };
 
-export function NewOpportunity() {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const { agent } = useGetCurrentAgent();
+// ─── Helper: same lang/option transforms used in OpportunityDetailsEdit ─────
 
-  const methods = useForm<FormData>({
-    resolver: zodResolver(createSchema(t)),
-    mode: "onChange",
-    defaultValues: { title: "" },
+function toLangOptionItems(
+  formLangs: { language: string }[],
+  apiLanguages: ApiLanguageOption[],
+  t: TFunction,
+): OptionItem[] {
+  return formLangs.flatMap(({ language }) => {
+    if (!language) return [];
+    const numId = Number(language);
+    if (!isNaN(numId) && numId > 0) {
+      const found = apiLanguages.find((a) => a.id === numId);
+      return found ? [{ id: found.id, title: found.title }] : [];
+    }
+    const found = apiLanguages.find((a) => {
+      if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
+      const key = `languageNames.${a.title.toLowerCase()}`;
+      const translated = t(key);
+      return translated !== key && translated === language;
+    });
+    return found ? [{ id: found.id, title: found.title }] : [];
   });
+}
+
+function toOptionItems(ids: string[], apiItems: ApiLanguageOption[]): OptionItem[] {
+  const map = new Map(apiItems.map((i) => [i.id, i.title]));
+  return ids.flatMap((id) => {
+    const numId = Number(id);
+    const title = map.get(numId);
+    return title ? [{ id: numId, title }] : [];
+  });
+}
+
+// ─── Opportunity Details fields (used inside a FormProvider for that form) ──
+
+function OpportunityDetailsFields({
+  isEvent,
+  apiLanguages,
+  apiActivities,
+  apiSkills,
+}: {
+  isEvent: boolean;
+  apiLanguages: ApiLanguageOption[];
+  apiActivities: ApiLanguageOption[];
+  apiSkills: ApiLanguageOption[];
+}) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const locale = lang === "de" ? de : enUS;
+  const prefix = "dashboard.opportunityProfile.opportunityDetails";
 
   const {
     control,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = methods;
+    formState: { errors },
+  } = useFormContext<OpportunityDetailsFormData>();
+
+  const activityMapping = createMapping(apiActivities);
+  const skillMapping = createMapping(apiSkills);
+  const languagesForForm = apiLanguages.map((l) => ({
+    id: l.id,
+    title: { [lang as Lang]: l.title } as Record<Lang, string>,
+  }));
+
+  return (
+    <FormDetails>
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <EditableField
+            mode="edit"
+            type="textarea"
+            label={t(`${prefix}.description`)}
+            value={field.value}
+            setValue={field.onChange}
+            maxLength={MAX_DESCRIPTION_LENGTH}
+            hint={t(`${prefix}.descriptionHint`, { max: MAX_DESCRIPTION_LENGTH })}
+            errorMessage={errors.description?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="mainCommunication"
+        control={control}
+        render={({ field, fieldState }) => (
+          <FieldGroup>
+            <label>{t(`${prefix}.mainCommunication`)}</label>
+            <div>
+              <LanguageFields
+                languages={field.value}
+                onChange={field.onChange}
+                t={t}
+                availableLanguages={languagesForForm}
+                showLevel={false}
+              />
+              {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
+            </div>
+          </FieldGroup>
+        )}
+      />
+
+      <Controller
+        name="residentsSpeak"
+        control={control}
+        render={({ field, fieldState }) => (
+          <FieldGroup>
+            <label>{t(`${prefix}.residentsSpeak`)}</label>
+            <div>
+              <LanguageFields
+                languages={field.value}
+                onChange={field.onChange}
+                t={t}
+                availableLanguages={languagesForForm}
+                showLevel={false}
+              />
+              {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
+            </div>
+          </FieldGroup>
+        )}
+      />
+
+      {isEvent ? (
+        <>
+          <Controller
+            name="eventDate"
+            control={control}
+            render={({ field }) => (
+              <DateFieldRow>
+                <label>{t(`${prefix}.eventDate`)}</label>
+                <DatePickerContainer>
+                  <DatePickerWithLabel
+                    date={field.value ?? undefined}
+                    onSelect={(d) => field.onChange(d ?? null)}
+                    locale={locale}
+                    allowFuture
+                  />
+                </DatePickerContainer>
+              </DateFieldRow>
+            )}
+          />
+          <Controller
+            name="eventTime"
+            control={control}
+            render={({ field }) => (
+              <DateFieldRow>
+                <label htmlFor="new-opp-eventTime">{t(`${prefix}.eventTime`)}</label>
+                <TimeInputWrapper>
+                  <TimeInput
+                    id="new-opp-eventTime"
+                    type="time"
+                    value={field.value || ""}
+                    onChange={field.onChange}
+                    $hasError={!!errors.eventTime}
+                  />
+                </TimeInputWrapper>
+              </DateFieldRow>
+            )}
+          />
+        </>
+      ) : (
+        <Controller
+          name="availability"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FieldGroup>
+              <label>{t(`${prefix}.schedule`)}</label>
+              <div>
+                <AvailabilityGrid
+                  availability={field.value ?? apiToFormAvailability(undefined)}
+                  onChange={field.onChange}
+                  t={t}
+                  currentLanguage={lang as Lang}
+                />
+                {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
+              </div>
+            </FieldGroup>
+          )}
+        />
+      )}
+
+      <Controller
+        name="numberOfVolunteers"
+        control={control}
+        render={({ field }) => (
+          <EditableField
+            mode="edit"
+            type="stepper"
+            label={t(`${prefix}.numberOfVolunteers`)}
+            value={field.value}
+            setValue={field.onChange}
+            errorMessage={errors.numberOfVolunteers?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="activities"
+        control={control}
+        render={({ field }) => (
+          <EditableField
+            mode="edit"
+            type="checkbox-list"
+            label={t(`${prefix}.activities`)}
+            value={field.value.map((id) => activityMapping.idToTitle[Number(id)] || String(id))}
+            setValue={(value) => {
+              const labels = Array.isArray(value) ? value : [value];
+              field.onChange(labels.map((label) => String(activityMapping.titleToId[label])));
+            }}
+            options={apiActivities.map((a) => a.title)}
+            errorMessage={errors.activities?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="skills"
+        control={control}
+        render={({ field }) => (
+          <EditableField
+            mode="edit"
+            type="checkbox-list"
+            label={t(`${prefix}.skills`)}
+            value={field.value.map((id) => skillMapping.idToTitle[Number(id)] || String(id))}
+            setValue={(value) => {
+              const labels = Array.isArray(value) ? value : [value];
+              field.onChange(labels.map((label) => String(skillMapping.titleToId[label])));
+            }}
+            options={apiSkills.map((s) => s.title)}
+            errorMessage={errors.skills?.message}
+          />
+        )}
+      />
+    </FormDetails>
+  );
+}
+
+// ─── Main component ──────────────────────────────────────────────────────────
+
+export function NewOpportunity() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const locale = lang === "de" ? de : enUS;
+  const router = useRouter();
+  const { agent } = useGetCurrentAgent();
+  const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
+
+  const { data: apiLanguages = [] } = useApiLanguages();
+  const { data: apiActivities = [] } = useApiActivities();
+  const { data: apiSkills = [] } = useApiSkills();
+
+  // Header form: title + volunteerType
+  const headerMethods = useForm<HeaderFormData>({
+    resolver: zodResolver(createHeaderSchema(t)),
+    mode: "onChange",
+    defaultValues: { title: "", volunteerType: VolunteerStateTypeType.REGULAR },
+  });
+  const {
+    control: headerControl,
+    handleSubmit: handleHeaderSubmit,
+    watch: watchHeader,
+    formState: { errors: headerErrors },
+  } = headerMethods;
+  const selectedType = watchHeader("volunteerType");
+  const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
+  const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
+
+  // Opportunity details form
+  const detailsMethods = useForm<OpportunityDetailsFormData>({
+    resolver: zodResolver(createOpportunityDetailsSchema(t)),
+    mode: "onChange",
+    defaultValues: {
+      description: "",
+      numberOfVolunteers: "1",
+      mainCommunication: [{ id: 1, language: "", level: "" }],
+      residentsSpeak: [{ id: 1, language: "", level: "" }],
+      availability: undefined,
+      eventDate: null,
+      eventTime: "",
+      activities: [],
+      skills: [],
+    },
+  });
+
+  // Accompanying details form (always initialised; only submitted when type is ACCOMPANYING)
+  const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
+    resolver: zodResolver(accompanyingDetailsSchema),
+    mode: "onChange",
+    defaultValues: {
+      appointmentAddress: "",
+      appointmentPostcode: "",
+      appointmentDate: null,
+      appointmentTime: "",
+      refugeeNumber: "",
+      refugeeName: "",
+      refugeeLanguage: [],
+      appointmentLanguage: undefined,
+    },
+  });
+
+  // Accompanying section helpers (mirrors AccompanyingDetails.tsx)
+  const keyToLabel: Record<string, string> = {};
+  const labelToKey: Record<string, string> = {};
+  apiLanguages.forEach((l) => {
+    keyToLabel[String(l.id)] = l.title;
+    labelToKey[l.title] = String(l.id);
+  });
+  const appointmentLanguageKeys = Object.values(TranslatedIntoType);
+  const appointmentLanguageKeyToLabel: Record<string, string> = {};
+  const appointmentLanguageLabelToKey: Record<string, string> = {};
+  appointmentLanguageKeys.forEach((key) => {
+    const label = t(`dashboard.opportunityProfile.accompanyingDetails.appointmentLanguageOptions.${key}`);
+    appointmentLanguageKeyToLabel[key] = label;
+    appointmentLanguageLabelToKey[label] = key;
+  });
+  const minAppointmentDate = useMemo(() => new Date(), []);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<
     CreateOpportunityBody,
@@ -54,14 +409,50 @@ export function NewOpportunity() {
   >({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
-    onSuccessCallback: (response) => {
+    onSuccessCallback: async (response) => {
       const id = response?.data?.id;
-      if (id) router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
+      if (!id) return;
+
+      const detailsData = detailsMethods.getValues();
+
+      // PATCH opportunity details
+      await axios.patch(`${apiPathOpportunity}/${id}`, {
+        description: detailsData.description,
+        numberVolunteers: Number(detailsData.numberOfVolunteers) || 1,
+        languagesMain: toLangOptionItems(detailsData.mainCommunication, apiLanguages, t),
+        languagesResidents: toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t),
+        activities: toOptionItems(detailsData.activities, apiActivities),
+        skills: toOptionItems(detailsData.skills, apiSkills),
+        schedule: detailsData.availability ? formToApiAvailability(detailsData.availability) : undefined,
+      });
+
+      // PATCH accompanying details if applicable
+      if (isAccompanying) {
+        const acc = accompanyingMethods.getValues();
+        await axios.patch(`${apiPathOpportunity}/${id}`, {
+          accompanyingDetails: {
+            appointmentAddress: acc.appointmentAddress,
+            appointmentPostcode: acc.appointmentPostcode || undefined,
+            appointmentDate: acc.appointmentDate ? acc.appointmentDate.toISOString() : undefined,
+            appointmentTime: acc.appointmentTime ? localHhmmToUtc(acc.appointmentTime) : undefined,
+            refugeeNumber: acc.refugeeNumber,
+            refugeeName: acc.refugeeName,
+            refugeeLanguage: (acc.refugeeLanguage ?? []).map((id) => ({ id })),
+            appointmentLanguage: acc.appointmentLanguage || undefined,
+          },
+        });
+      }
+
+      router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
     },
   });
 
-  const onSubmit = (values: FormData) => {
-    createOpportunity({ title: values.title, agentId: agent?.id });
+  const onSubmit = (headerData: HeaderFormData) => {
+    createOpportunity({
+      title: headerData.title,
+      volunteerType: headerData.volunteerType,
+      agentId: agent?.id,
+    });
   };
 
   return (
@@ -73,15 +464,17 @@ export function NewOpportunity() {
 
       <Heading2>{t("dashboard.newOpportunity.title")}</Heading2>
 
-      <FormProvider {...methods}>
-        <SectionCard
-          iconName={IconName.Wrench}
-          title={t("dashboard.newOpportunity.fields.title")}
-          subComponent={
-            <FormDetails>
+      {/* Header card — title input + volunteer type selector */}
+      <Card>
+        <ProfileContent>
+          <IconContainer>
+            <ShootingStarIcon size={120} color="var(--color-blue-500)" weight="duotone" />
+          </IconContainer>
+          <ProfileInfo>
+            <TitleSection>
               <Controller
                 name="title"
-                control={control}
+                control={headerControl}
                 render={({ field }) => (
                   <EditableField
                     mode="edit"
@@ -89,29 +482,178 @@ export function NewOpportunity() {
                     label={t("dashboard.newOpportunity.fields.title")}
                     value={field.value}
                     setValue={field.onChange}
-                    errorMessage={errors.title?.message}
+                    errorMessage={headerErrors.title?.message}
                   />
                 )}
               />
-            </FormDetails>
+            </TitleSection>
+
+            <StatusSection>
+              <VolunteerTypeRow>
+                <Heading4>{t("dashboard.volunteerProfile.volunteerHeader.volunteerType_title")}</Heading4>
+                <TypeButtons>
+                  {SELECTABLE_VOLUNTEER_TYPES.map((type) => (
+                    <TypeButton
+                      key={type}
+                      type="button"
+                      $active={selectedType === type}
+                      onClick={() => headerMethods.setValue("volunteerType", type, { shouldValidate: true })}
+                    >
+                      {volunteerTypeLabelMap[type]}
+                    </TypeButton>
+                  ))}
+                </TypeButtons>
+              </VolunteerTypeRow>
+            </StatusSection>
+          </ProfileInfo>
+        </ProfileContent>
+      </Card>
+
+      {/* Opportunity Details section */}
+      <SectionCard
+        iconName={IconName.Wrench}
+        title={t("dashboard.opportunityProfile.opportunityDetails.title")}
+        subComponent={
+          <FormProvider {...detailsMethods}>
+            <OpportunityDetailsFields
+              isEvent={isEvent}
+              apiLanguages={apiLanguages}
+              apiActivities={apiActivities}
+              apiSkills={apiSkills}
+            />
+          </FormProvider>
+        }
+      />
+
+      {/* Accompanying Details section — only for ACCOMPANYING type */}
+      {isAccompanying && (
+        <SectionCard
+          iconName={IconName.Users}
+          title={t("dashboard.opportunityProfile.accompanyingDetailsTitle")}
+          subComponent={
+            <FormProvider {...accompanyingMethods}>
+              <AccompanyingDetailsEdit
+                locale={locale}
+                languageOptions={apiLanguages.map((l) => l.title)}
+                keyToLabel={keyToLabel}
+                labelToKey={labelToKey}
+                appointmentLanguageOptions={appointmentLanguageKeys.map((k) => appointmentLanguageKeyToLabel[k])}
+                appointmentLanguageKeyToLabel={appointmentLanguageKeyToLabel}
+                appointmentLanguageLabelToKey={appointmentLanguageLabelToKey}
+                onCancel={() => {}}
+                onSubmit={() => {}}
+                isPending={false}
+                minAppointmentDate={minAppointmentDate}
+              />
+            </FormProvider>
           }
         />
+      )}
 
-        <SaveRow>
-          <Button
-            text={t("dashboard.newOpportunity.submit")}
-            backgroundcolor="var(--color-aubergine)"
-            textColor="var(--color-white)"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isPending || !isValid}
-          />
-        </SaveRow>
-      </FormProvider>
+      <SaveRow>
+        <Button
+          text={t("dashboard.newOpportunity.submit")}
+          backgroundcolor="var(--color-aubergine)"
+          textColor="var(--color-white)"
+          onClick={handleHeaderSubmit(onSubmit)}
+          disabled={isPending}
+        />
+      </SaveRow>
     </PageContainer>
   );
 }
 
+// ─── Styled components ───────────────────────────────────────────────────────
+
 const SaveRow = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+const VolunteerTypeRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-blue-50);
+
+  h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-blue-700);
+    margin: 0;
+    flex-shrink: 0;
+  }
+`;
+
+const TypeButtons = styled.div`
+  display: flex;
+  gap: var(--spacing-8);
+  flex-wrap: wrap;
+`;
+
+const TypeButton = styled.button<{ $active: boolean }>`
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--border-radius-sm);
+  border: 2px solid var(--color-aubergine);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: var(--transition-all);
+  background-color: ${({ $active }) => ($active ? "var(--color-aubergine)" : "var(--color-white)")};
+  color: ${({ $active }) => ($active ? "var(--color-white)" : "var(--color-aubergine)")};
+
+  &:hover {
+    opacity: var(--opacity-hover);
+  }
+`;
+
+const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-grey-100);
+  width: 100%;
+
+  > label {
+    font-size: var(--editableField-fieldWrapper-label-fontSize);
+    font-weight: var(--editableField-fieldWrapper-label-fontWeight);
+  }
+`;
+
+const DateFieldRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-grey-100);
+  gap: var(--spacing-16);
+  width: 100%;
+
+  > label {
+    font-size: var(--editableField-fieldWrapper-label-fontSize);
+    font-weight: var(--editableField-fieldWrapper-label-fontWeight);
+    flex-shrink: 0;
+    width: var(--editableField-fieldWrapper-label-width);
+  }
+`;
+
+const DatePickerContainer = styled.div`
+  flex: 1;
+`;
+
+const TimeInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+`;
+
+const TimeInput = styled.input<{ $hasError?: boolean }>`
+  padding: var(--spacing-8) var(--spacing-12);
+  border: ${({ $hasError }) => ($hasError ? "1px solid var(--color-error)" : "1px solid var(--color-grey-300)")};
+  border-radius: var(--border-radius-xs);
+  font-size: var(--font-size-lg);
+  color: var(--color-midnight);
 `;
