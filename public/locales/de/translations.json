@@ -973,6 +973,10 @@
       "deleteConfirmTitle": "Anerkennung löschen?",
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
+    "profile": {
+      "loading": "Profil wird geladen...",
+      "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab."
+    },
     "agentProfile": {
       "agentProfile": "Einrichtungs-/Projektprofil",
       "registeredSince": "Registriert seit",
