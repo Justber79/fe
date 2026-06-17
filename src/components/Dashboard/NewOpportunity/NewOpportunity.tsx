@@ -1,10 +1,7 @@
 "use client";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { SectionCard } from "@/components/Dashboard/Profile/common/SectionCard";
-import {
-  apiToFormAvailability,
-  formToApiAvailability,
-} from "@/components/Dashboard/Profile/sections/VolunteerProfile/availabilityUtils";
+import { apiToFormAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/availabilityUtils";
 import {
   ApiLanguageOption,
   useApiActivities,
@@ -40,16 +37,20 @@ import { AvailabilityGrid } from "@/components/forms/AvailabilityGrid/Availabili
 import { LanguageFields } from "@/components/forms/LanguageFields";
 import { apiPathOpportunity, DashboardRoutes, MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
-import { localHhmmToUtc } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2, Heading4 } from "@/components/styled/text";
-import { ShootingStarIcon } from "@phosphor-icons/react";
-import { ArrowLeftIcon } from "@phosphor-icons/react";
-import axios from "axios";
+import { ShootingStarIcon, ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TFunction } from "i18next";
-import { ApiOpportunityGet, Lang, OptionItem, TranslatedIntoType, VolunteerStateTypeType } from "need4deed-sdk";
+import {
+  ApiOpportunityGet,
+  Lang,
+  OptionId,
+  OptionItem,
+  OpportunityFormDataWithAgentSubmitter,
+  TranslatedIntoType,
+  VolunteerStateTypeType,
+} from "need4deed-sdk";
 import i18next from "i18next";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -66,8 +67,6 @@ const SELECTABLE_VOLUNTEER_TYPES = [
   VolunteerStateTypeType.EVENTS,
 ] as const;
 
-type SelectableVolunteerType = (typeof SELECTABLE_VOLUNTEER_TYPES)[number];
-
 const createHeaderSchema = (t: (key: string) => string) =>
   z.object({
     title: z.string().min(1, t("form.error.required")),
@@ -80,13 +79,7 @@ const createHeaderSchema = (t: (key: string) => string) =>
 
 type HeaderFormData = z.infer<ReturnType<typeof createHeaderSchema>>;
 
-type CreateOpportunityBody = {
-  title: string;
-  volunteerType: SelectableVolunteerType;
-  agentId?: number;
-};
-
-// ─── Helper: same lang/option transforms used in OpportunityDetailsEdit ─────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function toLangOptionItems(
   formLangs: { language: string }[],
@@ -119,7 +112,72 @@ function toOptionItems(ids: string[], apiItems: ApiLanguageOption[]): OptionItem
   });
 }
 
-// ─── Opportunity Details fields (used inside a FormProvider for that form) ──
+function availabilityToTimeslots(availability: OpportunityDetailsFormData["availability"]): [number, OptionId][] {
+  return (availability ?? []).flatMap(({ weekday, timeSlots }) =>
+    timeSlots
+      .filter((ts) => ts.selected)
+      .map((ts) => {
+        const slotId = weekday === 0 ? ts.id.charAt(0).toUpperCase() + ts.id.slice(1) : ts.id;
+        return [weekday, slotId] as [number, OptionId];
+      }),
+  );
+}
+
+function buildCreatePayload(
+  headerData: HeaderFormData,
+  detailsData: OpportunityDetailsFormData,
+  accompData: AccompanyingDetailsFormData | null,
+  apiLanguages: ApiLanguageOption[],
+  apiActivities: ApiLanguageOption[],
+  apiSkills: ApiLanguageOption[],
+  t: TFunction,
+): OpportunityFormDataWithAgentSubmitter {
+  const isEvent = headerData.volunteerType === VolunteerStateTypeType.EVENTS;
+  const isAccompanying = headerData.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
+
+  const mainLangIds = toLangOptionItems(detailsData.mainCommunication, apiLanguages, t).map((i) => i.id);
+  const residentsLangIds = toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t).map((i) => i.id);
+  const refugeeLangIds = (accompData?.refugeeLanguage ?? []).map(Number).filter(Boolean);
+  const languages = [...new Set([...mainLangIds, ...residentsLangIds, ...refugeeLangIds])];
+
+  const activities = toOptionItems(detailsData.activities, apiActivities).map((i) => i.id);
+  const skills = toOptionItems(detailsData.skills, apiSkills).map((i) => i.id);
+  const timeslots = isEvent ? undefined : availabilityToTimeslots(detailsData.availability);
+
+  const onetime_date_time =
+    isEvent && detailsData.eventDate
+      ? `${detailsData.eventDate.toISOString().split("T")[0]}T${detailsData.eventTime || "00:00"}:00`
+      : undefined;
+
+  const accomp_datetime =
+    isAccompanying && accompData?.appointmentDate
+      ? `${accompData.appointmentDate.toISOString().split("T")[0]}T${accompData.appointmentTime || "00:00"}:00`
+      : null;
+
+  return {
+    title: headerData.title,
+    opportunity_type: headerData.volunteerType,
+    vo_information: detailsData.description || null,
+    volunteers_number: Number(detailsData.numberOfVolunteers) || 1,
+    languages,
+    activities,
+    skills,
+    timeslots: timeslots ?? null,
+    onetime_date_time,
+    accomp_address: isAccompanying ? (accompData?.appointmentAddress ?? "") : "",
+    accomp_postcode: isAccompanying ? (accompData?.appointmentPostcode ?? "") : "",
+    accomp_datetime,
+    accomp_name: isAccompanying ? (accompData?.refugeeName ?? null) : null,
+    accomp_phone: isAccompanying ? (accompData?.refugeeNumber ?? null) : null,
+    accomp_information: null,
+    accomp_translation: isAccompanying ? (accompData?.appointmentLanguage ?? null) : null,
+    berlin_locations: [],
+    category: "",
+    category_id: "",
+  } as OpportunityFormDataWithAgentSubmitter;
+}
+
+// ─── Opportunity Details fields ───────────────────────────────────────────────
 
 function OpportunityDetailsFields({
   isEvent,
@@ -330,7 +388,6 @@ export function NewOpportunity() {
   const lang = i18n.language;
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
-  const { agent } = useGetCurrentAgent();
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
 
   const { data: apiLanguages = [] } = useApiLanguages();
@@ -370,7 +427,7 @@ export function NewOpportunity() {
     },
   });
 
-  // Accompanying details form (always initialised; only submitted when type is ACCOMPANYING)
+  // Accompanying details form (always initialised; only included in payload when type is ACCOMPANYING)
   const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
     resolver: zodResolver(accompanyingDetailsSchema),
     mode: "onChange",
@@ -386,7 +443,7 @@ export function NewOpportunity() {
     },
   });
 
-  // Accompanying section helpers (mirrors AccompanyingDetails.tsx)
+  // Accompanying section helpers
   const keyToLabel: Record<string, string> = {};
   const labelToKey: Record<string, string> = {};
   apiLanguages.forEach((l) => {
@@ -404,55 +461,28 @@ export function NewOpportunity() {
   const minAppointmentDate = useMemo(() => new Date(), []);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<
-    CreateOpportunityBody,
+    OpportunityFormDataWithAgentSubmitter,
     { message: string; data: ApiOpportunityGet }
   >({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
-    onSuccessCallback: async (response) => {
+    onSuccessCallback: (response) => {
       const id = response?.data?.id;
-      if (!id) return;
-
-      const detailsData = detailsMethods.getValues();
-
-      // PATCH opportunity details
-      await axios.patch(`${apiPathOpportunity}/${id}`, {
-        description: detailsData.description,
-        numberVolunteers: Number(detailsData.numberOfVolunteers) || 1,
-        languagesMain: toLangOptionItems(detailsData.mainCommunication, apiLanguages, t),
-        languagesResidents: toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t),
-        activities: toOptionItems(detailsData.activities, apiActivities),
-        skills: toOptionItems(detailsData.skills, apiSkills),
-        schedule: detailsData.availability ? formToApiAvailability(detailsData.availability) : undefined,
-      });
-
-      // PATCH accompanying details if applicable
-      if (isAccompanying) {
-        const acc = accompanyingMethods.getValues();
-        await axios.patch(`${apiPathOpportunity}/${id}`, {
-          accompanyingDetails: {
-            appointmentAddress: acc.appointmentAddress,
-            appointmentPostcode: acc.appointmentPostcode || undefined,
-            appointmentDate: acc.appointmentDate ? acc.appointmentDate.toISOString() : undefined,
-            appointmentTime: acc.appointmentTime ? localHhmmToUtc(acc.appointmentTime) : undefined,
-            refugeeNumber: acc.refugeeNumber,
-            refugeeName: acc.refugeeName,
-            refugeeLanguage: (acc.refugeeLanguage ?? []).map((id) => ({ id })),
-            appointmentLanguage: acc.appointmentLanguage || undefined,
-          },
-        });
-      }
-
-      router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
+      if (id) router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
     },
   });
 
   const onSubmit = (headerData: HeaderFormData) => {
-    createOpportunity({
-      title: headerData.title,
-      volunteerType: headerData.volunteerType,
-      agentId: agent?.id,
-    });
+    const payload = buildCreatePayload(
+      headerData,
+      detailsMethods.getValues(),
+      isAccompanying ? accompanyingMethods.getValues() : null,
+      apiLanguages,
+      apiActivities,
+      apiSkills,
+      t,
+    );
+    createOpportunity(payload);
   };
 
   return (
