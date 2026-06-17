@@ -573,6 +573,7 @@ export function NewOpportunity() {
                 onSubmit={() => {}}
                 isPending={false}
                 minAppointmentDate={minAppointmentDate}
+                hideButtons
               />
             </FormProvider>
           }
