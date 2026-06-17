@@ -6,6 +6,7 @@ export interface AgentRegistrationData {
   email: string;
   password: string;
   confirmPassword: string;
+  phone: string;
 }
 
 export const defaultAgentRegistrationData: AgentRegistrationData = {
@@ -14,6 +15,7 @@ export const defaultAgentRegistrationData: AgentRegistrationData = {
   email: "",
   password: "",
   confirmPassword: "",
+  phone: "",
 };
 
 export const TOTAL_STEPS = 1;
