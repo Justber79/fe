@@ -43,15 +43,12 @@ import { ShootingStarIcon, ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TFunction } from "i18next";
 import {
-  ApiOpportunityGet,
   Lang,
-  OptionId,
   OptionItem,
   OpportunityFormDataWithAgentSubmitter,
   TranslatedIntoType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
-import i18next from "i18next";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
@@ -112,13 +109,13 @@ function toOptionItems(ids: string[], apiItems: ApiLanguageOption[]): OptionItem
   });
 }
 
-function availabilityToTimeslots(availability: OpportunityDetailsFormData["availability"]): [number, OptionId][] {
+function availabilityToTimeslots(availability: OpportunityDetailsFormData["availability"]): [number, string][] {
   return (availability ?? []).flatMap(({ weekday, timeSlots }) =>
     timeSlots
       .filter((ts) => ts.selected)
       .map((ts) => {
         const slotId = weekday === 0 ? ts.id.charAt(0).toUpperCase() + ts.id.slice(1) : ts.id;
-        return [weekday, slotId] as [number, OptionId];
+        return [weekday, slotId] as [number, string];
       }),
   );
 }
@@ -130,24 +127,25 @@ function buildCreatePayload(
   apiLanguages: ApiLanguageOption[],
   apiActivities: ApiLanguageOption[],
   apiSkills: ApiLanguageOption[],
+  lang: string,
   t: TFunction,
 ): OpportunityFormDataWithAgentSubmitter {
   const isEvent = headerData.volunteerType === VolunteerStateTypeType.EVENTS;
   const isAccompanying = headerData.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
 
-  const mainLangIds = toLangOptionItems(detailsData.mainCommunication, apiLanguages, t).map((i) => i.id);
-  const residentsLangIds = toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t).map((i) => i.id);
-  const refugeeLangIds = (accompData?.refugeeLanguage ?? []).map(Number).filter(Boolean);
+  const mainLangIds = toLangOptionItems(detailsData.mainCommunication, apiLanguages, t).map((i) => String(i.id));
+  const residentsLangIds = toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t).map((i) => String(i.id));
+  const refugeeLangIds = (accompData?.refugeeLanguage ?? []).map(String).filter(Boolean);
   const languages = [...new Set([...mainLangIds, ...residentsLangIds, ...refugeeLangIds])];
 
-  const activities = toOptionItems(detailsData.activities, apiActivities).map((i) => i.id);
-  const skills = toOptionItems(detailsData.skills, apiSkills).map((i) => i.id);
-  const timeslots = isEvent ? undefined : availabilityToTimeslots(detailsData.availability);
+  const activities = toOptionItems(detailsData.activities, apiActivities).map((i) => String(i.id));
+  const skills = toOptionItems(detailsData.skills, apiSkills).map((i) => String(i.id));
+  const timeslots = isEvent ? null : availabilityToTimeslots(detailsData.availability);
 
   const onetime_date_time =
     isEvent && detailsData.eventDate
       ? `${detailsData.eventDate.toISOString().split("T")[0]}T${detailsData.eventTime || "00:00"}:00`
-      : undefined;
+      : null;
 
   const accomp_datetime =
     isAccompanying && accompData?.appointmentDate
@@ -156,25 +154,29 @@ function buildCreatePayload(
 
   return {
     title: headerData.title,
-    opportunity_type: headerData.volunteerType,
+    opportunity_type: isAccompanying ? "accompanying" : "volunteering",
     vo_information: detailsData.description || null,
     volunteers_number: Number(detailsData.numberOfVolunteers) || 1,
     languages,
     activities,
     skills,
-    timeslots: timeslots ?? null,
+    timeslots,
     onetime_date_time,
-    accomp_address: isAccompanying ? (accompData?.appointmentAddress ?? "") : "",
-    accomp_postcode: isAccompanying ? (accompData?.appointmentPostcode ?? "") : "",
+    accomp_address: isAccompanying ? (accompData?.appointmentAddress ?? null) : null,
+    accomp_postcode: isAccompanying ? (accompData?.appointmentPostcode ?? null) : null,
     accomp_datetime,
     accomp_name: isAccompanying ? (accompData?.refugeeName ?? null) : null,
     accomp_phone: isAccompanying ? (accompData?.refugeeNumber ?? null) : null,
     accomp_information: null,
     accomp_translation: isAccompanying ? (accompData?.appointmentLanguage ?? null) : null,
-    berlin_locations: [],
+    berlin_locations: null,
     category: "",
     category_id: "",
-  } as OpportunityFormDataWithAgentSubmitter;
+    language: lang as `${Lang}`,
+    agent_id: null,
+    submitted_by_id: null,
+    last_edited_time_notion: null,
+  };
 }
 
 // ─── Opportunity Details fields ───────────────────────────────────────────────
@@ -460,15 +462,11 @@ export function NewOpportunity() {
   });
   const minAppointmentDate = useMemo(() => new Date(), []);
 
-  const { mutate: createOpportunity, isPending } = useMutationQuery<
-    OpportunityFormDataWithAgentSubmitter,
-    { message: string; data: ApiOpportunityGet }
-  >({
+  const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
-    onSuccessCallback: (response) => {
-      const id = response?.data?.id;
-      if (id) router.push(`/${i18next.language}${DashboardRoutes.Opportunities}/${id}`);
+    onSuccessCallback: () => {
+      router.push(`/${lang}${DashboardRoutes.Home}`);
     },
   });
 
@@ -480,6 +478,7 @@ export function NewOpportunity() {
       apiLanguages,
       apiActivities,
       apiSkills,
+      lang,
       t,
     );
     createOpportunity(payload);
