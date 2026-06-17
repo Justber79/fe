@@ -972,6 +972,10 @@
       "deleteConfirmTitle": "Delete appreciation?",
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
+    "profile": {
+      "loading": "Loading profile...",
+      "notSetUp": "Your organisation profile is not set up yet — please complete registration."
+    },
     "agentProfile": {
       "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
