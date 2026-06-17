@@ -392,7 +392,7 @@ export function NewOpportunity() {
   const lang = i18n.language;
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
-  const { agent, isLoading: agentLoading } = useGetCurrentAgent();
+  const { agentId } = useGetCurrentAgent();
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
 
   const { data: apiLanguages = [] } = useApiLanguages();
@@ -475,7 +475,7 @@ export function NewOpportunity() {
 
   const onSubmit = (headerData: HeaderFormData) => {
     // Don't create an opportunity that isn't linked to its agent.
-    if (!agent?.id) return;
+    if (!agentId) return;
     const payload = buildCreatePayload(
       headerData,
       detailsMethods.getValues(),
@@ -485,7 +485,7 @@ export function NewOpportunity() {
       apiSkills,
       lang,
       t,
-      agent.id,
+      agentId,
     );
     createOpportunity(payload);
   };
@@ -592,7 +592,7 @@ export function NewOpportunity() {
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
           onClick={handleHeaderSubmit(onSubmit)}
-          disabled={isPending || agentLoading || !agent}
+          disabled={isPending || !agentId}
         />
       </SaveRow>
     </PageContainer>
