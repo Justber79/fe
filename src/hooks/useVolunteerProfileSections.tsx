@@ -25,7 +25,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthorized, isOwnProfile } = useAuth(volunteer?.id);
+  const { isAuthorized, isOwnProfile } = useAuth(volunteer?.person.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
