@@ -972,6 +972,10 @@
       "deleteConfirmTitle": "Delete appreciation?",
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
+    "profile": {
+      "loading": "Loading profile...",
+      "notSetUp": "Your organisation profile is not set up yet — please complete registration."
+    },
     "agentProfile": {
       "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
@@ -1537,6 +1541,7 @@
       "email": "Email address",
       "password": "Password",
       "confirmPassword": "Confirm password",
+      "phone": "Phone number",
       "organizationName": "Organisation name",
       "organizationType": "Organisation type",
       "selectOrganizationType": "Select type…",
@@ -1553,6 +1558,7 @@
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
+      "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
       "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
     },
