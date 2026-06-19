@@ -21,7 +21,8 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string) => {
       .refine((val) => urlRegex.test(val), {
         message: t(`${i18nPrefix}.websiteInvalid`),
       }),
-    address: z.string().min(1, required),
+    addressStreet: z.string(),
+    addressPostcode: z.string(),
     organizationType: z.enum(AgentType),
     operator: z.string().min(1, required),
     services: z.string().min(1, required),

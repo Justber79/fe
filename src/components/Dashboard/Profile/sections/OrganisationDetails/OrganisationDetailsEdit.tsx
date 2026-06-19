@@ -55,16 +55,30 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
           )}
         />
         <Controller
-          name="address"
+          name="addressStreet"
           control={control}
           render={({ field }) => (
             <EditableField
               mode="edit"
               type="text"
-              label={t(`${i18nPrefix}.address`)}
-              value={field.value}
+              label={t(`${i18nPrefix}.addressStreet`)}
+              value={field.value ?? ""}
               setValue={field.onChange}
-              errorMessage={errors.address?.message}
+              errorMessage={errors.addressStreet?.message}
+            />
+          )}
+        />
+        <Controller
+          name="addressPostcode"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t(`${i18nPrefix}.addressPostcode`)}
+              value={field.value ?? ""}
+              setValue={field.onChange}
+              errorMessage={errors.addressPostcode?.message}
             />
           )}
         />
