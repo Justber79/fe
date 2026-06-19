@@ -4,7 +4,7 @@ import { LangPurpose, type ApiVolunteerOpportunityGetList, type OptionItem } fro
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { getLanguagesByPurpose } from "./helpers";
+import { abbreviateDistrict, getLanguagesByPurpose } from "./helpers";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -15,10 +15,10 @@ interface TableRowProps {
 
 export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
   const { t } = useTranslation();
-
-  const { id, title, volunteerType, district, statusMatch, languages } = opportunity;
+  const { id, title, volunteerType, location, statusMatch, languages } = opportunity;
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtText = abbreviateDistrict(districtTitle) || "—";
   return (
     <ClickableRow $isLast={isLast} $cursor={"auto"} data-testid={`opportunity-row-${id}`}>
       <TableCell data-testid={`opportunity-title-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.title}>
@@ -37,7 +37,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
         {mainCommunication || "—"}
       </TableCell>
       <TableCell data-testid={`opportunity-district-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.district}>
-        {districtTitle || "—"}
+        {districtText || "—"}
       </TableCell>
     </ClickableRow>
   );
