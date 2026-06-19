@@ -4,7 +4,9 @@ import { ActivitySpan } from "@/components/styled/text";
 import { CalendarDotsIcon, MapPinIcon, ShootingStarIcon, TranslateIcon, WrenchIcon } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/hooks/useAuth";
 import { ApiLanguage, ApiVolunteerOpportunityGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
+import { ActivityLog } from "../ActivityLog";
 import { StatusAccordionActions } from "../shared/AccordionActions";
 import { DetailContainer, SplitContainer } from "../shared/accordionStyles";
 import { InfoSection } from "../shared/InfoSection";
@@ -12,6 +14,7 @@ import { DetailParagraph } from "./styles";
 
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
+  opportunityId: number;
   currentStatus: OpportunityVolunteerStatusType;
   onMatch: () => void;
   onNotAMatch: () => void;
@@ -69,6 +72,7 @@ function TagsWithOverflow({ tags }: { tags: string[] }) {
 
 export default function VolunteerDetail({
   volunteer,
+  opportunityId,
   currentStatus,
   onMatch,
   onNotAMatch,
@@ -76,6 +80,7 @@ export default function VolunteerDetail({
   onMarkAsPast,
 }: Props) {
   const { t } = useTranslation();
+  const { isAuthorized } = useAuth();
   const { languages, activities, skills, availability, locations } = volunteer;
 
   const activityTags = activities.map((a) => a.title);
@@ -111,6 +116,10 @@ export default function VolunteerDetail({
       <InfoSection icon={MapPinIcon} title={t("dashboard.volunteers.preferredDistricts")}>
         <DetailParagraph>{districtsText}</DetailParagraph>
       </InfoSection>
+
+      {currentStatus === OpportunityVolunteerStatusType.ACTIVE && (
+        <ActivityLog opportunityId={opportunityId} volunteerId={volunteer.volunteerId} readOnly={!isAuthorized} />
+      )}
 
       {/* 4. Action Buttons */}
       <StatusAccordionActions

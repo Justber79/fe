@@ -9,10 +9,11 @@ import OpportunityDetail from "./OpportunityDetail";
 
 type Props = {
   opportunity: ApiOpportunityVolunteerGet;
+  volunteerId: number;
   currentStatus: OpportunityVolunteerStatusType;
 } & AccordionActionProps;
 
-export default function AccordionOpportunity({ opportunity, currentStatus, ...actionProps }: Props) {
+export default function AccordionOpportunity({ opportunity, volunteerId, currentStatus, ...actionProps }: Props) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
@@ -32,7 +33,12 @@ export default function AccordionOpportunity({ opportunity, currentStatus, ...ac
       subtitle={`${t(getDatePrefixKey(currentStatus))} ${new Date(opportunity.updatedAt).toLocaleDateString("de-DE")}`}
       onGoToProfile={handleGoToProfile}
     >
-      <OpportunityDetail opportunity={opportunity} currentStatus={currentStatus} {...actionProps} />
+      <OpportunityDetail
+        opportunity={opportunity}
+        volunteerId={volunteerId}
+        currentStatus={currentStatus}
+        {...actionProps}
+      />
     </Accordion>
   );
 }

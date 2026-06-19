@@ -18,6 +18,7 @@ import VolunteerDetail from "./VolunteerDetail";
 
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
+  opportunityId: number;
   currentStatus: OpportunityVolunteerStatusType;
   onMatch: () => void;
   onNotAMatch: () => void;
@@ -27,6 +28,7 @@ type Props = {
 
 export const AccordionVolunteer = ({
   volunteer,
+  opportunityId,
   currentStatus,
   onMatch,
   onNotAMatch,
@@ -70,6 +72,7 @@ export const AccordionVolunteer = ({
     >
       <VolunteerDetail
         volunteer={volunteer}
+        opportunityId={opportunityId}
         currentStatus={currentStatus}
         onMatch={onMatch}
         onNotAMatch={onNotAMatch}
