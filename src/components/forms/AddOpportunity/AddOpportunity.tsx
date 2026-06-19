@@ -725,9 +725,10 @@ export default function AddOpportunity() {
                   <label htmlFor="consent">{getTickMark(!!field.state.value)}</label>
                   <span>
                     {t("form.addOpportunity.fields.consent.header")} {t("form.addOpportunity.fields.consent.agree")}{" "}
-                    <a href={`/${Subpage.GUIDELINES}/${lng}`}>{t("homepage.footer.legal.guidelines")}</a>{" "}
+                    <a href={`/${lng}/${Subpage.RAC_GUIDELINES}`}>{t("homepage.footer.legal.guidelines")}</a>,{" "}
+                    <a href={`/${lng}/${Subpage.LEGAL_NOTICE}`}>{t("homepage.footer.legal.legalNotice")}</a>{" "}
                     {t("form.addOpportunity.fields.consent.and")}{" "}
-                    <a href={`/${Subpage.DATA_PROTECTION}/${lng}`}>{t("homepage.footer.legal.dataPrivacy")}</a>
+                    <a href={`/${lng}/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")}</a>
                   </span>
                 </div>
                 <FieldInfo field={field} />
