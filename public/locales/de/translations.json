@@ -1199,7 +1199,12 @@
         "saveSuccess": "Begleitdetails erfolgreich aktualisiert",
         "notAccompanyingMessage": "Diese Möglichkeit ist nicht als Begleitung markiert. Ändern Sie diesen Status in der oberen Karte, wenn Sie die Begleitinformationen ausfüllen müssen (Terminadresse, Angaben zu Geflüchteten usw.).",
         "validation": {
-          "invalidTimeFormat": "Ungültiges Zeitformat (verwenden Sie HH:MM)"
+          "invalidTimeFormat": "Ungültiges Zeitformat (verwenden Sie HH:MM)",
+          "addressRequired": "Terminadresse ist erforderlich",
+          "postcodeRequired": "Terminpostleitzahl ist erforderlich",
+          "dateRequired": "Termindatum ist erforderlich",
+          "timeRequired": "Terminzeit ist erforderlich",
+          "nameRequired": "Name des Geflüchteten ist erforderlich"
         }
       },
       "volunteersSec": {
