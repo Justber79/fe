@@ -13,8 +13,8 @@ import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
 import { AccompanyingDetailsDisplay } from "./AccompanyingDetailsDisplay";
 import { AccompanyingDetailsEdit } from "./AccompanyingDetailsEdit";
 import { getInitialFormValues, getMinAppointmentDate, isAccompanyingType } from "./helpers";
-import { AccompanyingDetailsFormData, accompanyingDetailsSchema } from "./accompanyingDetailsSchema";
 import { Container, NotAccompanyingMessage } from "./styles";
+import { createAccompanyingDetailsSchema, AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -56,7 +56,7 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   const initialFormValues = getInitialFormValues(opportunity.accompanyingDetails);
 
   const methods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(accompanyingDetailsSchema),
+    resolver: zodResolver(createAccompanyingDetailsSchema(t, false)),
     mode: "onChange",
     defaultValues: initialFormValues,
   });

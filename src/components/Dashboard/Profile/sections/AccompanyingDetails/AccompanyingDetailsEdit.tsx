@@ -2,9 +2,9 @@ import Button from "@/components/core/button/Button/Button";
 import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { Locale } from "date-fns";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, ControllerFieldState, ControllerRenderProps, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { AccompanyingDetailsFormData } from "./accompanyingDetailsSchema";
+
 import {
   ButtonRow,
   DateFieldRow,
@@ -14,6 +14,7 @@ import {
   TimeInput,
   TimeInputWrapper,
 } from "./styles";
+import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 type Props = {
   locale: Locale;
@@ -86,7 +87,13 @@ export const AccompanyingDetailsEdit = ({
         <Controller
           name="appointmentDate"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AccompanyingDetailsFormData, "appointmentDate"> }) => (
+          render={({
+            field,
+            fieldState,
+          }: {
+            field: ControllerRenderProps<AccompanyingDetailsFormData, "appointmentDate">;
+            fieldState: ControllerFieldState;
+          }) => (
             <DateFieldRow data-testid="appointment-date-field">
               <label>{t("dashboard.opportunityProfile.accompanyingDetails.appointmentDate")}</label>
               <DatePickerContainer>
@@ -98,6 +105,7 @@ export const AccompanyingDetailsEdit = ({
                   minDate={minAppointmentDate}
                 />
               </DatePickerContainer>
+              {fieldState.error && <ErrorText>{fieldState.error.message}</ErrorText>}
             </DateFieldRow>
           )}
         />
@@ -119,11 +127,7 @@ export const AccompanyingDetailsEdit = ({
                   onChange={field.onChange}
                   $hasError={!!errors.appointmentTime}
                 />
-                {errors.appointmentTime && (
-                  <ErrorText>
-                    {t(`dashboard.opportunityProfile.accompanyingDetails.validation.${errors.appointmentTime.message}`)}
-                  </ErrorText>
-                )}
+                {errors.appointmentTime && <ErrorText>{errors.appointmentTime.message}</ErrorText>}
               </TimeInputWrapper>
             </DateFieldRow>
           )}

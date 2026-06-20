@@ -1,6 +1,6 @@
 import { utcHhmmToLocal } from "@/utils";
 import { ApiOpportunityAccompanyingDetails, VolunteerStateTypeType } from "need4deed-sdk";
-import { AccompanyingDetailsFormData } from "./accompanyingDetailsSchema";
+import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undefined): boolean => {
   return (
