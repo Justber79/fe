@@ -28,7 +28,13 @@ export const createAccompanyingDetailsSchema = (t: (key: string) => string, requ
     refugeeNumber: z.string().optional(),
     refugeeName: required ? z.string().min(1, t(`${i18nPrefix}.nameRequired`)) : z.string().optional(),
     refugeeLanguage: z.array(z.string()).optional(),
-    appointmentLanguage: z.nativeEnum(TranslatedIntoType).optional(),
+    appointmentLanguage: required
+      ? z
+          .nativeEnum(TranslatedIntoType)
+          .or(z.literal(""))
+          .optional()
+          .refine((v) => !!v, { message: t(`${i18nPrefix}.appointmentLanguageRequired`) })
+      : z.nativeEnum(TranslatedIntoType).or(z.literal("")).optional(),
   });
 };
 

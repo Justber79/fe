@@ -1199,7 +1199,8 @@
           "postcodeRequired": "Appointment postcode is required",
           "dateRequired": "Appointment date is required",
           "timeRequired": "Appointment time is required",
-          "nameRequired": "Refugee name is required"
+          "nameRequired": "Refugee name is required",
+          "appointmentLanguageRequired": "Appointment language is required"
         }
       },
       "volunteersSec": {

@@ -170,7 +170,7 @@ function buildCreatePayload(
     accomp_name: isAccompanying ? (accompData?.refugeeName ?? null) : null,
     accomp_phone: isAccompanying ? (accompData?.refugeeNumber ?? null) : null,
     accomp_information: null,
-    accomp_translation: isAccompanying ? (accompData?.appointmentLanguage ?? null) : null,
+    accomp_translation: isAccompanying ? accompData?.appointmentLanguage || null : null,
     berlin_locations: null,
     category: "",
     category_id: "",

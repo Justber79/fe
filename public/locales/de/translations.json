@@ -1204,7 +1204,8 @@
           "postcodeRequired": "Terminpostleitzahl ist erforderlich",
           "dateRequired": "Termindatum ist erforderlich",
           "timeRequired": "Terminzeit ist erforderlich",
-          "nameRequired": "Name des Geflüchteten ist erforderlich"
+          "nameRequired": "Name des Geflüchteten ist erforderlich",
+          "appointmentLanguageRequired": "Terminsprache ist erforderlich"
         }
       },
       "volunteersSec": {
