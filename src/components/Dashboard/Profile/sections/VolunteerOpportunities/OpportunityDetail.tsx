@@ -23,7 +23,8 @@ export default function OpportunityDetail({
   const canShowActions = onMatch;
   return (
     <DetailContainer>
-      {currentStatus === OpportunityVolunteerStatusType.ACTIVE && (
+      {(currentStatus === OpportunityVolunteerStatusType.ACTIVE ||
+        currentStatus === OpportunityVolunteerStatusType.PAST) && (
         <ActivityLog opportunityId={opportunity.opportunityId} volunteerId={volunteerId} readOnly />
       )}
       {canShowActions && (

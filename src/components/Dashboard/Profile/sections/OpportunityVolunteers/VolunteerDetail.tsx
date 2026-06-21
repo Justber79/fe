@@ -117,8 +117,13 @@ export default function VolunteerDetail({
         <DetailParagraph>{districtsText}</DetailParagraph>
       </InfoSection>
 
-      {currentStatus === OpportunityVolunteerStatusType.ACTIVE && (
-        <ActivityLog opportunityId={opportunityId} volunteerId={volunteer.volunteerId} readOnly={!isAuthorized} />
+      {(currentStatus === OpportunityVolunteerStatusType.ACTIVE ||
+        currentStatus === OpportunityVolunteerStatusType.PAST) && (
+        <ActivityLog
+          opportunityId={opportunityId}
+          volunteerId={volunteer.volunteerId}
+          readOnly={!isAuthorized || currentStatus === OpportunityVolunteerStatusType.PAST}
+        />
       )}
 
       {/* 4. Action Buttons */}
