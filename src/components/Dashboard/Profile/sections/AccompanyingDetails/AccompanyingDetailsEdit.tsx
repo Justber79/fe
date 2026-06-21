@@ -4,16 +4,9 @@ import { EditableField } from "@/components/EditableField/EditableField";
 import { Locale } from "date-fns";
 import { Controller, ControllerFieldState, ControllerRenderProps, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { ErrorMessage } from "@/components/core/common";
 
-import {
-  ButtonRow,
-  DateFieldRow,
-  DatePickerContainer,
-  Details,
-  ErrorText,
-  TimeInput,
-  TimeInputWrapper,
-} from "./styles";
+import { ButtonRow, DateFieldRow, DatePickerContainer, Details, TimeInput, TimeInputWrapper } from "./styles";
 import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 type Props = {
@@ -98,14 +91,15 @@ export const AccompanyingDetailsEdit = ({
               <label>{t("dashboard.opportunityProfile.accompanyingDetails.appointmentDate")}</label>
               <DatePickerContainer>
                 <DatePickerWithLabel
+                  hasError={!!fieldState.error}
                   date={field.value ?? undefined}
                   onSelect={(d) => field.onChange(d ?? null)}
                   locale={locale}
                   allowFuture
                   minDate={minAppointmentDate}
                 />
+                {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
               </DatePickerContainer>
-              {fieldState.error && <ErrorText>{fieldState.error.message}</ErrorText>}
             </DateFieldRow>
           )}
         />
@@ -127,7 +121,7 @@ export const AccompanyingDetailsEdit = ({
                   onChange={field.onChange}
                   $hasError={!!errors.appointmentTime}
                 />
-                {errors.appointmentTime && <ErrorText>{errors.appointmentTime.message}</ErrorText>}
+                {errors.appointmentTime?.message && <ErrorMessage message={errors.appointmentTime.message} />}
               </TimeInputWrapper>
             </DateFieldRow>
           )}
