@@ -60,8 +60,8 @@ export function Volunteers() {
     router.push(pathname + questionMark + params.toString());
   };
 
-  const handleClearFilter = (filterKey: string) => {
-    const cleared = getClearSingleFilter(cardsFilter, filterKey);
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
     router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
   };

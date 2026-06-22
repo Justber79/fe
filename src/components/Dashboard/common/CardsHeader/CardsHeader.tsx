@@ -44,7 +44,7 @@ type Props = {
   extraSortOptions?: SortOption[];
   activeFilters: FilterItem[];
   onClearAllFilters?: () => void;
-  onClearFilter: (filter: string) => void;
+  onClearFilter: (filter: string, parentKey?: string) => void;
   entityFilter?: EntityFilter;
 };
 
@@ -120,7 +120,7 @@ export default function CardsHeader({
                   size={20}
                   onClick={() => {
                     f.onChange(!f.checked);
-                    onClearFilter(f?.keyValue);
+                    onClearFilter(f?.keyValue || f.label, f.parentKey);
                   }}
                 />
               </XIconDiv>
