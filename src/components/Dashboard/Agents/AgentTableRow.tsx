@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { WrapAnywhereCell } from "../common/EntityTableList/styles";
+import { CopyEmail } from "../common/CopyEmail";
 
 interface TableRowProps {
   agent: ApiAgentGetList;
@@ -29,7 +30,9 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`agent-row-${id}`}>
-      <TableCell data-testid={`agent-title-${id}`}>{title}</TableCell>
+      <TableCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
+        {title}
+      </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
         {typeLabels[type] || type}
       </TableCell>
@@ -45,7 +48,10 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
         {"—"}
       </TableCell>
-      <WrapAnywhereCell data-testid={`agent-email-${id}`}>{email || "—"}</WrapAnywhereCell>
+      <WrapAnywhereCell $width={AGENT_COL_WIDTHS.email} $align="space-between" data-testid={`agent-email-${id}`}>
+        {email || "—"}
+        {email && <CopyEmail email={email} name={title} />}
+      </WrapAnywhereCell>
     </ClickableRow>
   );
 }

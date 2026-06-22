@@ -19,11 +19,14 @@ import { ApiVolunteerGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "./useAuth";
 
 export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefined) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isAuthorized, isOwnProfile } = useAuth(volunteer?.person.id);
+  const hasEditingRights = isAuthorized || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const volunteerProfileRef = useRef<VolunteerProfileRef>(null);
@@ -60,23 +63,13 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
 
   const sections: SectionCardProps[] = [
     {
-      iconName: IconName.ChatsCircle,
-      title: t("dashboard.volunteerProfile.contactDetailsTitle"),
-      ...(!isContactEditing && {
-        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
-        onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
-      }),
-      subComponent: (
-        <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
-      ),
-    },
-    {
       iconName: IconName.UserCircle,
       title: t("dashboard.volunteerProfile.volunteerProfile"),
-      ...(!isProfileEditing && {
-        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
-        onHeaderButtonClick: () => volunteerProfileRef.current?.handleEditClick(),
-      }),
+      ...(!isProfileEditing &&
+        hasEditingRights && {
+          headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
+          onHeaderButtonClick: () => volunteerProfileRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <VolunteerProfile
           ref={volunteerProfileRef}
@@ -88,12 +81,14 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      headerButtonName: opportunityId
-        ? t("dashboard.volunteerProfile.suggestButtonName")
-        : t("dashboard.volunteerProfile.findOppButtonName"),
-      onHeaderButtonClick: opportunityId
-        ? () => setIsSuggestDialogOpen(true)
-        : () => router.push(`/${i18n.language}/dashboard/opportunities?volunteer=${volunteer.id}`),
+      ...(hasEditingRights && {
+        headerButtonName: opportunityId
+          ? t("dashboard.volunteerProfile.suggestButtonName")
+          : t("dashboard.volunteerProfile.findOppButtonName"),
+        onHeaderButtonClick: opportunityId
+          ? () => setIsSuggestDialogOpen(true)
+          : () => router.push(`/${i18n.language}/dashboard/opportunities?volunteer=${volunteer.id}`),
+      }),
       subComponent: (
         <>
           <VolunteerOpportunities volunteerId={volunteer.id} />
@@ -111,28 +106,22 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ChatsTeardrop,
       title: t("dashboard.communicationSection.title"),
-      headerButtonName: t("dashboard.communicationSection.addNew"),
-      onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
+      ...(hasEditingRights && {
+        headerButtonName: t("dashboard.communicationSection.addNew"),
+        onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
+      }),
       subComponent: (
         <CommunicationTracker ref={communicationTrackerRef} entityId={volunteer.id} entityType="volunteer" />
       ),
     },
     {
-      iconName: IconName.ChatCircleDots,
-      title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
-      subComponent: <Comments volunteer={volunteer} />,
-    },
-    {
       iconName: IconName.Gift,
       title: t("dashboard.appreciationSection.title"),
-      headerButtonName: t("dashboard.appreciationSection.addNew"),
-      onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
+      ...(hasEditingRights && {
+        headerButtonName: t("dashboard.appreciationSection.addNew"),
+        onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
+      }),
       subComponent: <Appreciation ref={appreciationRef} volunteer={volunteer} />,
-    },
-    {
-      iconName: IconName.ClipboardText,
-      title: t("dashboard.volunteerProfile.documents"),
-      subComponent: <VolunteerProfileDocument volunteer={volunteer} />,
     },
     {
       iconName: IconName.ChartLine,
@@ -140,6 +129,35 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       subComponent: <div>Activity Log sub-component. to be replaced...</div>,
     },
   ];
+
+  if (hasEditingRights) {
+    sections.unshift({
+      iconName: IconName.ChatsCircle,
+      title: t("dashboard.volunteerProfile.contactDetailsTitle"),
+      ...(!isContactEditing && {
+        headerButtonName: t("dashboard.volunteerProfile.editButtonName"),
+        onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
+      }),
+      subComponent: (
+        <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
+      ),
+    });
+  }
+
+  if (isAuthorized) {
+    sections.push(
+      {
+        iconName: IconName.ClipboardText,
+        title: t("dashboard.volunteerProfile.documents"),
+        subComponent: <VolunteerProfileDocument volunteer={volunteer} />,
+      },
+      {
+        iconName: IconName.ChatCircleDots,
+        title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
+        subComponent: <Comments volunteer={volunteer} />,
+      },
+    );
+  }
 
   return {
     sections,

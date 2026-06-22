@@ -69,7 +69,7 @@ export function Opportunities() {
   };
 
   const handleClearAllFilters = () => {
-    const cleared = getClearFilter(cardsFilter) as unknown as OpportunityCardsFilter;
+    const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
     router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
   };

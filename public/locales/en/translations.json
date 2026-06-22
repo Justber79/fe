@@ -27,6 +27,7 @@
         "dataPrivacy": "Privacy",
         "agreement": "Voluntary Participation Agreement",
         "guidelines": "Need4Deed Guidelines",
+        "legalNotice": "Legal notice",
         "cookies": "Cookies"
       }
     },
@@ -339,6 +340,16 @@
         "matchedOn": "Matched on",
         "activeSince": "Active since",
         "pastSince": "Past since"
+      },
+      "copyEmails": {
+        "tooltip": "Copy all emails",
+        "tooltipSingle": "Copy email",
+        "success": "Copied {{count}} emails",
+        "successSingle": "Email copied",
+        "copyAriaSingle": "Copy email of {{name}}",
+        "copyAriaAllAgents": "Copy all NGO emails",
+        "copyAriaAllVolunteers": "Copy all volunteer emails",
+        "genericError": "Something went wrong. Please try again."
       }
     },
     "volunteers": {
@@ -351,14 +362,6 @@
         "language": "Language",
         "district": "District",
         "email": "Email"
-      },
-      "copyEmails": {
-        "tooltip": "Copy all emails",
-        "tooltipSingle": "Copy email",
-        "success": "Copied {{count}} emails",
-        "successSingle": "Email copied",
-        "copyAriaSingle": "Copy email of {{name}}",
-        "genericError": "Something went wrong. Please try again."
       },
       "tabs": {
         "tab1": "List",
@@ -845,14 +848,11 @@
       },
       "table": {
         "title": "Title",
-        "type": "Type",
-        "currentStatus": "Current Status",
         "matchingStatus": "Matching Status",
         "languages": "Languages",
-        "activities": "Activities",
         "district": "District",
         "schedule": "Schedule",
-        "volunteersNeeded": "Volunteers Needed",
+        "volunteersNeeded": "Needed",
         "agentName": "NGO"
       },
       "card": {
@@ -973,6 +973,10 @@
       "deleteConfirmTitle": "Delete appreciation?",
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
+    "profile": {
+      "loading": "Loading profile...",
+      "notSetUp": "Your organisation profile is not set up yet — please complete registration."
+    },
     "agentProfile": {
       "agentProfile": "NGO Profile",
       "registeredSince": "Registered since",
@@ -1082,7 +1086,9 @@
           "required": "This field is required",
           "websiteInvalid": "Website must start with http:// or https://",
           "clientLanguagesRequired": "At least one language is required"
-        }
+        },
+        "addressStreet": "Street",
+        "addressPostcode": "Postcode"
       },
       "opportunitiesSec": {
         "postOpportunity": "Post opportunity",
@@ -1536,6 +1542,7 @@
       "email": "Email address",
       "password": "Password",
       "confirmPassword": "Confirm password",
+      "phone": "Phone number",
       "organizationName": "Organisation name",
       "organizationType": "Organisation type",
       "selectOrganizationType": "Select type…",
@@ -1552,6 +1559,7 @@
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
+      "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
       "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
     },

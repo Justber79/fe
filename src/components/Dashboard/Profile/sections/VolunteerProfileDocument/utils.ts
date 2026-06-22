@@ -1,11 +1,4 @@
-import { ApiDocumentGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
-
-// TODO: remove once SDK >= 0.0.82 is published (BE issue need4deed-org/be#481)
-type ApiVolunteerGet = import("need4deed-sdk").ApiVolunteerGet & {
-  statusVaccinationDate?: Date | null;
-  statusCGCApplicationDate?: Date | null;
-  statusCGCDate?: Date | null;
-};
+import { ApiDocumentGet, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 
 export type DocumentRow = {
   type: DocumentType;

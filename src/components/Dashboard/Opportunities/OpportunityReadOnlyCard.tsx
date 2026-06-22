@@ -1,21 +1,12 @@
 import { ApiVolunteerOpportunityGetList, LangPurpose, OptionItem, ProfileVolunteeringType } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Tags } from "@/components/core/common";
 import { Paragraph } from "@/components/styled/text";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
-import { formatAccompanyingDate, getActivityTitles, getLanguagesByPurpose } from "./helpers";
-import {
-  formatAvailability,
-  matchStatusColorMap,
-  matchStatusIconMap,
-  statusColorMap,
-  statusIconMap,
-  volunteerTypeIconMap,
-} from "./OpportunityCard.helpers";
+import { matchStatusColorMap, matchStatusIconMap, volunteerTypeIconMap } from "./OpportunityCard.helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
+import { getLanguagesByPurpose } from "./helpers";
 
 type Props = {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -24,22 +15,10 @@ type Props = {
   districtsList?: OptionItem[];
 };
 
-export function OpportunityCard({ opportunity, volunteerId, activitiesList, districtsList }: Props) {
-  const { t, i18n } = useTranslation();
-  const router = useRouter();
+export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
+  const { t } = useTranslation();
 
-  const {
-    id,
-    title,
-    volunteerType,
-    statusOpportunity,
-    languages,
-    activities,
-    availability,
-    accompanyingDetails,
-    statusMatch,
-    location,
-  } = opportunity as ApiVolunteerOpportunityGetList & {
+  const { title, volunteerType, location, languages, statusMatch } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
     district?: { id: number };
@@ -47,38 +26,11 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
-  const activityTitles = getActivityTitles(activities, activitiesList);
+
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
-
-  const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
-  const scheduleText = isAccompanying
-    ? formatAccompanyingDate(accompanyingDetails)
-    : availability?.length > 0
-      ? formatAvailability(availability)
-      : null;
-
-  const handleCardClick = () => {
-    if (!id) return;
-    const params = volunteerId ? `?volunteer=${volunteerId}` : "";
-    router.push(`/${i18n.language}/dashboard/opportunities/${id}${params}`);
-  };
-
   return (
-    <Card onClick={handleCardClick} data-testid="opportunity-card">
+    <Card data-testid="opportunity-card" $cursor={"auto"}>
       <StatusTagsDiv>
-        {statusOpportunity && (
-          <StatusDiv>
-            {statusIconMap[statusOpportunity]}
-            <Paragraph
-              fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
-              fontSize="var(--dashboard-volunteers-card-status-fontSize)"
-              lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={statusColorMap[statusOpportunity]}
-            >
-              {t(`dashboard.opportunities.status.${statusOpportunity}`)}
-            </Paragraph>
-          </StatusDiv>
-        )}
         {statusMatch && (
           <StatusDiv>
             {matchStatusIconMap[statusMatch]}
@@ -121,21 +73,6 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
             <CardParagraph text={recipientLanguage} />
           </LanguageRow>
         )}
-      </CardDetail>
-
-      {activityTitles.length > 0 &&
-        (isAccompanying ? (
-          <CardDetail header={t("dashboard.opportunities.type.accompanying")} iconName={IconName.PersonSimpleWalk}>
-            <CardParagraph text={activityTitles.join(", ")} />
-          </CardDetail>
-        ) : (
-          <CardDetail header={t("dashboard.volunteers.activities")} iconName={IconName.ShootingStar}>
-            <Tags tags={activityTitles} max={2} />
-          </CardDetail>
-        ))}
-
-      <CardDetail header={t("dashboard.opportunities.dateOfAppointment")} iconName={IconName.CalendarDots}>
-        {scheduleText && <CardParagraph text={scheduleText} />}
       </CardDetail>
 
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>

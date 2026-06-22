@@ -1,23 +1,21 @@
 "use client";
 
 import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
-import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
+import { LangPurpose, OpportunityMatchStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
-import { getActivityTitles, getLanguagesByPurpose } from "./helpers";
-import { ClickableRow, TableCell } from "@/components/core/common/Table";
+import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate, formatAvailability } from "./OpportunityCard.helpers";
+import { abbreviateDistrict, formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
+import { MatchedBadge } from "./styles";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
   isLast: boolean;
-  activitiesList?: OptionItem[];
   districtsList?: OptionItem[];
 }
 
-export function OpportunityTableRow({ opportunity, isLast, activitiesList, districtsList }: TableRowProps) {
+export function OpportunityTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
@@ -25,26 +23,26 @@ export function OpportunityTableRow({ opportunity, isLast, activitiesList, distr
     id,
     title,
     volunteerType,
-    statusOpportunity,
     statusMatch,
     languages,
-    activities,
     availability,
     accompanyingDetails,
-    district,
+    location,
     agentTitle,
     numberOfVolunteers,
   } = opportunity;
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
     : availability?.length
-      ? formatAvailability(availability)
+      ? formatSchedule(availability, t)
       : null;
 
-  const activityTitles = getActivityTitles(activities, activitiesList);
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
+  const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
+  const statusLabel = t(`dashboard.opportunities.matchStatus.${statusMatch}`);
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -53,43 +51,30 @@ export function OpportunityTableRow({ opportunity, isLast, activitiesList, distr
 
   return (
     <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`opportunity-row-${id}`}>
-      <TitleCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
-        {title}
-      </TitleCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.volunteerType} data-testid={`opportunity-volunteer-type-${id}`}>
-        {t(`dashboard.opportunities.type.${volunteerType}`)}
-      </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.statusOpportunity} data-testid={`opportunity-status-opportunity-${id}`}>
-        {t(`dashboard.opportunities.status.${statusOpportunity}`)}
-      </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
-        {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
-      </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
-        {mainCommunication || "—"}
-      </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.activities} data-testid={`opportunity-activities-${id}`}>
-        {activityTitles.join(", ") || "—"}
-      </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
-        {districtTitle || "—"}
+      <TableCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
+        <WrappedText>{title}</WrappedText>
       </TableCell>
       <TableCell $width={OPPORTUNITY_COL_WIDTHS.schedule} data-testid={`opportunity-schedule-${id}`}>
-        {scheduleText || "—"}
+        <WrappedText>{scheduleText || "—"}</WrappedText>
+      </TableCell>
+      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
+        {isMatched ? <MatchedBadge>{statusLabel}</MatchedBadge> : <TruncatedText>{statusLabel}</TruncatedText>}
+      </TableCell>
+      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
+        <TruncatedText>{mainCommunication || "—"}</TruncatedText>
+      </TableCell>
+      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
+        <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
       <TableCell
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        {numberOfVolunteers ?? "—"}
+        <WrappedText>{numberOfVolunteers ?? "—"}</WrappedText>
       </TableCell>
-      <TableCell $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
-        {agentTitle || "—"}
+      <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
+        <TruncatedText>{agentTitle || "—"}</TruncatedText>
       </TableCell>
     </ClickableRow>
   );
 }
-
-const TitleCell = styled(TableCell)`
-  overflow-wrap: anywhere;
-`;

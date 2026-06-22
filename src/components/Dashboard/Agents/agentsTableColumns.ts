@@ -1,18 +1,26 @@
 import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
+import { ReactNode } from "react";
 
 export const AGENT_COL_WIDTHS = {
+  title: COLUMN_WIDTH.XL,
   type: COLUMN_WIDTH.MD,
   volunteerSearch: COLUMN_WIDTH.LG,
-  district: COLUMN_WIDTH.LG,
+  district: COLUMN_WIDTH.MD,
   activeVolunteers: COLUMN_WIDTH.XS,
   numOpportunities: COLUMN_WIDTH.SM,
-  email: COLUMN_WIDTH.LG,
+  email: COLUMN_WIDTH.XXL,
 };
 
-export const createAgentTableColumns = (t: TFunction): Column[] => [
-  { key: "title", label: t("dashboard.agents.table.title") },
+export const AGENT_READ_ONLY_COL_WIDTHS = {
+  title: COLUMN_WIDTH.XXXL,
+  type: COLUMN_WIDTH.XXXL,
+  district: COLUMN_WIDTH.XXXL,
+};
+
+export const createAgentTableColumns = (t: TFunction, copyButton: ReactNode): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_COL_WIDTHS.title },
   { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
   {
     key: "volunteerSearch",
@@ -30,5 +38,11 @@ export const createAgentTableColumns = (t: TFunction): Column[] => [
     label: t("dashboard.agents.table.numberOfOpportunities"),
     width: AGENT_COL_WIDTHS.numOpportunities,
   },
-  { key: "email", label: t("dashboard.agents.table.email") },
+  { key: "email", label: t("dashboard.agents.table.email"), width: AGENT_COL_WIDTHS.email, headerAction: copyButton },
+];
+
+export const createReadOnlyAgentTableColumns = (t: TFunction): Column[] => [
+  { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_READ_ONLY_COL_WIDTHS.title },
+  { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_READ_ONLY_COL_WIDTHS.type },
+  { key: "district", label: t("dashboard.agents.table.district"), width: AGENT_READ_ONLY_COL_WIDTHS.district },
 ];

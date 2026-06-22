@@ -38,6 +38,8 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
     website: details?.website || "",
     operator: details?.operator || agent.operator || "",
     clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
+    addressStreet: details?.addressStreet ?? "",
+    addressPostcode: details?.addressPostcode ?? "",
   };
 
   const methods = useForm<OrganisationDetailsFormData>({
@@ -59,7 +61,12 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   const onSubmit = (values: OrganisationDetailsFormData) => {
     updateOrganization(
-      { about: values.about, website: values.website },
+      {
+        about: values.about,
+        website: values.website,
+        addressStreet: values.addressStreet,
+        addressPostcode: values.addressPostcode,
+      },
       {
         onSuccess: () => {
           reset(values);
@@ -79,7 +86,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
             onSubmit={handleSubmit(onSubmit)}
           />
         ) : (
-          <OrganisationDetailsDisplay rawClientLanguages={details?.clientLanguages} />
+          <OrganisationDetailsDisplay rawClientLanguages={details?.clientLanguages} address={details?.address} />
         )}
       </FormContainer>
     </FormProvider>

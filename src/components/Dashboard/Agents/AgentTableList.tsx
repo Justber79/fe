@@ -3,10 +3,13 @@
 import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
 import { EntityTableList } from "../common/EntityTableList";
 import { useTranslation } from "react-i18next";
-import { createAgentTableColumns } from "./agentsTableColumns";
+import { createAgentTableColumns, createReadOnlyAgentTableColumns } from "./agentsTableColumns";
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
 import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
+import { CopyButton } from "../common/CopyButton";
+import { AgentReadOnlyTableRow } from "./AgentReadOnlyTableRow";
+import { useAuth } from "@/hooks/useAuth";
 
 interface TableListProps {
   agents: ApiAgentGetList[];
@@ -15,6 +18,8 @@ interface TableListProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
+  onCopyEmails: () => void;
+  isCopying: boolean;
 }
 
 export function AgentTableList({
@@ -24,32 +29,58 @@ export function AgentTableList({
   currentPage,
   setCurrentPage,
   districtsList,
+  onCopyEmails,
+  isCopying,
 }: TableListProps) {
   const { t } = useTranslation();
+  const { isAuthorized } = useAuth();
 
-  const columns = useMemo(() => createAgentTableColumns(t), [t]);
+  const columns = useMemo(() => {
+    const copyButton = (
+      <CopyButton
+        onClick={onCopyEmails}
+        disabled={isCopying}
+        tooltipText={t("dashboard.common.copyEmails.tooltip")}
+        ariaLabel={t("dashboard.common.copyEmails.copyAriaAllAgents")}
+      />
+    );
+    return createAgentTableColumns(t, copyButton);
+  }, [t, onCopyEmails, isCopying]);
+  const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   const typeLabels = useMemo(() => createAgentTypeMap(t), [t]);
   const searchLabels = useMemo(() => createVolunteerSearchMap(t), [t]);
 
   return (
     <EntityTableList
-      columns={columns}
+      columns={isAuthorized ? columns : readOnlyColumns}
       data={agents}
-      renderRow={(agent, isLast) => (
-        <AgentTableRow
-          key={agent.id}
-          agent={agent}
-          isLast={isLast}
-          typeLabels={typeLabels}
-          searchLabels={searchLabels}
-          districtsList={districtsList}
-        />
-      )}
+      renderRow={(agent, isLast) =>
+        isAuthorized ? (
+          <AgentTableRow
+            key={agent.id}
+            agent={agent}
+            isLast={isLast}
+            typeLabels={typeLabels}
+            searchLabels={searchLabels}
+            districtsList={districtsList}
+          />
+        ) : (
+          <AgentReadOnlyTableRow
+            key={agent.id}
+            agent={agent}
+            isLast={isLast}
+            typeLabels={typeLabels}
+            searchLabels={searchLabels}
+            districtsList={districtsList}
+          />
+        )
+      }
       count={count}
       itemsPerPage={itemsPerPage}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       testIdPrefix="agents"
+      noFixedWidth={!isAuthorized}
     />
   );
 }
