@@ -15,22 +15,18 @@ export const getClearFilter = <T extends object>(filter: T): T => {
 };
 
 export const getClearSingleFilter = <T extends object>(filter: T, targetKey: string): T => {
-  const newFilter = (Array.isArray(filter) ? [] : {}) as Record<string, string | boolean>;
+  const newFilter = (Array.isArray(filter) ? [] : {}) as Record<string, string | boolean | object>;
 
-  // 1. Transform the UI Label (e.g., "Refugee Accommodation" -> "refugee-accommodation")
-  const normalizedTarget = targetKey
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/[^a-z0-9-_]/g, ""); // Remove any accidental special characters
+  // 1. Pure, non-destructive normalization (Just lowercase and clean whitespace)
+  const normalizedTarget = targetKey.toLowerCase().trim();
 
   for (const [key, val] of Object.entries(filter)) {
-    const normalizedKey = key.toLowerCase();
+    const normalizedKey = key.toLowerCase().trim();
 
-    // 2. Strip prefixes like agent-, opp-, vol- if they exist
+    // 2. Strip standard technical prefixes if present (e.g., opp-, agent-, vol-)
     const keyWithoutPrefix = normalizedKey.replace(/^[a-z]{2,5}-/, "");
 
-    // 3. Match Evaluation
+    // 3. Match Evaluation: Exact character-for-character check
     const isMatch = normalizedKey === normalizedTarget || keyWithoutPrefix === normalizedTarget;
 
     if (isMatch) {
@@ -39,7 +35,7 @@ export const getClearSingleFilter = <T extends object>(filter: T, targetKey: str
       else if (typeof val === "object" && val !== null) newFilter[key] = getClearFilter(val);
       else newFilter[key] = val;
     }
-    // Deep Dive: Keep recursing into nested objects
+    // Deep Dive: Recurse into nested objects (like availability -> days)
     else if (typeof val === "object" && val !== null) {
       newFilter[key] = getClearSingleFilter(val, targetKey);
     }
