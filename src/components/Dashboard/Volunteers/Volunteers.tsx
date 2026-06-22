@@ -10,7 +10,7 @@ import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder } from "nee
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { getClearFilter } from "../common/CardsFilter/helpers";
+import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { CardsFilter } from "./Filters/types";
@@ -60,6 +60,12 @@ export function Volunteers() {
     router.push(pathname + questionMark + params.toString());
   };
 
+  const handleClearFilter = (filterKey: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+  };
+
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
@@ -99,6 +105,7 @@ export function Volunteers() {
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
           entityFilter={
             opportunityFilter ? { ...opportunityFilter, onRemove: handleRemoveOpportunityFilter } : undefined
           }
