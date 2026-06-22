@@ -20,7 +20,7 @@ export const AGENT_READ_ONLY_COL_WIDTHS = {
 };
 
 export const createAgentTableColumns = (t: TFunction, copyButton: ReactNode): Column[] => [
-  { key: "title", label: t("dashboard.agents.table.title") },
+  { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_COL_WIDTHS.title },
   { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
   {
     key: "volunteerSearch",
