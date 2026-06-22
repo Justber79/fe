@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
+import { abbreviateDistrict, formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
 import { MatchedBadge } from "./styles";
 
 interface TableRowProps {
@@ -27,12 +27,12 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
     languages,
     availability,
     accompanyingDetails,
-    district,
+    location,
     agentTitle,
     numberOfVolunteers,
   } = opportunity;
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
-
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
@@ -64,7 +64,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         <TruncatedText>{mainCommunication || "—"}</TruncatedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
-        <TruncatedText>{districtTitle || "—"}</TruncatedText>
+        <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
       <TableCell
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}

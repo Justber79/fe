@@ -8,7 +8,7 @@ export function useCommentTag(
   setNewCommentText?: (text: string) => void,
   textAreaRef?: React.RefObject<HTMLTextAreaElement | null> | null,
 ) {
-  const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
+  const [tags, setTags] = useState<{ id: number; name: string; personId: number }[]>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [activeRowIndex, setActiveRowIndex] = useState(0);
   const [filteredListLength, setFilteredListLength] = useState(0);
@@ -76,7 +76,7 @@ export function useCommentTag(
     return elements;
   }, [value, tags, users]);
 
-  const handleTagAdd = (userId: number, fullName: string) => {
+  const handleTagAdd = (userId: number, fullName: string, personId: number) => {
     if (!value || !textAreaRef?.current) return null;
     const cursorPosition = textAreaRef.current.selectionStart;
     const textBeforeCaret = value.substring(0, cursorPosition);
@@ -85,7 +85,7 @@ export function useCommentTag(
 
     const newText = textBeforeCaret.substring(0, lastAtIndex) + `@${fullName} ` + textAfterCaret;
     setNewCommentText?.(newText);
-    setTags((prev) => [...prev, { id: userId, name: fullName }]);
+    setTags((prev) => [...prev, { id: userId, name: fullName, personId }]);
     setShowAutocomplete(false);
   };
 
@@ -112,7 +112,7 @@ export function useCommentTag(
       if (!text || !users) return text;
       return text.replace(/<@(\d+)>/g, (match, userId) => {
         const user = users.find((u) => u.id === Number(userId));
-        return user ? `@${user.fullName.replaceAll(/ /g, "")}` : "@user";
+        return user ? `@${user.fullName.replaceAll(/ /g, "")}` : `@user:${userId}`;
       });
     },
     [users],
@@ -120,16 +120,16 @@ export function useCommentTag(
 
   const initTags = (value: string) => {
     if (!value || !users) return;
-    const regexTag = /(<@\d+>)|((?<=^|\s)@[\w\s]+?)(?=\s|$)/g;
+    const regexTag = /(<@\d+>)|((?<=^|\s)@[\w\s]+?(?::\d+)?)(?=\s|$)/g;
     const matches = Array.from(value.matchAll(regexTag));
-    const freshlyFoundTags: { id: number; name: string }[] = [];
+    const freshlyFoundTags: { id: number; name: string; personId: number }[] = [];
 
     matches.forEach((match) => {
       const username = match[0];
       const user = users.find((u) => `@${u.fullName.replaceAll(/ /g, "")}` === username);
-      if (user) {
+      if (user && user.personId != null) {
         const cleanName = user.fullName.replace(/\s/g, "");
-        freshlyFoundTags.push({ id: user.id, name: cleanName });
+        freshlyFoundTags.push({ id: user.id, name: cleanName, personId: user.personId });
       }
     });
     if (freshlyFoundTags.length > 0) {
