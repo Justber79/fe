@@ -30,6 +30,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
     location,
     agentTitle,
     numberOfVolunteers,
+    volunteerNames,
   } = opportunity;
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
@@ -43,6 +44,8 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
   const statusLabel = t(`dashboard.opportunities.matchStatus.${statusMatch}`);
+  const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
+  const matchedNames = firstNames.length > 1 ? `${firstNames[0]} +${firstNames.length - 1}` : (firstNames[0] ?? "");
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -70,7 +73,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        <WrappedText>{numberOfVolunteers ?? "—"}</WrappedText>
+        <WrappedText>{isMatched ? matchedNames : (numberOfVolunteers ?? "—")}</WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
         <TruncatedText>{agentTitle || "—"}</TruncatedText>
