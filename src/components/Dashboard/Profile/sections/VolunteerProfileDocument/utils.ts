@@ -1,5 +1,12 @@
 import { ApiDocumentGet, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 
+// These fields are not yet in ApiVolunteerGet SDK type
+type ExtendedVolunteerGet = ApiVolunteerGet & {
+  statusVaccinationDate?: string | Date | null;
+  statusCGCDate?: string | Date | null;
+  statusCGCApplicationDate?: string | Date | null;
+};
+
 export type DocumentRow = {
   type: DocumentType;
   nameKey: string;
@@ -66,15 +73,21 @@ export const enrichDocuments = (
 
     let receivedAt: Date | null = null;
     switch (type) {
-      case DocumentType.MEASLES_VACCINATION:
-        receivedAt = volunteer.statusVaccinationDate ? new Date(volunteer.statusVaccinationDate) : null;
+      case DocumentType.MEASLES_VACCINATION: {
+        const ext = volunteer as ExtendedVolunteerGet;
+        receivedAt = ext.statusVaccinationDate ? new Date(ext.statusVaccinationDate as string) : null;
         break;
-      case DocumentType.CGC:
-        receivedAt = volunteer.statusCGCDate ? new Date(volunteer.statusCGCDate) : null;
+      }
+      case DocumentType.CGC: {
+        const ext = volunteer as ExtendedVolunteerGet;
+        receivedAt = ext.statusCGCDate ? new Date(ext.statusCGCDate as string) : null;
         break;
-      case DocumentType.CGC_APPLICATION:
-        receivedAt = volunteer.statusCGCApplicationDate ? new Date(volunteer.statusCGCApplicationDate) : null;
+      }
+      case DocumentType.CGC_APPLICATION: {
+        const ext = volunteer as ExtendedVolunteerGet;
+        receivedAt = ext.statusCGCApplicationDate ? new Date(ext.statusCGCApplicationDate as string) : null;
         break;
+      }
       case DocumentType.PASSPORT_ID:
         receivedAt = passportReceivedAt;
         break;

@@ -10,7 +10,7 @@ export const useAuth = (contactPersonId?: Id) => {
 
   useEffect(() => {
     const userIsAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
-    const personId = user?.personId;
+    const personId = (user as typeof user & { personId?: number })?.personId;
     if (userIsAuthorized) setIsAuthorized(true);
     if (contactPersonId && personId === contactPersonId) {
       setIsOwnProfile(true);
