@@ -14,7 +14,6 @@ import { DetailParagraph } from "./styles";
 
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
-  opportunityId: number;
   currentStatus: OpportunityVolunteerStatusType;
   onMatch: () => void;
   onNotAMatch: () => void;
@@ -72,7 +71,6 @@ function TagsWithOverflow({ tags }: { tags: string[] }) {
 
 export default function VolunteerDetail({
   volunteer,
-  opportunityId,
   currentStatus,
   onMatch,
   onNotAMatch,
@@ -120,8 +118,7 @@ export default function VolunteerDetail({
       {(currentStatus === OpportunityVolunteerStatusType.ACTIVE ||
         currentStatus === OpportunityVolunteerStatusType.PAST) && (
         <ActivityLog
-          opportunityId={opportunityId}
-          volunteerId={volunteer.volunteerId}
+          opportunityVolunteerId={volunteer.id}
           readOnly={!isAuthorized || currentStatus === OpportunityVolunteerStatusType.PAST}
         />
       )}

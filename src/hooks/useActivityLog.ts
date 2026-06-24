@@ -4,20 +4,20 @@ import {
   ApiActivityLogPost,
 } from "@/components/Dashboard/Profile/sections/ActivityLog/types";
 import { sumHours } from "@/components/Dashboard/Profile/sections/ActivityLog/utils";
-import { apiPathActivityLog, apiPathOpportunity, cacheTTL } from "@/config/constants";
+import { apiPathActivityLog, apiPathOpportunityVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import axios from "axios";
 
-export const useActivityLog = (opportunityId: number, volunteerId: number) => {
-  const queryKey = ["activity-log", String(opportunityId), String(volunteerId)];
-  const matchPath = `${apiPathOpportunity}/${opportunityId}/volunteer/${volunteerId}/activity-log`;
+export const useActivityLog = (opportunityVolunteerId: number) => {
+  const queryKey = ["activity-log", String(opportunityVolunteerId)];
+  const matchPath = `${apiPathOpportunityVolunteer}/${opportunityVolunteerId}/activity-log`;
 
   const { data: entries = [], isLoading } = useGetQuery<ApiActivityLogGet[]>({
     queryKey,
     apiPath: matchPath,
     staleTime: cacheTTL,
-    enabled: !!opportunityId && !!volunteerId,
+    enabled: !!opportunityVolunteerId,
   });
 
   const { mutate: createEntry, isPending: isCreating } = useMutationQuery<ApiActivityLogPost, unknown>({

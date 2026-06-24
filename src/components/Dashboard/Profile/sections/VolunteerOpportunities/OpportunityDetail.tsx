@@ -7,13 +7,11 @@ import { AccordionActionProps } from "../shared/types";
 
 type Props = {
   opportunity: ApiOpportunityVolunteerGet;
-  volunteerId: number;
   currentStatus: OpportunityVolunteerStatusType;
 } & AccordionActionProps;
 
 export default function OpportunityDetail({
   opportunity,
-  volunteerId,
   currentStatus,
   onMatch,
   onNotAMatch,
@@ -25,7 +23,7 @@ export default function OpportunityDetail({
     <DetailContainer>
       {(currentStatus === OpportunityVolunteerStatusType.ACTIVE ||
         currentStatus === OpportunityVolunteerStatusType.PAST) && (
-        <ActivityLog opportunityId={opportunity.opportunityId} volunteerId={volunteerId} readOnly />
+        <ActivityLog opportunityVolunteerId={opportunity.id} readOnly />
       )}
       {canShowActions && (
         <StatusAccordionActions

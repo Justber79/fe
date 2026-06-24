@@ -74,7 +74,6 @@ export const OpportunityVolunteers = ({ opportunityId }: { opportunityId: Id }) 
           <AccordionVolunteer
             key={volunteer.id}
             volunteer={volunteer}
-            opportunityId={Number(opportunityId)}
             currentStatus={currentTabStatus}
             onMatch={() => handleMatch(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}

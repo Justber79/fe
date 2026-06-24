@@ -22,14 +22,13 @@ import { ActivityLogFormData, ApiActivityLogGet, ApiActivityLogPost } from "./ty
 import { formatHours } from "./utils";
 
 type Props = {
-  opportunityId: number;
-  volunteerId: number;
+  opportunityVolunteerId: number;
   readOnly?: boolean;
 };
 
-export function ActivityLog({ opportunityId, volunteerId, readOnly = false }: Props) {
+export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props) {
   const { t } = useTranslation();
-  const { entries, totalHours, createEntry, updateEntry, deleteEntry } = useActivityLog(opportunityId, volunteerId);
+  const { entries, totalHours, createEntry, updateEntry, deleteEntry } = useActivityLog(opportunityVolunteerId);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiActivityLogGet | undefined>(undefined);

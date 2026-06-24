@@ -72,7 +72,6 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
           <AccordionOpportunity
             key={opportunity.id}
             opportunity={opportunity}
-            volunteerId={Number(volunteerId)}
             currentStatus={currentTabStatus}
             onMatch={() => handleMatch(opportunity.id)}
             onNotAMatch={() => handleNotAMatch(opportunity.id)}
