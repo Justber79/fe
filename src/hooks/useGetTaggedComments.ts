@@ -8,7 +8,7 @@ export const useGetTaggedComments = (personId: number) => {
     isLoading,
     isError,
     error,
-  } = useGetQuery<ApiComment[]>({
+  } = useGetQuery<ApiComment & { taggedPersons: { id: number; readAt: Date }[] }[]>({
     queryKey: ["tagComments", String(personId)],
     apiPath: `${apiPathComment}?taggedPersonId=${personId}`,
     staleTime: cacheTTL,
