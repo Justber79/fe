@@ -6,6 +6,9 @@ import { AvatarImg } from "../../OpportunityVolunteers/styles";
 import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
 
+// personId is not yet in ApiUserGet SDK type — cast until SDK is updated
+type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
+
 type Props = {
   handleTagAdd: (userId: number, fullName: string, personId: number) => void;
   newCommentText: string;
@@ -13,7 +16,7 @@ type Props = {
   activeRowIndex: number;
   setFilteredListLength: (length: number) => void;
   setOnSelectTrigger: (callback: (() => void) | null) => void;
-  users?: ApiUserGet[] | undefined;
+  users?: ApiUserGetWithPersonId[] | undefined;
 };
 
 export default function Autocomplete({
