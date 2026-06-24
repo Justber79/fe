@@ -20,7 +20,12 @@
       "legalNotice": "Rechtlicher Hinweis",
       "privacy": "Datenschutz",
       "vpa": "Freiwilligenvereinbarung",
-      "contact": "Kontakt"
+      "contact": "Kontakt",
+      "legal": {
+        "guidelines": "Need4Deed Leitlinien",
+        "legalNotice": "Rechtlicher Hinweis",
+        "dataPrivacy": "Datenschutz"
+      }
     },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
