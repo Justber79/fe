@@ -12,7 +12,7 @@ const LANG_COOKIE = "preferred-lang";
 const REFRESH = "refresh";
 
 const authorizedRoutes: Record<string, { regex: RegExp; redirect: string }> = {
-  NGO: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
+  AGENT: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
 };
 
 export function middleware(request: NextRequest) {
@@ -22,14 +22,15 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     const userObject = decodeJwtPayload(token);
-    const isAuthorized = userObject.role === UserRole.ADMIN || userObject.role === UserRole.COORDINATOR;
-    const match = pathname.match(authorizedRoutes.NGO.regex);
+    const isAuthorized =
+      (userObject && userObject.role === UserRole.ADMIN) || (userObject && userObject.role === UserRole.COORDINATOR);
+    const match = pathname.match(authorizedRoutes.AGENT.regex);
     if (match) {
       if (isAuthorized || userObject.role === UserRole.AGENT) {
         return NextResponse.next();
       }
       const url = request.nextUrl.clone();
-      url.pathname = authorizedRoutes.NGO.redirect;
+      url.pathname = authorizedRoutes.AGENT.redirect;
       const redirectResponse = NextResponse.redirect(url);
       return redirectResponse;
     }
