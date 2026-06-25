@@ -27,6 +27,7 @@ export enum Subpage {
   OPPORTUNITY_FORM = "opportunity-form",
   DATA_PROTECTION = "data-protection",
   GUIDELINES = "guidelines",
+  RAC_GUIDELINES = "rac-guidelines",
 }
 
 export enum Env {

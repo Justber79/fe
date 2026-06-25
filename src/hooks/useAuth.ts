@@ -10,10 +10,11 @@ export const useAuth = (contactPersonId?: Id) => {
 
   useEffect(() => {
     const userIsAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
+    const personId = (user as typeof user & { personId?: number })?.personId;
     if (userIsAuthorized) setIsAuthorized(true);
-    if (user?.role === UserRole.VOLUNTEER && user.id === contactPersonId) {
+    if (user?.role === UserRole.VOLUNTEER && personId === contactPersonId) {
       setIsOwnProfile(true);
-    } else if (user?.role === UserRole.AGENT && user.personId === contactPersonId) {
+    } else if (user?.role === UserRole.AGENT && personId === contactPersonId) {
       setIsOwnProfile(true);
     } else {
       setIsOwnProfile(false);

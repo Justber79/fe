@@ -3,11 +3,14 @@ import { apiPathAgent } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
 import { ApiAgentPatch } from "need4deed-sdk";
 
-// Patches agent-level org details (about, website) via the agent endpoint.
-// Note: address and district require the organization's numeric ID which is not
-// currently exposed in the agent API response — those fields need a BE change.
+// addressStreet and addressPostcode are not yet in ApiAgentPatch SDK type
+type OrganizationDetailsPatch = Pick<ApiAgentPatch, "about" | "website"> & {
+  addressStreet?: string;
+  addressPostcode?: string;
+};
+
 export const useUpdateOrganization = (agentId: string) => {
-  return useMutationQuery<Pick<ApiAgentPatch, "about" | "website">, ApiAgentProfileGet>({
+  return useMutationQuery<OrganizationDetailsPatch, ApiAgentProfileGet>({
     apiPath: `${apiPathAgent}/${agentId}`,
     method: "patch",
     successMessage: "dashboard.agentProfile.organisationDetails.saveSuccess",

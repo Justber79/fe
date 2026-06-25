@@ -11,7 +11,7 @@ export function NewestTaggedComments() {
   const { t } = useTranslation();
 
   const user = useCurrentUser();
-  const personId = user?.personId || -1;
+  const personId = (user as typeof user & { personId?: number })?.personId ?? -1;
 
   const { tagComments, isLoading, isError, error } = useGetTaggedComments(personId);
 

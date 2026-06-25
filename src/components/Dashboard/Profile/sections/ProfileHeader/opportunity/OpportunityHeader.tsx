@@ -1,5 +1,9 @@
 "use client";
-import { matchStatusColorMap, matchStatusIconMap } from "@/components/Dashboard/Opportunities/OpportunityCard.helpers";
+import {
+  matchStatusColorMap,
+  matchStatusIconMap,
+  OpportunityMatchStatusType,
+} from "@/components/Dashboard/Opportunities/OpportunityCard.helpers";
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
@@ -56,8 +60,10 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         title={t("dashboard.opportunityProfile.matchingStatus")}
         extra={
           statusMatch ? (
-            <MatchStatusBadge $color={matchStatusColorMap[statusMatch] ?? "var(--color-blue-700)"}>
-              {matchStatusIconMap[statusMatch]}
+            <MatchStatusBadge
+              $color={matchStatusColorMap[statusMatch as OpportunityMatchStatusType] ?? "var(--color-blue-700)"}
+            >
+              {matchStatusIconMap[statusMatch as OpportunityMatchStatusType]}
               <span>{t(`dashboard.opportunities.matchStatus.${statusMatch}`)}</span>
             </MatchStatusBadge>
           ) : (
@@ -72,11 +78,13 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         label={opportunity.volunteerType ? volunteerTypeLabelMap[opportunity.volunteerType] : undefined}
       />
 
-      {opportunity.agent?.id && (
+      {(opportunity.agent as typeof opportunity.agent & { id?: number })?.id && (
         <StatusRowField
           title={t("dashboard.opportunityProfile.agent")}
           extra={
-            <AgentLink href={`/${i18n.language}/dashboard/agents/${opportunity.agent.id}`}>
+            <AgentLink
+              href={`/${i18n.language}/dashboard/agents/${(opportunity.agent as typeof opportunity.agent & { id?: number }).id}`}
+            >
               {opportunity.agent.name}
             </AgentLink>
           }

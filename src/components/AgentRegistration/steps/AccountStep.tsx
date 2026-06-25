@@ -70,6 +70,17 @@ export function AccountStep({ data, onChange, errors }: Props) {
           errors={errors.confirmPassword ? [errors.confirmPassword] : []}
         />
       </FieldWrapper>
+
+      <FieldWrapper>
+        <FieldLabel>{t("agentRegistration.fields.phone")}</FieldLabel>
+        <FormInput
+          type="tel"
+          value={data.phone}
+          onInputChange={(v) => onChange({ phone: v })}
+          placeHolder={t("agentRegistration.fields.phone")}
+          errors={errors.phone ? [errors.phone] : []}
+        />
+      </FieldWrapper>
     </div>
   );
 }

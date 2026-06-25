@@ -6,7 +6,21 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
+import { abbreviateDistrict, formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
+import { MatchedBadge } from "./styles";
+import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
+import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
+
+// These fields are not yet in ApiVolunteerOpportunityGetList SDK type
+type ExtendedOpportunity = ApiVolunteerOpportunityGetList & {
+  statusMatch?: string;
+  accompanyingDetails?: ApiOpportunityAccompanyingDetails & {
+    appointmentPostcode?: string;
+    appointmentDistrict?: { title: Record<string, string> };
+  };
+  agentTitle?: string;
+  numberOfVolunteers?: number;
+};
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -18,20 +32,12 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
-  const {
-    id,
-    title,
-    volunteerType,
-    statusMatch,
-    languages,
-    availability,
-    accompanyingDetails,
-    district,
-    agentTitle,
-    numberOfVolunteers,
-  } = opportunity;
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const ext = opportunity as ExtendedOpportunity;
+  const { id, title, volunteerType, languages, availability, location } = opportunity;
+  const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
@@ -40,6 +46,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
       : null;
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
+  const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
+  const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
+
   const handleGoToProfile = () => {
     if (!id) return;
     router.push(`/${i18n.language}/dashboard/opportunities/${id}`);
@@ -54,20 +63,19 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         <WrappedText>{scheduleText || "—"}</WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.statusMatch} data-testid={`opportunity-status-match-${id}`}>
-        <TruncatedText>{t(`dashboard.opportunities.matchStatus.${statusMatch}`)}</TruncatedText>
+        {isMatched ? <MatchedBadge>{statusLabel}</MatchedBadge> : <TruncatedText>{statusLabel}</TruncatedText>}
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
         <TruncatedText>{mainCommunication || "—"}</TruncatedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
-        <TruncatedText>{districtTitle || "—"}</TruncatedText>
+        <TruncatedText>{districtText}</TruncatedText>
       </TableCell>
       <TableCell
-        $noWrap
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        {numberOfVolunteers ?? "—"}
+        <WrappedText>{numberOfVolunteers ?? "—"}</WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
         <TruncatedText>{agentTitle || "—"}</TruncatedText>

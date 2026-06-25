@@ -12,6 +12,7 @@ interface Props {
 export function AgentReadOnlyTableRow({ agent, isLast, districtsList }: Props) {
   const { id, title, type, district } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+
   return (
     <ClickableRow $isLast={isLast} $cursor={"auto"} data-testid={`agent-row-${id}`}>
       <TableCell data-testid={`agent-title-${id}`}>{title}</TableCell>

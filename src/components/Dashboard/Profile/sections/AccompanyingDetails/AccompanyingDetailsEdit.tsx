@@ -27,6 +27,7 @@ type Props = {
   onSubmit: () => void;
   isPending: boolean;
   minAppointmentDate: Date;
+  hideButtons?: boolean;
 };
 
 export const AccompanyingDetailsEdit = ({
@@ -41,6 +42,7 @@ export const AccompanyingDetailsEdit = ({
   onSubmit,
   isPending,
   minAppointmentDate,
+  hideButtons = false,
 }: Props) => {
   const { t } = useTranslation();
   const {
@@ -196,24 +198,26 @@ export const AccompanyingDetailsEdit = ({
         />
       </Details>
 
-      <ButtonRow>
-        <Button
-          text={t("dashboard.opportunityProfile.accompanyingDetails.cancel")}
-          onClick={onCancel}
-          width="auto"
-          padding="var(--volunteer-profile-section-card-header-button-padding)"
-          backgroundcolor="var(--color-white)"
-          textColor="var(--color-aubergine)"
-          border="var(--volunteer-profile-section-card-header-button-border)"
-        />
-        <Button
-          text={t("dashboard.opportunityProfile.accompanyingDetails.saveChanges")}
-          onClick={onSubmit}
-          width="auto"
-          padding="var(--volunteer-profile-section-card-header-button-padding)"
-          disabled={!isDirty || !isValid || isPending}
-        />
-      </ButtonRow>
+      {!hideButtons && (
+        <ButtonRow>
+          <Button
+            text={t("dashboard.opportunityProfile.accompanyingDetails.cancel")}
+            onClick={onCancel}
+            width="auto"
+            padding="var(--volunteer-profile-section-card-header-button-padding)"
+            backgroundcolor="var(--color-white)"
+            textColor="var(--color-aubergine)"
+            border="var(--volunteer-profile-section-card-header-button-border)"
+          />
+          <Button
+            text={t("dashboard.opportunityProfile.accompanyingDetails.saveChanges")}
+            onClick={onSubmit}
+            width="auto"
+            padding="var(--volunteer-profile-section-card-header-button-padding)"
+            disabled={!isDirty || !isValid || isPending}
+          />
+        </ButtonRow>
+      )}
     </>
   );
 };
