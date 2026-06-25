@@ -4,15 +4,16 @@ import { Modal } from "@/components/core/modal";
 import { de, enUS } from "date-fns/locale";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ApiActivityLogEntry } from "need4deed-sdk";
 import { DialogButtonGroup, DialogForm } from "../shared/styles";
 import { DialogTitle, FieldError, FieldGroup, FieldLabel, HoursInput } from "./styles";
-import { ActivityLogFormData, ApiActivityLogGet } from "./types";
+import { ActivityLogFormData } from "./types";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: ActivityLogFormData) => void;
-  initialData?: ApiActivityLogGet;
+  initialData?: ApiActivityLogEntry;
 };
 
 const parseHours = (value: string): number | null => {

@@ -10,7 +10,7 @@ import {
 } from "@/components/core/common/Table";
 import { useActivityLog } from "@/hooks/useActivityLog";
 import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
-import { format } from "date-fns";
+import { ApiActivityLogEntry, ApiActivityLogPost } from "need4deed-sdk";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
@@ -18,7 +18,7 @@ import { SectionEmptyState, SectionWrapper } from "../shared/styles";
 import { formatDate } from "../shared/utils/formatDate";
 import { ActivityLogDialog } from "./ActivityLogDialog";
 import { ActivityLogTableContainer, AddEntryButton, AddEntryRow, TotalCell, TotalRow, TotalSpacer } from "./styles";
-import { ActivityLogFormData, ApiActivityLogGet, ApiActivityLogPost } from "./types";
+import { ActivityLogFormData } from "./types";
 import { formatHours } from "./utils";
 
 type Props = {
@@ -31,21 +31,21 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
   const { entries, totalHours, createEntry, updateEntry, deleteEntry } = useActivityLog(opportunityVolunteerId);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<ApiActivityLogGet | undefined>(undefined);
-  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiActivityLogGet | null>(null);
+  const [editingEntry, setEditingEntry] = useState<ApiActivityLogEntry | undefined>(undefined);
+  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiActivityLogEntry | null>(null);
 
   const handleAddNew = () => {
     setEditingEntry(undefined);
     setIsDialogOpen(true);
   };
 
-  const handleEdit = (entry: ApiActivityLogGet) => {
+  const handleEdit = (entry: ApiActivityLogEntry) => {
     setEditingEntry(entry);
     setIsDialogOpen(true);
   };
 
   const handleSave = (data: ActivityLogFormData) => {
-    const payload: ApiActivityLogPost = { date: format(data.date, "yyyy-MM-dd"), hours: data.hours };
+    const payload: ApiActivityLogPost = { date: data.date, hours: data.hours };
     if (editingEntry) {
       updateEntry({ id: editingEntry.id, data: payload }, { onSuccess: () => setIsDialogOpen(false) });
     } else {
