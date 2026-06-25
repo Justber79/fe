@@ -6,14 +6,17 @@ import { AvatarImg } from "../../OpportunityVolunteers/styles";
 import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
 
+// personId is not yet in ApiUserGet SDK type — cast until SDK is updated
+type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
+
 type Props = {
-  handleTagAdd: (userId: number, fullName: string) => void;
+  handleTagAdd: (userId: number, fullName: string, personId: number) => void;
   newCommentText: string;
   textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
   activeRowIndex: number;
   setFilteredListLength: (length: number) => void;
   setOnSelectTrigger: (callback: (() => void) | null) => void;
-  users?: ApiUserGet[] | undefined;
+  users?: ApiUserGetWithPersonId[] | undefined;
 };
 
 export default function Autocomplete({
@@ -42,7 +45,7 @@ export default function Autocomplete({
 
   const filteredUsers = useMemo(() => {
     if (userFilter === null) return;
-    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter));
+    return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter) && user?.personId != null);
   }, [userFilter, users]);
 
   useEffect(() => {
@@ -55,7 +58,10 @@ export default function Autocomplete({
     if (!filteredUsers) return;
     const activeUser = filteredUsers[activeRowIndex];
     if (activeUser) {
-      setOnSelectTrigger(() => () => handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, "")));
+      setOnSelectTrigger(() => () => {
+        if (activeUser.personId == null) return;
+        handleTagAdd(activeUser.id, activeUser.fullName.replaceAll(/ /g, ""), activeUser.personId);
+      });
     } else {
       setOnSelectTrigger(null);
     }
@@ -83,8 +89,8 @@ export default function Autocomplete({
     }
   }, [activeRowIndex, filteredUsers]);
 
-  const handleUserSelect = (userId: number, fullName: string) => {
-    handleTagAdd(userId, fullName.replaceAll(/ /g, ""));
+  const handleUserSelect = (userId: number, fullName: string, personId: number) => {
+    handleTagAdd(userId, fullName.replaceAll(/ /g, ""), personId);
   };
 
   const resolvedAvatarUrl = (url: string | null | undefined) => {
@@ -127,7 +133,10 @@ export default function Autocomplete({
               key={user.id}
               role="option"
               aria-selected={isActive}
-              onClick={() => handleUserSelect(user.id, user.fullName)}
+              onClick={() => {
+                if (user.personId == null) return;
+                handleUserSelect(user.id, user.fullName, user.personId);
+              }}
               style={{
                 backgroundColor: isActive ? "var(--editableField-optionRow-selectedBg)" : "transparent",
                 cursor: "pointer",
