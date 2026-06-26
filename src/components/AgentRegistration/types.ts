@@ -1,5 +1,29 @@
 import { AgentServiceType, AgentType } from "need4deed-sdk";
 
+// These types are not yet in need4deed-sdk — defined locally until the SDK is updated.
+export enum AgentMembershipStatus {
+  PENDING = "pending",
+  ACTIVE = "active",
+}
+
+export interface ApiAgentRegisterNew {
+  title: string;
+  type?: AgentType;
+  info?: string;
+  website?: string;
+  services?: AgentServiceType[];
+  addressStreet?: string;
+  addressPostcode?: string;
+  districtId?: number;
+  languages?: number[];
+}
+
+export type ApiAgentRegister = { agent: ApiAgentRegisterNew } | { agentId: number };
+
+export interface ApiAgentRegisterResponse {
+  membershipStatus: AgentMembershipStatus;
+}
+
 export interface AgentRegistrationData {
   firstName: string;
   lastName: string;
@@ -44,3 +68,16 @@ export const defaultProfileCompletionData: ProfileCompletionData = {
   services: [],
   clientLanguageIds: [],
 };
+
+export interface ApiAgentMembershipPerson {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+}
+
+export interface ApiAgentMembership {
+  id: number;
+  status: AgentMembershipStatus;
+  agentTitle?: string;
+  person?: ApiAgentMembershipPerson;
+}

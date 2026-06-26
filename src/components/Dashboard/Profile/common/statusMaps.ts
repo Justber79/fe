@@ -19,13 +19,13 @@ import {
 import {
   AgentEngagementStatusType,
   OpportunityMatchStatus,
-  OpportunityMatchStatusType,
   OpportunityStatusType,
   VolunteerStateEngagementType,
   VolunteerStateMatchType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
 import type React from "react";
+import { OpportunityMatchStatusType } from "../../Opportunities/OpportunityCard.helpers";
 import { OpportunityManualStatusType } from "../sections/ProfileHeader/opportunity/constants";
 import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch } from "../types";
 
@@ -69,15 +69,12 @@ export const statusColorMap: Record<StatusValue, string> = {
     [VolunteerStateEngagementType.UNRESPONSIVE, "var(--color-grey-50)"],
     [VolunteerStateEngagementType.INACTIVE, "var(--color-grey-50)"],
     [VolunteerStateEngagementType.NEW, "var(--color-green-100)"],
-    [OpportunityMatchStatus.NO_MATCHES, "var(--color-grey-50)"],
     [OpportunityMatchStatus.PENDING_MATCH, "var(--color-violet-100)"],
     [OpportunityMatchStatus.MATCHED, "var(--color-green-100)"],
-    [OpportunityMatchStatus.PAST, "var(--color-grey-50)"],
     [VolunteerStateMatchType.NO_MATCHES, "var(--color-grey-50)"],
     [VolunteerStateMatchType.PENDING_MATCH, "var(--color-violet-100)"],
     [VolunteerStateMatchType.MATCHED, "var(--color-green-100)"],
     [VolunteerStateMatchType.NEEDS_REMATCH, "var(--color-red-50)"],
-    [VolunteerStateMatchType.PAST, "var(--color-grey-50)"],
     [OpportunityMatchStatusType.NO_MATCHES, "var(--color-grey-50)"],
     [OpportunityMatchStatusType.PENDING_MATCH, "var(--color-violet-100)"],
     [OpportunityMatchStatusType.MATCHED, "var(--color-green-100)"],
@@ -91,7 +88,6 @@ export const statusColorMap: Record<StatusValue, string> = {
     [OpportunityStatusType.SEARCHING, "var(--color-violet-100)"],
     [OpportunityStatusType.NEW, "var(--color-violet-100)"],
     [OpportunityStatusType.ACTIVE, "var(--color-green-50)"],
-    [OpportunityStatusType.INACTIVE, "var(--color-grey-50)"],
     [OpportunityStatusType.PAST, "var(--color-grey-50)"],
     [AgentVolunteerSearch.NOT_NEEDED, "var(--color-grey-50)"],
     [AgentVolunteerSearch.VOLUNTEERS_FOUND, "var(--color-green-100)"],
@@ -121,15 +117,12 @@ export const statusIconMap: Record<StatusValue, IconComponent> = {
     [VolunteerStateEngagementType.UNRESPONSIVE, PhoneXIcon],
     [VolunteerStateEngagementType.INACTIVE, StopCircleIcon],
     [VolunteerStateEngagementType.NEW, SparkleIcon],
-    [OpportunityMatchStatus.NO_MATCHES, ProhibitInsetIcon],
     [OpportunityMatchStatus.PENDING_MATCH, HourglassIcon],
     [OpportunityMatchStatus.MATCHED, CheckCircleIcon],
-    [OpportunityMatchStatus.PAST, StopCircleIcon],
     [VolunteerStateMatchType.NO_MATCHES, ProhibitInsetIcon],
     [VolunteerStateMatchType.PENDING_MATCH, HourglassIcon],
     [VolunteerStateMatchType.MATCHED, CheckCircleIcon],
     [VolunteerStateMatchType.NEEDS_REMATCH, ArrowsClockwiseIcon],
-    [VolunteerStateMatchType.PAST, StopCircleIcon],
     [OpportunityMatchStatusType.NO_MATCHES, ProhibitInsetIcon],
     [OpportunityMatchStatusType.PENDING_MATCH, HourglassIcon],
     [OpportunityMatchStatusType.MATCHED, CheckCircleIcon],
@@ -143,7 +136,6 @@ export const statusIconMap: Record<StatusValue, IconComponent> = {
     [OpportunityStatusType.NEW, SparkleIcon],
     [OpportunityStatusType.ACTIVE, ChartLineIcon],
     [OpportunityStatusType.SEARCHING, HourglassIcon],
-    [OpportunityStatusType.INACTIVE, StopCircleIcon],
     [OpportunityStatusType.PAST, StopCircleIcon],
     [AgentVolunteerSearch.NOT_NEEDED, HandPalmIcon],
     [AgentVolunteerSearch.VOLUNTEERS_FOUND, CheckCircleIcon],

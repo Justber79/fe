@@ -15,7 +15,9 @@ interface TableRowProps {
 
 export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
   const { t } = useTranslation();
-  const { id, title, volunteerType, location, statusMatch, languages } = opportunity;
+  const { id, title, volunteerType, location, languages } = opportunity;
+  // statusMatch is not yet in ApiVolunteerOpportunityGetList SDK type
+  const statusMatch = (opportunity as ApiVolunteerOpportunityGetList & { statusMatch?: string }).statusMatch;
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
