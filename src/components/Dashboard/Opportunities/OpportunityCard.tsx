@@ -38,7 +38,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     availability,
     accompanyingDetails,
     statusMatch,
-    district,
+    location,
   } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
@@ -48,7 +48,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
@@ -81,12 +81,12 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
         )}
         {statusMatch && (
           <StatusDiv>
-            {matchStatusIconMap[statusMatch]}
+            {matchStatusIconMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             <Paragraph
               fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
               fontSize="var(--dashboard-volunteers-card-status-fontSize)"
               lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={matchStatusColorMap[statusMatch]}
+              color={matchStatusColorMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             >
               {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
             </Paragraph>

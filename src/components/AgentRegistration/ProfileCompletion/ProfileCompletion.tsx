@@ -5,13 +5,8 @@ import { apiPathAgentRegister, apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
-import {
-  AgentMembershipStatus,
-  ApiAgentRegister,
-  ApiAgentRegisterNew,
-  ApiAgentRegisterResponse,
-  ApiOptionLists,
-} from "need4deed-sdk";
+import { ApiOptionLists } from "need4deed-sdk";
+import { AgentMembershipStatus, ApiAgentRegister, ApiAgentRegisterNew, ApiAgentRegisterResponse } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

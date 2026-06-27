@@ -43,13 +43,34 @@ import { Heading2, Heading4 } from "@/components/styled/text";
 import { ShootingStarIcon, ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TFunction } from "i18next";
-import {
-  Lang,
-  OptionItem,
-  OpportunityFormDataWithAgentSubmitter,
-  TranslatedIntoType,
-  VolunteerStateTypeType,
-} from "need4deed-sdk";
+import { Lang, OptionItem, TranslatedIntoType, VolunteerStateTypeType } from "need4deed-sdk";
+
+// Not yet in need4deed-sdk — defined locally until the SDK is updated.
+type OpportunityFormDataWithAgentSubmitter = {
+  title: string;
+  opportunity_type: "accompanying" | "volunteering";
+  vo_information: string | null;
+  volunteers_number: number;
+  languages: string[];
+  activities: string[];
+  skills: string[];
+  timeslots: [number, string][] | null;
+  onetime_date_time: string | null;
+  accomp_address: string | null;
+  accomp_postcode: string | null;
+  accomp_datetime: string | null;
+  accomp_name: string | null;
+  accomp_phone: string | null;
+  accomp_information: string | null;
+  accomp_translation: `${TranslatedIntoType}` | null;
+  berlin_locations: string[] | null;
+  category: string;
+  category_id: string;
+  language: `${Lang}`;
+  agent_id: number;
+  submitted_by_id: number | null;
+  last_edited_time_notion: string | null;
+};
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
