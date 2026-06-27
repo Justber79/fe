@@ -14,7 +14,6 @@ import { useCommentMenu } from "./hooks/useCommentMenu";
 import { AddCommentButton, Container, NewCommentSection, TagOverlay, TextArea } from "./styles";
 import { useCommentTag } from "./hooks/useCommentTag";
 import Autocomplete from "./Autocomplete";
-import { getPersonIds } from "./helpers";
 
 type Props = {
   entityId: Id;
@@ -27,7 +26,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
   const { t } = useTranslation();
   const { mutate: createComment, isPending: isCreating } = useCreateComment(entityId, entityType);
   const [newCommentText, setNewCommentText] = useState("");
-  const [isTagFetch, setIsTagFetch] = useState(false);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -62,16 +60,15 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     if (!newCommentText.trim()) return;
 
     let formattedText = newCommentText;
-    const taggedUserIds: number[] = [];
+    const taggedPersonIds: number[] = [];
 
     tags.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
-      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
-        taggedUserIds.push(tag.id);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedPersonIds.includes(tag.personId)) {
+        taggedPersonIds.push(tag.personId);
       }
     });
 
-    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     createComment(
       {
         text: formattedText.trim(),
@@ -104,17 +101,16 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     if (!edit.editText.trim() || !edit.editingCommentId) return;
 
     const currentTags = initTags(edit.editText);
-    const taggedUserIds: number[] = [];
+    const taggedPersonIds: number[] = [];
 
     let formattedText = edit.editText;
     currentTags?.forEach((tag) => {
       formattedText = formattedText.replace(`@${tag.name}`, `<@${tag.id}>`);
-      if (formattedText.includes(`<@${tag.id}>`) && !taggedUserIds.includes(tag.id)) {
-        taggedUserIds.push(tag.id);
+      if (formattedText.includes(`<@${tag.id}>`) && !taggedPersonIds.includes(tag.personId)) {
+        taggedPersonIds.push(tag.personId);
       }
     });
 
-    const taggedPersonIds = await getPersonIds(taggedUserIds, setIsTagFetch, t);
     updateComment(
       { text: formattedText.trim(), taggedPersonIds },
 
@@ -154,7 +150,6 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
             text: edit.editText,
             canSave: edit.canSave,
             isUpdating,
-            isTagFetch,
             onTextChange: edit.updateEditText,
             onKeyPress: (e) => edit.handleKeyPress(e, handleSaveEdit),
             onSave: handleSaveEdit,
@@ -203,7 +198,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
       </NewCommentSection>
       <AddCommentButton
         onClick={handleAddComment}
-        disabled={!newCommentText.trim() || isCreating || isTagFetch}
+        disabled={!newCommentText.trim() || isCreating}
         data-testid="add-comment-button"
       >
         {t("dashboard.commentsSection.addComment")}

@@ -18,7 +18,7 @@ type Props = {
 export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const { t } = useTranslation();
 
-  const { title, volunteerType, district, languages, statusMatch } = opportunity as ApiVolunteerOpportunityGetList & {
+  const { title, volunteerType, location, languages, statusMatch } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
     district?: { id: number };
@@ -27,18 +27,18 @@ export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
 
-  const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   return (
     <Card data-testid="opportunity-card" $cursor={"auto"}>
       <StatusTagsDiv>
         {statusMatch && (
           <StatusDiv>
-            {matchStatusIconMap[statusMatch]}
+            {matchStatusIconMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             <Paragraph
               fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
               fontSize="var(--dashboard-volunteers-card-status-fontSize)"
               lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={matchStatusColorMap[statusMatch]}
+              color={matchStatusColorMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             >
               {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
             </Paragraph>

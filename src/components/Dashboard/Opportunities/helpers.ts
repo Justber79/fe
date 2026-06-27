@@ -200,3 +200,16 @@ export function formatSchedule(availability: Availability, t: TFunction): string
     })
     .join("; ");
 }
+
+export const abbreviateDistrict = (district: string | null) => {
+  if (!district) return "-";
+  if (district?.includes("-")) {
+    const abbreviation = district
+      .split("-")
+      .filter((word) => word.trim())
+      .map((word) => word.trim()[0])
+      .join("-");
+    return abbreviation.toUpperCase();
+  }
+  return district;
+};

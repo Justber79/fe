@@ -1,5 +1,6 @@
 import { TFunction } from "i18next";
-import { OpportunityMatchStatusType, OpportunityStatusType } from "need4deed-sdk";
+import { OpportunityStatusType } from "need4deed-sdk";
+import { OpportunityMatchStatusType } from "@/components/Dashboard/Opportunities/OpportunityCard.helpers";
 
 export type { OpportunityMatchStatusType };
 
@@ -13,14 +14,13 @@ export const SDK_TO_MANUAL: Partial<Record<OpportunityStatusType, OpportunityMan
   [OpportunityStatusType.NEW]: OpportunityManualStatusType.NEW,
   [OpportunityStatusType.SEARCHING]: OpportunityManualStatusType.SEARCHING,
   [OpportunityStatusType.ACTIVE]: OpportunityManualStatusType.SEARCHING,
-  [OpportunityStatusType.INACTIVE]: OpportunityManualStatusType.INACTIVE,
   [OpportunityStatusType.PAST]: OpportunityManualStatusType.INACTIVE,
 };
 
 export const MANUAL_TO_SDK: Partial<Record<OpportunityManualStatusType, OpportunityStatusType>> = {
   [OpportunityManualStatusType.NEW]: OpportunityStatusType.NEW,
   [OpportunityManualStatusType.SEARCHING]: OpportunityStatusType.SEARCHING,
-  [OpportunityManualStatusType.INACTIVE]: OpportunityStatusType.INACTIVE,
+  [OpportunityManualStatusType.INACTIVE]: OpportunityStatusType.PAST,
 };
 
 export const STATUS_DESCRIPTION_KEYS: Record<OpportunityManualStatusType, string> = {

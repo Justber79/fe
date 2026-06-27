@@ -17,7 +17,6 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
     [OpportunityStatusType.NEW]: false,
     [OpportunityStatusType.SEARCHING]: false,
     [OpportunityStatusType.ACTIVE]: false,
-    [OpportunityStatusType.INACTIVE]: false,
     [OpportunityStatusType.PAST]: false,
   },
   type: {

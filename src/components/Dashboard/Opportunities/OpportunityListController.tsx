@@ -16,13 +16,17 @@ function isAppointmentSort(sort: string): sort is AppointmentSort {
   return (APPOINTMENT_SORT_VALUES as readonly string[]).includes(sort);
 }
 
+type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
+  accompanyingDetails?: { appointmentDate?: string };
+};
+
 function sortByAppointmentDate(
   opportunities: ApiVolunteerOpportunityGetList[],
   sort: AppointmentSort,
 ): ApiVolunteerOpportunityGetList[] {
   return [...opportunities].sort((a, b) => {
-    const dateA = a.accompanyingDetails?.appointmentDate;
-    const dateB = b.accompanyingDetails?.appointmentDate;
+    const dateA = (a as OpportunityWithAccompanying).accompanyingDetails?.appointmentDate;
+    const dateB = (b as OpportunityWithAccompanying).accompanyingDetails?.appointmentDate;
 
     if (!dateA && !dateB) return 0;
     if (!dateA) return 1;

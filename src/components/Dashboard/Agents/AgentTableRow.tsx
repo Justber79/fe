@@ -20,7 +20,9 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
   const { i18n } = useTranslation();
   const router = useRouter();
 
-  const { id, title, type, volunteerSearch, district, activeVolunteers, email } = agent;
+  const { id, title, type, volunteerSearch, district, activeVolunteers } = agent;
+  // email is not in ApiAgentGetList SDK type — cast until SDK is updated
+  const email = (agent as ApiAgentGetList & { email?: string }).email;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const handleGoToProfile = () => {
