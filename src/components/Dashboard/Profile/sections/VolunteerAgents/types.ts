@@ -26,6 +26,7 @@ export const createMatchStatusLabelMap = (t: TFunction): Record<VolunteerStateMa
   [VolunteerStateMatchType.PENDING_MATCH]: t("dashboard.volunteers.matchStatus.vol-pending-match"),
   [VolunteerStateMatchType.MATCHED]: t("dashboard.volunteers.matchStatus.vol-matched"),
   [VolunteerStateMatchType.NEEDS_REMATCH]: t("dashboard.volunteers.matchStatus.vol-needs-rematch"),
+  [VolunteerStateMatchType.PAST]: t("dashboard.volunteers.matchStatus.vol-past"),
 });
 
 export const createStatusLabelMap = (t: TFunction): Record<VolunteerStateTypeType, string> => ({
