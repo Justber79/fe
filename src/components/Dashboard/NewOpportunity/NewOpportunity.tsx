@@ -408,7 +408,6 @@ export function NewOpportunity() {
   });
   const {
     control: headerControl,
-    handleSubmit: handleHeaderSubmit,
     watch: watchHeader,
     formState: { errors: headerErrors },
   } = headerMethods;
@@ -474,11 +473,14 @@ export function NewOpportunity() {
     },
   });
 
-  const onSubmit = (headerData: HeaderFormData) => {
-    // Don't create an opportunity that isn't linked to its agent.
-    if (!agentId) return;
+  const handleCreate = async () => {
+    const headerValid = await headerMethods.trigger();
+    const detailsValid = await detailsMethods.trigger();
+    const accompValid = !isAccompanying || (await accompanyingMethods.trigger());
+    if (!headerValid || !detailsValid || !accompValid || !agentId) return;
+
     const payload = buildCreatePayload(
-      headerData,
+      headerMethods.getValues(),
       detailsMethods.getValues(),
       isAccompanying ? accompanyingMethods.getValues() : null,
       apiLanguages,
@@ -592,11 +594,7 @@ export function NewOpportunity() {
           text={t("dashboard.newOpportunity.submit")}
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
-          onClick={async () => {
-            const accompValid = !isAccompanying || (await accompanyingMethods.trigger());
-            if (!accompValid) return;
-            handleHeaderSubmit(onSubmit)();
-          }}
+          onClick={handleCreate}
           disabled={isPending || !agentId}
         />
       </SaveRow>
