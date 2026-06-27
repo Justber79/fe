@@ -81,12 +81,12 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
         )}
         {statusMatch && (
           <StatusDiv>
-            {matchStatusIconMap[statusMatch]}
+            {matchStatusIconMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             <Paragraph
               fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
               fontSize="var(--dashboard-volunteers-card-status-fontSize)"
               lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={matchStatusColorMap[statusMatch]}
+              color={matchStatusColorMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
             >
               {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
             </Paragraph>

@@ -3,6 +3,9 @@ import { useGetQuery } from "@/hooks";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useState, useCallback, useEffect } from "react";
 
+// personId is not yet in ApiUserGet SDK type — cast until SDK is updated
+type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
+
 export function useCommentTag(
   value: string,
   setNewCommentText?: (text: string) => void,
@@ -14,7 +17,7 @@ export function useCommentTag(
   const [filteredListLength, setFilteredListLength] = useState(0);
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
-  const { data: users } = useGetQuery<ApiUserGet[]>({
+  const { data: users } = useGetQuery<ApiUserGetWithPersonId[]>({
     queryKey: ["users", "coordinators"],
     apiPath: apiPathUser,
     params: {

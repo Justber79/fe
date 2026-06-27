@@ -30,7 +30,6 @@ export function getContactMethodOptions(t: TFunction, contactType: ContactType):
 
   return [
     ContactMethodType.PHONE,
-    ContactMethodType.VIDEO_CALL,
     ContactMethodType.TELEGRAM,
     ContactMethodType.WHATSAPP,
     ContactMethodType.SIGNAL,
