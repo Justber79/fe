@@ -41,18 +41,14 @@ export function VolunteerTableRow({
   const router = useRouter();
   const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
-  const {
-    id,
-    name,
-    avatarUrl,
-    statusEngagement,
-    statusType,
-    languages,
-    locations,
-    statusMatch,
-    email,
-    statusCommunication,
-  } = volunteer;
+  const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
+  // These fields are not yet in ApiVolunteerGetList SDK type
+  const ext = volunteer as ApiVolunteerGetList & {
+    statusMatch?: import("need4deed-sdk").VolunteerStateMatchType;
+    email?: string;
+    statusCommunication?: import("need4deed-sdk").VolunteerStateCommunicationType;
+  };
+  const { statusMatch, email, statusCommunication } = ext;
 
   const topLangs = getTopLanguages(languages, 2);
   const languageText =

@@ -9,13 +9,18 @@ import {
   StopCircleIcon,
   TranslateIcon,
 } from "@phosphor-icons/react";
-import {
-  ApiVolunteerOpportunityGetList,
-  OpportunityMatchStatusType,
-  OpportunityStatusType,
-  ProfileVolunteeringType,
-} from "need4deed-sdk";
+import { ApiVolunteerOpportunityGetList, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { JSX } from "react";
+
+// OpportunityMatchStatusType was removed from need4deed-sdk — defined locally.
+export enum OpportunityMatchStatusType {
+  NO_MATCHES = "opp-vol-no-matches",
+  PENDING_MATCH = "opp-vol-pending-match",
+  MATCHED = "opp-vol-matched",
+  NEEDS_REMATCH = "opp-vol-needs-rematch",
+  UNMATCHED = "opp-vol-unmatched",
+  PAST = "opp-vol-past",
+}
 
 export function formatAvailability(availability: ApiVolunteerOpportunityGetList["availability"]): string {
   const first = availability[0];
@@ -28,8 +33,8 @@ export const statusColorMap: Record<OpportunityStatusType, string> = {
   [OpportunityStatusType.NEW]: "var(--color-red-500)",
   [OpportunityStatusType.SEARCHING]: "var(--color-orange-500, var(--color-red-500))",
   [OpportunityStatusType.ACTIVE]: "var(--color-green-700)",
-  [OpportunityStatusType.INACTIVE]: "var(--color-grey-700)",
   [OpportunityStatusType.PAST]: "var(--color-grey-700)",
+  [OpportunityStatusType.INACTIVE]: "var(--color-grey-700)",
 };
 
 export const statusIconMap: Record<OpportunityStatusType, JSX.Element> = {
@@ -38,10 +43,10 @@ export const statusIconMap: Record<OpportunityStatusType, JSX.Element> = {
     <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.SEARCHING]} />
   ),
   [OpportunityStatusType.ACTIVE]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.ACTIVE]} />,
+  [OpportunityStatusType.PAST]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.PAST]} />,
   [OpportunityStatusType.INACTIVE]: (
     <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.INACTIVE]} />
   ),
-  [OpportunityStatusType.PAST]: <ShootingStarIcon size={18} color={statusColorMap[OpportunityStatusType.PAST]} />,
 };
 
 export const matchStatusColorMap: Record<OpportunityMatchStatusType, string> = {

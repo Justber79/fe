@@ -1,13 +1,26 @@
 "use client";
 
 import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
-import { LangPurpose, OpportunityMatchStatusType, ProfileVolunteeringType } from "need4deed-sdk";
+import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { abbreviateDistrict, formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
 import { MatchedBadge } from "./styles";
+import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
+import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
+
+// These fields are not yet in ApiVolunteerOpportunityGetList SDK type
+type ExtendedOpportunity = ApiVolunteerOpportunityGetList & {
+  statusMatch?: string;
+  accompanyingDetails?: ApiOpportunityAccompanyingDetails & {
+    appointmentPostcode?: string;
+    appointmentDistrict?: { title: Record<string, string> };
+  };
+  agentTitle?: string;
+  numberOfVolunteers?: number;
+};
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -19,18 +32,10 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
-  const {
-    id,
-    title,
-    volunteerType,
-    statusMatch,
-    languages,
-    availability,
-    accompanyingDetails,
-    location,
-    agentTitle,
-    numberOfVolunteers,
-  } = opportunity;
+  const ext = opportunity as ExtendedOpportunity;
+  const { id, title, volunteerType, languages, availability, location } = opportunity;
+  const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
+
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
@@ -42,7 +47,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
-  const statusLabel = t(`dashboard.opportunities.matchStatus.${statusMatch}`);
+  const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
 
   const handleGoToProfile = () => {
     if (!id) return;
