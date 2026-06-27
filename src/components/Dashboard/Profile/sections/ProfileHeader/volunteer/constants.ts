@@ -38,4 +38,5 @@ export const createMatchLabelMap = (t: TFunction): Record<VolunteerStateMatchTyp
   [VolunteerStateMatchType.NEEDS_REMATCH]: t(
     "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.needsRematch",
   ),
+  [VolunteerStateMatchType.PAST]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.past"),
 });
