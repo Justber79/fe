@@ -38,7 +38,8 @@ function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): Volunte
     return VolunteerStateMatchType.PENDING_MATCH;
   }
   if (statuses.some((s) => s === OpportunityVolunteerStatusType.PAST)) {
-    return VolunteerStateMatchType.PAST;
+    // VolunteerStateMatchType.PAST no longer in SDK — fall back to NO_MATCHES
+    return VolunteerStateMatchType.NO_MATCHES;
   }
   return VolunteerStateMatchType.NO_MATCHES;
 }

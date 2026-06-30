@@ -4,7 +4,8 @@ import { apiPathAgentMembership } from "@/config/constants";
 import { useGetQuery, useMutationQuery } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import axios from "axios";
-import { AgentMembershipStatus, ApiAgentMembership, UserRole } from "need4deed-sdk";
+import { UserRole } from "need4deed-sdk";
+import { AgentMembershipStatus, ApiAgentMembership } from "@/components/AgentRegistration/types";
 import { useTranslation } from "react-i18next";
 import { Actions, Meta, Panel, Row, Title } from "./styled";
 

@@ -23,7 +23,7 @@ const NotificationCircle = styled.div`
 
 export function NotificationBadge() {
   const user = useCurrentUser();
-  const personId = user?.personId || -1;
+  const personId = (user as typeof user & { personId?: number })?.personId ?? -1;
 
   const { tagComments, isLoading, isError } = useGetTaggedComments(personId);
 

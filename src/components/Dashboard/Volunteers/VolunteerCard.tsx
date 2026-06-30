@@ -159,7 +159,7 @@ const stateMatchColorMap: Record<VolunteerStateMatchType, string> = {
   [VolunteerStateMatchType.PENDING_MATCH]: "var(--color-blue-700)",
   [VolunteerStateMatchType.MATCHED]: "var(--color-green-700)",
   [VolunteerStateMatchType.NEEDS_REMATCH]: "var(--color-red-700)",
-  [VolunteerStateMatchType.PAST]: "var(--color-grey-500)",
+  [VolunteerStateMatchType.PAST]: "var(--color-grey-700)",
 };
 
 const stateEngagementColorMap: Record<VolunteerStateEngagementType, string> = {
