@@ -22,7 +22,6 @@ export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethod
     [ContactMethodType.EMAIL]: "dashboard.communicationSection.platformOptions.email",
     [ContactMethodType.SMS]: "dashboard.communicationSection.platformOptions.sms",
     [ContactMethodType.VOICENOTE]: "dashboard.communicationSection.platformOptions.voicenote",
-    [ContactMethodType.VIDEO_CALL]: "dashboard.communicationSection.platformOptions.videoCall",
   };
   return t(map[contactMethod] || `dashboard.communicationSection.platformOptions.${contactMethod.toLowerCase()}`, {
     defaultValue: contactMethod,

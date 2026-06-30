@@ -2,6 +2,13 @@ import { utcHhmmToLocal } from "@/utils";
 import { ApiOpportunityAccompanyingDetails, VolunteerStateTypeType } from "need4deed-sdk";
 import { AccompanyingDetailsFormData } from "./accompanyingDetailsSchema";
 
+// These fields are not yet in the SDK ApiOpportunityAccompanyingDetails type
+type ExtendedAccompanyingDetails = ApiOpportunityAccompanyingDetails & {
+  appointmentPostcode?: string;
+  refugeeLanguage?: { id: number | string }[];
+  appointmentLanguage?: string;
+};
+
 export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undefined): boolean => {
   return (
     volunteerType === VolunteerStateTypeType.ACCOMPANYING ||
@@ -40,13 +47,17 @@ export const formatTimeForDisplay = (time: string | undefined): string => time ?
 
 export const getInitialFormValues = (
   details: ApiOpportunityAccompanyingDetails | undefined,
-): AccompanyingDetailsFormData => ({
-  appointmentAddress: details?.appointmentAddress || "",
-  appointmentPostcode: details?.appointmentPostcode || "",
-  appointmentDate: parseDate(details?.appointmentDate),
-  appointmentTime: details?.appointmentTime ? utcHhmmToLocal(parseTime(details.appointmentTime)) : "",
-  refugeeNumber: details?.refugeeNumber || "",
-  refugeeName: details?.refugeeName || "",
-  refugeeLanguage: details?.refugeeLanguage?.map((lang) => String(lang.id)) ?? [],
-  appointmentLanguage: details?.appointmentLanguage ?? undefined,
-});
+): AccompanyingDetailsFormData => {
+  const ext = details as ExtendedAccompanyingDetails | undefined;
+  return {
+    appointmentAddress: details?.appointmentAddress || "",
+    appointmentPostcode: ext?.appointmentPostcode || "",
+    appointmentDate: parseDate(details?.appointmentDate),
+    appointmentTime: details?.appointmentTime ? utcHhmmToLocal(parseTime(details.appointmentTime)) : "",
+    refugeeNumber: details?.refugeeNumber || "",
+    refugeeName: details?.refugeeName || "",
+    refugeeLanguage: ext?.refugeeLanguage?.map((lang: { id: number | string }) => String(lang.id)) ?? [],
+    appointmentLanguage:
+      (ext?.appointmentLanguage as import("need4deed-sdk").TranslatedIntoType | undefined) ?? undefined,
+  };
+};
