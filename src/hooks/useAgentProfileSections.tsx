@@ -81,7 +81,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     },
   ];
 
-  const authorizedSections: SectionCardProps[] = [
+  const adminOrCoordinatorSections: SectionCardProps[] = [
     ...sections,
     {
       iconName: IconName.ChatCircleDots,
@@ -91,7 +91,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
   ];
 
   return {
-    sections: isAdminOrCoordinator ? authorizedSections : sections,
+    sections: isAdminOrCoordinator ? adminOrCoordinatorSections : sections,
     heading: t("dashboard.agentProfile.agentProfile"),
     header: <ProfileHeader agent={agent} />,
   };
