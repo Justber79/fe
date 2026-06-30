@@ -17,8 +17,8 @@ import { useAuth } from "./useAuth";
 
 export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) => {
   const { t } = useTranslation();
-  const { isAuthorized, isOwnProfile } = useAuth(agent?.representative?.id);
-  const hasEditingRights = isAuthorized || isOwnProfile;
+  const { isAuthorized: isAdminOrCoordinator, isOwnProfile } = useAuth(agent?.representative?.id);
+  const hasEditingRights = isAdminOrCoordinator || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const organisationDetailsRef = useRef<EditableSectionRef>(null);
@@ -91,7 +91,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
   ];
 
   return {
-    sections: isAuthorized ? authorizedSections : sections,
+    sections: isAdminOrCoordinator ? authorizedSections : sections,
     heading: t("dashboard.agentProfile.agentProfile"),
     header: <ProfileHeader agent={agent} />,
   };
