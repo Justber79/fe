@@ -81,16 +81,17 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     },
   ];
 
-  if (isAuthorized) {
-    sections.push({
+  const authorizedSections: SectionCardProps[] = [
+    ...sections,
+    {
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${agent.comments?.length ?? 0}`,
       subComponent: <Comments agent={agent} />,
-    });
-  }
+    },
+  ];
 
   return {
-    sections,
+    sections: isAuthorized ? authorizedSections : sections,
     heading: t("dashboard.agentProfile.agentProfile"),
     header: <ProfileHeader agent={agent} />,
   };
