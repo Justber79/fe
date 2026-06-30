@@ -119,7 +119,6 @@ export default function CardsHeader({
                 <XIcon
                   size={20}
                   onClick={() => {
-                    f.onChange(!f.checked);
                     onClearFilter(f?.keyValue || f.label, f.parentKey);
                   }}
                 />

@@ -61,6 +61,7 @@ export const createAvailabilityFilterItems = (
         }));
       },
       keyValue: key,
+      parentKey: QueryParamsKeys.AVAILABILITY,
     })),
   });
 
