@@ -42,3 +42,23 @@ export const setAuthHint = (): void => {
 export const clearAuthHint = (): void => {
   document.cookie = `${AUTH_HINT_COOKIE_NAME}=; max-age=0; ${AUTH_HINT_COOKIE_ATTRS}`;
 };
+
+export const decodeJwtPayload = (token: string) => {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      throw new Error("Invalid token structure");
+    }
+
+    const rawPayload = parts[1];
+
+    const standardBase64 = rawPayload.replace(/-/g, "+").replace(/_/g, "/");
+
+    const decodedString = atob(standardBase64);
+
+    return JSON.parse(decodedString);
+  } catch (error) {
+    console.error("Failed to manually decode token:", error);
+    return null;
+  }
+};
