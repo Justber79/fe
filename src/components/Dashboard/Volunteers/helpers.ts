@@ -2,6 +2,7 @@ import {
   ApiLanguage,
   ApiOptionLists,
   ApiVolunteerGetList,
+  EntityTableName,
   LangProficiency,
   OptionItem,
   QueryParamsKeys,
@@ -10,7 +11,7 @@ export { createFilterFromOption } from "../common/CardsFilter/helpers";
 export { createSelectedFilterItemsAsFlatArray } from "./Filters/helpers";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
-import { CardsFilter } from "./Filters/types";
+import { VolunteerCardsFilter } from "./Filters/types";
 
 const proficiencyOrder = [
   LangProficiency.NATIVE,
@@ -63,7 +64,7 @@ interface SerializeFiltersOptions {
 }
 
 export function serializeFilters(
-  filter: CardsFilter,
+  filter: VolunteerCardsFilter,
   searchParams?: ReadonlyURLSearchParams,
   asString = true,
   options?: SerializeFiltersOptions,
@@ -118,6 +119,15 @@ export function serializeFilters(
     }
   });
 
+  params.delete(EntityTableName.ACTIVITY);
+  Object.entries(filter.activity).forEach(([key, value]) => {
+    if (value === true) {
+      const paramValue =
+        (options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id) || key;
+      params.append(EntityTableName.ACTIVITY, String(paramValue));
+    }
+  });
+
   // 2. Clear all existing 'availability' params
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
@@ -133,8 +143,8 @@ export function serializeFilters(
   return asString ? params.toString() : params;
 }
 
-export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: ReadonlyURLSearchParams) {
-  const newFilter: CardsFilter = structuredClone(filter);
+export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, searchParams: ReadonlyURLSearchParams) {
+  const newFilter: VolunteerCardsFilter = structuredClone(filter);
 
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) {
@@ -168,6 +178,11 @@ export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: R
     if (newFilter.engagement[e] !== undefined) {
       newFilter.engagement[e] = true;
     }
+  });
+
+  const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
+  queryActivities.forEach((l) => {
+    newFilter.activity[l] = true;
   });
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);

@@ -13,7 +13,7 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter } from "../common/CardsFilter/helpers";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
-import { CardsFilter } from "./Filters/types";
+import { VolunteerCardsFilter } from "./Filters/types";
 import {
   createFilterFromOption,
   createSelectedFilterItemsAsFlatArray,
@@ -47,7 +47,9 @@ export function Volunteers() {
     setSortOrder(sortOrder as SortOrder);
   };
 
-  const handleFilterUpdate = (newFilter: CardsFilter | ((prev: CardsFilter) => CardsFilter)) => {
+  const handleFilterUpdate = (
+    newFilter: VolunteerCardsFilter | ((prev: VolunteerCardsFilter) => VolunteerCardsFilter),
+  ) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
 
     setCardsFilter(updatedFilter);
@@ -74,6 +76,7 @@ export function Volunteers() {
         ...prev,
         district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
         language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
+        activity: createFilterFromOption(apiFilterOptions, EntityTableName.ACTIVITY),
       };
 
       return deserializeVolunteerFilters(baseFilters, searchParams);
