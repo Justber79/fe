@@ -13,9 +13,12 @@ import { VolunteerAgents } from "@/components/Dashboard/Profile/sections/Volunte
 import { ApiAgentProfileGet, IconName } from "@/components/Dashboard/Profile/types";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "./useAuth";
 
 export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) => {
   const { t } = useTranslation();
+  const { isAuthorized: isAdminOrCoordinator, isOwnProfile } = useAuth(agent?.representative?.id);
+  const hasEditingRights = isAdminOrCoordinator || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const organisationDetailsRef = useRef<EditableSectionRef>(null);
@@ -33,10 +36,11 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.ChatsCircle,
       title: t("dashboard.agentProfile.contactDetails.title"),
-      ...(!isContactEditing && {
-        headerButtonName: t("dashboard.agentProfile.contactDetails.edit"),
-        onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
-      }),
+      ...(!isContactEditing &&
+        hasEditingRights && {
+          headerButtonName: t("dashboard.agentProfile.contactDetails.edit"),
+          onHeaderButtonClick: () => contactDetailsRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <ContactDetails ref={contactDetailsRef} agent={agent} onEditingChange={handleContactEditingChange} />
       ),
@@ -44,10 +48,11 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.UsersThree,
       title: t("dashboard.agentProfile.organisationDetails.title"),
-      ...(!isOrgEditing && {
-        headerButtonName: t("dashboard.agentProfile.organisationDetails.edit"),
-        onHeaderButtonClick: () => organisationDetailsRef.current?.handleEditClick(),
-      }),
+      ...(!isOrgEditing &&
+        hasEditingRights && {
+          headerButtonName: t("dashboard.agentProfile.organisationDetails.edit"),
+          onHeaderButtonClick: () => organisationDetailsRef.current?.handleEditClick(),
+        }),
       subComponent: (
         <OrganisationDetails ref={organisationDetailsRef} agent={agent} onEditingChange={handleOrgEditingChange} />
       ),
@@ -60,16 +65,24 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      headerButtonName: t("dashboard.agentProfile.opportunitiesSec.postOpportunity"),
+      ...(hasEditingRights && {
+        headerButtonName: t("dashboard.agentProfile.opportunitiesSec.postOpportunity"),
+      }),
       subComponent: <AgentOpportunities agentId={agent.id} />,
     },
     {
       iconName: IconName.ChatsTeardrop,
       title: t("dashboard.communicationSection.title"),
-      headerButtonName: t("dashboard.communicationSection.addNew"),
-      onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
+      ...(hasEditingRights && {
+        headerButtonName: t("dashboard.communicationSection.addNew"),
+        onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
+      }),
       subComponent: <CommunicationTracker ref={communicationTrackerRef} entityId={agent.id} entityType="agent" />,
     },
+  ];
+
+  const adminOrCoordinatorSections: SectionCardProps[] = [
+    ...sections,
     {
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${agent.comments?.length ?? 0}`,
@@ -78,7 +91,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
   ];
 
   return {
-    sections,
+    sections: isAdminOrCoordinator ? adminOrCoordinatorSections : sections,
     heading: t("dashboard.agentProfile.agentProfile"),
     header: <ProfileHeader agent={agent} />,
   };
