@@ -142,21 +142,19 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
         <ContactDetails ref={contactDetailsRef} volunteer={volunteer} onEditingChange={handleContactEditingChange} />
       ),
     });
+    sections.push({
+      iconName: IconName.ClipboardText,
+      title: t("dashboard.volunteerProfile.documents"),
+      subComponent: <VolunteerProfileDocument volunteer={volunteer} />,
+    });
   }
 
   if (isAuthorized) {
-    sections.push(
-      {
-        iconName: IconName.ClipboardText,
-        title: t("dashboard.volunteerProfile.documents"),
-        subComponent: <VolunteerProfileDocument volunteer={volunteer} />,
-      },
-      {
-        iconName: IconName.ChatCircleDots,
-        title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
-        subComponent: <Comments volunteer={volunteer} />,
-      },
-    );
+    sections.push({
+      iconName: IconName.ChatCircleDots,
+      title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
+      subComponent: <Comments volunteer={volunteer} />,
+    });
   }
 
   return {
