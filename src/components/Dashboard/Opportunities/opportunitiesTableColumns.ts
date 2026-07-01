@@ -8,7 +8,7 @@ export const OPPORTUNITY_COL_WIDTHS = {
   statusMatch: COLUMN_WIDTH.SM,
   languages: COLUMN_WIDTH.MD,
   district: COLUMN_WIDTH.XL,
-  numberOfVolunteers: COLUMN_WIDTH.XS,
+  numberOfVolunteers: COLUMN_WIDTH.XXS,
   agentTitle: COLUMN_WIDTH.XL,
 };
 

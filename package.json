@@ -21,7 +21,11 @@
     "date-fns": "^4.1.0",
     "email-validator": "^2.0.4",
     "i18next": "^25.3.2",
+<<<<<<< HEAD
     "need4deed-sdk": "0.0.115",
+=======
+    "need4deed-sdk": "../sdk",
+>>>>>>> 41a5fa4 (🐛 reduce  "Needed" column width from 140px to 120px)
     "next": "15.3.8",
     "react": "^19.0.0",
     "react-day-picker": "^9.13.0",
