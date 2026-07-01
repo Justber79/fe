@@ -110,7 +110,8 @@ export default function NavigationBar() {
   const router = useRouter();
   const currentPathname = usePathname();
   const user = useCurrentUser();
-  const canSeeCalendar = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
+  const canSeeCalendar = user?.role !== UserRole.AGENT;
+
   const userInitials = user?.fullName
     ? user.fullName
         .split(" ")
