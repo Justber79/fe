@@ -12,7 +12,9 @@ export const useAuth = (contactPersonId?: Id) => {
     const userIsAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
     const personId = (user as typeof user & { personId?: number })?.personId;
     if (userIsAuthorized) setIsAuthorized(true);
-    if (contactPersonId && personId === contactPersonId) {
+    if (user?.role === UserRole.VOLUNTEER && personId === contactPersonId) {
+      setIsOwnProfile(true);
+    } else if (user?.role === UserRole.AGENT && personId === contactPersonId) {
       setIsOwnProfile(true);
     } else {
       setIsOwnProfile(false);
