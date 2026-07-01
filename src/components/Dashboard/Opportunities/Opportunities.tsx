@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
@@ -21,7 +20,6 @@ import { ViewMode } from "../common/types";
 
 export function Opportunities() {
   const { t } = useTranslation();
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
   const [sortOrder, setSortOrder] = useState<string>(SortOrder.NewToOld);
@@ -30,13 +28,17 @@ export function Opportunities() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
   const tabs = [
     t("dashboard.opportunities.tabs.tab1"),
     t("dashboard.opportunities.tabs.tab2"),
     t("dashboard.opportunities.tabs.tab3"),
   ];
+  const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.LIST;
+  const selectedTabIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
+  const activeTabIndex = selectedTabIndex !== -1 ? selectedTabIndex : 0;
+  const viewMode = VIEW_MODE_BY_TAB[activeTabIndex];
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
@@ -47,6 +49,15 @@ export function Opportunities() {
 
   const handleSortChange = (order: string) => {
     setSortOrder(order);
+  };
+
+  const handleTabChange = (index: number) => {
+    const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", targetViewMode);
+
+    router.push(pathname + questionMark + params.toString());
   };
 
   const extraSortOptions = [
@@ -99,7 +110,7 @@ export function Opportunities() {
           resultText={t("dashboard.home.sidebar.opportunities")}
           tabs={tabs}
           selectedTabIndex={selectedTabIndex}
-          setSelectedTabIndex={setSelectedTabIndex}
+          setSelectedTabIndex={handleTabChange}
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
