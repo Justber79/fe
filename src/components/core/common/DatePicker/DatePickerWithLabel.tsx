@@ -24,6 +24,7 @@ type Props = {
   label?: string;
   showTodayIndicator?: boolean;
   todayText?: string;
+  hasError?: boolean;
 };
 
 export function DatePickerWithLabel({
@@ -35,6 +36,7 @@ export function DatePickerWithLabel({
   label,
   showTodayIndicator = false,
   todayText = "today",
+  hasError,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -127,6 +129,7 @@ export function DatePickerWithLabel({
         {label && <FloatingLabel>{label}</FloatingLabel>}
         <DateInputIcon size={24} weight="regular" onClick={handleIconClick} />
         <DateInput
+          $hasError={hasError}
           ref={inputRef}
           value={inputValue}
           onChange={handleInputChange}
