@@ -3,52 +3,54 @@
     "heroSection": {
       "menuItems": {
         "about": "ÜBER UNS",
-        "volunteeringOpportunities": "EHRENAMTSANGEBOTE",
+        "volunteeringOpportunities": "Ehrenamtsbedarfe",
         "events": "VERANSTALTUNGEN"
       },
       "content": {
         "heroText": "Ehrenamtliche Unterstützung für Geflüchtete",
-        "heroSupportingText": "Wir verbinden Freiwillige mit Gemeinschaftsunterkünften in Berlin",
-        "buttonJoinVolunteer": "Jetzt sich engagieren",
+        "heroSupportingText": "Wir vermitteln Ehrenamtliche an Gemeinschaftsunterkünften in Berlin",
+        "buttonJoinVolunteer": "Finde jetzt dein Ehrenamt",
         "buttonJoinRefugeeCenter": "Unterstützung als Unterkunft beantragen"
       }
     },
     "footer": {
       "about": "ÜBER",
       "resources": "RESSOURCEN",
-      "faq": "HGF",
+      "faq": "FAQ",
       "legalNotice": "Rechtlicher Hinweis",
       "privacy": "Datenschutz",
-      "vpa": "Freiwilligenvereinbarung",
+      "vpa": "Ehrenamtliche Vereinbarung",
       "contact": "Kontakt",
       "legal": {
-        "guidelines": "Need4Deed Leitlinien",
+        "guidelines": "Need4Deed Richtlinien",
         "legalNotice": "Rechtlicher Hinweis",
-        "dataPrivacy": "Datenschutz"
+        "dataPrivacy": "Datenschutz",
+        "agreement": "Ehrenamtliche Vereinbarung",
+        "cookies": "Cookies"
       }
     },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
-      "headerParagraph": "Was Freiwillige und Unterkünfte sagen"
+      "headerParagraph": "Was Ehrenamtliche und Unterkünfte sagen"
     },
     "volunteeringCategories": {
-      "header": "Wie kannst Du Dich engagieren?",
-      "headerParagraph": "Wir bieten verschiedene Arten von ehrenamtlichen Tätigkeiten an, entweder regelmäßig oder gelegentlich.",
+      "header": "So kannst du dich ehrenamtlich engagieren",
+      "headerParagraph": "Wir brauchen Unterstützung bei verschiedenen ehrenamtlichen Tätigkeiten und Projekten, entweder regelmäßig oder gelegentlich.",
       "card": {
-        "germanLanguageSupport": "Deutsche Unterstützung",
-        "germanLanguageSupportInfo": "Sprichst Du fließend Deutsch? Unterstütze Geflüchtete, indem du in Sprachcafés unterrichtest oder Nachhilfe gibst – privat oder in Gruppen.",
+        "germanLanguageSupport": "Hilfe beim Deutschlernen",
+        "germanLanguageSupportInfo": "Sprichst Du fließend Deutsch? Unterstütze Geflüchtete, indem du in Sprachcafés unterrichtest oder Nachhilfe für einzelne Personen oder Gruppen gibst.",
         "childcare": "Kinderbetreuung",
-        "childcareInfo": "Hilf Kindern in Unterkünften – bei der Betreuung am Tag oder den Hausaufgaben. Erfahrung mit Kindern ist ein Plus!",
-        "skillsBasedVolunteering": "Ehrenamt mit Fachkenntnissen",
-        "skillsBasedVolunteeringInfo": "Nutze deine Fähigkeiten – z. B. Fahrradreparatur, Gartenarbeit oder Musik.",
+        "childcareInfo": "Wir suchen Ehrenamtliche, die in Unterkünften bei der Arbeit mit Kindern aushelfen können, z.B. in der Kinderbetreuung oder bei den Hausaufgaben. Erfahrung mit Kindern ist ein Plus!",
+        "skillsBasedVolunteering": "Ehrenamtliche Tätigkeiten mit besonderen Kompetenzen",
+        "skillsBasedVolunteeringInfo": "Bei manchen ehrenamtlichen Aufgaben kannst du deine Kenntnisse und Fähigkeiten gezielt einbringen, z.B. bei Fahrradreparaturen, Gartenarbeit, Musik oder organisatorischen Aufgaben.",
         "events": "Veranstaltungen",
-        "eventsInfo": "Manche Events brauchen extra Hilfe - Festivals, Ausflüge, Gartenarbeit oder Eintichtung von Kleiderkammer.",
-        "sportsActivities": "Allgemeines Engagement",
-        "sportsActivitiesInfo": "Unterstütze mit Kleiderkammer, Tandem oder Sportangebote für Kinder, Jugendliche oder Erwachsene in Unterkünften.",
+        "eventsInfo": "Bei besonderen Veranstaltungen brauchen wir zusätzliche, einmalige Unterstützung, z.B. bei Festivals, Ausflügen, Gartenarbeitseinsätzen, gemeinsamen kulturellen Aktivitäten oder Kochaktionen, speziellen Workshops oder der Einrichtung einer Kleiderkammer.",
+        "sportsActivities": "Allgemeine ehrenamtliche Tätigkeiten",
+        "sportsActivitiesInfo": "Es wird immer Unterstützung bei Kleiderkammern, Tandem-Sprachangeboten oder Sportangeboten in Unterkünften für Kinder, Jugendliche oder Erwachsene gesucht.",
         "accompanyARefugee": "Begleitung",
-        "accompanyARefugeeInfo": "Sprichst Du fließend Deutsch und eine weitere Sprache? Begleite Geflüchtete zu Ämtern, Ärzt*innen oder anderen Terminen."
+        "accompanyARefugeeInfo": "Sprichst Du fließend Deutsch und eine weitere Sprache? Begleite Geflüchtete zu Ämtern, Ärzt*innen oder anderen Terminen, um bei den bürokratischen Anliegen und der Übersetzung zu helfen."
       },
-      "footerButton": "Siehe Ehrenamtsangebote"
+      "footerButton": "Siehe Ehrenamtsbedarfe"
     }
   },
   "form": {
@@ -82,20 +84,20 @@
       "weekends": "Gelegentlich wochenends"
     },
     "becomeVolunteer": {
-      "header": "Werde Freiwillige*r bei",
+      "header": "Werde Ehrenamtliche*r bei",
       "thankYou": {
-        "header": "Danke für Dein Interesse an der Freiwilligenarbeit mit Geflüchteten :-)",
+        "header": "Danke für Dein Interesse an der ehrenamtlichen Arbeit mit Geflüchteten :-)",
         "para": "Wir melden uns in den nächsten Tagen mit den nächsten Schritten bei Dir!"
       },
       "somethingWrong": {
         "header": "Da ist etwas schief gelaufen! ",
         "para": "Bitte überprüfe alle Pflichtfelder und versuche es erneut."
       },
-      "thanks": "Danke, dass Du Dich für ehrenamtliches Engagement entschieden hast.",
+      "thanks": "Danke, dass Du Dich ehrenamtlich engagieren möchtest.",
       "reset": "Zurücksetzen",
       "modal": {
         "continue": "Zur Registrierung",
-        "already": "Schon als Freiwillige*r registriert?\nKopiere dies:",
+        "already": "Schon als Ehrenamtliche*r registriert?\nKopiere dies:",
         "copied": "Kopiert",
         "email": "Und sende es per E-Mail an:",
         "number": "Oder via WhatsApp/Telegram an:"
@@ -113,21 +115,21 @@
           "error": "Muss eine Telefonnummer sein"
         },
         "postcode": {
-          "label": "PLZ (Berlin) deines Standorts",
+          "label": "PLZ (Berlin) Deines Wohnorts",
           "error": ""
         },
         "locations": {
           "header": "Bevorzugte Bezirke* (Berlin)",
           "para": "*Denke daran, dass die meisten Unterkünfte außerhalb des Rings liegen!",
           "error": "",
-          "helpText": "Falls wir keine perfekte Möglichkeit finden, schicken wir Dir die Möglichkeiten, die auch auf deinem Standort basieren!",
+          "helpText": "Die möglichen ehrenamtlichen Tätigkeiten, die wir Dir schicken, basieren sowohl auf Deinen bevorzugten Bezirken als auch auf der Postleitzahl Deines Wohnorts.",
           "helpTitle": ""
         },
         "availability": {
           "header": "Verfügbarkeit",
-          "para": "*Denke daran, dass die meisten Möglichkeiten auf die Arbeitszeiten von 9-17 Uhr begrenzt sind, zumindest am Anfang!",
+          "para": "*Denke daran, dass die meisten Tätigkeiten innerhalb der regulären Arbeitszeit von 9-17 Uhr stattfinden, zumindest am Anfang!",
           "error": "",
-          "helpText": "Die Verfügbarkeiten von Mo-So beziehen sich auf regelmäßig wiederkehrende Freiwilligenarbeit. Wenn die Zeiträume auf bestimmte Zeiträume begrenzt sind oder erklärt werden müssen, schreibe bitte im letzten Abschnitt in die Kommentare.",
+          "helpText": "Die Verfügbarkeiten von Mo-So beziehen sich auf regelmäßige ehrenamtliche Tätigkeiten. Wenn Deine Verfügbarkeiten auf bestimmte Zeiträume begrenzt sind oder erklärt werden müssen, schreibe dies bitte im letzten Abschnitt in die Kommentare.",
           "helpTitle": ""
         },
         "languages": {
@@ -151,45 +153,45 @@
           "languagesIntermediate": {
             "header": "Mittelstufe"
           },
-          "singleLevelError": "Bitte wähle nur auf einer Ebene eine Sprache aus",
-          "helpText": "Fließend bedeutet, dass Du denkst, dass Du bei Übersetzungen zwischen Sprachen unterstützen kannst, falls es nötig ist. Diese Sprachen sind an den Bedürfnissen von Geflüchteten orientiert. Wenn die Sprache, die Du als Muttersprache oder fließend beherrschst, nicht hier aufgelistet ist, füge sie bitte im letzten Kommentarfeld hinzu!",
+          "singleLevelError": "Bitte gib nur ein Niveau pro Sprache an",
+          "helpText": "Fließend bedeutet, dass Du denkst, dass Du bei Bedarf in dieser Sprache übersetzen kannst. Die wählbaren Sprachen orientieren sich an den Bedarfen der Geflüchteten. Wenn die Sprache, die Du als Muttersprache oder fließend beherrschst, nicht hier aufgelistet ist, füge sie bitte im letzten Kommentarfeld hinzu!",
           "helpTitle": ""
         },
         "activities": {
           "header": "Bevorzugte Aktivitäten",
           "error": "Bitte wähle mindestens eine Aktivität aus",
-          "helpText": "Dies sind die häufigsten Bedürfnisse, die freiwillige Unterstützung erfordern. Manchmal können sie sich ändern, sobald Du mit der Freiwilligenarbeit beginnst.",
+          "helpText": "Dies sind die häufigsten Bedarfe, die ehrenamtliche Unterstützung erfordern. Manchmal können sie sich ändern, sobald Du mit der ehrenamtlichen Arbeit beginnst.",
           "helpTitle": ""
         },
         "skills": {
           "header": "Zusätzliche Fähigkeiten oder Erfahrungen",
-          "helpText": "Alles, was Du aus deiner Erfahrung, deinen Fähigkeiten oder deinem Fachwissen teilen kannst, kann nützlich sein, aber keine Sorge, es ist keine Voraussetzung für Freiwilligenarbeit!",
+          "helpText": "Alles, was Du an Erfahrungen, Fähigkeiten oder Fachwissen teilen kannst, kann nützlich sein. Aber keine Sorge, es ist keine Voraussetzung für ehrenamtliches Engagement!",
           "helpTitle": ""
         },
         "certOfGoodConduct": {
-          "header": "Führungszeugnis",
+          "header": "Erweitertes Führungszeugnis",
           "error": "Bitte wähle mindestens eine Option aus",
-          "why": "Warum brauche ich das?",
-          "true": "Ich habe eines",
-          "false": "Muss beantragt werden",
+          "why": "Warum brauche ich ein Führungszeugnis?",
+          "true": "Ich habe ein erweitertes Führungszeugnis.",
+          "false": "Es muss beantragt werden.",
           "helpText": "",
           "helpTitle": ""
         },
         "certMeaslesVaccination": {
           "header": "Masernimpfnachweis",
           "error": "Bitte wähle mindestens eine Option aus",
-          "true": "Ich habe einen",
-          "false": "Muss nachgewiesen werden",
+          "true": "Ich habe einen Masernimpfnachweis.",
+          "false": "Ich habe noch keinen Nachweis und reiche ihn nach.",
           "helpText": "",
           "helpTitle": ""
         },
         "leadFrom": {
-          "header": "Woher hast Du von uns erfahren?",
+          "header": "Wie hast Du von uns erfahren?",
           "helpText": "",
           "helpTitle": ""
         },
         "comments": {
-          "label": "Kommentare (andere Sprachen, Zeiten, Orte, Aktivitäten usw.)",
+          "label": "Kommentare (andere Sprachen, Zeiten, Standorte, Aktivitäten usw.)",
           "helpText": "",
           "helpTitle": ""
         },
@@ -203,15 +205,15 @@
       }
     },
     "addOpportunity": {
-      "header": "Bedarf an Freiwilligenarbeit",
+      "header": "Ehrenamtsbedarf",
       "thankYou": {
-        "header": "Vielen Dank für das Ausfüllen des Antragsformulars zur freiwilligen Unterstützung der Unterkunft!",
-        "para": "Wir sollten uns in den nächsten 3 Arbeitstagen bei Dir melden. Sollte dies nicht der Fall sein, wende Dich bitte an contact@need4deed.org"
+        "header": "Vielen Dank für das Ausfüllen des Antragsformulars zur ehrenamtlichen Unterstützung der Unterkunft!",
+        "para": "Wir sollten uns in den nächsten Arbeitstagen bei Dir melden. Sollte dies nicht der Fall sein, wende Dich bitte an contact@need4deed.org"
       },
       "wentWrong": {
         "header": "Entschuldigung, auf unserer Seite ist etwas schief gelaufen :-(",
-        "para": "Bitte nütze zunächst diese Google-Formulare:",
-        "volunteeringLink": "Freizeit",
+        "para": "Bitte nutze zunächst dieses Google-Formular für die Anmeldung:",
+        "volunteeringLink": "Allgemeine ehrenamtliche Tätigkeiten",
         "accompanyingLink": "Begleitung"
       },
       "temporaryDown": {
@@ -223,7 +225,7 @@
         "title": {
           "label": "Was wird gebraucht?",
           "example": "z.B. \"Begleitung zur Augenklinik\", \"Basteln & Malen\"",
-          "errorTooLong": "Bitte kürze den Titel auf 128 Zeichen"
+          "errorTooLong": "Bitte kürze das Anliegen auf 128 Zeichen"
         },
         "consent": {
           "header": "",
@@ -255,11 +257,11 @@
         },
         "opportunityType": {
           "header": "Art des Bedarfs",
-          "volunteering": "Freizeit",
-          "accompanying": "Begleitung",
+          "volunteering": "Allgemeine ehrenamtliche Tätigkeit",
+          "accompanying": "Begleitung zu einem Termin",
           "regular": "Regelmäßig oder Veranstaltungen",
-          "events": "Veranstaltung",
-          "helpText": "Es gibt zwei Arten von Unterstützung: Freiwilliges Engagement bei verschiedenen Aktivitäten (meist Freizeitaktivitäten) und Begleitung zu Terminen.",
+          "events": "Veranstaltungen",
+          "helpText": "Es gibt zwei Arten von Unterstützung: ehrenamtliches Engagement bei verschiedenen Aktivitäten (meist Freizeitaktivitäten) und Begleitung zu Terminen, meist für Übersetzungen.",
           "helpTitle": ""
         },
         "aaGroup": {
@@ -269,18 +271,18 @@
           },
           "translatedInto": {
             "header": "Sprache, in die übersetzt werden soll:",
-            "noTranslation": "Keine Sprachmittlung (Wegebegleitung)",
+            "noTranslation": "Keine Sprachmittlung (Wegbegleitung)",
             "englishOk": "Deutsch oder Englisch",
             "deutsche": "Nur Deutsch",
-            "helpText": "Bitte wähle die Sprache aus, in die übersetzt werden soll (wenn Englisch in Ordnung ist, wähle bitte Englisch und Deutsch aus - das kann bei der Suche nach Freiwilligen helfen!). Falls keine Übersetzung benötigt wird, wähle bitte die Option Wegebegleitung."
+            "helpText": "Bitte wähle die Sprache aus, in die übersetzt werden soll. Wenn auch in Englisch übersetzt werden kann, wähle bitte „Englisch und Deutsch“ aus - das kann bei der Suche nach Freiwilligen helfen! Falls keine Übersetzung benötigt wird, wähle bitte die Option „Wegbegleitung“."
           },
           "languagesTranslation": {
-            "header": "Sprachen, die Geflüchtete sprechen",
-            "helpText": "Bitte wählen die während des Termins benötigten Sprachen aus."
+            "header": "Für die Übersetzung benötigte Sprache(n)",
+            "helpText": "Bitte wähle die während des Termins benötigte(n) Sprache(n) aus."
           },
           "dateTime": {
             "label": "Termin Datum und Uhrzeit",
-            "tooClose": "Der Termin muss frühestens nach 7 Werktagen stattfinden."
+            "tooClose": "Der Termin darf frühestens in 7 Werktagen stattfinden."
           },
           "address": {
             "label": "Terminanschrift"
@@ -295,7 +297,7 @@
             "label": "Telefonnummer der*des Geflüchteten"
           },
           "information": {
-            "label": "Gib Informationen über die Aufgabe, die von den Freiwilligen erwartet wird"
+            "label": "Bitte beschreibe die Aufgabe, die die Ehrenamtlichen übernehmen sollen."
           },
           "locations": {
             "header": "Bezirke"
@@ -311,26 +313,26 @@
           },
           "schedule": {
             "header": "Zeitplan",
-            "helpText": "Bitte wähle Zeitfenster für die Freiwilligenarbeit aus.",
+            "helpText": "Bitte wähle die benötigten Zeitfenster für die ehrenamtliche Tätigkeit oder das genaue Datum für eine einmalige Veranstaltung aus.",
             "or": "oder",
             "oneTimeLabel": "Einmaliges Veranstaltungsdatum",
             "error": "Veranstaltungsdatum oder Zeitplan erforderlich",
-            "errorBoth": "Bitte wähle entweder den Zeitplan oder das Veranstaltungsdatum aus"
+            "errorBoth": "Bitte wähle entweder ein oder mehrere Zeitfenster oder ein einmaliges Veranstaltungsdatum aus."
           },
           "skills": {
             "header": "Fähigkeiten",
-            "helpText": "Bitte wähle die für die Freiwilligenarbeit benötigten Fähigkeiten aus."
+            "helpText": "Bitte wähle die für die ehrenamtliche Tätigkeit benötigten Fähigkeiten aus."
           },
           "languagesRefugee": {
-            "header": "Kommunikation ist möglich mit",
-            "helpText": "Bitte wähle die während der Freiwilligenarbeit benötigten Sprachen aus."
+            "header": "Kommunikation ist möglich auf",
+            "helpText": "Bitte wähle die während der ehrenamtlichen Tätigkeit benötigten Sprachen aus."
           },
           "numberVolunteers": {
-            "label": "Wie viele Freiwillige werden benötigt",
+            "label": "Wie viele Ehrenamtliche werden benötigt",
             "error": "Bitte gib eine Zahl ein"
           },
           "information": {
-            "label": "Gib Informationen über die Aufgabe, die von den Freiwilligen erwartet wird"
+            "label": "Bitte beschreibe die Aufgabe, die die Ehrenamtlichen übernehmen sollen"
           }
         }
       }
@@ -357,7 +359,7 @@
       }
     },
     "volunteers": {
-      "header": "Freiwilligenverzeichnis",
+      "header": "Ehrenamtlichenverzeichnis",
       "table": {
         "name": "Name",
         "type": "Typ",
@@ -373,7 +375,7 @@
       },
       "filters": {
         "accompanying": "Begleitung",
-        "accompanyingDesc": "Nur Freiwillige anzeigen, die bereit sind, Bewohner zu einzelnen Terminen zu begleiten",
+        "accompanyingDesc": "Nur Ehrenamtliche anzeigen, die bereit sind, Geflüchtete zu einzelnen Terminen zu begleiten",
         "district": "Bezirk",
         "languages": "Sprachen",
         "activities": "Aktivitäten",
@@ -413,8 +415,8 @@
           },
           "occasional": {
             "header": "Gelegentlich",
-            "weekdays": "Wochentage",
-            "weekends": "Wochenenden"
+            "weekdays": "Wochentags",
+            "weekends": "Wochenende"
           }
         },
         "volunteerType_title": "Freiwilligen-Typ",
@@ -425,7 +427,7 @@
           "regular-accompanying": "Regelmäßig + Begleitend"
         }
       },
-      "volunteers": "Freiwillige",
+      "volunteers": "Ehrenamtliche",
       "languages": "Sprachen",
       "activities": "Aktivitäten",
       "skillsExperience": "Fähigkeiten & Erfahrungen",
@@ -452,14 +454,14 @@
         "newTags": "Neueste Tags",
         "taggedComment": "{{user}} hat dich in {{entityType}}: {{entityTitle}} markiert",
         "noTaggedComments": "Du bist derzeit in keinen Kommentaren markiert",
-        "newOpportunities": "Neueste Möglichkeiten",
-        "newVolunteers": "Neueste Freiwillige",
+        "newOpportunities": "Neueste Ehrenamtsbedarfe",
+        "newVolunteers": "Neueste Ehrenamtliche",
         "loading": "Wird geladen..."
       },
       "sidebar": {
         "home": "Startseite",
-        "volunteers": "Freiwillige",
-        "opportunities": "Möglichkeiten",
+        "volunteers": "Ehrenamtliche",
+        "opportunities": "Ehrenamtsbedarfe",
         "agents": "Einrichtungen/Projekte",
         "racs": "RACs",
         "posts": "Beiträge",
@@ -469,7 +471,7 @@
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
     "found": "gefunden",
-    "searchPlaceHolder": "Freiwillige suchen",
+    "searchPlaceHolder": "Ehrenamtliche suchen",
     "sortBy": {
       "sortBy": "Sortieren nach",
       "newToOld": "Neueste zuerst",
@@ -478,15 +480,15 @@
       "appointmentDistant": "Event: Späteste zuerst"
     },
     "heroSection": {
-      "heroText": "Bedarfsorientierte freiwillige Unterstützung für Geflüchtete in Berlin",
-      "heroSupportingText": "Wir vermitteln Freiwillige an Flüchtlingsunterkünfte in Not",
-      "buttonJoinVolunteer": "Jetzt sich engagieren",
-      "buttonJoinRefugeeCenter": "Als Flüchtlingsunterkunft beitreten"
+      "heroText": "Bedarfsorientierte ehrenamtliche Unterstützung für Geflüchtete in Berlin",
+      "heroSupportingText": "Wir vermitteln Ehrenamtliche an Flüchtlingsunterkünfte in Not",
+      "buttonJoinVolunteer": "Finde jetzt dein Ehrenamt",
+      "buttonJoinRefugeeCenter": "Unterstützung als Unterkunft beantragen"
     },
     "header": {
       "button": {
         "login": "Anmelden",
-        "joinVolunteer": "Jetzt sich engagieren",
+        "joinVolunteer": "Finde jetzt dein Ehrenamt",
         "dashboard": "Dashboard"
       }
     },
@@ -508,20 +510,20 @@
     },
     "volunteerProfile": {
       "backToDashboard": "Zurück zum Dashboard",
-      "volunteersProfile": "Profil des Freiwilligen",
+      "volunteersProfile": "Profil der*des Ehrenamtlichen",
       "contactDetailsTitle": "Kontaktdaten",
       "volunteerProfile": "Freiwilligenprofil",
-      "opportunities": "Möglichkeiten",
+      "opportunities": "Ehrenamtliche Tätigkeiten",
       "coordinatorComments": "Kommentare der Koordination",
       "documents": "Dokumente",
       "activityLog": "Aktivitätsprotokoll",
       "editButtonName": "Bearbeiten",
-      "findOppButtonName": "Möglichkeit finden",
+      "findOppButtonName": "Ehrenamtliche Tätigkeiten finden",
       "suggestButtonName": "Vorschlagen",
       "suggestDialog": {
-        "title": "Diesem Freiwilligen vorschlagen?",
+        "title": "Diesem*r Ehrenamtlichen vorschlagen?",
         "messageMid": "wird benachrichtigt, dass Sie",
-        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem / ihrem Profil unter \"ausstehenden\" Möglichkeiten.",
+        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"ausstehende\" ehrenamtliche Tätigkeiten.",
         "confirm": "Vorschlagen",
         "cancel": "Abbrechen",
         "success": "Vorschlag erfolgreich gesendet"
@@ -532,12 +534,12 @@
         "modalData": {
           "title": "Engagement-Status ändern",
           "options": {
-            "unresponsive": "Nicht ansprechbar",
-            "description": "Freiwillige(r) reagiert nicht auf Nachrichten oder Anrufe.",
+            "unresponsive": "Nicht erreichbar",
+            "description": "Ehrenamtliche*r reagiert nicht auf Nachrichten oder Anrufe.",
             "temporarily_unavailable": "Vorübergehend nicht verfügbar",
-            "description2": "Der/Die Freiwillige ist vorübergehend nicht für Einsätze verfügbar.",
+            "description2": "Der*Die Ehrenamtliche ist vorübergehend nicht für Einsätze verfügbar.",
             "inactive": "Inaktiv",
-            "description3": "Der/Die Freiwillige ist nicht mehr im Programm aktiv.",
+            "description3": "Der*Die Ehrenamtliche ist nicht mehr im Programm aktiv.",
             "dateReturn": "Rückkehrdatum",
             "dateReturnPlaceHolder": "Rückkehrdatum auswählen (optional)",
             "dateReturnRequired": "Rückkehrdatum ist erforderlich für vorübergehend nicht verfügbar Status"
@@ -548,7 +550,7 @@
         "notSet": "Nicht festgelegt",
         "change_status": "Als suchend markieren",
         "until": "bis",
-        "volunteer_since": "Freiwillige*r seit",
+        "volunteer_since": "Ehrenamtliche*r seit",
         "engagementStatus_title": "Engagement-Status",
         "engagementStatus_options": {
           "new": "Neu",
@@ -556,15 +558,15 @@
           "active": "Aktiv",
           "active_description": "Aktiv",
           "available": "Verfügbar",
-          "available_description": "Wir haben mit ihr gesprochen, sie kann freiwillig arbeiten",
+          "available_description": "Wir haben mit ihr gesprochen, sie kann sich ehrenamtlich engagieren",
           "tempUnavailable": "Vorübergehend nicht verfügbar",
           "tempUnavailable_description": "Wir wissen, dass die Person in der nächsten Zeit nicht aktiv sein kann",
           "inactive": "Inaktiv",
-          "inactive_description": "Diese*r Freiwillige kann nicht mehr freiwillig arbeiten",
+          "inactive_description": "Diese*r Ehrenamtliche*r kann sich nicht mehr engagieren",
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Hat nach mehreren Versuchen nie geantwortet"
         },
-        "volunteerType_title": "Freiwilligen-Typ",
+        "volunteerType_title": "Art der Tätigkeit",
         "volunteerType_options": {
           "accompanying": "Begleitend",
           "regular": "Regelmäßig",
@@ -575,12 +577,12 @@
           "festival": "Festival",
           "weekend-only": "Nur Wochenende"
         },
-        "matchStatus_title": "Zuweisungs-Status",
+        "matchStatus_title": "Status der Zuweisung",
         "matchStatus_options": {
           "noMatches": "Keine Zuweisungen",
           "pendingMatch": "Zuweisung ausstehend",
           "matched": "Zugewiesen",
-          "needsRematch": "Neu-Zuweisung erforderlich",
+          "needsRematch": "Erneute Zuweisung erforderlich",
           "past": "Vergangen"
         },
         "communication_title": "Kommunikation",
@@ -653,12 +655,12 @@
         }
       },
       "profileSection": {
-        "title": "Freiwilligenprofil",
+        "title": "Ehrenamtlichenprofil",
         "edit": "Bearbeiten",
         "languages": "Sprachen",
         "availability": "Verfügbarkeit",
         "districts": "Bezirke",
-        "volunteerType": "Freiwilligen-Typ",
+        "volunteerType": "Art der Tätigkeit",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrungen",
         "comments": "Kommentare",
@@ -670,7 +672,7 @@
           "levelRequired": "Wähle ein Niveau aus",
           "availabilityRequired": "Bitte wähle mindestens eine Verfügbarkeit aus",
           "districtsRequired": "Bitte wähle mindestens einen Bezirk aus",
-          "volunteerTypeRequired": "Freiwilligen-Typ ist erforderlich",
+          "volunteerTypeRequired": "Art der Tätigkeit ist erforderlich",
           "activitiesRequired": "Bitte wähle mindestens eine Aktivität aus",
           "skillsRequired": "Fähigkeiten sind erforderlich"
         }
@@ -696,7 +698,11 @@
         "new": "Neu",
         "searching": "Suchend",
         "active": "Aktiv",
-        "past": "Vergangen"
+        "past": "Vergangen",
+        "opp-new": "Neu",
+        "opp-searching": "Suchend",
+        "opp-active": "Aktiv",
+        "opp-past": "Vergangen"
       },
       "type": {
         "accompanying": "Begleitend",
@@ -706,7 +712,7 @@
       },
       "card": {
         "mainCommunication": "Hauptkommunikation",
-        "residentsSpeak": "Bewohner sprechen",
+        "residentsSpeak": "Geflüchtete sprechen",
         "schedule": "Zeitplan",
         "search": "Suche"
       },
@@ -722,7 +728,7 @@
           "asog": "ASOG",
           "counseling-center": "Beratungsstelle",
           "tandem": "Tandem",
-          "multiple-social-support": "Mehrfach-Sozialberatung"
+          "multiple-social-support": "Allgemeine Sozialberatung"
         },
         "engagementStatus": {
           "header": "Status",
@@ -732,7 +738,7 @@
           "agent-unresponsive": "Reagiert nicht"
         },
         "volunteerSearch": {
-          "header": "Freiwilligensuche",
+          "header": "Ehrenamtlichensuche",
           "agent-searching": "Suchend",
           "agent-volunteers-found": "Besetzt",
           "agent-not-needed": "Nicht benötigt"
@@ -745,7 +751,7 @@
           "childcare": "Kinderbetreuung",
           "consultation": "Beratung",
           "job-coaching": "Job-Coaching",
-          "refugee-accommodation": "Flüchtlingsunterkunft",
+          "refugee-accommodation": "Unterkunft für Geflüchtete",
           "sport": "Sport",
           "tandem": "Tandem",
           "tutoring": "Nachhilfe",
@@ -760,14 +766,14 @@
         "no": "Keine Übersetzung erforderlich"
       },
       "defaultMainCommunication": "Englisch, Deutsch",
-      "otherCategory": "Allgemeine Freiwilligenarbeit",
+      "otherCategory": "Allgemeine ehrenamtliche Tätigkeiten",
       "goToProfile": "Zum Profil",
       "mainCommunication": "Hauptkommunikation",
       "translationTo": "Übersetzung nach",
-      "residentsSpeak": "Bewohner sprechen",
+      "residentsSpeak": "Geflüchtete sprechen",
       "languages": "Sprachen",
       "schedule": "Zeitplan",
-      "district": "Stadtviertel",
+      "district": "Bezirk",
       "dateOfAppointment": "Termindatum",
       "description": "Beschreibung",
       "pendingMemberships": {
@@ -780,7 +786,7 @@
       }
     },
     "opportunities": {
-      "opportunities": "Möglichkeiten",
+      "opportunities": "Ehrenamtsbedarfe",
       "tabs": {
         "tab1": "Liste",
         "tab2": "Karten",
@@ -799,7 +805,8 @@
         "opp-vol-matched": "Zugeordnet",
         "opp-vol-needs-rematch": "Erneute Zuordnung erforderlich",
         "opp-vol-unmatched": "Nicht zugeordnet",
-        "opp-vol-past": "Vergangen"
+        "opp-vol-past": "Vergangen",
+        "vol-no-matches": "Keine Zuordnungen"
       },
       "type": {
         "accompanying": "Begleitung",
@@ -818,7 +825,7 @@
       },
       "card": {
         "mainCommunication": "Hauptkommunikation",
-        "residentsSpeak": "Bewohner sprechen",
+        "residentsSpeak": "Geflüchtete sprechen",
         "schedule": "Zeitplan",
         "search": "Suchen"
       },
@@ -876,7 +883,7 @@
       "goToProfile": "Zum Profil",
       "mainCommunication": "Hauptkommunikation",
       "translationTo": "Übersetzung nach",
-      "residentsSpeak": "Bewohnende sprechen",
+      "residentsSpeak": "Geflüchtete sprechen",
       "languages": "Sprachen",
       "schedule": "Zeitplan",
       "district": "Bezirk",
@@ -965,9 +972,9 @@
       "editAppreciation": "Anerkennung bearbeiten",
       "dueDateRequired": "Fälligkeitsdatum*",
       "deliveryDate": "Lieferdatum (optional)",
-      "didVolunteerReceive": "Hat der Freiwillige es erhalten?*",
-      "volunteerReceivedIt": "Der Freiwillige hat es erhalten",
-      "needToGiveIt": "Muss dem Freiwilligen gegeben werden",
+      "didVolunteerReceive": "Hat der*die Ehrenamtliche es erhalten?*",
+      "volunteerReceivedIt": "Der*die Ehrenamtliche hat es erhalten",
+      "needToGiveIt": "Muss dem*der Ehrenamtlichen gegeben werden",
       "receivedOnRequired": "Erhalten am*",
       "today": "heute",
       "cancel": "Abbrechen",
@@ -987,8 +994,8 @@
       "registeredSince": "Registriert seit",
       "engagementStatus": "Engagement-Status",
       "serviceType": "Dienstleistungsart",
-      "volunteerSearch": "Freiwilligensuche",
-      "trustLevel": "Reaktionsfähigkeit",
+      "volunteerSearch": "Ehrenamtlichensuche",
+      "trustLevel": "Erreichbarkeit",
       "changeStatus": "Status ändern",
       "district": "Bezirk",
       "type": "Typ",
@@ -1012,7 +1019,7 @@
           "tandem": "Tandem",
           "sport": "Sport",
           "tutoring": "Nachhilfe",
-          "refugeeAccommodation": "Unterkunft für geflüchteten",
+          "refugeeAccommodation": "Unterkunft für Geflüchtete",
           "jobCoaching": "Job-Coaching",
           "youth": "Jugend"
         },
@@ -1047,14 +1054,14 @@
         "saveSuccess": "Kontaktdaten erfolgreich aktualisiert",
         "roles": {
           "label": "Rolle",
-          "social-worker": "Sozialarbeiter",
-          "volunteer-coordinator": "Ehrenamtskoordinator",
+          "social-worker": "Sozialarbeiter*in",
+          "volunteer-coordinator": "Ehrenamtskoordinator*in",
           "manager": "Leitung",
-          "project-coordinator": "Projektkoordinator",
+          "project-coordinator": "Projektkoordinator*in",
           "coordination": "Koordination",
-          "psychologist": "Psychologe",
-          "project-staff": "Projektmitarbeiter",
-          "childcare-worker": "Kinderbetreuer",
+          "psychologist": "Psychologe*in",
+          "project-staff": "Projektmitarbeiter*in",
+          "childcare-worker": "Kinderbetreuer*in",
           "other": "Sonstiges"
         },
         "cancel": "Abbrechen",
@@ -1075,7 +1082,7 @@
         }
       },
       "organisationDetails": {
-        "title": "Organisationsdetails",
+        "title": "Details zur Organisation",
         "edit": "Bearbeiten",
         "about": "Über uns",
         "website": "Webseite",
@@ -1083,7 +1090,7 @@
         "organisationType": "Art der Organisation",
         "operator": "Träger",
         "services": "Leistungen",
-        "clientLanguages": "Sprachen der Klient:innen",
+        "clientLanguages": "Sprachen des*der Klienten*in",
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Organisationsdetails erfolgreich aktualisiert",
@@ -1098,17 +1105,17 @@
       "opportunitiesSec": {
         "postOpportunity": "Möglichkeit posten",
         "tabs": {
-          "lookingForVolunteers": "Suche nach Freiwilligen",
+          "lookingForVolunteers": "Suche nach Ehrenamtlichen",
           "active": "Aktiv",
           "past": "Vergangen"
         }
       }
     },
     "opportunityProfile": {
-      "opportunityProfile": "Profil der Möglichkeit",
+      "opportunityProfile": "Profil der ehrenamtlichen Tätigkeit",
       "postedOn": "Veröffentlicht am",
       "currentStatus": "Aktueller Status",
-      "matchingStatus": "Matching-Status",
+      "matchingStatus": "Zuordnungsstatus",
       "agent": "Einrichtung/Projekt",
       "status": {
         "new": "Neu",
@@ -1120,24 +1127,24 @@
       "matchStatus": {
         "noMatches": "Keine Zuweisungen",
         "pendingMatch": "Zuweisung ausstehend",
-        "matched": "Gematcht",
-        "needRematch": "Neues Matching erforderlich",
-        "unmatched": "Nicht gematcht",
+        "matched": "Zugewiesen",
+        "needRematch": "Neue Zuweisung erforderlich",
+        "unmatched": "Nicht zugewiesen",
         "past": "Vergangen"
       },
-      "statusUpdateSuccess": "Status der Möglichkeit erfolgreich aktualisiert",
+      "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
       "statusModal": {
-        "title": "Opportunitätsstatus ändern",
+        "title": "Status der ehrenamtlichen Tätigkeit ändern",
         "save": "Speichern",
         "cancel": "Abbrechen",
         "options": {
           "new": "Neu / Validierung erforderlich",
-          "new_description": "Die Möglichkeit wurde noch nicht validiert.",
+          "new_description": "Die ehrenamtliche Tätigkeit wurde noch nicht validiert.",
           "searching": "Validiert",
-          "searching_description": "Die Möglichkeit wurde validiert, es kann nach ihr gesucht werden.",
+          "searching_description": "Die ehrenamtliche Tätigkeit wurde validiert, es kann danach gesucht werden.",
           "inactive": "Inaktiv",
-          "inactive_description": "Die Möglichkeit ist nicht mehr aktiv."
+          "inactive_description": "Diese ehrenamtliche Tätigkeit ist nicht mehr aktuell."
         }
       },
       "contactDetailsTitle": "Kontaktdaten",
@@ -1178,16 +1185,16 @@
           "districtRequired": "Bezirk ist erforderlich"
         }
       },
-      "accompanyingDetailsTitle": "Begleitdetails",
+      "accompanyingDetailsTitle": "Details zur Begleitung",
       "accompanyingDetails": {
         "appointmentAddress": "Terminadresse",
         "appointmentPostcode": "Terminpostleitzahl",
         "appointmentDistrict": "Terminbezirk",
         "appointmentDate": "Termindatum",
         "appointmentTime": "Terminzeit",
-        "refugeeNumber": "Geflüchtetennummer",
+        "refugeeNumber": "Telefonnummer der*des Geflüchteten",
         "refugeeName": "Name des Geflüchteten",
-        "refugeeLanguage": "Flüchtlingssprache",
+        "refugeeLanguage": "Sprache der*des Geflüchteten",
         "appointmentLanguage": "Terminsprache",
         "appointmentLanguageOptions": {
           "deutsche": "Deutsch",
@@ -1196,21 +1203,21 @@
         },
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
-        "saveSuccess": "Begleitdetails erfolgreich aktualisiert",
-        "notAccompanyingMessage": "Diese Möglichkeit ist nicht als Begleitung markiert. Ändern Sie diesen Status in der oberen Karte, wenn Sie die Begleitinformationen ausfüllen müssen (Terminadresse, Angaben zu Geflüchteten usw.).",
+        "saveSuccess": "Details zur Begleitung erfolgreich aktualisiert",
+        "notAccompanyingMessage": "Diese ehrenamtliche Tätigkeit ist nicht als Begleitung markiert. Ändern Sie diesen Status in der oberen Karte, wenn Sie die Begleitinformationen ausfüllen müssen (Terminadresse, Angaben zu Geflüchteten usw.).",
         "validation": {
           "invalidTimeFormat": "Ungültiges Zeitformat (verwenden Sie HH:MM)"
         }
       },
       "volunteersSec": {
-        "title": "Freiwillige",
-        "findVolunteers": "Freiwillige finden",
+        "title": "Ehrenamtliche",
+        "findVolunteers": "Ehrenamtliche finden",
         "suggestButtonName": "Vorschlagen",
         "suggestDialog": {
-          "title": "Für diese Möglichkeit vorschlagen?",
+          "title": "Für diese ehrenamtliche Tätigkeit vorschlagen?",
           "messageStart": "Der Verantwortliche von",
           "messageMid": "wird benachrichtigt, dass Sie",
-          "messageEnd": "vorgeschlagen haben. Es erscheint in seinem / ihrem Profil unter \"ausstehenden\" Freiwilligen.",
+          "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"ausstehenden\" Ehrenamtlichen.",
           "confirm": "Vorschlagen",
           "cancel": "Abbrechen",
           "success": "Vorschlag erfolgreich gesendet"
@@ -1222,31 +1229,31 @@
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
         },
-        "emptyState": "Noch keine Freiwilligen in dieser Kategorie",
-        "statusUpdateSuccess": "Freiwilligen-Status erfolgreich aktualisiert",
-        "removeSuccess": "Freiwilliger erfolgreich entfernt"
+        "emptyState": "Noch keine Ehrenamtlichen in dieser Kategorie",
+        "statusUpdateSuccess": "Ehrenamtlichen-Status erfolgreich aktualisiert",
+        "removeSuccess": "Ehrenamtliche*r erfolgreich entfernt"
       },
       "opportunityDetails": {
-        "title": "Details der Möglichkeit",
+        "title": "Details zur ehrenamtlichen Tätigkeit",
         "opportunityName": "Name",
         "description": "Beschreibung",
         "mainCommunication": "Hauptkommunikation",
-        "residentsSpeak": "Bewohner sprechen",
+        "residentsSpeak": "Geflüchtete sprechen",
         "schedule": "Zeitplan",
         "eventDate": "Veranstaltungsdatum",
         "eventTime": "Veranstaltungszeit",
-        "numberOfVolunteers": "Anzahl der Freiwilligen",
+        "numberOfVolunteers": "Anzahl der Ehrenamtlichen",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrung",
         "descriptionHint": "Max. {{max}} Zeichen",
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
-        "saveSuccess": "Möglichkeit erfolgreich aktualisiert",
+        "saveSuccess": "Ehrenamtliche Tätigkeit erfolgreich aktualisiert",
         "validation": {
           "opportunityNameRequired": "Name ist erforderlich",
           "descriptionRequired": "Beschreibung ist erforderlich",
           "descriptionTooLong": "Beschreibung ist zu lang",
-          "numberOfVolunteersRequired": "Anzahl der Freiwilligen muss mindestens 1 sein",
+          "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
@@ -1281,8 +1288,8 @@
         "other": "Sonstiges"
       },
       "dateOfContact": "Datum des Kontakts",
-      "contactDate": "Kontaktdatum",
-      "contactDateRequired": "Kontaktdatum*",
+      "contactDate": "Datum des Kontakts",
+      "contactDateRequired": "Datum des Kontakts*",
       "whatPlatform": "Welche Plattform haben Sie verwendet?",
       "howDidYouSend": "Wie haben Sie Ihre Nachricht gesendet?",
       "contactMethodLabel": "Kontaktmethode",
@@ -1290,11 +1297,11 @@
       "contactMethodRequired": "Kontaktmethode*",
       "communicationTypeRequired": "Kommunikationstyp*",
       "communicationTypes": {
-        "briefedVolunteer": "Briefing erfolgt (begleitende*r Freiwillige*r)",
+        "briefedVolunteer": "Briefing erfolgt (begleitende*r Ehrenamtliche*r)",
         "firstInquiry": "Erste Anfrage gesendet",
-        "opportunityList": "Möglichkeitenliste gesendet",
+        "opportunityList": "Liste der Ehrenamtsbedarfe gesendet",
         "statusUpdate": "Statusaktualisierung",
-        "postMatchFollowUp": "Nachverfolgung nach Vermittlung"
+        "postMatchFollowUp": "Folgegespräch nach Zuweisung"
       },
       "platformOptions": {
         "phoneNumber": "Telefonnummer",
@@ -1316,7 +1323,7 @@
       "deleteConfirmTitle": "Eintrag löschen?",
       "deleteConfirmText": "\"{{entryType}}\" Kommunikationseintrag wird dauerhaft gelöscht.",
       "statusChange": "Statusänderung",
-      "followUp": "Nachverfolgung",
+      "followUp": "Folgegespräch",
       "inquiry": "Anfrage",
       "other": "Sonstiges",
       "email": "E-Mail",
@@ -1332,7 +1339,7 @@
       "createEvent": "Veranstaltung erstellen",
       "createForm": {
         "eventTitle": "Veranstaltungstitel",
-        "titleLabel": "Titel des Ehrenamtsangebots",
+        "titleLabel": "Titel der ehrenamtlichen Tätigkeit",
         "titlePlaceholder": "Titel",
         "titleHelper": "z.B. \"Begleitung zur Augenklinik\", \"Basteln & Malen\"",
         "descriptionLabel": "Beschreibung",
@@ -1368,44 +1375,44 @@
   },
   "aboutus": {
     "aboutusHeading": "Über das Projekt",
-    "aboutusSubheading": "Die Zahl der Menschen, die weltweit vor Konflikten, Verfolgung und Menschenrechtsverletzungen fliehen, war noch nie so hoch wie heute. Need4Deed will die Inklusion und Integration von Geflüchteten in Berlin durch zivilgesellschaftliches Engagement fördern, indem es den Zugang zu ehrenamtlichen Engagement erleichtert. Unser Ziel ist es, einen nachhaltigen und skalierbaren Mechanismus für diesen Zweck aufzubauen, indem wir Freiwillige mit Geflüchteten, die in Berliner Gemeinschaftsunterkünften leben, auf der Grundlage ihrer spezifischen Bedürfnisse zusammenbringen.",
+    "aboutusSubheading": "Die Zahl der Menschen, die weltweit vor Konflikten, Verfolgung und Menschenrechtsverletzungen fliehen, war noch nie so hoch wie heute. Need4Deed will die Inklusion und Integration von Geflüchteten in Berlin durch zivilgesellschaftliches Engagement fördern, indem es den Zugang zu ehrenamtlichem Engagement erleichtert. Unser Ziel ist es, einen nachhaltigen und skalierbaren Mechanismus für diesen Zweck aufzubauen, indem wir Ehrenamtliche mit Geflüchteten, die in Berliner Gemeinschaftsunterkünften leben, auf der Grundlage ihrer spezifischen Bedürfnisse zusammenbringen.",
     "values": {
       "valuesHeading": "Unsere Werte",
       "equalOpportunityHeading": "Chancengleichheit",
       "equalOpportunitySubheading": "Menschen, die unter bedürftigen Lebensbedingungen leben, sollten gleiche Chancen erhalten. Dazu gehören auch unterversorgte Personen und Gruppen, die von Zwangsmigration betroffen sind.",
       "responsibilityHeading": "Verantwortung",
       "responsibilitySubheading": "Sowohl die Länder (der Staat) als auch die Zivilgesellschaft tragen Verantwortung für ihre unterversorgten Gemeinschaften, einschließlich der von erzwungener Migration Betroffenen.",
-      "migranToMigranSupportHeading": "Unterstützung von Migrant*innen zu Migrant*innen",
-      "migranToMigranSupportSubheading": "Insbesondere Gruppen und Einzelpersonen, die eine erzwungene Migration hinter sich haben, können am besten von anderen Personen mit Migrationshintergrund in ihrem Integrationsprozess verstanden und unterstützt werden, so dass sie gleiche Chancen erhalten und schließlich selbst von der Gesellschaft profitieren.",
+      "migranToMigranSupportHeading": "Migrant*innen unterstützen Migrant*innen",
+      "migranToMigranSupportSubheading": "Insbesondere Gruppen und Einzelpersonen, die eine erzwungene Migration durchlebt haben, könnten im Laufe ihres Integrationsprozesses am besten von anderen Menschen mit Migrationshintergrund verstanden und unterstützt werden, damit sie gleiche Chancen erhalten und schließlich selbst einen Beitrag zur Gesellschaft leisten können.",
       "activeParticipationHeading": "Aktive Beteiligung",
-      "activeParticipationSubheading": "Eine Unterstützungsstruktur von Migrant*innen für Migrant*innen neben der Unterstützung von Nicht-Migrant*innen eine wichtige soziale Rolle in Gesellschaften spielen kann, indem es einen schnelleren Integrationsprozess und eine aktive Beteiligung der unterstützten Gemeinschaften ermöglicht.",
+      "activeParticipationSubheading": "Eine Unterstützungsstruktur von Migrant*innen für Migrant*innen kann neben der Unterstützung von Nicht-Migrant*innen eine wichtige soziale Rolle in Gesellschaften spielen, indem sie einen schnelleren Integrationsprozess und eine aktive Beteiligung der unterstützten Gemeinschaften ermöglicht.",
       "technologyHeading": "Technologie",
       "technologySubheading": "Der Einsatz von Technologie zur Unterstützung unterversorgter Gemeinschaften ist ein entscheidender Wert, um das Geben und Nehmen von Unterstützung integrativer, zugänglicher und skalierbarer zu machen."
     }
   },
   "faqs": {
-    "faqs": "HGFs",
+    "faqs": "FAQs",
     "title": "Häufig gestellte Fragen",
-    "first_steps_question": "Was sind die ersten Schritte, um Freiwilliger zu werden?",
-    "first_steps_answer": "Beginnen Sie mit dem Ausfüllen des Freiwilligenantragsformulars auf der Need4Deed-Website.",
+    "first_steps_question": "Was sind die ersten Schritte, um Ehrenamtlicher zu werden?",
+    "first_steps_answer": "Beginnen Sie mit dem Ausfüllen des Ehrenamtlichenantragsformulars auf der Need4Deed-Website.",
     "after_form_question": "Was passiert, nachdem ich das Formular ausgefüllt habe?",
-    "after_form_answer": "Nachdem wir Ihre Präferenzen und Standorte haben, suchen wir nach einer passenden Möglichkeit für Sie und kontaktieren Sie in den nächsten Tagen.",
-    "find_opportunities_question": "Wie finde ich verfügbare Freiwilligenmöglichkeiten?",
-    "find_opportunities_answer": "Sehen Sie auf der Seite 'Möglichkeiten' auf der Need4Deed-Website nach aktuellen Freiwilligenrollen.",
-    "volunteer_roles_question": "Welche Arten von Freiwilligenrollen werden angeboten?",
-    "volunteer_roles_answer": "Die Rollen umfassen Kinderbetreuung, Sprachcafés, Übersetzungsdienste und Unterstützung bei offiziellen Terminen und sportlichen Aktivitäten.",
-    "special_skills_question": "Brauche ich spezielle Fähigkeiten, um mich freiwillig zu engagieren?",
-    "special_skills_answer": "Viele Rollen stehen allen Freiwilligen offen, obwohl für bestimmte Positionen spezielle Fähigkeiten erforderlich sein können.",
-    "volunteering_time_question": "Wie viel Zeit nimmt das Freiwilligenengagement in Anspruch?",
-    "volunteering_time_answer": "Regelmäßiges Freiwilligenengagement erfordert normalerweise etwa 2 Stunden pro Woche oder zweimal im Monat. Unregelmäßiges Freiwilligenengagement kann stattfinden, wann immer Sie Zeit haben, insbesondere bei Veranstaltungen oder Aufgaben wie Übersetzungen bei Arztterminen.",
-    "age_requirements_question": "Gibt es Altersanforderungen für Freiwillige?",
-    "age_requirements_answer": "Die Altersanforderungen können variieren, aber die meisten Orte verlangen, dass die Person über 18 Jahre alt ist. Bitte überprüfen Sie die spezifischen Anforderungen in den Möglichkeiten.",
+    "after_form_answer": "Nachdem wir Ihre Präferenzen und Standorte haben, suchen wir nach einem passenden Ehrenamt für Sie und kontaktieren Sie in den nächsten Tagen.",
+    "find_opportunities_question": "Wie finde ich aktuelle Ehrenamtsbedarfe?",
+    "find_opportunities_answer": "Sehen Sie auf der Seite „Ehrenamtsbedarfe“ auf der Need4Deed-Website nach aktuellen Möglichkeiten, sich ehrenamtlich zu engagieren.",
+    "volunteer_roles_question": "Welche Arten von ehrenamtlichen Tätigkeit werden angeboten?",
+    "volunteer_roles_answer": "Die Aufgaben umfassen Kinderbetreuung, Sprachcafés, Übersetzungsdienste und Unterstützung bei offiziellen Terminen und sportlichen Aktivitäten.",
+    "special_skills_question": "Brauche ich spezielle Fähigkeiten, um mich ehrenamtlich zu engagieren?",
+    "special_skills_answer": "Viele Aufgaben stehen allen Ehrenamtlichen offen, obwohl für bestimmte Bedarfe spezielle Fähigkeiten erforderlich sein können.",
+    "volunteering_time_question": "Wie viel Zeit nimmt ehrenamtliches Engagement in Anspruch?",
+    "volunteering_time_answer": "Regelmäßiges ehrenamtliches Engagement erfordert normalerweise einen Zeitaufwand von etwa zwei Stunden pro Woche oder, bei selteneren Einsätzen, zwei Termine im Monat. Unregelmäßiges ehrenamtliches Engagement kann stattfinden, wann immer Sie Zeit haben, insbesondere bei Veranstaltungen oder Aufgaben wie Übersetzungen bei Arztterminen.",
+    "age_requirements_question": "Gibt es Altersanforderungen für Ehrenamtliche?",
+    "age_requirements_answer": "Die Altersanforderungen können variieren, aber die meisten Einrichtungen verlangen, dass die Person über 18 Jahre alt ist. Bitte überprüfen Sie die spezifischen Anforderungen in den Ehrenamtsbedarfen.",
     "voluntea_gatherings_question": "Was kann ich bei den VolunTea-Treffen erwarten?",
     "voluntea_gatherings_answer": "Die VolunTea-Treffen umfasst die Mission von Need4Deed, Freiwilligenrollen und Unterstützung bei der Suche nach geeigneten Unterkünften für Geflüchtete.",
-    "training_question": "Gibt es eine spezielle Schulung?",
+    "training_question": "Werden spezielle Schulungen angeboten?",
     "training_answer": "Alle paar Monate werden Schulungen angeboten, insbesondere für diejenigen, die Übersetzungsunterstützung leisten.",
-    "group_volunteering_question": "Kann ich mit einer Gruppe oder Organisation freiwillig arbeiten?",
-    "group_volunteering_answer": "Ja, Gruppenfreiwilligenarbeit wird gefördert, insbesondere für diejenigen, die Unterkünfte für Geflüchtete unterstützen."
+    "group_volunteering_question": "Kann ich mich bei einer Gruppe oder Organisation ehrenamtlich engagieren?",
+    "group_volunteering_answer": "Ja, ehrenamtliches Engagement für Gruppen wird gefördert, insbesondere für diejenigen, die Unterkünfte für Geflüchtete unterstützen."
   },
   "legal": {
     "legalHeading": "Legal",
