@@ -13,10 +13,6 @@ import {
   createOpportunityDetailsSchema,
   OpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
-import {
-  AccompanyingDetailsFormData,
-  accompanyingDetailsSchema,
-} from "@/components/Dashboard/Profile/sections/AccompanyingDetails/accompanyingDetailsSchema";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
@@ -77,6 +73,10 @@ import { Controller, FormProvider, useForm, useFormContext } from "react-hook-fo
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { z } from "zod";
+import {
+  createAccompanyingDetailsSchema,
+  AccompanyingDetailsFormData,
+} from "../Profile/sections/AccompanyingDetails/createAccompanyingDetailsSchema";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -191,7 +191,7 @@ function buildCreatePayload(
     accomp_name: isAccompanying ? (accompData?.refugeeName ?? null) : null,
     accomp_phone: isAccompanying ? (accompData?.refugeeNumber ?? null) : null,
     accomp_information: null,
-    accomp_translation: isAccompanying ? (accompData?.appointmentLanguage ?? null) : null,
+    accomp_translation: isAccompanying ? accompData?.appointmentLanguage || null : null,
     berlin_locations: null,
     category: "",
     category_id: "",
@@ -414,6 +414,7 @@ export function NewOpportunity() {
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
   const { agentId } = useGetCurrentAgent();
+
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
 
   const { data: apiLanguages = [] } = useApiLanguages();
@@ -428,7 +429,6 @@ export function NewOpportunity() {
   });
   const {
     control: headerControl,
-    handleSubmit: handleHeaderSubmit,
     watch: watchHeader,
     formState: { errors: headerErrors },
   } = headerMethods;
@@ -455,7 +455,7 @@ export function NewOpportunity() {
 
   // Accompanying details form (always initialised; only included in payload when type is ACCOMPANYING)
   const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(accompanyingDetailsSchema),
+    resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
     mode: "onChange",
     defaultValues: {
       appointmentAddress: "",
@@ -494,11 +494,14 @@ export function NewOpportunity() {
     },
   });
 
-  const onSubmit = (headerData: HeaderFormData) => {
-    // Don't create an opportunity that isn't linked to its agent.
-    if (!agentId) return;
+  const handleCreate = async () => {
+    const headerValid = await headerMethods.trigger();
+    const detailsValid = await detailsMethods.trigger();
+    const accompValid = !isAccompanying || (await accompanyingMethods.trigger());
+    if (!headerValid || !detailsValid || !accompValid || !agentId) return;
+
     const payload = buildCreatePayload(
-      headerData,
+      headerMethods.getValues(),
       detailsMethods.getValues(),
       isAccompanying ? accompanyingMethods.getValues() : null,
       apiLanguages,
@@ -612,7 +615,7 @@ export function NewOpportunity() {
           text={t("dashboard.newOpportunity.submit")}
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
-          onClick={handleHeaderSubmit(onSubmit)}
+          onClick={handleCreate}
           disabled={isPending || !agentId}
         />
       </SaveRow>
