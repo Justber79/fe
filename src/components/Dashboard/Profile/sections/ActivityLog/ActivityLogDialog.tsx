@@ -1,6 +1,7 @@
 import { Button } from "@/components/core/button";
 import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
 import { Modal } from "@/components/core/modal";
+import { parseISO } from "date-fns";
 import { de, enUS } from "date-fns/locale";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,7 @@ type Props = {
   onClose: () => void;
   onSave: (data: ActivityLogFormData) => void;
   initialData?: ApiActivityLogEntry;
+  isSaving?: boolean;
 };
 
 const parseHours = (value: string): number | null => {
@@ -24,11 +26,11 @@ const parseHours = (value: string): number | null => {
   return parsed;
 };
 
-export function ActivityLogDialog({ isOpen, onClose, onSave, initialData }: Props) {
+export function ActivityLogDialog({ isOpen, onClose, onSave, initialData, isSaving = false }: Props) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language === "de" ? de : enUS;
 
-  const [date, setDate] = useState<Date | undefined>(initialData ? new Date(initialData.date) : undefined);
+  const [date, setDate] = useState<Date | undefined>(initialData ? parseISO(String(initialData.date)) : undefined);
   const [hours, setHours] = useState(initialData ? String(initialData.hours) : "");
 
   const parsedHours = parseHours(hours);
@@ -37,7 +39,7 @@ export function ActivityLogDialog({ isOpen, onClose, onSave, initialData }: Prop
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || parsedHours === null) return;
+    if (isSaving || !date || parsedHours === null) return;
     onSave({ date, hours: parsedHours });
   };
 
@@ -92,7 +94,7 @@ export function ActivityLogDialog({ isOpen, onClose, onSave, initialData }: Prop
             onClick={handleSubmit}
             backgroundcolor={isFormValid ? "var(--color-aubergine)" : "var(--color-grey-50)"}
             textColor={isFormValid ? "var(--color-white)" : "var(--color-grey-400)"}
-            disabled={!isFormValid}
+            disabled={!isFormValid || isSaving}
           />
         </DialogButtonGroup>
       </DialogForm>

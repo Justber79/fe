@@ -28,7 +28,8 @@ type Props = {
 
 export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props) {
   const { t } = useTranslation();
-  const { entries, totalHours, createEntry, updateEntry, deleteEntry } = useActivityLog(opportunityVolunteerId);
+  const { entries, totalHours, isLoading, createEntry, isCreating, updateEntry, isUpdating, deleteEntry, isDeleting } =
+    useActivityLog(opportunityVolunteerId);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiActivityLogEntry | undefined>(undefined);
@@ -54,6 +55,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
   };
 
   const confirmDelete = () => {
+    if (isDeleting) return;
     if (deleteConfirmEntry) {
       deleteEntry(deleteConfirmEntry.id, {
         onSuccess: () => setDeleteConfirmEntry(null),
@@ -64,7 +66,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
 
   return (
     <SectionWrapper data-testid="activity-log-container">
-      {entries.length === 0 ? (
+      {!isLoading && entries.length === 0 ? (
         <SectionEmptyState data-testid="activity-log-empty-state">
           {t("dashboard.activityLog.emptyState")}
         </SectionEmptyState>
@@ -146,6 +148,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
           onClose={() => setIsDialogOpen(false)}
           onSave={handleSave}
           initialData={editingEntry}
+          isSaving={isCreating || isUpdating}
         />
       )}
 
