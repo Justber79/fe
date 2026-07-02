@@ -16,6 +16,7 @@ import {
 } from "./constants";
 import { TrustLevelDropdown } from "./TrustLevelDropdown";
 import { useAgentEngagementStatusDialog } from "./useAgentEngagementStatusDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
   agent: ApiAgentProfileGet;
@@ -26,6 +27,7 @@ export const AgentHeader = ({ agent }: Props) => {
   const districtLabel = getDistrictLabel(agent.district, i18n.language);
   const dialog = useAgentEngagementStatusDialog(agent);
   const { mutate: patchAgent } = useUpdateAgentStatus(agent.id);
+  const { isAuthorized } = useAuth();
 
   const registeredDate = agent.createdAt ? formatDateTime(agent.createdAt) : EMPTY_PLACEHOLDER_VALUE;
   const subtitle = `${t("dashboard.agentProfile.registeredSince")} ${registeredDate}`;
@@ -54,7 +56,11 @@ export const AgentHeader = ({ agent }: Props) => {
         title={t("dashboard.agentProfile.engagementStatus")}
         status={agent.statusEngagement}
         label={engagementStatusLabels[agent.statusEngagement]}
-        action={<EditButton onClick={dialog.openDialog}>{t("dashboard.agentProfile.changeStatus")}</EditButton>}
+        action={
+          isAuthorized && (
+            <EditButton onClick={dialog.openDialog}>{t("dashboard.agentProfile.changeStatus")}</EditButton>
+          )
+        }
       />
 
       <StatusRowField
@@ -66,12 +72,14 @@ export const AgentHeader = ({ agent }: Props) => {
       <StatusRowField
         title={t("dashboard.agentProfile.trustLevel")}
         extra={
-          <TrustLevelDropdown
-            value={agent.trustLevel}
-            options={TRUST_LEVEL_OPTIONS}
-            labels={trustLevelLabels}
-            onChange={handleTrustLevelChange}
-          />
+          isAuthorized && (
+            <TrustLevelDropdown
+              value={agent.trustLevel}
+              options={TRUST_LEVEL_OPTIONS}
+              labels={trustLevelLabels}
+              onChange={handleTrustLevelChange}
+            />
+          )
         }
       />
 
