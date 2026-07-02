@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, SortOrder } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
@@ -17,8 +17,11 @@ import { deserializeOpportunityFilters, serializeOpportunityFilters } from "./he
 import { OpportunityListController } from "./OpportunityListController";
 import { ContentRow, OpportunitiesContainer } from "./styles";
 import { ViewMode } from "../common/types";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function Opportunities() {
+  const user = useCurrentUser(true);
+  const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
@@ -28,17 +31,20 @@ export function Opportunities() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const tabs = !user
+    ? []
+    : isAgent
+      ? [t("dashboard.opportunities.tabs.tab2"), t("dashboard.opportunities.tabs.tab3")]
+      : [
+          t("dashboard.opportunities.tabs.tab1"),
+          t("dashboard.opportunities.tabs.tab2"),
+          t("dashboard.opportunities.tabs.tab3"),
+        ];
 
-  const tabs = [
-    t("dashboard.opportunities.tabs.tab1"),
-    t("dashboard.opportunities.tabs.tab2"),
-    t("dashboard.opportunities.tabs.tab3"),
-  ];
   const urlViewParam = searchParams.get("view");
-  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
+  const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
   const selectedTabIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const activeTabIndex = selectedTabIndex !== -1 ? selectedTabIndex : 0;
-  const viewMode = VIEW_MODE_BY_TAB[activeTabIndex];
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
