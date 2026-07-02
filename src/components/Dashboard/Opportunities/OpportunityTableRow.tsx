@@ -49,7 +49,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
   const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
   const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
-  const matchedNames = firstNames.length > 1 ? `${firstNames[0]} +${firstNames.length - 1}` : (firstNames[0] ?? "");
+  const firstName = firstNames[0] ?? "";
+  const otherVolunteersCount = numberOfVolunteers && numberOfVolunteers > 1 ? numberOfVolunteers - 1 : 0;
+  const matchedNames = firstName && otherVolunteersCount ? `${firstName} +${otherVolunteersCount}` : firstName;
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -77,7 +79,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        <WrappedText>{isMatched ? matchedNames : (numberOfVolunteers ?? "—")}</WrappedText>
+        <WrappedText>
+          {isMatched ? matchedNames || numberOfVolunteers?.toString() || "—" : (numberOfVolunteers ?? "—")}
+        </WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
         <TruncatedText>{agentTitle || "—"}</TruncatedText>
