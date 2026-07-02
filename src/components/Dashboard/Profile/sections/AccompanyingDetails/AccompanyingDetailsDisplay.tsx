@@ -2,9 +2,9 @@ import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
-import { AccompanyingDetailsFormData } from "./accompanyingDetailsSchema";
 import { formatTimeForDisplay } from "./helpers";
 import { DateFieldRow, Details } from "./styles";
+import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 type Props = {
   values: AccompanyingDetailsFormData;

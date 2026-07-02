@@ -16,9 +16,15 @@ export const createAgentFilterItems = (
     (key) => key,
   );
 
-  const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
-    t(`dashboard.agents.filters.type.${key.toLocaleLowerCase()}`),
-  );
+  const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key, parent) => {
+    const fallbackPath = `dashboard.agents.filters.type.${key.toLocaleLowerCase()}`;
+
+    if (key === "tandem" && parent === "type") {
+      return `${t("dashboard.agents.table.type")} ${t(fallbackPath)}`;
+    }
+
+    return t(fallbackPath);
+  });
 
   const volunteerSearchFilters = generateNestedFilterControlItems(
     filter.volunteerSearch,

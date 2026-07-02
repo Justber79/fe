@@ -69,9 +69,3 @@ export const TimeInput = styled.input<HasError>`
     border: ${(props) => (props.$hasError ? "2px solid var(--color-red-600)" : "2px solid var(--color-green-200)")};
   }
 `;
-
-export const ErrorText = styled.span`
-  color: var(--color-red-600);
-  font-size: var(--font-size-14);
-  margin-top: var(--spacing-4);
-`;
