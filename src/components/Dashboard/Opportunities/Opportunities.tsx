@@ -9,7 +9,7 @@ import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
+import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -76,6 +76,12 @@ export function Opportunities() {
     router.push(pathname + questionMark + params.toString());
   };
 
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
+  };
+
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
@@ -98,6 +104,7 @@ export function Opportunities() {
   }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
+
   return (
     <DashboardLayout>
       <OpportunitiesContainer data-testid="opportunities-container">
@@ -117,6 +124,7 @@ export function Opportunities() {
           extraSortOptions={extraSortOptions}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
         />
 

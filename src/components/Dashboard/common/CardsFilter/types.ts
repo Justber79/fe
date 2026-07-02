@@ -15,4 +15,6 @@ export type FilterItem = {
   label: string;
   checked: unknown;
   onChange: (checked: boolean) => void;
+  keyValue: string;
+  parentKey?: string;
 };
