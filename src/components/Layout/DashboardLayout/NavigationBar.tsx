@@ -15,6 +15,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ElementType } from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationBadge } from "./NotificationBadge";
+import { UserRole } from "need4deed-sdk";
 
 const BarContainer = styled.div`
   display: flex;
@@ -109,6 +110,8 @@ export default function NavigationBar() {
   const router = useRouter();
   const currentPathname = usePathname();
   const user = useCurrentUser();
+  const canSeeCalendar = user?.role !== UserRole.AGENT;
+
   const userInitials = user?.fullName
     ? user.fullName
         .split(" ")
@@ -141,11 +144,15 @@ export default function NavigationBar() {
       Icon: NotepadIcon,
       route: DashboardRoutes.Posts,
     },
-    {
-      label: t("dashboard.home.sidebar.calendar"),
-      Icon: CalendarDotsIcon,
-      route: DashboardRoutes.Calendar,
-    },
+    ...(canSeeCalendar
+      ? [
+          {
+            label: t("dashboard.home.sidebar.calendar"),
+            Icon: CalendarDotsIcon,
+            route: DashboardRoutes.Calendar,
+          },
+        ]
+      : []),
     {
       label: t("dashboard.home.sidebar.profile"),
       text: userInitials,
