@@ -8,19 +8,22 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ApiOptionLists, EntityTableName, SortOrder } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
 import { useGetQuery } from "@/hooks";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { AgentCardsFilter } from "./Filters/types";
 import { createSelectedAgentFiltersAsFlatArray } from "./Filters/helpers";
 import { defaultAgentCardsFilter } from "./Filters/constants";
-import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
+import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { deserializeAgentFilters, serializeAgentFilters } from "./helpers";
 import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
 import { ViewMode } from "../common/types";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const Agents = () => {
+  const user = useCurrentUser(true);
+  const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -31,9 +34,15 @@ export const Agents = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const tabs = [t("dashboard.agents.tabs.tab1"), t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")];
-  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.LIST;
+
+  const tabs = !user
+    ? []
+    : isAgent
+      ? [t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")]
+      : [t("dashboard.agents.tabs.tab1"), t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")];
+
+  const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
@@ -47,6 +56,12 @@ export const Agents = () => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
     setCardsFilter(updatedFilter);
     router.push(pathname + questionMark + serializeAgentFilters(updatedFilter, searchParams));
+  };
+
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeAgentFilters(cleared, searchParams));
   };
 
   const handleClearAllFilters = () => {
@@ -87,6 +102,7 @@ export const Agents = () => {
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
         />
         <PendingMemberships />
         <ContentRow>

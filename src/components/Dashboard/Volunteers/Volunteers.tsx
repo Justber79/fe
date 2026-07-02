@@ -6,11 +6,11 @@ import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { getClearFilter } from "../common/CardsFilter/helpers";
+import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { VolunteerCardsFilter } from "./Filters/types";
@@ -22,8 +22,11 @@ import {
 } from "./helpers";
 import { VolunteerListController } from "./VolunteerListController";
 import { ViewMode } from "../common/types";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function Volunteers() {
+  const user = useCurrentUser(true);
+  const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -34,8 +37,8 @@ export function Volunteers() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const tabs = [t("dashboard.volunteers.tabs.tab1"), t("dashboard.volunteers.tabs.tab2")];
-  const viewMode = Object.values(ViewMode)[selectedTabIndex];
+  const tabs = !user || isAgent ? [] : [t("dashboard.volunteers.tabs.tab1"), t("dashboard.volunteers.tabs.tab2")];
+  const viewMode = isAgent ? ViewMode.CARDS : Object.values(ViewMode)[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
 
@@ -60,6 +63,12 @@ export function Volunteers() {
     const params = new URLSearchParams(searchParams);
     params.delete("opportunity");
     router.push(pathname + questionMark + params.toString());
+  };
+
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
   };
 
   const handleClearAllFilters = () => {
@@ -102,6 +111,7 @@ export function Volunteers() {
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
           entityFilter={
             opportunityFilter ? { ...opportunityFilter, onRemove: handleRemoveOpportunityFilter } : undefined
           }

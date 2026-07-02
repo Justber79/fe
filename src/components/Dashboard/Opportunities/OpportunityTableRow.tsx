@@ -33,7 +33,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const router = useRouter();
 
   const ext = opportunity as ExtendedOpportunity;
-  const { id, title, volunteerType, languages, availability, location } = opportunity;
+  const { id, title, volunteerType, languages, availability, location, volunteerNames } = opportunity;
   const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
@@ -48,6 +48,10 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
   const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
+  const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
+  const firstName = firstNames[0] ?? "";
+  const otherVolunteersCount = numberOfVolunteers && numberOfVolunteers > 1 ? numberOfVolunteers - 1 : 0;
+  const matchedNames = firstName && otherVolunteersCount ? `${firstName} +${otherVolunteersCount}` : firstName;
 
   const handleGoToProfile = () => {
     if (!id) return;
@@ -75,7 +79,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
         $width={OPPORTUNITY_COL_WIDTHS.numberOfVolunteers}
         data-testid={`opportunity-number-of-volunteers-${id}`}
       >
-        <WrappedText>{numberOfVolunteers ?? "—"}</WrappedText>
+        <WrappedText>
+          {isMatched ? matchedNames || numberOfVolunteers?.toString() || "—" : (numberOfVolunteers ?? "—")}
+        </WrappedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.agentTitle} data-testid={`opportunity-agent-${id}`}>
         <TruncatedText>{agentTitle || "—"}</TruncatedText>
