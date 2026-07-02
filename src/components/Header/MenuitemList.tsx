@@ -13,7 +13,12 @@ export default function MenuitemList({ items, menuItemColor }: Props) {
   return (
     <>
       {items.map(([label, linkUrl]) => (
-        <Link href={linkUrl} key={label} target={linkUrl === eventsPublicLandingUrl ? "_blank" : "_self"}>
+        <Link
+          href={linkUrl}
+          key={label}
+          target={linkUrl === eventsPublicLandingUrl ? "_blank" : "_self"}
+          rel={linkUrl === eventsPublicLandingUrl ? "noopener noreferrer" : undefined}
+        >
           <MenuItem text={label} color={menuItemColor} />
         </Link>
       ))}
