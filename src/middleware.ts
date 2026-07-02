@@ -34,6 +34,13 @@ export function middleware(request: NextRequest) {
       const redirectResponse = NextResponse.redirect(url);
       return redirectResponse;
     }
+
+    const calendarRegex = /^(?:\/[a-z]{2})?\/dashboard\/calendar(?:\/|$)/;
+    if (userObject?.role === UserRole.AGENT && calendarRegex.test(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   const localePrefixRegex = /^\/([a-z]{2})(?:\/|$)/i;
