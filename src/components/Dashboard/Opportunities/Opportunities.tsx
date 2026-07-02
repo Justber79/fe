@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, SortOrder } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
+import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -18,8 +18,11 @@ import { deserializeOpportunityFilters, serializeOpportunityFilters } from "./he
 import { OpportunityListController } from "./OpportunityListController";
 import { ContentRow, OpportunitiesContainer } from "./styles";
 import { ViewMode } from "../common/types";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function Opportunities() {
+  const user = useCurrentUser(true);
+  const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -30,13 +33,18 @@ export function Opportunities() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const tabs = [
-    t("dashboard.opportunities.tabs.tab1"),
-    t("dashboard.opportunities.tabs.tab2"),
-    t("dashboard.opportunities.tabs.tab3"),
-  ];
-  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP] as const;
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.LIST;
+  const tabs = !user
+    ? []
+    : isAgent
+      ? [t("dashboard.opportunities.tabs.tab2"), t("dashboard.opportunities.tabs.tab3")]
+      : [
+          t("dashboard.opportunities.tabs.tab1"),
+          t("dashboard.opportunities.tabs.tab2"),
+          t("dashboard.opportunities.tabs.tab3"),
+        ];
+
+  const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
@@ -68,6 +76,12 @@ export function Opportunities() {
     router.push(pathname + questionMark + params.toString());
   };
 
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
+  };
+
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
@@ -90,6 +104,7 @@ export function Opportunities() {
   }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
+
   return (
     <DashboardLayout>
       <OpportunitiesContainer data-testid="opportunities-container">
@@ -109,6 +124,7 @@ export function Opportunities() {
           extraSortOptions={extraSortOptions}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
         />
 
