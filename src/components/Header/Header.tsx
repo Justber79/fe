@@ -3,7 +3,7 @@ import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { eventsSectionContainerId } from "@/config/constants";
+import { DashboardRoutes, eventsPublicLandingUrl } from "@/config/constants";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { MenuItemType, Subpage } from "@/types";
 import BurgerMenuItems from "./BurgerMenuItems";
@@ -55,8 +55,8 @@ export function Header({
 
   const menuItems: MenuItemType[] = [
     [t("homepage.heroSection.menuItems.about"), `/${Subpage.ABOUT}`],
-    [t("homepage.heroSection.menuItems.volunteeringOpportunities"), `/${Subpage.OPPORTUNITY_CARDS}`],
-    [t("homepage.heroSection.menuItems.events"), `/#${eventsSectionContainerId}`],
+    [t("homepage.heroSection.menuItems.volunteeringOpportunities"), `${DashboardRoutes.Opportunities}?view=cards`],
+    [t("homepage.heroSection.menuItems.events"), eventsPublicLandingUrl],
   ];
 
   return (
