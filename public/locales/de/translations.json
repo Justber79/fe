@@ -986,6 +986,26 @@
       "deleteConfirmTitle": "Anerkennung löschen?",
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
+    "activityLog": {
+      "date": "Datum",
+      "hours": "Stunden",
+      "total": "Gesamt",
+      "hoursValue": "{{hours}} Stunden",
+      "addEntry": "Eintrag hinzufügen",
+      "editEntry": "Eintrag bearbeiten",
+      "deleteEntry": "Eintrag löschen",
+      "datePlaceholder": "Datum des Einsatzes",
+      "hoursPlaceholder": "z. B. 2,5",
+      "hoursInvalid": "Bitte Stunden größer als 0 eingeben",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "emptyState": "Für dieses Match wurden noch keine Stunden erfasst",
+      "entryAdded": "Eintrag erfolgreich hinzugefügt",
+      "entryUpdated": "Eintrag erfolgreich aktualisiert",
+      "entryDeleted": "Eintrag erfolgreich gelöscht",
+      "deleteConfirmTitle": "Eintrag löschen?",
+      "deleteConfirmText": "Der Eintrag vom {{date}} wird dauerhaft gelöscht."
+    },
     "profile": {
       "loading": "Profil wird geladen...",
       "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab."
