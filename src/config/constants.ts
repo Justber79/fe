@@ -8,6 +8,7 @@ export const apiPathVolunteer = `/${apiPrefix}/volunteer`;
 export const apiPathComment = `/${apiPrefix}/comment`;
 export const apiPathCommunication = `/${apiPrefix}/communication`;
 export const apiPathAppreciation = `/${apiPrefix}/appreciation`;
+export const apiPathActivityLog = `/${apiPrefix}/activity-log`;
 export const apiPathLogin = `/${apiPrefix}/auth/login`;
 export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
 export const apiPathAuthEmailDomain = `/${apiPrefix}/auth-email-domain/`;
@@ -44,6 +45,7 @@ export const phoneRegEx = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9]
 export const n4dLanguageLocalStorageKey = "n4d-language";
 
 export const eventsSectionContainerId = "events-section-container";
+export const eventsPublicLandingUrl = "https://www.need4deed.org/event-page";
 
 export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
 

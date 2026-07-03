@@ -69,6 +69,8 @@ export const createAvailabilityFilterItems = (
           [QueryParamsKeys.AVAILABILITY]: { ...availability, [labelKey]: updated },
         }));
       },
+      keyValue: key,
+      parentKey: QueryParamsKeys.AVAILABILITY,
     })),
   });
 

@@ -2,18 +2,61 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { userAgent } from "next/server";
 import { supportedLangs } from "./config/constants";
-import { Lang } from "need4deed-sdk";
+import { Lang, UserRole } from "need4deed-sdk";
+import { decodeJwtPayload } from "./utils";
 
 const DEFAULT_LOCALE = Lang.EN;
 const DEFAULT_DEVICE_TYPE = "desktop";
 const DEVICE_HEADER_NAME = "x-device-type";
 const LANG_COOKIE = "preferred-lang";
+const REFRESH = "refresh";
+
+const authorizedRoutes: Record<string, { regex: RegExp; redirect: string }> = {
+  AGENT: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
+  DASHBOARD: { regex: /^(?:\/[a-z]{2})?\/dashboard(?:\/|$)/, redirect: "/login" },
+};
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const token = request.cookies.get(REFRESH)?.value;
+
+  if (!token) {
+    const match = pathname.match(authorizedRoutes.DASHBOARD.regex);
+    if (match) {
+      const url = request.nextUrl.clone();
+      url.search = "";
+      url.pathname = authorizedRoutes.DASHBOARD.redirect;
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (token) {
+    const userObject = decodeJwtPayload(token);
+    const isAuthorized =
+      (userObject && userObject.role === UserRole.ADMIN) || (userObject && userObject.role === UserRole.COORDINATOR);
+    const match = pathname.match(authorizedRoutes.AGENT.regex);
+    if (match) {
+      if (isAuthorized || userObject.role === UserRole.AGENT) {
+        return NextResponse.next();
+      }
+      const url = request.nextUrl.clone();
+      url.pathname = authorizedRoutes.AGENT.redirect;
+      const redirectResponse = NextResponse.redirect(url);
+      return redirectResponse;
+    }
+
+    const calendarRegex = /^(?:\/[a-z]{2})?\/dashboard\/calendar(?:\/|$)/;
+    if (userObject?.role === UserRole.AGENT && calendarRegex.test(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+  }
+
   const localePrefixRegex = /^\/([a-z]{2})(?:\/|$)/i;
   const match = pathname.match(localePrefixRegex);
+
   const currentLocale = match ? match[1] : null;
 
   // Use cookie-saved language preference, fall back to DEFAULT_LOCALE
