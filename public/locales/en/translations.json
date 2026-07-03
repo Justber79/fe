@@ -973,6 +973,26 @@
       "deleteConfirmTitle": "Delete appreciation?",
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
+    "activityLog": {
+      "date": "Date",
+      "hours": "Hours",
+      "total": "Total",
+      "hoursValue": "{{hours}} hours",
+      "addEntry": "Add entry",
+      "editEntry": "Edit entry",
+      "deleteEntry": "Delete entry",
+      "datePlaceholder": "Session date",
+      "hoursPlaceholder": "e.g. 2.5",
+      "hoursInvalid": "Please enter hours greater than 0",
+      "cancel": "Cancel",
+      "save": "Save",
+      "emptyState": "No hours logged for this match yet",
+      "entryAdded": "Entry added successfully",
+      "entryUpdated": "Entry updated successfully",
+      "entryDeleted": "Entry deleted successfully",
+      "deleteConfirmTitle": "Delete entry?",
+      "deleteConfirmText": "The entry for {{date}} will be permanently deleted."
+    },
     "profile": {
       "loading": "Loading profile...",
       "notSetUp": "Your organisation profile is not set up yet — please complete registration."
