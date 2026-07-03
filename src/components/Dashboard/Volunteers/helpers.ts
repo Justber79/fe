@@ -122,9 +122,15 @@ export function serializeFilters(
   params.delete(EntityTableName.ACTIVITY);
   Object.entries(filter.activity).forEach(([key, value]) => {
     if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id) || key;
-      params.append(EntityTableName.ACTIVITY, String(paramValue));
+      if (options?.serializeToIDs && options.apiFilterOptions) {
+        const activityId =
+          options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id;
+        if (activityId !== undefined) {
+          params.append(EntityTableName.ACTIVITY, String(activityId));
+        }
+      } else {
+        params.append(EntityTableName.ACTIVITY, key);
+      }
     }
   });
 
@@ -182,7 +188,9 @@ export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, search
 
   const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
   queryActivities.forEach((l) => {
-    newFilter.activity[l] = true;
+    if (newFilter.activity[l] !== undefined) {
+      newFilter.activity[l] = true;
+    }
   });
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
