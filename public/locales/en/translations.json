@@ -115,12 +115,12 @@
           "label": "Phone Number or Telegram Handle"
         },
         "postcode": {
-          "label": "PLZ (Berlin) of your location"
+          "label": "PLZ (Berlin) of your place of residence"
         },
         "locations": {
           "header": "Preferred districts* (Berlin)",
           "para": "*keep in mind that most accommodation centers are outside the ring!",
-          "helpText": "In case we cant find a perfect match we might send you offers that are also based on your location!",
+          "helpText": "The offers we send you will be based on your preferred districts and the zip code of your place of residence.",
           "helpTitle": ""
         },
         "availability": {
@@ -175,7 +175,7 @@
         "certMeaslesVaccination": {
           "header": "Certificate of Measles Vaccination",
           "true": "I have one",
-          "false": "Need to prove it",
+          "false": "Will turn in later",
           "helpText": "",
           "helpTitle": ""
         },
@@ -266,8 +266,8 @@
           "translatedInto": {
             "header": "Language to be translated into:",
             "noTranslation": "No translation",
-            "englishOk": "English is OK",
-            "deutsche": "German",
+            "englishOk": "German or English",
+            "deutsche": "Only German",
             "helpText": "Please pick to what language translation is needed."
           },
           "languagesTranslation": {
@@ -369,7 +369,7 @@
       },
       "filters": {
         "accompanying": "Accompanying",
-        "accompanyingDesc": "Only show volunteers that are open to bring residents to individual appointments",
+        "accompanyingDesc": "Only show volunteers that are open to bring refugees to individual appointments",
         "district": "District",
         "languages": "Languages",
         "activities": "Activities",
@@ -559,7 +559,7 @@
           "unresponsive": "Unresponsive",
           "unresponsive_description": "Never replied after few times"
         },
-        "volunteerType_title": "Volunteer type",
+        "volunteerType_title": "Volunteering type",
         "volunteerType_options": {
           "accompanying": "Accompanying",
           "regular": "Regular",
@@ -653,7 +653,7 @@
         "languages": "Languages",
         "availability": "Availability",
         "districts": "Districts",
-        "volunteerType": "Volunteer type",
+        "volunteerType": "Volunteering type",
         "activities": "Activities",
         "skills": "Skills & experience",
         "comments": "Comments",
@@ -665,7 +665,7 @@
           "levelRequired": "Choose a level",
           "availabilityRequired": "Please select your availability",
           "districtsRequired": "Please select at least one district",
-          "volunteerTypeRequired": "Please select a volunteer type",
+          "volunteerTypeRequired": "Please select a volunteering type",
           "activitiesRequired": "Please select at least one activity",
           "skillsRequired": "Please select at least one skill"
         }
@@ -745,7 +745,7 @@
       },
       "card": {
         "mainCommunication": "Main communication",
-        "residentsSpeak": "Residents speak",
+        "residentsSpeak": "Refugees speak",
         "schedule": "Schedule",
         "search": "Search"
       },
@@ -803,7 +803,7 @@
       "goToProfile": "Go to Profile",
       "mainCommunication": "Main communication",
       "translationTo": "Translation to",
-      "residentsSpeak": "Residents speak",
+      "residentsSpeak": "Refugees speak",
       "languages": "Languages",
       "schedule": "Schedule",
       "district": "District",
@@ -857,7 +857,7 @@
       },
       "card": {
         "mainCommunication": "Main communication",
-        "residentsSpeak": "Residents speak",
+        "residentsSpeak": "Refugees speak",
         "schedule": "Schedule",
         "search": "Search"
       },
@@ -915,7 +915,7 @@
       "goToProfile": "Go to Profile",
       "mainCommunication": "Main communication",
       "translationTo": "Translation to",
-      "residentsSpeak": "Residents speak",
+      "residentsSpeak": "Refugees speak",
       "languages": "Languages",
       "schedule": "Schedule",
       "district": "District",
@@ -1214,7 +1214,13 @@
         "saveSuccess": "Accompanying details updated successfully",
         "notAccompanyingMessage": "This opportunity is not marked as accompanying. Change this status in the top card if you need to fill out the accompanying information (appointment address, refugee details, etc.).",
         "validation": {
-          "invalidTimeFormat": "Invalid time format (use HH:MM)"
+          "invalidTimeFormat": "Invalid time format (use HH:MM)",
+          "addressRequired": "Appointment address is required",
+          "postcodeRequired": "Appointment postcode is required",
+          "dateRequired": "Appointment date is required",
+          "timeRequired": "Appointment time is required",
+          "nameRequired": "Refugee name is required",
+          "appointmentLanguageRequired": "Appointment language is required"
         }
       },
       "volunteersSec": {
@@ -1246,7 +1252,7 @@
         "opportunityName": "Name",
         "description": "Description",
         "mainCommunication": "Main communication",
-        "residentsSpeak": "Residents speak",
+        "residentsSpeak": "Refugees speak",
         "schedule": "Schedule",
         "eventDate": "Event date",
         "eventTime": "Event time",

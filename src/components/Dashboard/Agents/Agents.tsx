@@ -14,7 +14,7 @@ import { apiPathOption, questionMark } from "@/config/constants";
 import { AgentCardsFilter } from "./Filters/types";
 import { createSelectedAgentFiltersAsFlatArray } from "./Filters/helpers";
 import { defaultAgentCardsFilter } from "./Filters/constants";
-import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
+import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { deserializeAgentFilters, serializeAgentFilters } from "./helpers";
 import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
@@ -58,6 +58,12 @@ export const Agents = () => {
     router.push(pathname + questionMark + serializeAgentFilters(updatedFilter, searchParams));
   };
 
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeAgentFilters(cleared, searchParams));
+  };
+
   const handleClearAllFilters = () => {
     const cleared = getClearFilter<AgentCardsFilter>(cardsFilter);
     setCardsFilter(cleared);
@@ -96,6 +102,7 @@ export const Agents = () => {
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
         />
         <PendingMemberships />
         <ContentRow>

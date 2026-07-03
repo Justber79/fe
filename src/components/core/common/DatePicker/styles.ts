@@ -61,7 +61,7 @@ export const DateInputIcon = styled(Calendar)`
   z-index: 1;
 `;
 
-export const DateInput = styled.input`
+export const DateInput = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   padding: var(--spacing-16);
   padding-left: var(--date-picker-input-padding-left);
@@ -75,6 +75,8 @@ export const DateInput = styled.input`
   font-family: var(--bs-body-font-family);
   cursor: text;
   background: var(--color-white);
+  border: ${(props) =>
+    props.$hasError ? "2px solid var(--color-red-600)" : "var(--border-width-thin) solid var(--color-grey-200)"};
 
   &:focus {
     outline: none;

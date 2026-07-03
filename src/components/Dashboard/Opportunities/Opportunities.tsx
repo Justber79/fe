@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
@@ -9,7 +8,7 @@ import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { createFilterFromOption, getClearFilter } from "../common/CardsFilter/helpers";
+import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -24,7 +23,6 @@ export function Opportunities() {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
   const [sortOrder, setSortOrder] = useState<string>(SortOrder.NewToOld);
@@ -43,7 +41,9 @@ export function Opportunities() {
           t("dashboard.opportunities.tabs.tab3"),
         ];
 
+  const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const selectedTabIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
@@ -55,6 +55,15 @@ export function Opportunities() {
 
   const handleSortChange = (order: string) => {
     setSortOrder(order);
+  };
+
+  const handleTabChange = (index: number) => {
+    const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", targetViewMode);
+
+    router.push(pathname + questionMark + params.toString());
   };
 
   const extraSortOptions = [
@@ -74,6 +83,12 @@ export function Opportunities() {
     const params = new URLSearchParams(searchParams);
     params.delete("volunteer");
     router.push(pathname + questionMark + params.toString());
+  };
+
+  const handleClearFilter = (filterKey: string, parentKey?: string) => {
+    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    setCardsFilter(cleared);
+    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
   };
 
   const handleClearAllFilters = () => {
@@ -98,6 +113,7 @@ export function Opportunities() {
   }, [apiFilterOptions, searchParams]);
 
   const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
+
   return (
     <DashboardLayout>
       <OpportunitiesContainer data-testid="opportunities-container">
@@ -107,7 +123,7 @@ export function Opportunities() {
           resultText={t("dashboard.home.sidebar.opportunities")}
           tabs={tabs}
           selectedTabIndex={selectedTabIndex}
-          setSelectedTabIndex={setSelectedTabIndex}
+          setSelectedTabIndex={handleTabChange}
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
@@ -117,6 +133,7 @@ export function Opportunities() {
           extraSortOptions={extraSortOptions}
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
+          onClearFilter={handleClearFilter}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
         />
 
