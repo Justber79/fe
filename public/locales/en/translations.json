@@ -483,7 +483,8 @@
       "button": {
         "login": "Log in",
         "joinVolunteer": "Join as a volunteer",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Log out"
       }
     },
     "login": {
