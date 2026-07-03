@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Paragraph } from "../styled/text";
 import { Menu, ItemText } from "@/components/core/menu";
+import { useLogout } from "@/hooks/useLogout";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ const getInitials = (fullName: string | undefined): string => {
 
 export function UserProfile() {
   const { t } = useTranslation();
+  const { mutate: logout } = useLogout();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useCurrentUser();
   const initials = getInitials(user?.fullName) || user?.firstName?.[0]?.toUpperCase() || "";
@@ -127,7 +129,7 @@ export function UserProfile() {
             </UserTextColumn>
           </UserInfoBlock>
         )}
-        <Menu.Item onSelect={() => {}}>
+        <Menu.Item onSelect={logout}>
           <ItemText fw="bold">{t("dashboard.header.button.logout")}</ItemText>
         </Menu.Item>
       </Menu.Dropdown>

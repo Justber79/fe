@@ -10,6 +10,7 @@ export const apiPathCommunication = `/${apiPrefix}/communication`;
 export const apiPathAppreciation = `/${apiPrefix}/appreciation`;
 export const apiPathLogin = `/${apiPrefix}/auth/login`;
 export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
+export const apiPathAuthLogout = `/${apiPrefix}/auth/logout`;
 export const apiPathAuthEmailDomain = `/${apiPrefix}/auth-email-domain/`;
 export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
