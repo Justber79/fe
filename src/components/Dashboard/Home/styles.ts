@@ -28,8 +28,8 @@ export const TagContainer = styled.div`
   max-height: var(--tag-row-max-height);
 `;
 
-export const TagRow = styled.div`
-  background-color: var(--color-orchid-subtle);
+export const TagRow = styled.div<{ $isRead: boolean }>`
+  background-color: ${({ $isRead }) => ($isRead ? "var(--color-orchid-subtle)" : "var(--color-orchid)")};
   border-radius: var(--tag-row-border-radius);
   & h4 {
     margin: 0;
@@ -42,6 +42,6 @@ export const TagRow = styled.div`
     padding: var(--tag-row-padding);
   }
   &:hover {
-    background-color: var(--color-orchid);
+    background-color: ${({ $isRead }) => ($isRead ? "var(--color-orchid)" : " var(--color-orchid-subtle)")};
   }
 `;

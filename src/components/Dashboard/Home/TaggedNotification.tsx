@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { TagRow } from "./styles";
 import { type DashboardEntityType } from "@/hooks/useGetEntityTitle";
 import { useGetEntityTitle } from "@/hooks/useGetEntityTitle";
+import { usePatchTaggedComments } from "@/hooks/usePatchTaggedComments";
 
 type Props = {
   entityType: DashboardEntityType;
@@ -13,12 +14,29 @@ type Props = {
   authorName: string;
   apiPath: string;
   link: string;
+  personId: number;
+  commentId: number;
+  isRead: boolean;
 };
 
-export default function TaggedNotification({ entityType, entityId, authorName, apiPath, link }: Props) {
+export default function TaggedNotification({
+  entityType,
+  entityId,
+  authorName,
+  apiPath,
+  link,
+  personId,
+  commentId,
+  isRead,
+}: Props) {
   const { t } = useTranslation();
-
+  const { mutate: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
   const { title, isLoading, isError, error } = useGetEntityTitle(entityType, entityId, apiPath);
+
+  const handleReadTag = async () => {
+    if (isRead) return;
+    await updateReadTagComment({ read_at: new Date() });
+  };
 
   if (isLoading) {
     return <Heading4>{t("dashboard.home.content.loading")}</Heading4>;
@@ -28,11 +46,11 @@ export default function TaggedNotification({ entityType, entityId, authorName, a
     return <Heading4>{error?.message}</Heading4>;
   }
   return (
-    <TagRow>
+    <TagRow onClick={handleReadTag} $isRead={isRead}>
       <Link
         href={{
           pathname: link,
-          hash: entityType === "opportunity" ? "opportunity-volunteers-container" : "communication-tracker-container",
+          query: { scrollTo: "coordinator-comments" },
         }}
       >
         <ChatCircleIcon size={22} />
