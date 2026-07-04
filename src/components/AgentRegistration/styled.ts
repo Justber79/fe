@@ -133,3 +133,29 @@ export const StyledTextarea = styled.textarea`
     border: var(--form-input-container-border-focus);
   }
 `;
+
+export const FieldConsent = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    accent-color: var(--color-aubergine);
+    cursor: pointer;
+  }
+`;
+
+export const StyledErrorMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--form-input-error-message-container-gap);
+  padding: var(--form-input-error-message-container-padding);
+  color: var(--form-input-error-message-color);
+  font-size: var(--form-input-error-message-fontSize);
+  font-weight: var(--form-input-error-message-fontWeight);
+  line-height: var(--form-input-error-message-lineHeight);
+`;
