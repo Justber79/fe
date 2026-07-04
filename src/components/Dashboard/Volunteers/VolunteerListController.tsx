@@ -4,7 +4,7 @@ import { DashboardListLoading } from "@/components/Dashboard/common/DashboardLis
 import { apiPathVolunteer, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder, UserRole } from "need4deed-sdk";
-import { CardsFilter } from "./Filters/types";
+import { VolunteerCardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
@@ -16,7 +16,7 @@ interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
   sortOrder: SortOrder;
   isFiltersOpen: boolean;
-  filter: CardsFilter;
+  filter: VolunteerCardsFilter;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
   viewMode: ViewMode;

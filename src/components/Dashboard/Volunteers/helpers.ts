@@ -2,6 +2,7 @@ import {
   ApiLanguage,
   ApiOptionLists,
   ApiVolunteerGetList,
+  EntityTableName,
   LangProficiency,
   OptionItem,
   QueryParamsKeys,
@@ -10,7 +11,7 @@ export { createFilterFromOption } from "../common/CardsFilter/helpers";
 export { createSelectedFilterItemsAsFlatArray } from "./Filters/helpers";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
-import { CardsFilter } from "./Filters/types";
+import { VolunteerCardsFilter } from "./Filters/types";
 
 const proficiencyOrder = [
   LangProficiency.NATIVE,
@@ -63,7 +64,7 @@ interface SerializeFiltersOptions {
 }
 
 export function serializeFilters(
-  filter: CardsFilter,
+  filter: VolunteerCardsFilter,
   searchParams?: ReadonlyURLSearchParams,
   asString = true,
   options?: SerializeFiltersOptions,
@@ -118,6 +119,21 @@ export function serializeFilters(
     }
   });
 
+  params.delete(EntityTableName.ACTIVITY);
+  Object.entries(filter.activity).forEach(([key, value]) => {
+    if (value === true) {
+      if (options?.serializeToIDs && options.apiFilterOptions) {
+        const activityId =
+          options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id;
+        if (activityId !== undefined) {
+          params.append(EntityTableName.ACTIVITY, String(activityId));
+        }
+      } else {
+        params.append(EntityTableName.ACTIVITY, key);
+      }
+    }
+  });
+
   // 2. Clear all existing 'availability' params
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
@@ -133,8 +149,8 @@ export function serializeFilters(
   return asString ? params.toString() : params;
 }
 
-export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: ReadonlyURLSearchParams) {
-  const newFilter: CardsFilter = structuredClone(filter);
+export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, searchParams: ReadonlyURLSearchParams) {
+  const newFilter: VolunteerCardsFilter = structuredClone(filter);
 
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) {
@@ -167,6 +183,13 @@ export function deserializeVolunteerFilters(filter: CardsFilter, searchParams: R
   queryEngagement.forEach((e) => {
     if (newFilter.engagement[e] !== undefined) {
       newFilter.engagement[e] = true;
+    }
+  });
+
+  const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
+  queryActivities.forEach((l) => {
+    if (newFilter.activity[l] !== undefined) {
+      newFilter.activity[l] = true;
     }
   });
 

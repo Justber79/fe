@@ -1,14 +1,15 @@
 import {
   ByDay,
+  EntityTableName,
   OccasionalType,
   QueryParamsKeys,
   TimeSlot,
   VolunteerStateEngagementType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
-import { CardsFilter } from "./types";
+import { VolunteerCardsFilter } from "./types";
 
-export const defaultVolunteerCardsFilter: CardsFilter = {
+export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
   [QueryParamsKeys.SEARCH]: "",
   type: {
     [VolunteerStateTypeType.ACCOMPANYING]: false,
@@ -26,6 +27,7 @@ export const defaultVolunteerCardsFilter: CardsFilter = {
     [VolunteerStateEngagementType.INACTIVE]: false,
     [VolunteerStateEngagementType.UNRESPONSIVE]: false,
   },
+  [EntityTableName.ACTIVITY]: {},
   [QueryParamsKeys.AVAILABILITY]: {
     times: {
       [TimeSlot.morning]: false,
@@ -50,5 +52,5 @@ export const defaultVolunteerCardsFilter: CardsFilter = {
 };
 
 export const SEPARATOR = "~";
-export type AvailabilityKeys = keyof CardsFilter["availability"];
+export type AvailabilityKeys = keyof VolunteerCardsFilter["availability"];
 export type AvailabilitySubKeys = TimeSlot | ByDay | OccasionalType;
