@@ -494,7 +494,8 @@
       "button": {
         "login": "Anmelden",
         "joinVolunteer": "Finde jetzt dein Ehrenamt",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Abmelden"
       }
     },
     "login": {
