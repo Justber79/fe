@@ -63,7 +63,7 @@ export const DashboardBaseContainer = styled.div`
   max-width: var(--dashboard-base-container-width);
   padding-top: var(--dashboard-base-container-padding-top);
   padding-bottom: var(--dashboard-base-container-padding-bottom);
-
+  background-color: green;
   @media (max-width: 767px) {
     margin-left: 16px;
     margin-right: 16px;

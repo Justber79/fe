@@ -20,11 +20,11 @@ import { UserRole } from "need4deed-sdk";
 const BarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: sticky;
   width: var(--dashboard-navigation-bar-container-width);
   top: 112px;
   left: 0;
-  z-index: 1;
+  z-index: 0;
   gap: var(--dashboard-navigation-bar-gap);
   background-color: var(--color-orchid-subtle);
   border-top-right-radius: var(--dashboard-navigation-bar-border-radius);
@@ -35,7 +35,8 @@ const BarContainer = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
-    top: auto;
+    position: sticky;
+    top: unset;
     bottom: 0;
     width: 100%;
     height: var(--dashboard-navigation-bar-mobile-height);
