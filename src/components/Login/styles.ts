@@ -9,9 +9,6 @@ export const EmailSentMessageDiv = styled.div`
 export const EmailButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  & a {
-    font-size: var(--dashboard-login-forgot-password-email-button-fontSize);
-  }
 `;
 
 export const StyledForm = styled.form`

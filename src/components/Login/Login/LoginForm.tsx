@@ -1,13 +1,13 @@
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormInput } from "../core/common";
-import { Button, Checkbox } from "../core/button";
+import { FormInput } from "../../core/common";
+import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin } from "@/config/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FormActions, LoginButtonDiv, StyledForm } from "./styles";
+import { FormActions, LoginButtonDiv, StyledForm } from "../styles";
 
 interface LoginData {
   email: string;

@@ -1,5 +1,5 @@
 "use client";
-import { LoginLayout } from "../Layout";
+import { LoginLayout } from "../../Layout";
 import { useTranslation } from "react-i18next";
 import { LoginController } from "./LoginController";
 
