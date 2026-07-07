@@ -1,11 +1,13 @@
 import React from "react";
-import { LoginButtonDiv, StyledForm } from "../LoginForm";
 import { useForm } from "@tanstack/react-form";
 import { FormInput } from "../../core/common";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { useSearchParams } from "next/navigation";
+import { apiPathPasswordReset } from "@/config/constants";
+import { createResetPasswordSchema } from "./resetPasswordSchema";
+import { StyledForm } from "../styles";
 
 interface ResetPasswordData {
   newPassword: string;
@@ -23,8 +25,8 @@ type Props = {
 
 const useResetPasswordMutation = (onResetSuccess: () => void) => {
   return useMutationQuery<ResetPasswordData, ResetPasswordResponse>({
-    apiPath: "/api/auth/password-reset/confirm",
-    successMessage: "Email sent",
+    apiPath: apiPathPasswordReset,
+    successMessage: "dashboard.login.successResetPasswordMessage",
     onSuccessCallback: async () => {
       onResetSuccess();
     },
@@ -46,7 +48,8 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
       resetPassword(value);
     },
   });
-
+  const schema = createResetPasswordSchema(t);
+  console.log("s", schema);
   return (
     <StyledForm
       onSubmit={(e) => {
@@ -58,7 +61,14 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
       <form.Field
         name="newPassword"
         validators={{
-          onChange: ({ value }) => (!value ? t("dashboard.login.passwordMissing") : undefined),
+          onChange: ({ value }) => {
+            const result = schema.shape.newPassword.safeParse(value);
+            if (!result.success) {
+              const errorKey = result.error.issues[0].message;
+              return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
+            }
+            return undefined;
+          },
         }}
       >
         {(field) => (
@@ -66,7 +76,7 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
             type="password"
             value={field.state.value}
             onInputChange={field.handleChange}
-            placeHolder="New Password"
+            placeHolder={t("dashboard.login.newPassword")}
             errors={field.state.meta.errors}
           />
         )}
@@ -74,12 +84,22 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
       <form.Field
         name="confirmPassword"
         validators={{
-          onChange: ({ value }) =>
-            !value
-              ? t("dashboard.login.passwordMissing")
-              : form.state.values.newPassword !== value
-                ? "passwords must match"
-                : undefined,
+          onChange: ({ value, fieldApi }) => {
+            const resultValue = schema.shape.newPassword.safeParse(value);
+            if (!resultValue.success) {
+              const errorKey = resultValue.error.issues[0].message;
+              return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
+            }
+            const result = schema.safeParse(fieldApi.form.state.values);
+            if (!result.success) {
+              const confirmError = result.error.issues.find((i) => i.path.includes("confirmPassword"));
+              if (confirmError) {
+                const errorKey = confirmError.message;
+                return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
+              }
+            }
+            return undefined;
+          },
         }}
       >
         {(field) => (
@@ -87,25 +107,25 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
             type="password"
             value={field.state.value}
             onInputChange={field.handleChange}
-            placeHolder="Confirm Password"
+            placeHolder={t("dashboard.login.confirmPassword")}
             errors={field.state.meta.errors}
           />
         )}
       </form.Field>
-      <LoginButtonDiv>
-        <form.Subscribe selector={(state) => state}>
-          {() => (
-            <Button
-              type="submit"
-              text={"Reset Password"}
-              backgroundcolor={form.state.canSubmit && !isPending ? "var(--color-aubergine)" : "var(--color-grey-50)"}
-              textColor={form.state.canSubmit && !isPending ? "var(--color-white)" : "var(--color-grey-400)"}
-              textHoverColor="var(--color-magnolia)"
-              disabled={!form.state.canSubmit || isPending}
-            />
-          )}
-        </form.Subscribe>
-      </LoginButtonDiv>
+      <form.Subscribe selector={(state) => state}>
+        {() => (
+          <Button
+            type="submit"
+            text={t("dashboard.login.resetPassword")}
+            backgroundcolor={form.state.canSubmit && !isPending ? "var(--color-aubergine)" : "var(--color-grey-50)"}
+            textColor={form.state.canSubmit && !isPending ? "var(--color-white)" : "var(--color-grey-400)"}
+            textHoverColor="var(--color-magnolia)"
+            disabled={
+              !form.state.canSubmit || !form.state.values.newPassword || !form.state.values.confirmPassword || isPending
+            }
+          />
+        )}
+      </form.Subscribe>
     </StyledForm>
   );
 }

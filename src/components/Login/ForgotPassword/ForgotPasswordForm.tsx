@@ -1,36 +1,38 @@
 import React from "react";
-import { LoginButtonDiv, StyledForm } from "../LoginForm";
 import { useForm } from "@tanstack/react-form";
 import { FormInput } from "../../core/common";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
+import { apiPathRequestReset } from "@/config/constants";
+import Link from "next/link";
+import { EmailButtonDiv, StyledForm } from "../styles";
 
-interface ResetPasswordData {
+interface ForgotPasswordData {
   email: string;
 }
 
-interface ResetPasswordResponse {
+interface ForgotPasswordResponse {
   message: string;
 }
 
 type Props = {
-  onResetSuccess: () => void;
+  onSuccess: () => void;
 };
 
 const useResetPasswordMutation = (onResetSuccess: () => void) => {
-  return useMutationQuery<ResetPasswordData, ResetPasswordResponse>({
-    apiPath: "/api/auth/request-reset",
-    successMessage: "Email sent",
+  return useMutationQuery<ForgotPasswordData, ForgotPasswordResponse>({
+    apiPath: apiPathRequestReset,
+    successMessage: "dashboard.login.successEmailLinkMessage",
     onSuccessCallback: async () => {
       onResetSuccess();
     },
   });
 };
 
-export function ForgotPasswordForm({ onResetSuccess }: Props) {
+export function ForgotPasswordForm({ onSuccess }: Props) {
   const { t } = useTranslation();
-  const { mutate: resetPassword, isPending } = useResetPasswordMutation(onResetSuccess);
+  const { mutate: resetPassword, isPending } = useResetPasswordMutation(onSuccess);
   const form = useForm({
     defaultValues: {
       email: "",
@@ -69,12 +71,12 @@ export function ForgotPasswordForm({ onResetSuccess }: Props) {
           />
         )}
       </form.Field>
-      <LoginButtonDiv>
+      <EmailButtonDiv>
         <form.Subscribe selector={(state) => state}>
           {() => (
             <Button
               type="submit"
-              text={"Send reset link"}
+              text={t("dashboard.login.sendEmail")}
               backgroundcolor={form.state.canSubmit && !isPending ? "var(--color-aubergine)" : "var(--color-grey-50)"}
               textColor={form.state.canSubmit && !isPending ? "var(--color-white)" : "var(--color-grey-400)"}
               textHoverColor="var(--color-magnolia)"
@@ -82,7 +84,8 @@ export function ForgotPasswordForm({ onResetSuccess }: Props) {
             />
           )}
         </form.Subscribe>
-      </LoginButtonDiv>
+        <Link href="/login">{t("dashboard.login.backToLogin")}</Link>
+      </EmailButtonDiv>
     </StyledForm>
   );
 }

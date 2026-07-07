@@ -591,6 +591,8 @@ html {
   --dashboard-login-heading-letterSpacing: 0.25px;
   --dashboard-login-checkbox-label-fontSize: 20px;
   --dashboard-login-forgot-password-label-fontWeight: 600;
+  --dashboard-login-forgot-password-email-message-gap: 16px;
+  --dashboard-login-forgot-password-email-button-fontSize: 24px;
   --filters-container-width: min(340px, calc(100vw - 32px));
   --filters-container-border-radius: 16px;
   --filters-description-font-size: 16px;
@@ -1449,7 +1451,6 @@ html {
     --dashboard-notification-font-size: 0.85rem;
     --dashboard-notification-background-color: var(--color-red-600);
     --dashboard-notification-text-color: var(--color-white);
-
 
     --dashboard-home-container-padding: 40px 120px 100px 132px;
 
