@@ -7,6 +7,7 @@ import { Button, Checkbox } from "../core/button";
 import { Paragraph } from "../styled/text";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin } from "@/config/constants";
+import { useRouter } from "next/navigation";
 
 interface LoginData {
   email: string;
@@ -28,7 +29,7 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
   });
 };
 
-const StyledForm = styled.form`
+export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: var(--dashboard-login-content-container-gap);
@@ -41,7 +42,7 @@ const FormActions = styled.div`
   align-items: center;
 `;
 
-const LoginButtonDiv = styled.div`
+export const LoginButtonDiv = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -53,6 +54,7 @@ interface LoginFormProps {
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const { t } = useTranslation();
   const { mutate: login, isPending } = useLoginMutation(onLoginSuccess);
+  const router = useRouter();
   const [rememberMeChecked, setRememberMeChecked] = useState(false);
 
   const form = useForm({
@@ -126,6 +128,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         <Paragraph
           fontWeight="var(--dashboard-login-forgot-password-label-fontWeight)"
           color="var(--color-midnight-light)"
+          onClick={() => router.push("forgotten-password")}
         >
           {t("dashboard.login.forgotPassword")}?
         </Paragraph>
