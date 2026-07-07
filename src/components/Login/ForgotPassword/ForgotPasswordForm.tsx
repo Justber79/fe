@@ -4,7 +4,7 @@ import { FormInput } from "../../core/common";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
-import { apiPathRequestReset } from "@/config/constants";
+import { apiPathRequestPasswordReset } from "@/config/constants";
 import Link from "next/link";
 import { EmailButtonDiv, StyledForm } from "../styles";
 
@@ -20,9 +20,9 @@ type Props = {
   onSuccess: () => void;
 };
 
-const useResetPasswordMutation = (onResetSuccess: () => void) => {
+const useRequestPasswordResetMutation = (onResetSuccess: () => void) => {
   return useMutationQuery<ForgotPasswordData, ForgotPasswordResponse>({
-    apiPath: apiPathRequestReset,
+    apiPath: apiPathRequestPasswordReset,
     successMessage: "dashboard.login.successEmailLinkMessage",
     onSuccessCallback: async () => {
       onResetSuccess();
@@ -32,13 +32,13 @@ const useResetPasswordMutation = (onResetSuccess: () => void) => {
 
 export function ForgotPasswordForm({ onSuccess }: Props) {
   const { t } = useTranslation();
-  const { mutate: resetPassword, isPending } = useResetPasswordMutation(onSuccess);
+  const { mutate: requestPasswordReset, isPending } = useRequestPasswordResetMutation(onSuccess);
   const form = useForm({
     defaultValues: {
       email: "",
     },
     onSubmit: async ({ value }) => {
-      resetPassword(value);
+      requestPasswordReset(value);
     },
   });
   return (
@@ -55,7 +55,6 @@ export function ForgotPasswordForm({ onSuccess }: Props) {
           onChange: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChangeAsyncDebounceMs: 500,
           onChangeAsync: async ({ value }) => {
-            // Simulating a network request for validation
             await new Promise((resolve) => setTimeout(resolve, 500));
             return value.includes("@") ? undefined : t("dashboard.login.emailMissingAtChar");
           },
