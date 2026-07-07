@@ -470,6 +470,11 @@
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
+    "posts": {
+      "inputPlaceholder": "Nachricht eingeben...",
+      "send": "Senden",
+      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet."
+    },
     "found": "gefunden",
     "searchPlaceHolder": "Ehrenamtliche suchen",
     "sortBy": {

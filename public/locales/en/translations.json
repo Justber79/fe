@@ -464,6 +464,11 @@
       },
       "createOpportunity": "Create New Opportunity"
     },
+    "posts": {
+      "inputPlaceholder": "Type a message...",
+      "send": "Send",
+      "empty": "No posts yet. Be the first to post a message."
+    },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
     "sortBy": {
