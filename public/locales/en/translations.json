@@ -388,6 +388,14 @@
           "temporarilyUnavailable": "Temporarily Unavailable",
           "unresponsive": "Unresponsive"
         },
+        "matchStatus": {
+          "header": "Match Status",
+          "vol-no-matches": "No matches",
+          "vol-pending-match": "Pending match",
+          "vol-matched": "Matched",
+          "vol-needs-rematch": "Needs rematch",
+          "vol-past": "Past"
+        },
         "preferredAv": {
           "header": "Preferred Availability",
           "days": {

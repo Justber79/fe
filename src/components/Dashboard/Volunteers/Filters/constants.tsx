@@ -5,9 +5,10 @@ import {
   QueryParamsKeys,
   TimeSlot,
   VolunteerStateEngagementType,
+  VolunteerStateMatchType,
   VolunteerStateTypeType,
 } from "need4deed-sdk";
-import { VolunteerCardsFilter } from "./types";
+import { VolunteerCardsFilter, VolunteerStatusMatch } from "./types";
 
 export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
   [QueryParamsKeys.SEARCH]: "",
@@ -26,6 +27,13 @@ export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
     [VolunteerStateEngagementType.TEMP_UNAVAILABLE]: false,
     [VolunteerStateEngagementType.INACTIVE]: false,
     [VolunteerStateEngagementType.UNRESPONSIVE]: false,
+  },
+  [VolunteerStatusMatch.MATCH]: {
+    [VolunteerStateMatchType.MATCHED]: false,
+    [VolunteerStateMatchType.NEEDS_REMATCH]: false,
+    [VolunteerStateMatchType.NO_MATCHES]: false,
+    [VolunteerStateMatchType.PAST]: false,
+    [VolunteerStateMatchType.PENDING_MATCH]: false,
   },
   [EntityTableName.ACTIVITY]: {},
   [QueryParamsKeys.AVAILABILITY]: {
