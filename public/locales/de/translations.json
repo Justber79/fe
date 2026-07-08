@@ -394,6 +394,14 @@
           "temporarilyUnavailable": "Vorübergehend nicht verfügbar",
           "unresponsive": "Reagiert nicht"
         },
+        "matchStatus": {
+          "header": "Zuordnungsstatus",
+          "vol-no-matches": "Keine Zuweisungen",
+          "vol-pending-match": "Zuordnung ausstehend",
+          "vol-matched": "Zugeordnet",
+          "vol-needs-rematch": "Erneute Zuordnung erforderlich",
+          "vol-past": "Vergangen"
+        },
         "preferredAv": {
           "header": "Bevorzugte Verfügbarkeit",
           "days": {
@@ -470,6 +478,11 @@
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
+    "posts": {
+      "inputPlaceholder": "Nachricht eingeben...",
+      "send": "Senden",
+      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet."
+    },
     "found": "gefunden",
     "searchPlaceHolder": "Ehrenamtliche suchen",
     "sortBy": {
@@ -489,7 +502,8 @@
       "button": {
         "login": "Anmelden",
         "joinVolunteer": "Finde jetzt dein Ehrenamt",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Abmelden"
       }
     },
     "login": {

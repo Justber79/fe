@@ -209,11 +209,13 @@ function OpportunityDetailsFields({
   apiLanguages,
   apiActivities,
   apiSkills,
+  isAccompanying,
 }: {
   isEvent: boolean;
   apiLanguages: ApiLanguageOption[];
   apiActivities: ApiLanguageOption[];
   apiSkills: ApiLanguageOption[];
+  isAccompanying: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -231,6 +233,29 @@ function OpportunityDetailsFields({
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+
+  if (isAccompanying) {
+    return (
+      <FormDetails>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="textarea"
+              label={t(`${prefix}.description`)}
+              value={field.value}
+              setValue={field.onChange}
+              maxLength={MAX_DESCRIPTION_LENGTH}
+              hint={t(`${prefix}.descriptionHint`, { max: MAX_DESCRIPTION_LENGTH })}
+              errorMessage={errors.description?.message}
+            />
+          )}
+        />
+      </FormDetails>
+    );
+  }
 
   return (
     <FormDetails>
@@ -250,7 +275,6 @@ function OpportunityDetailsFields({
           />
         )}
       />
-
       <Controller
         name="mainCommunication"
         control={control}
@@ -579,6 +603,7 @@ export function NewOpportunity() {
               apiLanguages={apiLanguages}
               apiActivities={apiActivities}
               apiSkills={apiSkills}
+              isAccompanying={isAccompanying}
             />
           </FormProvider>
         }
