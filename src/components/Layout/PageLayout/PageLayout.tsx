@@ -31,8 +31,6 @@ const PageContentHeaderContainer = styled.div<PageContentHeaderContainerProps>`
   background: ${(props) => props.background || "var(--layout-static-page-background-default)"};
   padding-bottom: var(--layout-static-page-header-content-bottom-padding);
   padding-top: var(--layout-static-page-header-height);
-  background-color: red;
-  position: relative;
 `;
 
 export function PageLayout({ children, background }: Props) {

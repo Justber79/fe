@@ -35,7 +35,7 @@ const BarContainer = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
-    position: sticky;
+    position: fixed;
     top: unset;
     bottom: 0;
     width: 100%;
