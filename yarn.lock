@@ -2412,10 +2412,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-need4deed-sdk@0.0.115:
-  version "0.0.115"
-  resolved "https://registry.yarnpkg.com/need4deed-sdk/-/need4deed-sdk-0.0.115.tgz#cb07ffaabbd22353e65b28e9a592a3a78b269593"
-  integrity sha512-VoOpHlSnAUgNIHrUsKPrj1L4299ze+bBFsnCLs3BP5IPL5lLN5uK1vzkT+t9rAgilb8h22HqXWlzxMAPBhoTcA==
+need4deed-sdk@0.0.120:
+  version "0.0.120"
+  resolved "https://registry.yarnpkg.com/need4deed-sdk/-/need4deed-sdk-0.0.120.tgz#dfc49febd1fb4dde61b3b1c80c4acb8ddccbb90c"
+  integrity sha512-ehpWMuM09QUnEYsW1Cto/fWd9Ms/iES+8fa/Gmw9i8XjKHWRcS14Lz3Lhu10To8ZoU9bKHJqgz6KrU9+iHnY0w==
 
 next@15.3.8:
   version "15.3.8"
