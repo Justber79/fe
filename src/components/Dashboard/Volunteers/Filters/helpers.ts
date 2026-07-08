@@ -1,13 +1,17 @@
 import { TFunction } from "i18next";
-import { Availability, CardsFilter } from "./types";
+import { Availability, VolunteerCardsFilter, VolunteerStatusMatch } from "./types";
 import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
 import { SelectionMap, SetFilter } from "../../common/CardsFilter/types";
-import { QueryParamsKeys } from "need4deed-sdk";
+import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
 
 /**
  * Creates filter items for districts, languages, engagement, and availability.
  */
-export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<CardsFilter>, t: TFunction) => {
+export const createFilterItems = (
+  filter: VolunteerCardsFilter,
+  setFilter: SetFilter<VolunteerCardsFilter>,
+  t: TFunction,
+) => {
   const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
     t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
   );
@@ -33,9 +37,31 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
     (key) => t(`dashboard.volunteers.filters.engagement.${key}`),
   );
 
+  const statusMatchFilters = generateNestedFilterControlItems(
+    filter[VolunteerStatusMatch.MATCH],
+    setFilter,
+    VolunteerStatusMatch.MATCH,
+    (key) => t(`dashboard.volunteers.filters.matchStatus.${key}`),
+  );
+
+  const activityFilters = generateNestedFilterControlItems(
+    filter[EntityTableName.ACTIVITY],
+    setFilter,
+    EntityTableName.ACTIVITY,
+    (key) => key,
+  );
+
   const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
 
-  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, typeFilters };
+  return {
+    districtFilters,
+    languageFilters,
+    engagementFilters,
+    availabilityFilters,
+    typeFilters,
+    activityFilters,
+    statusMatchFilters,
+  };
 };
 
 /**
@@ -43,7 +69,7 @@ export const createFilterItems = (filter: CardsFilter, setFilter: SetFilter<Card
  */
 export const createAvailabilityFilterItems = (
   availability: Availability,
-  setFilter: SetFilter<CardsFilter>,
+  setFilter: SetFilter<VolunteerCardsFilter>,
   t: TFunction,
 ) => {
   const { days, times, occasional } = availability;
@@ -73,16 +99,30 @@ export const createAvailabilityFilterItems = (
 };
 
 export const createSelectedFilterItemsAsFlatArray = (
-  filter: CardsFilter,
-  setFilter: SetFilter<CardsFilter>,
+  filter: VolunteerCardsFilter,
+  setFilter: SetFilter<VolunteerCardsFilter>,
   t: TFunction,
 ) => {
   const filterItems = createFilterItems(filter, setFilter, t);
 
-  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, typeFilters } = filterItems;
+  const {
+    districtFilters,
+    engagementFilters,
+    statusMatchFilters,
+    languageFilters,
+    availabilityFilters,
+    typeFilters,
+    activityFilters,
+  } = filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
-  return [...typeFilters, ...districtFilters, ...engagementFilters, ...languageFilters, ...flatAvFilters].filter(
-    (f) => f.checked,
-  );
+  return [
+    ...typeFilters,
+    ...districtFilters,
+    ...engagementFilters,
+    ...statusMatchFilters,
+    ...languageFilters,
+    ...activityFilters,
+    ...flatAvFilters,
+  ].filter((f) => f.checked);
 };

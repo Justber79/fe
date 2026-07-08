@@ -18,10 +18,13 @@ RUN yarn build
 FROM node:22-alpine AS runner
 WORKDIR /app
 
+ARG GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-unknown}
+
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 RUN apk add --no-cache curl
 

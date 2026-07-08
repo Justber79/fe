@@ -394,6 +394,14 @@
           "temporarilyUnavailable": "Vorübergehend nicht verfügbar",
           "unresponsive": "Reagiert nicht"
         },
+        "matchStatus": {
+          "header": "Zuordnungsstatus",
+          "vol-no-matches": "Keine Zuweisungen",
+          "vol-pending-match": "Zuordnung ausstehend",
+          "vol-matched": "Zugeordnet",
+          "vol-needs-rematch": "Erneute Zuordnung erforderlich",
+          "vol-past": "Vergangen"
+        },
         "preferredAv": {
           "header": "Bevorzugte Verfügbarkeit",
           "days": {
@@ -470,6 +478,11 @@
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
+    "posts": {
+      "inputPlaceholder": "Nachricht eingeben...",
+      "send": "Senden",
+      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet."
+    },
     "found": "gefunden",
     "searchPlaceHolder": "Ehrenamtliche suchen",
     "sortBy": {
@@ -489,7 +502,8 @@
       "button": {
         "login": "Anmelden",
         "joinVolunteer": "Finde jetzt dein Ehrenamt",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Abmelden"
       }
     },
     "login": {
@@ -984,6 +998,26 @@
       "appreciationDeleted": "Anerkennung erfolgreich gelöscht",
       "deleteConfirmTitle": "Anerkennung löschen?",
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
+    },
+    "activityLog": {
+      "date": "Datum",
+      "hours": "Stunden",
+      "total": "Gesamt",
+      "hoursValue": "{{hours}} Stunden",
+      "addEntry": "Eintrag hinzufügen",
+      "editEntry": "Eintrag bearbeiten",
+      "deleteEntry": "Eintrag löschen",
+      "datePlaceholder": "Datum des Einsatzes",
+      "hoursPlaceholder": "z. B. 2,5",
+      "hoursInvalid": "Bitte Stunden größer als 0 eingeben",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "emptyState": "Für dieses Match wurden noch keine Stunden erfasst",
+      "entryAdded": "Eintrag erfolgreich hinzugefügt",
+      "entryUpdated": "Eintrag erfolgreich aktualisiert",
+      "entryDeleted": "Eintrag erfolgreich gelöscht",
+      "deleteConfirmTitle": "Eintrag löschen?",
+      "deleteConfirmText": "Der Eintrag vom {{date}} wird dauerhaft gelöscht."
     },
     "profile": {
       "loading": "Profil wird geladen...",

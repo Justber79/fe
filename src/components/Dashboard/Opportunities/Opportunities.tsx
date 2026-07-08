@@ -43,8 +43,9 @@ export function Opportunities() {
 
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
-  const selectedTabIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
+  const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
+  const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
