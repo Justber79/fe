@@ -3,7 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import { validate as validateEmail } from "email-validator";
 import { Lang } from "need4deed-sdk";
 import Image from "next/image";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -42,7 +42,6 @@ const somethingWrong = "form.becomeVolunteer.somethingWrong";
 export default function BecomeVolunteer() {
   const [showErrorAnnouncement, setShowErrorAnnouncement] = useState(false);
   const navigate = useRouter();
-  const { lng } = useParams();
   const { t, i18n } = useTranslation();
   const opportunityParams = useSearchParams();
   const language = i18n.language as Lang;
@@ -432,9 +431,9 @@ export default function BecomeVolunteer() {
                   <label htmlFor="consent">{getTickMark(!!fieldConsent.state.value)}</label>
                   <span>
                     {t("form.becomeVolunteer.fields.consent.header")}{" "}
-                    <a href={`/${Subpage.DATA_PROTECTION}/${lng}`}>{t("homepage.footer.legal.dataPrivacy")}</a>{" "}
+                    <a href={`/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")}</a>{" "}
                     {t("form.becomeVolunteer.fields.consent.and")}{" "}
-                    <a href={`/${Subpage.AGREEMENT}/${lng}`}>{t("homepage.footer.legal.agreement")}</a>
+                    <a href={`/${Subpage.AGREEMENT}`}>{t("homepage.footer.legal.agreement")}</a>
                   </span>
                 </div>
                 <FieldInfo field={fieldConsent} />
