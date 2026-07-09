@@ -33,7 +33,7 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
             <EditableField
               mode="edit"
               type="text"
-              label={t(`${i18nPrefix}.title`)}
+              label={t(`${i18nPrefix}.ngoTitle`)}
               value={field.value}
               setValue={field.onChange}
               errorMessage={errors.title?.message}
