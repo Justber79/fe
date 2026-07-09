@@ -30,12 +30,13 @@ export default function TaggedNotification({
   isRead,
 }: Props) {
   const { t } = useTranslation();
-  const { mutate: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
+  const { mutateAsync: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
   const { title, isLoading, isError, error } = useGetEntityTitle(entityType, entityId, apiPath);
 
-  const handleReadTag = async () => {
+  const handleReadTag = async (e: React.MouseEvent) => {
     if (isRead) return;
-    await updateReadTagComment({ read_at: new Date() });
+    e.preventDefault();
+    await updateReadTagComment({ id: personId, readAt: new Date() });
   };
 
   if (isLoading) {

@@ -1,12 +1,9 @@
 import { apiPathComment } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-
-type PatchTaggedComments = {
-  read_at: Date;
-};
+import { ApiCommentTaggedPerson } from "need4deed-sdk";
 
 export const usePatchTaggedComments = (commentId: number, personId: string | number) => {
-  return useMutationQuery<PatchTaggedComments, null>({
+  return useMutationQuery<ApiCommentTaggedPerson, null>({
     apiPath: `${apiPathComment}/${commentId}/read`,
     method: "patch",
     queryKeyToInvalidate: ["tagComments", String(personId)],

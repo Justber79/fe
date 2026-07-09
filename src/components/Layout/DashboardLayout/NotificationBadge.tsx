@@ -29,7 +29,7 @@ export function NotificationBadge() {
 
   const unreadTaggedComments = tagComments
     ?.flatMap((comment) => comment.taggedPersons)
-    ?.filter((comment) => !comment.readAt);
+    ?.filter((comment) => !comment.readAt && personId === comment.id);
 
   const count = unreadTaggedComments?.length || 0;
 

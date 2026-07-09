@@ -19,6 +19,7 @@ export function NewestTaggedComments() {
   const mostRecentComments = tagComments?.toReversed();
 
   const handleIsRead = (comment: ApiComment) => {
+    if (personId <= 0) return false;
     const taggedComment = comment.taggedPersons.find((tag) => tag.id === personId);
     return taggedComment?.readAt !== null;
   };
