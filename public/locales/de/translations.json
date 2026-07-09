@@ -1117,6 +1117,7 @@
       },
       "organisationDetails": {
         "title": "Details zur Organisation",
+        "ngoTitle": "Vereinsname",
         "edit": "Bearbeiten",
         "about": "Über uns",
         "website": "Webseite",

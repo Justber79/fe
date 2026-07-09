@@ -27,6 +27,20 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
     <>
       <FormDetails data-testid="organisation-details-edit">
         <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t(`${i18nPrefix}.title`)}
+              value={field.value}
+              setValue={field.onChange}
+              errorMessage={errors.title?.message}
+            />
+          )}
+        />
+        <Controller
           name="about"
           control={control}
           render={({ field }) => (
