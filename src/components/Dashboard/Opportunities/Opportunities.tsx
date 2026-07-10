@@ -36,7 +36,7 @@ export function Opportunities() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const [sortOrder, setSortOrder] = useState<string>(() => parseSortParam(searchParams.get(SORT_PARAM)));
+  const sortOrder = parseSortParam(searchParams.get(SORT_PARAM));
   const tabs = !user
     ? []
     : isAgent
@@ -61,7 +61,6 @@ export function Opportunities() {
 
   const handleSortChange = (order: string) => {
     const sort = parseSortParam(order);
-    setSortOrder(sort);
     const params = new URLSearchParams(searchParams);
     params.delete("page");
     if (sort === DEFAULT_SORT_ORDER) params.delete(SORT_PARAM);
@@ -106,17 +105,10 @@ export function Opportunities() {
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
-    setSortOrder(DEFAULT_SORT_ORDER);
     const params = serializeOpportunityFilters(cleared, searchParams, false);
     params.delete(SORT_PARAM);
     router.push(pathname + questionMark + params.toString());
   };
-
-  // sync sort on back/forward within the same route (no remount → lazy init won't re-run)
-  const sortParam = searchParams.get(SORT_PARAM);
-  useEffect(() => {
-    setSortOrder(parseSortParam(sortParam));
-  }, [sortParam]);
 
   useEffect(() => {
     if (!apiFilterOptions) return;
