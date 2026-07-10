@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "@tanstack/react-form";
+import { FieldApi, useForm } from "@tanstack/react-form";
 import { FormInput } from "../../core/common";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../core/button";
@@ -18,6 +18,18 @@ interface ResetPasswordData {
 interface ResetPasswordResponse {
   message: string;
 }
+
+type FieldApiType = FieldApi<
+  {
+    newPassword: string;
+    confirmPassword: string;
+    token: string;
+  },
+  "confirmPassword",
+  undefined,
+  undefined,
+  string
+>;
 
 type Props = {
   onResetSuccess: () => void;
@@ -49,7 +61,23 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
     },
   });
   const schema = createResetPasswordSchema(t);
-  console.log("s", schema);
+
+  const handleValidation = (value: string, fieldApi?: FieldApiType) => {
+    const result = schema.shape.newPassword.safeParse(value);
+    if (!result.success) {
+      return result.error.issues[0].message;
+    }
+    if (fieldApi) {
+      const result = schema.safeParse(fieldApi.form.state.values);
+      if (!result.success) {
+        const confirmError = result.error.issues.find((i) => i.path.includes("confirmPassword"));
+        if (confirmError) {
+          return confirmError.message;
+        }
+      }
+    }
+    return undefined;
+  };
   return (
     <StyledForm
       onSubmit={(e) => {
@@ -61,14 +89,7 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
       <form.Field
         name="newPassword"
         validators={{
-          onChange: ({ value }) => {
-            const result = schema.shape.newPassword.safeParse(value);
-            if (!result.success) {
-              const errorKey = result.error.issues[0].message;
-              return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
-            }
-            return undefined;
-          },
+          onChange: ({ value }) => handleValidation(value),
         }}
       >
         {(field) => (
@@ -84,22 +105,7 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
       <form.Field
         name="confirmPassword"
         validators={{
-          onChange: ({ value, fieldApi }) => {
-            const resultValue = schema.shape.newPassword.safeParse(value);
-            if (!resultValue.success) {
-              const errorKey = resultValue.error.issues[0].message;
-              return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
-            }
-            const result = schema.safeParse(fieldApi.form.state.values);
-            if (!result.success) {
-              const confirmError = result.error.issues.find((i) => i.path.includes("confirmPassword"));
-              if (confirmError) {
-                const errorKey = confirmError.message;
-                return errorKey.startsWith("dashboard.") ? t(errorKey) : errorKey;
-              }
-            }
-            return undefined;
-          },
+          onChange: ({ value, fieldApi }) => handleValidation(value, fieldApi),
         }}
       >
         {(field) => (
@@ -120,9 +126,7 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
             backgroundcolor={form.state.canSubmit && !isPending ? "var(--color-aubergine)" : "var(--color-grey-50)"}
             textColor={form.state.canSubmit && !isPending ? "var(--color-white)" : "var(--color-grey-400)"}
             textHoverColor="var(--color-magnolia)"
-            disabled={
-              !form.state.canSubmit || !form.state.values.newPassword || !form.state.values.confirmPassword || isPending
-            }
+            disabled={!form.state.canSubmit || isPending}
           />
         )}
       </form.Subscribe>

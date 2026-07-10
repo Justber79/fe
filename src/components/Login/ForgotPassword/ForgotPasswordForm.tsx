@@ -52,11 +52,10 @@ export function ForgotPasswordForm({ onSuccess }: Props) {
       <form.Field
         name="email"
         validators={{
-          onChange: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
-          onChangeAsyncDebounceMs: 500,
-          onChangeAsync: async ({ value }) => {
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            return value.includes("@") ? undefined : t("dashboard.login.emailMissingAtChar");
+          onChange: ({ value }) => {
+            if (!value) return t("dashboard.login.emailMissing");
+            if (!value.includes("@")) return t("dashboard.login.emailMissingAtChar");
+            return undefined;
           },
         }}
       >

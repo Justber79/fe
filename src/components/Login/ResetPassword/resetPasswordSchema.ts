@@ -11,7 +11,7 @@ export const createResetPasswordSchema = (t: (key: string) => string) => {
       confirmPassword: z.string().min(1, { message: t("dashboard.login.passwordMissing") }),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
-      message: "dashboard.login.passwordNotMatching",
+      message: t("dashboard.login.passwordNotMatching"),
       path: ["confirmPassword"],
     });
 };
