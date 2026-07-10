@@ -388,6 +388,14 @@
           "temporarilyUnavailable": "Temporarily Unavailable",
           "unresponsive": "Unresponsive"
         },
+        "matchStatus": {
+          "header": "Match Status",
+          "vol-no-matches": "No matches",
+          "vol-pending-match": "Pending match",
+          "vol-matched": "Matched",
+          "vol-needs-rematch": "Needs rematch",
+          "vol-past": "Past"
+        },
         "preferredAv": {
           "header": "Preferred Availability",
           "days": {
@@ -464,6 +472,11 @@
       },
       "createOpportunity": "Create New Opportunity"
     },
+    "posts": {
+      "inputPlaceholder": "Type a message...",
+      "send": "Send",
+      "empty": "No posts yet. Be the first to post a message."
+    },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
     "sortBy": {
@@ -483,7 +496,8 @@
       "button": {
         "login": "Log in",
         "joinVolunteer": "Join as a volunteer",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Log out"
       }
     },
     "login": {

@@ -11,6 +11,7 @@ export const apiPathAppreciation = `/${apiPrefix}/appreciation`;
 export const apiPathActivityLog = `/${apiPrefix}/activity-log`;
 export const apiPathLogin = `/${apiPrefix}/auth/login`;
 export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
+export const apiPathAuthLogout = `/${apiPrefix}/auth/logout`;
 export const apiPathAuthEmailDomain = `/${apiPrefix}/auth-email-domain/`;
 export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
@@ -81,9 +82,12 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 
 export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
+export const REFRESH_TOKEN_MAX_AGE_S = 60 * 60 * 24 * 7; // seconds — matches BE refresh token TTL (cookie max-age expects seconds)
 export const AUTH_HINT_COOKIE_NAME = "is_logged_in";
-export const AUTH_HINT_COOKIE_ATTRS = "path=/; SameSite=Lax; Secure";
-export const AUTH_HINT_MAX_AGE = 6000;
+export const AUTH_HINT_COOKIE_ATTRS = `path=/; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`;
+export const AUTH_HINT_MAX_AGE = REFRESH_TOKEN_MAX_AGE_S;
+
+export const USER_QUERY_KEY = ["user"];
 
 export const TABLE_LIMIT = 20;
 export const CARD_COLUMNS = 3;

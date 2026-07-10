@@ -35,6 +35,9 @@ export const Card = styled(BaseCard)<{ $cursor?: string }>`
     box-shadow 0.3s ease-in-out;
   cursor: ${(props) => props.$cursor || "pointer"};
 
+  text-decoration: none;
+  color: inherit;
+
   &:hover {
     background-color: var(--color-orchid);
   }

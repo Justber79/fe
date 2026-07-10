@@ -11,7 +11,7 @@ export { createFilterFromOption } from "../common/CardsFilter/helpers";
 export { createSelectedFilterItemsAsFlatArray } from "./Filters/helpers";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
-import { VolunteerCardsFilter } from "./Filters/types";
+import { VolunteerCardsFilter, VolunteerStatusMatch } from "./Filters/types";
 
 const proficiencyOrder = [
   LangProficiency.NATIVE,
@@ -119,6 +119,13 @@ export function serializeFilters(
     }
   });
 
+  params.delete(VolunteerStatusMatch.MATCH);
+  Object.entries(filter.match).forEach(([key, value]) => {
+    if (value === true) {
+      params.append(VolunteerStatusMatch.MATCH, key.replace(/^vol-/, ""));
+    }
+  });
+
   params.delete(EntityTableName.ACTIVITY);
   Object.entries(filter.activity).forEach(([key, value]) => {
     if (value === true) {
@@ -183,6 +190,13 @@ export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, search
   queryEngagement.forEach((e) => {
     if (newFilter.engagement[e] !== undefined) {
       newFilter.engagement[e] = true;
+    }
+  });
+
+  const queryStatusMatch = searchParams.getAll(VolunteerStatusMatch.MATCH);
+  queryStatusMatch.forEach((e) => {
+    if (newFilter.match[e] !== undefined) {
+      newFilter.match[e] = true;
     }
   });
 
