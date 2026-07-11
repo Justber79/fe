@@ -1,19 +1,12 @@
 import { apiPathOpportunity } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-import { ApiOpportunityGet, OpportunityType, TranslatedIntoType } from "need4deed-sdk";
+import { ApiOpportunityGet, ApiOpportunityPatch } from "need4deed-sdk";
 
 export type OpportunityTypeUpdateData = {
-  opportunity_type: OpportunityType;
-  accompanyingDetails?: {
-    appointmentAddress?: string;
-    appointmentPostcode?: string;
-    appointmentDate?: string;
-    appointmentTime?: string;
-    refugeeNumber?: string;
-    refugeeName?: string;
-    refugeeLanguage?: { id: string | number }[];
-    appointmentLanguage?: TranslatedIntoType;
-  };
+  opportunity_type: ApiOpportunityPatch["opportunity_type"];
+  accompanyingDetails?: ApiOpportunityPatch["accompanyingDetails"];
+
+  // It's not yet implemented in api, for now keep it like that, change later.
   eventDetails?: {
     eventDate?: string;
     eventTime?: string;

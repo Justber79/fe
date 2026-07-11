@@ -11,10 +11,13 @@ import {
   createAccompanyingDetailsSchema,
   AccompanyingDetailsFormData,
 } from "../../../AccompanyingDetails/createAccompanyingDetailsSchema";
-import { getMinAppointmentDate } from "../../../AccompanyingDetails/helpers";
+import {
+  buildAccompanyingPayload,
+  getInitialFormValues,
+  getMinAppointmentDate,
+} from "../../../AccompanyingDetails/helpers";
 import { useApiLanguages } from "../../../VolunteerProfile/hooks";
 import { useUpdateOpportunityType } from "@/hooks/useUpdateOpportunityType";
-import { localHhmmToUtc } from "@/utils";
 import { TypeChangeButtons } from "./TypeChangeButtons";
 
 type Props = {
@@ -51,39 +54,20 @@ export const AccompanyingTypeChangeForm = ({ opportunityId, locale, onCancel }: 
   const methods = useForm<AccompanyingDetailsFormData>({
     resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
     mode: "onChange",
-    defaultValues: {
-      appointmentAddress: "",
-      appointmentPostcode: "",
-      appointmentDate: null,
-      appointmentTime: "",
-      refugeeNumber: "",
-      refugeeName: "",
-      refugeeLanguage: [],
-      appointmentLanguage: undefined,
-    },
+    defaultValues: getInitialFormValues(undefined),
   });
 
   useEffect(() => {
-    methods.reset({
-      appointmentAddress: "",
-      appointmentPostcode: "",
-      appointmentDate: null,
-      appointmentTime: "",
-      refugeeNumber: "",
-      refugeeName: "",
-      refugeeLanguage: [],
-      appointmentLanguage: undefined,
-    });
+    methods.reset(getInitialFormValues(undefined));
   }, [methods]);
 
   const handleSave = async () => {
     const valid = await methods.trigger();
     if (!valid) return;
 
-    const accompanyingDetails = buildAccompanyingPayload(methods.getValues());
     await updateType({
       opportunity_type: VolunteerStateTypeType.ACCOMPANYING as OpportunityType,
-      ...(accompanyingDetails ? { accompanyingDetails } : {}),
+      accompanyingDetails: buildAccompanyingPayload(methods.getValues()),
     });
     onCancel();
   };
@@ -120,21 +104,6 @@ export const AccompanyingTypeChangeForm = ({ opportunityId, locale, onCancel }: 
       />
     </>
   );
-};
-
-const buildAccompanyingPayload = (values: AccompanyingDetailsFormData) => {
-  const result: Record<string, unknown> = {};
-
-  if (values.appointmentAddress) result.appointmentAddress = values.appointmentAddress;
-  if (values.appointmentPostcode) result.appointmentPostcode = values.appointmentPostcode;
-  if (values.appointmentDate) result.appointmentDate = values.appointmentDate.toISOString();
-  if (values.appointmentTime) result.appointmentTime = localHhmmToUtc(values.appointmentTime);
-  if (values.refugeeNumber) result.refugeeNumber = values.refugeeNumber;
-  if (values.refugeeName) result.refugeeName = values.refugeeName;
-  if (values.refugeeLanguage?.length) result.refugeeLanguage = values.refugeeLanguage.map((id) => ({ id }));
-  if (values.appointmentLanguage) result.appointmentLanguage = values.appointmentLanguage;
-
-  return Object.keys(result).length > 0 ? result : undefined;
 };
 
 const AccompanyingSection = styled.div`
