@@ -94,9 +94,10 @@ export function AccountStep({ data, onChange, errors }: Props) {
           />
           <span>
             {t("agentRegistration.fields.consent.header")}{" "}
-            <a href={`/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")}</a>{" "}
+            <a href={`/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")},</a>{" "}
+            <a href={`/${Subpage.AGREEMENT}`}>{t("homepage.footer.legal.agreement")}</a>{" "}
             {t("agentRegistration.fields.consent.and")}{" "}
-            <a href={`/${Subpage.AGREEMENT}`}>{t("homepage.footer.legal.agreement")}</a>
+            <a href={`/${Subpage.RAC_GUIDELINES}`}>{t("homepage.footer.legal.guidelines")}</a>
           </span>
         </FieldConsent>
         {errors.consent && (
