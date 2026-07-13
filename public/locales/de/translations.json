@@ -514,8 +514,20 @@
       "forgotPassword": "Passwort vergessen",
       "emailMissing": "E-Mail fehlt.",
       "emailMissingAtChar": "Die E-Mail-Adresse muss ein '@'-Zeichen enthalten.",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Passwort bestätigen",
       "passwordMissing": "Passwort fehlt.",
-      "successMessage": "Anmeldung erfolgreich"
+      "passwordTooShort": "Passwörter müssen mindestens 8 Zeichen lang sein",
+      "passwordTooLong": "Passwörter dürfen nicht länger als 50 Zeichen sein",
+      "passwordNotMatching": "Passwörter müssen übereinstimmen",
+      "successMessage": "Anmeldung erfolgreich",
+      "resetPassword": "Passwort zurücksetzen",
+      "sendEmailLink": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten",
+      "sendEmail": "E-Mail senden",
+      "successEmailLinkMessage": "E-Mail gesendet. Bitte überprüfen Sie Ihre E-Mails",
+      "successResetPasswordMessage": "Passwort erfolgreich zurückgesetzt",
+      "backToLogin": "Zurück zum Login",
+      "checkEmails": "Bitte E-Mails überprüfen"
     },
     "filters": {
       "button": "FILTER",
