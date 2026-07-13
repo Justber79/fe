@@ -3,7 +3,7 @@
 import { MapPinIcon } from "@phosphor-icons/react";
 import { AgentTrustLevel } from "@/components/Dashboard/Profile/types/agent";
 import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { IconDiv } from "@/components/styled/container";
 import {
@@ -25,7 +25,6 @@ interface Props {
 
 export const AgentCard = ({ agent, districtsList }: Props) => {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
 
   const { id, title, district, volunteerSearch, serviceType, type, trustLevel } = getNormalizedAgent(agent);
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
@@ -37,18 +36,14 @@ export const AgentCard = ({ agent, districtsList }: Props) => {
   const serviceTypeLabels = createServiceTypeMap(t);
   const agentTypeLabels = createAgentTypeMap(t);
 
-  const handleCardClick = () => {
-    if (!id) return;
-
-    router.push(`/${i18n.language}/dashboard/agents/${id}`);
-  };
+  const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
 
   const handleTrustLevelChange = (next: AgentTrustLevel) => {
     if (id == null) return;
     patchAgent({ trustLevel: next });
   };
   return (
-    <Card onClick={handleCardClick}>
+    <Card as={Link} href={profileUrl}>
       <CardHeader>
         <CardHeaderInfo>
           <Heading4>{title}</Heading4>

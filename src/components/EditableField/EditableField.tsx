@@ -273,6 +273,7 @@ export interface EditableFieldRef<T> {
 interface EditableFieldProps<T = string | number | string[]> {
   mode: "display" | "edit";
   type: EditableFieldType;
+  placeholder?: string;
   label?: string;
   value: T;
   setValue: (value: T) => void;
@@ -295,6 +296,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     validator,
     options = [],
     errorMessage,
+    placeholder,
     hint,
     maxLength,
   }: EditableFieldProps<T>,
@@ -385,6 +387,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
             <input
               type="text"
               value={localValue}
+              placeholder={placeholder}
               onChange={(e) => {
                 const v = e.target.value as T;
                 setLocalValue(v);
@@ -412,6 +415,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
           <InputWrapper $hasError={!!errorMessage}>
             <textarea
               value={localValue as string}
+              placeholder={placeholder}
               maxLength={maxLength}
               onChange={(e) => {
                 const v = e.target.value as T;

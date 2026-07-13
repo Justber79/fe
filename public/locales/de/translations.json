@@ -394,6 +394,14 @@
           "temporarilyUnavailable": "Vorübergehend nicht verfügbar",
           "unresponsive": "Reagiert nicht"
         },
+        "matchStatus": {
+          "header": "Zuordnungsstatus",
+          "vol-no-matches": "Keine Zuweisungen",
+          "vol-pending-match": "Zuordnung ausstehend",
+          "vol-matched": "Zugeordnet",
+          "vol-needs-rematch": "Erneute Zuordnung erforderlich",
+          "vol-past": "Vergangen"
+        },
         "preferredAv": {
           "header": "Bevorzugte Verfügbarkeit",
           "days": {
@@ -470,6 +478,11 @@
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
+    "posts": {
+      "inputPlaceholder": "Nachricht eingeben...",
+      "send": "Senden",
+      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet."
+    },
     "found": "gefunden",
     "searchPlaceHolder": "Ehrenamtliche suchen",
     "sortBy": {
@@ -489,7 +502,8 @@
       "button": {
         "login": "Anmelden",
         "joinVolunteer": "Finde jetzt dein Ehrenamt",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Abmelden"
       }
     },
     "login": {
@@ -500,8 +514,20 @@
       "forgotPassword": "Passwort vergessen",
       "emailMissing": "E-Mail fehlt.",
       "emailMissingAtChar": "Die E-Mail-Adresse muss ein '@'-Zeichen enthalten.",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Passwort bestätigen",
       "passwordMissing": "Passwort fehlt.",
-      "successMessage": "Anmeldung erfolgreich"
+      "passwordTooShort": "Passwörter müssen mindestens 8 Zeichen lang sein",
+      "passwordTooLong": "Passwörter dürfen nicht länger als 50 Zeichen sein",
+      "passwordNotMatching": "Passwörter müssen übereinstimmen",
+      "successMessage": "Anmeldung erfolgreich",
+      "resetPassword": "Passwort zurücksetzen",
+      "sendEmailLink": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten",
+      "sendEmail": "E-Mail senden",
+      "successEmailLinkMessage": "E-Mail gesendet. Bitte überprüfen Sie Ihre E-Mails",
+      "successResetPasswordMessage": "Passwort erfolgreich zurückgesetzt",
+      "backToLogin": "Zurück zum Login",
+      "checkEmails": "Bitte E-Mails überprüfen"
     },
     "filters": {
       "button": "FILTER",
@@ -984,6 +1010,26 @@
       "appreciationDeleted": "Anerkennung erfolgreich gelöscht",
       "deleteConfirmTitle": "Anerkennung löschen?",
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
+    },
+    "activityLog": {
+      "date": "Datum",
+      "hours": "Stunden",
+      "total": "Gesamt",
+      "hoursValue": "{{hours}} Stunden",
+      "addEntry": "Eintrag hinzufügen",
+      "editEntry": "Eintrag bearbeiten",
+      "deleteEntry": "Eintrag löschen",
+      "datePlaceholder": "Datum des Einsatzes",
+      "hoursPlaceholder": "z. B. 2,5",
+      "hoursInvalid": "Bitte Stunden größer als 0 eingeben",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "emptyState": "Für dieses Match wurden noch keine Stunden erfasst",
+      "entryAdded": "Eintrag erfolgreich hinzugefügt",
+      "entryUpdated": "Eintrag erfolgreich aktualisiert",
+      "entryDeleted": "Eintrag erfolgreich gelöscht",
+      "deleteConfirmTitle": "Eintrag löschen?",
+      "deleteConfirmText": "Der Eintrag vom {{date}} wird dauerhaft gelöscht."
     },
     "profile": {
       "loading": "Profil wird geladen...",
@@ -1939,7 +1985,11 @@
       "district": "Bezirk",
       "selectDistrict": "Bezirk auswählen…",
       "services": "Angebotene Leistungen",
-      "clientLanguages": "Von Bewohnenden gesprochene Sprachen"
+      "clientLanguages": "Von Bewohnenden gesprochene Sprachen",
+      "consent": {
+        "header": "Hiermit stimme ich zu:",
+        "and": "und"
+      }
     },
     "errors": {
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",

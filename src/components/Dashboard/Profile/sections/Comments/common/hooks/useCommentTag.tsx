@@ -22,7 +22,7 @@ export function useCommentTag(
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
-      filter: { role: UserRole.COORDINATOR },
+      role: UserRole.COORDINATOR,
     },
     staleTime: cacheTTL,
     enabled: !!setNewCommentText,

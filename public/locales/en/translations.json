@@ -388,6 +388,14 @@
           "temporarilyUnavailable": "Temporarily Unavailable",
           "unresponsive": "Unresponsive"
         },
+        "matchStatus": {
+          "header": "Match Status",
+          "vol-no-matches": "No matches",
+          "vol-pending-match": "Pending match",
+          "vol-matched": "Matched",
+          "vol-needs-rematch": "Needs rematch",
+          "vol-past": "Past"
+        },
         "preferredAv": {
           "header": "Preferred Availability",
           "days": {
@@ -464,6 +472,11 @@
       },
       "createOpportunity": "Create New Opportunity"
     },
+    "posts": {
+      "inputPlaceholder": "Type a message...",
+      "send": "Send",
+      "empty": "No posts yet. Be the first to post a message."
+    },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
     "sortBy": {
@@ -483,7 +496,8 @@
       "button": {
         "login": "Log in",
         "joinVolunteer": "Join as a volunteer",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "logout": "Log out"
       }
     },
     "login": {
@@ -494,8 +508,20 @@
       "forgotPassword": "Forgot Password",
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
       "passwordMissing": "Password's missing.",
-      "successMessage": "Login successful"
+      "passwordTooShort": "Passwords must be 8 characters or more",
+      "passwordTooLong": "Passwords can be no more than 50 characters",
+      "passwordNotMatching": "Passwords must match",
+      "successMessage": "Login successful",
+      "resetPassword": "Reset password",
+      "sendEmailLink": "Enter your email to receive a password reset link",
+      "sendEmail": "Send email",
+      "successEmailLinkMessage": "Email sent. Please check your emails",
+      "successResetPasswordMessage": "Password successfully reset",
+      "backToLogin": "Back to login",
+      "checkEmails": "Please check your emails"
     },
     "filters": {
       "button": "FILTERS",
@@ -972,6 +998,26 @@
       "appreciationDeleted": "Appreciation deleted successfully",
       "deleteConfirmTitle": "Delete appreciation?",
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
+    },
+    "activityLog": {
+      "date": "Date",
+      "hours": "Hours",
+      "total": "Total",
+      "hoursValue": "{{hours}} hours",
+      "addEntry": "Add entry",
+      "editEntry": "Edit entry",
+      "deleteEntry": "Delete entry",
+      "datePlaceholder": "Session date",
+      "hoursPlaceholder": "e.g. 2.5",
+      "hoursInvalid": "Please enter hours greater than 0",
+      "cancel": "Cancel",
+      "save": "Save",
+      "emptyState": "No hours logged for this match yet",
+      "entryAdded": "Entry added successfully",
+      "entryUpdated": "Entry updated successfully",
+      "entryDeleted": "Entry deleted successfully",
+      "deleteConfirmTitle": "Delete entry?",
+      "deleteConfirmText": "The entry for {{date}} will be permanently deleted."
     },
     "profile": {
       "loading": "Loading profile...",
@@ -1560,7 +1606,11 @@
       "district": "District",
       "selectDistrict": "Select district…",
       "services": "Services provided",
-      "clientLanguages": "Languages spoken by residents"
+      "clientLanguages": "Languages spoken by residents",
+      "consent": {
+        "header": "I hereby agree to the:",
+        "and": "and"
+      }
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",

@@ -537,7 +537,7 @@ html {
   --dashboard-cards-header-sortBy-circle-arrow-margin-left: 12px;
   --dashboard-cards-header-user-profile-container-gap: 8px;
   --dashboard-cards-header-user-icon-size: 32px;
-  --dashboard-cards-header-user-icon-border-radius: 16px;
+  --dashboard-cards-header-user-info-icon-size: 42px;
   --dashboard-cards-header-filter-item-container-gap: 8px;
   --dashboard-home-container-padding: 40px 16px 60px 16px;
   --dashboard-home-container-gap: 20px;
@@ -591,6 +591,7 @@ html {
   --dashboard-login-heading-letterSpacing: 0.25px;
   --dashboard-login-checkbox-label-fontSize: 20px;
   --dashboard-login-forgot-password-label-fontWeight: 600;
+  --dashboard-login-forgot-password-email-message-gap: 16px;
   --filters-container-width: min(340px, calc(100vw - 32px));
   --filters-container-border-radius: 16px;
   --filters-description-font-size: 16px;
@@ -1449,7 +1450,6 @@ html {
     --dashboard-notification-font-size: 0.85rem;
     --dashboard-notification-background-color: var(--color-red-600);
     --dashboard-notification-text-color: var(--color-white);
-
 
     --dashboard-home-container-padding: 40px 120px 100px 132px;
 

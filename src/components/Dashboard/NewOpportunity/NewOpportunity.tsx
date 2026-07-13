@@ -10,8 +10,8 @@ import {
 } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import {
-  createOpportunityDetailsSchema,
-  OpportunityDetailsFormData,
+  createNewOpportunityDetailsSchema,
+  NewOpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
@@ -131,7 +131,7 @@ function toOptionItems(ids: string[], apiItems: ApiLanguageOption[]): OptionItem
   });
 }
 
-function availabilityToTimeslots(availability: OpportunityDetailsFormData["availability"]): [number, string][] {
+function availabilityToTimeslots(availability: NewOpportunityDetailsFormData["availability"]): [number, string][] {
   return (availability ?? []).flatMap(({ weekday, timeSlots }) =>
     timeSlots
       .filter((ts) => ts.selected)
@@ -144,7 +144,7 @@ function availabilityToTimeslots(availability: OpportunityDetailsFormData["avail
 
 function buildCreatePayload(
   headerData: HeaderFormData,
-  detailsData: OpportunityDetailsFormData,
+  detailsData: NewOpportunityDetailsFormData,
   accompData: AccompanyingDetailsFormData | null,
   apiLanguages: ApiLanguageOption[],
   apiActivities: ApiLanguageOption[],
@@ -209,11 +209,13 @@ function OpportunityDetailsFields({
   apiLanguages,
   apiActivities,
   apiSkills,
+  isAccompanying,
 }: {
   isEvent: boolean;
   apiLanguages: ApiLanguageOption[];
   apiActivities: ApiLanguageOption[];
   apiSkills: ApiLanguageOption[];
+  isAccompanying: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -223,7 +225,7 @@ function OpportunityDetailsFields({
   const {
     control,
     formState: { errors },
-  } = useFormContext<OpportunityDetailsFormData>();
+  } = useFormContext<NewOpportunityDetailsFormData>();
 
   const activityMapping = createMapping(apiActivities);
   const skillMapping = createMapping(apiSkills);
@@ -231,6 +233,29 @@ function OpportunityDetailsFields({
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+
+  if (isAccompanying) {
+    return (
+      <FormDetails>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="textarea"
+              label={t(`${prefix}.description`)}
+              value={field.value}
+              setValue={field.onChange}
+              maxLength={MAX_DESCRIPTION_LENGTH}
+              hint={t(`${prefix}.descriptionHint`, { max: MAX_DESCRIPTION_LENGTH })}
+              errorMessage={errors.description?.message}
+            />
+          )}
+        />
+      </FormDetails>
+    );
+  }
 
   return (
     <FormDetails>
@@ -250,7 +275,6 @@ function OpportunityDetailsFields({
           />
         )}
       />
-
       <Controller
         name="mainCommunication"
         control={control}
@@ -437,8 +461,8 @@ export function NewOpportunity() {
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
 
   // Opportunity details form
-  const detailsMethods = useForm<OpportunityDetailsFormData>({
-    resolver: zodResolver(createOpportunityDetailsSchema(t)),
+  const detailsMethods = useForm<NewOpportunityDetailsFormData>({
+    resolver: zodResolver(createNewOpportunityDetailsSchema(t)),
     mode: "onChange",
     defaultValues: {
       description: "",
@@ -579,6 +603,7 @@ export function NewOpportunity() {
               apiLanguages={apiLanguages}
               apiActivities={apiActivities}
               apiSkills={apiSkills}
+              isAccompanying={isAccompanying}
             />
           </FormProvider>
         }

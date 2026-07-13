@@ -2,7 +2,9 @@
 import { FormInput } from "@/components/core/common";
 import { useTranslation } from "react-i18next";
 import { AgentRegistrationData } from "../types";
-import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
+import { FieldConsent, FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledErrorMessage } from "../styled";
+import { Subpage } from "@/types";
+import { WarningCircle } from "@phosphor-icons/react";
 
 type Props = {
   data: AgentRegistrationData;
@@ -80,6 +82,30 @@ export function AccountStep({ data, onChange, errors }: Props) {
           placeHolder={t("agentRegistration.fields.phone")}
           errors={errors.phone ? [errors.phone] : []}
         />
+      </FieldWrapper>
+
+      <FieldWrapper>
+        <FieldConsent>
+          <input
+            id="consent"
+            type="checkbox"
+            checked={data.consent}
+            onChange={(e) => onChange({ consent: e.target.checked })}
+          />
+          <span>
+            {t("agentRegistration.fields.consent.header")}{" "}
+            <a href={`/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")}</a>,{" "}
+            <a href={`/${Subpage.RAC_GUIDELINES}`}>{t("homepage.footer.legal.guidelines")}</a>{" "}
+            {t("agentRegistration.fields.consent.and")}{" "}
+            <a href={`/${Subpage.AGREEMENT}`}>{t("homepage.footer.legal.agreement")}</a>{" "}
+          </span>
+        </FieldConsent>
+        {errors.consent && (
+          <StyledErrorMessage>
+            <WarningCircle size={20} weight="regular" />
+            {errors.consent}
+          </StyledErrorMessage>
+        )}
       </FieldWrapper>
     </div>
   );

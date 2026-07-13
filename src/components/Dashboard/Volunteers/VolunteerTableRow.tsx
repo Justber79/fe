@@ -10,7 +10,7 @@ import { CirclePic } from "@/components/styled/img";
 import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
 import { ApiVolunteerGetList } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { getVolunteerColWidths } from "./volunteerTableColumns";
 import { getFirstName, getTopLanguages, truncateList } from "./helpers";
@@ -38,7 +38,6 @@ export function VolunteerTableRow({
   canSeeContactColumns,
 }: TableRowProps) {
   const { i18n } = useTranslation();
-  const router = useRouter();
   const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
@@ -71,14 +70,11 @@ export function VolunteerTableRow({
   const districtText = truncateList(abbreviatedDistricts, 1) || "—";
   const showBriefedCheck = isBriefedAccompanying(statusType, statusCommunication ?? undefined);
 
-  const handleGoToProfile = () => {
-    if (!id) return;
-    const params = opportunityId ? `?opportunity=${opportunityId}` : "";
-    router.push(`/${i18n.language}/dashboard/volunteers/${id}${params}`);
-  };
+  const params = opportunityId ? `?opportunity=${opportunityId}` : "";
+  const profileUrl = id ? `/${i18n.language}/dashboard/volunteers/${id}${params}` : "";
 
   return (
-    <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`volunteer-row-${id}`}>
+    <ClickableRow as={Link} href={profileUrl} $isLast={isLast} data-testid={`volunteer-row-${id}`}>
       <TableCell $width={VOLUNTEER_COL_WIDTHS.name} data-testid={`volunteer-name-${id}`}>
         <CirclePic src={getImageUrl(avatarUrl || defaultAvatarURL)} size="32px" />
         <TruncatedText>{getFirstName(name)}</TruncatedText>

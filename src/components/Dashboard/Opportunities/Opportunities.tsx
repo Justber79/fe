@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
@@ -13,7 +13,13 @@ import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
-import { deserializeOpportunityFilters, serializeOpportunityFilters } from "./helpers";
+import {
+  deserializeOpportunityFilters,
+  serializeOpportunityFilters,
+  parseSortParam,
+  SORT_PARAM,
+  DEFAULT_SORT_ORDER,
+} from "./helpers";
 import { OpportunityListController } from "./OpportunityListController";
 import { ContentRow, OpportunitiesContainer } from "./styles";
 import { ViewMode } from "../common/types";
@@ -25,12 +31,12 @@ export function Opportunities() {
   const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
-  const [sortOrder, setSortOrder] = useState<string>(SortOrder.NewToOld);
   const [cardsFilter, setCardsFilter] = useState(defaultOpportunityCardsFilter);
   const { data: apiFilterOptions } = useGetQuery<ApiOptionLists>({ queryKey: ["options"], apiPath: apiPathOption });
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const sortOrder = parseSortParam(searchParams.get(SORT_PARAM));
   const tabs = !user
     ? []
     : isAgent
@@ -43,8 +49,9 @@ export function Opportunities() {
 
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
-  const selectedTabIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
+  const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
+  const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
@@ -54,7 +61,12 @@ export function Opportunities() {
   };
 
   const handleSortChange = (order: string) => {
-    setSortOrder(order);
+    const sort = parseSortParam(order);
+    const params = new URLSearchParams(searchParams);
+    params.delete("page");
+    if (sort === DEFAULT_SORT_ORDER) params.delete(SORT_PARAM);
+    else params.set(SORT_PARAM, sort);
+    router.push(pathname + questionMark + params.toString());
   };
 
   const handleTabChange = (index: number) => {
@@ -94,7 +106,9 @@ export function Opportunities() {
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
+    const params = serializeOpportunityFilters(cleared, searchParams, false);
+    params.delete(SORT_PARAM);
+    router.push(pathname + questionMark + params.toString());
   };
 
   useEffect(() => {

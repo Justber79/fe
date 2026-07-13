@@ -47,6 +47,7 @@ export function validateStep(
       errors.confirmPassword = t("agentRegistration.errors.passwordMismatch");
     if (!data.phone.trim()) errors.phone = required;
     else if (data.phone.trim().length < 7) errors.phone = t("agentRegistration.errors.phoneTooShort");
+    if (!data.consent) errors.consent = required;
   }
 
   return errors;
