@@ -1,7 +1,7 @@
 "use client";
 
 import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
@@ -18,20 +18,16 @@ interface TableRowProps {
 
 export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, districtsList }: TableRowProps) {
   const { i18n } = useTranslation();
-  const router = useRouter();
 
   const { id, title, type, volunteerSearch, district, activeVolunteers } = agent;
   // email is not in ApiAgentGetList SDK type — cast until SDK is updated
   const email = (agent as ApiAgentGetList & { email?: string }).email;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
-  const handleGoToProfile = () => {
-    if (!id) return;
-    router.push(`/${i18n.language}/dashboard/agents/${id}`);
-  };
+  const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
 
   return (
-    <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`agent-row-${id}`}>
+    <ClickableRow as={Link} href={profileUrl} $isLast={isLast} data-testid={`agent-row-${id}`}>
       <TableCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
         {title}
       </TableCell>

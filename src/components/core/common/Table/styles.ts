@@ -111,6 +111,9 @@ export const ClickableRow = styled(TableRow)<{ $cursor?: string }>`
   &:hover {
     background: var(--color-pink-50);
   }
+
+  text-decoration: none;
+  color: inherit;
 `;
 
 export const TruncatedText = styled.span`
