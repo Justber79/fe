@@ -508,8 +508,20 @@
       "forgotPassword": "Forgot Password",
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
       "passwordMissing": "Password's missing.",
-      "successMessage": "Login successful"
+      "passwordTooShort": "Passwords must be 8 characters or more",
+      "passwordTooLong": "Passwords can be no more than 50 characters",
+      "passwordNotMatching": "Passwords must match",
+      "successMessage": "Login successful",
+      "resetPassword": "Reset password",
+      "sendEmailLink": "Enter your email to receive a password reset link",
+      "sendEmail": "Send email",
+      "successEmailLinkMessage": "Email sent. Please check your emails",
+      "successResetPasswordMessage": "Password successfully reset",
+      "backToLogin": "Back to login",
+      "checkEmails": "Please check your emails"
     },
     "filters": {
       "button": "FILTERS",
@@ -1610,7 +1622,11 @@
       "district": "District",
       "selectDistrict": "Select district…",
       "services": "Services provided",
-      "clientLanguages": "Languages spoken by residents"
+      "clientLanguages": "Languages spoken by residents",
+      "consent": {
+        "header": "I hereby agree to the:",
+        "and": "and"
+      }
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",

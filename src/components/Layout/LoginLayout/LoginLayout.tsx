@@ -1,13 +1,12 @@
 "use client";
 import styled from "styled-components";
-import { PageLayout } from "../Layout";
-import { CustomHeading } from "../styled/text";
-import { ImageWithGradient } from "../core/image";
-import { getImageUrl } from "@/utils/helpers";
-import { useScreenType } from "@/context/DeviceContext";
 import { ScreenTypes } from "@/config/constants";
-import { useTranslation } from "react-i18next";
-import { LoginController } from "./LoginController";
+import { ReactNode } from "react";
+import { getImageUrl } from "@/utils";
+import { useScreenType } from "@/context/DeviceContext";
+import { PageLayout } from "../PageLayout";
+import { CustomHeading } from "@/components/styled/text";
+import { ImageWithGradient } from "@/components/core/image";
 
 const gradientClassName = "image-filter-gradient-blue ";
 
@@ -37,11 +36,14 @@ const LoginContentContainer = styled.div`
   gap: var(--dashboard-login-content-container-gap);
 `;
 
-export function Login() {
+type Props = {
+  children: ReactNode;
+  heading: string;
+};
+
+export function LoginLayout({ children, heading }: Props) {
   const screenType = useScreenType();
   const imageUrl = getImageUrl(imageNames[screenType]);
-  const { t } = useTranslation();
-
   return (
     <PageLayout background="var(--color-white)">
       <LoginContainer>
@@ -54,9 +56,9 @@ export function Login() {
               letterSpacing="var(--dashboard-login-heading-letterSpacing)"
               color="var(--color-midnight)"
             >
-              {t("dashboard.login.login")}
+              {heading}
             </CustomHeading>
-            <LoginController />
+            {children}
           </LoginContentContainer>
         </LoginSubContainer>
 
