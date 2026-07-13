@@ -28,9 +28,6 @@ const SELECTABLE_TYPES = [
   VolunteerStateTypeType.EVENTS,
 ];
 
-const toDialogInitial = (type: VolunteerStateTypeType): VolunteerStateTypeType =>
-  type === VolunteerStateTypeType.REGULAR_ACCOMPANYING ? VolunteerStateTypeType.ACCOMPANYING : type;
-
 type Props = {
   onClose: () => void;
   opportunity: ApiOpportunityGet;
@@ -42,7 +39,7 @@ export const ChangeOpportunityTypeDialog = ({ onClose, opportunity }: Props) => 
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const currentType = opportunity.volunteerType;
 
-  const [selected, setSelected] = useState<VolunteerStateTypeType>(toDialogInitial(currentType));
+  const [selected, setSelected] = useState(currentType);
 
   const options = SELECTABLE_TYPES.map((type) => ({
     value: type,
@@ -57,7 +54,7 @@ export const ChangeOpportunityTypeDialog = ({ onClose, opportunity }: Props) => 
 
   const showEventForm = selected === VolunteerStateTypeType.EVENTS && currentType !== VolunteerStateTypeType.EVENTS;
 
-  const isNoop = selected === toDialogInitial(currentType);
+  const isNoop = selected === currentType;
 
   return (
     <Modal isOpen onClose={onClose}>
