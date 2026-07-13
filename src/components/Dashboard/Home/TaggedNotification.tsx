@@ -30,13 +30,12 @@ export default function TaggedNotification({
   isRead,
 }: Props) {
   const { t } = useTranslation();
-  const { mutateAsync: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
+  const { mutate: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
   const { title, isLoading, isError, error } = useGetEntityTitle(entityType, entityId, apiPath);
 
-  const handleReadTag = async (e: React.MouseEvent) => {
+  const handleReadTag = () => {
     if (isRead) return;
-    e.preventDefault();
-    await updateReadTagComment({ id: personId, readAt: new Date() });
+    updateReadTagComment({ id: personId, readAt: new Date() });
   };
 
   if (isLoading) {
@@ -47,12 +46,13 @@ export default function TaggedNotification({
     return <Heading4>{error?.message}</Heading4>;
   }
   return (
-    <TagRow onClick={handleReadTag} $isRead={isRead}>
+    <TagRow $isRead={isRead}>
       <Link
         href={{
           pathname: link,
           query: { scrollTo: "coordinator-comments" },
         }}
+        onClick={handleReadTag}
       >
         <ChatCircleIcon size={22} />
         <Heading4>

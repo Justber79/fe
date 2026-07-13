@@ -21,6 +21,7 @@ export function NewestTaggedComments() {
   const handleIsRead = (comment: ApiComment) => {
     if (personId <= 0) return false;
     const taggedComment = comment.taggedPersons.find((tag) => tag.id === personId);
+    if (!taggedComment) return false;
     return taggedComment?.readAt !== null;
   };
 
