@@ -54,7 +54,9 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
 
   const { mutate: deleteComment } = useDeleteComment(entityId, deleteState.deleteCommentId ?? 0, entityType);
 
-  const sortedComments = comments.slice().reverse();
+  const sortedComments = comments.slice().sort((a, b) => {
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+  });
 
   const handleAddComment = async () => {
     if (!newCommentText.trim()) return;
