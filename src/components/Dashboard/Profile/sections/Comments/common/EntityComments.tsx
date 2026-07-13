@@ -142,7 +142,7 @@ export function EntityComments({ entityId, entityType, comments, testId }: Props
     menu.closeMenu();
   };
   return (
-    <Container data-testid={testId}>
+    <Container data-testid={testId} id="coordinator-comments">
       {sortedComments.map((comment) => (
         <Comment
           key={comment.id}
