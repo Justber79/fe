@@ -1,13 +1,14 @@
 "use client";
 
 import { getCookie } from "@/utils/helpers";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
   const [verified, setVerified] = useState(false);
   const [verifying, setVerifying] = useState(true);
   const { token, lang } = useParams<{ token: string; lang: string }>();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -23,8 +24,11 @@ export default function Page() {
       .then((res) => {
         if (res.ok) {
           setVerified(true);
+          // role param in the URL is the primary signal; cookie is a fallback
+          // for links opened before this change was deployed.
+          const roleFromUrl = searchParams.get("role");
           const pendingRole = getCookie("n4d_pending_role");
-          if (pendingRole === "agent") {
+          if (roleFromUrl === "agent" || pendingRole === "agent") {
             document.cookie = "n4d_pending_role=; path=/; max-age=0";
             // Forward the verify token — the agent form uses it as the
             // querystring auth for POST /agent/register.
@@ -39,7 +43,7 @@ export default function Page() {
       .catch(() => {
         setVerifying(false);
       });
-  }, [token, lang, router]);
+  }, [token, lang, router, searchParams]);
 
   return (
     <div>

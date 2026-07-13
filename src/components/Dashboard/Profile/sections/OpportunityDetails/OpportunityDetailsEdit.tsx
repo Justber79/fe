@@ -16,7 +16,6 @@ import {
 } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import { useUpdateOpportunityDetails } from "@/hooks/useUpdateOpportunityDetails";
-import { useUpdateOpportunityTitle } from "@/hooks/useUpdateOpportunityTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { de, enUS } from "date-fns/locale";
@@ -78,7 +77,6 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   const isEventType = opp.volunteerType === VolunteerStateTypeType.EVENTS;
 
   const { mutate: updateOpportunityDetails } = useUpdateOpportunityDetails(opp.id);
-  const { mutate: updateTitle } = useUpdateOpportunityTitle(opp.id);
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
   const { data: apiSkills = [] } = useApiSkills();
@@ -104,12 +102,12 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<OpportunityDetailsFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
-      title: opp.title ?? "",
+      title: opp.title,
       description: opp.description ?? "",
       numberOfVolunteers: String(opp.numberOfVolunteers ?? ""),
       mainCommunication: languagesToFormValues(generalLangs, t),
@@ -128,11 +126,9 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   };
 
   const onSubmit = (values: OpportunityDetailsFormData) => {
-    if (values.title !== opp.title) {
-      updateTitle({ title: values.title });
-    }
     updateOpportunityDetails(
       {
+        title: values.title,
         description: values.description,
         numberVolunteers: Number(values.numberOfVolunteers),
         languagesMain: toLangOptionItems(values.mainCommunication, apiLanguages, t),
@@ -351,7 +347,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
           onClick={handleSubmit(onSubmit)}
           width="auto"
           padding="var(--volunteer-profile-section-card-header-button-padding)"
-          disabled={!isValid}
+          disabled={Object.keys(errors).length > 0}
         />
       </FormButtonRow>
     </>

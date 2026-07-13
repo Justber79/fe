@@ -1,13 +1,13 @@
-import { apiPathAgent, apiPathMe, cacheTTL } from "@/config/constants";
+import { apiPathAgent, apiPathMe, AUTH_HINT_COOKIE_NAME, cacheTTL, USER_QUERY_KEY } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { ApiAgentGet, ApiUserGet } from "need4deed-sdk";
 
 export const useGetCurrentAgent = () => {
-  const isLoggedIn = getCookie("is_logged_in") === "true";
+  const isLoggedIn = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
 
   const { data: user, isLoading: userLoading } = useGetQuery<ApiUserGet & { agentId?: number }>({
-    queryKey: ["user"],
+    queryKey: USER_QUERY_KEY,
     apiPath: apiPathMe,
     staleTime: cacheTTL,
     enabled: isLoggedIn,

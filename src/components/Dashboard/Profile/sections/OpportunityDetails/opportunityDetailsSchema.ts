@@ -26,3 +26,8 @@ export const createOpportunityDetailsSchema = (t: (key: string) => string) =>
   });
 
 export type OpportunityDetailsFormData = z.infer<ReturnType<typeof createOpportunityDetailsSchema>>;
+
+export const createNewOpportunityDetailsSchema = (t: (key: string) => string) =>
+  createOpportunityDetailsSchema(t).omit({ title: true });
+
+export type NewOpportunityDetailsFormData = z.infer<ReturnType<typeof createNewOpportunityDetailsSchema>>;
