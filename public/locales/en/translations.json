@@ -1606,7 +1606,11 @@
       "district": "District",
       "selectDistrict": "Select district…",
       "services": "Services provided",
-      "clientLanguages": "Languages spoken by residents"
+      "clientLanguages": "Languages spoken by residents",
+      "consent": {
+        "header": "I hereby agree to the:",
+        "and": "and"
+      }
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
