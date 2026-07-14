@@ -96,6 +96,7 @@ export function OpportunityListController({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         districtsList={apiFilterOptions?.district ?? undefined}
+        volunteerId={volunteerId}
       />
     );
   }
