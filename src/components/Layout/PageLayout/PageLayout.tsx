@@ -33,6 +33,10 @@ const PageContentHeaderContainer = styled.div<PageContentHeaderContainerProps>`
   padding-top: var(--layout-static-page-header-height);
 `;
 
+const PageContentContainer = styled.div`
+  display: flex;
+`;
+
 export function PageLayout({ children, background }: Props) {
   const screenType = useScreenType();
   const isBurgerMenu = screenType !== ScreenTypes.DESKTOP;
@@ -47,7 +51,7 @@ export function PageLayout({ children, background }: Props) {
           padding="var(--layout-static-page-header-padding)"
           menuItemColor="var(--color-midnight)"
         />
-        {children}
+        <PageContentContainer>{children}</PageContentContainer>
       </PageContentHeaderContainer>
       <FooterPartnersSection />
     </PageContainer>

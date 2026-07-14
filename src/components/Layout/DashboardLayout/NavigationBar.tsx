@@ -162,26 +162,28 @@ export default function NavigationBar() {
   ];
 
   return (
-    <BarContainer>
-      {options.map(({ label, Icon, text, route }) => {
-        const isSelected = currentPathname.startsWith(route);
+    <div>
+      <BarContainer>
+        {options.map(({ label, Icon, text, route }) => {
+          const isSelected = currentPathname.startsWith(route);
 
-        return (
-          <Option
-            key={label}
-            onClick={() => {
-              router.push(route);
-            }}
-          >
-            <IconDiv $isSelected={isSelected}>
-              {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
-              {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||
-                (text && <StyledParagraph isSelected={isSelected} label={text} />)}
-            </IconDiv>
-            <StyledParagraph label={label} />
-          </Option>
-        );
-      })}
-    </BarContainer>
+          return (
+            <Option
+              key={label}
+              onClick={() => {
+                router.push(route);
+              }}
+            >
+              <IconDiv $isSelected={isSelected}>
+                {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
+                {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||
+                  (text && <StyledParagraph isSelected={isSelected} label={text} />)}
+              </IconDiv>
+              <StyledParagraph label={label} />
+            </Option>
+          );
+        })}
+      </BarContainer>
+    </div>
   );
 }
