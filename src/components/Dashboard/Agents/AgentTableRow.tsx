@@ -19,9 +19,7 @@ interface TableRowProps {
 export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, districtsList }: TableRowProps) {
   const { i18n } = useTranslation();
 
-  const { id, title, type, volunteerSearch, district, activeVolunteers } = agent;
-  // email is not in ApiAgentGetList SDK type — cast until SDK is updated
-  const email = (agent as ApiAgentGetList & { email?: string }).email;
+  const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
 
   const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
@@ -44,7 +42,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
         {activeVolunteers}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.numOpportunities} data-testid={`agent-opportunities-${id}`}>
-        {"—"}
+        {numOpportunities ?? "—"}
       </TableCell>
       <WrapAnywhereCell $width={AGENT_COL_WIDTHS.email} $align="space-between" data-testid={`agent-email-${id}`}>
         {email || "—"}
