@@ -516,6 +516,7 @@ export function NewOpportunity() {
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
     },
+    queryKeyToInvalidate: ["agent-opportunities", String(agentId)],
   });
 
   const handleCreate = async () => {
