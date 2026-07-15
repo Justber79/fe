@@ -31,6 +31,7 @@ export interface AgentRegistrationData {
   password: string;
   confirmPassword: string;
   phone: string;
+  consent: boolean;
 }
 
 export const defaultAgentRegistrationData: AgentRegistrationData = {
@@ -40,6 +41,7 @@ export const defaultAgentRegistrationData: AgentRegistrationData = {
   password: "",
   confirmPassword: "",
   phone: "",
+  consent: false,
 };
 
 export const TOTAL_STEPS = 1;
