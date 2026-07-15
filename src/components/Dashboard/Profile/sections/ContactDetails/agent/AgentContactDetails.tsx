@@ -82,6 +82,7 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
     updateAgent(
       {
         ...values,
+        agentId: agent.id,
         address: {
           id: agent.representative?.address?.id,
           street: addressData.street,
