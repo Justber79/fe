@@ -591,6 +591,7 @@ html {
   --dashboard-login-heading-letterSpacing: 0.25px;
   --dashboard-login-checkbox-label-fontSize: 20px;
   --dashboard-login-forgot-password-label-fontWeight: 600;
+  --dashboard-login-forgot-password-email-message-gap: 16px;
   --filters-container-width: min(340px, calc(100vw - 32px));
   --filters-container-border-radius: 16px;
   --filters-description-font-size: 16px;

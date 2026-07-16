@@ -6,9 +6,10 @@ import { useGetTaggedComments } from "@/hooks/useGetTaggedComments";
 import { DashboardEntityType } from "@/hooks/useGetEntityTitle";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { TagContainer } from "./styles";
+import { ApiComment } from "need4deed-sdk";
 
 export function NewestTaggedComments() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const user = useCurrentUser();
   const personId = (user as typeof user & { personId?: number })?.personId ?? -1;
@@ -16,6 +17,13 @@ export function NewestTaggedComments() {
   const { tagComments, isLoading, isError, error } = useGetTaggedComments(personId);
 
   const mostRecentComments = tagComments?.toReversed();
+
+  const handleIsRead = (comment: ApiComment) => {
+    if (personId <= 0) return false;
+    const taggedComment = comment.taggedPersons.find((tag) => tag.id === personId);
+    if (!taggedComment) return false;
+    return taggedComment?.readAt !== null;
+  };
 
   if (isLoading) {
     return <Heading4>{t("dashboard.home.content.loading")}</Heading4>;
@@ -39,7 +47,10 @@ export function NewestTaggedComments() {
               entityId={comment.entityId}
               authorName={comment.authorName}
               apiPath={processEntity[comment.entityType as DashboardEntityType].path}
-              link={`${processEntity[comment.entityType as DashboardEntityType].linkUrl}/${comment.entityId}`}
+              link={`/${i18n.language}${processEntity[comment.entityType as DashboardEntityType].linkUrl}/${comment.entityId}`}
+              personId={personId}
+              commentId={comment.id}
+              isRead={handleIsRead(comment)}
             />
           );
         })

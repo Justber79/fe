@@ -1,5 +1,5 @@
 import { ApiVolunteerOpportunityGetList, LangPurpose, OptionItem, ProfileVolunteeringType } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Tags } from "@/components/core/common";
 import { Paragraph } from "@/components/styled/text";
@@ -26,7 +26,6 @@ type Props = {
 
 export function OpportunityCard({ opportunity, volunteerId, activitiesList, districtsList }: Props) {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
 
   const {
     id,
@@ -57,14 +56,11 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
       ? formatAvailability(availability)
       : null;
 
-  const handleCardClick = () => {
-    if (!id) return;
-    const params = volunteerId ? `?volunteer=${volunteerId}` : "";
-    router.push(`/${i18n.language}/dashboard/opportunities/${id}${params}`);
-  };
+  const params = volunteerId ? `?volunteer=${volunteerId}` : "";
+  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
 
   return (
-    <Card onClick={handleCardClick} data-testid="opportunity-card">
+    <Card as={Link} href={profileUrl} data-testid="opportunity-card">
       <StatusTagsDiv>
         {statusOpportunity && (
           <StatusDiv>

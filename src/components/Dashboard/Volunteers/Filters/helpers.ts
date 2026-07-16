@@ -1,5 +1,5 @@
 import { TFunction } from "i18next";
-import { Availability, VolunteerCardsFilter } from "./types";
+import { Availability, VolunteerCardsFilter, VolunteerStatusMatch } from "./types";
 import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
 import { SelectionMap, SetFilter } from "../../common/CardsFilter/types";
 import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
@@ -37,6 +37,13 @@ export const createFilterItems = (
     (key) => t(`dashboard.volunteers.filters.engagement.${key}`),
   );
 
+  const statusMatchFilters = generateNestedFilterControlItems(
+    filter[VolunteerStatusMatch.MATCH],
+    setFilter,
+    VolunteerStatusMatch.MATCH,
+    (key) => t(`dashboard.volunteers.filters.matchStatus.${key}`),
+  );
+
   const activityFilters = generateNestedFilterControlItems(
     filter[EntityTableName.ACTIVITY],
     setFilter,
@@ -46,7 +53,15 @@ export const createFilterItems = (
 
   const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
 
-  return { districtFilters, languageFilters, engagementFilters, availabilityFilters, typeFilters, activityFilters };
+  return {
+    districtFilters,
+    languageFilters,
+    engagementFilters,
+    availabilityFilters,
+    typeFilters,
+    activityFilters,
+    statusMatchFilters,
+  };
 };
 
 /**
@@ -90,14 +105,22 @@ export const createSelectedFilterItemsAsFlatArray = (
 ) => {
   const filterItems = createFilterItems(filter, setFilter, t);
 
-  const { districtFilters, engagementFilters, languageFilters, availabilityFilters, typeFilters, activityFilters } =
-    filterItems;
+  const {
+    districtFilters,
+    engagementFilters,
+    statusMatchFilters,
+    languageFilters,
+    availabilityFilters,
+    typeFilters,
+    activityFilters,
+  } = filterItems;
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
 
   return [
     ...typeFilters,
     ...districtFilters,
     ...engagementFilters,
+    ...statusMatchFilters,
     ...languageFilters,
     ...activityFilters,
     ...flatAvFilters,
