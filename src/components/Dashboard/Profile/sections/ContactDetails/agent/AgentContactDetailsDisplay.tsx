@@ -54,13 +54,6 @@ export const AgentContactDetailsDisplay = ({ keysToLabels }: Props) => {
         value={values.landline || ""}
         setValue={() => {}}
       />
-      <EditableField
-        mode="display"
-        type="text"
-        label={t("dashboard.agentProfile.contactDetails.address")}
-        value={values.address || ""}
-        setValue={() => {}}
-      />
     </FormDetails>
   );
 };

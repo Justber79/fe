@@ -11,7 +11,6 @@ import { FormContainer } from "../../shared/styles";
 import { EditableSectionProps } from "../../shared/types";
 import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
 import { useEnumTranslation } from "../shared";
-import { formatAddress, parseAddress } from "./agentAddressUtils";
 import { AgentContactDetailsDisplay } from "./AgentContactDetailsDisplay";
 import { AgentContactDetailsEdit } from "./AgentContactDetailsEdit";
 import { AgentContactDetailsFormData, createAgentContactDetailsSchema } from "./agentContactDetailsSchema";
@@ -55,7 +54,6 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
       email: agent?.representative?.email ?? "",
       phone: agent?.representative?.phone ?? "",
       landline: agent?.representative?.landline ?? "",
-      address: formatAddress(agent?.representative?.address),
     }),
     [agent],
   );
@@ -78,20 +76,10 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
   };
 
   const onSubmit = (values: AgentContactDetailsFormData) => {
-    const addressData = parseAddress(values.address ?? "");
     updateAgent(
       {
         ...values,
         agentId: agent.id,
-        address: {
-          id: agent.representative?.address?.id,
-          street: addressData.street,
-          city: addressData.city,
-          postcode: {
-            id: agent.representative?.address?.postcode?.id,
-            code: addressData.postcode,
-          },
-        },
       },
       {
         onSuccess: () => {

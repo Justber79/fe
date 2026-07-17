@@ -1096,7 +1096,6 @@
         "email": "E-Mail",
         "mobile": "Mobiltelefon",
         "landline": "Festnetz",
-        "address": "Adresse",
         "saveSuccess": "Kontaktdaten erfolgreich aktualisiert",
         "roles": {
           "label": "Rolle",
@@ -1115,7 +1114,6 @@
         "edit": "Bearbeiten",
         "validation": {
           "nameRequired": "Name ist erforderlich",
-          "addressRequired": "Adresse ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",
           "mobileRequired": "Mobilnummer ist erforderlich",
           "mobileInvalid": "Die Mobilnummer muss mit + beginnen und darf nur Ziffern und Leerzeichen enthalten",
