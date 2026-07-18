@@ -7,8 +7,7 @@ import styled from "styled-components";
 interface VolunteerCardListProps {
   volunteers: ApiVolunteerGetList[];
   count: number;
-  columns: number;
-  rows: number;
+  itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   opportunityId?: string;
@@ -24,8 +23,7 @@ const VolunteerCardListContainer = styled.div`
 export function VolunteerCardList({
   volunteers,
   count,
-  columns,
-  rows,
+  itemsPerPage,
   currentPage,
   setCurrentPage,
   opportunityId,
@@ -38,8 +36,7 @@ export function VolunteerCardList({
     <VolunteerCardListContainer>
       <PaginatedGrid
         pageItems={items}
-        columns={columns}
-        rows={rows}
+        itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItemCounts={count}

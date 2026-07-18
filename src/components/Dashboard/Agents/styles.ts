@@ -21,6 +21,10 @@ export const ContentRow = styled.div`
 export const AgentCardListContainer = styled.div`
   display: flex;
   justify-content: left;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  --card-width: var(--dashboard-agents-card-width);
 `;
 
 export const Card = styled(BaseCard)<{ $cursor?: string }>`
