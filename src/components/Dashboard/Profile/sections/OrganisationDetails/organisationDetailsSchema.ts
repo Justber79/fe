@@ -14,6 +14,7 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string) => {
   const required = t(`${i18nPrefix}.required`);
 
   return z.object({
+    title: z.string().min(1, required),
     about: z.string().min(1, required),
     website: z
       .string()
