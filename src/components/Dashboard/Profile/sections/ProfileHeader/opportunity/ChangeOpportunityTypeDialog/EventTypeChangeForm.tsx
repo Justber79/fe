@@ -54,7 +54,10 @@ export const EventTypeChangeForm = ({ opportunityId, locale, onCancel }: Props) 
     };
     await updateType({
       opportunity_type: VolunteerStateTypeType.EVENTS as OpportunityType,
-      eventDetails,
+      event: {
+        date: eventDetails.eventDate,
+        time: eventDetails.eventTime,
+      },
     });
     onCancel();
   };

@@ -137,6 +137,13 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
         activities: toOptionItems(values.activities, apiActivities),
         skills: toOptionItems(values.skills, apiSkills),
         schedule: values.availability ? formToApiAvailability(values.availability) : undefined,
+        event:
+          values.eventDate && values.eventTime
+            ? {
+                date: values.eventDate.toISOString(),
+                time: values.eventTime,
+              }
+            : undefined,
       },
       { onSuccess: onCancel },
     );

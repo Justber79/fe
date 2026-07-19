@@ -5,12 +5,7 @@ import { ApiOpportunityGet, ApiOpportunityPatch } from "need4deed-sdk";
 export type OpportunityTypeUpdateData = {
   opportunity_type: ApiOpportunityPatch["opportunity_type"];
   accompanyingDetails?: ApiOpportunityPatch["accompanyingDetails"];
-
-  // It's not yet implemented in api, for now keep it like that, change later.
-  eventDetails?: {
-    eventDate?: string;
-    eventTime?: string;
-  };
+  event?: ApiOpportunityPatch["event"];
 };
 
 export const useUpdateOpportunityType = (opportunityId: ApiOpportunityGet["id"]) => {
