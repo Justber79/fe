@@ -11,8 +11,17 @@ type StatusUpdatePayload = {
 
 type DeletePayload = { m2mId: number };
 
-function getComplementaryPrefix(queryKey: string[]): string {
-  return queryKey[0] === "opportunity-volunteers" ? "volunteer-opportunities" : "opportunity-volunteers";
+// "agent-volunteers" aggregates volunteers across all of an agent's
+// opportunities, so a status change made from there can affect both the
+// volunteer's own view and a single opportunity's volunteer list.
+const COMPLEMENTARY_PREFIXES: Record<string, string[]> = {
+  "opportunity-volunteers": ["volunteer-opportunities"],
+  "volunteer-opportunities": ["opportunity-volunteers"],
+  "agent-volunteers": ["volunteer-opportunities", "opportunity-volunteers"],
+};
+
+function getComplementaryPrefixes(queryKey: string[]): string[] {
+  return COMPLEMENTARY_PREFIXES[queryKey[0]] ?? ["opportunity-volunteers"];
 }
 
 export const useUpdateOpportunityVolunteerStatus = (queryKeyToInvalidate: string[]) => {
@@ -26,7 +35,9 @@ export const useUpdateOpportunityVolunteerStatus = (queryKeyToInvalidate: string
     successMessage: "dashboard.opportunityProfile.volunteersSec.statusUpdateSuccess",
     queryKeyToInvalidate,
     onSuccessCallback: () => {
-      queryClient.invalidateQueries({ queryKey: [getComplementaryPrefix(queryKeyToInvalidate)] });
+      getComplementaryPrefixes(queryKeyToInvalidate).forEach((prefix) =>
+        queryClient.invalidateQueries({ queryKey: [prefix] }),
+      );
     },
   });
 };
@@ -42,7 +53,9 @@ export const useDeleteOpportunityVolunteer = (queryKeyToInvalidate: string[]) =>
     successMessage: "dashboard.opportunityProfile.volunteersSec.removeSuccess",
     queryKeyToInvalidate,
     onSuccessCallback: () => {
-      queryClient.invalidateQueries({ queryKey: [getComplementaryPrefix(queryKeyToInvalidate)] });
+      getComplementaryPrefixes(queryKeyToInvalidate).forEach((prefix) =>
+        queryClient.invalidateQueries({ queryKey: [prefix] }),
+      );
     },
   });
 };
