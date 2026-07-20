@@ -13,6 +13,7 @@ export const VolunteerContactDetailsDisplay = ({ keysToLabels }: Props) => {
   const { t } = useTranslation();
   const { watch } = useFormContext<VolunteerContactDetailsFormData>();
   const values = watch();
+  const address = [values.street, values.postcode].filter(Boolean).join(", ");
 
   return (
     <FormDetails data-testid="volunteer-contact-details-display">
@@ -36,7 +37,7 @@ export const VolunteerContactDetailsDisplay = ({ keysToLabels }: Props) => {
         mode="display"
         type="text"
         label={t("dashboard.volunteerProfile.contactDetails.address")}
-        value={values.address}
+        value={address}
         setValue={() => {}}
       />
 

@@ -35,6 +35,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   const initialFormValues = {
     ...details,
+    title: agent.title || "",
     website: details?.website || "",
     operator: details?.operator || agent.operator || "",
     clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
@@ -62,6 +63,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
   const onSubmit = (values: OrganisationDetailsFormData) => {
     updateOrganization(
       {
+        title: values.title,
         about: values.about,
         website: values.website,
         addressStreet: values.addressStreet,
