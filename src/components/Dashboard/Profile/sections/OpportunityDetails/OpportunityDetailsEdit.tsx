@@ -25,7 +25,11 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../shared/styles";
 import { languagesToFormValues } from "./formatters";
-import { createOpportunityDetailsSchema, OpportunityDetailsFormData } from "./opportunityDetailsSchema";
+import {
+  createOpportunityDetailsSchema,
+  getMainCommunicationLanguageOptions,
+  OpportunityDetailsFormData,
+} from "./opportunityDetailsSchema";
 import { DateFieldRow, DatePickerContainer, ErrorText, FieldGroup, TimeInput, TimeInputWrapper } from "./styles";
 import { OpportunityWithDetails } from "./types";
 
@@ -87,6 +91,10 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+  const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map((l) => ({
+    id: l.id,
+    title: { [lang as Lang]: l.title } as Record<Lang, string>,
+  }));
 
   const generalLangs = opp.languages.filter((l) => l.purpose === LangPurpose.GENERAL);
   const seenResidents = new Set<number>();
@@ -97,7 +105,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     return true;
   });
 
-  const schema = createOpportunityDetailsSchema(t);
+  const schema = createOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages));
   const {
     control,
     handleSubmit,
@@ -187,7 +195,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
                   languages={field.value}
                   onChange={field.onChange}
                   t={t}
-                  availableLanguages={languagesForForm}
+                  availableLanguages={mainCommunicationLanguagesForForm}
                   showLevel={false}
                 />
                 {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}

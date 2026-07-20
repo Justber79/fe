@@ -11,6 +11,7 @@ import {
 import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import {
   createNewOpportunityDetailsSchema,
+  getMainCommunicationLanguageOptions,
   NewOpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
@@ -233,6 +234,10 @@ function OpportunityDetailsFields({
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+  const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map((l) => ({
+    id: l.id,
+    title: { [lang as Lang]: l.title } as Record<Lang, string>,
+  }));
 
   if (isAccompanying) {
     return (
@@ -286,7 +291,7 @@ function OpportunityDetailsFields({
                 languages={field.value}
                 onChange={field.onChange}
                 t={t}
-                availableLanguages={languagesForForm}
+                availableLanguages={mainCommunicationLanguagesForForm}
                 showLevel={false}
               />
               {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
@@ -462,7 +467,7 @@ export function NewOpportunity() {
 
   // Opportunity details form
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
-    resolver: zodResolver(createNewOpportunityDetailsSchema(t)),
+    resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
     mode: "onChange",
     defaultValues: {
       description: "",
