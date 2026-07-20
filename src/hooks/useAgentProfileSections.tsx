@@ -60,7 +60,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.UserCheck,
       title: t("dashboard.volunteers.volunteers"),
-      subComponent: <VolunteerAgents />,
+      subComponent: <VolunteerAgents agentId={agent.id} />,
     },
     {
       iconName: IconName.ShootingStar,
