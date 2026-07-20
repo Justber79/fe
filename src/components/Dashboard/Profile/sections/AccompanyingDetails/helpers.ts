@@ -1,4 +1,4 @@
-import { utcHhmmToLocal } from "@/utils";
+import { localHhmmToUtc, utcHhmmToLocal } from "@/utils";
 import { ApiOpportunityAccompanyingDetails, VolunteerStateTypeType } from "need4deed-sdk";
 import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
@@ -61,3 +61,14 @@ export const getInitialFormValues = (
       (ext?.appointmentLanguage as import("need4deed-sdk").TranslatedIntoType | undefined) ?? undefined,
   };
 };
+
+export const buildAccompanyingPayload = (values: AccompanyingDetailsFormData) => ({
+  appointmentAddress: values.appointmentAddress,
+  appointmentPostcode: values.appointmentPostcode || undefined,
+  appointmentDate: values.appointmentDate ? values.appointmentDate.toISOString() : undefined,
+  appointmentTime: values.appointmentTime ? localHhmmToUtc(values.appointmentTime) : undefined,
+  refugeeNumber: values.refugeeNumber,
+  refugeeName: values.refugeeName,
+  refugeeLanguage: (values.refugeeLanguage ?? []).map((id) => ({ id })),
+  appointmentLanguage: values.appointmentLanguage || undefined,
+});
