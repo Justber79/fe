@@ -32,7 +32,7 @@ export const AccordionVolunteer = ({
   const router = useRouter();
 
   const handleGoToProfile = () => {
-    router.push(`/${i18n.language}/dashboard/volunteers/${volunteer.id}`);
+    router.push(`/${i18n.language}/dashboard/volunteers/${volunteer.volunteerId}`);
   };
 
   const engagementStatusLabels = createEngagementStatusLabelMap(t);
@@ -44,11 +44,8 @@ export const AccordionVolunteer = ({
       <Heading4 margin={0} color="var(--color-midnight)">
         {volunteer?.name}
       </Heading4>
-      <ProfileStatusBadge
-        status={volunteer?.statusEngagement}
-        label={engagementStatusLabels[volunteer?.statusEngagement]}
-      />
-      <ProfileStatusBadge status={volunteer?.statusType} label={statusLabels[volunteer?.statusType]} />
+      <ProfileStatusBadge status={volunteer?.engagement} label={engagementStatusLabels[volunteer?.engagement]} />
+      <ProfileStatusBadge status={volunteer?.volunteeringType} label={statusLabels[volunteer?.volunteeringType]} />
     </>
   );
 
@@ -56,7 +53,7 @@ export const AccordionVolunteer = ({
     <Accordion
       data-testid="volunteer-accordion"
       headerLeft={headerLeft}
-      subtitle={`${t(getDatePrefixKey(currentStatus))} 12.02.2025`}
+      subtitle={`${t(getDatePrefixKey(currentStatus))} ${new Date(volunteer.updatedAt).toLocaleDateString("de-DE")}`}
       onGoToProfile={handleGoToProfile}
     >
       <VolunteerDetail
