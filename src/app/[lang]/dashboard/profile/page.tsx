@@ -1,6 +1,6 @@
 "use client";
 import CenteredWrapper from "@/components/core/common/CenteredWrapper";
-import { AgentProfileController } from "@/components/Dashboard/Profile/AgentProfileController";
+import ProfileLayout from "@/components/Dashboard/Profile/ProfileLayout";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useTranslation } from "react-i18next";
@@ -25,5 +25,5 @@ export default function DashboardProfilePage() {
     );
   }
 
-  return <AgentProfileController entityId={String(agentId)} />;
+  return <ProfileLayout entityId={String(agentId)} entityType={"agent"} />;
 }
