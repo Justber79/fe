@@ -11,20 +11,22 @@ type AgentSearchMatch = { id: number; title: string };
 // (the COORDINATOR-only GET /agent is not available to a registrant).
 export function useAgentAddressLookup(
   addressStreet: string,
+  addressPostcode: string,
   token: string | null,
   onConfirm?: (matched: AgentSearchMatch) => void,
 ) {
   const [selectedAgent, setSelectedAgent] = useState<AgentSearchMatch | null>(null);
   const [dismissedAddress, setDismissedAddress] = useState<string | null>(null);
   const debouncedAddress = useDebounce(addressStreet.trim(), 400);
+  const debouncedPostcode = useDebounce(addressPostcode.trim(), 400);
 
-  const enabled = debouncedAddress.length >= 3 && !!token;
+  const enabled = debouncedAddress.length >= 3 && !!debouncedPostcode && !!token;
 
   const { data: matches } = useGetQuery<AgentSearchMatch[]>({
-    queryKey: ["agent-register-search", debouncedAddress],
+    queryKey: ["agent-register-search", debouncedAddress, debouncedPostcode],
     apiPath: `${apiPathAgentRegister}/search?token=${encodeURIComponent(
       token ?? "",
-    )}&street=${encodeURIComponent(debouncedAddress)}`,
+    )}&street=${encodeURIComponent(debouncedAddress)}&postcode=${encodeURIComponent(debouncedPostcode)}`,
     staleTime: cacheTTL,
     enabled,
     addLang: false,

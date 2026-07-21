@@ -10,6 +10,7 @@ type DataMutationOptions<TResponse, TData> = {
   successMessage?: string;
   onSuccessCallback?: (data: TResponse) => void;
   queryKeyToInvalidate?: (string | number)[];
+  noToast?: boolean;
 } & (
   | {
       apiPath: string;
@@ -44,6 +45,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
   onSuccessCallback,
   queryKeyToInvalidate,
   mutationFn,
+  noToast = false,
 }: DataMutationOptions<TResponse, TData>) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -57,7 +59,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     },
 
     onSuccess: (responseData) => {
-      toast.success(t(successMessage || "message.successful") + " 🎉");
+      if (!noToast) toast.success(t(successMessage || "message.successful") + " 🎉");
 
       // Invalidate queries to trigger a re-fetch of stale data
       if (queryKeyToInvalidate) {
@@ -87,7 +89,9 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
           errorMessage = t("message.validationFailed");
         }
 
-        const commDeleteMatch = errorMessage.match(/^You do not have permission to delete communication with id:(\d+)\.$/);
+        const commDeleteMatch = errorMessage.match(
+          /^You do not have permission to delete communication with id:(\d+)\.$/,
+        );
         if (commDeleteMatch) {
           errorMessage = t("dashboard.communicationSection.deletePermissionError", { id: commDeleteMatch[1] });
         }
