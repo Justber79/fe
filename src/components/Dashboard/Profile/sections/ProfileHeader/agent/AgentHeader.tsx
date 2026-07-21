@@ -69,19 +69,19 @@ export const AgentHeader = ({ agent }: Props) => {
         label={volunteerSearchLabels[agent.volunteerSearch]}
       />
 
-      <StatusRowField
-        title={t("dashboard.agentProfile.trustLevel")}
-        extra={
-          isAuthorized && (
+      {isAuthorized && (
+        <StatusRowField
+          title={t("dashboard.agentProfile.trustLevel")}
+          extra={
             <TrustLevelDropdown
               value={agent.trustLevel}
               options={TRUST_LEVEL_OPTIONS}
               labels={trustLevelLabels}
               onChange={handleTrustLevelChange}
             />
-          )
-        }
-      />
+          }
+        />
+      )}
 
       <StatusRowField title={t("dashboard.agentProfile.district")} showIcon={false} extra={districtLabel} />
     </HeaderCard>

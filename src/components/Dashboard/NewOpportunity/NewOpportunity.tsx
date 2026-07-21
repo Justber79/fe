@@ -41,34 +41,14 @@ import { Heading2, Heading4 } from "@/components/styled/text";
 import { ShootingStarIcon, ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TFunction } from "i18next";
-import { Lang, OptionItem, TranslatedIntoType, VolunteerStateTypeType } from "need4deed-sdk";
-
-// Not yet in need4deed-sdk — defined locally until the SDK is updated.
-type OpportunityFormDataWithAgentSubmitter = {
-  title: string;
-  opportunity_type: "accompanying" | "volunteering";
-  vo_information: string | null;
-  volunteers_number: number;
-  languages: string[];
-  activities: string[];
-  skills: string[];
-  timeslots: [number, string][] | null;
-  onetime_date_time: string | null;
-  accomp_address: string | null;
-  accomp_postcode: string | null;
-  accomp_datetime: string | null;
-  accomp_name: string | null;
-  accomp_phone: string | null;
-  accomp_information: string | null;
-  accomp_translation: `${TranslatedIntoType}` | null;
-  berlin_locations: string[] | null;
-  category: string;
-  category_id: string;
-  language: `${Lang}`;
-  agent_id: number;
-  submitted_by_id: number | null;
-  last_edited_time_notion: string | null;
-};
+import {
+  Lang,
+  OpportunityFormDataWithAgentSubmitter,
+  OpportunityLegacyType,
+  OptionItem,
+  TranslatedIntoType,
+  VolunteerStateTypeType,
+} from "need4deed-sdk";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
@@ -147,13 +127,13 @@ function buildCreatePayload(
   const isEvent = headerData.volunteerType === VolunteerStateTypeType.EVENTS;
   const isAccompanying = headerData.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
 
-  const mainLangIds = toLangOptionItems(detailsData.mainCommunication, apiLanguages, t).map((i) => String(i.id));
-  const residentsLangIds = toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t).map((i) => String(i.id));
-  const refugeeLangIds = (accompData?.refugeeLanguage ?? []).map(String).filter(Boolean);
-  const languages = [...new Set([...mainLangIds, ...residentsLangIds, ...refugeeLangIds])];
+  const mainLangIds = toLangOptionItems(detailsData.mainCommunication, apiLanguages, t).map((i) => i.id);
+  const residentsLangIds = toLangOptionItems(detailsData.residentsSpeak, apiLanguages, t).map((i) => i.id);
+  const refugeeLangIds = (accompData?.refugeeLanguage ?? []).map(Number).filter((id) => !isNaN(id));
+  const languageIds = [...new Set([...mainLangIds, ...residentsLangIds, ...refugeeLangIds])];
 
-  const activities = toOptionItems(detailsData.activities, apiActivities).map((i) => String(i.id));
-  const skills = toOptionItems(detailsData.skills, apiSkills).map((i) => String(i.id));
+  const activityIds = toOptionItems(detailsData.activities, apiActivities).map((i) => i.id);
+  const skillIds = toOptionItems(detailsData.skills, apiSkills).map((i) => i.id);
   const timeslots = isEvent ? null : availabilityToTimeslots(detailsData.availability);
 
   const onetime_date_time =
@@ -168,12 +148,12 @@ function buildCreatePayload(
 
   return {
     title: headerData.title,
-    opportunity_type: isAccompanying ? "accompanying" : "volunteering",
+    opportunity_type: isAccompanying ? OpportunityLegacyType.ACCOMPANYING : OpportunityLegacyType.VOLUNTEERING,
     vo_information: detailsData.description || null,
     volunteers_number: Number(detailsData.numberOfVolunteers) || 1,
-    languages,
-    activities,
-    skills,
+    languageIds,
+    activityIds,
+    skillIds,
     timeslots,
     onetime_date_time,
     accomp_address: isAccompanying ? (accompData?.appointmentAddress ?? null) : null,
@@ -183,7 +163,7 @@ function buildCreatePayload(
     accomp_phone: isAccompanying ? (accompData?.refugeeNumber ?? null) : null,
     accomp_information: null,
     accomp_translation: isAccompanying ? accompData?.appointmentLanguage || null : null,
-    berlin_locations: null,
+    districtIds: null,
     category: "",
     category_id: "",
     language: lang as `${Lang}`,

@@ -647,6 +647,8 @@
         "phone": "Phone number",
         "email": "Email",
         "address": "Address",
+        "street": "Street name",
+        "postcode": "Postcode",
         "preferredCommunicationType": {
           "label": "Ways to contact",
           "whatsapp": "WhatsApp",
@@ -669,7 +671,8 @@
           "phoneInvalid": "Phone number must start with + and contain only digits and spaces",
           "emailRequired": "Email is required",
           "emailInvalid": "Please enter a valid email address",
-          "addressRequired": "Address is required",
+          "streetRequired": "Street name is required",
+          "postcodeRequired": "Postcode is required",
           "preferredCommunicationTypeRequired": "Please select at least one way to contact"
         }
       },
@@ -1117,6 +1120,7 @@
       },
       "organisationDetails": {
         "title": "Organisation details",
+        "ngoTitle": "NGO's Name",
         "edit": "Edit",
         "about": "About",
         "website": "Website",

@@ -27,7 +27,11 @@ export function NotificationBadge() {
 
   const { tagComments, isLoading, isError } = useGetTaggedComments(personId);
 
-  const count = tagComments?.length || 0;
+  const unreadTaggedComments = tagComments
+    ?.flatMap((comment) => comment.taggedPersons)
+    ?.filter((comment) => !comment.readAt && personId === comment.id);
+
+  const count = unreadTaggedComments?.length || 0;
 
   if (isLoading || isError || count === 0) {
     return null;

@@ -26,9 +26,10 @@ interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
   isLast: boolean;
   districtsList?: OptionItem[];
+  volunteerId?: string;
 }
 
-export function OpportunityTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
+export function OpportunityTableRow({ opportunity, isLast, districtsList, volunteerId }: TableRowProps) {
   const { t, i18n } = useTranslation();
 
   const ext = opportunity as ExtendedOpportunity;
@@ -52,7 +53,8 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const otherVolunteersCount = numberOfVolunteers && numberOfVolunteers > 1 ? numberOfVolunteers - 1 : 0;
   const matchedNames = firstName && otherVolunteersCount ? `${firstName} +${otherVolunteersCount}` : firstName;
 
-  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
+  const params = volunteerId ? `?volunteer=${volunteerId}` : "";
+  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
 
   return (
     <ClickableRow as={Link} href={profileUrl} $isLast={isLast} data-testid={`opportunity-row-${id}`}>

@@ -654,6 +654,8 @@
         "phone": "Telefonnummer",
         "email": "E-Mail",
         "address": "Adresse",
+        "street": "Straßenname",
+        "postcode": "Postleitzahl",
         "preferredCommunicationType": {
           "label": "Kontaktmöglichkeiten",
           "whatsapp": "WhatsApp",
@@ -676,7 +678,8 @@
           "phoneInvalid": "Telefonnummer muss mit + beginnen und nur Ziffern und Leerzeichen enthalten",
           "emailRequired": "E-Mail ist erforderlich",
           "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-          "addressRequired": "Adresse ist erforderlich",
+          "streetRequired": "Straßenname ist erforderlich",
+          "postcodeRequired": "Postleitzahl ist erforderlich",
           "preferredCommunicationTypeRequired": "Bitte wählen Sie mindestens eine Kontaktmöglichkeit aus"
         }
       },
@@ -1129,6 +1132,7 @@
       },
       "organisationDetails": {
         "title": "Details zur Organisation",
+        "ngoTitle": "Vereinsname",
         "edit": "Bearbeiten",
         "about": "Über uns",
         "website": "Webseite",
