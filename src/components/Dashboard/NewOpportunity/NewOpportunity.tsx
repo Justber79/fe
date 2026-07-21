@@ -11,8 +11,10 @@ import {
 import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import {
   createNewOpportunityDetailsSchema,
+  getMainCommunicationLanguageOptions,
   NewOpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
+import { resolveFormLanguageToOption } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
@@ -86,18 +88,7 @@ function toLangOptionItems(
   t: TFunction,
 ): OptionItem[] {
   return formLangs.flatMap(({ language }) => {
-    if (!language) return [];
-    const numId = Number(language);
-    if (!isNaN(numId) && numId > 0) {
-      const found = apiLanguages.find((a) => a.id === numId);
-      return found ? [{ id: found.id, title: found.title }] : [];
-    }
-    const found = apiLanguages.find((a) => {
-      if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
-      const key = `languageNames.${a.title.toLowerCase()}`;
-      const translated = t(key);
-      return translated !== key && translated === language;
-    });
+    const found = resolveFormLanguageToOption(language, apiLanguages, t);
     return found ? [{ id: found.id, title: found.title }] : [];
   });
 }
@@ -213,6 +204,10 @@ function OpportunityDetailsFields({
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+  const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map((l) => ({
+    id: l.id,
+    title: { [lang as Lang]: l.title } as Record<Lang, string>,
+  }));
 
   if (isAccompanying) {
     return (
@@ -266,7 +261,7 @@ function OpportunityDetailsFields({
                 languages={field.value}
                 onChange={field.onChange}
                 t={t}
-                availableLanguages={languagesForForm}
+                availableLanguages={mainCommunicationLanguagesForForm}
                 showLevel={false}
               />
               {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
@@ -442,7 +437,7 @@ export function NewOpportunity() {
 
   // Opportunity details form
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
-    resolver: zodResolver(createNewOpportunityDetailsSchema(t)),
+    resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
     mode: "onChange",
     defaultValues: {
       description: "",
@@ -496,6 +491,7 @@ export function NewOpportunity() {
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
     },
+    queryKeyToInvalidate: ["agent-opportunities", String(agentId)],
   });
 
   const handleCreate = async () => {
