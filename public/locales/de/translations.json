@@ -508,6 +508,7 @@
     },
     "login": {
       "login": "Anmelden",
+      "createAccount": "Konto erstellen",
       "email": "Email",
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
