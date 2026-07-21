@@ -116,12 +116,14 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       {
         iconName: IconName.UsersThree,
         title: t("dashboard.opportunityProfile.volunteersSec.title"),
-        headerButtonName: volunteerId
-          ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
-          : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
-        onHeaderButtonClick: volunteerId
-          ? () => setIsSuggestDialogOpen(true)
-          : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        ...(isAuthorized && {
+          headerButtonName: volunteerId
+            ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
+            : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
+          onHeaderButtonClick: volunteerId
+            ? () => setIsSuggestDialogOpen(true)
+            : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        }),
         subComponent: (
           <>
             <OpportunityVolunteers opportunityId={opportunity.id} />
