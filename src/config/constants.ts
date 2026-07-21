@@ -49,6 +49,7 @@ export const n4dLanguageLocalStorageKey = "n4d-language";
 
 export const eventsSectionContainerId = "events-section-container";
 export const eventsPublicLandingUrl = "https://www.need4deed.org/event-page";
+export const opportunityCardsPublicUrl = "https://www.need4deed.org/opportunity-cards";
 
 export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
 

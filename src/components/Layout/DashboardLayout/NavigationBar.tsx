@@ -110,7 +110,8 @@ export default function NavigationBar() {
   const router = useRouter();
   const currentPathname = usePathname();
   const user = useCurrentUser();
-  const canSeeCalendar = user?.role !== UserRole.AGENT;
+  const isAgent = user?.role === UserRole.AGENT;
+  const canSeeCalendar = !isAgent;
 
   const userInitials = user?.fullName
     ? user.fullName
@@ -124,26 +125,34 @@ export default function NavigationBar() {
 
   const options: BarOptions[] = [
     { label: t("dashboard.home.sidebar.home"), Icon: HouseIcon, route: DashboardRoutes.Home },
-    {
-      label: t("dashboard.home.sidebar.volunteers"),
-      Icon: UserCheckIcon,
-      route: DashboardRoutes.Volunteers,
-    },
-    {
-      label: t("dashboard.home.sidebar.opportunities"),
-      Icon: ShootingStarIcon,
-      route: DashboardRoutes.Opportunities,
-    },
+    ...(isAgent
+      ? []
+      : [
+          {
+            label: t("dashboard.home.sidebar.volunteers"),
+            Icon: UserCheckIcon,
+            route: DashboardRoutes.Volunteers,
+          },
+          {
+            label: t("dashboard.home.sidebar.opportunities"),
+            Icon: ShootingStarIcon,
+            route: DashboardRoutes.Opportunities,
+          },
+        ]),
     {
       label: t("dashboard.home.sidebar.agents"),
       Icon: BookOpenTextIcon,
       route: DashboardRoutes.Agents,
     },
-    {
-      label: t("dashboard.home.sidebar.posts"),
-      Icon: NotepadIcon,
-      route: DashboardRoutes.Posts,
-    },
+    ...(isAgent
+      ? []
+      : [
+          {
+            label: t("dashboard.home.sidebar.posts"),
+            Icon: NotepadIcon,
+            route: DashboardRoutes.Posts,
+          },
+        ]),
     ...(canSeeCalendar
       ? [
           {
