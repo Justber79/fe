@@ -35,6 +35,30 @@ export function extractOptionTitles(items: OptionById[], lang: Lang): string[] {
     .filter(Boolean);
 }
 
+// Resolves a language form value back to its API option — the value is
+// either a numeric option id (picked from the dropdown) or a translated
+// name (set on initial load by languagesToFormValues). Returns undefined
+// for a value that doesn't match any option (empty, or a legacy/out-of-set
+// language no longer offered), so callers can tell "not selected" apart
+// from "selected but unresolvable".
+export function resolveFormLanguageToOption<T extends { id: number; title: string }>(
+  language: string,
+  apiLanguages: T[],
+  t: (key: string) => string,
+): T | undefined {
+  if (!language) return undefined;
+  const numId = Number(language);
+  if (!isNaN(numId) && numId > 0) {
+    return apiLanguages.find((a) => a.id === numId);
+  }
+  return apiLanguages.find((a) => {
+    if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
+    const key = `languageNames.${a.title.toLowerCase()}`;
+    const translated = t(key);
+    return translated !== key && translated === language;
+  });
+}
+
 export function languagesToFormValues(langs: ApiLanguage[], t: TFunction): LanguageObject[] {
   if (langs.length === 0) return [{ id: 1, language: "", level: "" }];
 
