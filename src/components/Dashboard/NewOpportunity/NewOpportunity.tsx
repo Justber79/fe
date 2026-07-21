@@ -16,6 +16,7 @@ import {
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
 import { resolveFormLanguageToOption } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
+import { getMinAppointmentDate } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/helpers";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
@@ -483,7 +484,7 @@ export function NewOpportunity() {
     appointmentLanguageKeyToLabel[key] = label;
     appointmentLanguageLabelToKey[label] = key;
   });
-  const minAppointmentDate = useMemo(() => new Date(), []);
+  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,

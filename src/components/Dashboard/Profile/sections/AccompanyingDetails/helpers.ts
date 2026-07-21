@@ -16,16 +16,11 @@ export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undef
   );
 };
 
+// Matches the legacy form's rule: an accompanying appointment must be at
+// least 8 calendar days out (day+1 through day+7 are disallowed).
 export const getMinAppointmentDate = (): Date => {
   const date = new Date();
-  let weekdaysAdded = 0;
-  while (weekdaysAdded < 7) {
-    date.setDate(date.getDate() + 1);
-    const dayOfWeek = date.getDay();
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-      weekdaysAdded++;
-    }
-  }
+  date.setDate(date.getDate() + 8);
   date.setHours(0, 0, 0, 0);
   return date;
 };
