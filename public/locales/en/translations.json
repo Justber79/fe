@@ -502,6 +502,7 @@
     },
     "login": {
       "login": "Log in",
+      "createAccount": "Create account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
