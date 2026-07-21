@@ -17,7 +17,7 @@ import { useAuth } from "./useAuth";
 
 export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) => {
   const { t } = useTranslation();
-  const { isAuthorized: isAdminOrCoordinator, isOwnProfile } = useAuth(agent?.representative?.id);
+  const { isAuthorized: isAdminOrCoordinator, isOwnProfile } = useAuth(agent?.id);
   const hasEditingRights = isAdminOrCoordinator || isOwnProfile;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
