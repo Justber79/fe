@@ -8,11 +8,10 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "r
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { EditableSectionProps, EditableSectionRef } from "../shared/types";
-import { localHhmmToUtc } from "@/utils";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
 import { AccompanyingDetailsDisplay } from "./AccompanyingDetailsDisplay";
 import { AccompanyingDetailsEdit } from "./AccompanyingDetailsEdit";
-import { getInitialFormValues, getMinAppointmentDate, isAccompanyingType } from "./helpers";
+import { getInitialFormValues, getMinAppointmentDate, isAccompanyingType, buildAccompanyingPayload } from "./helpers";
 import { Container, NotAccompanyingMessage } from "./styles";
 import { createAccompanyingDetailsSchema, AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
@@ -82,16 +81,7 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   const onSubmit = (values: AccompanyingDetailsFormData) => {
     updateAccompanyingDetails(
       {
-        accompanyingDetails: {
-          appointmentAddress: values.appointmentAddress,
-          appointmentPostcode: values.appointmentPostcode || undefined,
-          appointmentDate: values.appointmentDate ? values.appointmentDate.toISOString() : undefined,
-          appointmentTime: values.appointmentTime ? localHhmmToUtc(values.appointmentTime) : undefined,
-          refugeeNumber: values.refugeeNumber,
-          refugeeName: values.refugeeName,
-          refugeeLanguage: (values.refugeeLanguage ?? []).map((id) => ({ id })),
-          appointmentLanguage: values.appointmentLanguage || undefined,
-        },
+        accompanyingDetails: buildAccompanyingPayload(values),
       },
       {
         onSuccess: () => {
