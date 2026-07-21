@@ -21,7 +21,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.agent.id);
+  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.agent?.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
