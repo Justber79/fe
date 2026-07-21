@@ -43,12 +43,14 @@ export const Accordion = ({ headerLeft, subtitle, onGoToProfile, children, "data
           >
             {t("dashboard.opportunities.goToProfile")}
           </Heading4>
-          <CaretIcon
-            size={24}
-            onClick={() => setIsOpen((prev) => !prev)}
-            cursor="pointer"
-            color="var(--color-midnight)"
-          />
+          {children && (
+            <CaretIcon
+              size={24}
+              onClick={() => setIsOpen((prev) => !prev)}
+              cursor="pointer"
+              color="var(--color-midnight)"
+            />
+          )}
         </HeaderButtonsContainer>
       </HeaderContainer>
 

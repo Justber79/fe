@@ -1,6 +1,5 @@
 import {
-  ApiVolunteerGetList,
-  OpportunityVolunteerStatusType,
+  ApiVolunteerOpportunityGet,
   VolunteerStateEngagementType,
   VolunteerStateMatchType,
   VolunteerStateTypeType,
@@ -8,9 +7,7 @@ import {
 
 import { TFunction } from "i18next";
 
-export type MappedVolunteerAgent = ApiVolunteerGetList & {
-  status: OpportunityVolunteerStatusType;
-};
+export type MappedVolunteerAgent = ApiVolunteerOpportunityGet;
 
 export const createEngagementStatusLabelMap = (t: TFunction): Record<VolunteerStateEngagementType, string> => ({
   [VolunteerStateEngagementType.NEW]: t("dashboard.volunteers.filters.engagement.new"),
