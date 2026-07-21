@@ -9,7 +9,6 @@ import { FormContainer } from "../../shared/styles";
 import { EditableSectionProps, EditableSectionRef } from "../../shared/types";
 import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
 import { useEnumTranslation } from "../shared";
-import { formatAddress, parseAddress } from "./volunteerAddressUtils";
 import { createVolunteerContactDetailsSchema, VolunteerContactDetailsFormData } from "./volunteerContactDetailsSchema";
 import { VolunteerContactDetailsDisplay } from "./VolunteerContactDetailsDisplay";
 import { VolunteerContactDetailsEdit } from "./VolunteerContactDetailsEdit";
@@ -41,7 +40,8 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
     (): VolunteerContactDetailsFormData => ({
       phone: volunteer.person.phone ?? "",
       email: volunteer.person.email ?? "",
-      address: volunteer.person.address ? formatAddress(volunteer.person?.address) : "",
+      street: volunteer.person.address?.street ?? "",
+      postcode: volunteer.person.address?.postcode?.code ?? "",
       preferredCommunicationType: volunteer.preferredCommunicationType ?? [],
     }),
     [volunteer],
@@ -65,8 +65,6 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
   };
 
   const onSubmit = (values: VolunteerContactDetailsFormData) => {
-    const addressData = parseAddress(values.address);
-
     updateContact(
       {
         person: {
@@ -75,9 +73,9 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
           email: values.email,
           address: {
             id: volunteer.person.address ? volunteer.person.address?.id : 0,
-            street: addressData.street,
-            city: addressData.city,
-            postcode: { code: addressData.postcode },
+            city: "",
+            street: values.street,
+            postcode: { code: values.postcode },
           },
         },
         preferredCommunicationType: values.preferredCommunicationType,

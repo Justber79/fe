@@ -26,13 +26,19 @@ export default function AccordionOpportunity({ opportunity, currentStatus, ...ac
     </Heading4>
   );
 
+  const hasActions = !!actionProps.onMatch;
+  const hasActivityLog =
+    currentStatus === OpportunityVolunteerStatusType.ACTIVE || currentStatus === OpportunityVolunteerStatusType.PAST;
+
   return (
     <Accordion
       headerLeft={headerLeft}
       subtitle={`${t(getDatePrefixKey(currentStatus))} ${new Date(opportunity.updatedAt).toLocaleDateString("de-DE")}`}
       onGoToProfile={handleGoToProfile}
     >
-      <OpportunityDetail opportunity={opportunity} currentStatus={currentStatus} {...actionProps} />
+      {hasActions || hasActivityLog ? (
+        <OpportunityDetail opportunity={opportunity} currentStatus={currentStatus} {...actionProps} />
+      ) : null}
     </Accordion>
   );
 }
