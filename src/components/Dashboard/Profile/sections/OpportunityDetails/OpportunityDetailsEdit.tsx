@@ -24,7 +24,7 @@ import { ApiOpportunityGet, Lang, LangPurpose, OptionItem, VolunteerStateTypeTyp
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../shared/styles";
-import { languagesToFormValues } from "./formatters";
+import { languagesToFormValues, resolveFormLanguageToOption } from "./formatters";
 import {
   createOpportunityDetailsSchema,
   getMainCommunicationLanguageOptions,
@@ -39,20 +39,7 @@ function toLangOptionItems(
   t: TFunction,
 ): OptionItem[] {
   return formLangs.flatMap(({ language }) => {
-    if (!language) return [];
-    // LanguageFieldRow stores the ID as a string when the user picks from the dropdown
-    const numId = Number(language);
-    if (!isNaN(numId) && numId > 0) {
-      const found = apiLanguages.find((a) => a.id === numId);
-      return found ? [{ id: found.id, title: found.title }] : [];
-    }
-    // languagesToFormValues stores translated names on initial load; reverse the lookup
-    const found = apiLanguages.find((a) => {
-      if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
-      const key = `languageNames.${a.title.toLowerCase()}`;
-      const translated = t(key);
-      return translated !== key && translated === language;
-    });
+    const found = resolveFormLanguageToOption(language, apiLanguages, t);
     return found ? [{ id: found.id, title: found.title }] : [];
   });
 }
