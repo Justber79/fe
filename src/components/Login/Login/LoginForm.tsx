@@ -126,18 +126,17 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           )}
         </form.Subscribe>
 
-        <Link href={"/register/agent"} style={{ textDecoration: "none" }}>
-          <Button
-            type="button"
-            text={t("dashboard.login.createAccount")}
-            backgroundcolor="transparent"
-            textColor="var(--color-aubergine)"
-            textHoverColor="var(--color-aubergine)"
-            border="1px solid var(--color-aubergine)"
-            height="48px"
-            padding="8px 20px"
-          />
-        </Link>
+        <Button
+          type="button"
+          onClick={() => router.push("/register/agent")}
+          text={t("dashboard.login.createAccount")}
+          backgroundcolor="transparent"
+          textColor="var(--color-aubergine)"
+          textHoverColor="var(--color-aubergine)"
+          border="1px solid var(--color-aubergine)"
+          height="48px"
+          padding="8px 20px"
+        />
       </LoginButtonDiv>
     </StyledForm>
   );

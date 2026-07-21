@@ -26,7 +26,6 @@ export const FormActions = styled.div`
 
 export const LoginButtonDiv = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-16);
