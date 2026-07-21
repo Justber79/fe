@@ -647,6 +647,8 @@
         "phone": "Phone number",
         "email": "Email",
         "address": "Address",
+        "street": "Street name",
+        "postcode": "Postcode",
         "preferredCommunicationType": {
           "label": "Ways to contact",
           "whatsapp": "WhatsApp",
@@ -669,7 +671,8 @@
           "phoneInvalid": "Phone number must start with + and contain only digits and spaces",
           "emailRequired": "Email is required",
           "emailInvalid": "Please enter a valid email address",
-          "addressRequired": "Address is required",
+          "streetRequired": "Street name is required",
+          "postcodeRequired": "Postcode is required",
           "preferredCommunicationTypeRequired": "Please select at least one way to contact"
         }
       },
@@ -1167,6 +1170,22 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "typeUpdateSuccess": "Opportunity type updated successfully",
+      "change_type": "Change type",
+      "typeModal": {
+        "title": "Change opportunity type",
+        "save": "Save",
+        "cancel": "Cancel",
+        "accompanyingWarning": "The accompanying details (refugee contact, appointment address) may no longer be relevant.",
+        "eventDateRequired": "Event date is required",
+        "eventTimeRequired": "Event time is required",
+        "invalidEventTime": "Please enter a valid time (HH:MM)",
+        "options": {
+          "accompanying": "Ideal for opportunities where a volunteer accompanies a refugee to an appointment or activity.",
+          "regular": "A standard volunteer opportunity with recurring tasks like tutoring or support.",
+          "events": "A one-time or periodic event such as a workshop, celebration, or group activity."
+        }
+      },
       "statusModal": {
         "title": "Change opportunity status",
         "save": "Save",
@@ -1294,6 +1313,7 @@
           "descriptionTooLong": "Description is too long",
           "numberOfVolunteersRequired": "Number of volunteers must be at least 1",
           "languageRequired": "At least one language is required",
+          "mainCommunicationInvalid": "Main communication must be German only, or German and English",
           "availabilityRequired": "At least one time slot must be selected",
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"

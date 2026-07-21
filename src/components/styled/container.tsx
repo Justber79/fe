@@ -72,6 +72,10 @@ export const DashboardBaseContainer = styled.div`
   }
 `;
 
+export const DashboardContentContainer = styled.div`
+  display: flex;
+`;
+
 export const OverlayingSectionContainer = styled(SectionContainer)`
   position: absolute;
   width: 100%;

@@ -654,6 +654,8 @@
         "phone": "Telefonnummer",
         "email": "E-Mail",
         "address": "Adresse",
+        "street": "Straßenname",
+        "postcode": "Postleitzahl",
         "preferredCommunicationType": {
           "label": "Kontaktmöglichkeiten",
           "whatsapp": "WhatsApp",
@@ -676,7 +678,8 @@
           "phoneInvalid": "Telefonnummer muss mit + beginnen und nur Ziffern und Leerzeichen enthalten",
           "emailRequired": "E-Mail ist erforderlich",
           "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-          "addressRequired": "Adresse ist erforderlich",
+          "streetRequired": "Straßenname ist erforderlich",
+          "postcodeRequired": "Postleitzahl ist erforderlich",
           "preferredCommunicationTypeRequired": "Bitte wählen Sie mindestens eine Kontaktmöglichkeit aus"
         }
       },
@@ -1179,6 +1182,22 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
+      "change_type": "Typ ändern",
+      "typeModal": {
+        "title": "Art der ehrenamtlichen Tätigkeit ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen",
+        "accompanyingWarning": "Die Begleitdetails (Kontakt der geflüchteten Person, Terminadresse) sind möglicherweise nicht mehr relevant.",
+        "eventDateRequired": "Veranstaltungsdatum ist erforderlich",
+        "eventTimeRequired": "Veranstaltungszeit ist erforderlich",
+        "invalidEventTime": "Bitte eine gültige Uhrzeit eingeben (HH:MM)",
+        "options": {
+          "accompanying": "Ideal für Tätigkeiten, bei denen ein*e Ehrenamtliche*r eine geflüchtete Person zu einem Termin oder einer Aktivität begleitet.",
+          "regular": "Eine reguläre ehrenamtliche Tätigkeit mit wiederkehrenden Aufgaben wie Nachhilfe oder Unterstützung.",
+          "events": "Eine einmalige oder regelmäßige Veranstaltung wie ein Workshop, eine Feier oder eine Gruppenaktivität."
+        }
+      },
       "statusModal": {
         "title": "Status der ehrenamtlichen Tätigkeit ändern",
         "save": "Speichern",
@@ -1306,6 +1325,7 @@
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
+          "mainCommunicationInvalid": "Hauptkommunikation muss ausschließlich Deutsch oder Deutsch und Englisch sein",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
