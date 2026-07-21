@@ -1087,7 +1087,6 @@
         "email": "E-mail",
         "mobile": "Mobile",
         "landline": "Landline",
-        "address": "Address",
         "saveSuccess": "Contact details updated successfully",
         "roles": {
           "label": "Role",
@@ -1106,7 +1105,6 @@
         "edit": "Edit",
         "validation": {
           "nameRequired": "Name is required",
-          "addressRequired": "Address is required",
           "districtRequired": "District is required",
           "mobileRequired": "Mobile number is required",
           "mobileInvalid": "Mobile number must start with + and contain only digits and spaces",
