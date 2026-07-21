@@ -55,7 +55,7 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
       subtitle={subtitle}
       after={
         <>
-          <ChangeOpportunityStatusDialog dialog={dialog} />
+          <ChangeOpportunityStatusDialog dialog={dialog} isAuthorized={isAuthorized} />
           {isTypeOpen && <ChangeOpportunityTypeDialog onClose={() => setIsTypeOpen(false)} opportunity={opportunity} />}
         </>
       }
