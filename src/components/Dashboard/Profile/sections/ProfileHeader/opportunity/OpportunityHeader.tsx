@@ -8,7 +8,7 @@ import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
 import { ShootingStarIcon } from "@phosphor-icons/react";
-import { ApiOpportunityGet } from "need4deed-sdk";
+import { ApiOpportunityGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import { ChangeOpportunityTypeDialog } from "./ChangeOpportunityTypeDialog/Chang
 import { createOpportunityStatusLabelMap } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -26,6 +27,12 @@ type Props = {
 
 export const OpportunityHeader = ({ opportunity }: Props) => {
   const { isAuthorized } = useAuth();
+  const currentUser = useCurrentUser();
+  // Coordinator/admin may edit any opportunity; an agent may only change the
+  // status of an opportunity belonging to their own agent (mirrors the be
+  // ownership check on PATCH /opportunity/:id).
+  const canChangeStatus =
+    isAuthorized || (currentUser?.role === UserRole.AGENT && currentUser?.agentId === opportunity.agent?.id);
   const { t, i18n } = useTranslation();
   const dialog = useOpportunityStatusDialog(opportunity);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
@@ -58,7 +65,7 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         status={dialog.selected}
         label={statusLabelMap[dialog.selected]}
         action={
-          isAuthorized && (
+          canChangeStatus && (
             <EditButton onClick={dialog.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
           )
         }
