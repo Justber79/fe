@@ -1118,6 +1118,17 @@
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "edit": "Bearbeiten",
+        "additionalContacts": {
+          "title": "Weitere Kontakte"
+        },
+        "addContact": {
+          "button": "Kontakt hinzufügen",
+          "title": "Kontakt hinzufügen",
+          "submit": "Hinzufügen",
+          "addressStreet": "Straße",
+          "addressPostcode": "Postleitzahl",
+          "success": "Kontakt erfolgreich hinzugefügt"
+        },
         "validation": {
           "nameRequired": "Name ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",

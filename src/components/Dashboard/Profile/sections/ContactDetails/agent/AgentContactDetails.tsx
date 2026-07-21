@@ -108,7 +108,7 @@ export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function
             isPending={isPending}
           />
         ) : (
-          <AgentContactDetailsDisplay keysToLabels={keysToLabels} />
+          <AgentContactDetailsDisplay agent={agent} keysToLabels={keysToLabels} />
         )}
       </FormContainer>
     </FormProvider>
