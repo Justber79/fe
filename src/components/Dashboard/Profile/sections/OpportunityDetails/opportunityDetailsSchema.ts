@@ -14,14 +14,24 @@ const languageObjectSchema = z.object({
 
 type MainCommunicationLanguageOption = { id: number; title: string; isoCode?: string };
 
+// `title` is translated into whatever language the option list was fetched
+// in (German by default), so it's never the literal English word "german"/
+// "english" — isoCode is the reliable, locale-independent signal. The title
+// fallback (checking both English and German spellings) only matters for
+// callers/tests that don't supply isoCode.
+function toLangCode(option: MainCommunicationLanguageOption): "de" | "en" | null {
+  if (option.isoCode === "de") return "de";
+  if (option.isoCode === "en") return "en";
+  const title = option.title.toLowerCase();
+  if (["german", "deutsch"].includes(title)) return "de";
+  if (["english", "englisch"].includes(title)) return "en";
+  return null;
+}
+
 // The org's main communication language is German, with English as the only
 // secondary option — unlike "Residents speak", which allows any language.
-// isoCode is preferred when the option list provides it; title matching is
-// the fallback for callers/tests that only supply id+title.
 export function getMainCommunicationLanguageOptions<T extends MainCommunicationLanguageOption>(apiLanguages: T[]): T[] {
-  return apiLanguages.filter((l) =>
-    l.isoCode ? ["de", "en"].includes(l.isoCode) : ["german", "english"].includes(l.title.toLowerCase()),
-  );
+  return apiLanguages.filter((l) => toLangCode(l) !== null);
 }
 
 export const createOpportunityDetailsSchema = (
@@ -36,18 +46,20 @@ export const createOpportunityDetailsSchema = (
       const selected = langs.filter(({ language }) => !!language);
       if (selected.length === 0) return; // nothing picked — always valid
 
-      const resolved = selected.map(
-        ({ language }) => resolveFormLanguageToOption(language, mainCommunicationLanguageOptions, t)?.title,
+      const resolved = selected.map(({ language }) =>
+        resolveFormLanguageToOption(language, mainCommunicationLanguageOptions, t),
       );
       // A row that fails to resolve is a legacy/out-of-set language (saved
       // before this restriction existed, or no longer offered) — that must
-      // be flagged, not silently dropped from the title set below, or it
-      // would incorrectly read as "none selected" and pass validation.
-      const hasUnresolved = resolved.some((title) => !title);
-      const titles = new Set(resolved.filter((title): title is string => !!title).map((title) => title.toLowerCase()));
-      const isGermanOnly = titles.size === 1 && titles.has("german");
-      const isGermanAndEnglish = titles.size === 2 && titles.has("german") && titles.has("english");
-      if (hasUnresolved || !(isGermanOnly || isGermanAndEnglish)) {
+      // be flagged, not silently dropped below, or it would incorrectly
+      // read as "none selected" and pass validation.
+      const hasUnresolved = resolved.some((option) => !option);
+      const codes = new Set(
+        resolved.filter((option): option is MainCommunicationLanguageOption => !!option).map(toLangCode),
+      );
+      const isGermanOnly = codes.size === 1 && codes.has("de");
+      const isGermanAndEnglish = codes.size === 2 && codes.has("de") && codes.has("en");
+      if (hasUnresolved || codes.has(null) || !(isGermanOnly || isGermanAndEnglish)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: t(`${i18nPrefix}.mainCommunicationInvalid`),
