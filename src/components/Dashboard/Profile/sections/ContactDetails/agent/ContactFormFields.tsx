@@ -13,8 +13,6 @@ type Props = {
   toKey: (label: string) => AgentRoles;
 };
 
-// The 6-field set shared by every contact — primary, additional, and new —
-// per fe#854: no middle name, no address fields.
 export const ContactFormFields = ({ control, errors, roleOptions, toLabel, toKey }: Props) => {
   const { t } = useTranslation();
 

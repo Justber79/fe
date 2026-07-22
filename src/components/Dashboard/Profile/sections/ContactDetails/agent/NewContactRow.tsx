@@ -25,9 +25,6 @@ const emptyValues: ContactFormData = {
   landline: "",
 };
 
-// The inline "new contact" row, shown in place of the small "+ Add contact"
-// button once clicked — same field set and layout as editing an existing
-// contact (ContactRow), just starting blank and posting instead of patching.
 export const NewContactRow = ({ agentId, onDone }: Props) => {
   const { t } = useTranslation();
   const { mutate: createContact, isPending } = useCreateAgentContact(agentId);

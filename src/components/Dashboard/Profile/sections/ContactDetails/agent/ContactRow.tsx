@@ -31,9 +31,6 @@ function toDefaultValues(contact: ApiAgentMembership): ContactFormData {
   };
 }
 
-// One line per contact — primary and additional alike, per fe#854. Clicking
-// the pencil expands this row in place into the editable field set; saving
-// (or cancelling) collapses it back to a line. No modal/external box.
 export const ContactRow = ({ agentId, contact }: Props) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);

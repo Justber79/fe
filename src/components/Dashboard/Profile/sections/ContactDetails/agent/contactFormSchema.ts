@@ -1,8 +1,6 @@
 import { AgentRoles, PHONE_NUMBER_REGEX } from "@/config/constants";
 import { z } from "zod";
 
-// Shared by both "+ Add contact" and per-contact editing — every contact
-// (primary and additional) has the identical field set and validation.
 export const createContactFormSchema = (t: (key: string) => string) => {
   return z.object({
     firstName: z.string().min(1, t("dashboard.agentProfile.contactDetails.validation.nameRequired")),

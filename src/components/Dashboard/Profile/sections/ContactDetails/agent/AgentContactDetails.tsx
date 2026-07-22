@@ -13,11 +13,6 @@ import { AddContactButton, AddContactRow } from "./styles";
 type Props = { agent: ApiAgentProfileGet } & EditableSectionProps;
 export type ContactDetailsRef = { handleEditClick: () => void };
 
-// Every contact (the primary representative and every additional one) is
-// rendered and edited identically — one row per person, each expanding in
-// place to edit, per fe#854. There is no longer a section-wide edit toggle,
-// so `ref`/`onEditingChange` are kept only for API compatibility with the
-// ContactDetails switchboard (volunteer/opportunity sections still use them).
 export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function ContactDetails({ agent }, ref) {
   const { t } = useTranslation();
   const [isAddingContact, setIsAddingContact] = useState(false);
