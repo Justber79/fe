@@ -1972,6 +1972,8 @@
     "back": "Zurück",
     "submit": "Konto erstellen",
     "optional": "optional",
+    "alreadyUser": "Bereits registriert?",
+    "loginLink": "In Ihrem Konto anmelden",
     "steps": {
       "account": {
         "title": "Ihr Konto",

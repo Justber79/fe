@@ -58,6 +58,17 @@ export const SuccessWrapper = styled.div`
   text-align: center;
 `;
 
+export const ExistingUserWrapper = styled.div`
+  display: flex;
+  gap: var(--agent-form-existing-user-gap);
+  margin-bottom: var(--agent-form-existing-user-margin-bottom);
+`;
+
+export const ExistingUserText = styled.span`
+  font-size: var(--agent-form-existing-user-font-size);
+  color: var(--color-grey-800);
+`;
+
 export const SuccessTitle = styled.h2`
   font-size: 1.375rem;
   font-weight: 700;

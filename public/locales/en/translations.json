@@ -1593,6 +1593,8 @@
     "back": "Back",
     "submit": "Create account",
     "optional": "optional",
+    "alreadyUser": "Already registered?",
+    "loginLink": "Login into your account",
     "steps": {
       "account": {
         "title": "Your account",

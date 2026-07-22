@@ -14,6 +14,8 @@ import {
   Actions,
   Card,
   ErrorBanner,
+  ExistingUserText,
+  ExistingUserWrapper,
   PageSubtitle,
   PageTitle,
   SuccessText,
@@ -22,6 +24,7 @@ import {
   Wrapper,
 } from "./styled";
 import { AgentRegistrationData, defaultAgentRegistrationData } from "./types";
+import Link from "next/link";
 
 const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; SameSite=Lax; Secure";
 
@@ -117,6 +120,11 @@ export function AgentRegistration() {
       <Card>
         <PageTitle>{t("agentRegistration.title")}</PageTitle>
         <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
+
+        <ExistingUserWrapper>
+          <ExistingUserText>{t("agentRegistration.alreadyUser")}</ExistingUserText>
+          <Link href="/login">{t("agentRegistration.loginLink")}</Link>
+        </ExistingUserWrapper>
 
         {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
 
