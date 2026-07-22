@@ -1095,14 +1095,11 @@
       "statusUpdateSuccess": "Status der Einrichtung/des Projekts erfolgreich aktualisiert",
       "contactDetails": {
         "title": "Kontaktdaten",
-        "fullName": "Name",
         "firstName": "Vorname",
-        "middleName": "Zweitname",
         "lastName": "Nachname",
         "email": "E-Mail",
         "mobile": "Mobiltelefon",
         "landline": "Festnetz",
-        "saveSuccess": "Kontaktdaten erfolgreich aktualisiert",
         "roles": {
           "label": "Rolle",
           "social-worker": "Sozialarbeiter*in",
@@ -1118,20 +1115,12 @@
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "edit": "Bearbeiten",
-        "additionalContacts": {
-          "title": "Weitere Kontakte"
-        },
         "addContact": {
           "button": "Kontakt hinzufügen",
-          "title": "Kontakt hinzufügen",
           "submit": "Hinzufügen",
-          "addressStreet": "Straße",
-          "addressPostcode": "Postleitzahl",
           "success": "Kontakt erfolgreich hinzugefügt"
         },
         "editContact": {
-          "title": "Kontakt bearbeiten",
-          "submit": "Änderungen speichern",
           "success": "Kontakt erfolgreich aktualisiert"
         },
         "validation": {
