@@ -10,6 +10,7 @@ import { FormDetails } from "../shared/styles";
 import { extractOptionTitles, formatLanguagesByPurpose } from "./formatters";
 import { DateFieldRow, FieldRow, TagsValue } from "./styles";
 import { OpportunityWithDetails } from "./types";
+import { dateFromDateTimeUTCStrings, formatToLocalTime } from "@/utils";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -28,6 +29,12 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const schedule = formatAvailability(opp.availability, t);
   const activities = extractOptionTitles(opp.activities, lang);
   const skills = extractOptionTitles(opp.skills, lang);
+
+  let eventDate: Date | null = null;
+
+  if (opp.event?.date && opp.event?.time) {
+    eventDate = dateFromDateTimeUTCStrings(opp.event.date, opp.event.time);
+  }
 
   return (
     <FormDetails>
@@ -67,12 +74,12 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
         <>
           <DateFieldRow data-testid="opportunity-details-event-date">
             <label>{t(`${prefix}.eventDate`)}</label>
-            <span>{opp.event?.date ? format(new Date(opp.event.date), "dd.MM.yyyy") : EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{eventDate ? format(new Date(eventDate), "dd.MM.yyyy") : EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
 
           <DateFieldRow data-testid="opportunity-details-event-time">
             <label>{t(`${prefix}.eventTime`)}</label>
-            <span>{opp.event?.time || EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{eventDate ? formatToLocalTime(eventDate) : EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
         </>
       ) : (
