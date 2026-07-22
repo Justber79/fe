@@ -1083,14 +1083,11 @@
       "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
-        "fullName": "Name",
         "firstName": "First Name",
-        "middleName": "Middle Name",
         "lastName": "Last Name",
         "email": "E-mail",
         "mobile": "Mobile",
         "landline": "Landline",
-        "saveSuccess": "Contact details updated successfully",
         "roles": {
           "label": "Role",
           "social-worker": "Social worker",
@@ -1106,20 +1103,12 @@
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "edit": "Edit",
-        "additionalContacts": {
-          "title": "Other contacts"
-        },
         "addContact": {
           "button": "Add contact",
-          "title": "Add a contact",
           "submit": "Add",
-          "addressStreet": "Street",
-          "addressPostcode": "Postcode",
           "success": "Contact added successfully"
         },
         "editContact": {
-          "title": "Edit contact",
-          "submit": "Save changes",
           "success": "Contact updated successfully"
         },
         "validation": {
