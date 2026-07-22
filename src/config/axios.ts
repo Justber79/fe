@@ -70,8 +70,16 @@ axios.interceptors.response.use(
 
       clearAuthHint();
 
-      // Only redirect if we aren't already on the login page to avoid loops
-      if (!(window.location.pathname.includes("login") || window.location.pathname.includes("forms"))) {
+      // Only redirect if we aren't already on a public auth-flow/form entry page
+      // (login, or a standalone form like forms/volunteer or register/agent) —
+      // those pages shouldn't be hijacked by a stale/expired session.
+      if (
+        !(
+          window.location.pathname.includes("login") ||
+          window.location.pathname.includes("forms") ||
+          window.location.pathname.includes("register")
+        )
+      ) {
         toast.error("Session expired. Please log in again.");
         window.location.href = "/login";
       }
