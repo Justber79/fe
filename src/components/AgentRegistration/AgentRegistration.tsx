@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/core/button";
+import { PageLayout } from "@/components/Layout";
 import { apiPathUser } from "@/config/constants";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
@@ -88,38 +89,42 @@ export function AgentRegistration() {
 
   if (isSuccess) {
     return (
-      <Wrapper>
-        <Card>
-          <SuccessWrapper>
-            <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
-            <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
-          </SuccessWrapper>
-        </Card>
-      </Wrapper>
+      <PageLayout>
+        <Wrapper>
+          <Card>
+            <SuccessWrapper>
+              <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
+              <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
+            </SuccessWrapper>
+          </Card>
+        </Wrapper>
+      </PageLayout>
     );
   }
 
   return (
-    <Wrapper>
-      <Card>
-        <PageTitle>{t("agentRegistration.title")}</PageTitle>
-        <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
+    <PageLayout>
+      <Wrapper>
+        <Card>
+          <PageTitle>{t("agentRegistration.title")}</PageTitle>
+          <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
 
-        {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
+          {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
 
-        <AccountStep data={formData} onChange={update} errors={errors} />
+          <AccountStep data={formData} onChange={update} errors={errors} />
 
-        <Actions>
-          <div />
-          <Button
-            text={t("agentRegistration.next")}
-            backgroundcolor="var(--color-aubergine)"
-            textColor="var(--color-white)"
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-          />
-        </Actions>
-      </Card>
-    </Wrapper>
+          <Actions>
+            <div />
+            <Button
+              text={t("agentRegistration.next")}
+              backgroundcolor="var(--color-aubergine)"
+              textColor="var(--color-white)"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            />
+          </Actions>
+        </Card>
+      </Wrapper>
+    </PageLayout>
   );
 }
