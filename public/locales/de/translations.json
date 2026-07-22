@@ -1129,6 +1129,11 @@
           "addressPostcode": "Postleitzahl",
           "success": "Kontakt erfolgreich hinzugefügt"
         },
+        "editContact": {
+          "title": "Kontakt bearbeiten",
+          "submit": "Änderungen speichern",
+          "success": "Kontakt erfolgreich aktualisiert"
+        },
         "validation": {
           "nameRequired": "Name ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",

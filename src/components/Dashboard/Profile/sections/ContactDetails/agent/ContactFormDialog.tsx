@@ -5,13 +5,15 @@ import { Modal } from "@/components/core/modal/Modal";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { AgentRoles } from "@/config/constants";
 import { useCreateAgentContact } from "@/hooks/useCreateAgentContact";
+import { useUpdateAgentContactMembership } from "@/hooks/useUpdateAgentContactMembership";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ApiAgentMembership } from "need4deed-sdk";
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { ButtonRow, FormDetails } from "../../shared/styles";
 import { useEnumTranslation } from "../shared";
-import { AddContactFormData, createAddContactSchema } from "./addContactSchema";
+import { ContactFormData, createContactFormSchema } from "./contactFormSchema";
 
 const Title = styled.h3`
   font-weight: var(--font-weight-bold);
@@ -24,47 +26,85 @@ const Title = styled.h3`
 
 type Props = {
   agentId: string;
+  contact?: ApiAgentMembership;
   onClose: () => void;
 };
 
 const roleKeys = Object.values(AgentRoles);
 
-export const AddContactDialog = ({ agentId, onClose }: Props) => {
+const emptyValues: ContactFormData = {
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  role: "" as AgentRoles,
+  email: "",
+  phone: "",
+  landline: "",
+  addressStreet: "",
+  addressPostcode: "",
+};
+
+function toDefaultValues(contact: ApiAgentMembership | undefined): ContactFormData {
+  if (!contact) {
+    return emptyValues;
+  }
+  return {
+    firstName: contact.person.firstName ?? "",
+    middleName: contact.person.middleName ?? "",
+    lastName: contact.person.lastName ?? "",
+    role: contact.role,
+    email: contact.person.email ?? "",
+    phone: contact.person.phone ?? "",
+    landline: contact.person.landline ?? "",
+    addressStreet: contact.person.address?.street ?? "",
+    addressPostcode: contact.person.address?.postcode?.code ?? "",
+  };
+}
+
+// Handles both "+ Add contact" and per-row "Edit" — same field set, same
+// layout, only the submit target and pre-filled values differ.
+export const ContactFormDialog = ({ agentId, contact, onClose }: Props) => {
   const { t } = useTranslation();
-  const { mutate: createContact, isPending } = useCreateAgentContact(agentId);
+  const isEditing = Boolean(contact);
+  const { mutate: createContact, isPending: isCreating } = useCreateAgentContact(agentId);
+  const { mutate: updateContact, isPending: isUpdating } = useUpdateAgentContactMembership(agentId, contact?.id ?? 0);
   const { options, toLabel, toKey } = useEnumTranslation(roleKeys, "dashboard.agentProfile.contactDetails.roles");
 
-  const schema = createAddContactSchema(t);
+  const schema = createContactFormSchema(t);
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<AddContactFormData>({
+  } = useForm<ContactFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      role: "" as AgentRoles,
-      email: "",
-      phone: "",
-      addressStreet: "",
-      addressPostcode: "",
-    },
+    defaultValues: toDefaultValues(contact),
   });
 
-  const onSubmit = (values: AddContactFormData) => {
-    createContact(values, { onSuccess: onClose });
+  const isPending = isCreating || isUpdating;
+
+  const onSubmit = (values: ContactFormData) => {
+    if (isEditing) {
+      updateContact(values, { onSuccess: onClose });
+    } else {
+      createContact(values, { onSuccess: onClose });
+    }
   };
 
   return (
     <Modal isOpen onClose={onClose}>
-      <Title>{t("dashboard.agentProfile.contactDetails.addContact.title")}</Title>
-      <FormDetails data-testid="agent-add-contact-dialog">
+      <Title>
+        {t(
+          isEditing
+            ? "dashboard.agentProfile.contactDetails.editContact.title"
+            : "dashboard.agentProfile.contactDetails.addContact.title",
+        )}
+      </Title>
+      <FormDetails data-testid="agent-contact-form-dialog">
         <Controller
           name="firstName"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "firstName"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "firstName"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -76,9 +116,23 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
           )}
         />
         <Controller
+          name="middleName"
+          control={control}
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "middleName"> }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t("dashboard.agentProfile.contactDetails.middleName")}
+              value={field.value ?? ""}
+              setValue={field.onChange}
+              errorMessage={errors.middleName?.message}
+            />
+          )}
+        />
+        <Controller
           name="lastName"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "lastName"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "lastName"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -92,7 +146,7 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
         <Controller
           name="role"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "role"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "role"> }) => (
             <EditableField
               mode="edit"
               type="radio-list"
@@ -107,7 +161,7 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
         <Controller
           name="email"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "email"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "email"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -121,7 +175,7 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
         <Controller
           name="phone"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "phone"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "phone"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -133,9 +187,23 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
           )}
         />
         <Controller
+          name="landline"
+          control={control}
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "landline"> }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t("dashboard.agentProfile.contactDetails.landline")}
+              value={field.value ?? ""}
+              setValue={field.onChange}
+              errorMessage={errors.landline?.message}
+            />
+          )}
+        />
+        <Controller
           name="addressStreet"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "addressStreet"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "addressStreet"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -149,7 +217,7 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
         <Controller
           name="addressPostcode"
           control={control}
-          render={({ field }: { field: ControllerRenderProps<AddContactFormData, "addressPostcode"> }) => (
+          render={({ field }: { field: ControllerRenderProps<ContactFormData, "addressPostcode"> }) => (
             <EditableField
               mode="edit"
               type="text"
@@ -173,7 +241,11 @@ export const AddContactDialog = ({ agentId, onClose }: Props) => {
           border="var(--volunteer-profile-section-card-header-button-border)"
         />
         <Button
-          text={t("dashboard.agentProfile.contactDetails.addContact.submit")}
+          text={t(
+            isEditing
+              ? "dashboard.agentProfile.contactDetails.editContact.submit"
+              : "dashboard.agentProfile.contactDetails.addContact.submit",
+          )}
           onClick={handleSubmit(onSubmit)}
           width="auto"
           disabled={!isValid || isPending}

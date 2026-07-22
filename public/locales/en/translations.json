@@ -1117,6 +1117,11 @@
           "addressPostcode": "Postcode",
           "success": "Contact added successfully"
         },
+        "editContact": {
+          "title": "Edit contact",
+          "submit": "Save changes",
+          "success": "Contact updated successfully"
+        },
         "validation": {
           "nameRequired": "Name is required",
           "districtRequired": "District is required",

@@ -1,116 +1,56 @@
 "use client";
 
-import { AgentRoles } from "@/config/constants";
-import { useUpdateAgentContact } from "@/hooks/useUpdateAgentContact";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import Button from "@/components/core/button/Button/Button";
+import { ApiAgentMembership } from "need4deed-sdk";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ApiAgentProfileGet } from "../../../types";
-import { FormContainer } from "../../shared/styles";
+import { FormDetails } from "../../shared/styles";
 import { EditableSectionProps } from "../../shared/types";
-import { useEditingChangeNotifier } from "../../shared/useEditingChangeNotifier";
-import { useEnumTranslation } from "../shared";
-import { AgentContactDetailsDisplay } from "./AgentContactDetailsDisplay";
-import { AgentContactDetailsEdit } from "./AgentContactDetailsEdit";
-import { AgentContactDetailsFormData, createAgentContactDetailsSchema } from "./agentContactDetailsSchema";
+import { ContactFormDialog } from "./ContactFormDialog";
+import { ContactRow } from "./ContactRow";
 
-type Props = {
-  agent: ApiAgentProfileGet;
-} & EditableSectionProps;
+type Props = { agent: ApiAgentProfileGet } & EditableSectionProps;
+export type ContactDetailsRef = { handleEditClick: () => void };
 
-export type ContactDetailsRef = {
-  handleEditClick: () => void;
-};
-
-const roleKeys = Object.values(AgentRoles);
-
-export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function ContactDetails(
-  { agent, onEditingChange },
-  ref,
-) {
+// Every contact (the primary representative and every additional one) is
+// rendered and edited identically — one row per person, each with its own
+// "Edit" button, per fe#848. There is no longer a section-wide edit toggle,
+// so `ref`/`onEditingChange` are kept only for API compatibility with the
+// ContactDetails switchboard (volunteer/opportunity sections still use them).
+export const AgentContactDetails = forwardRef<ContactDetailsRef, Props>(function ContactDetails({ agent }, ref) {
   const { t } = useTranslation();
-  const { mutate: updateAgent, isPending } = useUpdateAgentContact(
-    String(agent?.representative?.id),
-    String(agent?.id),
-  );
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingContact, setEditingContact] = useState<ApiAgentMembership | null>(null);
+  const [isAddContactOpen, setIsAddContactOpen] = useState(false);
 
-  useEditingChangeNotifier(isEditing, onEditingChange);
-
-  const { options, keysToLabels, toLabel, toKey } = useEnumTranslation(
-    roleKeys,
-    "dashboard.agentProfile.contactDetails.roles",
-  );
-
-  const schema = createAgentContactDetailsSchema(t);
-
-  const initialFormValues = useMemo(
-    (): AgentContactDetailsFormData => ({
-      firstName: agent?.representative?.firstName ?? "",
-      middleName: agent?.representative?.middleName ?? "",
-      lastName: agent?.representative?.lastName ?? "",
-      role: agent?.representative?.role as AgentContactDetailsFormData["role"],
-      email: agent?.representative?.email ?? "",
-      phone: agent?.representative?.phone ?? "",
-      landline: agent?.representative?.landline ?? "",
-    }),
-    [agent],
-  );
-
-  const methods = useForm<AgentContactDetailsFormData>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-    defaultValues: initialFormValues,
-  });
-
-  const { handleSubmit, reset } = methods;
-
-  const handleEditClick = () => setIsEditing(true);
-
-  useImperativeHandle(ref, () => ({ handleEditClick }));
-
-  const handleCancel = () => {
-    reset();
-    setIsEditing(false);
-  };
-
-  const onSubmit = (values: AgentContactDetailsFormData) => {
-    updateAgent(
-      {
-        ...values,
-        agentId: agent.id,
-      },
-      {
-        onSuccess: () => {
-          reset(values);
-          setIsEditing(false);
-        },
-      },
-    );
-  };
-
-  useEffect(() => {
-    if (isEditing) return;
-    reset(initialFormValues);
-  }, [initialFormValues, isEditing, reset]);
+  useImperativeHandle(ref, () => ({ handleEditClick: () => {} }));
 
   return (
-    <FormProvider {...methods}>
-      <FormContainer $isEditing={isEditing}>
-        {isEditing ? (
-          <AgentContactDetailsEdit
-            options={options}
-            toLabel={toLabel}
-            toKey={toKey}
-            onCancel={handleCancel}
-            onSubmit={handleSubmit(onSubmit)}
-            isPending={isPending}
-          />
-        ) : (
-          <AgentContactDetailsDisplay agent={agent} keysToLabels={keysToLabels} />
-        )}
-      </FormContainer>
-    </FormProvider>
+    <>
+      <FormDetails>
+        {(agent.contacts ?? []).map((contact) => (
+          <ContactRow key={contact.id} contact={contact} onEdit={() => setEditingContact(contact)} />
+        ))}
+      </FormDetails>
+
+      <Button
+        text={t("dashboard.agentProfile.contactDetails.addContact.button")}
+        onClick={() => setIsAddContactOpen(true)}
+        width="auto"
+        padding="var(--volunteer-profile-section-card-header-button-padding)"
+        backgroundcolor="var(--color-white)"
+        textColor="var(--color-aubergine)"
+        border="var(--volunteer-profile-section-card-header-button-border)"
+      />
+
+      {isAddContactOpen && <ContactFormDialog agentId={String(agent.id)} onClose={() => setIsAddContactOpen(false)} />}
+      {editingContact && (
+        <ContactFormDialog
+          agentId={String(agent.id)}
+          contact={editingContact}
+          onClose={() => setEditingContact(null)}
+        />
+      )}
+    </>
   );
 });
