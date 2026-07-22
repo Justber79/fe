@@ -8,6 +8,7 @@ import { UserRole } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import { validateRACEmail } from "@/components/forms/validators";
 import { validateStep } from "./helpers";
 import { AccountStep } from "./steps/AccountStep";
@@ -25,6 +26,15 @@ import {
 import { AgentRegistrationData, defaultAgentRegistrationData } from "./types";
 
 const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; SameSite=Lax; Secure";
+
+// Wrapper's own min-height: 100vh would double up with PageLayout's flex: 1
+// container (which already fills the viewport minus header/footer), adding
+// a spurious extra viewport of empty space. Override it only here — the
+// other consumer of Wrapper (ProfileCompletion) isn't rendered inside PageLayout.
+const PageWrapper = styled(Wrapper)`
+  min-height: 0;
+  flex: 1;
+`;
 
 export function AgentRegistration() {
   const { t, i18n } = useTranslation();
@@ -103,21 +113,21 @@ export function AgentRegistration() {
   if (isSuccess) {
     return (
       <PageLayout>
-        <Wrapper>
+        <PageWrapper>
           <Card>
             <SuccessWrapper>
               <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
               <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
             </SuccessWrapper>
           </Card>
-        </Wrapper>
+        </PageWrapper>
       </PageLayout>
     );
   }
 
   return (
     <PageLayout>
-      <Wrapper>
+      <PageWrapper>
         <Card>
           <PageTitle>{t("agentRegistration.title")}</PageTitle>
           <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
@@ -137,7 +147,7 @@ export function AgentRegistration() {
             />
           </Actions>
         </Card>
-      </Wrapper>
+      </PageWrapper>
     </PageLayout>
   );
 }
