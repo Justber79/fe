@@ -3,6 +3,7 @@ import { Tags } from "@/components/core/common/Tags";
 import { formatAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/formatters";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { format } from "date-fns";
 import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../shared/styles";
@@ -66,12 +67,12 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
         <>
           <DateFieldRow data-testid="opportunity-details-event-date">
             <label>{t(`${prefix}.eventDate`)}</label>
-            <span>{EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{opp.event?.date ? format(new Date(opp.event.date), "dd.MM.yyyy") : EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
 
           <DateFieldRow data-testid="opportunity-details-event-time">
             <label>{t(`${prefix}.eventTime`)}</label>
-            <span>{EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{opp.event?.time || EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
         </>
       ) : (
