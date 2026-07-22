@@ -30,18 +30,6 @@ export const getMinAppointmentDate = (): Date => {
   return date;
 };
 
-export const parseDate = (date: Date | string | undefined | null): Date | null => {
-  if (!date) return null;
-  const parsed = date instanceof Date ? date : new Date(date);
-  return isNaN(parsed.getTime()) ? null : parsed;
-};
-
-export const parseTime = (time: Date | string | undefined): string => {
-  if (!time) return "";
-  if (typeof time === "string") return time;
-  return time.toTimeString().slice(0, 5);
-};
-
 // Form state stores local time (already converted from UTC on init), so display as-is.
 export const formatTimeForDisplay = (time: string | undefined): string => time ?? "";
 
