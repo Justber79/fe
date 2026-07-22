@@ -1,9 +1,11 @@
 "use client";
 import { Button } from "@/components/core/button";
-import { apiPathUser } from "@/config/constants";
+import { apiPathUser, DashboardRoutes } from "@/config/constants";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validateRACEmail } from "@/components/forms/validators";
 import { validateStep } from "./helpers";
@@ -24,12 +26,19 @@ import { AgentRegistrationData, defaultAgentRegistrationData } from "./types";
 const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; SameSite=Lax; Secure";
 
 export function AgentRegistration() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const router = useRouter();
+  const user = useCurrentUser(true);
   const [formData, setFormData] = useState<AgentRegistrationData>(defaultAgentRegistrationData);
   const [errors, setErrors] = useState<Partial<Record<keyof AgentRegistrationData, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    router.push(`/${i18n.language}${DashboardRoutes.Home}`);
+  }, [user, i18n.language, router]);
 
   const update = (fields: Partial<AgentRegistrationData>) => {
     setFormData((prev) => ({ ...prev, ...fields }));
@@ -85,6 +94,10 @@ export function AgentRegistration() {
       setIsSubmitting(false);
     }
   };
+
+  if (user) {
+    return null;
+  }
 
   if (isSuccess) {
     return (
