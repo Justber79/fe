@@ -3,12 +3,14 @@ import { Tags } from "@/components/core/common/Tags";
 import { formatAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/formatters";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { format } from "date-fns";
 import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../shared/styles";
 import { extractOptionTitles, formatLanguagesByPurpose } from "./formatters";
 import { DateFieldRow, FieldRow, TagsValue } from "./styles";
 import { OpportunityWithDetails } from "./types";
+import { dateFromDateTimeUTCStrings, formatToLocalTime } from "@/utils";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -27,6 +29,12 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const schedule = formatAvailability(opp.availability, t);
   const activities = extractOptionTitles(opp.activities, lang);
   const skills = extractOptionTitles(opp.skills, lang);
+
+  let eventDate: Date | null = null;
+
+  if (opp.event?.date && opp.event?.time) {
+    eventDate = dateFromDateTimeUTCStrings(opp.event.date, opp.event.time);
+  }
 
   return (
     <FormDetails>
@@ -66,12 +74,12 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
         <>
           <DateFieldRow data-testid="opportunity-details-event-date">
             <label>{t(`${prefix}.eventDate`)}</label>
-            <span>{EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{eventDate ? format(new Date(eventDate), "dd.MM.yyyy") : EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
 
           <DateFieldRow data-testid="opportunity-details-event-time">
             <label>{t(`${prefix}.eventTime`)}</label>
-            <span>{EMPTY_PLACEHOLDER_VALUE}</span>
+            <span>{eventDate ? formatToLocalTime(eventDate) : EMPTY_PLACEHOLDER_VALUE}</span>
           </DateFieldRow>
         </>
       ) : (

@@ -32,6 +32,12 @@ import {
 import { FieldGroup } from "./styles";
 import { OpportunityEventDateTimeEdit } from "./OpportunityEventDateTimeEdit";
 import { OpportunityWithDetails } from "./types";
+import {
+  dateFromDateTimeUTCStrings,
+  dateFromLocalDateAndTimeString,
+  formatToLocalTime,
+  formatToUtcTime,
+} from "@/utils";
 
 function toLangOptionItems(
   formLangs: { language: string }[],
@@ -91,6 +97,11 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     seenResidents.add(l.id);
     return true;
   });
+  let currentEventDateTime: Date | null = null;
+
+  if (opp.event?.date && opp.event?.time) {
+    currentEventDateTime = dateFromDateTimeUTCStrings(opp.event.date, opp.event.time);
+  }
 
   const schema = createOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages));
   const methods = useForm<OpportunityDetailsFormData>({
@@ -103,8 +114,8 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
       mainCommunication: languagesToFormValues(generalLangs, t),
       residentsSpeak: languagesToFormValues(residentsLangs, t),
       availability: isEventType ? undefined : apiToFormAvailability(opp.availability),
-      eventDate: null,
-      eventTime: "",
+      eventDate: currentEventDateTime ? currentEventDateTime : null,
+      eventTime: currentEventDateTime ? formatToLocalTime(currentEventDateTime) : "",
       activities: opp.activities.map((a) => String(a.id)),
       skills: opp.skills.map((s) => String(s.id)),
     },
@@ -122,6 +133,12 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   };
 
   const onSubmit = (values: OpportunityDetailsFormData) => {
+    let eventDateTime: Date | null = null;
+
+    if (values.eventDate && values.eventTime) {
+      eventDateTime = dateFromLocalDateAndTimeString(values.eventDate, values.eventTime);
+    }
+
     updateOpportunityDetails(
       {
         title: values.title,
@@ -133,10 +150,10 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
         skills: toOptionItems(values.skills, apiSkills),
         schedule: values.availability ? formToApiAvailability(values.availability) : undefined,
         event:
-          values.eventDate && values.eventTime
+          eventDateTime && values.eventTime
             ? {
-                date: values.eventDate.toISOString(),
-                time: values.eventTime,
+                date: eventDateTime.toISOString(),
+                time: formatToUtcTime(eventDateTime),
               }
             : undefined,
       },
