@@ -1,8 +1,6 @@
 import { XIcon } from "@phosphor-icons/react";
 import styled, { css, keyframes } from "styled-components";
 
-import LanguageSwitcher from "./LanguageSwitcher";
-import { MenuItemsContainer } from "./MenuItems";
 import MenuitemList from "./MenuitemList";
 import { MenuItemType } from "@/types";
 import N4DLogoFlat from "../svg/N4DLogoFlat";
@@ -27,6 +25,19 @@ const slideOut = keyframes`
 interface BurgerMenuProps {
   $isOpen: boolean;
 }
+
+const MenuItemsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: var(--homepage-hero-section-header-menu-items-flex-direction);
+  width: var(--homepage-hero-section-header-menu-items-width);
+  gap: var(--homepage-hero-section-header-menu-items-gap);
+  height: fit-content;
+  a {
+    text-decoration: none;
+  }
+`;
 
 const BurgerMenuItemsContainer = styled(MenuItemsContainer)<BurgerMenuProps>`
   position: absolute;
@@ -82,10 +93,7 @@ export default function BurgerMenuItems({ isOpen, items, setIsOpen, menuItemColo
         <N4DLogoFlat width="146" height="38" />
         <XIcon size={32} onClick={() => setIsOpen(false)} />
       </BurgerMenuHeader>
-
       <MenuitemList items={items} menuItemColor={menuItemColor} />
-
-      <LanguageSwitcher textColor={menuItemColor} />
     </BurgerMenuItemsContainer>
   );
 }

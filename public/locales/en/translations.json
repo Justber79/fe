@@ -1622,6 +1622,8 @@
     "back": "Back",
     "submit": "Create account",
     "optional": "optional",
+    "alreadyUser": "Already registered?",
+    "loginLink": "Login to your account",
     "steps": {
       "account": {
         "title": "Your account",
