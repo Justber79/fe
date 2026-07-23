@@ -8,7 +8,7 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiAgentGetList, ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
 import { useGetQuery } from "@/hooks";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { AgentCardsFilter } from "./Filters/types";
@@ -20,11 +20,14 @@ import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
 import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useGetOpportunity } from "@/hooks/useGetOpportunity";
+import { useTransferOpportunityToAgent } from "@/hooks/useTransferOpportunityToAgent";
+import { ConfirmationDialog } from "../Profile/sections/shared/ConfirmationDialog";
 
 export const Agents = () => {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
@@ -34,6 +37,20 @@ export const Agents = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
+  const transferOpportunityId = searchParams.get("transferOpportunity") ?? undefined;
+  const transferOpportunity = useGetOpportunity(transferOpportunityId);
+  const [agentToTransferTo, setAgentToTransferTo] = useState<ApiAgentGetList | undefined>(undefined);
+
+  const { mutate: transferMutate } = useTransferOpportunityToAgent(Number(transferOpportunityId), () => {
+    setAgentToTransferTo(undefined);
+    router.push(`/${i18n.language}/dashboard/opportunities/${transferOpportunityId}`);
+  });
+
+  const handleTransferConfirm = () => {
+    if (!agentToTransferTo) return;
+    transferMutate({ agent: { id: agentToTransferTo.id } });
+  };
 
   const tabs = !user
     ? []
@@ -88,7 +105,11 @@ export const Agents = () => {
     <DashboardLayout>
       <AgentsContainer data-testid="agents-container">
         <CardsHeader
-          header={t("dashboard.agents.agents")}
+          header={
+            transferOpportunityId
+              ? t("dashboard.agents.transferMode.header", { name: transferOpportunity?.name })
+              : t("dashboard.agents.agents")
+          }
           resultCounter={numOfAgents}
           resultText={t("dashboard.home.sidebar.racs")}
           tabs={tabs}
@@ -113,6 +134,7 @@ export const Agents = () => {
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             viewMode={viewMode}
+            onSelect={transferOpportunityId ? setAgentToTransferTo : undefined}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}
@@ -121,6 +143,18 @@ export const Agents = () => {
           />
         </ContentRow>
       </AgentsContainer>
+      {agentToTransferTo && (
+        <ConfirmationDialog
+          title={t("dashboard.agents.transferMode.confirmTitle")}
+          message={t("dashboard.agents.transferMode.confirmMessage", {
+            opportunityName: transferOpportunity?.name,
+            agentName: agentToTransferTo.title,
+          })}
+          confirmText={t("dashboard.agents.transferMode.confirmButton")}
+          onCancel={() => setAgentToTransferTo(undefined)}
+          onConfirm={handleTransferConfirm}
+        />
+      )}
     </DashboardLayout>
   );
 };

@@ -708,6 +708,13 @@
           "activitiesRequired": "Bitte wähle mindestens eine Aktivität aus",
           "skillsRequired": "Fähigkeiten sind erforderlich"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Freiwillige:n löschen",
+        "confirmTitle": "Dieses Profil löschen?",
+        "confirmMessage": "Dadurch wird das Profil von \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Freiwillige:r erfolgreich gelöscht"
       }
     },
     "agents": {
@@ -815,6 +822,13 @@
         "reject": "Ablehnen",
         "approved": "Beitrittsanfrage genehmigt",
         "rejected": "Beitrittsanfrage abgelehnt"
+      },
+      "transferMode": {
+        "header": "Wähle eine Einrichtung, an die \"{{name}}\" übertragen werden soll",
+        "confirmTitle": "Diese Möglichkeit übertragen?",
+        "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
+        "confirmButton": "Übertragen",
+        "success": "Möglichkeit erfolgreich übertragen"
       }
     },
     "opportunities": {
@@ -1165,6 +1179,13 @@
           "active": "Aktiv",
           "past": "Vergangen"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Einrichtung löschen",
+        "confirmTitle": "Diese Einrichtung löschen?",
+        "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Einrichtung erfolgreich gelöscht"
       }
     },
     "opportunityProfile": {
@@ -1338,6 +1359,14 @@
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Möglichkeit löschen",
+        "transferButton": "An andere Einrichtung übertragen",
+        "confirmTitle": "Diese Möglichkeit löschen?",
+        "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Möglichkeit erfolgreich gelöscht"
       }
     },
     "racTitle": "Geflüchtetenunterkunft",

@@ -20,6 +20,7 @@ interface TableListProps {
   districtsList?: OptionItem[];
   onCopyEmails: () => void;
   isCopying: boolean;
+  onSelect?: (agent: ApiAgentGetList) => void;
 }
 
 export function AgentTableList({
@@ -31,6 +32,7 @@ export function AgentTableList({
   districtsList,
   onCopyEmails,
   isCopying,
+  onSelect,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
@@ -63,6 +65,7 @@ export function AgentTableList({
             typeLabels={typeLabels}
             searchLabels={searchLabels}
             districtsList={districtsList}
+            onSelect={onSelect}
           />
         ) : (
           <AgentReadOnlyTableRow

@@ -8,15 +8,20 @@ import {
 import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactDetails";
 import { OrganisationDetails } from "@/components/Dashboard/Profile/sections/OrganisationDetails";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
+import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
 import { VolunteerAgents } from "@/components/Dashboard/Profile/sections/VolunteerAgents/VolunteerAgents";
 import { ApiAgentProfileGet, IconName } from "@/components/Dashboard/Profile/types";
+import { useDeleteAgent } from "@/hooks/useDeleteAgent";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "./useAuth";
 
 export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const router = useRouter();
   const { isAuthorized: isAdminOrCoordinator, isOwnProfile } = useAuth(agent?.id);
   const hasEditingRights = isAdminOrCoordinator || isOwnProfile;
 
@@ -24,8 +29,13 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
   const communicationTrackerRef = useRef<CommunicationTrackerRef>(null);
 
   const [isOrgEditing, setIsOrgEditing] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleOrgEditingChange = useCallback((editing: boolean) => setIsOrgEditing(editing), []);
+
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteAgent(agent?.id ?? 0, () => {
+    router.push(`/${i18n.language}/dashboard/agents`);
+  });
 
   if (!agent) return null;
 
@@ -77,6 +87,28 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${agent.comments?.length ?? 0}`,
       subComponent: <Comments agent={agent} />,
+    },
+    {
+      iconName: IconName.Trash,
+      title: t("dashboard.agentProfile.dangerZone.title"),
+      subComponent: (
+        <>
+          <DangerZoneButtonRow
+            deleteButtonText={t("dashboard.agentProfile.dangerZone.deleteButton")}
+            onDeleteClick={() => setIsDeleteDialogOpen(true)}
+            deleteDisabled={isDeleting}
+          />
+          {isDeleteDialogOpen && (
+            <ConfirmationDialog
+              title={t("dashboard.agentProfile.dangerZone.confirmTitle")}
+              message={t("dashboard.agentProfile.dangerZone.confirmMessage", { name: agent.title })}
+              confirmText={t("dashboard.agentProfile.dangerZone.deleteButton")}
+              onCancel={() => setIsDeleteDialogOpen(false)}
+              onConfirm={() => deleteMutate(undefined)}
+            />
+          )}
+        </>
+      ),
     },
   ];
 
