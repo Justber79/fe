@@ -13,6 +13,7 @@ import MenuItems from "./MenuItems";
 import UserProfile from "./UserProfile";
 import MenuItem from "./MenuItem";
 import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface HeaderContainerProps {
   height?: string;
@@ -31,6 +32,7 @@ const HeaderContainer = styled.div<HeaderContainerProps>`
   top: 0;
   background-color: var(--color-orchid-subtle);
   width: -webkit-fill-available;
+  gap: var(--space-sm);
 `;
 
 interface Props {
@@ -84,6 +86,7 @@ export function Header({
       ) : (
         <MenuItems items={menuItems} menuItemColor={menuItemColor} />
       )}
+      <LanguageSwitcher textColor={menuItemColor} />
 
       {user && (
         <Link href={`/${i18n.language}/dashboard`} style={{ textDecoration: "none" }}>
