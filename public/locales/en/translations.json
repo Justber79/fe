@@ -1594,7 +1594,7 @@
     "submit": "Create account",
     "optional": "optional",
     "alreadyUser": "Already registered?",
-    "loginLink": "Login into your account",
+    "loginLink": "Login to your account",
     "steps": {
       "account": {
         "title": "Your account",

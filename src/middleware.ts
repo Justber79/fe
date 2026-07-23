@@ -13,7 +13,7 @@ const REFRESH = "refresh";
 
 const authorizedRoutes: Record<string, { regex: RegExp; redirect: string }> = {
   AGENT: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
-  NEW_OPPORTUNITIES: { regex: /^(?:\/[a-z]{2})?\/forms\/opportunities(?:\/|$)/, redirect: "/login" },
+  NEW_OPPORTUNITIES: { regex: /^(?:\/[a-z]{2})?\/forms\/opportunity(?:\/|$)/, redirect: "/login" },
   DASHBOARD: { regex: /^(?:\/[a-z]{2})?\/dashboard(?:\/|$)/, redirect: "/login" },
 };
 
