@@ -2,11 +2,7 @@ import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Heading4 } from "@/components/styled/text";
 import { defaultAvatarVolunteerProfile } from "@/config/constants";
 import { getImageUrl } from "@/utils";
-import {
-  ApiVolunteerOpportunityGet,
-  OpportunityVolunteerStatusType,
-  VolunteerStateCommunicationType,
-} from "need4deed-sdk";
+import { ApiVolunteerOpportunityGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { isBriefedAccompanying } from "../ProfileHeader/common";
@@ -35,13 +31,9 @@ export const AccordionVolunteer = ({
 }: Props) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const { volunteerId, name, avatarUrl, engagement, volunteeringType } = volunteer;
+  const { volunteerId, name, avatarUrl, engagement, volunteeringType, communication } = volunteer;
 
-  // TODO: remove cast once SDK adds statusCommunication to ApiVolunteerOpportunityGet
-  const { statusCommunication } = volunteer as ApiVolunteerOpportunityGet & {
-    statusCommunication?: VolunteerStateCommunicationType;
-  };
-  const showBriefedCheck = isBriefedAccompanying(volunteeringType, statusCommunication);
+  const showBriefedCheck = isBriefedAccompanying(volunteeringType, communication);
 
   const handleGoToProfile = () => {
     router.push(`/${i18n.language}/dashboard/volunteers/${volunteerId}`);
