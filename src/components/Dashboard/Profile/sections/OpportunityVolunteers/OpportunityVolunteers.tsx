@@ -13,7 +13,13 @@ import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../sha
 import { AccordionVolunteer } from "./AccordionVolunteer";
 import { OpportunityVolunteersContainer } from "./styles";
 
-export const OpportunityVolunteers = ({ opportunityId }: { opportunityId: Id }) => {
+export const OpportunityVolunteers = ({
+  opportunityId,
+  hasEditingRights,
+}: {
+  opportunityId: Id;
+  hasEditingRights?: boolean;
+}) => {
   const { t } = useTranslation();
 
   const queryKey = ["opportunity-volunteers", String(opportunityId)];
@@ -75,6 +81,7 @@ export const OpportunityVolunteers = ({ opportunityId }: { opportunityId: Id }) 
             key={volunteer.id}
             volunteer={volunteer}
             currentStatus={currentTabStatus}
+            hasEditingRights={hasEditingRights}
             onMatch={() => handleMatch(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
             onMarkAsActive={() => handleMarkAsActive(volunteer.id)}

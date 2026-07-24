@@ -19,6 +19,7 @@ import VolunteerDetail from "./VolunteerDetail";
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
+  hasEditingRights?: boolean;
   onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
@@ -28,6 +29,7 @@ type Props = {
 export const AccordionVolunteer = ({
   volunteer,
   currentStatus,
+  hasEditingRights,
   onMatch,
   onNotAMatch,
   onMarkAsActive,
@@ -71,6 +73,7 @@ export const AccordionVolunteer = ({
       <VolunteerDetail
         volunteer={volunteer}
         currentStatus={currentStatus}
+        hasEditingRights={hasEditingRights}
         onMatch={onMatch}
         onNotAMatch={onNotAMatch}
         onMarkAsActive={onMarkAsActive}
