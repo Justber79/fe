@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import { apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import {
@@ -15,6 +16,7 @@ import AccordionOpportunity from "./AccordionOpportunity";
 
 export default function VolunteerOpportunities({ volunteerId }: { volunteerId: Id }) {
   const { t } = useTranslation();
+  const { isAuthorized } = useAuth();
 
   const queryKey = ["volunteer-opportunities", String(volunteerId)];
 
@@ -68,17 +70,21 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
       {visibleItems.length === 0 ? (
         <SectionEmptyState>{t("dashboard.volunteerProfile.opportunitiesSec.emptyState")}</SectionEmptyState>
       ) : (
-        visibleItems.map((opportunity) => (
-          <AccordionOpportunity
-            key={opportunity.id}
-            opportunity={opportunity}
-            currentStatus={currentTabStatus}
-            onMatch={() => handleMatch(opportunity.id)}
-            onNotAMatch={() => handleNotAMatch(opportunity.id)}
-            onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
-            onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
-          />
-        ))
+        visibleItems.map((opportunity) =>
+          isAuthorized ? (
+            <AccordionOpportunity
+              key={opportunity.id}
+              opportunity={opportunity}
+              currentStatus={currentTabStatus}
+              onMatch={() => handleMatch(opportunity.id)}
+              onNotAMatch={() => handleNotAMatch(opportunity.id)}
+              onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
+              onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
+            />
+          ) : (
+            <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />
+          ),
+        )
       )}
     </VolunteerOpportunitiesContainer>
   );

@@ -8,15 +8,18 @@ import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
 import { ShootingStarIcon } from "@phosphor-icons/react";
-import { ApiOpportunityGet } from "need4deed-sdk";
+import { ApiOpportunityGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, StatusRowField } from "../common";
 import { ChangeOpportunityStatusDialog } from "./ChangeOpportunityStatusDialog";
+import { ChangeOpportunityTypeDialog } from "./ChangeOpportunityTypeDialog/ChangeOpportunityTypeDialog";
 import { createOpportunityStatusLabelMap } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -24,8 +27,15 @@ type Props = {
 
 export const OpportunityHeader = ({ opportunity }: Props) => {
   const { isAuthorized } = useAuth();
+  const currentUser = useCurrentUser();
+  // Coordinator/admin may edit any opportunity; an agent may only change the
+  // status of an opportunity belonging to their own agent (mirrors the be
+  // ownership check on PATCH /opportunity/:id).
+  const canChangeStatus =
+    isAuthorized || (currentUser?.role === UserRole.AGENT && currentUser?.agentId === opportunity.agent?.id);
   const { t, i18n } = useTranslation();
   const dialog = useOpportunityStatusDialog(opportunity);
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const { statusMatch } = opportunity as ApiOpportunityGet & { statusMatch?: string };
@@ -43,14 +53,19 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
       }
       title={opportunity.title}
       subtitle={subtitle}
-      after={<ChangeOpportunityStatusDialog dialog={dialog} />}
+      after={
+        <>
+          <ChangeOpportunityStatusDialog dialog={dialog} isAuthorized={isAuthorized} />
+          {isTypeOpen && <ChangeOpportunityTypeDialog onClose={() => setIsTypeOpen(false)} opportunity={opportunity} />}
+        </>
+      }
     >
       <StatusRowField
         title={t("dashboard.opportunityProfile.currentStatus")}
         status={dialog.selected}
         label={statusLabelMap[dialog.selected]}
         action={
-          isAuthorized && (
+          canChangeStatus && (
             <EditButton onClick={dialog.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
           )
         }
@@ -76,6 +91,11 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         title={t("dashboard.volunteerProfile.volunteerHeader.volunteerType_title")}
         status={opportunity.volunteerType}
         label={opportunity.volunteerType ? volunteerTypeLabelMap[opportunity.volunteerType] : undefined}
+        action={
+          isAuthorized && (
+            <EditButton onClick={() => setIsTypeOpen(true)}>{t("dashboard.opportunityProfile.change_type")}</EditButton>
+          )
+        }
       />
 
       {(opportunity.agent as typeof opportunity.agent & { id?: number })?.id && (

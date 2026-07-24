@@ -63,7 +63,6 @@ export const DashboardBaseContainer = styled.div`
   max-width: var(--dashboard-base-container-width);
   padding-top: var(--dashboard-base-container-padding-top);
   padding-bottom: var(--dashboard-base-container-padding-bottom);
-
   @media (max-width: 767px) {
     margin-left: 16px;
     margin-right: 16px;
@@ -71,6 +70,10 @@ export const DashboardBaseContainer = styled.div`
       var(--dashboard-base-container-padding-bottom) + var(--dashboard-navigation-bar-mobile-height)
     );
   }
+`;
+
+export const DashboardContentContainer = styled.div`
+  display: flex;
 `;
 
 export const OverlayingSectionContainer = styled(SectionContainer)`

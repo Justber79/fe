@@ -1,6 +1,12 @@
-import AddOpportunity from "@/components/forms/AddOpportunity/AddOpportunity";
+"use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function OpportunityPage() {
-  return <AddOpportunity />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard");
+  }, [router]);
 }

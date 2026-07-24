@@ -3,15 +3,17 @@ import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { DashboardRoutes, eventsPublicLandingUrl } from "@/config/constants";
+import { DashboardRoutes, eventsPublicLandingUrl, opportunityCardsPublicUrl } from "@/config/constants";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { MenuItemType, Subpage } from "@/types";
+import { UserRole } from "need4deed-sdk";
 import BurgerMenuItems from "./BurgerMenuItems";
 import LoginRegister from "./LoginRegister";
 import MenuItems from "./MenuItems";
 import UserProfile from "./UserProfile";
 import MenuItem from "./MenuItem";
 import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface HeaderContainerProps {
   height?: string;
@@ -30,6 +32,7 @@ const HeaderContainer = styled.div<HeaderContainerProps>`
   top: 0;
   background-color: var(--color-orchid-subtle);
   width: -webkit-fill-available;
+  gap: var(--space-sm);
 `;
 
 interface Props {
@@ -53,9 +56,14 @@ export function Header({
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState<boolean>(false);
   const user = useCurrentUser();
 
+  const isAgent = user?.role === UserRole.AGENT;
+
   const menuItems: MenuItemType[] = [
     [t("homepage.heroSection.menuItems.about"), `/${Subpage.ABOUT}`],
-    [t("homepage.heroSection.menuItems.volunteeringOpportunities"), `${DashboardRoutes.Opportunities}?view=cards`],
+    [
+      t("homepage.heroSection.menuItems.volunteeringOpportunities"),
+      isAgent ? opportunityCardsPublicUrl : `${DashboardRoutes.Opportunities}?view=cards`,
+    ],
     [t("homepage.heroSection.menuItems.events"), eventsPublicLandingUrl],
   ];
 
@@ -78,6 +86,7 @@ export function Header({
       ) : (
         <MenuItems items={menuItems} menuItemColor={menuItemColor} />
       )}
+      <LanguageSwitcher textColor={menuItemColor} />
 
       {user && (
         <Link href={`/${i18n.language}/dashboard`} style={{ textDecoration: "none" }}>
