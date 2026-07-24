@@ -9,5 +9,6 @@ export const useTransferOpportunityToAgent = (opportunityId: number, onSuccess?:
     method: "patch",
     successMessage: "dashboard.agents.transferMode.success",
     onSuccessCallback: onSuccess,
+    queryKeyToInvalidate: ["opportunity", String(opportunityId)],
   });
 };

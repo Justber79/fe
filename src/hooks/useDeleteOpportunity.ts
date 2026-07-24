@@ -6,6 +6,7 @@ export const useDeleteOpportunity = (opportunityId: Id, onSuccess?: () => void) 
   return useMutationQuery<unknown, { message: string }>({
     apiPath: `${apiPathOpportunity}/${opportunityId}`,
     method: "delete",
+    queryKeyToInvalidate: ["opportunities"],
     successMessage: "dashboard.opportunityProfile.dangerZone.deleteSuccess",
     onSuccessCallback: onSuccess,
   });
