@@ -63,7 +63,7 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
       />
       <EditableField
         mode="display"
-        type="text"
+        type="checkbox-list"
         label={t(`${i18nPrefix}.services`)}
         value={values.services}
         setValue={() => {}}

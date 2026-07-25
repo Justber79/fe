@@ -3,7 +3,8 @@ import { IconDiv } from "@/components/styled/container";
 import { Heading4, Paragraph } from "@/components/styled/text";
 import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, DistrictDiv } from "./styles";
 import { useTranslation } from "react-i18next";
-import { ApiAgentGetList, OptionItem } from "need4deed-sdk";
+import { ApiAgentGetList, Lang, OptionItem } from "need4deed-sdk";
+import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 
 interface Props {
   agent: ApiAgentGetList;
@@ -11,9 +12,10 @@ interface Props {
 }
 
 export const AgentReadOnlyCard = ({ agent, districtsList }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { title, district, type } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const lang = i18n.language as Lang;
   return (
     <Card $cursor="auto">
       <CardHeader>
@@ -23,7 +25,7 @@ export const AgentReadOnlyCard = ({ agent, districtsList }: Props) => {
       </CardHeader>
       <CardDetailsInfo>
         <Heading4>{t("dashboard.agentProfile.type")}</Heading4>
-        <Paragraph> {type}</Paragraph>
+        <Paragraph> {extractOptionTitle(type, lang)}</Paragraph>
       </CardDetailsInfo>
       <DistrictContainer>
         <DistrictDiv>

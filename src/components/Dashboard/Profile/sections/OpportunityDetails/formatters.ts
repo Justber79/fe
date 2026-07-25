@@ -26,13 +26,13 @@ export function formatLanguagesByPurpose(
     .join(", ");
 }
 
+export function extractOptionTitle(item: OptionById | undefined, lang: Lang): string {
+  if (!item?.title) return "";
+  return item.title[lang] ?? item.title[Lang.EN] ?? "";
+}
+
 export function extractOptionTitles(items: OptionById[], lang: Lang): string[] {
-  return items
-    .map((item) => {
-      if (!item.title) return "";
-      return item.title[lang] ?? item.title[Lang.EN] ?? "";
-    })
-    .filter(Boolean);
+  return items.map((item) => extractOptionTitle(item, lang)).filter(Boolean);
 }
 
 // Resolves a language form value back to its API option — the value is

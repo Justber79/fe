@@ -1,5 +1,4 @@
 import { LanguageLevel } from "@/types";
-import { AgentType } from "need4deed-sdk";
 import { z } from "zod";
 
 const languageObjectSchema = z.object({
@@ -24,9 +23,11 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string) => {
       }),
     addressStreet: z.string(),
     addressPostcode: z.string(),
-    organizationType: z.enum(AgentType),
+    // Stores the translated title (like `district` elsewhere), resolved
+    // back to an id at submit time via AgentType/Service option mappings.
+    organizationType: z.string().min(1, required),
     operator: z.string().min(1, required),
-    services: z.string().min(1, required),
+    services: z.array(z.string()).min(1, required),
     clientLanguages: z.array(languageObjectSchema).min(1, t(`${i18nPrefix}.clientLanguagesRequired`)),
   });
 };

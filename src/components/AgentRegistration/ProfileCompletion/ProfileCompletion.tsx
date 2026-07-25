@@ -40,10 +40,10 @@ function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
     title: formData.organizationName,
     // `info`/`languages: number[]` follow the registration contract — these
     // deliberately differ from the agent PATCH shape (`about`/`OptionById[]`).
-    type: formData.organizationType || undefined,
+    typeId: formData.organizationType || undefined,
     info: formData.about || undefined,
     website: formData.website || undefined,
-    services: formData.services.length > 0 ? formData.services : undefined,
+    serviceIds: formData.services.length > 0 ? formData.services : undefined,
     addressStreet: formData.addressStreet || undefined,
     addressPostcode: formData.addressPostcode || undefined,
     districtId: formData.districtId ?? undefined,
@@ -254,7 +254,9 @@ export function ProfileCompletion() {
             </div>
           ))}
 
-        {!isJoining && step === 2 && <OrgInfoStep data={formData} onChange={update} errors={errors} />}
+        {!isJoining && step === 2 && (
+          <OrgInfoStep data={formData} onChange={update} errors={errors} optionLists={optionLists} />
+        )}
         {!isJoining && step === 3 && <ServicesStep data={formData} onChange={update} optionLists={optionLists} />}
 
         <Actions>
