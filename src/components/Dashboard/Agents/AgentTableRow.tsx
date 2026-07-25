@@ -1,26 +1,27 @@
 "use client";
 
-import type { ApiAgentGetList, OptionItem } from "need4deed-sdk";
+import type { ApiAgentGetList, Lang, OptionItem } from "need4deed-sdk";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 import { CopyEmail } from "../common/CopyEmail";
+import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 
 interface TableRowProps {
   agent: ApiAgentGetList;
   isLast: boolean;
-  typeLabels: Record<string, string>;
   searchLabels: Record<string, string>;
   districtsList?: OptionItem[];
 }
 
-export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, districtsList }: TableRowProps) {
+export function AgentTableRow({ agent, isLast, searchLabels, districtsList }: TableRowProps) {
   const { i18n } = useTranslation();
 
   const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
+  const lang = i18n.language as Lang;
 
   const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
 
@@ -30,7 +31,7 @@ export function AgentTableRow({ agent, isLast, typeLabels, searchLabels, distric
         {title}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
-        {typeLabels[type] || type}
+        {extractOptionTitle(type, lang)}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.volunteerSearch} data-testid={`agent-search-${id}`}>
         {searchLabels[volunteerSearch] || volunteerSearch}

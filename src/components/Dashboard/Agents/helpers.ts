@@ -1,13 +1,14 @@
 import {
   AgentVolunteerSearchType,
   ApiAgentGetList,
-  AgentServiceType,
   ApiOptionLists,
   AgentTrustType,
   ApiAgentGet,
   OptionById,
   QueryParamsKeys,
   AgentType,
+  Service,
+  EntityTableName,
 } from "need4deed-sdk";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
@@ -17,13 +18,13 @@ type AgentListItem = ApiAgentGetList & Partial<ApiAgentGet>;
 
 export function getNormalizedAgent(agent: AgentListItem): Omit<
   AgentListItem,
-  "district" | "volunteerSearch" | "type" | "trustLevel" | "serviceType"
+  "district" | "volunteerSearch" | "type" | "trustLevel" | "services"
 > & {
   district: OptionById | undefined;
   volunteerSearch: AgentVolunteerSearchType;
   type: AgentType;
   trustLevel: AgentTrustType;
-  serviceType: AgentServiceType[] | undefined;
+  services: Service[] | undefined;
 } {
   return {
     ...agent,
@@ -31,7 +32,7 @@ export function getNormalizedAgent(agent: AgentListItem): Omit<
     district: agent.district ?? undefined,
     volunteerSearch: agent.volunteerSearch ?? AgentVolunteerSearchType.NOT_NEEDED,
     trustLevel: agent.trustLevel ? agent.trustLevel : AgentTrustType.UNKNOWN,
-    serviceType: agent.serviceType ?? undefined,
+    services: agent.services ?? undefined,
   };
 }
 
@@ -64,7 +65,11 @@ export function serializeAgentFilters(
   params.delete("type");
   Object.entries(filter.type).forEach(([key, value]) => {
     if (value === true) {
-      params.append("type", key);
+      const paramValue =
+        (options?.serializeToIDs &&
+          options.apiFilterOptions?.[EntityTableName.AGENT_TYPE]?.find((d) => d.title === key)?.id) ||
+        key;
+      params.append("type", String(paramValue));
     }
   });
 
@@ -85,7 +90,11 @@ export function serializeAgentFilters(
   params.delete("services");
   Object.entries(filter.services).forEach(([key, value]) => {
     if (value === true) {
-      params.append("services", key);
+      const paramValue =
+        (options?.serializeToIDs &&
+          options.apiFilterOptions?.[EntityTableName.SERVICE]?.find((d) => d.title === key)?.id) ||
+        key;
+      params.append("services", String(paramValue));
     }
   });
 

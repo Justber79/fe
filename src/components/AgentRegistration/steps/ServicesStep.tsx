@@ -1,5 +1,5 @@
 "use client";
-import { ApiOptionLists, AgentServiceType, EntityTableName } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
@@ -38,11 +38,12 @@ type Props = {
 export function ServicesStep({ data, onChange, optionLists }: Props) {
   const { t } = useTranslation();
   const languages = optionLists?.[EntityTableName.LANGUAGE] ?? [];
+  const services = optionLists?.[EntityTableName.SERVICE] ?? [];
 
-  const toggleService = (service: AgentServiceType) => {
-    const updated = data.services.includes(service)
-      ? data.services.filter((s) => s !== service)
-      : [...data.services, service];
+  const toggleService = (serviceId: number) => {
+    const updated = data.services.includes(serviceId)
+      ? data.services.filter((s) => s !== serviceId)
+      : [...data.services, serviceId];
     onChange({ services: updated });
   };
 
@@ -61,14 +62,14 @@ export function ServicesStep({ data, onChange, optionLists }: Props) {
       <FieldWrapper>
         <FieldLabel>{t("agentRegistration.fields.services")}</FieldLabel>
         <CheckboxGrid>
-          {Object.values(AgentServiceType).map((service) => (
-            <CheckboxLabel key={service}>
+          {services.map((service) => (
+            <CheckboxLabel key={service.id}>
               <input
                 type="checkbox"
-                checked={data.services.includes(service)}
-                onChange={() => toggleService(service)}
+                checked={data.services.includes(service.id)}
+                onChange={() => toggleService(service.id)}
               />
-              {t(`dashboard.agents.filters.services.${service}`, { defaultValue: service })}
+              {service.title}
             </CheckboxLabel>
           ))}
         </CheckboxGrid>
