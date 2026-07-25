@@ -1,9 +1,14 @@
 "use client";
-import { useApiLanguages } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import {
+  useApiAgentTypes,
+  useApiLanguages,
+  useApiServices,
+} from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import { ApiAgentProfileGet } from "@/components/Dashboard/Profile/types";
 import { useUpdateOrganization } from "@/hooks/useUpdateOrganizationDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormContainer } from "../shared/styles";
@@ -28,19 +33,37 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   useEditingChangeNotifier(isEditing, onEditingChange);
   const { data: apiLanguages } = useApiLanguages();
+  const { data: apiAgentTypes = [] } = useApiAgentTypes();
+  const { data: apiServices = [] } = useApiServices();
+  const agentTypeMapping = useMemo(() => createMapping(apiAgentTypes), [apiAgentTypes]);
+  const serviceMapping = useMemo(() => createMapping(apiServices), [apiServices]);
 
   const details = agent.agentDetails;
   const languagesForForm = toLanguagesForForm(apiLanguages, i18n.language);
   const schema = createOrganisationDetailsSchema(t);
 
-  const initialFormValues = {
-    ...details,
-    website: details?.website || "",
-    operator: details?.operator || agent.operator || "",
-    clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
-    addressStreet: details?.addressStreet ?? "",
-    addressPostcode: details?.addressPostcode ?? "",
-  };
+  // organizationType/services come back from GET /agent as { id, title: {en,de} }
+  // (both languages at once); resolve by id to the title already translated to
+  // the current UI language by the fetched AgentType/Service option lists, so
+  // the picker's options and the pre-selected value use the same strings.
+  const initialFormValues = useMemo(
+    () => ({
+      ...details,
+      title: agent.title || "",
+      website: details?.website || "",
+      operator: details?.operator || agent.operator || "",
+      clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
+      addressStreet: details?.addressStreet ?? "",
+      addressPostcode: details?.addressPostcode ?? "",
+      organizationType: details?.organizationType?.id
+        ? (agentTypeMapping.idToTitle[Number(details.organizationType.id)] ?? "")
+        : "",
+      services: (details?.services ?? [])
+        .map((service) => (service.id ? serviceMapping.idToTitle[Number(service.id)] : undefined))
+        .filter((title): title is string => Boolean(title)),
+    }),
+    [details, agent.title, agent.operator, agentTypeMapping, serviceMapping],
+  );
 
   const methods = useForm<OrganisationDetailsFormData>({
     resolver: zodResolver(schema),
@@ -54,18 +77,35 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   useImperativeHandle(ref, () => ({ handleEditClick }));
 
+  // apiAgentTypes/apiServices resolve asynchronously after the form's initial
+  // mount, so the id->title lookups above are still empty when useForm first
+  // captures defaultValues (RHF freezes them at mount). Re-sync once the real
+  // data arrives, matching the pattern in RefugeeAccommodationCentre.tsx.
+  useEffect(() => {
+    if (isEditing) return;
+    reset(initialFormValues);
+  }, [initialFormValues, isEditing, reset]);
+
   const handleCancel = () => {
     reset();
     setIsEditing(false);
   };
 
   const onSubmit = (values: OrganisationDetailsFormData) => {
+    const typeId = agentTypeMapping.titleToId[values.organizationType];
+    const serviceIds = values.services
+      .map((title) => serviceMapping.titleToId[title])
+      .filter((id): id is number => id !== undefined);
+
     updateOrganization(
       {
+        title: values.title,
         about: values.about,
         website: values.website,
         addressStreet: values.addressStreet,
         addressPostcode: values.addressPostcode,
+        ...(typeId !== undefined && { typeId }),
+        serviceIds,
       },
       {
         onSuccess: () => {
@@ -82,6 +122,8 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
         {isEditing ? (
           <OrganisationDetailsEdit
             languagesForForm={languagesForForm}
+            organizationTypeOptions={apiAgentTypes.map((agentType) => agentType.title)}
+            servicesOptions={apiServices.map((service) => service.title)}
             onCancel={handleCancel}
             onSubmit={handleSubmit(onSubmit)}
           />

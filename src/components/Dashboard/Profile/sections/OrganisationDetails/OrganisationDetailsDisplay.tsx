@@ -22,6 +22,13 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
       <EditableField
         mode="display"
         type="text"
+        label={t(`${i18nPrefix}.ngoTitle`)}
+        value={values.title}
+        setValue={() => {}}
+      />
+      <EditableField
+        mode="display"
+        type="text"
         label={t(`${i18nPrefix}.about`)}
         value={values.about}
         setValue={() => {}}
@@ -56,7 +63,7 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
       />
       <EditableField
         mode="display"
-        type="text"
+        type="checkbox-list"
         label={t(`${i18nPrefix}.services`)}
         value={values.services}
         setValue={() => {}}

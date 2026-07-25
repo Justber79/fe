@@ -2,7 +2,7 @@
 
 import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
 import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
@@ -26,11 +26,11 @@ interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
   isLast: boolean;
   districtsList?: OptionItem[];
+  volunteerId?: string;
 }
 
-export function OpportunityTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
+export function OpportunityTableRow({ opportunity, isLast, districtsList, volunteerId }: TableRowProps) {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
 
   const ext = opportunity as ExtendedOpportunity;
   const { id, title, volunteerType, languages, availability, location, volunteerNames } = opportunity;
@@ -53,13 +53,11 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList }: Tabl
   const otherVolunteersCount = numberOfVolunteers && numberOfVolunteers > 1 ? numberOfVolunteers - 1 : 0;
   const matchedNames = firstName && otherVolunteersCount ? `${firstName} +${otherVolunteersCount}` : firstName;
 
-  const handleGoToProfile = () => {
-    if (!id) return;
-    router.push(`/${i18n.language}/dashboard/opportunities/${id}`);
-  };
+  const params = volunteerId ? `?volunteer=${volunteerId}` : "";
+  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
 
   return (
-    <ClickableRow $isLast={isLast} onClick={handleGoToProfile} data-testid={`opportunity-row-${id}`}>
+    <ClickableRow as={Link} href={profileUrl} $isLast={isLast} data-testid={`opportunity-row-${id}`}>
       <TableCell $width={OPPORTUNITY_COL_WIDTHS.title} data-testid={`opportunity-title-${id}`}>
         <WrappedText>{title}</WrappedText>
       </TableCell>

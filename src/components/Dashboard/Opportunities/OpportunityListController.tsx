@@ -4,17 +4,10 @@ import { apiPathOpportunity, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABL
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
-import { serializeOpportunityFilters } from "./helpers";
+import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
-
-const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
-type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
-
-function isAppointmentSort(sort: string): sort is AppointmentSort {
-  return (APPOINTMENT_SORT_VALUES as readonly string[]).includes(sort);
-}
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -63,7 +56,7 @@ export function OpportunityListController({
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
-  }) as URLSearchParams;
+  });
 
   if (volunteerId) {
     serializedFilter.set("volunteer", volunteerId);
@@ -103,6 +96,7 @@ export function OpportunityListController({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         districtsList={apiFilterOptions?.district ?? undefined}
+        volunteerId={volunteerId}
       />
     );
   }

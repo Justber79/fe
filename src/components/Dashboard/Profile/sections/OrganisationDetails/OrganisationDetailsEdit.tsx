@@ -12,11 +12,19 @@ const i18nPrefix = "dashboard.agentProfile.organisationDetails";
 
 type Props = {
   languagesForForm: Option[];
+  organizationTypeOptions: string[];
+  servicesOptions: string[];
   onCancel: () => void;
   onSubmit: () => void;
 };
 
-export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }: Props) => {
+export const OrganisationDetailsEdit = ({
+  languagesForForm,
+  organizationTypeOptions,
+  servicesOptions,
+  onCancel,
+  onSubmit,
+}: Props) => {
   const { t } = useTranslation();
   const {
     control,
@@ -26,6 +34,20 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
   return (
     <>
       <FormDetails data-testid="organisation-details-edit">
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t(`${i18nPrefix}.ngoTitle`)}
+              value={field.value}
+              setValue={field.onChange}
+              errorMessage={errors.title?.message}
+            />
+          )}
+        />
         <Controller
           name="about"
           control={control}
@@ -88,10 +110,11 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
           render={({ field }) => (
             <EditableField
               mode="edit"
-              type="text"
+              type="radio-list"
               label={t(`${i18nPrefix}.organisationType`)}
               value={field.value}
               setValue={field.onChange}
+              options={organizationTypeOptions}
               errorMessage={errors.organizationType?.message}
             />
           )}
@@ -116,10 +139,11 @@ export const OrganisationDetailsEdit = ({ languagesForForm, onCancel, onSubmit }
           render={({ field }) => (
             <EditableField
               mode="edit"
-              type="text"
+              type="checkbox-list"
               label={t(`${i18nPrefix}.services`)}
               value={field.value}
               setValue={field.onChange}
+              options={servicesOptions}
               errorMessage={errors.services?.message}
             />
           )}

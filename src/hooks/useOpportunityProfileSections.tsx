@@ -21,7 +21,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.contact.id);
+  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.agent?.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
@@ -116,12 +116,14 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       {
         iconName: IconName.UsersThree,
         title: t("dashboard.opportunityProfile.volunteersSec.title"),
-        headerButtonName: volunteerId
-          ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
-          : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
-        onHeaderButtonClick: volunteerId
-          ? () => setIsSuggestDialogOpen(true)
-          : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        ...(isAuthorized && {
+          headerButtonName: volunteerId
+            ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
+            : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
+          onHeaderButtonClick: volunteerId
+            ? () => setIsSuggestDialogOpen(true)
+            : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        }),
         subComponent: (
           <>
             <OpportunityVolunteers opportunityId={opportunity.id} />

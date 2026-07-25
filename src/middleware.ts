@@ -13,6 +13,7 @@ const REFRESH = "refresh";
 
 const authorizedRoutes: Record<string, { regex: RegExp; redirect: string }> = {
   AGENT: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
+  NEW_OPPORTUNITIES: { regex: /^(?:\/[a-z]{2})?\/forms\/opportunity(?:\/|$)/, redirect: "/login" },
   DASHBOARD: { regex: /^(?:\/[a-z]{2})?\/dashboard(?:\/|$)/, redirect: "/login" },
 };
 
@@ -22,10 +23,15 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get(REFRESH)?.value;
 
   if (!token) {
-    const match = pathname.match(authorizedRoutes.DASHBOARD.regex);
-    if (match) {
-      const url = request.nextUrl.clone();
+    const url = request.nextUrl.clone();
+    const dashboardMatch = pathname.match(authorizedRoutes.DASHBOARD.regex);
+    const newOppMatch = pathname.match(authorizedRoutes.NEW_OPPORTUNITIES.regex);
+    if (dashboardMatch) {
       url.search = "";
+      url.pathname = authorizedRoutes.DASHBOARD.redirect;
+      return NextResponse.redirect(url);
+    }
+    if (newOppMatch) {
       url.pathname = authorizedRoutes.DASHBOARD.redirect;
       return NextResponse.redirect(url);
     }

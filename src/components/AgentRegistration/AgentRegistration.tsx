@@ -1,10 +1,14 @@
 "use client";
 import { Button } from "@/components/core/button";
-import { apiPathUser } from "@/config/constants";
+import { PageLayout } from "@/components/Layout";
+import { apiPathUser, DashboardRoutes } from "@/config/constants";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import { validateRACEmail } from "@/components/forms/validators";
 import { validateStep } from "./helpers";
 import { AccountStep } from "./steps/AccountStep";
@@ -12,6 +16,8 @@ import {
   Actions,
   Card,
   ErrorBanner,
+  ExistingUserText,
+  ExistingUserWrapper,
   PageSubtitle,
   PageTitle,
   SuccessText,
@@ -20,16 +26,33 @@ import {
   Wrapper,
 } from "./styled";
 import { AgentRegistrationData, defaultAgentRegistrationData } from "./types";
+import Link from "next/link";
 
 const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; SameSite=Lax; Secure";
 
+// Wrapper's own min-height: 100vh would double up with PageLayout's flex: 1
+// container (which already fills the viewport minus header/footer), adding
+// a spurious extra viewport of empty space. Override it only here — the
+// other consumer of Wrapper (ProfileCompletion) isn't rendered inside PageLayout.
+const PageWrapper = styled(Wrapper)`
+  min-height: 0;
+  flex: 1;
+`;
+
 export function AgentRegistration() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const router = useRouter();
+  const user = useCurrentUser(true);
   const [formData, setFormData] = useState<AgentRegistrationData>(defaultAgentRegistrationData);
   const [errors, setErrors] = useState<Partial<Record<keyof AgentRegistrationData, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    router.push(`/${i18n.language}${DashboardRoutes.Home}`);
+  }, [user, i18n.language, router]);
 
   const update = (fields: Partial<AgentRegistrationData>) => {
     setFormData((prev) => ({ ...prev, ...fields }));
@@ -86,40 +109,53 @@ export function AgentRegistration() {
     }
   };
 
+  if (user) {
+    return null;
+  }
+
   if (isSuccess) {
     return (
-      <Wrapper>
-        <Card>
-          <SuccessWrapper>
-            <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
-            <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
-          </SuccessWrapper>
-        </Card>
-      </Wrapper>
+      <PageLayout>
+        <PageWrapper>
+          <Card>
+            <SuccessWrapper>
+              <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
+              <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
+            </SuccessWrapper>
+          </Card>
+        </PageWrapper>
+      </PageLayout>
     );
   }
 
   return (
-    <Wrapper>
-      <Card>
-        <PageTitle>{t("agentRegistration.title")}</PageTitle>
-        <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
+    <PageLayout>
+      <PageWrapper>
+        <Card>
+          <PageTitle>{t("agentRegistration.title")}</PageTitle>
+          <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
 
-        {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
+          <ExistingUserWrapper>
+            <ExistingUserText>{t("agentRegistration.alreadyUser")}</ExistingUserText>
+            <Link href="/login">{t("agentRegistration.loginLink")}</Link>
+          </ExistingUserWrapper>
 
-        <AccountStep data={formData} onChange={update} errors={errors} />
+          {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
 
-        <Actions>
-          <div />
-          <Button
-            text={t("agentRegistration.next")}
-            backgroundcolor="var(--color-aubergine)"
-            textColor="var(--color-white)"
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-          />
-        </Actions>
-      </Card>
-    </Wrapper>
+          <AccountStep data={formData} onChange={update} errors={errors} />
+
+          <Actions>
+            <div />
+            <Button
+              text={t("agentRegistration.next")}
+              backgroundcolor="var(--color-aubergine)"
+              textColor="var(--color-white)"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            />
+          </Actions>
+        </Card>
+      </PageWrapper>
+    </PageLayout>
   );
 }

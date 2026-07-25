@@ -6,6 +6,7 @@ import {
   OptionById,
   OptionItem,
   QueryParamsKeys,
+  SortOrder,
 } from "need4deed-sdk";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
@@ -22,12 +23,40 @@ interface SerializeFiltersOptions {
   apiFilterOptions?: ApiOptionLists;
 }
 
+export const SORT_PARAM = "sort";
+export const DEFAULT_SORT_ORDER: string = SortOrder.NewToOld;
+
+export const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
+export type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
+
+export function isAppointmentSort(sort: string): sort is AppointmentSort {
+  return (APPOINTMENT_SORT_VALUES as readonly string[]).includes(sort);
+}
+
+const VALID_SORT_VALUES: string[] = [SortOrder.NewToOld, SortOrder.OldToNew, ...APPOINTMENT_SORT_VALUES];
+
+export function parseSortParam(value: string | null): string {
+  return value && VALID_SORT_VALUES.includes(value) ? value : DEFAULT_SORT_ORDER;
+}
+
+export function serializeOpportunityFilters(
+  filter: OpportunityCardsFilter,
+  searchParams?: ReadonlyURLSearchParams,
+  asString?: true,
+  options?: SerializeFiltersOptions,
+): string;
+export function serializeOpportunityFilters(
+  filter: OpportunityCardsFilter,
+  searchParams: ReadonlyURLSearchParams | undefined,
+  asString: false,
+  options?: SerializeFiltersOptions,
+): URLSearchParams;
 export function serializeOpportunityFilters(
   filter: OpportunityCardsFilter,
   searchParams?: ReadonlyURLSearchParams,
   asString = true,
   options?: SerializeFiltersOptions,
-) {
+): string | URLSearchParams {
   const params = new URLSearchParams(searchParams);
   params.delete("page");
 

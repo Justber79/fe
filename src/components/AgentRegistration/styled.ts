@@ -58,6 +58,17 @@ export const SuccessWrapper = styled.div`
   text-align: center;
 `;
 
+export const ExistingUserWrapper = styled.div`
+  display: flex;
+  gap: var(--agent-form-existing-user-gap);
+  margin-bottom: var(--agent-form-existing-user-margin-bottom);
+`;
+
+export const ExistingUserText = styled.span`
+  font-size: var(--agent-form-existing-user-font-size);
+  color: var(--color-grey-800);
+`;
+
 export const SuccessTitle = styled.h2`
   font-size: 1.375rem;
   font-weight: 700;
@@ -132,4 +143,30 @@ export const StyledTextarea = styled.textarea`
     outline: none;
     border: var(--form-input-container-border-focus);
   }
+`;
+
+export const FieldConsent = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    accent-color: var(--color-aubergine);
+    cursor: pointer;
+  }
+`;
+
+export const StyledErrorMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--form-input-error-message-container-gap);
+  padding: var(--form-input-error-message-container-padding);
+  color: var(--form-input-error-message-color);
+  font-size: var(--form-input-error-message-fontSize);
+  font-weight: var(--form-input-error-message-fontWeight);
+  line-height: var(--form-input-error-message-lineHeight);
 `;

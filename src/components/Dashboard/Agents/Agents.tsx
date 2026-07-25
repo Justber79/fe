@@ -77,6 +77,8 @@ export const Agents = () => {
       const baseFilters = {
         ...prev,
         district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
+        type: createFilterFromOption(apiFilterOptions, EntityTableName.AGENT_TYPE),
+        services: createFilterFromOption(apiFilterOptions, EntityTableName.SERVICE),
       };
 
       return deserializeAgentFilters(baseFilters, searchParams);

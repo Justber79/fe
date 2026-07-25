@@ -335,6 +335,8 @@
   "dashboard": {
     "common": {
       "loading": "Loading...",
+      "selectOption": "Select option...",
+      "selectOptions": "Select options...",
       "datePrefix": {
         "appliedOn": "Applied on",
         "matchedOn": "Matched on",
@@ -502,14 +504,27 @@
     },
     "login": {
       "login": "Log in",
+      "createAccount": "Create account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
       "forgotPassword": "Forgot Password",
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
       "passwordMissing": "Password's missing.",
-      "successMessage": "Login successful"
+      "passwordTooShort": "Passwords must be 8 characters or more",
+      "passwordTooLong": "Passwords can be no more than 50 characters",
+      "passwordNotMatching": "Passwords must match",
+      "successMessage": "Login successful",
+      "resetPassword": "Reset password",
+      "sendEmailLink": "Enter your email to receive a password reset link",
+      "sendEmail": "Send email",
+      "successEmailLinkMessage": "Email sent. Please check your emails",
+      "successResetPasswordMessage": "Password successfully reset",
+      "backToLogin": "Back to login",
+      "checkEmails": "Please check your emails"
     },
     "filters": {
       "button": "FILTERS",
@@ -635,6 +650,8 @@
         "phone": "Phone number",
         "email": "Email",
         "address": "Address",
+        "street": "Street name",
+        "postcode": "Postcode",
         "preferredCommunicationType": {
           "label": "Ways to contact",
           "whatsapp": "WhatsApp",
@@ -657,7 +674,8 @@
           "phoneInvalid": "Phone number must start with + and contain only digits and spaces",
           "emailRequired": "Email is required",
           "emailInvalid": "Please enter a valid email address",
-          "addressRequired": "Address is required",
+          "streetRequired": "Street name is required",
+          "postcodeRequired": "Postcode is required",
           "preferredCommunicationTypeRequired": "Please select at least one way to contact"
         }
       },
@@ -1065,15 +1083,11 @@
       "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
-        "fullName": "Name",
         "firstName": "First Name",
-        "middleName": "Middle Name",
         "lastName": "Last Name",
         "email": "E-mail",
         "mobile": "Mobile",
         "landline": "Landline",
-        "address": "Address",
-        "saveSuccess": "Contact details updated successfully",
         "roles": {
           "label": "Role",
           "social-worker": "Social worker",
@@ -1089,9 +1103,16 @@
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "edit": "Edit",
+        "addContact": {
+          "button": "Add contact",
+          "submit": "Add",
+          "success": "Contact added successfully"
+        },
+        "editContact": {
+          "success": "Contact updated successfully"
+        },
         "validation": {
           "nameRequired": "Name is required",
-          "addressRequired": "Address is required",
           "districtRequired": "District is required",
           "mobileRequired": "Mobile number is required",
           "mobileInvalid": "Mobile number must start with + and contain only digits and spaces",
@@ -1105,6 +1126,7 @@
       },
       "organisationDetails": {
         "title": "Organisation details",
+        "ngoTitle": "NGO's Name",
         "edit": "Edit",
         "about": "About",
         "website": "Website",
@@ -1156,6 +1178,22 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "typeUpdateSuccess": "Opportunity type updated successfully",
+      "change_type": "Change type",
+      "typeModal": {
+        "title": "Change opportunity type",
+        "save": "Save",
+        "cancel": "Cancel",
+        "accompanyingWarning": "The accompanying details (refugee contact, appointment address) may no longer be relevant.",
+        "eventDateRequired": "Event date is required",
+        "eventTimeRequired": "Event time is required",
+        "invalidEventTime": "Please enter a valid time (HH:MM)",
+        "options": {
+          "accompanying": "Ideal for opportunities where a volunteer accompanies a refugee to an appointment or activity.",
+          "regular": "A standard volunteer opportunity with recurring tasks like tutoring or support.",
+          "events": "A one-time or periodic event such as a workshop, celebration, or group activity."
+        }
+      },
       "statusModal": {
         "title": "Change opportunity status",
         "save": "Save",
@@ -1283,6 +1321,7 @@
           "descriptionTooLong": "Description is too long",
           "numberOfVolunteersRequired": "Number of volunteers must be at least 1",
           "languageRequired": "At least one language is required",
+          "mainCommunicationInvalid": "Main communication must be German only, or German and English",
           "availabilityRequired": "At least one time slot must be selected",
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"
@@ -1554,6 +1593,8 @@
     "back": "Back",
     "submit": "Create account",
     "optional": "optional",
+    "alreadyUser": "Already registered?",
+    "loginLink": "Login to your account",
     "steps": {
       "account": {
         "title": "Your account",
@@ -1594,7 +1635,11 @@
       "district": "District",
       "selectDistrict": "Select district…",
       "services": "Services provided",
-      "clientLanguages": "Languages spoken by residents"
+      "clientLanguages": "Languages spoken by residents",
+      "consent": {
+        "header": "I hereby agree to the:",
+        "and": "and"
+      }
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",

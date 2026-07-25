@@ -6,9 +6,11 @@ import {
   useApiSkills,
 } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 import {
-  createOpportunityDetailsSchema,
-  OpportunityDetailsFormData,
+  createNewOpportunityDetailsSchema,
+  getMainCommunicationLanguageOptions,
+  NewOpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
+import { resolveFormLanguageToOption } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
@@ -58,8 +60,8 @@ export function NewOpportunity() {
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
 
   // Opportunity details form
-  const detailsMethods = useForm<OpportunityDetailsFormData>({
-    resolver: zodResolver(createOpportunityDetailsSchema(t)),
+  const detailsMethods = useForm<NewOpportunityDetailsFormData>({
+    resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
     mode: "onChange",
     defaultValues: {
       description: "",
@@ -105,7 +107,7 @@ export function NewOpportunity() {
     appointmentLanguageKeyToLabel[key] = label;
     appointmentLanguageLabelToKey[label] = key;
   });
-  const minAppointmentDate = useMemo(() => new Date(), []);
+  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,
@@ -113,6 +115,7 @@ export function NewOpportunity() {
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
     },
+    queryKeyToInvalidate: ["agent-opportunities", String(agentId)],
   });
 
   const handleCreate = async () => {

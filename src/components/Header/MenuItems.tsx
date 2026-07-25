@@ -1,17 +1,13 @@
 import styled from "styled-components";
 
-import LanguageSwitcher from "./LanguageSwitcher";
 import MenuitemList from "./MenuitemList";
 import { MenuItemType } from "@/types";
 
-export const MenuItemsContainer = styled.div`
+const DesktopMenuItemsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-direction: var(--homepage-hero-section-header-menu-items-flex-direction);
-  width: var(--homepage-hero-section-header-menu-items-width);
-  gap: var(--homepage-hero-section-header-menu-items-gap);
   height: fit-content;
+  gap: var(--homepage-hero-section-header-menu-items-gap);
   a {
     text-decoration: none;
   }
@@ -24,10 +20,8 @@ interface Props {
 
 export default function MenuItems({ items, menuItemColor }: Props) {
   return (
-    <MenuItemsContainer>
+    <DesktopMenuItemsContainer>
       <MenuitemList items={items} menuItemColor={menuItemColor} />
-
-      <LanguageSwitcher textColor={menuItemColor} />
-    </MenuItemsContainer>
+    </DesktopMenuItemsContainer>
   );
 }

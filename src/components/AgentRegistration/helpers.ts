@@ -1,31 +1,4 @@
-import { AgentServiceType, AgentType } from "need4deed-sdk";
 import { AgentRegistrationData, ProfileCompletionData } from "./types";
-
-export const AGENT_TYPE_LABELS: Record<AgentType, string> = {
-  [AgentType.AE]: "AE",
-  [AgentType.GU1]: "GU1",
-  [AgentType.GU2]: "GU2",
-  [AgentType.GU2_PLUS]: "GU2+",
-  [AgentType.GU3]: "GU3",
-  [AgentType.NU]: "NU",
-  [AgentType.ASOG]: "ASOG",
-  [AgentType.COUNSELING_CENTER]: "Counseling Center",
-  [AgentType.TANDEM]: "Tandem",
-  [AgentType.MULTIPLE_SOCIAL_SUPPORT]: "Multiple Social Support",
-};
-
-export const AGENT_SERVICE_LABELS: Record<AgentServiceType, string> = {
-  [AgentServiceType.CHILDCARE]: "Childcare",
-  [AgentServiceType.WELFARE]: "Welfare",
-  [AgentServiceType.CONSULTATION]: "Consultation",
-  [AgentServiceType.VOLUNTARY_SUPPORT]: "Voluntary Support",
-  [AgentServiceType.TANDEM]: "Tandem",
-  [AgentServiceType.SPORT]: "Sport",
-  [AgentServiceType.TUTORING]: "Tutoring",
-  [AgentServiceType.REFUGEE_ACCOMMODATION]: "Refugee Accommodation",
-  [AgentServiceType.JOB_COACHING]: "Job Coaching",
-  [AgentServiceType.YOUTH]: "Youth",
-};
 
 export function validateStep(
   step: number,
@@ -47,6 +20,7 @@ export function validateStep(
       errors.confirmPassword = t("agentRegistration.errors.passwordMismatch");
     if (!data.phone.trim()) errors.phone = required;
     else if (data.phone.trim().length < 7) errors.phone = t("agentRegistration.errors.phoneTooShort");
+    if (!data.consent) errors.consent = required;
   }
 
   return errors;

@@ -20,11 +20,11 @@ import { UserRole } from "need4deed-sdk";
 const BarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: sticky;
   width: var(--dashboard-navigation-bar-container-width);
   top: 112px;
   left: 0;
-  z-index: 1;
+  z-index: 0;
   gap: var(--dashboard-navigation-bar-gap);
   background-color: var(--color-orchid-subtle);
   border-top-right-radius: var(--dashboard-navigation-bar-border-radius);
@@ -35,7 +35,8 @@ const BarContainer = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
-    top: auto;
+    position: fixed;
+    top: unset;
     bottom: 0;
     width: 100%;
     height: var(--dashboard-navigation-bar-mobile-height);
@@ -110,7 +111,8 @@ export default function NavigationBar() {
   const router = useRouter();
   const currentPathname = usePathname();
   const user = useCurrentUser();
-  const canSeeCalendar = user?.role !== UserRole.AGENT;
+  const isAgent = user?.role === UserRole.AGENT;
+  const canSeeCalendar = !isAgent;
 
   const userInitials = user?.fullName
     ? user.fullName
@@ -124,26 +126,34 @@ export default function NavigationBar() {
 
   const options: BarOptions[] = [
     { label: t("dashboard.home.sidebar.home"), Icon: HouseIcon, route: DashboardRoutes.Home },
-    {
-      label: t("dashboard.home.sidebar.volunteers"),
-      Icon: UserCheckIcon,
-      route: DashboardRoutes.Volunteers,
-    },
-    {
-      label: t("dashboard.home.sidebar.opportunities"),
-      Icon: ShootingStarIcon,
-      route: DashboardRoutes.Opportunities,
-    },
+    ...(isAgent
+      ? []
+      : [
+          {
+            label: t("dashboard.home.sidebar.volunteers"),
+            Icon: UserCheckIcon,
+            route: DashboardRoutes.Volunteers,
+          },
+          {
+            label: t("dashboard.home.sidebar.opportunities"),
+            Icon: ShootingStarIcon,
+            route: DashboardRoutes.Opportunities,
+          },
+        ]),
     {
       label: t("dashboard.home.sidebar.agents"),
       Icon: BookOpenTextIcon,
       route: DashboardRoutes.Agents,
     },
-    {
-      label: t("dashboard.home.sidebar.posts"),
-      Icon: NotepadIcon,
-      route: DashboardRoutes.Posts,
-    },
+    ...(isAgent
+      ? []
+      : [
+          {
+            label: t("dashboard.home.sidebar.posts"),
+            Icon: NotepadIcon,
+            route: DashboardRoutes.Posts,
+          },
+        ]),
     ...(canSeeCalendar
       ? [
           {
@@ -161,26 +171,28 @@ export default function NavigationBar() {
   ];
 
   return (
-    <BarContainer>
-      {options.map(({ label, Icon, text, route }) => {
-        const isSelected = currentPathname.startsWith(route);
+    <div>
+      <BarContainer>
+        {options.map(({ label, Icon, text, route }) => {
+          const isSelected = currentPathname.startsWith(route);
 
-        return (
-          <Option
-            key={label}
-            onClick={() => {
-              router.push(route);
-            }}
-          >
-            <IconDiv $isSelected={isSelected}>
-              {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
-              {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||
-                (text && <StyledParagraph isSelected={isSelected} label={text} />)}
-            </IconDiv>
-            <StyledParagraph label={label} />
-          </Option>
-        );
-      })}
-    </BarContainer>
+          return (
+            <Option
+              key={label}
+              onClick={() => {
+                router.push(route);
+              }}
+            >
+              <IconDiv $isSelected={isSelected}>
+                {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
+                {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||
+                  (text && <StyledParagraph isSelected={isSelected} label={text} />)}
+              </IconDiv>
+              <StyledParagraph label={label} />
+            </Option>
+          );
+        })}
+      </BarContainer>
+    </div>
   );
 }

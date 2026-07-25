@@ -51,7 +51,7 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
-  const { isAuthorized, isOwnProfile } = useAuth();
+  const { isAuthorized, isOwnProfile } = useAuth(volunteer.person.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const { data: opportunitiesData } = useGetQuery<ApiOpportunityVolunteerGet[]>({

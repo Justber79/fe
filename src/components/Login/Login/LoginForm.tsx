@@ -1,12 +1,13 @@
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormInput } from "../core/common";
-import styled from "styled-components";
-import { Button, Checkbox } from "../core/button";
-import { Paragraph } from "../styled/text";
+import { FormInput } from "../../core/common";
+import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin } from "@/config/constants";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { FormActions, LoginButtonDiv, StyledForm } from "../styles";
 
 interface LoginData {
   email: string;
@@ -28,24 +29,6 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
   });
 };
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: var(--dashboard-login-content-container-gap);
-`;
-
-const FormActions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const LoginButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 interface LoginFormProps {
   onLoginSuccess: () => void;
 }
@@ -53,6 +36,7 @@ interface LoginFormProps {
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const { t } = useTranslation();
   const { mutate: login, isPending } = useLoginMutation(onLoginSuccess);
+  const router = useRouter();
   const [rememberMeChecked, setRememberMeChecked] = useState(false);
 
   const form = useForm({
@@ -123,12 +107,9 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           label={t("dashboard.login.rememberMe")}
           labelFontSize="var(--dashboard-login-checkbox-label-fontSize)"
         />
-        <Paragraph
-          fontWeight="var(--dashboard-login-forgot-password-label-fontWeight)"
-          color="var(--color-midnight-light)"
-        >
+        <Link href={"/forgotten-password"} onClick={() => router.push("forgotten-password")}>
           {t("dashboard.login.forgotPassword")}?
-        </Paragraph>
+        </Link>
       </FormActions>
 
       <LoginButtonDiv>
@@ -144,6 +125,18 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             />
           )}
         </form.Subscribe>
+
+        <Button
+          type="button"
+          onClick={() => router.push("/register/agent")}
+          text={t("dashboard.login.createAccount")}
+          backgroundcolor="transparent"
+          textColor="var(--color-aubergine)"
+          textHoverColor="var(--color-aubergine)"
+          border="1px solid var(--color-aubergine)"
+          height="48px"
+          padding="8px 20px"
+        />
       </LoginButtonDiv>
     </StyledForm>
   );

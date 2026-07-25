@@ -61,18 +61,31 @@ export const VolunteerContactDetailsEdit = ({
             />
           )}
         />
-
         <Controller
-          name="address"
+          name="street"
           control={control}
           render={({ field }) => (
             <EditableField
               mode="edit"
               type="text"
-              label={t("dashboard.volunteerProfile.contactDetails.address")}
+              label={t("dashboard.volunteerProfile.contactDetails.street")}
               value={field.value}
               setValue={field.onChange}
-              errorMessage={errors.address?.message}
+              errorMessage={errors.street?.message}
+            />
+          )}
+        />
+        <Controller
+          name="postcode"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="text"
+              label={t("dashboard.volunteerProfile.contactDetails.postcode")}
+              value={field.value}
+              setValue={field.onChange}
+              errorMessage={errors.postcode?.message}
             />
           )}
         />
