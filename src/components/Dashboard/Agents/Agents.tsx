@@ -87,6 +87,11 @@ export const Agents = () => {
     router.push(pathname + questionMark + serializeAgentFilters(cleared, searchParams));
   };
 
+  const handleCancelTransfer = () => {
+    setAgentToTransferTo(undefined);
+    router.push(`/${i18n.language}/dashboard/opportunities/${transferOpportunityId}`);
+  };
+
   useEffect(() => {
     if (!apiFilterOptions) return;
 
@@ -153,7 +158,7 @@ export const Agents = () => {
             agentName: agentToTransferTo.title,
           })}
           confirmText={t("dashboard.agents.transferMode.confirmButton")}
-          onCancel={() => setAgentToTransferTo(undefined)}
+          onCancel={handleCancelTransfer}
           onConfirm={handleTransferConfirm}
         />
       )}

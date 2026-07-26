@@ -44,7 +44,19 @@ export const AgentCard = ({ agent, districtsList, onSelect }: Props) => {
     patchAgent({ trustLevel: next });
   };
 
-  const cardProps = onSelect ? { onClick: () => onSelect(agent) } : { as: Link, href: profileUrl };
+  const cardProps = onSelect
+    ? {
+        onClick: () => onSelect(agent),
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onSelect(agent);
+          }
+        },
+      }
+    : { as: Link, href: profileUrl };
 
   return (
     <Card {...cardProps}>

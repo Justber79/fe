@@ -26,7 +26,19 @@ export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSe
 
   const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
 
-  const rowProps = onSelect ? { onClick: () => onSelect(agent) } : { as: Link, href: profileUrl };
+  const rowProps = onSelect
+    ? {
+        onClick: () => onSelect(agent),
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onSelect(agent);
+          }
+        },
+      }
+    : { as: Link, href: profileUrl };
 
   return (
     <ClickableRow {...rowProps} $isLast={isLast} data-testid={`agent-row-${id}`}>
