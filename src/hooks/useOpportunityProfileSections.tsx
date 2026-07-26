@@ -53,7 +53,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteOpportunity(opportunity?.id ?? 0, () => {
-    router.push(`/${i18n.language}/dashboard/opportunities`);
+    router.replace(`/${i18n.language}/dashboard/opportunities`);
   });
 
   if (!opportunity) return null;

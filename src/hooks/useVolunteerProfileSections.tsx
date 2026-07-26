@@ -53,7 +53,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteVolunteer(volunteer?.id ?? 0, () => {
-    router.push(`/${i18n.language}/dashboard/volunteers`);
+    router.replace(`/${i18n.language}/dashboard/volunteers`);
   });
 
   if (!volunteer) return null;

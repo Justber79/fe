@@ -34,7 +34,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
   const handleOrgEditingChange = useCallback((editing: boolean) => setIsOrgEditing(editing), []);
 
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteAgent(agent?.id ?? 0, () => {
-    router.push(`/${i18n.language}/dashboard/agents`);
+    router.replace(`/${i18n.language}/dashboard/agents`);
   });
 
   if (!agent) return null;
