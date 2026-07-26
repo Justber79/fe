@@ -96,7 +96,8 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
           <DangerZoneButtonRow
             deleteButtonText={t("dashboard.agentProfile.dangerZone.deleteButton")}
             onDeleteClick={() => setIsDeleteDialogOpen(true)}
-            deleteDisabled={isDeleting}
+            deleteDisabled={isDeleting || agent.numOpportunities > 0}
+            blockedMessage={t("dashboard.agentProfile.dangerZone.blockedMessage")}
           />
           {isDeleteDialogOpen && (
             <ConfirmationDialog

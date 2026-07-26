@@ -42,7 +42,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding: ${(props) => props.padding};
   flex-direction: ${(props) => (props.$iconPosition === "right" ? "row-reverse" : "row")};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  transition: background-color 0.2s ease, opacity 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 
   &:hover {
     background-color: ${(props) => hoverBGColorMap[props.backgroundcolor || defaultBGColor]};
@@ -84,6 +86,7 @@ export interface ButtonProps {
   disabled?: boolean;
   padding?: string;
   type?: "button" | "submit" | "reset";
+  ["aria-describedby"]?: string;
 }
 
 export function Button({
@@ -104,6 +107,7 @@ export function Button({
   disabled,
   padding,
   type = "button",
+  ["aria-describedby"]: ariaDescribedBy,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -118,6 +122,7 @@ export function Button({
       $iconPosition={iconPosition}
       border={border}
       $textHoverColor={textHoverColor}
+      aria-describedby={ariaDescribedBy}
     >
       {iconName && (
         <IconDiv color={iconColor} size={iconSize}>

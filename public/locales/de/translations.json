@@ -1183,6 +1183,7 @@
       "dangerZone": {
         "title": "Gefahrenzone",
         "deleteButton": "Einrichtung löschen",
+        "blockedMessage": "Ehrenamtsbedarfe oben zuerst übertragen.",
         "confirmTitle": "Diese Einrichtung löschen?",
         "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
         "deleteSuccess": "Einrichtung erfolgreich gelöscht"

@@ -1171,6 +1171,7 @@
       "dangerZone": {
         "title": "Danger zone",
         "deleteButton": "Delete NGO",
+        "blockedMessage": "Transfer opportunities above first.",
         "confirmTitle": "Delete this NGO?",
         "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
         "deleteSuccess": "NGO deleted successfully"
