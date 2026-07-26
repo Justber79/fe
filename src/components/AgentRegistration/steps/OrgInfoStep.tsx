@@ -1,8 +1,7 @@
 "use client";
 import { FormInput } from "@/components/core/common";
-import { AgentType } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
-import { AGENT_TYPE_LABELS } from "../helpers";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect, StyledTextarea } from "../styled";
 import { ProfileCompletionData } from "../types";
 
@@ -12,10 +11,12 @@ type Props = {
   data: OrgData;
   onChange: (fields: Partial<OrgData>) => void;
   errors: Partial<Record<string, string>>;
+  optionLists?: ApiOptionLists;
 };
 
-export function OrgInfoStep({ data, onChange, errors }: Props) {
+export function OrgInfoStep({ data, onChange, errors, optionLists }: Props) {
   const { t } = useTranslation();
+  const agentTypes = optionLists?.[EntityTableName.AGENT_TYPE] ?? [];
 
   return (
     <div>
@@ -36,13 +37,13 @@ export function OrgInfoStep({ data, onChange, errors }: Props) {
         <FieldLabel>{t("agentRegistration.fields.organizationType")}</FieldLabel>
         <StyledSelect
           value={data.organizationType}
-          onChange={(e) => onChange({ organizationType: e.target.value as AgentType })}
+          onChange={(e) => onChange({ organizationType: e.target.value ? Number(e.target.value) : "" })}
           $hasError={!!errors.organizationType}
         >
           <option value="">{t("agentRegistration.fields.selectOrganizationType")}</option>
-          {Object.values(AgentType).map((type) => (
-            <option key={type} value={type}>
-              {AGENT_TYPE_LABELS[type]}
+          {agentTypes.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.title}
             </option>
           ))}
         </StyledSelect>
