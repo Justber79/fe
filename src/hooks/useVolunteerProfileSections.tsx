@@ -7,12 +7,15 @@ import {
 } from "@/components/Dashboard/Profile/sections/CommunicationTracker";
 import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactDetails";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
+import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/SuggestDialog";
 import VolunteerOpportunities from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/VolunteerOpportunities";
 import { VolunteerProfile, VolunteerProfileRef } from "@/components/Dashboard/Profile/sections/VolunteerProfile";
 import { VolunteerProfileDocument } from "@/components/Dashboard/Profile/sections/VolunteerProfileDocument";
 import { IconName } from "@/components/Dashboard/Profile/types";
+import { useDeleteVolunteer } from "@/hooks/useDeleteVolunteer";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
 import { ApiVolunteerGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
@@ -47,6 +50,11 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     setIsSuggestDialogOpen(false);
     router.push(`/${i18n.language}/dashboard/opportunities/${opportunityId}`);
   }, ["opportunity-volunteers", String(opportunityId)]);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteVolunteer(volunteer?.id ?? 0, () => {
+    router.replace(`/${i18n.language}/dashboard/volunteers`);
+  });
 
   if (!volunteer) return null;
 
@@ -154,6 +162,28 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${volunteer.comments?.length ?? 0}`,
       subComponent: <Comments volunteer={volunteer} />,
+    });
+    sections.push({
+      iconName: IconName.Trash,
+      title: t("dashboard.volunteerProfile.dangerZone.title"),
+      subComponent: (
+        <>
+          <DangerZoneButtonRow
+            deleteButtonText={t("dashboard.volunteerProfile.dangerZone.deleteButton")}
+            onDeleteClick={() => setIsDeleteDialogOpen(true)}
+            deleteDisabled={isDeleting}
+          />
+          {isDeleteDialogOpen && (
+            <ConfirmationDialog
+              title={t("dashboard.volunteerProfile.dangerZone.confirmTitle")}
+              message={t("dashboard.volunteerProfile.dangerZone.confirmMessage", { name: volunteerFullName })}
+              confirmText={t("dashboard.volunteerProfile.dangerZone.deleteButton")}
+              onCancel={() => setIsDeleteDialogOpen(false)}
+              onConfirm={() => deleteMutate(undefined)}
+            />
+          )}
+        </>
+      ),
     });
   }
 

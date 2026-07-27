@@ -14,9 +14,10 @@ interface TableRowProps {
   isLast: boolean;
   searchLabels: Record<string, string>;
   districtsList?: OptionItem[];
+  onSelect?: (agent: ApiAgentGetList) => void;
 }
 
-export function AgentTableRow({ agent, isLast, searchLabels, districtsList }: TableRowProps) {
+export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSelect }: TableRowProps) {
   const { i18n } = useTranslation();
 
   const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email } = agent;
@@ -25,8 +26,22 @@ export function AgentTableRow({ agent, isLast, searchLabels, districtsList }: Ta
 
   const profileUrl = id ? `/${i18n.language}/dashboard/agents/${id}` : "";
 
+  const rowProps = onSelect
+    ? {
+        onClick: () => onSelect(agent),
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onSelect(agent);
+          }
+        },
+      }
+    : { as: Link, href: profileUrl };
+
   return (
-    <ClickableRow as={Link} href={profileUrl} $isLast={isLast} data-testid={`agent-row-${id}`}>
+    <ClickableRow {...rowProps} $isLast={isLast} data-testid={`agent-row-${id}`}>
       <TableCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
         {title}
       </TableCell>

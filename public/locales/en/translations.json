@@ -701,6 +701,13 @@
           "activitiesRequired": "Please select at least one activity",
           "skillsRequired": "Please select at least one skill"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete volunteer",
+        "confirmTitle": "Delete this volunteer?",
+        "confirmMessage": "This will permanently delete \"{{name}}\"'s profile and cannot be undone.",
+        "deleteSuccess": "Volunteer deleted successfully"
       }
     },
     "documentSection": {
@@ -848,6 +855,13 @@
         "reject": "Reject",
         "approved": "Join request approved",
         "rejected": "Join request rejected"
+      },
+      "transferMode": {
+        "header": "Select an NGO to transfer \"{{name}}\" to",
+        "confirmTitle": "Transfer this opportunity?",
+        "confirmMessage": "This will move \"{{opportunityName}}\" to {{agentName}}. The applicant's contact details stay the same; assigned volunteers move with it.",
+        "confirmButton": "Transfer",
+        "success": "Opportunity transferred successfully"
       }
     },
     "opportunities": {
@@ -1153,6 +1167,14 @@
           "active": "Active",
           "past": "Past"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete NGO",
+        "blockedMessage": "Transfer opportunities above first.",
+        "confirmTitle": "Delete this NGO?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "NGO deleted successfully"
       }
     },
     "opportunityProfile": {
@@ -1326,6 +1348,14 @@
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete opportunity",
+        "transferButton": "Transfer to another NGO",
+        "confirmTitle": "Delete this opportunity?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "Opportunity deleted successfully"
       }
     },
     "racTitle": "Refugee accommodation centre",
