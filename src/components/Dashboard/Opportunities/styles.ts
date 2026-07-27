@@ -24,7 +24,6 @@ export const OpportunityCardListContainer = styled.div`
   justify-content: left;
   flex: 1;
   min-width: 0;
-  width: 100%;
   --card-width: var(--dashboard-volunteers-card-width);
 `;
 

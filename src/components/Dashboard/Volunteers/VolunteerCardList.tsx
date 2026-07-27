@@ -18,6 +18,7 @@ const VolunteerCardListContainer = styled.div`
   justify-content: left;
   flex: 1;
   min-width: 0;
+  --card-width: var(--dashboard-volunteers-card-width);
 `;
 
 export function VolunteerCardList({
