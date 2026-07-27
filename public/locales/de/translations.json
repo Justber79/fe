@@ -2038,10 +2038,9 @@
     "completion": {
       "title": "Konto-Einrichtung abschließen",
       "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
-      "matchFound": "Wir haben eine Organisation gefunden, die zu dieser Adresse passt: {{name}}. Möchten Sie diese verwenden?",
-      "useThisOrg": "Ja, diese verwenden",
+      "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
+      "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "skip": "Nein, manuell eingeben",
-      "matched": "Organisation gefunden: {{name}}",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",
