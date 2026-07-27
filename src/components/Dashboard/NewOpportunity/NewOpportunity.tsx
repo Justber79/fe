@@ -10,7 +10,6 @@ import {
   getMainCommunicationLanguageOptions,
   NewOpportunityDetailsFormData,
 } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
-import { resolveFormLanguageToOption } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections/AccompanyingDetails/AccompanyingDetailsEdit";
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
@@ -36,6 +35,7 @@ import { OpportunityDetailsFields } from "./fields/OpportunityDetailsFields";
 import { buildCreatePayload } from "./helper";
 import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
+import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
 
 export function NewOpportunity() {
   const { t, i18n } = useTranslation();
