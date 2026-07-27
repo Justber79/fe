@@ -14,7 +14,7 @@ import { DetailParagraph } from "./styles";
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
-  hasEditingRights?: boolean;
+  hasEditingRights: boolean;
   onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;

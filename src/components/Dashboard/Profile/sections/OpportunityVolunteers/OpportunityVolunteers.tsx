@@ -18,7 +18,7 @@ export const OpportunityVolunteers = ({
   hasEditingRights,
 }: {
   opportunityId: Id;
-  hasEditingRights?: boolean;
+  hasEditingRights: boolean;
 }) => {
   const { t } = useTranslation();
 
