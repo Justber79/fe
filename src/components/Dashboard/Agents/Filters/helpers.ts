@@ -16,14 +16,16 @@ export const createAgentFilterItems = (
     (key) => key,
   );
 
+  // `key` is already the translated title from GET /option (see
+  // Agents.tsx's createFilterFromOption), not an enum value — no i18n
+  // lookup needed. "Tandem" happens to be both an agent type and a
+  // service, so disambiguate the type one with a "Type" prefix.
   const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key, parent) => {
-    const fallbackPath = `dashboard.agents.filters.type.${key.toLocaleLowerCase()}`;
-
-    if (key === "tandem" && parent === "type") {
-      return `${t("dashboard.agents.table.type")} ${t(fallbackPath)}`;
+    if (key.toLowerCase() === "tandem" && parent === "type") {
+      return `${t("dashboard.agents.table.type")} ${key}`;
     }
 
-    return t(fallbackPath);
+    return key;
   });
 
   const volunteerSearchFilters = generateNestedFilterControlItems(
@@ -40,9 +42,8 @@ export const createAgentFilterItems = (
     (key) => t(`dashboard.agents.filters.engagementStatus.${key}`),
   );
 
-  const servicesFilters = generateNestedFilterControlItems(filter.services, setFilter, "services", (key) =>
-    t(`dashboard.agents.filters.services.${key}`),
-  );
+  // Same as `type` above: `key` is already the translated title.
+  const servicesFilters = generateNestedFilterControlItems(filter.services, setFilter, "services", (key) => key);
 
   return {
     districtFilters,
