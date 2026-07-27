@@ -1689,10 +1689,9 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
-      "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
-      "useThisOrg": "Yes, use this",
+      "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
+      "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",
-      "matched": "Organisation matched: {{name}}",
       "titleTaken": "An organisation with this name already exists.",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",
