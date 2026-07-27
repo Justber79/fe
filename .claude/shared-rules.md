@@ -40,5 +40,11 @@ Before altering the database schema:
 - Confirm it is **semantically correct** — names and structure must match existing modeling
   conventions and clearly express what the data represents.
 
-Surface the proposed change and your reasoning *before* writing a migration. Schema changes are
+Surface the proposed change and your reasoning _before_ writing a migration. Schema changes are
 deliberate decisions, not incidental side effects of a feature.
+
+## Clean up processes you launch
+
+Any dev server or other long-running process started to check or verify a change (`yarn dev`,
+`yarn dev:docker`, `yarn start`, etc.) **must be killed once you're done with it**. Do not leave
+orphaned processes running — e.g. stray `next-server`/node instances piling up on ports 3000+.

@@ -335,6 +335,8 @@
   "dashboard": {
     "common": {
       "loading": "Loading...",
+      "selectOption": "Select option...",
+      "selectOptions": "Select options...",
       "datePrefix": {
         "appliedOn": "Applied on",
         "matchedOn": "Matched on",
@@ -502,6 +504,7 @@
     },
     "login": {
       "login": "Log in",
+      "createAccount": "Create account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
@@ -698,6 +701,13 @@
           "activitiesRequired": "Please select at least one activity",
           "skillsRequired": "Please select at least one skill"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete volunteer",
+        "confirmTitle": "Delete this volunteer?",
+        "confirmMessage": "This will permanently delete \"{{name}}\"'s profile and cannot be undone.",
+        "deleteSuccess": "Volunteer deleted successfully"
       }
     },
     "documentSection": {
@@ -845,6 +855,13 @@
         "reject": "Reject",
         "approved": "Join request approved",
         "rejected": "Join request rejected"
+      },
+      "transferMode": {
+        "header": "Select an NGO to transfer \"{{name}}\" to",
+        "confirmTitle": "Transfer this opportunity?",
+        "confirmMessage": "This will move \"{{opportunityName}}\" to {{agentName}}. The applicant's contact details stay the same; assigned volunteers move with it.",
+        "confirmButton": "Transfer",
+        "success": "Opportunity transferred successfully"
       }
     },
     "opportunities": {
@@ -1080,15 +1097,11 @@
       "statusUpdateSuccess": "NGO status updated successfully",
       "contactDetails": {
         "title": "Contact details",
-        "fullName": "Name",
         "firstName": "First Name",
-        "middleName": "Middle Name",
         "lastName": "Last Name",
         "email": "E-mail",
         "mobile": "Mobile",
         "landline": "Landline",
-        "address": "Address",
-        "saveSuccess": "Contact details updated successfully",
         "roles": {
           "label": "Role",
           "social-worker": "Social worker",
@@ -1104,9 +1117,16 @@
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "edit": "Edit",
+        "addContact": {
+          "button": "Add contact",
+          "submit": "Add",
+          "success": "Contact added successfully"
+        },
+        "editContact": {
+          "success": "Contact updated successfully"
+        },
         "validation": {
           "nameRequired": "Name is required",
-          "addressRequired": "Address is required",
           "districtRequired": "District is required",
           "mobileRequired": "Mobile number is required",
           "mobileInvalid": "Mobile number must start with + and contain only digits and spaces",
@@ -1147,6 +1167,14 @@
           "active": "Active",
           "past": "Past"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete NGO",
+        "blockedMessage": "Transfer opportunities above first.",
+        "confirmTitle": "Delete this NGO?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "NGO deleted successfully"
       }
     },
     "opportunityProfile": {
@@ -1315,10 +1343,19 @@
           "descriptionTooLong": "Description is too long",
           "numberOfVolunteersRequired": "Number of volunteers must be at least 1",
           "languageRequired": "At least one language is required",
+          "mainCommunicationInvalid": "Main communication must be German only, or German and English",
           "availabilityRequired": "At least one time slot must be selected",
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete opportunity",
+        "transferButton": "Transfer to another NGO",
+        "confirmTitle": "Delete this opportunity?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "Opportunity deleted successfully"
       }
     },
     "racTitle": "Refugee accommodation centre",
@@ -1586,6 +1623,8 @@
     "back": "Back",
     "submit": "Create account",
     "optional": "optional",
+    "alreadyUser": "Already registered?",
+    "loginLink": "Login to your account",
     "steps": {
       "account": {
         "title": "Your account",
@@ -1650,10 +1689,9 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
-      "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
-      "useThisOrg": "Yes, use this",
+      "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
+      "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",
-      "matched": "Organisation matched: {{name}}",
       "titleTaken": "An organisation with this name already exists.",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",

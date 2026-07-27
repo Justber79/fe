@@ -8,6 +8,7 @@ import { z } from "zod";
 import { OpportunityEventDateTimeEdit } from "../../../OpportunityDetails/OpportunityEventDateTimeEdit";
 import { useUpdateOpportunityType } from "@/hooks/useUpdateOpportunityType";
 import { TypeChangeButtons } from "./TypeChangeButtons";
+import { dateFromLocalDateAndTimeString, formatToUtcTime } from "@/utils";
 
 const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -48,15 +49,13 @@ export const EventTypeChangeForm = ({ opportunityId, locale, onCancel }: Props) 
     if (!valid) return;
 
     const values = methods.getValues();
-    const eventDetails = {
-      eventDate: values.eventDate.toISOString(),
-      eventTime: values.eventTime,
-    };
+    const eventDateTime = dateFromLocalDateAndTimeString(values.eventDate, values.eventTime);
+
     await updateType({
       opportunity_type: VolunteerStateTypeType.EVENTS as OpportunityType,
       event: {
-        date: eventDetails.eventDate,
-        time: eventDetails.eventTime,
+        date: eventDateTime.toISOString(),
+        time: formatToUtcTime(eventDateTime),
       },
     });
     onCancel();

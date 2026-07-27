@@ -671,6 +671,11 @@ html {
   --volunteer-profile-opportunities-accordion-language-row-gap: 8px;
   --opportunity-volunteers-avatar-size: 40px;
   --opportunity-volunteers-avatar-border-radius: 50%;
+
+  /* agent registration form */
+  --agent-form-existing-user-margin-bottom: 30px;
+  --agent-form-existing-user-gap: 10px;
+  --agent-form-existing-user-font-size: 0.9375rem;
 }
 
 .with-linebreaks {

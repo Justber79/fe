@@ -20,7 +20,7 @@ export function useAgentAddressLookup(
 
   const enabled = debouncedAddress.length >= 3 && !!token;
 
-  const { data: matches } = useGetQuery<AgentSearchMatch[]>({
+  const { data } = useGetQuery<AgentSearchMatch[]>({
     queryKey: ["agent-register-search", debouncedAddress],
     apiPath: `${apiPathAgentRegister}/search?token=${encodeURIComponent(
       token ?? "",
@@ -30,16 +30,17 @@ export function useAgentAddressLookup(
     addLang: false,
   });
 
-  const matched = enabled && matches && matches.length > 0 ? matches[0] : null;
+  // The API returns every matching candidate, not a single "the" match —
+  // more than one org can share a partial street.
+  const matches = enabled ? (data ?? []) : [];
 
   const isDismissed = dismissedAddress === debouncedAddress;
-  const isMatch = !!matched && selectedAgent?.id === matched.id;
-  const showBanner = !!matched && !isMatch && !isDismissed;
+  const isMatch = !!selectedAgent && matches.some((m) => m.id === selectedAgent.id);
+  const showBanner = matches.length > 0 && !isMatch && !isDismissed;
 
-  const confirmMatch = () => {
-    if (!matched) return;
-    setSelectedAgent(matched);
-    onConfirm?.(matched);
+  const selectMatch = (agent: AgentSearchMatch) => {
+    setSelectedAgent(agent);
+    onConfirm?.(agent);
   };
 
   const dismissMatch = () => {
@@ -48,12 +49,11 @@ export function useAgentAddressLookup(
   };
 
   return {
-    matched,
-    matches: enabled ? (matches ?? []) : [],
+    matches,
     selectedAgent,
     isMatch,
     showBanner,
-    confirmMatch,
+    selectMatch,
     dismissMatch,
   };
 }

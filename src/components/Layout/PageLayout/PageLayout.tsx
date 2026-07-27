@@ -34,10 +34,6 @@ const PageContentHeaderContainer = styled.div<PageContentHeaderContainerProps>`
   padding-top: var(--layout-static-page-header-height);
 `;
 
-const PageContentContainer = styled.div`
-  display: flex;
-`;
-
 export function PageLayout({ children, background }: Props) {
   const screenType = useScreenType();
   const searchParams = useSearchParams();
@@ -72,7 +68,7 @@ export function PageLayout({ children, background }: Props) {
           padding="var(--layout-static-page-header-padding)"
           menuItemColor="var(--color-midnight)"
         />
-        <PageContentContainer>{children}</PageContentContainer>
+        {children}
       </PageContentHeaderContainer>
       <FooterPartnersSection />
     </PageContainer>

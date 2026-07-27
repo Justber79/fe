@@ -68,7 +68,7 @@ export default function HeroContent() {
             text={t("dashboard.heroSection.buttonJoinVolunteer")}
           />
           <Button
-            onClick={() => router.push(`/${i18n.language}/forms/opportunity`)}
+            onClick={() => router.push(`/${i18n.language}/register/agent`)}
             text={t("dashboard.heroSection.buttonJoinRefugeeCenter")}
           />
         </HeroButtonsContainer>

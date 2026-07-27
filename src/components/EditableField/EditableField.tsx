@@ -3,6 +3,7 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { HasError, HasHint } from "@/types";
 import { MinusIcon, PlusIcon, XCircleIcon } from "@phosphor-icons/react";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
@@ -302,6 +303,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
   }: EditableFieldProps<T>,
   ref: React.Ref<EditableFieldRef<T>>,
 ) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [localValue, setLocalValue] = useState<T>(value);
   const [open, setOpen] = useState<boolean>(false);
@@ -504,8 +506,8 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                 {type === "checkbox-list"
                   ? Array.isArray(localValue) && localValue.length > 0
                     ? localValue.join(", ")
-                    : "Select options..."
-                  : localValue || "Select option..."}
+                    : t("dashboard.common.selectOptions")
+                  : localValue || t("dashboard.common.selectOption")}
               </span>
 
               <Arrow className={open ? "open" : ""} />

@@ -23,11 +23,21 @@ import { ApiOpportunityGet, Lang, LangPurpose, OptionItem, VolunteerStateTypeTyp
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../shared/styles";
-import { languagesToFormValues } from "./formatters";
-import { createOpportunityDetailsSchema, OpportunityDetailsFormData } from "./opportunityDetailsSchema";
+import { languagesToFormValues, resolveFormLanguageToOption } from "./formatters";
+import {
+  createOpportunityDetailsSchema,
+  getMainCommunicationLanguageOptions,
+  OpportunityDetailsFormData,
+} from "./opportunityDetailsSchema";
 import { FieldGroup } from "./styles";
 import { OpportunityEventDateTimeEdit } from "./OpportunityEventDateTimeEdit";
 import { OpportunityWithDetails } from "./types";
+import {
+  dateFromDateTimeUTCStrings,
+  dateFromLocalDateAndTimeString,
+  formatToLocalTime,
+  formatToUtcTime,
+} from "@/utils";
 
 function toLangOptionItems(
   formLangs: { language: string }[],
@@ -35,20 +45,7 @@ function toLangOptionItems(
   t: TFunction,
 ): OptionItem[] {
   return formLangs.flatMap(({ language }) => {
-    if (!language) return [];
-    // LanguageFieldRow stores the ID as a string when the user picks from the dropdown
-    const numId = Number(language);
-    if (!isNaN(numId) && numId > 0) {
-      const found = apiLanguages.find((a) => a.id === numId);
-      return found ? [{ id: found.id, title: found.title }] : [];
-    }
-    // languagesToFormValues stores translated names on initial load; reverse the lookup
-    const found = apiLanguages.find((a) => {
-      if (a.title === language || a.title.toLowerCase() === language.toLowerCase()) return true;
-      const key = `languageNames.${a.title.toLowerCase()}`;
-      const translated = t(key);
-      return translated !== key && translated === language;
-    });
+    const found = resolveFormLanguageToOption(language, apiLanguages, t);
     return found ? [{ id: found.id, title: found.title }] : [];
   });
 }
@@ -87,6 +84,10 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   }));
+  const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map((l) => ({
+    id: l.id,
+    title: { [lang as Lang]: l.title } as Record<Lang, string>,
+  }));
 
   const generalLangs = opp.languages.filter((l) => l.purpose === LangPurpose.GENERAL);
   const seenResidents = new Set<number>();
@@ -96,8 +97,13 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     seenResidents.add(l.id);
     return true;
   });
+  let currentEventDateTime: Date | null = null;
 
-  const schema = createOpportunityDetailsSchema(t);
+  if (opp.event?.date && opp.event?.time) {
+    currentEventDateTime = dateFromDateTimeUTCStrings(opp.event.date, opp.event.time);
+  }
+
+  const schema = createOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages));
   const methods = useForm<OpportunityDetailsFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -108,8 +114,8 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
       mainCommunication: languagesToFormValues(generalLangs, t),
       residentsSpeak: languagesToFormValues(residentsLangs, t),
       availability: isEventType ? undefined : apiToFormAvailability(opp.availability),
-      eventDate: null,
-      eventTime: "",
+      eventDate: currentEventDateTime ? currentEventDateTime : null,
+      eventTime: currentEventDateTime ? formatToLocalTime(currentEventDateTime) : "",
       activities: opp.activities.map((a) => String(a.id)),
       skills: opp.skills.map((s) => String(s.id)),
     },
@@ -127,6 +133,12 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
   };
 
   const onSubmit = (values: OpportunityDetailsFormData) => {
+    let eventDateTime: Date | null = null;
+
+    if (values.eventDate && values.eventTime) {
+      eventDateTime = dateFromLocalDateAndTimeString(values.eventDate, values.eventTime);
+    }
+
     updateOpportunityDetails(
       {
         title: values.title,
@@ -138,10 +150,10 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
         skills: toOptionItems(values.skills, apiSkills),
         schedule: values.availability ? formToApiAvailability(values.availability) : undefined,
         event:
-          values.eventDate && values.eventTime
+          eventDateTime && values.eventTime
             ? {
-                date: values.eventDate.toISOString(),
-                time: values.eventTime,
+                date: eventDateTime.toISOString(),
+                time: formatToUtcTime(eventDateTime),
               }
             : undefined,
       },
@@ -196,7 +208,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
                     languages={field.value}
                     onChange={field.onChange}
                     t={t}
-                    availableLanguages={languagesForForm}
+                    availableLanguages={mainCommunicationLanguagesForForm}
                     showLevel={false}
                   />
                   {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}

@@ -7,8 +7,11 @@ import { OpportunityVolunteers } from "@/components/Dashboard/Profile/sections/O
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers/SuggestDialog";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
 import { RefugeeAccommodationCentre } from "@/components/Dashboard/Profile/sections/RefugeeAccommodationCentre";
+import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
 import { IconName } from "@/components/Dashboard/Profile/types";
+import { useDeleteOpportunity } from "@/hooks/useDeleteOpportunity";
 import { useGetVolunteer } from "@/hooks/useGetVolunteer";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
 import { ApiOpportunityGet, OpportunityVolunteerStatusType, VolunteerStateTypeType } from "need4deed-sdk";
@@ -21,7 +24,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.contact.id);
+  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.agent?.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
@@ -47,6 +50,11 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     setIsSuggestDialogOpen(false);
     router.push(`/${i18n.language}/dashboard/volunteers/${volunteerId}`);
   }, ["volunteer-opportunities", String(volunteerId)]);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteOpportunity(opportunity?.id ?? 0, () => {
+    router.replace(`/${i18n.language}/dashboard/opportunities`);
+  });
 
   if (!opportunity) return null;
 
@@ -116,12 +124,14 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       {
         iconName: IconName.UsersThree,
         title: t("dashboard.opportunityProfile.volunteersSec.title"),
-        headerButtonName: volunteerId
-          ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
-          : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
-        onHeaderButtonClick: volunteerId
-          ? () => setIsSuggestDialogOpen(true)
-          : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        ...(isAuthorized && {
+          headerButtonName: volunteerId
+            ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
+            : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
+          onHeaderButtonClick: volunteerId
+            ? () => setIsSuggestDialogOpen(true)
+            : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+        }),
         subComponent: (
           <>
             <OpportunityVolunteers opportunityId={opportunity.id} />
@@ -159,6 +169,32 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${commentsCount}`,
       subComponent: <Comments opportunity={opportunity} />,
+    });
+    sections.push({
+      iconName: IconName.Trash,
+      title: t("dashboard.opportunityProfile.dangerZone.title"),
+      subComponent: (
+        <>
+          <DangerZoneButtonRow
+            deleteButtonText={t("dashboard.opportunityProfile.dangerZone.deleteButton")}
+            onDeleteClick={() => setIsDeleteDialogOpen(true)}
+            deleteDisabled={isDeleting}
+            transferButtonText={t("dashboard.opportunityProfile.dangerZone.transferButton")}
+            onTransferClick={() =>
+              router.push(`/${i18n.language}/dashboard/agents?transferOpportunity=${opportunity.id}`)
+            }
+          />
+          {isDeleteDialogOpen && (
+            <ConfirmationDialog
+              title={t("dashboard.opportunityProfile.dangerZone.confirmTitle")}
+              message={t("dashboard.opportunityProfile.dangerZone.confirmMessage", { name: opportunity.title })}
+              confirmText={t("dashboard.opportunityProfile.dangerZone.deleteButton")}
+              onCancel={() => setIsDeleteDialogOpen(false)}
+              onConfirm={() => deleteMutate(undefined)}
+            />
+          )}
+        </>
+      ),
     });
   }
 

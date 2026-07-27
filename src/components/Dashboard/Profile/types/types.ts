@@ -37,6 +37,7 @@ export enum IconName {
   PingPong = "pingPong",
   ShootingStar = "shootingStar",
   Sparkle = "sparkle",
+  Trash = "trash",
   UserCheck = "userCheck",
   UserCircle = "userCircle",
   Users = "users",

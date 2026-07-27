@@ -19,6 +19,32 @@ export function localHhmmToUtc(hhmm: string): string {
   return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
 }
 
+export function dateFromDateTimeUTCStrings(date: string | undefined, time: string | undefined): Date | null {
+  if (!date || !time) return null;
+  const dateTimeString = `${date}T${time}:00Z`;
+  const parsedDate = new Date(dateTimeString);
+  return isNaN(parsedDate.getTime()) ? null : parsedDate;
+}
+
+export function dateFromLocalDateAndTimeString(date: Date, time: string): Date {
+  const [hours, minutes] = time.split(":").map(Number);
+  const localDateTime = new Date(date);
+  localDateTime.setHours(hours, minutes, 0, 0);
+  return localDateTime;
+}
+
+export function formatToLocalTime(date: Date): string {
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
+export function formatToUtcTime(date: Date): string {
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
 export function getDateLocalTooUTC(dateStr: string | undefined) {
   if (!dateStr) return undefined;
 

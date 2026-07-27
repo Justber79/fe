@@ -31,7 +31,7 @@ import {
   Wrapper,
 } from "../styled";
 import { defaultProfileCompletionData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
-import { CheckMark, MatchBanner, MatchActions, SmallButton } from "./styled";
+import { CheckMark, MatchBanner, MatchActions, MatchListCopy, MatchRow, SmallButton } from "./styled";
 import { useAgentAddressLookup } from "./useAgentAddressLookup";
 import { setAuthHint } from "@/utils/helpers";
 
@@ -40,10 +40,10 @@ function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
     title: formData.organizationName,
     // `info`/`languages: number[]` follow the registration contract — these
     // deliberately differ from the agent PATCH shape (`about`/`OptionById[]`).
-    type: formData.organizationType || undefined,
+    typeId: formData.organizationType || undefined,
     info: formData.about || undefined,
     website: formData.website || undefined,
-    services: formData.services.length > 0 ? formData.services : undefined,
+    serviceIds: formData.services.length > 0 ? formData.services : undefined,
     addressStreet: formData.addressStreet || undefined,
     addressPostcode: formData.addressPostcode || undefined,
     districtId: formData.districtId ?? undefined,
@@ -72,7 +72,7 @@ export function ProfileCompletion() {
     apiPath: apiPathOption,
   });
 
-  const { matched, selectedAgent, showBanner, confirmMatch, dismissMatch } = useAgentAddressLookup(
+  const { matches, selectedAgent, showBanner, selectMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
     (m) => update({ addressStreet: m.title }),
@@ -238,22 +238,30 @@ export function ProfileCompletion() {
                   errors={errors.addressStreet ? [errors.addressStreet] : []}
                 />
                 {showBanner && (
-                  <MatchBanner $matched={false}>
-                    <span>{t("agentRegistration.completion.matchFound", { name: matched!.title })}</span>
+                  <>
+                    <MatchListCopy>
+                      {t("agentRegistration.completion.matchesFound", { count: matches.length })}
+                    </MatchListCopy>
+                    {matches.map((agent) => (
+                      <MatchRow key={agent.id} type="button" onClick={() => selectMatch(agent)}>
+                        {agent.title}
+                      </MatchRow>
+                    ))}
                     <MatchActions>
-                      <SmallButton $primary onClick={confirmMatch}>
-                        {t("agentRegistration.completion.useThisOrg")}
+                      <SmallButton $primary onClick={dismissMatch}>
+                        {t("agentRegistration.completion.skip")}
                       </SmallButton>
-                      <SmallButton onClick={dismissMatch}>{t("agentRegistration.completion.skip")}</SmallButton>
                     </MatchActions>
-                  </MatchBanner>
+                  </>
                 )}
               </FieldWrapper>
               <AddressStep data={formData} onChange={update} errors={errors} optionLists={optionLists} hideStreet />
             </div>
           ))}
 
-        {!isJoining && step === 2 && <OrgInfoStep data={formData} onChange={update} errors={errors} />}
+        {!isJoining && step === 2 && (
+          <OrgInfoStep data={formData} onChange={update} errors={errors} optionLists={optionLists} />
+        )}
         {!isJoining && step === 3 && <ServicesStep data={formData} onChange={update} optionLists={optionLists} />}
 
         <Actions>
@@ -284,7 +292,7 @@ export function ProfileCompletion() {
               backgroundcolor="var(--color-aubergine)"
               textColor="var(--color-white)"
               onClick={handleNext}
-              disabled={tokenMissing}
+              disabled={tokenMissing || (step === 1 && showBanner)}
             />
           )}
         </Actions>

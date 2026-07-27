@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { createAgentTableColumns, createReadOnlyAgentTableColumns } from "./agentsTableColumns";
 import { useMemo } from "react";
 import { AgentTableRow } from "./AgentTableRow";
-import { createAgentTypeMap, createVolunteerSearchMap } from "./constants";
+import { createVolunteerSearchMap } from "./constants";
 import { CopyButton } from "../common/CopyButton";
 import { AgentReadOnlyTableRow } from "./AgentReadOnlyTableRow";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,6 +20,7 @@ interface TableListProps {
   districtsList?: OptionItem[];
   onCopyEmails: () => void;
   isCopying: boolean;
+  onSelect?: (agent: ApiAgentGetList) => void;
 }
 
 export function AgentTableList({
@@ -31,6 +32,7 @@ export function AgentTableList({
   districtsList,
   onCopyEmails,
   isCopying,
+  onSelect,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
@@ -47,7 +49,6 @@ export function AgentTableList({
     return createAgentTableColumns(t, copyButton);
   }, [t, onCopyEmails, isCopying]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
-  const typeLabels = useMemo(() => createAgentTypeMap(t), [t]);
   const searchLabels = useMemo(() => createVolunteerSearchMap(t), [t]);
 
   return (
@@ -60,19 +61,12 @@ export function AgentTableList({
             key={agent.id}
             agent={agent}
             isLast={isLast}
-            typeLabels={typeLabels}
             searchLabels={searchLabels}
             districtsList={districtsList}
+            onSelect={onSelect}
           />
         ) : (
-          <AgentReadOnlyTableRow
-            key={agent.id}
-            agent={agent}
-            isLast={isLast}
-            typeLabels={typeLabels}
-            searchLabels={searchLabels}
-            districtsList={districtsList}
-          />
+          <AgentReadOnlyTableRow key={agent.id} agent={agent} isLast={isLast} districtsList={districtsList} />
         )
       }
       count={count}

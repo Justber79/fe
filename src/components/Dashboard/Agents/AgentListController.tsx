@@ -17,9 +17,10 @@ type Props = {
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
   viewMode: ViewMode;
+  onSelect?: (agent: ApiAgentGetList) => void;
 };
 
-export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilterOptions, viewMode }: Props) => {
+export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilterOptions, viewMode, onSelect }: Props) => {
   const { currentPage, setCurrentPage } = usePageParam();
   const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
@@ -64,6 +65,7 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilt
         districtsList={apiFilterOptions?.district ?? undefined}
         onCopyEmails={handleCopyEmails}
         isCopying={isCopying}
+        onSelect={onSelect}
       />
     );
   }
@@ -76,6 +78,7 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilt
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       districtsList={apiFilterOptions?.district ?? undefined}
+      onSelect={onSelect}
     />
   );
 };
