@@ -497,7 +497,6 @@
     "header": {
       "button": {
         "login": "Log in",
-        "joinVolunteer": "Join as a volunteer",
         "dashboard": "Dashboard",
         "logout": "Log out"
       }
