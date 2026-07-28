@@ -134,7 +134,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
         }),
         subComponent: (
           <>
-            <OpportunityVolunteers opportunityId={opportunity.id} />
+            <OpportunityVolunteers opportunityId={opportunity.id} hasEditingRights={hasEditingRights} />
             {isSuggestDialogOpen && (
               <SuggestDialog
                 opportunityName={opportunity.title}

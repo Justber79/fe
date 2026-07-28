@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/core/common/Table";
 import { useActivityLog } from "@/hooks/useActivityLog";
+import { useAuth } from "@/hooks/useAuth";
 import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
 import { ApiActivityLogEntry, ApiActivityLogPost } from "need4deed-sdk";
 import { useState } from "react";
@@ -28,6 +29,7 @@ type Props = {
 
 export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props) {
   const { t } = useTranslation();
+  const { isAuthorized } = useAuth();
   const { entries, totalHours, isLoading, createEntry, isCreating, updateEntry, isUpdating, deleteEntry, isDeleting } =
     useActivityLog(opportunityVolunteerId);
 
@@ -76,7 +78,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
             <TableHeader>
               <TableHeaderCell>{t("dashboard.activityLog.date")}</TableHeaderCell>
               <TableHeaderCell>{t("dashboard.activityLog.hours")}</TableHeaderCell>
-              {!readOnly && (
+              {!readOnly && isAuthorized && (
                 <>
                   <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
                   <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
@@ -92,7 +94,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
                 >
                   <TableCell $noWrap>{formatDate(entry.date)}</TableCell>
                   <TableCell>{formatHours(Number(entry.hours))}</TableCell>
-                  {!readOnly && (
+                  {!readOnly && isAuthorized && (
                     <>
                       <ActionCell>
                         <ActionButton
@@ -123,7 +125,7 @@ export function ActivityLog({ opportunityVolunteerId, readOnly = false }: Props)
           <TotalRow data-testid="activity-log-total">
             <TotalCell>{t("dashboard.activityLog.total")}</TotalCell>
             <TotalCell>{t("dashboard.activityLog.hoursValue", { hours: formatHours(totalHours) })}</TotalCell>
-            {!readOnly && (
+            {!readOnly && isAuthorized && (
               <>
                 <TotalSpacer />
                 <TotalSpacer />
