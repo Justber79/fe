@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathVolunteer, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, SortOrder, UserRole } from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
@@ -15,7 +15,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
   sortOrder: SortOrder;
-  isFiltersOpen: boolean;
   filter: VolunteerCardsFilter;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
@@ -25,7 +24,6 @@ interface VolunteerListControllerProps {
 export function VolunteerListController({
   setNumOfVols,
   sortOrder,
-  isFiltersOpen,
   filter,
   apiFilterOptions,
   opportunityId,
@@ -88,8 +86,7 @@ export function VolunteerListController({
     <VolunteerCardList
       volunteers={volunteers}
       count={count}
-      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
-      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
+      itemsPerPage={limit}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       opportunityId={opportunityId}
