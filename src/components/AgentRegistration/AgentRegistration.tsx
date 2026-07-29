@@ -100,8 +100,11 @@ export function AgentRegistration() {
     } catch (err) {
       let message = t("message.errorGeneric");
       if (axios.isAxiosError(err)) {
-        const data = err.response?.data as { message?: string } | undefined;
-        message = data?.message ?? message;
+        const data = err.response?.data as { error?: string; message?: string } | undefined;
+        message =
+          data?.error === "InvalidOrganizationEmailError"
+            ? t("agentRegistration.errors.invalidOrganizationEmail")
+            : (data?.message ?? message);
       }
       setSubmitError(message);
     } finally {
