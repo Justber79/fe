@@ -1676,7 +1676,8 @@
       "passwordMismatch": "Passwords do not match",
       "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
-      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
+      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email.",
+      "invalidOrganizationEmail": "Invalid organization email."
     },
     "success": {
       "title": "Registration successful!",
