@@ -2055,7 +2055,8 @@
       "passwordMismatch": "Die Passwörter stimmen nicht überein",
       "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein",
       "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation.",
-      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail."
+      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail.",
+      "invalidOrganizationEmail": "Es wurde eine ungültige Organisations-E-Mail-Adresse angegeben."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
