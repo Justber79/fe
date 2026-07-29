@@ -642,7 +642,9 @@
         "notAMatchSuccess": "Removed",
         "markAsActiveSuccess": "Marked as active",
         "markAsPastSuccess": "Marked as past",
-        "emptyState": "No items in this category yet"
+        "emptyState": "No items in this category yet",
+        "unmatchDialogTitle": "Confirm Unmatch",
+        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?"
       },
       "contactDetails": {
         "title": "Contact details",
@@ -1147,7 +1149,7 @@
         "address": "Address",
         "organisationType": "Type of organisation",
         "operator": "Operator / Träger",
-        "services": "Leistungen",
+        "services": "Services",
         "clientLanguages": "Client languages",
         "cancel": "Cancel",
         "saveChanges": "Save changes",

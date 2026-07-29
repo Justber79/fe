@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/core/button";
 
 import { Actions } from "./accordionStyles";
+import { ConfirmationDialog } from "./ConfirmationDialog";
+import { useState } from "react";
 
 type AccordionActionsProps = {
-  onNotAMatch?: () => void;
+  onNotAMatch: () => void;
   onMatch?: () => void;
   onMarkAsActive?: () => void;
   onMarkAsPast?: () => void;
@@ -14,20 +16,30 @@ type AccordionActionsProps = {
 
 export const AccordionActions = ({ onNotAMatch, onMatch, onMarkAsActive, onMarkAsPast }: AccordionActionsProps) => {
   const { t } = useTranslation();
+  const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
   return (
     <Actions>
-      {onNotAMatch && (
-        <Button
-          onClick={onNotAMatch}
-          text={t("dashboard.volunteerProfile.opportunitiesSec.notAMatch")}
-          height="var(--volunteer-profile-opportunities-accordion-actions-button-height)"
-          textFontSize="var(--volunteer-profile-opportunities-accordion-actions-button-textFontSize)"
-          textColor="var(--color-aubergine)"
-          backgroundcolor="var(--color-white)"
-          border="var(--volunteer-profile-opportunities-accordion-actions-button-border)"
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          title={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogTitle")}
+          message={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogDescription")}
+          onCancel={() => setShowConfirmDialog(false)}
+          onConfirm={() => {
+            onNotAMatch();
+            setShowConfirmDialog(false);
+          }}
         />
       )}
+      <Button
+        onClick={() => setShowConfirmDialog(true)}
+        text={t("dashboard.volunteerProfile.opportunitiesSec.notAMatch")}
+        height="var(--volunteer-profile-opportunities-accordion-actions-button-height)"
+        textFontSize="var(--volunteer-profile-opportunities-accordion-actions-button-textFontSize)"
+        textColor="var(--color-aubergine)"
+        backgroundcolor="var(--color-white)"
+        border="var(--volunteer-profile-opportunities-accordion-actions-button-border)"
+      />
       {onMatch && (
         <Button
           onClick={onMatch}
@@ -78,7 +90,7 @@ export const StatusAccordionActions = ({
     return <AccordionActions onNotAMatch={onNotAMatch} onMarkAsActive={onMarkAsActive} />;
   }
   if (currentStatus === OpportunityVolunteerStatusType.ACTIVE) {
-    return <AccordionActions onMarkAsPast={onMarkAsPast} />;
+    return <AccordionActions onNotAMatch={onNotAMatch} onMarkAsPast={onMarkAsPast} />;
   }
   return null;
 };

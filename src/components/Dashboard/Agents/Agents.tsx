@@ -137,7 +137,6 @@ export const Agents = () => {
           <AgentListController
             setNumOfAgents={setNumOfAgents}
             sortOrder={sortOrder}
-            isFiltersOpen={isFiltersOpen}
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             viewMode={viewMode}

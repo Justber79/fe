@@ -70,7 +70,7 @@ export const OrganisationDetailsEdit = ({
               mode="edit"
               type="text"
               label={t(`${i18nPrefix}.website`)}
-              value={field.value}
+              value={field.value ?? ""}
               setValue={field.onChange}
               errorMessage={errors.website?.message}
             />

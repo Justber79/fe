@@ -17,10 +17,10 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string) => {
     about: z.string().min(1, required),
     website: z
       .string()
-      .min(1, required)
-      .refine((val) => urlRegex.test(val), {
+      .refine((val) => !val || urlRegex.test(val), {
         message: t(`${i18nPrefix}.websiteInvalid`),
-      }),
+      })
+      .optional(),
     addressStreet: z.string(),
     addressPostcode: z.string(),
     // Stores the translated title (like `district` elsewhere), resolved

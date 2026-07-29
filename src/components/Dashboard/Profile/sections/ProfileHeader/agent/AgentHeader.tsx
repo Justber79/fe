@@ -23,8 +23,8 @@ type Props = {
 };
 
 export const AgentHeader = ({ agent }: Props) => {
-  const { t, i18n } = useTranslation();
-  const districtLabel = getDistrictLabel(agent.district, i18n.language);
+  const { t } = useTranslation();
+  const districtLabel = getDistrictLabel(agent.district);
   const dialog = useAgentEngagementStatusDialog(agent);
   const { mutate: patchAgent } = useUpdateAgentStatus(agent.id);
   const { isAuthorized } = useAuth();

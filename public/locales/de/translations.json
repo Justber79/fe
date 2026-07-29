@@ -649,7 +649,9 @@
         "notAMatchSuccess": "Entfernt",
         "markAsActiveSuccess": "Als aktiv markiert",
         "markAsPastSuccess": "Als vergangen markiert",
-        "emptyState": "Noch keine Einträge in dieser Kategorie"
+        "emptyState": "Noch keine Einträge in dieser Kategorie",
+        "unmatchDialogTitle": "Zuordnung aufheben",
+        "unmatchDialogDescription": "Möchten Sie die Zuordnung für diese Person wirklich aufheben?"
       },
       "contactDetails": {
         "title": "Kontaktdaten",
