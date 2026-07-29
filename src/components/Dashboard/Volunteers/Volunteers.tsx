@@ -120,7 +120,6 @@ export function Volunteers() {
           <VolunteerListController
             setNumOfVols={setNumOfVols}
             sortOrder={sortOrder}
-            isFiltersOpen={isFiltersOpen}
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             opportunityId={opportunityId}

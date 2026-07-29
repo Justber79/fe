@@ -10,8 +10,7 @@ type Props = {
   districtsList?: OptionItem[];
   opportunities: ApiVolunteerOpportunityGetList[];
   count: number;
-  columns: number;
-  rows: number;
+  itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   volunteerId?: string;
@@ -20,8 +19,7 @@ type Props = {
 export function OpportunityCardList({
   opportunities,
   count,
-  columns,
-  rows,
+  itemsPerPage,
   currentPage,
   setCurrentPage,
   volunteerId,
@@ -48,8 +46,7 @@ export function OpportunityCardList({
     <OpportunityCardListContainer data-testid="opportunity-card-list">
       <PaginatedGrid
         pageItems={items}
-        columns={columns}
-        rows={rows}
+        itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItemCounts={count}
