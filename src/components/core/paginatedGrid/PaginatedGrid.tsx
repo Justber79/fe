@@ -4,15 +4,13 @@ import PaginationNumbers from "./PaginationNumbers";
 
 interface Props {
   pageItems: ReactNode[];
-  columns: number;
-  rows: number;
+  itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalItemCounts: number;
 }
 
-export function PaginatedGrid({ pageItems, columns, rows, currentPage, setCurrentPage, totalItemCounts }: Props) {
-  const itemsPerPage = columns * rows;
+export function PaginatedGrid({ pageItems, itemsPerPage, currentPage, setCurrentPage, totalItemCounts }: Props) {
   const totalPages = Math.ceil(totalItemCounts / itemsPerPage);
 
   const goToPage = (pageNumber: number) => {
@@ -23,9 +21,7 @@ export function PaginatedGrid({ pageItems, columns, rows, currentPage, setCurren
 
   return (
     <MainContainer>
-      <GridContainer columns={columns} rows={rows}>
-        {pageItems}
-      </GridContainer>
+      <GridContainer>{pageItems}</GridContainer>
 
       <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />
     </MainContainer>
@@ -40,16 +36,14 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--opportunities-container-gap);
+  width: 100%;
+  flex: 1;
 `;
 
-interface GridContainerProps {
-  columns: number;
-  rows: number;
-}
-
-const GridContainer = styled.div<GridContainerProps>`
+const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props) => props.columns}, 1fr);
-  grid-template-rows: repeat(${(props) => props.rows}, auto);
+  grid-template-columns: repeat(auto-fill, min(100%, var(--card-width, 320px)));
   gap: var(--paginated-grid-container-gap);
+  width: 100%;
+  justify-items: start;
 `;

@@ -91,8 +91,6 @@ export const AUTH_HINT_MAX_AGE = REFRESH_TOKEN_MAX_AGE_S;
 export const USER_QUERY_KEY = ["user"];
 
 export const TABLE_LIMIT = 20;
-export const CARD_COLUMNS = 3;
-export const CARD_ROWS = 3;
-export const CARD_LIMIT = CARD_COLUMNS * CARD_ROWS;
+export const CARD_LIMIT = 12;
 
 export const MAX_PAGE_LIMIT = 120; // BE hard cap per page

@@ -22,6 +22,9 @@ export const ContentRow = styled.div`
 export const OpportunityCardListContainer = styled.div`
   display: flex;
   justify-content: left;
+  flex: 1;
+  min-width: 0;
+  --card-width: var(--dashboard-volunteers-card-width);
 `;
 
 export const Card = styled(BaseCard)<{ $cursor?: string }>`

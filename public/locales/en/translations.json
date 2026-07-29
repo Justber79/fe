@@ -1149,7 +1149,7 @@
         "address": "Address",
         "organisationType": "Type of organisation",
         "operator": "Operator / Träger",
-        "services": "Leistungen",
+        "services": "Services",
         "clientLanguages": "Client languages",
         "cancel": "Cancel",
         "saveChanges": "Save changes",
