@@ -642,7 +642,9 @@
         "notAMatchSuccess": "Removed",
         "markAsActiveSuccess": "Marked as active",
         "markAsPastSuccess": "Marked as past",
-        "emptyState": "No items in this category yet"
+        "emptyState": "No items in this category yet",
+        "unmatchDialogTitle": "Confirm Unmatch",
+        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?"
       },
       "contactDetails": {
         "title": "Contact details",
