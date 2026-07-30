@@ -37,7 +37,7 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
         mode="display"
         type="text"
         label={t(`${i18nPrefix}.website`)}
-        value={values.website}
+        value={values.website ?? ""}
         setValue={() => {}}
       />
       <EditableField

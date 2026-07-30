@@ -155,7 +155,6 @@ export function Opportunities() {
           <OpportunityListController
             setNumOfOpps={setNumOfOpps}
             sortOrder={sortOrder}
-            isFiltersOpen={isFiltersOpen}
             filter={cardsFilter}
             apiFilterOptions={apiFilterOptions}
             volunteerId={volunteerId}

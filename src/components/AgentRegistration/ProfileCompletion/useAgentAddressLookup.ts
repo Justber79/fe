@@ -11,37 +11,36 @@ type AgentSearchMatch = { id: number; title: string };
 // (the COORDINATOR-only GET /agent is not available to a registrant).
 export function useAgentAddressLookup(
   addressStreet: string,
-  addressPostcode: string,
   token: string | null,
   onConfirm?: (matched: AgentSearchMatch) => void,
 ) {
   const [selectedAgent, setSelectedAgent] = useState<AgentSearchMatch | null>(null);
   const [dismissedAddress, setDismissedAddress] = useState<string | null>(null);
   const debouncedAddress = useDebounce(addressStreet.trim(), 400);
-  const debouncedPostcode = useDebounce(addressPostcode.trim(), 400);
 
-  const enabled = debouncedAddress.length >= 3 && !!debouncedPostcode && !!token;
+  const enabled = debouncedAddress.length >= 3 && !!token;
 
-  const { data: matches } = useGetQuery<AgentSearchMatch[]>({
-    queryKey: ["agent-register-search", debouncedAddress, debouncedPostcode],
+  const { data } = useGetQuery<AgentSearchMatch[]>({
+    queryKey: ["agent-register-search", debouncedAddress],
     apiPath: `${apiPathAgentRegister}/search?token=${encodeURIComponent(
       token ?? "",
-    )}&street=${encodeURIComponent(debouncedAddress)}&postcode=${encodeURIComponent(debouncedPostcode)}`,
+    )}&street=${encodeURIComponent(debouncedAddress)}`,
     staleTime: cacheTTL,
     enabled,
     addLang: false,
   });
 
-  const matched = enabled && matches && matches.length > 0 ? matches[0] : null;
+  // The API returns every matching candidate, not a single "the" match —
+  // more than one org can share a partial street.
+  const matches = enabled ? (data ?? []) : [];
 
   const isDismissed = dismissedAddress === debouncedAddress;
-  const isMatch = !!matched && selectedAgent?.id === matched.id;
-  const showBanner = !!matched && !isMatch && !isDismissed;
+  const isMatch = !!selectedAgent && matches.some((m) => m.id === selectedAgent.id);
+  const showBanner = matches.length > 0 && !isMatch && !isDismissed;
 
-  const confirmMatch = () => {
-    if (!matched) return;
-    setSelectedAgent(matched);
-    onConfirm?.(matched);
+  const selectMatch = (agent: AgentSearchMatch) => {
+    setSelectedAgent(agent);
+    onConfirm?.(agent);
   };
 
   const dismissMatch = () => {
@@ -50,12 +49,11 @@ export function useAgentAddressLookup(
   };
 
   return {
-    matched,
-    matches: enabled ? (matches ?? []) : [],
+    matches,
     selectedAgent,
     isMatch,
     showBanner,
-    confirmMatch,
+    selectMatch,
     dismissMatch,
   };
 }

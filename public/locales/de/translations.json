@@ -649,7 +649,9 @@
         "notAMatchSuccess": "Entfernt",
         "markAsActiveSuccess": "Als aktiv markiert",
         "markAsPastSuccess": "Als vergangen markiert",
-        "emptyState": "Noch keine Einträge in dieser Kategorie"
+        "emptyState": "Noch keine Einträge in dieser Kategorie",
+        "unmatchDialogTitle": "Zuordnung aufheben",
+        "unmatchDialogDescription": "Möchten Sie die Zuordnung für diese Person wirklich aufheben?"
       },
       "contactDetails": {
         "title": "Kontaktdaten",
@@ -708,6 +710,13 @@
           "activitiesRequired": "Bitte wähle mindestens eine Aktivität aus",
           "skillsRequired": "Fähigkeiten sind erforderlich"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Freiwillige:n löschen",
+        "confirmTitle": "Dieses Profil löschen?",
+        "confirmMessage": "Dadurch wird das Profil von \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Freiwillige:r erfolgreich gelöscht"
       }
     },
     "agents": {
@@ -815,6 +824,13 @@
         "reject": "Ablehnen",
         "approved": "Beitrittsanfrage genehmigt",
         "rejected": "Beitrittsanfrage abgelehnt"
+      },
+      "transferMode": {
+        "header": "Wähle eine Einrichtung, an die \"{{name}}\" übertragen werden soll",
+        "confirmTitle": "Diese Möglichkeit übertragen?",
+        "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
+        "confirmButton": "Übertragen",
+        "success": "Möglichkeit erfolgreich übertragen"
       }
     },
     "opportunities": {
@@ -1138,7 +1154,7 @@
       },
       "organisationDetails": {
         "title": "Details zur Organisation",
-        "ngoTitle": "Vereinsname",
+        "ngoTitle": "Einrichtungsname",
         "edit": "Bearbeiten",
         "about": "Über uns",
         "website": "Webseite",
@@ -1165,6 +1181,14 @@
           "active": "Aktiv",
           "past": "Vergangen"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Einrichtung löschen",
+        "blockedMessage": "Ehrenamtsbedarfe oben zuerst übertragen.",
+        "confirmTitle": "Diese Einrichtung löschen?",
+        "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Einrichtung erfolgreich gelöscht"
       }
     },
     "opportunityProfile": {
@@ -1338,6 +1362,14 @@
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
         }
+      },
+      "dangerZone": {
+        "title": "Gefahrenzone",
+        "deleteButton": "Möglichkeit löschen",
+        "transferButton": "An andere Einrichtung übertragen",
+        "confirmTitle": "Diese Möglichkeit löschen?",
+        "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+        "deleteSuccess": "Möglichkeit erfolgreich gelöscht"
       }
     },
     "racTitle": "Geflüchtetenunterkunft",
@@ -2025,7 +2057,8 @@
       "passwordMismatch": "Die Passwörter stimmen nicht überein",
       "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein",
       "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation.",
-      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail."
+      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail.",
+      "invalidOrganizationEmail": "Es wurde eine ungültige Organisations-E-Mail-Adresse angegeben."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
@@ -2038,10 +2071,9 @@
     "completion": {
       "title": "Konto-Einrichtung abschließen",
       "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
-      "matchFound": "Wir haben eine Organisation gefunden, die zu dieser Adresse passt: {{name}}. Möchten Sie diese verwenden?",
-      "useThisOrg": "Ja, diese verwenden",
+      "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
+      "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "skip": "Nein, manuell eingeben",
-      "matched": "Organisation gefunden: {{name}}",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",
