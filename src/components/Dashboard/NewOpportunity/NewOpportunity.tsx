@@ -48,7 +48,6 @@ export function NewOpportunity() {
   const { data: apiActivities = [] } = useApiActivities();
   const { data: apiSkills = [] } = useApiSkills();
 
-  // Header form: title + volunteerType
   const headerMethods = useForm<HeaderFormData>({
     resolver: zodResolver(createHeaderSchema(t)),
     mode: "onChange",
@@ -59,7 +58,6 @@ export function NewOpportunity() {
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
 
-  // Opportunity details form
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
     resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
     mode: "onChange",
@@ -76,7 +74,6 @@ export function NewOpportunity() {
     },
   });
 
-  // Accompanying details form (always initialised; only included in payload when type is ACCOMPANYING)
   const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
     resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
     mode: "onChange",
@@ -92,7 +89,6 @@ export function NewOpportunity() {
     },
   });
 
-  // Accompanying section helpers
   const keyToLabel: Record<string, string> = {};
   const labelToKey: Record<string, string> = {};
   apiLanguages.forEach((l) => {
@@ -144,15 +140,10 @@ export function NewOpportunity() {
         <ArrowLeftIcon size={24} />
         {t("dashboard.volunteerProfile.backToDashboard")}
       </BackButton>
-
       <Heading2>{t("dashboard.newOpportunity.title")}</Heading2>
-
-      {/* Header card — title input + volunteer type selector */}
       <FormProvider {...headerMethods}>
         <OpportunityHeaderCard selectedType={selectedType} />
       </FormProvider>
-
-      {/* Opportunity Details section */}
       <SectionCard
         iconName={IconName.Wrench}
         title={t("dashboard.opportunityProfile.opportunityDetails.title")}
@@ -168,8 +159,6 @@ export function NewOpportunity() {
           </FormProvider>
         }
       />
-
-      {/* Accompanying Details section — only for ACCOMPANYING type */}
       {isAccompanying && (
         <SectionCard
           iconName={IconName.Users}
@@ -194,7 +183,6 @@ export function NewOpportunity() {
           }
         />
       )}
-
       <SaveRow>
         <Button
           text={t("dashboard.newOpportunity.submit")}
