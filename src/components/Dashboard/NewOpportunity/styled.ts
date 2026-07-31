@@ -95,3 +95,96 @@ export const AgentValue = styled.dd`
   color: var(--color-midnight);
   margin: 0;
 `;
+
+export const SaveRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const VolunteerTypeRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-blue-50);
+
+  h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-blue-700);
+    margin: 0;
+    flex-shrink: 0;
+  }
+`;
+
+export const TypeButtons = styled.div`
+  display: flex;
+  gap: var(--spacing-8);
+  flex-wrap: wrap;
+`;
+
+export const TypeButton = styled.button<{ $active: boolean }>`
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--border-radius-sm);
+  border: 2px solid var(--color-aubergine);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: var(--transition-all);
+  background-color: ${({ $active }) => ($active ? "var(--color-aubergine)" : "var(--color-white)")};
+  color: ${({ $active }) => ($active ? "var(--color-white)" : "var(--color-aubergine)")};
+
+  &:hover {
+    opacity: var(--opacity-hover);
+  }
+`;
+
+export const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-grey-100);
+  width: 100%;
+
+  > label {
+    font-size: var(--editableField-fieldWrapper-label-fontSize);
+    font-weight: var(--editableField-fieldWrapper-label-fontWeight);
+  }
+`;
+
+export const DateFieldRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-16) 0;
+  border-bottom: var(--border-width-thin) solid var(--color-grey-100);
+  gap: var(--spacing-16);
+  width: 100%;
+
+  > label {
+    font-size: var(--editableField-fieldWrapper-label-fontSize);
+    font-weight: var(--editableField-fieldWrapper-label-fontWeight);
+    flex-shrink: 0;
+    width: var(--editableField-fieldWrapper-label-width);
+  }
+`;
+
+export const DatePickerContainer = styled.div`
+  flex: 1;
+`;
+
+export const TimeInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+`;
+
+export const TimeInput = styled.input<{ $hasError?: boolean }>`
+  padding: var(--spacing-8) var(--spacing-12);
+  border: ${({ $hasError }) => ($hasError ? "1px solid var(--color-error)" : "1px solid var(--color-grey-300)")};
+  border-radius: var(--border-radius-xs);
+  font-size: var(--font-size-lg);
+  color: var(--color-midnight);
+`;
