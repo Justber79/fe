@@ -51,6 +51,9 @@ export const IconDiv = styled.div<IconDiVProps>`
 `;
 
 export const DashboardBaseContainer = styled.div`
+  flex: 1;
+  min-width: 0;
+
   /* Ensure content is never hidden under the fixed left navigation bar.
      On wide viewports the content stays centred; on narrower ones the left
      margin is clamped to the sidebar width (+ 16px breathing room matching
