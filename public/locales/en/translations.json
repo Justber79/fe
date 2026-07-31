@@ -642,7 +642,9 @@
         "notAMatchSuccess": "Removed",
         "markAsActiveSuccess": "Marked as active",
         "markAsPastSuccess": "Marked as past",
-        "emptyState": "No items in this category yet"
+        "emptyState": "No items in this category yet",
+        "unmatchDialogTitle": "Confirm Unmatch",
+        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?"
       },
       "contactDetails": {
         "title": "Contact details",
@@ -701,6 +703,13 @@
           "activitiesRequired": "Please select at least one activity",
           "skillsRequired": "Please select at least one skill"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete volunteer",
+        "confirmTitle": "Delete this volunteer?",
+        "confirmMessage": "This will permanently delete \"{{name}}\"'s profile and cannot be undone.",
+        "deleteSuccess": "Volunteer deleted successfully"
       }
     },
     "documentSection": {
@@ -848,6 +857,13 @@
         "reject": "Reject",
         "approved": "Join request approved",
         "rejected": "Join request rejected"
+      },
+      "transferMode": {
+        "header": "Select an NGO to transfer \"{{name}}\" to",
+        "confirmTitle": "Transfer this opportunity?",
+        "confirmMessage": "This will move \"{{opportunityName}}\" to {{agentName}}. The applicant's contact details stay the same; assigned volunteers move with it.",
+        "confirmButton": "Transfer",
+        "success": "Opportunity transferred successfully"
       }
     },
     "opportunities": {
@@ -1133,7 +1149,7 @@
         "address": "Address",
         "organisationType": "Type of organisation",
         "operator": "Operator / Träger",
-        "services": "Leistungen",
+        "services": "Services",
         "clientLanguages": "Client languages",
         "cancel": "Cancel",
         "saveChanges": "Save changes",
@@ -1153,6 +1169,14 @@
           "active": "Active",
           "past": "Past"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete NGO",
+        "blockedMessage": "Transfer opportunities above first.",
+        "confirmTitle": "Delete this NGO?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "NGO deleted successfully"
       }
     },
     "opportunityProfile": {
@@ -1326,6 +1350,14 @@
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"
         }
+      },
+      "dangerZone": {
+        "title": "Danger zone",
+        "deleteButton": "Delete opportunity",
+        "transferButton": "Transfer to another NGO",
+        "confirmTitle": "Delete this opportunity?",
+        "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
+        "deleteSuccess": "Opportunity deleted successfully"
       }
     },
     "racTitle": "Refugee accommodation centre",
@@ -1646,7 +1678,8 @@
       "passwordMismatch": "Passwords do not match",
       "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
-      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
+      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email.",
+      "invalidOrganizationEmail": "Invalid organization email."
     },
     "success": {
       "title": "Registration successful!",
@@ -1659,10 +1692,9 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
-      "matchFound": "We found an organisation matching this address: {{name}}. Would you like to use it?",
-      "useThisOrg": "Yes, use this",
+      "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
+      "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",
-      "matched": "Organisation matched: {{name}}",
       "titleTaken": "An organisation with this name already exists.",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",

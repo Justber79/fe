@@ -8,19 +8,19 @@ import { useAuth } from "@/hooks/useAuth";
 type Props = {
   agents: ApiAgentGetList[];
   count: number;
-  columns: number;
-  rows: number;
+  itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
+  onSelect?: (agent: ApiAgentGetList) => void;
 };
 
-export function AgentCardList({ agents, count, columns, rows, currentPage, setCurrentPage, districtsList }: Props) {
+export function AgentCardList({ agents, count, itemsPerPage, currentPage, setCurrentPage, districtsList, onSelect }: Props) {
   const { isAuthorized } = useAuth();
 
   const items = agents.map((agent) =>
     isAuthorized ? (
-      <AgentCard key={agent.id} agent={agent} districtsList={districtsList} />
+      <AgentCard key={agent.id} agent={agent} districtsList={districtsList} onSelect={onSelect} />
     ) : (
       <AgentReadOnlyCard key={agent.id} agent={agent} districtsList={districtsList} />
     ),
@@ -30,8 +30,7 @@ export function AgentCardList({ agents, count, columns, rows, currentPage, setCu
     <AgentCardListContainer data-testid="agent-card-list">
       <PaginatedGrid
         pageItems={items}
-        columns={columns}
-        rows={rows}
+        itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItemCounts={count}

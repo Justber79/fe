@@ -4,7 +4,6 @@ import { ActivitySpan } from "@/components/styled/text";
 import { CalendarDotsIcon, MapPinIcon, ShootingStarIcon, TranslateIcon, WrenchIcon } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "@/hooks/useAuth";
 import { ApiLanguage, ApiVolunteerOpportunityGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { ActivityLog } from "../ActivityLog";
 import { StatusAccordionActions } from "../shared/AccordionActions";
@@ -15,6 +14,7 @@ import { DetailParagraph } from "./styles";
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
+  hasEditingRights: boolean;
   onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
@@ -72,13 +72,13 @@ function TagsWithOverflow({ tags }: { tags: string[] }) {
 export default function VolunteerDetail({
   volunteer,
   currentStatus,
+  hasEditingRights,
   onMatch,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
 }: Props) {
   const { t } = useTranslation();
-  const { isAuthorized } = useAuth();
   const { languages, activities, skills, availability, locations } = volunteer;
 
   const activityTags = activities.map((a) => a.title);
@@ -119,7 +119,7 @@ export default function VolunteerDetail({
         currentStatus === OpportunityVolunteerStatusType.PAST) && (
         <ActivityLog
           opportunityVolunteerId={volunteer.id}
-          readOnly={!isAuthorized || currentStatus === OpportunityVolunteerStatusType.PAST}
+          readOnly={!hasEditingRights || currentStatus === OpportunityVolunteerStatusType.PAST}
         />
       )}
 

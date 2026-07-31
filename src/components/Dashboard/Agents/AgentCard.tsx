@@ -22,9 +22,10 @@ import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, D
 interface Props {
   agent: ApiAgentGetList;
   districtsList?: OptionItem[];
+  onSelect?: (agent: ApiAgentGetList) => void;
 }
 
-export const AgentCard = ({ agent, districtsList }: Props) => {
+export const AgentCard = ({ agent, districtsList, onSelect }: Props) => {
   const { t, i18n } = useTranslation();
 
   const { id, title, district, volunteerSearch, services, type, trustLevel } = getNormalizedAgent(agent);
@@ -42,8 +43,23 @@ export const AgentCard = ({ agent, districtsList }: Props) => {
     if (id == null) return;
     patchAgent({ trustLevel: next });
   };
+
+  const cardProps = onSelect
+    ? {
+        onClick: () => onSelect(agent),
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onSelect(agent);
+          }
+        },
+      }
+    : { as: Link, href: profileUrl };
+
   return (
-    <Card as={Link} href={profileUrl}>
+    <Card {...cardProps}>
       <CardHeader>
         <CardHeaderInfo>
           <Heading4>{title}</Heading4>

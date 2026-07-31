@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathOpportunity, cacheTTL, CARD_COLUMNS, CARD_LIMIT, CARD_ROWS, TABLE_LIMIT } from "@/config/constants";
+import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -33,7 +33,6 @@ function sortByAppointmentDate(
 type Props = {
   setNumOfOpps: (num: number) => void;
   sortOrder: string;
-  isFiltersOpen: boolean;
   filter: OpportunityCardsFilter;
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
@@ -43,7 +42,6 @@ type Props = {
 export function OpportunityListController({
   setNumOfOpps,
   sortOrder,
-  isFiltersOpen,
   filter,
   apiFilterOptions,
   volunteerId,
@@ -107,8 +105,7 @@ export function OpportunityListController({
       districtsList={apiFilterOptions?.district ?? undefined}
       opportunities={opportunities}
       count={count}
-      columns={CARD_COLUMNS - (isFiltersOpen ? 1 : 0)}
-      rows={CARD_ROWS + (isFiltersOpen ? 1 : 0)}
+      itemsPerPage={limit}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       volunteerId={volunteerId}
