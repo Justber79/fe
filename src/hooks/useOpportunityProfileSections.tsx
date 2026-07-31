@@ -19,6 +19,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "./useAuth";
+import { useGetVolunteerOpportunityLinked } from "./useGetVolunteerOpportunityLinked";
 
 export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | undefined) => {
   const { t, i18n } = useTranslation();
@@ -45,6 +46,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteer = useGetVolunteer(volunteerId);
+  const { isAlreadyMatched } = useGetVolunteerOpportunityLinked(opportunity?.id ?? 0, volunteerId);
 
   const { mutate: suggestMutate } = useSuggestVolunteerOpportunity(() => {
     setIsSuggestDialogOpen(false);
@@ -124,14 +126,15 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
       {
         iconName: IconName.UsersThree,
         title: t("dashboard.opportunityProfile.volunteersSec.title"),
-        ...(isAuthorized && {
-          headerButtonName: volunteerId
-            ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
-            : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
-          onHeaderButtonClick: volunteerId
-            ? () => setIsSuggestDialogOpen(true)
-            : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
-        }),
+        ...(isAuthorized &&
+          !isAlreadyMatched && {
+            headerButtonName: volunteerId
+              ? t("dashboard.opportunityProfile.volunteersSec.suggestButtonName")
+              : t("dashboard.opportunityProfile.volunteersSec.findVolunteers"),
+            onHeaderButtonClick: volunteerId
+              ? () => setIsSuggestDialogOpen(true)
+              : () => router.push(`/${i18n.language}/dashboard/volunteers?opportunity=${opportunity.id}`),
+          }),
         subComponent: (
           <>
             <OpportunityVolunteers opportunityId={opportunity.id} hasEditingRights={hasEditingRights} />
