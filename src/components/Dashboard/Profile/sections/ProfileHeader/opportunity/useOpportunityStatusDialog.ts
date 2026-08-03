@@ -29,18 +29,8 @@ export const useOpportunityStatusDialog = (opportunity: ApiOpportunityGet): UseO
     }
   };
 
-  const onSave = (status: OpportunityManualStatusType, { onSuccess }: { onSuccess: () => void }) => {
-    // const sdkStatus = MANUAL_TO_SDK[status];
-    // if (sdkStatus) {
-    //   updateStatus({ statusOpportunity: sdkStatus }, { onSuccess });
-    // } else {
-    //   onSuccess();
-    // }
-    handleStatusChange(status, { onSuccess });
-  };
-
   return useStatusDialog({
     initial: toManualStatus(opportunity.statusOpportunity),
-    onSave,
+    onSave: handleStatusChange,
   });
 };
