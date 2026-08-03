@@ -14,7 +14,7 @@ const ProfilePage = (props: ProfileEntityProps) => {
 
   return (
     <PageContainer>
-      <BackButton onClick={() => router.back()}>
+      <BackButton onClick={() => router.push("/dashboard")}>
         <ArrowLeftIcon size={24} />
         {t("dashboard.volunteerProfile.backToDashboard")}
       </BackButton>
