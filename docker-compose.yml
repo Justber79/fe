@@ -1,6 +1,5 @@
 services:
-
- be:
+  be:
     container_name: be
     depends_on:
       bootstrap:
@@ -25,7 +24,7 @@ services:
       - DB_SCHEMA=public
     ports:
       - 8000:8000
- bootstrap:
+  bootstrap:
     container_name: data-bootstrap
     depends_on:
       db:
@@ -39,7 +38,7 @@ services:
       - DB_PASSWORD=postgres
       - DB_NAME=postgres
       - DB_SCHEMA=public
- db:
+  db:
     container_name: db
     image: postgres:17.2
     ports:
@@ -56,13 +55,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
- fe:
+  fe:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         NODE_ENV: ${NODE_ENV:-development}
         API_URL: "http://be:8000"
+        # NEXT_PUBLIC_* is inlined at build time; env_file cannot set these.
+        NEXT_PUBLIC_CLOUDFRONT_URL: ${NEXT_PUBLIC_CLOUDFRONT_URL:-https://d2nwrdddg8skub.cloudfront.net/images}
+        NEXT_PUBLIC_CLOUDFRONT_DATA_URL: ${NEXT_PUBLIC_CLOUDFRONT_DATA_URL:-https://d2nwrdddg8skub.cloudfront.net/data}
     container_name: fe
     ports:
       - "3000:3000"
