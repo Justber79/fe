@@ -503,7 +503,6 @@
     "header": {
       "button": {
         "login": "Anmelden",
-        "joinVolunteer": "Finde jetzt dein Ehrenamt",
         "dashboard": "Dashboard",
         "logout": "Abmelden"
       }
