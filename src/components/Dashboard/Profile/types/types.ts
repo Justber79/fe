@@ -54,3 +54,5 @@ export enum ProfileNavigationDirection {
   LEFT = "left",
   RIGHT = "right",
 }
+
+export const FadeDuration = 300;

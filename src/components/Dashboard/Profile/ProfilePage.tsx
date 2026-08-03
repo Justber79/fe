@@ -12,7 +12,7 @@ import {
   ProfileNavigatorWrapper,
 } from "./styles";
 import { ProfileEntityProps, ProfileNavigationDirection } from "./types";
-import { useEffect, useState } from "react";
+import { useFadedNavigation } from "./useFadedNavigation";
 
 const FADE_DURATION = 300;
 
@@ -20,19 +20,13 @@ const ProfilePage = (props: ProfileEntityProps) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { sections, heading, header } = useProfileSections(props);
-  const [isFading, setIsFading] = useState<boolean>(false);
+
+  const { navigateWithFade, isFading } = useFadedNavigation(props.agent ? props.agent.id : 0);
 
   const handleNavigate = (direction: ProfileNavigationDirection) => {
     if (!props.handleProfileNavigation) return;
-    setIsFading(true);
-    setTimeout(() => {
-      props.handleProfileNavigation!(direction);
-    }, FADE_DURATION);
+    navigateWithFade(() => props.handleProfileNavigation!(direction));
   };
-
-  useEffect(() => {
-    setIsFading(false);
-  }, [props.agent?.id]);
 
   return (
     <PageContainer>

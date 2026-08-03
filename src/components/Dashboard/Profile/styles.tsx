@@ -45,12 +45,12 @@ export const ProfileNavigatorWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  font-size: 1.5rem;
+  font-size: var(--profile-navigation-container-font-size);
 `;
 
 export const ProfileNavigatorContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--profile-navigation-container-gap);
   cursor: pointer;
 `;
