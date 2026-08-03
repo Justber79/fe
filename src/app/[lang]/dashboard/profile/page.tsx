@@ -10,8 +10,8 @@ export default function DashboardProfilePage() {
   const { t } = useTranslation();
   const { agentId, isLoading } = useGetCurrentAgent();
 
-  // test agentIds
-  const agentIds = [1, 2, 3, 4, 5, 6];
+  // test multiple agentIds here
+  const agentIds: Array<number> = [];
 
   if (isLoading) {
     return (
@@ -21,7 +21,7 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId || agentIds.length === 0) {
+  if (!agentId && agentIds.length === 0) {
     return (
       <CenteredWrapper>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -29,9 +29,9 @@ export default function DashboardProfilePage() {
     );
   }
 
-  return agentIds.length === 1 ? (
-    <ProfileLayout entityId={String(agentIds[0])} entityType={"agent"} />
-  ) : (
+  return agentIds.length > 1 ? (
     <MultipleProfilesController agentIds={agentIds} />
+  ) : (
+    <ProfileLayout entityId={String(String(agentId))} entityType={"agent"} />
   );
 }
