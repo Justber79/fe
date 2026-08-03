@@ -1,10 +1,8 @@
-import { apiPathOpportunity, cacheTTL } from "@/config/constants";
-import { useGetQuery } from "@/hooks/useGetQuery";
 import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
 } from "@/hooks/useUpdateOpportunityVolunteerStatus";
-import { ApiVolunteerOpportunityGet, Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
+import { Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
@@ -12,6 +10,7 @@ import { Tabs } from "../shared/Tabs";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
 import { OpportunityVolunteersContainer } from "./styles";
+import { useGetVolunteerOpportunityLinked } from "@/hooks/useGetVolunteerOpportunityLinked";
 
 export const OpportunityVolunteers = ({
   opportunityId,
@@ -24,12 +23,7 @@ export const OpportunityVolunteers = ({
 
   const queryKey = ["opportunity-volunteers", String(opportunityId)];
 
-  const { data, isLoading } = useGetQuery<ApiVolunteerOpportunityGet[]>({
-    queryKey,
-    apiPath: `${apiPathOpportunity}/${opportunityId}/volunteer-linked`,
-    staleTime: cacheTTL,
-    enabled: !!opportunityId,
-  });
+  const { data, isLoading } = useGetVolunteerOpportunityLinked(opportunityId);
 
   const volunteers = useMemo(() => data ?? [], [data]);
 
