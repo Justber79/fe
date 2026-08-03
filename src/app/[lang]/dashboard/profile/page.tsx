@@ -1,5 +1,6 @@
 "use client";
 import CenteredWrapper from "@/components/core/common/CenteredWrapper";
+import { MultipleProfilesController } from "@/components/Dashboard/Profile/MultipleProfilesController";
 import ProfileLayout from "@/components/Dashboard/Profile/ProfileLayout";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
@@ -9,6 +10,9 @@ export default function DashboardProfilePage() {
   const { t } = useTranslation();
   const { agentId, isLoading } = useGetCurrentAgent();
 
+  // test agentIds
+  const agentIds = [1, 2, 3, 4, 5, 6];
+
   if (isLoading) {
     return (
       <CenteredWrapper>
@@ -17,7 +21,7 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId) {
+  if (!agentId || agentIds.length === 0) {
     return (
       <CenteredWrapper>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -25,5 +29,9 @@ export default function DashboardProfilePage() {
     );
   }
 
-  return <ProfileLayout entityId={String(agentId)} entityType={"agent"} />;
+  return agentIds.length === 1 ? (
+    <ProfileLayout entityId={String(agentIds[0])} entityType={"agent"} />
+  ) : (
+    <MultipleProfilesController agentIds={agentIds} />
+  );
 }
