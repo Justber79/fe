@@ -29,19 +29,16 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
-  const racRef = useRef<EditableSectionRef>(null);
   const accompanyingDetailsRef = useRef<EditableSectionRef>(null);
   const opportunityDetailsRef = useRef<EditableSectionRef>(null);
 
   const [isOppDetailsEditing, setIsOppDetailsEditing] = useState(false);
   const [isContactEditing, setIsContactEditing] = useState(false);
-  const [isRacEditing, setIsRacEditing] = useState(false);
   const [isAccompanyingEditing, setIsAccompanyingEditing] = useState(false);
   const [isSuggestDialogOpen, setIsSuggestDialogOpen] = useState(false);
 
   const handleOppDetailsEditingChange = useCallback((editing: boolean) => setIsOppDetailsEditing(editing), []);
   const handleContactEditingChange = useCallback((editing: boolean) => setIsContactEditing(editing), []);
-  const handleRacEditingChange = useCallback((editing: boolean) => setIsRacEditing(editing), []);
   const handleAccompanyingEditingChange = useCallback((editing: boolean) => setIsAccompanyingEditing(editing), []);
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
@@ -94,19 +91,28 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     {
       iconName: IconName.House,
       title: t("dashboard.opportunityProfile.racTitle"),
-      ...(!isRacEditing &&
-        hasEditingRights && {
-          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-          onHeaderButtonClick: () => racRef.current?.handleEditClick(),
-        }),
-      subComponent: (
-        <RefugeeAccommodationCentre ref={racRef} opportunity={opportunity} onEditingChange={handleRacEditingChange} />
-      ),
+      subComponent: <RefugeeAccommodationCentre opportunity={opportunity} />,
     },
   ];
 
   if (hasEditingRights) {
     sections.push(
+      {
+        iconName: IconName.ChatsCircle,
+        title: t("dashboard.opportunityProfile.contactDetailsTitle"),
+        ...(!isContactEditing &&
+          Boolean(opportunity.contact?.id) && {
+            headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+            onHeaderButtonClick: () => opportunityContactDetailsRef.current?.handleEditClick(),
+          }),
+        subComponent: (
+          <ContactDetails
+            ref={opportunityContactDetailsRef}
+            opportunity={opportunity}
+            onEditingChange={handleContactEditingChange}
+          />
+        ),
+      },
       {
         iconName: IconName.Users,
         title: t("dashboard.opportunityProfile.accompanyingDetailsTitle"),
@@ -147,21 +153,6 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
               />
             )}
           </>
-        ),
-      },
-      {
-        iconName: IconName.ChatsCircle,
-        title: t("dashboard.opportunityProfile.contactDetailsTitle"),
-        ...(!isContactEditing && {
-          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
-          onHeaderButtonClick: () => opportunityContactDetailsRef.current?.handleEditClick(),
-        }),
-        subComponent: (
-          <ContactDetails
-            ref={opportunityContactDetailsRef}
-            opportunity={opportunity}
-            onEditingChange={handleContactEditingChange}
-          />
         ),
       },
     );
