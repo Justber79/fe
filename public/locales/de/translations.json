@@ -1013,7 +1013,11 @@
       "typeOptions": {
         "tshirt": "T-Shirt",
         "toteBag": "Stofftasche",
-        "benefitCard": "Vorteilskarte"
+        "benefitCard": "Vorteilskarte",
+        "need4deedCertificate": "Need4Deed-Zertifikat",
+        "cap": "Cap",
+        "notebook": "Notizbuch",
+        "cityCertificate": "Städtisches Zertifikat"
       },
       "addAppreciation": "Anerkennung hinzufügen",
       "editAppreciation": "Anerkennung bearbeiten",
@@ -1259,26 +1263,14 @@
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Kontaktdaten erfolgreich aktualisiert",
         "validation": {
-          "nameRequired": "Name ist erforderlich",
-          "phoneRequired": "Telefon ist erforderlich",
-          "phoneInvalid": "Telefon muss mit + beginnen und nur Ziffern/Leerzeichen enthalten",
-          "emailRequired": "E-Mail ist erforderlich",
-          "emailInvalid": "Ungültige E-Mail",
-          "waysToContactRequired": "Wählen Sie mindestens eine Kontaktmöglichkeit"
+          "nameRequired": "Name ist erforderlich"
         }
       },
       "racTitle": "Geflüchtetenunterkunft",
       "rac": {
         "name": "Name",
         "address": "Adresse",
-        "district": "Bezirk",
-        "cancel": "Abbrechen",
-        "saveChanges": "Änderungen speichern",
-        "validation": {
-          "nameRequired": "Name ist erforderlich",
-          "addressRequired": "Adresse ist erforderlich",
-          "districtRequired": "Bezirk ist erforderlich"
-        }
+        "district": "Bezirk"
       },
       "accompanyingDetailsTitle": "Details zur Begleitung",
       "accompanyingDetails": {
