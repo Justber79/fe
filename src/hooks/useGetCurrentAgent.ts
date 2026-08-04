@@ -1,6 +1,7 @@
 import { apiPathAgent, apiPathMe, AUTH_HINT_COOKIE_NAME, cacheTTL, USER_QUERY_KEY } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
+import { useQueries } from "@tanstack/react-query";
 import { ApiAgentGet, ApiUserGet } from "need4deed-sdk";
 
 export const useGetCurrentAgent = () => {
@@ -15,6 +16,8 @@ export const useGetCurrentAgent = () => {
   });
 
   const agentId = user?.agentId;
+  // test here for multiple NGOs
+  const agentIds = [agentId];
 
   const { data: agent, isLoading: agentLoading } = useGetQuery<ApiAgentGet>({
     queryKey: ["agent", String(agentId)],
@@ -24,5 +27,20 @@ export const useGetCurrentAgent = () => {
     addLang: false,
   });
 
-  return { agent, agentId, isLoading: userLoading || (!!agentId && agentLoading) };
+  const agentQueries = useQueries({
+    queries: agentIds.map((id) => ({
+      queryKey: ["agent", String(id)],
+      queryFn: async () => {
+        const res = await fetch(`${apiPathAgent}/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch agent");
+        return res.json();
+      },
+      staleTime: cacheTTL,
+      enabled: !!id,
+    })),
+  });
+
+  const currentAgents = agentQueries.map((q) => q.data?.data) ?? [];
+
+  return { agent, agentId, isLoading: userLoading || (!!agentId && agentLoading), currentAgents };
 };

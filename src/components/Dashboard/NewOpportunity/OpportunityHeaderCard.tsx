@@ -11,8 +11,8 @@ import { ShootingStarIcon } from "@phosphor-icons/react";
 import { useFormContext, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { VolunteerStateTypeType } from "need4deed-sdk";
-import { VolunteerTypeRow, TypeButtons, TypeButton } from "./styled";
-import { Heading4 } from "@/components/styled/text";
+import { VolunteerTypeRow, TypeButtons, TypeButton, NGOTypeRow, NGOnonEditableRow } from "./styled";
+import { Heading3, Heading4 } from "@/components/styled/text";
 import { createVolunteerTypeLabelMap } from "@/components/Dashboard/Profile/sections/ProfileHeader/common/labelMaps";
 import { HeaderFormData } from "./headerSchema";
 
@@ -22,7 +22,12 @@ const SELECTABLE_VOLUNTEER_TYPES = [
   VolunteerStateTypeType.EVENTS,
 ] as const;
 
-export default function OpportunityHeaderCard({ selectedType }: { selectedType: VolunteerStateTypeType }) {
+type Props = {
+  selectedType: VolunteerStateTypeType;
+  agentTitles: { id: number; title: string }[];
+};
+
+export default function OpportunityHeaderCard({ selectedType, agentTitles }: Props) {
   const { t } = useTranslation();
   const {
     control,
@@ -72,6 +77,33 @@ export default function OpportunityHeaderCard({ selectedType }: { selectedType: 
               </TypeButtons>
             </VolunteerTypeRow>
           </StatusSection>
+
+          <NGOTypeRow>
+            <Controller
+              name="agentId"
+              control={control}
+              render={({ field }) =>
+                agentTitles && agentTitles.length > 1 ? (
+                  <EditableField
+                    mode="edit"
+                    type="radio-list"
+                    label={t("dashboard.newOpportunity.fields.ngo")}
+                    value={field.value}
+                    setValue={field.onChange}
+                    labels={agentTitles?.map((agent) => agent.title)}
+                    displayValue={agentTitles?.find((agent) => agent.id === Number(field.value))?.title}
+                    options={agentTitles?.map((agent) => agent.id)}
+                    errorMessage={errors.agentId?.message}
+                  />
+                ) : (
+                  <NGOnonEditableRow>
+                    <Heading4>{t("dashboard.newOpportunity.fields.ngo")}</Heading4>
+                    <Heading3>{agentTitles[0]?.title ?? "-"}</Heading3>
+                  </NGOnonEditableRow>
+                )
+              }
+            />
+          </NGOTypeRow>
         </ProfileInfo>
       </ProfileContent>
     </Card>

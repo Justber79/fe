@@ -1464,7 +1464,8 @@
       "subtitle": "Fill in the details. You can edit everything after creating it.",
       "fields": {
         "title": "Opportunity title",
-        "titlePlaceholder": "e.g. German tutoring for adults"
+        "titlePlaceholder": "e.g. German tutoring for adults",
+        "ngo": "NGO"
       },
       "contactSection": "Contact details",
       "agentSection": "Your organisation",
