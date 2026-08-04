@@ -1372,7 +1372,7 @@
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
-          "mainCommunicationInvalid": "Hauptkommunikation muss ausschließlich Deutsch oder Deutsch und Englisch sein",
+          "mainCommunicationInvalid": "Hauptkommunikation muss Deutsch, Englisch oder beides sein",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
