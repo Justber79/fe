@@ -2,6 +2,7 @@ import { ApiAgentGetList, Lang, OptionItem } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
+import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 
 interface Props {
   agent: ApiAgentGetList;
@@ -17,8 +18,8 @@ export function AgentReadOnlyTableRow({ agent, isLast, districtsList }: Props) {
 
   return (
     <ClickableRow $isLast={isLast} $cursor={"auto"} data-testid={`agent-row-${id}`}>
-      <TableCell data-testid={`agent-title-${id}`}>{title}</TableCell>
-      <TableCell data-testid={`agent-type-${id}`}>{extractOptionTitle(type, lang)}</TableCell>
+      <WrapAnywhereCell data-testid={`agent-title-${id}`}>{title}</WrapAnywhereCell>
+      <WrapAnywhereCell data-testid={`agent-type-${id}`}>{extractOptionTitle(type, lang)}</WrapAnywhereCell>
       <TableCell data-testid={`agent-district-${id}`}>{districtTitle || "—"}</TableCell>
     </ClickableRow>
   );
