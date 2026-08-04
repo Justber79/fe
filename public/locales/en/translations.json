@@ -1126,6 +1126,15 @@
         "editContact": {
           "success": "Contact updated successfully"
         },
+        "deleteContact": {
+          "button": "Delete",
+          "confirmTitle": "Delete this contact?",
+          "confirmMessage": "This removes {{name}} from this NGO. Their account and any other NGOs they belong to are not affected.",
+          "confirmText": "Delete",
+          "success": "Contact deleted successfully",
+          "blockedMessage": "You can't remove yourself from this NGO."
+        },
+
         "validation": {
           "nameRequired": "Name is required",
           "districtRequired": "District is required",
