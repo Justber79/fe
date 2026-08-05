@@ -42,12 +42,12 @@ export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSe
 
   return (
     <ClickableRow {...rowProps} $isLast={isLast} data-testid={`agent-row-${id}`}>
-      <TableCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
+      <WrapAnywhereCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
         {title}
-      </TableCell>
-      <TableCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
+      </WrapAnywhereCell>
+      <WrapAnywhereCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
         {extractOptionTitle(type, lang)}
-      </TableCell>
+      </WrapAnywhereCell>
       <TableCell $width={AGENT_COL_WIDTHS.volunteerSearch} data-testid={`agent-search-${id}`}>
         {searchLabels[volunteerSearch] || volunteerSearch}
       </TableCell>

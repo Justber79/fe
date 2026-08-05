@@ -1,13 +1,19 @@
 import { EditableField } from "@/components/EditableField/EditableField";
-import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../shared/styles";
-import { RefugeeAccommodationCentreFormData } from "./refugeeAccommodationCentreSchema";
 
-export const RefugeeAccommodationCentreDisplay = () => {
+type RefugeeAccommodationCentreDisplayProps = {
+  name: string;
+  address: string;
+  district: string;
+};
+
+export const RefugeeAccommodationCentreDisplay = ({
+  name,
+  address,
+  district,
+}: RefugeeAccommodationCentreDisplayProps) => {
   const { t } = useTranslation();
-  const { watch } = useFormContext<RefugeeAccommodationCentreFormData>();
-  const values = watch();
 
   return (
     <FormDetails data-testid="refugee-accommodation-centre-display">
@@ -15,23 +21,21 @@ export const RefugeeAccommodationCentreDisplay = () => {
         mode="display"
         type="text"
         label={t("dashboard.opportunityProfile.rac.name")}
-        value={values.name}
+        value={name}
         setValue={() => {}}
       />
-
       <EditableField
         mode="display"
         type="text"
         label={t("dashboard.opportunityProfile.rac.address")}
-        value={values.address}
+        value={address}
         setValue={() => {}}
       />
-
       <EditableField
         mode="display"
         type="text"
         label={t("dashboard.opportunityProfile.rac.district")}
-        value={values.district}
+        value={district}
         setValue={() => {}}
       />
     </FormDetails>
