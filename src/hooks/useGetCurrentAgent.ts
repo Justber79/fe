@@ -17,7 +17,7 @@ export const useGetCurrentAgent = () => {
 
   const agentId = user?.agentId;
   // test here for multiple ngos, add more agentids
-  const agentIds = [agentId, 2, 3];
+  const agentIds = [agentId];
 
   const { data: agent, isLoading: agentLoading } = useGetQuery<ApiAgentGet>({
     queryKey: ["agent", String(agentId)],
