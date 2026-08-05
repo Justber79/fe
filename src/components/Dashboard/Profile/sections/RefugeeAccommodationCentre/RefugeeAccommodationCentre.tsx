@@ -1,103 +1,23 @@
 "use client";
-import { useUpdateOpportunityAgent } from "@/hooks/useUpdateOpportunityAgent";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { ApiOpportunityGet, Lang } from "need4deed-sdk";
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { FormContainer } from "../shared/styles";
-import { EditableSectionProps, EditableSectionRef } from "../shared/types";
-import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
-import { useApiDistricts } from "../VolunteerProfile/hooks";
-import { createMapping } from "../VolunteerProfile/mappingUtils";
 import { RefugeeAccommodationCentreDisplay } from "./RefugeeAccommodationCentreDisplay";
-import { RefugeeAccommodationCentreEdit } from "./RefugeeAccommodationCentreEdit";
-import {
-  createRefugeeAccommodationCentreSchema,
-  RefugeeAccommodationCentreFormData,
-} from "./refugeeAccommodationCentreSchema";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   opportunity: ApiOpportunityGet;
-} & EditableSectionProps;
+};
 
-export const RefugeeAccommodationCentre = forwardRef<EditableSectionRef, Props>(function RefugeeAccommodationCentre(
-  { opportunity, onEditingChange },
-  ref,
-) {
-  const { t, i18n } = useTranslation();
-  const { mutate: updateAgent, isPending } = useUpdateOpportunityAgent(opportunity.id);
-  const [isEditing, setIsEditing] = useState(false);
-
-  useEditingChangeNotifier(isEditing, onEditingChange);
-
-  const { data: apiDistricts = [] } = useApiDistricts();
-  const districtMapping = useMemo(() => createMapping(apiDistricts), [apiDistricts]);
-
-  const schema = createRefugeeAccommodationCentreSchema(t);
-
-  const initialFormValues = useMemo((): RefugeeAccommodationCentreFormData => {
-    const { agent } = opportunity;
-    const lang = i18n.language as Lang;
-    const districtTitle = agent.district?.title?.[lang] ?? agent.district?.title?.en ?? "";
-
-    return {
-      name: agent.name ?? "",
-      address: agent.address ?? "",
-      district: districtTitle,
-    };
-  }, [opportunity, i18n.language]);
-
-  const methods = useForm<RefugeeAccommodationCentreFormData>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-    defaultValues: initialFormValues,
-  });
-
-  const { handleSubmit, reset } = methods;
-
-  const handleEditClick = () => setIsEditing(true);
-
-  useImperativeHandle(ref, () => ({ handleEditClick }));
-
-  const handleCancel = () => {
-    reset();
-    setIsEditing(false);
-  };
-
-  const onSubmit = (values: RefugeeAccommodationCentreFormData) => {
-    const districtId = districtMapping.titleToId[values.district];
-    updateAgent(
-      {
-        agent: {
-          name: values.name,
-          address: values.address,
-          ...(districtId !== undefined && { district: districtId }),
-        },
-      },
-      { onSuccess: () => setIsEditing(false) },
-    );
-  };
-
-  useEffect(() => {
-    if (isEditing) return;
-    reset(initialFormValues);
-  }, [initialFormValues, isEditing, reset]);
+export function RefugeeAccommodationCentre({ opportunity }: Props) {
+  const { i18n } = useTranslation();
+  const lang = i18n.language as Lang;
+  const districtTitle = opportunity.agent.district?.title?.[lang] ?? opportunity.agent.district?.title?.de ?? "";
 
   return (
-    <FormProvider {...methods}>
-      <FormContainer data-testid="refugee-accommodation-centre-container" $isEditing={isEditing}>
-        {isEditing ? (
-          <RefugeeAccommodationCentreEdit
-            onCancel={handleCancel}
-            onSubmit={handleSubmit(onSubmit)}
-            isPending={isPending}
-            districts={apiDistricts.map((d) => d.title)}
-          />
-        ) : (
-          <RefugeeAccommodationCentreDisplay />
-        )}
-      </FormContainer>
-    </FormProvider>
+    <RefugeeAccommodationCentreDisplay
+      name={opportunity.agent.name}
+      address={opportunity.agent.address}
+      district={districtTitle}
+    />
   );
-});
+}
