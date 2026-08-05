@@ -117,7 +117,7 @@ export const FieldWrapper = styled.div<HasError>`
 export const HelperText = styled.p`
   font-size: var(--font-size-xs);
   color: var(--color-grey-500);
-  margin: 0;
+  margin: var(--spacing-12) 0;
   text-align: right;
   width: 100%;
 `;

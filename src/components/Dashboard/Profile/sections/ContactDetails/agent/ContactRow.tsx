@@ -104,7 +104,7 @@ export const ContactRow = ({ agentId, contact }: Props) => {
           />
         </ButtonRow>
         {isOwnRow && (
-          <HelperText data-testid="agent-contact-row-delete-delete-blocked">
+          <HelperText data-testid="agent-contact-row-delete-blocked">
             {t("dashboard.agentProfile.contactDetails.deleteContact.blockedMessage")}
           </HelperText>
         )}
