@@ -121,7 +121,7 @@ export const NGOTypeRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100&;
+  width: 100%;
   align-items: center;
   padding: var(--spacing-16) 0;
   border-bottom: var(--border-width-thin) solid var(--color-blue-50);

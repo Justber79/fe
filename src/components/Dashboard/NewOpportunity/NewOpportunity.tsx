@@ -118,7 +118,9 @@ export function NewOpportunity() {
     queryKeyToInvalidate: ["agent-opportunities", String(selectedAgentId)],
   });
 
-  const agentTitles = currentAgents?.map((agent) => ({ id: agent?.id, title: agent?.title }));
+  const agentTitles = currentAgents
+    .map((agent) => ({ id: agent?.id, title: agent?.title }))
+    .filter((agent) => Boolean(agent?.id));
 
   const handleCreate = async () => {
     const headerValid = await headerMethods.trigger();

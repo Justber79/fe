@@ -91,7 +91,7 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
                     value={field.value}
                     setValue={field.onChange}
                     labels={agentTitles?.map((agent) => agent.title)}
-                    displayValue={agentTitles?.find((agent) => agent.id === Number(field.value))?.title}
+                    displayValue={agentTitles?.find((agent) => agent.id === field.value)?.title}
                     options={agentTitles?.map((agent) => agent.id)}
                     errorMessage={errors.agentId?.message}
                   />
