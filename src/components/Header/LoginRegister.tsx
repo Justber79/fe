@@ -24,13 +24,6 @@ export function LoginRegister() {
         border="var(--layout-static-page-header-button-border)"
         textColor="var(--color-aubergine)"
       />
-
-      <Button
-        onClick={() => router.push(`/${i18n.language}/forms/volunteer`)}
-        text={t("dashboard.header.button.joinVolunteer")}
-        height="var(--layout-static-page-header-button-height)"
-        textFontSize="var(--layout-static-page-header-button-text-font-size)"
-      />
     </LoginRegisterContainer>
   );
 }
