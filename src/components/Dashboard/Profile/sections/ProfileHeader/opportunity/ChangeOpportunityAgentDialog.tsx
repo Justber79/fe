@@ -20,7 +20,7 @@ export const ChangeOpportunityAgentDialog = ({
     ?.map((agent) => ({
       value: agent?.id,
       label: agent?.title,
-      description: agent?.agentDetails.about,
+      description: agent?.agentDetails?.about,
     }));
   return (
     <ChangeStatusDialog
