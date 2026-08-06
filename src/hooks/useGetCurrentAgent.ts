@@ -2,6 +2,7 @@ import { apiPathAgent, apiPathMe, AUTH_HINT_COOKIE_NAME, cacheTTL, USER_QUERY_KE
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { useQueries } from "@tanstack/react-query";
+import axios from "axios";
 import { ApiAgentGet, ApiUserGet } from "need4deed-sdk";
 
 export const useGetCurrentAgent = () => {
@@ -31,16 +32,15 @@ export const useGetCurrentAgent = () => {
     queries: agentIds.map((id) => ({
       queryKey: ["agent", String(id)],
       queryFn: async () => {
-        const res = await fetch(`${apiPathAgent}/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch agent");
-        return res.json();
+        const res = await axios.get(`${apiPathAgent}/${id}`);
+        return res.data;
       },
       staleTime: cacheTTL,
       enabled: !!id,
     })),
   });
 
-  const currentAgents = agentQueries.map((q) => q.data?.data) ?? [];
+  const currentAgents = agentQueries.map((q) => q.data?.data);
 
   return { agent, agentId, isLoading: userLoading || (!!agentId && agentLoading), currentAgents };
 };
