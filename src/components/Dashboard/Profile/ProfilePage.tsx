@@ -17,7 +17,7 @@ import { useFadedNavigation } from "./useFadedNavigation";
 const FADE_DURATION = 300;
 
 const ProfilePage = (props: ProfileEntityProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const { sections, heading, header } = useProfileSections(props);
 
@@ -30,7 +30,7 @@ const ProfilePage = (props: ProfileEntityProps) => {
 
   return (
     <PageContainer>
-      <BackButton onClick={() => router.push("/dashboard")}>
+      <BackButton onClick={() => router.push(`/${i18n.language}/dashboard`)}>
         <ArrowLeftIcon size={24} />
         {t("dashboard.volunteerProfile.backToDashboard")}
       </BackButton>
