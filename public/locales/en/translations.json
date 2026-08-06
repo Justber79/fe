@@ -1001,7 +1001,11 @@
       "typeOptions": {
         "tshirt": "T-shirt",
         "toteBag": "Tote bag",
-        "benefitCard": "Benefit card"
+        "benefitCard": "Benefit card",
+        "need4deedCertificate": "Need4Deed certificate",
+        "cap": "Cap",
+        "notebook": "Notebook",
+        "cityCertificate": "City certificate"
       },
       "addAppreciation": "Add appreciation",
       "editAppreciation": "Edit appreciation",
@@ -1042,7 +1046,9 @@
     },
     "profile": {
       "loading": "Loading profile...",
-      "notSetUp": "Your organisation profile is not set up yet — please complete registration."
+      "notSetUp": "Your organisation profile is not set up yet — please complete registration.",
+      "nextNgoProfile": "Next NGO Profile",
+      "prevNgoProfile": "Previous NGO Profile"
     },
     "agentProfile": {
       "agentProfile": "NGO Profile",
@@ -1247,26 +1253,14 @@
         "saveChanges": "Save changes",
         "saveSuccess": "Contact details updated successfully",
         "validation": {
-          "nameRequired": "Name is required",
-          "phoneRequired": "Phone is required",
-          "phoneInvalid": "Phone must start with + and contain only digits/spaces",
-          "emailRequired": "Email is required",
-          "emailInvalid": "Invalid email",
-          "waysToContactRequired": "Select at least one way to contact"
+          "nameRequired": "Name is required"
         }
       },
       "racTitle": "Refugee accommodation centre",
       "rac": {
         "name": "Name",
         "address": "Address",
-        "district": "District",
-        "cancel": "Cancel",
-        "saveChanges": "Save changes",
-        "validation": {
-          "nameRequired": "Name is required",
-          "addressRequired": "Address is required",
-          "districtRequired": "District is required"
-        }
+        "district": "District"
       },
       "accompanyingDetailsTitle": "Accompanying details",
       "accompanyingDetails": {
