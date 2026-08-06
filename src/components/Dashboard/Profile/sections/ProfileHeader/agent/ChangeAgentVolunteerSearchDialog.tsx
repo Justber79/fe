@@ -16,7 +16,7 @@ export const ChangeAgentVolunteerSearchDialog = ({
 
   return (
     <ChangeStatusDialog
-      testId="change-agent-engagement-status-dialog"
+      testId="change-agent-volunteer-search-dialog"
       isOpen={isOpen}
       title={t("dashboard.agentProfile.modalData.titleVolSearch")}
       options={options}

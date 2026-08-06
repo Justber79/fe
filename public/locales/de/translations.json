@@ -1104,7 +1104,7 @@
       },
       "modalData": {
         "title": "Engagement-Status ändern",
-        "titleVolSearch": "Change Volunteer Search",
+        "titleVolSearch": "Ehrenamtlichensuche-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",

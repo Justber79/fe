@@ -1,8 +1,8 @@
 import { useUpdateOpportunityStatus } from "@/hooks/useUpdateOpportunityStatus";
+import { useUpdateAgentStatus } from "@/hooks/useUpdateAgentStatus";
 import { AgentVolunteerSearchType, ApiOpportunityGet, OpportunityStatusType } from "need4deed-sdk";
 import { useStatusDialog, UseStatusDialogReturn } from "../common/useStatusDialog";
 import { MANUAL_TO_SDK, OpportunityManualStatusType, SDK_TO_MANUAL } from "./constants";
-import { useUpdateAgentStatus } from "@/hooks/useUpdateAgentStatus";
 
 export type UseOpportunityStatusDialogReturn = UseStatusDialogReturn<OpportunityManualStatusType>;
 
@@ -11,7 +11,7 @@ const toManualStatus = (status: OpportunityStatusType): OpportunityManualStatusT
 
 export const useOpportunityStatusDialog = (opportunity: ApiOpportunityGet): UseOpportunityStatusDialogReturn => {
   const { mutate: updateStatus } = useUpdateOpportunityStatus(opportunity.id);
-  const { mutate: updateVolunteerSearch } = useUpdateAgentStatus(opportunity.agent?.id);
+  const { mutate: updateVolunteerSearch } = useUpdateAgentStatus(opportunity.agent.id);
 
   const handleStatusChange = (status: OpportunityManualStatusType, { onSuccess }: { onSuccess: () => void }) => {
     const sdkStatus = MANUAL_TO_SDK[status];
