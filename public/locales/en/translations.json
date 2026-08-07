@@ -1065,7 +1065,9 @@
           "new": "New",
           "active": "Active",
           "unresponsive": "Unresponsive",
-          "inactive": "Inactive"
+          "inactive": "Inactive",
+          "incontact": "In contact",
+          "triedToContact": "Tried to contact"
         },
         "volunteerSearch": {
           "notNeeded": "Not needed",
@@ -1096,7 +1098,9 @@
           "unresponsive": "Unresponsive",
           "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
-          "inactive_description": "This NGO does not work with the organization anymore."
+          "inactive_description": "This NGO does not work with the organization anymore.",
+          "incontact_description": "This NGO is in contact with the organization.",
+          "triedToContact_description": "We tried to contact this NGO but they did not respond."
         },
         "cancel": "Cancel",
         "save": "Save"

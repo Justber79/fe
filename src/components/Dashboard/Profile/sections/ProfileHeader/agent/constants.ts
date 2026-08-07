@@ -7,13 +7,22 @@ export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngage
   [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
   [AgentEngagementStatus.UNRESPONSIVE]: t("dashboard.agentProfile.status.engagement.unresponsive"),
   [AgentEngagementStatus.INACTIVE]: t("dashboard.agentProfile.status.engagement.inactive"),
+  [AgentEngagementStatus.INCONTACT]: t("dashboard.agentProfile.status.engagement.incontact"),
+  [AgentEngagementStatus.TRIED_TO_CONTACT]: t("dashboard.agentProfile.status.engagement.triedToContact"),
 });
 
-export const AGENT_DIALOG_STATUSES = [AgentEngagementStatus.UNRESPONSIVE, AgentEngagementStatus.INACTIVE] as const;
+export const AGENT_DIALOG_STATUSES = [
+  AgentEngagementStatus.UNRESPONSIVE,
+  AgentEngagementStatus.INACTIVE,
+  AgentEngagementStatus.INCONTACT,
+  AgentEngagementStatus.TRIED_TO_CONTACT,
+] as const;
 
 export const AGENT_ENGAGEMENT_DESCRIPTION_KEYS: Record<(typeof AGENT_DIALOG_STATUSES)[number], string> = {
   [AgentEngagementStatus.UNRESPONSIVE]: "unresponsive_description",
   [AgentEngagementStatus.INACTIVE]: "inactive_description",
+  [AgentEngagementStatus.INCONTACT]: "incontact_description",
+  [AgentEngagementStatus.TRIED_TO_CONTACT]: "incontact_description",
 };
 
 export const createAgentDialogOptions = (t: TFunction) => {
