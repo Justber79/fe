@@ -2,13 +2,14 @@ import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { LoadingErrorWrapper } from "./LoadingErrorWrapper";
 import ProfilePage from "./ProfilePage";
-import { ApiAgentProfileGet } from "./types";
+import { ApiAgentProfileGet, ProfileNavigationDirection } from "./types";
 
 type Props = {
   entityId: string;
+  handleProfileNavigation?: (direction: ProfileNavigationDirection) => void;
 };
 
-export const AgentProfileController = ({ entityId }: Props) => {
+export const AgentProfileController = ({ entityId, handleProfileNavigation }: Props) => {
   const { data, isLoading, isError, error } = useGetQuery<ApiAgentProfileGet>({
     queryKey: ["agent", entityId],
     apiPath: `${apiPathAgent}/${entityId}`,
@@ -17,7 +18,7 @@ export const AgentProfileController = ({ entityId }: Props) => {
 
   return (
     <LoadingErrorWrapper isLoading={isLoading} isError={isError} error={error} data={data} entityType="agent">
-      {data && <ProfilePage agent={data} />}
+      {data && <ProfilePage agent={data} handleProfileNavigation={handleProfileNavigation} />}
     </LoadingErrorWrapper>
   );
 };

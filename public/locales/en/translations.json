@@ -1046,7 +1046,9 @@
     },
     "profile": {
       "loading": "Loading profile...",
-      "notSetUp": "Your organisation profile is not set up yet — please complete registration."
+      "notSetUp": "Your organisation profile is not set up yet — please complete registration.",
+      "nextNgoProfile": "Next NGO Profile",
+      "prevNgoProfile": "Previous NGO Profile"
     },
     "agentProfile": {
       "agentProfile": "NGO Profile",
