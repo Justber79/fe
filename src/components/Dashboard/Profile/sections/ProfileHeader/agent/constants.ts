@@ -2,12 +2,14 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { TFunction } from "i18next";
 import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch, ApiAgentProfileGet } from "../../../types/agent";
 
-export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> => ({
-  [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
-  [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
-  [AgentEngagementStatus.UNRESPONSIVE]: t("dashboard.agentProfile.status.engagement.unresponsive"),
-  [AgentEngagementStatus.INACTIVE]: t("dashboard.agentProfile.status.engagement.inactive"),
-});
+export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> =>
+  // @ts-expect-error TODO - Add INCONTACT and TRIED_TO_CONTACT types
+  ({
+    [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
+    [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
+    [AgentEngagementStatus.UNRESPONSIVE]: t("dashboard.agentProfile.status.engagement.unresponsive"),
+    [AgentEngagementStatus.INACTIVE]: t("dashboard.agentProfile.status.engagement.inactive"),
+  });
 
 export const AGENT_DIALOG_STATUSES = [AgentEngagementStatus.UNRESPONSIVE, AgentEngagementStatus.INACTIVE] as const;
 

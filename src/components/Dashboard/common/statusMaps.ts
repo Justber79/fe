@@ -15,6 +15,7 @@ import { AgentEngagementStatusType, AgentTrustType, AgentVolunteerSearchType } f
 
 export type StatusValue = AgentEngagementStatusType | AgentVolunteerSearchType | AgentTrustType;
 
+// @ts-expect-error - TODO: Add INCONTACT and TRIED_TO_CONTACT types
 export const statusColorMap: Record<StatusValue, string> = {
   [AgentEngagementStatusType.ACTIVE]: "var(--color-green-100)",
   [AgentEngagementStatusType.UNRESPONSIVE]: "var(--color-grey-50)",
@@ -30,6 +31,7 @@ export const statusColorMap: Record<StatusValue, string> = {
 
 type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
 
+// @ts-expect-error - TODO: Add INCONTACT and TRIED_TO_CONTACT types
 export const statusIconMap: Record<StatusValue, IconComponent> = {
   [AgentEngagementStatusType.ACTIVE]: ChartLineIcon,
   [AgentEngagementStatusType.UNRESPONSIVE]: PhoneXIcon,

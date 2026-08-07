@@ -1162,7 +1162,11 @@
         "validation": {
           "required": "This field is required",
           "websiteInvalid": "Website must start with http:// or https://",
+          "operatorInvalid": "Operator invalid. Please select from the list",
           "clientLanguagesRequired": "At least one language is required"
+        },
+        "placeholders": {
+          "operatorPlaceholder": "Type the first three letters of the operator"
         },
         "addressStreet": "Street",
         "addressPostcode": "Postcode"

@@ -1174,7 +1174,11 @@
         "validation": {
           "required": "Dieses Feld ist erforderlich",
           "websiteInvalid": "Webseite muss mit http:// oder https:// beginnen",
+          "operatorInvalid": "Ungültiger Träger. Bitte aus der Liste auswählen",
           "clientLanguagesRequired": "Mindestens eine Sprache ist erforderlich"
+        },
+        "placeholders": {
+          "operatorPlaceholder": "Geben Sie die ersten drei Buchstaben des Trägers ein"
         },
         "addressStreet": "Straße",
         "addressPostcode": "PLZ"

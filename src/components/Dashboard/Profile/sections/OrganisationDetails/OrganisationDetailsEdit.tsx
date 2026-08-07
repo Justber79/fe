@@ -7,6 +7,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../shared/styles";
 import { OrganisationDetailsFormData } from "./organisationDetailsSchema";
+import { useCallback } from "react";
 
 const i18nPrefix = "dashboard.agentProfile.organisationDetails";
 
@@ -14,6 +15,7 @@ type Props = {
   languagesForForm: Option[];
   organizationTypeOptions: string[];
   servicesOptions: string[];
+  operatorOptions: string[];
   onCancel: () => void;
   onSubmit: () => void;
 };
@@ -22,6 +24,7 @@ export const OrganisationDetailsEdit = ({
   languagesForForm,
   organizationTypeOptions,
   servicesOptions,
+  operatorOptions,
   onCancel,
   onSubmit,
 }: Props) => {
@@ -31,6 +34,16 @@ export const OrganisationDetailsEdit = ({
     formState: { errors, isDirty, isValid },
   } = useFormContext<OrganisationDetailsFormData>();
 
+  const displayOperators = useCallback(
+    (value: string) => {
+      if (value.length >= 3) {
+        return operatorOptions.filter((op) => op.includes(value));
+      } else {
+        return [];
+      }
+    },
+    [operatorOptions],
+  );
   return (
     <>
       <FormDetails data-testid="organisation-details-edit">
@@ -123,14 +136,18 @@ export const OrganisationDetailsEdit = ({
           name="operator"
           control={control}
           render={({ field }) => (
-            <EditableField
-              mode="edit"
-              type="text"
-              label={t(`${i18nPrefix}.operator`)}
-              value={field.value}
-              setValue={field.onChange}
-              errorMessage={errors.operator?.message}
-            />
+            <>
+              <EditableField
+                mode="edit"
+                type="autocomplete"
+                label={t(`${i18nPrefix}.operator`)}
+                value={field.value}
+                setValue={field.onChange}
+                errorMessage={errors.operator?.message}
+                options={displayOperators(field.value)}
+                placeholder={t(`${i18nPrefix}.placeholders.operatorPlaceholder`)}
+              />
+            </>
           )}
         />
         <Controller

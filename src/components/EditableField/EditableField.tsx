@@ -264,7 +264,7 @@ const StepperValue = styled.span`
   user-select: none;
 `;
 
-type EditableFieldType = "text" | "textarea" | "number" | "stepper" | "checkbox-list" | "radio-list";
+type EditableFieldType = "text" | "textarea" | "number" | "stepper" | "checkbox-list" | "radio-list" | "autocomplete";
 
 export interface EditableFieldRef<T> {
   getValue: () => T;
@@ -547,6 +547,65 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
+                      <Text>{option}</Text>
+                    </OptionRow>
+                  );
+                })}
+              </DropdownList>
+            )}
+          </DropdownWrapper>
+        )}
+
+        {type === "autocomplete" && (
+          <DropdownWrapper ref={wrapperRef}>
+            <DropdownButton $hasError={!!errorMessage} onClick={() => setOpen((o) => !o)}>
+              <InputWrapper>
+                <input
+                  type="text"
+                  value={localValue}
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    const v = e.target.value as T;
+                    setLocalValue(v);
+                    setValue(v);
+                    setOpen(true);
+                  }}
+                  style={{ border: "none", padding: 0 }}
+                />
+                {Boolean(localValue) && (
+                  <ClearButton
+                    type="button"
+                    onClick={() => {
+                      const v = "" as T;
+                      setLocalValue(v);
+                      setValue(v);
+                    }}
+                    style={{ alignSelf: "flex-start", marginTop: "0px", marginRight: "0px" }}
+                  >
+                    <XCircleIcon size={20} weight="bold" />
+                  </ClearButton>
+                )}
+              </InputWrapper>
+
+              <Arrow className={open ? "open" : ""} />
+            </DropdownButton>
+
+            {open && options.length > 0 && (
+              <DropdownList>
+                {options.map((option) => {
+                  const isSelected = localValue === option;
+                  return (
+                    <OptionRow
+                      key={option}
+                      $isSelected={isSelected}
+                      onClick={() => {
+                        const v = option as T;
+                        setLocalValue(v);
+                        setValue(v);
+                        setOpen(false);
+                      }}
+                    >
+                      <input type={"radio"} name={label} value={option} checked={isSelected} onChange={() => {}} />
                       <Text>{option}</Text>
                     </OptionRow>
                   );
