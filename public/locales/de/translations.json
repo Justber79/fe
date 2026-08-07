@@ -1147,8 +1147,7 @@
           "confirmTitle": "Diesen Kontakt löschen?",
           "confirmMessage": "Dadurch wird {{name}} aus dieser Einrichtung entfernt. Das Konto der Person und andere Einrichtungen sind nicht betroffen.",
           "confirmText": "Löschen",
-          "success": "Kontakt erfolgreich gelöscht",
-          "blockedMessage": "Sie können sich nicht selbst aus dieser Einrichtung entfernen."
+          "success": "Kontakt erfolgreich gelöscht"
         },
         "validation": {
           "nameRequired": "Name ist erforderlich",

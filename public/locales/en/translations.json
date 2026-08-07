@@ -1135,8 +1135,7 @@
           "confirmTitle": "Delete this contact?",
           "confirmMessage": "This removes {{name}} from this NGO. Their account and any other NGOs they belong to are not affected.",
           "confirmText": "Delete",
-          "success": "Contact deleted successfully",
-          "blockedMessage": "You can't remove yourself from this NGO."
+          "success": "Contact deleted successfully"
         },
 
         "validation": {

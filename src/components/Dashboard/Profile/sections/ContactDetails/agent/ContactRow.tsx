@@ -4,17 +4,16 @@ import { useUpdateAgentContactMembership } from "@/hooks/useUpdateAgentContactMe
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PencilSimple } from "@phosphor-icons/react";
 import { ApiAgentMembership } from "need4deed-sdk";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ButtonRow, FieldWrapper, HelperText } from "../../shared/styles";
+import { ButtonRow, FieldWrapper } from "../../shared/styles";
 import { useEnumTranslation } from "../shared";
 import { ContactFormData, createContactFormSchema } from "./contactFormSchema";
 import { ContactFormFields } from "./ContactFormFields";
 import { EditIconButton } from "./styles";
 import { ConfirmationDialog } from "../../shared/ConfirmationDialog";
 import { useDeleteAgentContactMembership } from "@/hooks/useDeleteAgentContactMembership";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
@@ -42,10 +41,7 @@ export const ContactRow = ({ agentId, contact }: Props) => {
   const { options, toLabel, toKey } = useEnumTranslation(roleKeys, "dashboard.agentProfile.contactDetails.roles");
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { mutate: deleteContact, isPending: isDeleting } = useDeleteAgentContactMembership(agentId, contact.id);
-  const currentUser = useCurrentUser(true);
   const { isAuthorized } = useAuth();
-  const isOwnRow = !isAuthorized && currentUser?.personId === contact.person.id;
-  const blockedReasonId = useId();
 
   const schema = createContactFormSchema(t);
   const {
@@ -95,21 +91,17 @@ export const ContactRow = ({ agentId, contact }: Props) => {
             disabled={!isDirty || !isValid || isPending}
             padding="var(--volunteer-profile-section-card-header-button-padding)"
           />
-          <Button
-            text={t("dashboard.agentProfile.contactDetails.deleteContact.button")}
-            onClick={() => setOpenDeleteDialog(true)}
-            width="auto"
-            padding="var(--volunteer-profile-section-card-header-button-padding)"
-            backgroundcolor="var(--color-red-500)"
-            disabled={isDeleting || isOwnRow}
-            aria-describedby={isOwnRow ? blockedReasonId : undefined}
-          />
+          {isAuthorized && (
+            <Button
+              text={t("dashboard.agentProfile.contactDetails.deleteContact.button")}
+              onClick={() => setOpenDeleteDialog(true)}
+              width="auto"
+              padding="var(--volunteer-profile-section-card-header-button-padding)"
+              backgroundcolor="var(--color-red-500)"
+              disabled={isDeleting}
+            />
+          )}
         </ButtonRow>
-        {isOwnRow && (
-          <HelperText data-testid="agent-contact-row-delete-blocked" id={blockedReasonId}>
-            {t("dashboard.agentProfile.contactDetails.deleteContact.blockedMessage")}
-          </HelperText>
-        )}
 
         {openDeleteDialog && (
           <ConfirmationDialog

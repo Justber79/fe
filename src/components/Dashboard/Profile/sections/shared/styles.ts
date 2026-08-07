@@ -113,11 +113,3 @@ export const FieldWrapper = styled.div<HasError>`
     min-width: 0;
   }
 `;
-
-export const HelperText = styled.p`
-  font-size: var(--font-size-xs);
-  color: var(--color-grey-500);
-  margin: var(--spacing-12) 0;
-  text-align: right;
-  width: 100%;
-`;
