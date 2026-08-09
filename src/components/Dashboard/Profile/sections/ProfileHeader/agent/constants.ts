@@ -2,6 +2,7 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { TFunction } from "i18next";
 import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch, ApiAgentProfileGet } from "../../../types/agent";
 
+// @ts-expect-error TODO - Add INCONTACT and TRIED_TO_CONTACT types
 export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> => ({
   [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
   [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
