@@ -13,11 +13,12 @@ export type AgentStatusUpdateData = {
   volunteerSearch?: AgentVolunteerSearch;
 };
 
-export const useUpdateAgentStatus = (agentId: number) => {
+export const useUpdateAgentStatus = (agentId: number, noToast = false) => {
   return useMutationQuery<AgentStatusUpdateData, { message: string; data: ApiAgentProfileGet }>({
     apiPath: `${apiPathAgent}/${agentId}`,
     method: "patch",
     successMessage: "dashboard.agentProfile.statusUpdateSuccess",
     queryKeyToInvalidate: ["agent", String(agentId)],
+    noToast,
   });
 };

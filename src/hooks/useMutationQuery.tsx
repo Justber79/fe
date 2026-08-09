@@ -1,5 +1,5 @@
 import { HttpMethod } from "@/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, type QueryKey } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -9,7 +9,8 @@ type DataMutationOptions<TResponse, TData> = {
   method?: HttpMethod;
   successMessage?: string;
   onSuccessCallback?: (data: TResponse) => void;
-  queryKeyToInvalidate?: (string | number)[];
+  queryKeyToInvalidate?: QueryKey | QueryKey[];
+
   noToast?: boolean;
 } & (
   | {
@@ -63,7 +64,14 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
 
       // Invalidate queries to trigger a re-fetch of stale data
       if (queryKeyToInvalidate) {
-        queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
+        const keysToInvalidate = Array.isArray(queryKeyToInvalidate[0])
+          ? (queryKeyToInvalidate as QueryKey[])
+          : [queryKeyToInvalidate];
+
+        // 2. Loop through and invalidate
+        keysToInvalidate.forEach((queryKey) => {
+          queryClient.invalidateQueries({ queryKey });
+        });
       }
 
       // Execute the custom callback for component-specific logic (e.g., closing a modal)

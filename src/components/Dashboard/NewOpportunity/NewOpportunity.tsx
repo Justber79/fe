@@ -15,18 +15,13 @@ import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles
 import { IconName } from "@/components/Dashboard/Profile/types";
 import Button from "@/components/core/button/Button/Button";
 import { apiPathOpportunity, DashboardRoutes } from "@/config/constants";
-import { useMutationQuery, useUpdateAgentStatus } from "@/hooks";
+import { useMutationQuery } from "@/hooks";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2 } from "@/components/styled/text";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
-import {
-  TranslatedIntoType,
-  VolunteerStateTypeType,
-  OpportunityFormDataWithAgentSubmitter,
-  AgentVolunteerSearchType,
-} from "need4deed-sdk";
+import { TranslatedIntoType, VolunteerStateTypeType, OpportunityFormDataWithAgentSubmitter } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
@@ -109,16 +104,17 @@ export function NewOpportunity() {
     appointmentLanguageLabelToKey[label] = key;
   });
   const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
-  const { mutate: updateVolunteerSearch } = useUpdateAgentStatus(agentId ?? 0);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
-      updateVolunteerSearch({ volunteerSearch: AgentVolunteerSearchType.SEARCHING });
     },
-    queryKeyToInvalidate: ["agent-opportunities", String(agentId)],
+    queryKeyToInvalidate: [
+      ["agent-opportunities", String(agentId)],
+      ["agent", String(agentId)],
+    ],
   });
 
   const handleCreate = async () => {
