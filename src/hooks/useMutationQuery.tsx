@@ -62,13 +62,11 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     onSuccess: (responseData) => {
       if (!noToast) toast.success(t(successMessage || "message.successful") + " 🎉");
 
-      // Invalidate queries to trigger a re-fetch of stale data
       if (queryKeyToInvalidate) {
         const keysToInvalidate = Array.isArray(queryKeyToInvalidate[0])
           ? (queryKeyToInvalidate as QueryKey[])
           : [queryKeyToInvalidate];
 
-        // 2. Loop through and invalidate
         keysToInvalidate.forEach((queryKey) => {
           queryClient.invalidateQueries({ queryKey });
         });
