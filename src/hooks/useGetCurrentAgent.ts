@@ -4,7 +4,6 @@ import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { useQueries } from "@tanstack/react-query";
 import { ApiUserGet } from "need4deed-sdk";
-import { useState } from "react";
 
 export const useGetCurrentAgent = () => {
   const isLoggedIn = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
