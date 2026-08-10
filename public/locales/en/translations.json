@@ -1092,11 +1092,17 @@
       },
       "modalData": {
         "title": "Change engagement status",
+        "titleVolSearch": "Change Volunteer Search",
         "options": {
           "unresponsive": "Unresponsive",
           "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
           "inactive_description": "This NGO does not work with the organization anymore."
+        },
+        "optionsVolSearch": {
+          "agent-not-needed": "No longer need volunteers",
+          "agent-volunteers-found": "All available positions are filled by volunteers",
+          "agent-searching": "Looking for volunteers"
         },
         "cancel": "Cancel",
         "save": "Save"
