@@ -491,6 +491,8 @@ html {
   --profile-section-field-row-padding: 16px 0;
   --profile-section-badge-padding: 10px 20px;
   --profile-section-error-gap: 6px;
+  --profile-navigation-container-gap: 16px;
+  --profile-navigation-container-font-size: 24px;
 
   /* image */
   --image-circle-pic-size: 60px;

@@ -503,7 +503,6 @@
     "header": {
       "button": {
         "login": "Anmelden",
-        "joinVolunteer": "Finde jetzt dein Ehrenamt",
         "dashboard": "Dashboard",
         "logout": "Abmelden"
       }
@@ -1014,7 +1013,11 @@
       "typeOptions": {
         "tshirt": "T-Shirt",
         "toteBag": "Stofftasche",
-        "benefitCard": "Vorteilskarte"
+        "benefitCard": "Vorteilskarte",
+        "need4deedCertificate": "Need4Deed-Zertifikat",
+        "cap": "Cap",
+        "notebook": "Notizbuch",
+        "cityCertificate": "Städtisches Zertifikat"
       },
       "addAppreciation": "Anerkennung hinzufügen",
       "editAppreciation": "Anerkennung bearbeiten",
@@ -1055,7 +1058,9 @@
     },
     "profile": {
       "loading": "Profil wird geladen...",
-      "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab."
+      "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
+      "nextNgoProfile": "Nächstes NGO-Profil",
+      "prevNgoProfile": "Vorheriges NGO-Profil"
     },
     "agentProfile": {
       "agentProfile": "Einrichtungs-/Projektprofil",
@@ -1099,11 +1104,17 @@
       },
       "modalData": {
         "title": "Engagement-Status ändern",
+        "titleVolSearch": "Ehrenamtlichensuche-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
           "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
+        },
+        "optionsVolSearch": {
+          "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
+          "agent-volunteers-found": "Alle verfügbaren Stellen sind durch Ehrenamtliche besetzt",
+          "agent-searching": "Suche nach Ehrenamtlichen"
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
@@ -1260,26 +1271,14 @@
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Kontaktdaten erfolgreich aktualisiert",
         "validation": {
-          "nameRequired": "Name ist erforderlich",
-          "phoneRequired": "Telefon ist erforderlich",
-          "phoneInvalid": "Telefon muss mit + beginnen und nur Ziffern/Leerzeichen enthalten",
-          "emailRequired": "E-Mail ist erforderlich",
-          "emailInvalid": "Ungültige E-Mail",
-          "waysToContactRequired": "Wählen Sie mindestens eine Kontaktmöglichkeit"
+          "nameRequired": "Name ist erforderlich"
         }
       },
       "racTitle": "Geflüchtetenunterkunft",
       "rac": {
         "name": "Name",
         "address": "Adresse",
-        "district": "Bezirk",
-        "cancel": "Abbrechen",
-        "saveChanges": "Änderungen speichern",
-        "validation": {
-          "nameRequired": "Name ist erforderlich",
-          "addressRequired": "Adresse ist erforderlich",
-          "districtRequired": "Bezirk ist erforderlich"
-        }
+        "district": "Bezirk"
       },
       "accompanyingDetailsTitle": "Details zur Begleitung",
       "accompanyingDetails": {

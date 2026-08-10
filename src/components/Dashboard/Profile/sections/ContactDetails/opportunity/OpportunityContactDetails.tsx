@@ -17,6 +17,7 @@ import {
   createOpportunityContactDetailsSchema,
   OpportunityContactDetailsFormData,
 } from "./opportunityContactDetailsSchema";
+import { useAgentContactOptions } from "@/hooks/useAgentContactOptions";
 
 const WAYS_TO_CONTACT_TYPES = Object.values(PreferredCommunicationType);
 
@@ -35,7 +36,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
 
   const schema = createOpportunityContactDetailsSchema(t);
 
-  const { options, keysToLabels, labelsToKeys } = useEnumTranslation(
+  const { keysToLabels } = useEnumTranslation(
     WAYS_TO_CONTACT_TYPES,
     "dashboard.opportunityProfile.contactDetails.waysToContact",
   );
@@ -76,7 +77,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       return { name: parts[1] ?? "", phone: parts[4] ?? "", email: parts[0] ?? "", waysToContact: [] };
     }
     return { name: "", phone: "", email: "", waysToContact: [] };
-  }, [contactFromApi, latestPipedComment]);
+  }, [contactFromApi, latestPipedComment, hasApiContact]);
 
   const { mutate: updateContact, isPending: isUpdating } = useUpdateOpportunityContact(opportunity.id);
   const { mutate: createComment, isPending: isCreating } = useCreateComment(opportunity.id, "opportunity");
@@ -86,6 +87,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
     "opportunity",
   );
 
+  const { nameIdMap, options } = useAgentContactOptions(opportunity, isEditing);
   const methods = useForm<OpportunityContactDetailsFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -109,18 +111,7 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
     // Use the contact API when a Person is linked (contactFromApi.id exists).
     // Fall back to piped comment for legacy opportunities without a linked Person.
     if (contactFromApi?.id) {
-      updateContact(
-        {
-          contact: {
-            id: contactFromApi.id,
-            name: values.name,
-            phone: values.phone,
-            email: values.email,
-            waysToContact: values.waysToContact ?? [],
-          },
-        },
-        { onSuccess },
-      );
+      updateContact({ contact: { id: nameIdMap.titleToId[values.name] } }, { onSuccess });
       return;
     }
 
@@ -143,12 +134,10 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
       <FormContainer data-testid="opportunity-contact-details-container" $isEditing={isEditing}>
         {isEditing ? (
           <OpportunityContactDetailsEdit
-            options={options}
-            keysToLabels={keysToLabels}
-            labelsToKeys={labelsToKeys}
             onCancel={handleCancel}
             onSubmit={handleSubmit(onSubmit)}
             isPending={isUpdating || isCreating || isUpdatingComment}
+            options={options}
           />
         ) : (
           <OpportunityContactDetailsDisplay keysToLabels={keysToLabels} />
