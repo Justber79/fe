@@ -34,7 +34,7 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   const canChangeStatus =
     isAuthorized || (currentUser?.role === UserRole.AGENT && currentUser?.agentId === opportunity.agent?.id);
   const { t, i18n } = useTranslation();
-  const dialog = useOpportunityStatusDialog(opportunity);
+  const dialog = useOpportunityStatusDialog(opportunity, opportunity?.agentId);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);

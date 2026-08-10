@@ -17,6 +17,8 @@ import {
 import { TrustLevelDropdown } from "./TrustLevelDropdown";
 import { useAgentEngagementStatusDialog } from "./useAgentEngagementStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useAgentVolunteerSearchDialog } from "./useAgentVolunteerSearchDialog";
+import { ChangeAgentVolunteerSearchDialog } from "./ChangeAgentVolunteerSearchDialog";
 
 type Props = {
   agent: ApiAgentProfileGet;
@@ -25,9 +27,10 @@ type Props = {
 export const AgentHeader = ({ agent }: Props) => {
   const { t } = useTranslation();
   const districtLabel = getDistrictLabel(agent.district);
-  const dialog = useAgentEngagementStatusDialog(agent);
+  const dialogEngagementStatus = useAgentEngagementStatusDialog(agent);
+  const dialogVolunteerSearch = useAgentVolunteerSearchDialog(agent);
   const { mutate: patchAgent } = useUpdateAgentStatus(agent.id);
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, isOwnProfile } = useAuth(agent.id);
 
   const registeredDate = agent.createdAt ? formatDateTime(agent.createdAt) : EMPTY_PLACEHOLDER_VALUE;
   const subtitle = `${t("dashboard.agentProfile.registeredSince")} ${registeredDate}`;
@@ -50,7 +53,12 @@ export const AgentHeader = ({ agent }: Props) => {
       }
       title={agent.title}
       subtitle={subtitle}
-      after={<ChangeAgentEngagementStatusDialog dialog={dialog} />}
+      after={
+        <>
+          <ChangeAgentEngagementStatusDialog dialog={dialogEngagementStatus} />
+          <ChangeAgentVolunteerSearchDialog dialog={dialogVolunteerSearch} />
+        </>
+      }
     >
       <StatusRowField
         title={t("dashboard.agentProfile.engagementStatus")}
@@ -58,7 +66,9 @@ export const AgentHeader = ({ agent }: Props) => {
         label={engagementStatusLabels[agent.statusEngagement]}
         action={
           isAuthorized && (
-            <EditButton onClick={dialog.openDialog}>{t("dashboard.agentProfile.changeStatus")}</EditButton>
+            <EditButton onClick={dialogEngagementStatus.openDialog}>
+              {t("dashboard.agentProfile.changeStatus")}
+            </EditButton>
           )
         }
       />
@@ -67,6 +77,13 @@ export const AgentHeader = ({ agent }: Props) => {
         title={t("dashboard.agentProfile.volunteerSearch")}
         status={agent.volunteerSearch}
         label={volunteerSearchLabels[agent.volunteerSearch]}
+        action={
+          (isAuthorized || isOwnProfile) && (
+            <EditButton onClick={dialogVolunteerSearch.openDialog}>
+              {t("dashboard.agentProfile.changeStatus")}
+            </EditButton>
+          )
+        }
       />
 
       {isAuthorized && (
