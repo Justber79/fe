@@ -1150,6 +1150,13 @@
         "editContact": {
           "success": "Kontakt erfolgreich aktualisiert"
         },
+        "deleteContact": {
+          "button": "Löschen",
+          "confirmTitle": "Diesen Kontakt löschen?",
+          "confirmMessage": "Dadurch wird {{name}} aus dieser Einrichtung entfernt. Das Konto der Person und andere Einrichtungen sind nicht betroffen.",
+          "confirmText": "Löschen",
+          "success": "Kontakt erfolgreich gelöscht"
+        },
         "validation": {
           "nameRequired": "Name ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",
@@ -1482,7 +1489,8 @@
       "subtitle": "Füllen Sie die Details aus. Sie können alles nach der Erstellung bearbeiten.",
       "fields": {
         "title": "Titel der Möglichkeit",
-        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene"
+        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene",
+        "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
       "agentSection": "Ihre Organisation",

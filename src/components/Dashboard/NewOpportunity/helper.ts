@@ -1,4 +1,5 @@
 import { ApiLanguageOption } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { format } from "date-fns";
 import { TFunction } from "i18next";
 import {
   OptionItem,
@@ -68,14 +69,18 @@ export function buildCreatePayload(
   const skillIds = toOptionItems(detailsData.skills, apiSkills).map((i) => i.id);
   const timeslots = isEvent ? null : availabilityToTimeslots(detailsData.availability);
 
+  // eventDate/appointmentDate are local-midnight Date objects from the date
+  // picker (react-day-picker) — extract the *local* calendar date here, not
+  // its UTC date, or a positive UTC offset (Europe/Berlin is always +1/+2)
+  // reads back the previous day (fe#920).
   const onetime_date_time =
     isEvent && detailsData.eventDate
-      ? `${detailsData.eventDate.toISOString().split("T")[0]}T${detailsData.eventTime || "00:00"}:00`
+      ? `${format(detailsData.eventDate, "yyyy-MM-dd")}T${detailsData.eventTime || "00:00"}:00`
       : null;
 
   const accomp_datetime =
     isAccompanying && accompData?.appointmentDate
-      ? `${accompData.appointmentDate.toISOString().split("T")[0]}T${accompData.appointmentTime || "00:00"}:00`
+      ? `${format(accompData.appointmentDate, "yyyy-MM-dd")}T${accompData.appointmentTime || "00:00"}:00`
       : null;
 
   return {

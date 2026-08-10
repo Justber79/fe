@@ -280,10 +280,12 @@ interface EditableFieldProps<T = string | number | string[]> {
   setValue: (value: T) => void;
   submit?: (value: T) => void | Promise<void>;
   validator?: (value: T) => string | null;
-  options?: string[];
+  options?: string[] | number[];
   errorMessage?: string;
   hint?: string;
   maxLength?: number;
+  labels?: string[];
+  displayValue?: string;
 }
 
 export const EditableField = forwardRef(function EditableField<T extends string | number | string[]>(
@@ -300,6 +302,8 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     placeholder,
     hint,
     maxLength,
+    labels,
+    displayValue,
   }: EditableFieldProps<T>,
   ref: React.Ref<EditableFieldRef<T>>,
 ) {
@@ -507,7 +511,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                   ? Array.isArray(localValue) && localValue.length > 0
                     ? localValue.join(", ")
                     : t("dashboard.common.selectOptions")
-                  : localValue || t("dashboard.common.selectOption")}
+                  : displayValue || localValue || t("dashboard.common.selectOption")}
               </span>
 
               <Arrow className={open ? "open" : ""} />
@@ -515,10 +519,10 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
             {open && (
               <DropdownList>
-                {options.map((option) => {
+                {options.map((option, idx) => {
                   const isSelected =
                     type === "checkbox-list"
-                      ? Array.isArray(localValue) && localValue.includes(option)
+                      ? Array.isArray(localValue) && localValue.includes(String(option))
                       : localValue === option;
                   return (
                     <OptionRow
@@ -526,7 +530,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                       $isSelected={isSelected}
                       onClick={() => {
                         if (type === "checkbox-list") {
-                          handleCheckboxChange(option);
+                          handleCheckboxChange(String(option));
                         } else {
                           const v = option as T;
                           setLocalValue(v);
@@ -542,12 +546,12 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                         checked={isSelected}
                         onChange={() => {
                           if (type === "checkbox-list") {
-                            handleCheckboxChange(option);
+                            handleCheckboxChange(String(option));
                           }
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <Text>{option}</Text>
+                      <Text>{labels && labels.length ? labels[idx] : option}</Text>
                     </OptionRow>
                   );
                 })}
