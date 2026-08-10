@@ -9,6 +9,7 @@ export const createHeaderSchema = (t: (key: string) => string) =>
       VolunteerStateTypeType.ACCOMPANYING,
       VolunteerStateTypeType.EVENTS,
     ]),
+    agentId: z.number().min(1, t("form.error.required")),
   });
 
 export type HeaderFormData = z.infer<ReturnType<typeof createHeaderSchema>>;

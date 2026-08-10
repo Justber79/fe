@@ -14,6 +14,7 @@ const hoverBGColorMap = {
   "var(--color-orchid-light)": "var(--color-orchid)",
   "var(--color-grey-50)": "var(--color-aubergine)",
   "var(--color-violet-500)": "var(--color-violet-400)",
+  "var(--color-red-500)": "var(--color-red-400)",
   transparent: "transparent",
 };
 
