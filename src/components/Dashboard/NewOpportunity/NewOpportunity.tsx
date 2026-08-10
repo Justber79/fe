@@ -115,7 +115,10 @@ export function NewOpportunity() {
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
     },
-    queryKeyToInvalidate: ["agent-opportunities", String(selectedAgentId)],
+    queryKeyToInvalidate: [
+      ["agent-opportunities", String(selectedAgentId)],
+      ["agent", String(selectedAgentId)],
+    ],
   });
 
   const agentTitles = currentAgents

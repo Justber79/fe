@@ -11,6 +11,12 @@ export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngage
 
 export const AGENT_DIALOG_STATUSES = [AgentEngagementStatus.UNRESPONSIVE, AgentEngagementStatus.INACTIVE] as const;
 
+export const AGENT_VOLUNTEER_SEARCH_ARRAY = [
+  AgentVolunteerSearch.NOT_NEEDED,
+  AgentVolunteerSearch.SEARCHING,
+  AgentVolunteerSearch.VOLUNTEERS_FOUND,
+] as const;
+
 export const AGENT_ENGAGEMENT_DESCRIPTION_KEYS: Record<(typeof AGENT_DIALOG_STATUSES)[number], string> = {
   [AgentEngagementStatus.UNRESPONSIVE]: "unresponsive_description",
   [AgentEngagementStatus.INACTIVE]: "inactive_description",
@@ -32,6 +38,15 @@ export const createVolunteerSearchLabelMap = (t: TFunction): Record<AgentVolunte
 });
 
 export const TRUST_LEVEL_OPTIONS = [AgentTrustLevel.HIGH, AgentTrustLevel.LOW, AgentTrustLevel.UNKNOWN] as const;
+
+export const createAgentVolunteerSearchDialogOptions = (t: TFunction) => {
+  const volunteerSearchLabels = createVolunteerSearchLabelMap(t);
+  return AGENT_VOLUNTEER_SEARCH_ARRAY.map((status) => ({
+    value: status,
+    label: volunteerSearchLabels[status],
+    description: t(`dashboard.agentProfile.modalData.optionsVolSearch.${status}`),
+  }));
+};
 
 export const createTrustLevelLabelMap = (t: TFunction): Record<AgentTrustLevel, string> => ({
   [AgentTrustLevel.UNKNOWN]: t("dashboard.agentProfile.status.trustLevel.unknown"),
