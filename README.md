@@ -22,8 +22,8 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 To learn more about Next.js, take a look at the following resources:
 
-* [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-* [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
@@ -44,7 +44,7 @@ It is actively developed and will eventually include our public landing page (cu
 
 | Repository                                            | Description                                           |
 | ----------------------------------------------------- | ----------------------------------------------------- |
-| [`backend`](https://github.com/need4deed-org/be) | Node.js / TypeScript API backend                      |
+| [`backend`](https://github.com/need4deed-org/be)      | Node.js / TypeScript API backend                      |
 | [`sdk`](https://github.com/need4deed-org/sdk)         | Shared TypeScript types and helpers used by FE and BE |
 | [`website`](https://github.com/need4deed-org/website) | Legacy React/Vite landing page (currently frozen)     |
 
@@ -74,27 +74,25 @@ git clone https://github.com/need4deed-org/be.git
 git clone https://github.com/need4deed-org/sdk.git
 ```
 
-### 2. Keep SDK in Sync
+---
 
-We **don’t fetch the SDK** — we link it locally.
+## 🌐 Modifying API types
 
-1. Pull the latest SDK changes:
+The `sdk` repo contains the API types that are used by `be` and `fe`. These are published as an npm package `need4deed-sdk`. The following points must be considered before modifying these types.
 
-   ```bash
-   cd sdk
-   git pull origin <branch>
-   ```
+1. Modifying the API types in `sdk` must be followed by republishing the `need4deed-sdk` package to the npm registry.
+   https://www.npmjs.com/package/need4deed-sdk
 
-2. Then in the FE:
+2. The `fe`, `be` and `sdk` should then be upgraded using the following command.
 
-   ```bash
-   cd ../fe
-   yarn install ../sdk
-   ```
+```bash
+yarn upgrade need4deed-sdk --latest
+```
 
-3. Make sure all repos (`fe`, `be`, `sdk`) are checked out to the same branch name for consistency.
+### 🚧 Avoid workarounds
 
-> 💡 If you see TypeScript errors, ensure your local SDK and backend are aligned and up to date.
+- Linking the `sdk` locally will result in updated package references in the `package.json` file which will diverge from the published stable version of the `need4deed-sdk` This may result in production failures and is best avoided.
+- Using local type definitions and other workarounds is not acceptable.
 
 ---
 
@@ -103,9 +101,9 @@ We **don’t fetch the SDK** — we link it locally.
 All designs and layouts are defined in **Figma**.
 Before implementing or modifying any UI component:
 
-* Follow the design from the official Figma project shared by the Need4Deed design team
-* Match typography, spacing, and component structure
-* Discuss any changes or deviations with the design team before merging
+- Follow the design from the official Figma project shared by the Need4Deed design team
+- Match typography, spacing, and component structure
+- Discuss any changes or deviations with the design team before merging
 
 > Keeping the FE aligned with Figma ensures consistency and quality across our app.
 
@@ -113,9 +111,9 @@ Before implementing or modifying any UI component:
 
 ## 🧪 Development Notes
 
-* You can manually open the specific page you’re working on via its local URL (e.g. `http://localhost:3000/dashboard`)
-* The FE app will gradually incorporate the public landing page currently hosted on Amplify/S3
-* The `website` repo is frozen until the merge into this app is complete
+- You can manually open the specific page you’re working on via its local URL (e.g. `http://localhost:3000/dashboard`)
+- The FE app will gradually incorporate the public landing page currently hosted on Amplify/S3
+- The `website` repo is frozen until the merge into this app is complete
 
 ---
 
@@ -135,16 +133,14 @@ We welcome all contributions — from bug fixes to feature development.
 
 4. **Commit your changes**
    Follow our commit message style guide:
-
-   * Use present tense (“Add feature” not “Added feature”)
-   * Use imperative mood (“Fix bug” not “Fixes bug”)
-   * Keep it short (under 72 chars)
-   * Prefix with an emoji when relevant:
-
-     * 🎨 — style/format improvements
-     * 🐛 — bug fix
-     * 📝 — docs
-     * 🔥 — removing code/files
+   - Use present tense (“Add feature” not “Added feature”)
+   - Use imperative mood (“Fix bug” not “Fixes bug”)
+   - Keep it short (under 72 chars)
+   - Prefix with an emoji when relevant:
+     - 🎨 — style/format improvements
+     - 🐛 — bug fix
+     - 📝 — docs
+     - 🔥 — removing code/files
 
 5. **Push** your branch and open a **Pull Request** to `main`
 
@@ -154,9 +150,9 @@ We welcome all contributions — from bug fixes to feature development.
 
 ## 🐞 Reporting Bugs & Suggesting Features
 
-* Use the **Issues** tab in this repository
-* Check existing issues before opening a new one
-* Use the provided templates for **bug reports** and **feature requests**
+- Use the **Issues** tab in this repository
+- Check existing issues before opening a new one
+- Use the provided templates for **bug reports** and **feature requests**
 
 ---
 
@@ -165,4 +161,4 @@ We welcome all contributions — from bug fixes to feature development.
 By contributing, you agree that your contributions are licensed under our
 [Commons Clause + MIT License](LICENSE).
 
---- 
+---
