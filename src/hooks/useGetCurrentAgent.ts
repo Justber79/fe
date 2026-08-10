@@ -3,7 +3,7 @@ import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
-import { ApiAgentGet, ApiUserGet } from "need4deed-sdk";
+import { ApiUserGet } from "need4deed-sdk";
 
 export const useGetCurrentAgent = () => {
   const isLoggedIn = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
@@ -20,14 +20,6 @@ export const useGetCurrentAgent = () => {
   // test here for multiple NGOs
   const agentIds = [agentId];
 
-  const { data: agent, isLoading: agentLoading } = useGetQuery<ApiAgentGet>({
-    queryKey: ["agent", String(agentId)],
-    apiPath: `${apiPathAgent}/${agentId}`,
-    staleTime: cacheTTL,
-    enabled: !!agentId,
-    addLang: false,
-  });
-
   const agentQueries = useQueries({
     queries: agentIds.map((id) => ({
       queryKey: ["agent", String(id)],
@@ -42,5 +34,5 @@ export const useGetCurrentAgent = () => {
 
   const currentAgents = agentQueries.map((q) => q.data?.data);
 
-  return { agent, agentId, isLoading: userLoading || (!!agentId && agentLoading), currentAgents };
+  return { agentId, isLoading: userLoading || agentQueries.some((q) => q.isLoading), currentAgents };
 };
