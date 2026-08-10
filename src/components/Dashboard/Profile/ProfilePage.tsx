@@ -31,7 +31,7 @@ const ProfilePage = (props: ProfileEntityProps) => {
 
   return (
     <PageContainer>
-      <BackButton onClick={() => router.push(`/${i18n.language}/${DashboardRoutes.Home}`)}>
+      <BackButton onClick={() => router.push(`/${i18n.language}${DashboardRoutes.Home}`)}>
         <ArrowLeftIcon size={24} />
         {t("dashboard.volunteerProfile.backToDashboard")}
       </BackButton>
