@@ -1,7 +1,6 @@
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
 
 export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
   const oppLinkedQueries = useQueries({
@@ -13,7 +12,7 @@ export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
           if (!res) {
             throw new Error("Failed to fetch opportunity");
           }
-          return res;
+          return res.data;
         } catch (error) {
           console.error(`Error fetching agent with ID ${id}:`, error);
           throw error;
@@ -24,7 +23,7 @@ export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
     })),
   });
 
-  const allLinkedOpportunities = oppLinkedQueries.flatMap((q) => q.data?.data).filter((q) => Boolean(q)) ?? [];
+  const allLinkedOpportunities = oppLinkedQueries.flatMap((q) => q.data?.data).filter((q) => Boolean(q));
 
   return {
     allLinkedOpportunities,
