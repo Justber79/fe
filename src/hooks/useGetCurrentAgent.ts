@@ -7,8 +7,6 @@ import { ApiUserGet } from "need4deed-sdk";
 import { useState } from "react";
 
 export const useGetCurrentAgent = () => {
-  const [isAgentsLoading, setIsAgentsLoading] = useState(false);
-
   const isLoggedIn = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
 
   const { data: user, isLoading: userLoading } = useGetQuery<ApiUserGet & { agentId?: number }>({
@@ -27,7 +25,6 @@ export const useGetCurrentAgent = () => {
     queries: agentIds.map((id) => ({
       queryKey: ["agent", String(id)],
       queryFn: async () => {
-        setIsAgentsLoading(true);
         try {
           const response = await axios.get(`${apiPathAgent}/${id}`);
           return response.data;
@@ -35,7 +32,6 @@ export const useGetCurrentAgent = () => {
           console.error(`Error fetching agent with ID ${id}:`, error);
           throw error;
         } finally {
-          setIsAgentsLoading(false);
         }
       },
       staleTime: cacheTTL,
@@ -47,7 +43,7 @@ export const useGetCurrentAgent = () => {
 
   return {
     agentId,
-    isLoading: userLoading || (agentIds.length > 0 && isAgentsLoading),
+    isLoading: userLoading || agentQueries.some((q) => q.isLoading),
     currentAgents,
   };
 };
