@@ -1236,6 +1236,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
       "typeModal": {
@@ -1264,6 +1265,11 @@
           "inactive": "Inaktiv",
           "inactive_description": "Diese ehrenamtliche Tätigkeit ist nicht mehr aktuell."
         }
+      },
+      "ngoModal": {
+        "title": "Einrichtung/Projekt ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
       },
       "contactDetailsTitle": "Kontaktdaten",
       "editButtonName": "Bearbeiten",

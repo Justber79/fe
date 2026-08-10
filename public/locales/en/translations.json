@@ -1225,6 +1225,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",
       "typeModal": {
@@ -1253,6 +1254,11 @@
           "inactive": "Inactive",
           "inactive_description": "The opportunity is no longer active."
         }
+      },
+      "ngoModal": {
+        "title": "Change NGO",
+        "save": "Save",
+        "cancel": "Cancel"
       },
       "contactDetailsTitle": "Contact details",
       "editButtonName": "Edit",
