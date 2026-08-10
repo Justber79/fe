@@ -1,22 +1,23 @@
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useQueries } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
 
 export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const oppLinkedQueries = useQueries({
     queries: agentIds?.map((id) => ({
       queryKey: ["agent-opportunities", String(id)],
       queryFn: async () => {
-        setIsLoading(true);
-        const res = await fetch(`${apiPathAgent}/${id}/opportunity-linked`);
-        if (!res.ok) {
-          setIsLoading(false);
-          throw new Error("Failed to fetch opportunity");
+        try {
+          const res = await axios.get(`${apiPathAgent}/${id}/opportunity-linked`);
+          if (!res) {
+            throw new Error("Failed to fetch opportunity");
+          }
+          return res;
+        } catch (error) {
+          console.error(`Error fetching agent with ID ${id}:`, error);
+          throw error;
         }
-        setIsLoading(false);
-        return res.json();
       },
       staleTime: cacheTTL,
       enabled: !!id,
@@ -27,6 +28,6 @@ export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
 
   return {
     allLinkedOpportunities,
-    isLoading,
+    isLoading: oppLinkedQueries.some((q) => q.isLoading),
   };
 };
