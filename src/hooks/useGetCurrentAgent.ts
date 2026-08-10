@@ -1,8 +1,8 @@
+import axios from "axios";
 import { apiPathAgent, apiPathMe, AUTH_HINT_COOKIE_NAME, cacheTTL, USER_QUERY_KEY } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { useQueries } from "@tanstack/react-query";
-import axios from "axios";
 import { ApiUserGet } from "need4deed-sdk";
 
 export const useGetCurrentAgent = () => {
@@ -17,15 +17,20 @@ export const useGetCurrentAgent = () => {
   });
 
   const agentId = user?.agentId;
-  // test here for multiple NGOs
+  // test here for multiple ngos, add more agentids
   const agentIds = [agentId];
 
   const agentQueries = useQueries({
     queries: agentIds.map((id) => ({
       queryKey: ["agent", String(id)],
       queryFn: async () => {
-        const res = await axios.get(`${apiPathAgent}/${id}`);
-        return res.data;
+        try {
+          const response = await axios.get(`${apiPathAgent}/${id}`);
+          return response.data;
+        } catch (error) {
+          console.error(`Error fetching agent with ID ${id}:`, error);
+          throw error;
+        }
       },
       staleTime: cacheTTL,
       enabled: !!id,
@@ -34,5 +39,9 @@ export const useGetCurrentAgent = () => {
 
   const currentAgents = agentQueries.map((q) => q.data?.data);
 
-  return { agentId, isLoading: userLoading || agentQueries.some((q) => q.isLoading), currentAgents };
+  return {
+    agentId,
+    isLoading: userLoading || agentQueries.some((q) => q.isLoading),
+    currentAgents,
+  };
 };

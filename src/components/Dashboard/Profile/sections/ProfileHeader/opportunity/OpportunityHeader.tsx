@@ -20,21 +20,26 @@ import { createOpportunityStatusLabelMap } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { ChangeOpportunityAgentDialog } from "./ChangeOpportunityAgentDialog";
+import { useOpportunityAgentDialog } from "./useOpportunityAgentDialog";
+import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 
 type Props = {
   opportunity: ApiOpportunityGet;
 };
 
 export const OpportunityHeader = ({ opportunity }: Props) => {
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, isOwnProfile } = useAuth(opportunity.agent?.id);
   const currentUser = useCurrentUser();
+  const { currentAgents } = useGetCurrentAgent();
   // Coordinator/admin may edit any opportunity; an agent may only change the
   // status of an opportunity belonging to their own agent (mirrors the be
   // ownership check on PATCH /opportunity/:id).
   const canChangeStatus =
     isAuthorized || (currentUser?.role === UserRole.AGENT && currentUser?.agentId === opportunity.agent?.id);
   const { t, i18n } = useTranslation();
-  const dialog = useOpportunityStatusDialog(opportunity, opportunity?.agentId);
+  const dialogStatus = useOpportunityStatusDialog(opportunity);
+  const dialogAgent = useOpportunityAgentDialog(opportunity);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
@@ -55,18 +60,19 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
       subtitle={subtitle}
       after={
         <>
-          <ChangeOpportunityStatusDialog dialog={dialog} isAuthorized={isAuthorized} />
+          <ChangeOpportunityStatusDialog dialog={dialogStatus} isAuthorized={isAuthorized} />
           {isTypeOpen && <ChangeOpportunityTypeDialog onClose={() => setIsTypeOpen(false)} opportunity={opportunity} />}
+          <ChangeOpportunityAgentDialog dialog={dialogAgent} currentAgents={currentAgents} />
         </>
       }
     >
       <StatusRowField
         title={t("dashboard.opportunityProfile.currentStatus")}
-        status={dialog.selected}
-        label={statusLabelMap[dialog.selected]}
+        status={dialogStatus.selected}
+        label={statusLabelMap[dialogStatus.selected]}
         action={
           canChangeStatus && (
-            <EditButton onClick={dialog.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
+            <EditButton onClick={dialogStatus.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
           )
         }
       />
@@ -101,6 +107,12 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
       {(opportunity.agent as typeof opportunity.agent & { id?: number })?.id && (
         <StatusRowField
           title={t("dashboard.opportunityProfile.agent")}
+          action={
+            isOwnProfile &&
+            currentAgents.length > 1 && (
+              <EditButton onClick={dialogAgent.openDialog}>{t("dashboard.opportunityProfile.change_ngo")}</EditButton>
+            )
+          }
           extra={
             <AgentLink
               href={`/${i18n.language}/dashboard/agents/${(opportunity.agent as typeof opportunity.agent & { id?: number }).id}`}
