@@ -30,7 +30,6 @@ export const useGetCurrentAgent = () => {
         } catch (error) {
           console.error(`Error fetching agent with ID ${id}:`, error);
           throw error;
-        } finally {
         }
       },
       staleTime: cacheTTL,
