@@ -1104,11 +1104,17 @@
       },
       "modalData": {
         "title": "Engagement-Status ändern",
+        "titleVolSearch": "Ehrenamtlichensuche-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
           "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
+        },
+        "optionsVolSearch": {
+          "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
+          "agent-volunteers-found": "Alle verfügbaren Stellen sind durch Ehrenamtliche besetzt",
+          "agent-searching": "Suche nach Ehrenamtlichen"
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
