@@ -4,9 +4,14 @@ import { ApiAgentProfileGet } from "./agent";
 export type EntityType = "volunteer" | "opportunity" | "agent";
 
 export type ProfileEntityProps =
-  | { volunteer: ApiVolunteerGet; opportunity?: never; agent?: never }
-  | { opportunity: ApiOpportunityGet; volunteer?: never; agent?: never }
-  | { agent: ApiAgentProfileGet; volunteer?: never; opportunity?: never };
+  | { volunteer: ApiVolunteerGet; opportunity?: never; agent?: never; handleProfileNavigation?: never }
+  | { opportunity: ApiOpportunityGet; volunteer?: never; agent?: never; handleProfileNavigation?: never }
+  | {
+      agent: ApiAgentProfileGet;
+      volunteer?: never;
+      opportunity?: never;
+      handleProfileNavigation?: (direction: ProfileNavigationDirection) => void;
+    };
 
 export enum ProfileCardTypes {
   VOLUNTEER_HEADER = "VOLUNTEER_HEADER",
@@ -44,3 +49,10 @@ export enum IconName {
   UsersThree = "usersThree",
   Wrench = "wrench",
 }
+
+export enum ProfileNavigationDirection {
+  LEFT = "left",
+  RIGHT = "right",
+}
+
+export const FadeDuration = 300;
