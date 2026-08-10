@@ -1483,7 +1483,8 @@
       "subtitle": "Füllen Sie die Details aus. Sie können alles nach der Erstellung bearbeiten.",
       "fields": {
         "title": "Titel der Möglichkeit",
-        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene"
+        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene",
+        "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
       "agentSection": "Ihre Organisation",
