@@ -22,7 +22,7 @@ import { Heading2 } from "@/components/styled/text";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TranslatedIntoType, VolunteerStateTypeType, OpportunityFormDataWithAgentSubmitter } from "need4deed-sdk";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -42,7 +42,8 @@ export function NewOpportunity() {
   const lang = i18n.language;
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
-  const { agentId } = useGetCurrentAgent();
+
+  const { currentAgents } = useGetCurrentAgent();
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
@@ -51,12 +52,15 @@ export function NewOpportunity() {
   const headerMethods = useForm<HeaderFormData>({
     resolver: zodResolver(createHeaderSchema(t)),
     mode: "onChange",
-    defaultValues: { title: "", volunteerType: VolunteerStateTypeType.REGULAR },
+    defaultValues: { title: "", volunteerType: VolunteerStateTypeType.REGULAR, agentId: 0 },
   });
-  const { watch: watchHeader } = headerMethods;
+  const { watch: watchHeader, setValue: setAgentId } = headerMethods;
   const selectedType = watchHeader("volunteerType");
+  const selectedAgentId = watchHeader("agentId");
+
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
+  const firstNGOId = currentAgents[0]?.id;
 
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
     resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
@@ -111,14 +115,21 @@ export function NewOpportunity() {
     onSuccessCallback: () => {
       router.push(`/${lang}${DashboardRoutes.Home}`);
     },
-    queryKeyToInvalidate: ["agent-opportunities", String(agentId)],
+    queryKeyToInvalidate: [
+      ["agent-opportunities", String(selectedAgentId)],
+      ["agent", String(selectedAgentId)],
+    ],
   });
+
+  const agentTitles = currentAgents
+    .map((agent) => ({ id: agent?.id, title: agent?.title }))
+    .filter((agent) => Boolean(agent?.id));
 
   const handleCreate = async () => {
     const headerValid = await headerMethods.trigger();
     const detailsValid = await detailsMethods.trigger();
     const accompValid = !isAccompanying || (await accompanyingMethods.trigger());
-    if (!headerValid || !detailsValid || !accompValid || !agentId) return;
+    if (!headerValid || !detailsValid || !accompValid || !selectedAgentId) return;
 
     const payload = buildCreatePayload(
       headerMethods.getValues(),
@@ -129,10 +140,16 @@ export function NewOpportunity() {
       apiSkills,
       lang,
       t,
-      agentId,
+      selectedAgentId,
     );
     createOpportunity(payload);
   };
+
+  useEffect(() => {
+    if (firstNGOId) {
+      setAgentId("agentId", firstNGOId);
+    }
+  }, [firstNGOId]);
 
   return (
     <PageContainer>
@@ -142,7 +159,7 @@ export function NewOpportunity() {
       </BackButton>
       <Heading2>{t("dashboard.newOpportunity.title")}</Heading2>
       <FormProvider {...headerMethods}>
-        <OpportunityHeaderCard selectedType={selectedType} />
+        <OpportunityHeaderCard selectedType={selectedType} agentTitles={agentTitles} />
       </FormProvider>
       <SectionCard
         iconName={IconName.Wrench}
@@ -189,7 +206,7 @@ export function NewOpportunity() {
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
           onClick={handleCreate}
-          disabled={isPending || !agentId}
+          disabled={isPending || !selectedAgentId}
         />
       </SaveRow>
     </PageContainer>

@@ -1106,6 +1106,7 @@
       },
       "modalData": {
         "title": "Engagement-Status ändern",
+        "titleVolSearch": "Ehrenamtlichensuche-Status ändern",
         "options": {
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
@@ -1113,6 +1114,11 @@
           "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen.",
           "incontact_description": "Diese Einrichtung/dieses Projekt ist in Kontakt mit der Organisation.",
           "triedToContact_description": "Es wurde versucht, diese Einrichtung/dieses Projekt zu kontaktieren."
+        },
+        "optionsVolSearch": {
+          "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
+          "agent-volunteers-found": "Alle verfügbaren Stellen sind durch Ehrenamtliche besetzt",
+          "agent-searching": "Suche nach Ehrenamtlichen"
         },
         "cancel": "Abbrechen",
         "save": "Speichern"
@@ -1147,6 +1153,13 @@
         },
         "editContact": {
           "success": "Kontakt erfolgreich aktualisiert"
+        },
+        "deleteContact": {
+          "button": "Löschen",
+          "confirmTitle": "Diesen Kontakt löschen?",
+          "confirmMessage": "Dadurch wird {{name}} aus dieser Einrichtung entfernt. Das Konto der Person und andere Einrichtungen sind nicht betroffen.",
+          "confirmText": "Löschen",
+          "success": "Kontakt erfolgreich gelöscht"
         },
         "validation": {
           "nameRequired": "Name ist erforderlich",
@@ -1223,6 +1236,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
       "typeModal": {
@@ -1251,6 +1265,11 @@
           "inactive": "Inaktiv",
           "inactive_description": "Diese ehrenamtliche Tätigkeit ist nicht mehr aktuell."
         }
+      },
+      "ngoModal": {
+        "title": "Einrichtung/Projekt ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
       },
       "contactDetailsTitle": "Kontaktdaten",
       "editButtonName": "Bearbeiten",
@@ -1474,7 +1493,8 @@
       "subtitle": "Füllen Sie die Details aus. Sie können alles nach der Erstellung bearbeiten.",
       "fields": {
         "title": "Titel der Möglichkeit",
-        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene"
+        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene",
+        "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
       "agentSection": "Ihre Organisation",
