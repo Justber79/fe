@@ -28,7 +28,7 @@ export const AGENT_ENGAGEMENT_DESCRIPTION_KEYS: Record<(typeof AGENT_DIALOG_STAT
   [AgentEngagementStatus.UNRESPONSIVE]: "unresponsive_description",
   [AgentEngagementStatus.INACTIVE]: "inactive_description",
   [AgentEngagementStatus.INCONTACT]: "incontact_description",
-  [AgentEngagementStatus.TRIED_TO_CONTACT]: "incontact_description",
+  [AgentEngagementStatus.TRIED_TO_CONTACT]: "triedToContact_description",
 };
 
 export const createAgentDialogOptions = (t: TFunction) => {
