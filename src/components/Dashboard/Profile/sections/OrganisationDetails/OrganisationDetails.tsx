@@ -57,7 +57,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
       ...details,
       title: agent.title || "",
       website: details?.website || "",
-      operator: details?.operator,
+      operator: details?.operator || agent.operator || "",
       clientLanguages: apiLanguagesToFormValues(details?.clientLanguages),
       addressStreet: details?.addressStreet ?? "",
       addressPostcode: details?.addressPostcode ?? "",

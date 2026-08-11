@@ -1174,7 +1174,9 @@
         "validation": {
           "required": "Dieses Feld ist erforderlich",
           "websiteInvalid": "Webseite muss mit http:// oder https:// beginnen",
-          "operatorInvalid": "Ungültiger Träger. Bitte aus der Liste auswählen",
+          "operatorRequired": "Es sind mindestens 3 Zeichen erforderlich.",
+          "operatorHint": "Geben Sie die ersten drei Buchstaben ein, damit die Liste angezeigt wird, und wählen Sie aus der Liste aus. Wenn die Liste nicht erscheint, ist der Träger ungültig.",
+          "operatorInvalid": "Ungültiger Träger. Bitte wählen Sie aus der Liste oder versuchen Sie es mit einem anderen Träger.",
           "clientLanguagesRequired": "Mindestens eine Sprache ist erforderlich"
         },
         "placeholders": {

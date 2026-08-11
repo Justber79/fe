@@ -36,8 +36,8 @@ export const OrganisationDetailsEdit = ({
 
   const displayOperators = useCallback(
     (value: string) => {
-      if (value.length >= 3) {
-        return operatorOptions.filter((op) => op.includes(value));
+      if (value?.length >= 3) {
+        return operatorOptions.filter((op) => op.includes(value.toLowerCase()));
       } else {
         return [];
       }
@@ -146,6 +146,7 @@ export const OrganisationDetailsEdit = ({
                 errorMessage={errors.operator?.message}
                 options={displayOperators(field.value)}
                 placeholder={t(`${i18nPrefix}.placeholders.operatorPlaceholder`)}
+                hint={t(`dashboard.agentProfile.organisationDetails.validation.operatorHint`)}
               />
             </>
           )}
