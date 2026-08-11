@@ -1092,11 +1092,17 @@
       },
       "modalData": {
         "title": "Change engagement status",
+        "titleVolSearch": "Change Volunteer Search",
         "options": {
           "unresponsive": "Unresponsive",
           "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
           "inactive_description": "This NGO does not work with the organization anymore."
+        },
+        "optionsVolSearch": {
+          "agent-not-needed": "No longer need volunteers",
+          "agent-volunteers-found": "All available positions are filled by volunteers",
+          "agent-searching": "Looking for volunteers"
         },
         "cancel": "Cancel",
         "save": "Save"
@@ -1132,6 +1138,14 @@
         "editContact": {
           "success": "Contact updated successfully"
         },
+        "deleteContact": {
+          "button": "Delete",
+          "confirmTitle": "Delete this contact?",
+          "confirmMessage": "This removes {{name}} from this NGO. Their account and any other NGOs they belong to are not affected.",
+          "confirmText": "Delete",
+          "success": "Contact deleted successfully"
+        },
+
         "validation": {
           "nameRequired": "Name is required",
           "districtRequired": "District is required",
@@ -1213,6 +1227,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",
       "typeModal": {
@@ -1241,6 +1256,11 @@
           "inactive": "Inactive",
           "inactive_description": "The opportunity is no longer active."
         }
+      },
+      "ngoModal": {
+        "title": "Change NGO",
+        "save": "Save",
+        "cancel": "Cancel"
       },
       "contactDetailsTitle": "Contact details",
       "editButtonName": "Edit",
@@ -1464,7 +1484,8 @@
       "subtitle": "Fill in the details. You can edit everything after creating it.",
       "fields": {
         "title": "Opportunity title",
-        "titlePlaceholder": "e.g. German tutoring for adults"
+        "titlePlaceholder": "e.g. German tutoring for adults",
+        "ngo": "NGO"
       },
       "contactSection": "Contact details",
       "agentSection": "Your organisation",
