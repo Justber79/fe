@@ -1,13 +1,14 @@
+import { AppreciationWithStatus } from "@/components/Dashboard/Profile/sections/Appreciation/types";
 import { apiPathAppreciation, apiPathVolunteer } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import axios from "axios";
-import { ApiAppreciationGet, ApiAppreciationPatch, ApiAppreciationPost } from "need4deed-sdk";
+import { ApiAppreciationPatch, ApiAppreciationPost } from "need4deed-sdk";
 
 export const useAppreciationTracker = (volunteerId: number) => {
   const queryKey = ["volunteer", String(volunteerId), "appreciations"];
 
-  const { data: appreciations = [], isLoading } = useGetQuery<ApiAppreciationGet[]>({
+  const { data: appreciations = [], isLoading } = useGetQuery<AppreciationWithStatus[]>({
     queryKey,
     apiPath: `${apiPathVolunteer}/${volunteerId}/appreciation`,
   });

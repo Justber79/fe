@@ -2,7 +2,7 @@ import { Button } from "@/components/core/button";
 import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
 import { Modal } from "@/components/core/modal";
 import { de, enUS, Locale } from "date-fns/locale";
-import { ApiAppreciationGet, VolunteerStateAppreciationType } from "need4deed-sdk";
+import { VolunteerStateAppreciationType } from "need4deed-sdk";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SelectableOption } from "../shared/SelectableOption";
@@ -16,6 +16,7 @@ import {
   SubOptionContainer,
   SubQuestion,
 } from "./styles";
+import { AppreciationWithStatus, DeliveryStatus } from "./types";
 
 type Props = {
   isOpen: boolean;
@@ -25,11 +26,10 @@ type Props = {
     title: VolunteerStateAppreciationType;
     dateDue: Date | null;
     dateDelivery: Date | null;
+    status: DeliveryStatus;
   }) => void;
-  initialData?: ApiAppreciationGet;
+  initialData?: AppreciationWithStatus;
 };
-
-type DeliveryStatus = "received" | "pending";
 
 const APPRECIATION_TYPES = [
   {
@@ -77,12 +77,7 @@ function DeliveryStatusOption({
 }: DeliveryStatusOptionProps) {
   return (
     <>
-      <SelectableOption
-        isSelected={isSelected}
-        label={label}
-        onClick={onSelect}
-        data-testid={`sub-option-${status}`}
-      />
+      <SelectableOption isSelected={isSelected} label={label} onClick={onSelect} data-testid={`sub-option-${status}`} />
       {showDatePicker && (
         <DateFieldWrapper data-testid={testId}>
           <DatePickerWithLabel
@@ -113,13 +108,14 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
 
     if (initialData) {
       setSelectedType(initialData.title);
-      if (initialData.dateDelivery) {
-        setDeliveryStatus("received");
-        setSelectedDate(new Date(initialData.dateDelivery));
-      } else if (initialData.dateDue) {
-        setDeliveryStatus("pending");
-        setSelectedDate(new Date(initialData.dateDue));
-      }
+      setDeliveryStatus(initialData.status);
+      setSelectedDate(
+        initialData.dateDelivery
+          ? new Date(initialData.dateDelivery)
+          : initialData.dateDue
+            ? new Date(initialData.dateDue)
+            : undefined,
+      );
     } else {
       setSelectedType(undefined);
       setDeliveryStatus(undefined);
@@ -149,8 +145,9 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
     onSave({
       id: initialData?.id,
       title: selectedType,
-      dateDue: deliveryStatus === "pending" ? selectedDate : null,
+      dateDue: deliveryStatus === "received" ? null : selectedDate,
       dateDelivery: deliveryStatus === "received" ? selectedDate : null,
+      status: deliveryStatus,
     });
   };
 
@@ -210,6 +207,19 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
                         todayText={todayText}
                         allowFuture
                         testId="due-date-field"
+                      />
+                      <DeliveryStatusOption
+                        status="post"
+                        isSelected={deliveryStatus === "post"}
+                        label={t("dashboard.appreciationSection.volunteerPostIt")}
+                        onSelect={() => handleDeliveryStatusSelect("post")}
+                        showDatePicker={deliveryStatus === "post"}
+                        date={selectedDate}
+                        onDateSelect={setSelectedDate}
+                        locale={locale}
+                        dateLabel={t("dashboard.appreciationSection.postOnRequired")}
+                        todayText={todayText}
+                        testId="post-date-field"
                       />
                     </SubOptionContainer>
                   </ExpandedSection>

@@ -1,12 +1,11 @@
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
-import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { useAppreciationTracker } from "@/hooks/useAppreciationTracker";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
 import {
   ApiVolunteerGet,
-  ApiAppreciationGet,
   ApiAppreciationPost,
   VolunteerStateAppreciationType,
+  ApiAppreciationPatch,
 } from "need4deed-sdk";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +25,7 @@ import {
 } from "@/components/core/common/Table";
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
+import { AppreciationWithStatus, DeliveryStatus } from "./types";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -38,8 +38,8 @@ export type AppreciationRef = {
 export const Appreciation = forwardRef<AppreciationRef, Props>(function Appreciation({ volunteer }, ref) {
   const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<ApiAppreciationGet | undefined>(undefined);
-  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiAppreciationGet | null>(null);
+  const [editingEntry, setEditingEntry] = useState<AppreciationWithStatus | undefined>(undefined);
+  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<AppreciationWithStatus | null>(null);
 
   const { appreciations, createAppreciation, updateAppreciation, deleteAppreciation } = useAppreciationTracker(
     volunteer.id,
@@ -54,12 +54,12 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     handleAddNew,
   }));
 
-  const handleEdit = (entry: ApiAppreciationGet) => {
+  const handleEdit = (entry: AppreciationWithStatus) => {
     setEditingEntry(entry);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (entry: ApiAppreciationGet) => {
+  const handleDelete = (entry: AppreciationWithStatus) => {
     setDeleteConfirmEntry(entry);
   };
 
@@ -77,36 +77,36 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     title: VolunteerStateAppreciationType;
     dateDue: Date | null;
     dateDelivery: Date | null;
+    status: DeliveryStatus;
   }) => {
     if (data.id) {
-      const payload = {
+      const payload: ApiAppreciationPatch & { status: DeliveryStatus } = {
         title: data.title,
         dateDue: data.dateDue,
         dateDelivery: data.dateDelivery,
+        status: data.status,
       };
       updateAppreciation({ id: data.id, data: payload }, { onSuccess: () => setIsDialogOpen(false) });
     } else {
-      const payload: ApiAppreciationPost = {
+      const payload: ApiAppreciationPost & { status: DeliveryStatus } = {
         title: data.title,
         dateDue: data.dateDue || new Date(),
         dateDelivery: data.dateDelivery ?? undefined,
+        status: data.status,
       };
       createAppreciation(payload, { onSuccess: () => setIsDialogOpen(false) });
     }
   };
 
-  const getStatus = (entry: ApiAppreciationGet): "received" | "pending" =>
-    entry.dateDelivery ? "received" : "pending";
+  const getStatus = (entry: AppreciationWithStatus) => entry.status;
 
-  const getStatusLabel = (entry: ApiAppreciationGet): string => {
-    if (entry.dateDelivery) {
-      return t("dashboard.appreciationSection.statusReceived");
-    }
-    if (entry.dateDue) {
-      return `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue)}`;
-    }
-    return EMPTY_PLACEHOLDER_VALUE;
+  const STATUS_LABEL: Record<DeliveryStatus, (entry: AppreciationWithStatus) => string> = {
+    received: () => t("dashboard.appreciationSection.statusReceived"),
+    pending: (entry) => `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue ?? undefined)}`,
+    post: (entry) => `${t("dashboard.appreciationSection.statusMailedOn")} ${formatDate(entry.dateDue ?? undefined)}`,
   };
+
+  const getStatusLabel = (entry: AppreciationWithStatus) => STATUS_LABEL[entry.status](entry);
 
   return (
     <SectionWrapper data-testid="appreciation-container">

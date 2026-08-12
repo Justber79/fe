@@ -6,8 +6,14 @@ export const AppreciationTableContainer = styled(TableContainer)`
   margin-top: var(--spacing-24);
 `;
 
-export const StatusBadge = styled.div<{ $status: "received" | "pending" }>`
-  background: ${(props) => (props.$status === "received" ? "var(--color-green-100)" : "var(--color-red-50)")};
+export const StatusBadge = styled.div<{ $status: "received" | "pending" | "post" }>`
+  background: ${(props) =>
+    props.$status === "received"
+      ? "var(--color-green-100)"
+      : props.$status === "post"
+        ? "var(--color-blue-100)"
+        : "var(--color-red-50)"};
+
   padding: var(--spacing-12);
   border-radius: var(--border-radius-xs);
   font-weight: var(--font-weight-semi-bold);
