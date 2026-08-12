@@ -6,11 +6,14 @@ export type OpportunityStatusUpdateData = {
   statusOpportunity: OpportunityStatusType;
 };
 
-export const useUpdateOpportunityStatus = (opportunityId: ApiOpportunityGet["id"]) => {
+export const useUpdateOpportunityStatus = (opportunityId: ApiOpportunityGet["id"], agentId?: number) => {
   return useMutationQuery<OpportunityStatusUpdateData, { message: string; data: ApiOpportunityGet }>({
     apiPath: `${apiPathOpportunity}/${opportunityId}`,
     method: "patch",
     successMessage: "dashboard.opportunityProfile.statusUpdateSuccess",
-    queryKeyToInvalidate: ["opportunity", String(opportunityId)],
+    queryKeyToInvalidate: [
+      ["opportunity", String(opportunityId)],
+      ["agent", String(agentId)],
+    ],
   });
 };

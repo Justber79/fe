@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type UseStatusDialogReturn<T extends string> = {
+export type UseStatusDialogReturn<T extends string | number> = {
   isOpen: boolean;
   selected: T;
   original: T;
@@ -11,13 +11,13 @@ export type UseStatusDialogReturn<T extends string> = {
   setSelected: (value: T) => void;
 };
 
-type StatusDialogConfig<T extends string> = {
+type StatusDialogConfig<T extends string | number> = {
   initial: T;
   onSave: (value: T, callbacks: { onSuccess: () => void }) => void;
   isSaveDisabled?: (selected: T, original: T) => boolean;
 };
 
-export const useStatusDialog = <T extends string>({
+export const useStatusDialog = <T extends string | number>({
   initial,
   onSave,
   isSaveDisabled: customIsSaveDisabled,

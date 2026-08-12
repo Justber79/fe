@@ -8,8 +8,11 @@ export type UseOpportunityStatusDialogReturn = UseStatusDialogReturn<Opportunity
 const toManualStatus = (status: OpportunityStatusType): OpportunityManualStatusType =>
   SDK_TO_MANUAL[status] ?? OpportunityManualStatusType.NEW;
 
-export const useOpportunityStatusDialog = (opportunity: ApiOpportunityGet): UseOpportunityStatusDialogReturn => {
-  const { mutate: updateStatus } = useUpdateOpportunityStatus(opportunity.id);
+export const useOpportunityStatusDialog = (
+  opportunity: ApiOpportunityGet,
+  agentId?: number | null,
+): UseOpportunityStatusDialogReturn => {
+  const { mutate: updateStatus } = useUpdateOpportunityStatus(opportunity.id, agentId ?? 0);
 
   const onSave = (status: OpportunityManualStatusType, { onSuccess }: { onSuccess: () => void }) => {
     const sdkStatus = MANUAL_TO_SDK[status];
