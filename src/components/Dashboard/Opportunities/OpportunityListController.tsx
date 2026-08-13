@@ -8,7 +8,7 @@ import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from 
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
-import { DEFAULT_OPPORTUNITY_STATUSES } from "./Filters/constants";
+import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -61,8 +61,8 @@ export function OpportunityListController({
     serializedFilter.set("volunteer", volunteerId);
   }
 
-  if (!serializedFilter.has("status")) {
-    DEFAULT_OPPORTUNITY_STATUSES.forEach((defaultStatus) => serializedFilter.append("status", defaultStatus));
+  if (!serializedFilter.has(STATUS_PARAM)) {
+    DEFAULT_OPPORTUNITY_STATUSES.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
   }
 
   const backendSortOrder = isAppointmentSort(sortOrder) ? SortOrder.NewToOld : (sortOrder as SortOrder);
