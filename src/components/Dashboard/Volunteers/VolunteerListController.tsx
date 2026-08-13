@@ -42,6 +42,8 @@ export function VolunteerListController({
     serializedFilter.set("opportunity", opportunityId);
   }
 
+  const emailsFilter = new URLSearchParams(serializedFilter);
+
   if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT)) {
     DEFAULT_VOLUNTEER_ENGAGEMENTS.forEach((defaultEngagement) =>
       serializedFilter.append(QueryParamsKeys.ENGAGEMENT, defaultEngagement.replace(/^vol-/, "")),
@@ -64,7 +66,7 @@ export function VolunteerListController({
     staleTime: cacheTTL,
   });
   const volunteers = data || [];
-  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", emailsFilter);
   const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
