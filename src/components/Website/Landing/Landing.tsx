@@ -4,6 +4,7 @@ import { FooterPartnersSection } from "@/components/FooterPartners";
 import { Header } from "@/components/Header";
 import N4DLogo from "@/components/Layout/PageLayout/logos/N4DLogo";
 import { ProcessStepsSection } from "@/components/ProcessSteps";
+import { RefugeeSupport } from "@/components/RefugeeSupport";
 import { RacSection } from "@/components/RacSection";
 import { AppContainer } from "@/components/styled/container";
 import { TestimonialsSection } from "@/components/Testimonials";
@@ -32,6 +33,7 @@ export function Landing({ lang }: { lang: Lang }) {
       <VolunteeringCategoriesSection />
       {/* Transferred Components */}
       <VolunteeringOpportunitiesSection />
+      <RefugeeSupport />
       <EventsSection />
       <TestimonialsSection lang={lang} />
       <ProcessStepsSection />
