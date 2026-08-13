@@ -54,6 +54,8 @@ export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType)
   (status) => status !== OpportunityStatusType.INACTIVE,
 );
 
+export const STATUS_PARAM = "status";
+
 export const SEPARATOR = "~";
 export type AvailabilityKeys = keyof OpportunityCardsFilter["availability"];
 export type AvailabilitySubKeys = TimeSlot | ByDay | OccasionalType;
