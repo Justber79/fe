@@ -107,6 +107,23 @@ export const VolunteerTypeRow = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-16) 0;
+
+  h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-blue-700);
+    margin: 0;
+    flex-shrink: 0;
+  }
+`;
+
+export const NGOTypeRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  padding: var(--spacing-16) 0;
   border-bottom: var(--border-width-thin) solid var(--color-blue-50);
 
   h4 {
@@ -116,6 +133,13 @@ export const VolunteerTypeRow = styled.div`
     margin: 0;
     flex-shrink: 0;
   }
+`;
+
+export const NGOnonEditableRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 `;
 
 export const TypeButtons = styled.div`

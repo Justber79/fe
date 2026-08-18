@@ -57,9 +57,9 @@ export const createOpportunityDetailsSchema = (
       const codes = new Set(
         resolved.filter((option): option is MainCommunicationLanguageOption => !!option).map(toLangCode),
       );
-      const isGermanOnly = codes.size === 1 && codes.has("de");
-      const isGermanAndEnglish = codes.size === 2 && codes.has("de") && codes.has("en");
-      if (hasUnresolved || codes.has(null) || !(isGermanOnly || isGermanAndEnglish)) {
+
+      const isOnlyGermanOrEnglish = codes.size > 0 && Array.from(codes).every((code) => code === "de" || code === "en");
+      if (hasUnresolved || codes.has(null) || !isOnlyGermanOrEnglish) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: t(`${i18nPrefix}.mainCommunicationInvalid`),

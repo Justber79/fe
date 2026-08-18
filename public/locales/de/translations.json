@@ -1150,6 +1150,13 @@
         "editContact": {
           "success": "Kontakt erfolgreich aktualisiert"
         },
+        "deleteContact": {
+          "button": "Löschen",
+          "confirmTitle": "Diesen Kontakt löschen?",
+          "confirmMessage": "Dadurch wird {{name}} aus dieser Einrichtung entfernt. Das Konto der Person und andere Einrichtungen sind nicht betroffen.",
+          "confirmText": "Löschen",
+          "success": "Kontakt erfolgreich gelöscht"
+        },
         "validation": {
           "nameRequired": "Name ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",
@@ -1225,6 +1232,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
       "typeModal": {
@@ -1253,6 +1261,11 @@
           "inactive": "Inaktiv",
           "inactive_description": "Diese ehrenamtliche Tätigkeit ist nicht mehr aktuell."
         }
+      },
+      "ngoModal": {
+        "title": "Einrichtung/Projekt ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
       },
       "contactDetailsTitle": "Kontaktdaten",
       "editButtonName": "Bearbeiten",
@@ -1356,7 +1369,7 @@
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
-          "mainCommunicationInvalid": "Hauptkommunikation muss ausschließlich Deutsch oder Deutsch und Englisch sein",
+          "mainCommunicationInvalid": "Hauptkommunikation muss Deutsch, Englisch oder beides sein",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
@@ -1476,7 +1489,8 @@
       "subtitle": "Füllen Sie die Details aus. Sie können alles nach der Erstellung bearbeiten.",
       "fields": {
         "title": "Titel der Möglichkeit",
-        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene"
+        "titlePlaceholder": "z. B. Deutschkurs für Erwachsene",
+        "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
       "agentSection": "Ihre Organisation",
