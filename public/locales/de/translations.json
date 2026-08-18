@@ -1150,6 +1150,13 @@
         "editContact": {
           "success": "Kontakt erfolgreich aktualisiert"
         },
+        "deleteContact": {
+          "button": "Löschen",
+          "confirmTitle": "Diesen Kontakt löschen?",
+          "confirmMessage": "Dadurch wird {{name}} aus dieser Einrichtung entfernt. Das Konto der Person und andere Einrichtungen sind nicht betroffen.",
+          "confirmText": "Löschen",
+          "success": "Kontakt erfolgreich gelöscht"
+        },
         "validation": {
           "nameRequired": "Name ist erforderlich",
           "districtRequired": "Bezirk ist erforderlich",
@@ -1225,6 +1232,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
       "typeModal": {
@@ -1253,6 +1261,11 @@
           "inactive": "Inaktiv",
           "inactive_description": "Diese ehrenamtliche Tätigkeit ist nicht mehr aktuell."
         }
+      },
+      "ngoModal": {
+        "title": "Einrichtung/Projekt ändern",
+        "save": "Speichern",
+        "cancel": "Abbrechen"
       },
       "contactDetailsTitle": "Kontaktdaten",
       "editButtonName": "Bearbeiten",

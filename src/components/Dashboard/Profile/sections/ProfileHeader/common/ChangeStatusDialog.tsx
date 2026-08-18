@@ -16,14 +16,14 @@ import {
   RadioOption,
 } from "./dialogStyles";
 
-type StatusOption<T extends string> = {
+type StatusOption<T extends string | number> = {
   value: T;
   label: string;
   description: string;
   extra?: ReactNode;
 };
 
-type Props<T extends string> = {
+type Props<T extends string | number> = {
   testId: string;
   isOpen: boolean;
   title: string;
@@ -38,7 +38,7 @@ type Props<T extends string> = {
   cancelLabel: string;
 };
 
-export const ChangeStatusDialog = <T extends string>({
+export const ChangeStatusDialog = <T extends string | number>({
   testId,
   isOpen,
   title,
@@ -61,12 +61,7 @@ export const ChangeStatusDialog = <T extends string>({
           {options.map(({ value, label, description, extra }) => (
             <OptionItem key={value}>
               <RadioOption>
-                <input
-                  type="radio"
-                  name={radioName}
-                  checked={selected === value}
-                  onChange={() => onSelect(value)}
-                />
+                <input type="radio" name={radioName} checked={selected === value} onChange={() => onSelect(value)} />
                 <OptionLabel>{label}</OptionLabel>
               </RadioOption>
               <OptionDescription>{description}</OptionDescription>

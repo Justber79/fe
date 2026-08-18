@@ -12,6 +12,9 @@ import { useEnumTranslation } from "../shared";
 import { ContactFormData, createContactFormSchema } from "./contactFormSchema";
 import { ContactFormFields } from "./ContactFormFields";
 import { EditIconButton } from "./styles";
+import { ConfirmationDialog } from "../../shared/ConfirmationDialog";
+import { useDeleteAgentContactMembership } from "@/hooks/useDeleteAgentContactMembership";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
   agentId: string;
@@ -36,6 +39,9 @@ export const ContactRow = ({ agentId, contact }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const { mutate: updateContact, isPending } = useUpdateAgentContactMembership(agentId, contact.id);
   const { options, toLabel, toKey } = useEnumTranslation(roleKeys, "dashboard.agentProfile.contactDetails.roles");
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const { mutate: deleteContact, isPending: isDeleting } = useDeleteAgentContactMembership(agentId, contact.id);
+  const { isAuthorized } = useAuth();
 
   const schema = createContactFormSchema(t);
   const {
@@ -62,7 +68,8 @@ export const ContactRow = ({ agentId, contact }: Props) => {
   const onSubmit = (values: ContactFormData) => {
     updateContact(values, { onSuccess: () => setIsEditing(false) });
   };
-
+  const { person } = contact;
+  const fullName = [person.firstName, person.lastName].filter(Boolean).join(" ") || "–";
   if (isEditing) {
     return (
       <>
@@ -84,13 +91,41 @@ export const ContactRow = ({ agentId, contact }: Props) => {
             disabled={!isDirty || !isValid || isPending}
             padding="var(--volunteer-profile-section-card-header-button-padding)"
           />
+          {isAuthorized && (
+            <Button
+              text={t("dashboard.agentProfile.contactDetails.deleteContact.button")}
+              onClick={() => setOpenDeleteDialog(true)}
+              width="auto"
+              padding="var(--volunteer-profile-section-card-header-button-padding)"
+              backgroundcolor="var(--color-red-500)"
+              disabled={isDeleting}
+            />
+          )}
         </ButtonRow>
+
+        {openDeleteDialog && (
+          <ConfirmationDialog
+            title={t("dashboard.agentProfile.contactDetails.deleteContact.confirmTitle")}
+            message={t("dashboard.agentProfile.contactDetails.deleteContact.confirmMessage", {
+              name: fullName,
+            })}
+            confirmText={t("dashboard.agentProfile.contactDetails.deleteContact.confirmText")}
+            cancelText={t("dashboard.agentProfile.contactDetails.cancel")}
+            onCancel={() => setOpenDeleteDialog(false)}
+            onConfirm={() =>
+              deleteContact(undefined, {
+                onSuccess: () => {
+                  setOpenDeleteDialog(false);
+                  setIsEditing(false);
+                },
+              })
+            }
+          />
+        )}
       </>
     );
   }
 
-  const { person } = contact;
-  const fullName = [person.firstName, person.lastName].filter(Boolean).join(" ") || "–";
   const details = [toLabel(contact.role), person.email, person.phone, person.landline].filter(Boolean);
 
   return (
