@@ -44,6 +44,16 @@ const APPRECIATION_TYPES = [
     value: VolunteerStateAppreciationType.BENEFIT_CARD,
     labelKey: "dashboard.appreciationSection.typeOptions.benefitCard",
   },
+  {
+    value: VolunteerStateAppreciationType.NEED4DEED_CERTIFICATE,
+    labelKey: "dashboard.appreciationSection.typeOptions.need4deedCertificate",
+  },
+  { value: VolunteerStateAppreciationType.CAP, labelKey: "dashboard.appreciationSection.typeOptions.cap" },
+  { value: VolunteerStateAppreciationType.NOTEBOOK, labelKey: "dashboard.appreciationSection.typeOptions.notebook" },
+  {
+    value: VolunteerStateAppreciationType.CITY_CERTIFICATE,
+    labelKey: "dashboard.appreciationSection.typeOptions.cityCertificate",
+  },
 ];
 
 type DeliveryStatusOptionProps = {
@@ -77,12 +87,7 @@ function DeliveryStatusOption({
 }: DeliveryStatusOptionProps) {
   return (
     <>
-      <SelectableOption
-        isSelected={isSelected}
-        label={label}
-        onClick={onSelect}
-        data-testid={`sub-option-${status}`}
-      />
+      <SelectableOption isSelected={isSelected} label={label} onClick={onSelect} data-testid={`sub-option-${status}`} />
       {showDatePicker && (
         <DateFieldWrapper data-testid={testId}>
           <DatePickerWithLabel
