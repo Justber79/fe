@@ -1358,7 +1358,7 @@
           "descriptionTooLong": "Description is too long",
           "numberOfVolunteersRequired": "Number of volunteers must be at least 1",
           "languageRequired": "At least one language is required",
-          "mainCommunicationInvalid": "Main communication must be German only, or German and English",
+          "mainCommunicationInvalid": "Main communication must be German, English, or both",
           "availabilityRequired": "At least one time slot must be selected",
           "activitiesRequired": "At least one activity is required",
           "skillsRequired": "At least one skill is required"
@@ -1556,17 +1556,17 @@
       },
       "dataProtectionLink": "Click here for our Privacy Policy",
       "dataProtectionOfficer": "Data Protection Officer"
-    },
-    "message": {
-      "successful": "Successful",
-      "errorGeneric": "Something went wrong!",
-      "validationFailed": "Validation failed",
-      "uploadSuccess": "Document uploaded successfully!",
-      "deleteSuccess": "Document deleted successfully!",
-      "uploadError": "Upload failed. Please try again.",
-      "deleteError": "Delete failed. Please try again.",
-      "previewError": "Preview failed. Please try again."
     }
+  },
+  "message": {
+    "successful": "Successful",
+    "errorGeneric": "Something went wrong!",
+    "validationFailed": "Validation failed",
+    "uploadSuccess": "Document uploaded successfully!",
+    "deleteSuccess": "Document deleted successfully!",
+    "uploadError": "Upload failed. Please try again.",
+    "deleteError": "Delete failed. Please try again.",
+    "previewError": "Preview failed. Please try again."
   },
   "racGuidelines": {
     "heading": "Need4Deed Guidelines",
