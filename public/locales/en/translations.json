@@ -1559,17 +1559,17 @@
       },
       "dataProtectionLink": "Click here for our Privacy Policy",
       "dataProtectionOfficer": "Data Protection Officer"
-    },
-    "message": {
-      "successful": "Successful",
-      "errorGeneric": "Something went wrong!",
-      "validationFailed": "Validation failed",
-      "uploadSuccess": "Document uploaded successfully!",
-      "deleteSuccess": "Document deleted successfully!",
-      "uploadError": "Upload failed. Please try again.",
-      "deleteError": "Delete failed. Please try again.",
-      "previewError": "Preview failed. Please try again."
     }
+  },
+  "message": {
+    "successful": "Successful",
+    "errorGeneric": "Something went wrong!",
+    "validationFailed": "Validation failed",
+    "uploadSuccess": "Document uploaded successfully!",
+    "deleteSuccess": "Document deleted successfully!",
+    "uploadError": "Upload failed. Please try again.",
+    "deleteError": "Delete failed. Please try again.",
+    "previewError": "Preview failed. Please try again."
   },
   "racGuidelines": {
     "heading": "Need4Deed Guidelines",
