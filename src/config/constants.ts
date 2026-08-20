@@ -40,6 +40,8 @@ export const screenSizeThresholds = {
   desktop: 1440,
 };
 
+export const videoGuideURL = "https://www.youtube.com/embed/tk5akHPd9oo?si=k01Klx7SxIWwKHO_&rel=0&autoplay=0";
+
 export const eightDays = 1000 * 60 * 60 * 24 * 8;
 export const twoDays = 1000 * 60 * 60 * 24 * 2;
 
