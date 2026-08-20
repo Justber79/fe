@@ -375,6 +375,7 @@
         "district": "District",
         "languages": "Languages",
         "activities": "Activities",
+        "skills": "Skills",
         "engagement": {
           "header": "Engagement",
           "vol-active": "Active",

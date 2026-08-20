@@ -104,6 +104,15 @@ export function serializeOpportunityFilters(
     }
   });
 
+  params.delete(EntityTableName.SKILL);
+  Object.entries(filter.skill).forEach(([key, value]) => {
+    if (value === true) {
+      const paramValue =
+        (options?.serializeToIDs && options.apiFilterOptions?.skill?.find((d) => d.title === key)?.id) || key;
+      params.append(EntityTableName.SKILL, String(paramValue));
+    }
+  });
+
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
     const availabilityKey = key as AvailabilityKeys;
@@ -148,6 +157,11 @@ export function deserializeOpportunityFilters(
   const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
   queryActivities.forEach((l) => {
     newFilter.activity[l] = true;
+  });
+
+  const querySkills = searchParams.getAll(EntityTableName.SKILL);
+  querySkills.forEach((s) => {
+    newFilter.skill[s] = true;
   });
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
