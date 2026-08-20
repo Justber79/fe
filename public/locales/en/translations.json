@@ -863,6 +863,19 @@
         "confirmMessage": "This will move \"{{opportunityName}}\" to {{agentName}}. The applicant's contact details stay the same; assigned volunteers move with it.",
         "confirmButton": "Transfer",
         "success": "Opportunity transferred successfully"
+      },
+      "createAgent": {
+        "button": "Add a new NGO",
+        "title": "Add a new NGO",
+        "name": "Organization name",
+        "addressStreet": "Street address",
+        "addressPostcode": "Postcode",
+        "cancel": "Cancel",
+        "submit": "Create",
+        "success": "NGO created successfully",
+        "validation": {
+          "titleRequired": "Organization name is required"
+        }
       }
     },
     "opportunities": {
@@ -1145,7 +1158,6 @@
           "confirmText": "Delete",
           "success": "Contact deleted successfully"
         },
-
         "validation": {
           "nameRequired": "Name is required",
           "districtRequired": "District is required",

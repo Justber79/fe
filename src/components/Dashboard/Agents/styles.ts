@@ -7,6 +7,27 @@ export const AgentsContainer = styled.div`
   gap: var(--dashboard-volunteers-container-gap);
 `;
 
+// Coordinator/admin-only "create agent" button next to the Agents table
+// header (fe#911) — same circular icon-button treatment as the agent
+// profile's "add contact" button.
+export const CreateAgentButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: var(--border-width-thin) solid var(--color-aubergine);
+  background-color: var(--color-white);
+  color: var(--color-aubergine);
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: var(--color-aubergine-subtle);
+  }
+`;
+
 export const ContentRow = styled.div`
   display: flex;
   flex-direction: row;
