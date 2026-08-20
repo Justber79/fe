@@ -833,6 +833,19 @@
         "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
         "confirmButton": "Übertragen",
         "success": "Möglichkeit erfolgreich übertragen"
+      },
+      "createAgent": {
+        "button": "Neue NGO hinzufügen",
+        "title": "Neue NGO hinzufügen",
+        "name": "Name der Organisation",
+        "addressStreet": "Straße",
+        "addressPostcode": "Postleitzahl",
+        "cancel": "Abbrechen",
+        "submit": "Erstellen",
+        "success": "NGO erfolgreich erstellt",
+        "validation": {
+          "titleRequired": "Name der Organisation ist erforderlich"
+        }
       }
     },
     "opportunities": {
