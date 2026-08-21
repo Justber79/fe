@@ -843,7 +843,8 @@
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
         }
-      }
+      },
+      "unclaimed": "Nicht übernommen"
     },
     "opportunities": {
       "opportunities": "Ehrenamtsbedarfe",
@@ -1090,7 +1091,9 @@
           "new": "Neu",
           "active": "Aktiv",
           "unresponsive": "Nicht erreichbar",
-          "inactive": "Inaktiv"
+          "inactive": "Inaktiv",
+          "incontact": "In Kontakt",
+          "triedToContact": "Kontaktversuch unternommen"
         },
         "volunteerSearch": {
           "notNeeded": "Nicht benötigt",
@@ -1122,7 +1125,9 @@
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen.",
+          "incontact_description": "Diese Einrichtung/dieses Projekt ist in Kontakt mit der Organisation.",
+          "triedToContact_description": "Es wurde versucht, diese Einrichtung/dieses Projekt zu kontaktieren."
         },
         "optionsVolSearch": {
           "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
