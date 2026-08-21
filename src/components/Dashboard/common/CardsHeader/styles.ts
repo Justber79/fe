@@ -82,6 +82,12 @@ export const HyphenatedHeading2 = styled(Heading2)`
   ${hyphenationStyles}
 `;
 
+export const HeaderTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
 export const ClearAllButton = styled.button`
   display: flex;
   align-items: center;

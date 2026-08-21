@@ -1,25 +1,8 @@
 import styled from "styled-components";
-
-const iconButtonBase = `
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: var(--border-width-thin) solid var(--color-aubergine);
-  background-color: var(--color-white);
-  color: var(--color-aubergine);
-  cursor: pointer;
-  flex-shrink: 0;
-
-  &:hover {
-    background-color: var(--color-aubergine-subtle);
-  }
-`;
+import { circleIconButtonStyles } from "@/components/styled/mixins";
 
 export const EditIconButton = styled.button`
-  ${iconButtonBase}
+  ${circleIconButtonStyles}
 `;
 
 export const AddContactRow = styled.div`
@@ -29,5 +12,5 @@ export const AddContactRow = styled.div`
 `;
 
 export const AddContactButton = styled.button`
-  ${iconButtonBase}
+  ${circleIconButtonStyles}
 `;

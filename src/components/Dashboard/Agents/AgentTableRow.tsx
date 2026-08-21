@@ -7,6 +7,7 @@ import { AGENT_COL_WIDTHS } from "./agentsTableColumns";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 import { CopyEmail } from "../common/CopyEmail";
+import { UnclaimedBadge } from "../common/UnclaimedBadge";
 import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 
 interface TableRowProps {
@@ -20,7 +21,7 @@ interface TableRowProps {
 export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSelect }: TableRowProps) {
   const { i18n } = useTranslation();
 
-  const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email } = agent;
+  const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email, unclaimed } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
   const lang = i18n.language as Lang;
 
@@ -44,6 +45,7 @@ export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSe
     <ClickableRow {...rowProps} $isLast={isLast} data-testid={`agent-row-${id}`}>
       <WrapAnywhereCell $width={AGENT_COL_WIDTHS.title} data-testid={`agent-title-${id}`}>
         {title}
+        {unclaimed && <UnclaimedBadge />}
       </WrapAnywhereCell>
       <WrapAnywhereCell $width={AGENT_COL_WIDTHS.type} data-testid={`agent-type-${id}`}>
         {extractOptionTitle(type, lang)}

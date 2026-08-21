@@ -904,7 +904,21 @@
         "confirmMessage": "This will move \"{{opportunityName}}\" to {{agentName}}. The applicant's contact details stay the same; assigned volunteers move with it.",
         "confirmButton": "Transfer",
         "success": "Opportunity transferred successfully"
-      }
+      },
+      "createAgent": {
+        "button": "Add a new NGO",
+        "title": "Add a new NGO",
+        "name": "Organization name",
+        "addressStreet": "Street address",
+        "addressPostcode": "Postcode",
+        "cancel": "Cancel",
+        "submit": "Create",
+        "success": "NGO created successfully",
+        "validation": {
+          "titleRequired": "Organization name is required"
+        }
+      },
+      "unclaimed": "Unclaimed"
     },
     "opportunities": {
       "opportunities": "Opportunities",
@@ -1106,7 +1120,9 @@
           "new": "New",
           "active": "Active",
           "unresponsive": "Unresponsive",
-          "inactive": "Inactive"
+          "inactive": "Inactive",
+          "incontact": "In contact",
+          "triedToContact": "Tried to contact"
         },
         "volunteerSearch": {
           "notNeeded": "Not needed",
@@ -1138,7 +1154,9 @@
           "unresponsive": "Unresponsive",
           "unresponsive_description": "This NGO does not respond.",
           "inactive": "Inactive",
-          "inactive_description": "This NGO does not work with the organization anymore."
+          "inactive_description": "This NGO does not work with the organization anymore.",
+          "incontact_description": "This NGO is in contact with the organization.",
+          "triedToContact_description": "We tried to contact this NGO but they did not respond."
         },
         "optionsVolSearch": {
           "agent-not-needed": "No longer need volunteers",
@@ -1186,7 +1204,6 @@
           "confirmText": "Delete",
           "success": "Contact deleted successfully"
         },
-
         "validation": {
           "nameRequired": "Name is required",
           "districtRequired": "District is required",
