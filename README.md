@@ -119,7 +119,7 @@ Before implementing or modifying any UI component:
 
 ## 🤝 How to Contribute
 
-We welcome all contributions — from bug fixes to feature development.
+We welcome all contributions — from bug fixes to feature development. **Priorities are tagged as help out.**
 
 1. **Fork** this repository
 

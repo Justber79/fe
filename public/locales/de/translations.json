@@ -831,7 +831,21 @@
         "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
         "confirmButton": "Übertragen",
         "success": "Möglichkeit erfolgreich übertragen"
-      }
+      },
+      "createAgent": {
+        "button": "Neue NGO hinzufügen",
+        "title": "Neue NGO hinzufügen",
+        "name": "Name der Organisation",
+        "addressStreet": "Straße",
+        "addressPostcode": "Postleitzahl",
+        "cancel": "Abbrechen",
+        "submit": "Erstellen",
+        "success": "NGO erfolgreich erstellt",
+        "validation": {
+          "titleRequired": "Name der Organisation ist erforderlich"
+        }
+      },
+      "unclaimed": "Nicht übernommen"
     },
     "opportunities": {
       "opportunities": "Ehrenamtsbedarfe",
@@ -1078,7 +1092,9 @@
           "new": "Neu",
           "active": "Aktiv",
           "unresponsive": "Nicht erreichbar",
-          "inactive": "Inaktiv"
+          "inactive": "Inaktiv",
+          "incontact": "In Kontakt",
+          "triedToContact": "Kontaktversuch unternommen"
         },
         "volunteerSearch": {
           "notNeeded": "Nicht benötigt",
@@ -1110,7 +1126,9 @@
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen.",
+          "incontact_description": "Diese Einrichtung/dieses Projekt ist in Kontakt mit der Organisation.",
+          "triedToContact_description": "Es wurde versucht, diese Einrichtung/dieses Projekt zu kontaktieren."
         },
         "optionsVolSearch": {
           "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
