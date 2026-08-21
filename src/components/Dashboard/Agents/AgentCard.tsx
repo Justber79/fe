@@ -17,6 +17,7 @@ import { useUpdateAgentStatus } from "@/hooks";
 import { getNormalizedAgent } from "./helpers";
 import { createVolunteerSearchMap } from "./constants";
 import { StatusBadge } from "../common/StatusBadge";
+import { UnclaimedBadge } from "../common/UnclaimedBadge";
 import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, DistrictDiv } from "./styles";
 
 interface Props {
@@ -28,7 +29,7 @@ interface Props {
 export const AgentCard = ({ agent, districtsList, onSelect }: Props) => {
   const { t, i18n } = useTranslation();
 
-  const { id, title, district, volunteerSearch, services, type, trustLevel } = getNormalizedAgent(agent);
+  const { id, title, district, volunteerSearch, services, type, trustLevel, unclaimed } = getNormalizedAgent(agent);
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
   const lang = i18n.language as Lang;
 
@@ -63,6 +64,7 @@ export const AgentCard = ({ agent, districtsList, onSelect }: Props) => {
       <CardHeader>
         <CardHeaderInfo>
           <Heading4>{title}</Heading4>
+          {unclaimed && <UnclaimedBadge />}
         </CardHeaderInfo>
       </CardHeader>
       <CardDetailsInfo>
