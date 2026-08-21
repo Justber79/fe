@@ -1,4 +1,5 @@
 import { BaseCard } from "@/components/styled/container";
+import { circleIconButtonStyles } from "@/components/styled/mixins";
 import styled from "styled-components";
 
 export const AgentsContainer = styled.div`
@@ -11,21 +12,7 @@ export const AgentsContainer = styled.div`
 // header (fe#911) — same circular icon-button treatment as the agent
 // profile's "add contact" button.
 export const CreateAgentButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: var(--border-width-thin) solid var(--color-aubergine);
-  background-color: var(--color-white);
-  color: var(--color-aubergine);
-  cursor: pointer;
-  flex-shrink: 0;
-
-  &:hover {
-    background-color: var(--color-aubergine-subtle);
-  }
+  ${circleIconButtonStyles}
 `;
 
 export const ContentRow = styled.div`
