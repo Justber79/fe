@@ -13,7 +13,8 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter }: Props) {
   const { t } = useTranslation();
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, isAgent } = useAuth();
+  const canSeeFullView = isAuthorized || isAgent;
 
   const { districtFilters, languageFilters, statusFilters, typeFilters, activityFilters, availabilityFilters } =
     createOpportunityFilterItems(filter, setFilter, t);
@@ -24,7 +25,7 @@ export default function FiltersContent({ setFilter, filter }: Props) {
       <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
-      {isAuthorized && (
+      {canSeeFullView && (
         <AccordionFilter
           header={t("dashboard.opportunities.filters.schedule.header")}
           groupedItems={availabilityFilters}
