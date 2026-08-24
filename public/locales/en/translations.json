@@ -1551,7 +1551,6 @@
     "legalHeading": "Legal",
     "impressum": "Imprint",
     "dataPrivacy": "Privacy Policy",
-    "agreement": "Volunteer Participation Agreement",
     "guidelines": "Need4Deed Guidelines",
     "cookies": "Cookies",
     "notice": {
@@ -1576,6 +1575,42 @@
       },
       "dataProtectionLink": "Click here for our Privacy Policy",
       "dataProtectionOfficer": "Data Protection Officer"
+    },
+    "message": {
+      "successful": "Successful",
+      "errorGeneric": "Something went wrong!",
+      "validationFailed": "Validation failed",
+      "uploadSuccess": "Document uploaded successfully!",
+      "deleteSuccess": "Document deleted successfully!",
+      "uploadError": "Upload failed. Please try again.",
+      "deleteError": "Delete failed. Please try again.",
+      "previewError": "Preview failed. Please try again."
+    },
+    "agreement": {
+      "header": "Agreement for Volunteer Participation",
+      "para1": "This agreement only takes effect once you begin volunteer work with refugees.",
+      "para2": "By confirming your participation, you agree to the following terms for the Need4Deed project (hereinafter referred to as the \"Project Coordinator\"):",
+      "numbered1": "Scope of Volunteer Activity:",
+      "bullet11": "As a volunteer, you will take part in various activities under the guidance of the Project Coordinator, including:",
+      "subBullet111": "Direct communication with refugees or through social workers and volunteer coordinators.",
+      "subBullet112": "Support with low-threshold interpreting tasks for refugees at medical appointments and administrative errands.",
+      "subBullet113": "Support in shared accommodation facilities with activities such as childcare, sports, translation, gardening, and other leisure activities organized by the accommodation's volunteer coordinator.",
+      "numbered2": "Nature of the Agreement:",
+      "bullet21": "Your participation is entirely voluntary and unpaid. This agreement does not establish an employment relationship and creates no claim to future employment.",
+      "numbered3": "Nature of the Agreement:",
+      "bullet31": "Your participation is entirely voluntary and unpaid. This agreement does not establish an employment relationship and creates no claim to future employment.",
+      "bullet32": "Working times are agreed upon by mutual consent. If you are unable to attend, please inform the Project Coordinator in good time.",
+      "numbered4": "Liability and Insurance:",
+      "bullet41": "You are only liable for damages caused by intentional or grossly negligent conduct.",
+      "bullet42": "The Project Coordinator assumes no liability for your volunteer activity. Insurance and other legal responsibilities are governed by the contractual arrangements or statutory protections of the shared accommodation facility in which the refugees you support live.",
+      "numbered5": "Confidentiality and Data Protection:",
+      "bullet51": "You agree to maintain confidentiality regarding all confidential information you become aware of in the course of your activity.",
+      "numbered6": "Termination:",
+      "bullet61": "Either party may terminate this agreement with four weeks' notice. This period may be shortened by mutual agreement.",
+      "numbered7": "Expense Reimbursement:",
+      "bullet71": "You are entitled to reimbursement of necessary expenses incurred in the course of your activity, provided this has been agreed with the Project Coordinator in advance.",
+      "numbered8": "Miscellaneous:",
+      "bullet81": "Should any provision of this agreement be invalid, the validity of the remaining provisions shall remain unaffected."
     }
   },
   "message": {
