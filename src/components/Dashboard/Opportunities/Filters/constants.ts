@@ -17,6 +17,7 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
     [OpportunityStatusType.NEW]: false,
     [OpportunityStatusType.SEARCHING]: false,
     [OpportunityStatusType.ACTIVE]: false,
+    [OpportunityStatusType.INACTIVE]: false,
     [OpportunityStatusType.PAST]: false,
   },
   type: {
@@ -47,6 +48,13 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
     },
   },
 };
+
+// Every status except inactive. Derived so new SDK values are visible by default
+export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType).filter(
+  (status) => status !== OpportunityStatusType.INACTIVE,
+);
+
+export const STATUS_PARAM = "status";
 
 export const SEPARATOR = "~";
 export type AvailabilityKeys = keyof OpportunityCardsFilter["availability"];
