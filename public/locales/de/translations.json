@@ -29,6 +29,9 @@
         "cookies": "Cookies"
       }
     },
+    "iframeTitles": {
+      "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
+    },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
       "headerParagraph": "Was Ehrenamtliche und Unterkünfte sagen"
@@ -830,7 +833,21 @@
         "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
         "confirmButton": "Übertragen",
         "success": "Möglichkeit erfolgreich übertragen"
-      }
+      },
+      "createAgent": {
+        "button": "Neue NGO hinzufügen",
+        "title": "Neue NGO hinzufügen",
+        "name": "Name der Organisation",
+        "addressStreet": "Straße",
+        "addressPostcode": "Postleitzahl",
+        "cancel": "Abbrechen",
+        "submit": "Erstellen",
+        "success": "NGO erfolgreich erstellt",
+        "validation": {
+          "titleRequired": "Name der Organisation ist erforderlich"
+        }
+      },
+      "unclaimed": "Nicht übernommen"
     },
     "opportunities": {
       "opportunities": "Ehrenamtsbedarfe",
@@ -1017,7 +1034,7 @@
         "need4deedCertificate": "Need4Deed-Zertifikat",
         "cap": "Cap",
         "notebook": "Notizbuch",
-        "cityCertificate": "Städtisches Zertifikat"
+        "cityCertificate": "Senatsurkunde"
       },
       "addAppreciation": "Anerkennung hinzufügen",
       "editAppreciation": "Anerkennung bearbeiten",
@@ -1373,7 +1390,7 @@
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
-          "mainCommunicationInvalid": "Hauptkommunikation muss ausschließlich Deutsch oder Deutsch und Englisch sein",
+          "mainCommunicationInvalid": "Hauptkommunikation muss Deutsch, Englisch oder beides sein",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
