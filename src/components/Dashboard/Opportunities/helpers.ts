@@ -9,7 +9,7 @@ import {
   SortOrder,
 } from "need4deed-sdk";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
+import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR, STATUS_PARAM } from "./Filters/constants";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { format } from "date-fns";
 import { utcHhmmToLocal } from "@/utils";
@@ -81,10 +81,10 @@ export function serializeOpportunityFilters(
     }
   });
 
-  params.delete("status");
+  params.delete(STATUS_PARAM);
   Object.entries(filter.status).forEach(([key, value]) => {
     if (value === true) {
-      params.append("status", key);
+      params.append(STATUS_PARAM, key);
     }
   });
 
@@ -135,7 +135,7 @@ export function deserializeOpportunityFilters(
     newFilter.language[l] = true;
   });
 
-  const queryStatus = searchParams.getAll("status");
+  const queryStatus = searchParams.getAll(STATUS_PARAM);
   queryStatus.forEach((s) => {
     newFilter.status[s] = true;
   });

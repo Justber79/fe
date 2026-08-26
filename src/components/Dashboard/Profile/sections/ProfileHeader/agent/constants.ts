@@ -2,16 +2,21 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { TFunction } from "i18next";
 import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch, ApiAgentProfileGet } from "../../../types/agent";
 
-export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> =>
-  // @ts-expect-error TODO - Add INCONTACT and TRIED_TO_CONTACT types
-  ({
-    [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
-    [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
-    [AgentEngagementStatus.UNRESPONSIVE]: t("dashboard.agentProfile.status.engagement.unresponsive"),
-    [AgentEngagementStatus.INACTIVE]: t("dashboard.agentProfile.status.engagement.inactive"),
-  });
+export const createEngagementStatusLabelMap = (t: TFunction): Record<AgentEngagementStatus, string> => ({
+  [AgentEngagementStatus.NEW]: t("dashboard.agentProfile.status.engagement.new"),
+  [AgentEngagementStatus.ACTIVE]: t("dashboard.agentProfile.status.engagement.active"),
+  [AgentEngagementStatus.UNRESPONSIVE]: t("dashboard.agentProfile.status.engagement.unresponsive"),
+  [AgentEngagementStatus.INACTIVE]: t("dashboard.agentProfile.status.engagement.inactive"),
+  [AgentEngagementStatus.INCONTACT]: t("dashboard.agentProfile.status.engagement.incontact"),
+  [AgentEngagementStatus.TRIED_TO_CONTACT]: t("dashboard.agentProfile.status.engagement.triedToContact"),
+});
 
-export const AGENT_DIALOG_STATUSES = [AgentEngagementStatus.UNRESPONSIVE, AgentEngagementStatus.INACTIVE] as const;
+export const AGENT_DIALOG_STATUSES = [
+  AgentEngagementStatus.UNRESPONSIVE,
+  AgentEngagementStatus.INACTIVE,
+  AgentEngagementStatus.INCONTACT,
+  AgentEngagementStatus.TRIED_TO_CONTACT,
+] as const;
 
 export const AGENT_VOLUNTEER_SEARCH_ARRAY = [
   AgentVolunteerSearch.NOT_NEEDED,
@@ -22,6 +27,8 @@ export const AGENT_VOLUNTEER_SEARCH_ARRAY = [
 export const AGENT_ENGAGEMENT_DESCRIPTION_KEYS: Record<(typeof AGENT_DIALOG_STATUSES)[number], string> = {
   [AgentEngagementStatus.UNRESPONSIVE]: "unresponsive_description",
   [AgentEngagementStatus.INACTIVE]: "inactive_description",
+  [AgentEngagementStatus.INCONTACT]: "incontact_description",
+  [AgentEngagementStatus.TRIED_TO_CONTACT]: "triedToContact_description",
 };
 
 export const createAgentDialogOptions = (t: TFunction) => {
