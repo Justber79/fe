@@ -6,6 +6,7 @@ import { EventFormData } from "./CreateEvent";
 import { ButtonRow, CharCount, FieldGroup, FieldLabel, HelperText, StyledInput, StyledTextarea } from "./styles";
 
 const TITLE_MAX = 128;
+export const DESCRIPTION_MAX = 512;
 
 interface Props {
   title: string;
@@ -42,11 +43,17 @@ export function StepTitle({ title, description, onChange, onNext, onCancel, isNe
       <FieldGroup>
         <Heading3>{t("dashboard.calendar.createForm.descriptionLabel")}</Heading3>
         <StyledTextarea
+          aria-required="true"
           value={description}
+          maxLength={DESCRIPTION_MAX}
           rows={4}
           placeholder={t("dashboard.calendar.createForm.descriptionPlaceholder")}
           onChange={(e) => onChange({ description: e.target.value })}
         />
+        <HelperText>{t("dashboard.calendar.createForm.descriptionHelper", { max: DESCRIPTION_MAX })}</HelperText>
+        <CharCount>
+          {description.length}/{DESCRIPTION_MAX}
+        </CharCount>
       </FieldGroup>
 
       <ButtonRow>

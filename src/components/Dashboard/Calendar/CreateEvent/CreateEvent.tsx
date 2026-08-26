@@ -1,14 +1,16 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { EventN4DType, Lang, type ApiEventN4DCreate } from "need4deed-sdk";
 
 import { PageLayout } from "@/components/Layout";
+import { useCreateEvent, useEvents, useUpdateEvent } from "@/hooks";
 
 import { StepDateTime } from "./StepDateTime";
 import { StepLocation } from "./StepLocation";
-import { StepTitle } from "./StepTitle";
+import { DESCRIPTION_MAX, StepTitle } from "./StepTitle";
 
 export interface EventFormData {
   title: string;
@@ -16,13 +18,36 @@ export interface EventFormData {
   street: string;
   houseNumber: string;
   postcode: string;
-  date: string;
-  time: string;
+  registrationLink: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
 }
 
 const TOTAL_STEPS = 3;
 
-export function CreateEvent() {
+interface Props {
+  eventId?: number;
+}
+
+function dateParts(value?: Date) {
+  if (!value) return { date: "", time: "" };
+  const parsed = new Date(value);
+  return {
+    date: `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, "0")}-${String(parsed.getDate()).padStart(2, "0")}`,
+    time: `${String(parsed.getHours()).padStart(2, "0")}:${String(parsed.getMinutes()).padStart(2, "0")}`,
+  };
+}
+
+function parseAddress(address = "") {
+  const match = address.match(/^(.*)\s+(\S+),\s*(\d{5})/);
+  return match
+    ? { street: match[1], houseNumber: match[2], postcode: match[3] }
+    : { street: address, houseNumber: "", postcode: "" };
+}
+
+export function CreateEvent({ eventId }: Props) {
   const { i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,9 +60,32 @@ export function CreateEvent() {
     street: "",
     houseNumber: "",
     postcode: "",
-    date: prefilledDate,
-    time: "",
+    registrationLink: "",
+    startDate: prefilledDate,
+    startTime: "",
+    endDate: prefilledDate,
+    endTime: "",
   });
+  const [initializedEventId, setInitializedEventId] = useState<number | null>(null);
+  const { data: events = [], isLoading } = useEvents();
+  const editingEvent = eventId ? events.find((event) => event.id === eventId) : undefined;
+
+  useEffect(() => {
+    if (!eventId || !editingEvent || initializedEventId === eventId) return;
+    const start = dateParts(editingEvent.date);
+    const end = dateParts(editingEvent.dateEnd ?? editingEvent.date);
+    setFormData({
+      title: editingEvent.title,
+      description: editingEvent.description,
+      ...parseAddress(editingEvent.address),
+      registrationLink: editingEvent.linkRSVP,
+      startDate: start.date,
+      startTime: start.time,
+      endDate: end.date,
+      endTime: end.time,
+    });
+    setInitializedEventId(eventId);
+  }, [editingEvent, eventId, initializedEventId]);
 
   const update = (fields: Partial<EventFormData>) => setFormData((prev) => ({ ...prev, ...fields }));
 
@@ -51,22 +99,64 @@ export function CreateEvent() {
   };
   const handleCancel = () => router.push(`/${i18n.language}/dashboard/calendar`);
 
-  // TODO: call POST /event once BE #458 is ready
-  const handleSubmit = async () => {
-    router.push(`/${i18n.language}/dashboard/calendar`);
-  };
+  const returnToEvents = () => router.push(`/${i18n.language}/dashboard/calendar`);
+  const createEvent = useCreateEvent(returnToEvents);
+  const updateEvent = useUpdateEvent(eventId ?? 0, returnToEvents);
+
+  const toPayload = (): ApiEventN4DCreate => ({
+    date: new Date(`${formData.startDate}T${formData.startTime}`),
+    dateEnd: new Date(`${formData.endDate}T${formData.endTime}`),
+    type: EventN4DType.WORKSHOP,
+    linkRSVP: formData.registrationLink,
+    address: `${formData.street} ${formData.houseNumber}, ${formData.postcode} Berlin`,
+    active: true,
+    translations: [
+      {
+        language: i18n.language === Lang.DE ? Lang.DE : Lang.EN,
+        title: formData.title,
+        menuTitle: formData.title,
+        description: formData.description,
+        shortDescription: formData.description,
+      },
+    ],
+  });
+
+  const handleSubmit = () => (eventId ? updateEvent.mutate(toPayload()) : createEvent.mutate(toPayload()));
 
   const isNextEnabled = () => {
-    if (step === 1) return formData.title.trim().length > 0;
+    if (step === 1)
+      return (
+        formData.title.trim().length > 0 &&
+        formData.description.trim().length > 0 &&
+        formData.description.length <= DESCRIPTION_MAX
+      );
     if (step === 2)
       return (
         formData.street.trim().length > 0 &&
         formData.houseNumber.trim().length > 0 &&
-        formData.postcode.trim().length > 0
+        formData.postcode.trim().length > 0 &&
+        /^https?:\/\//.test(formData.registrationLink)
       );
-    if (step === 3) return formData.date.length > 0 && formData.time.length > 0;
+    if (step === 3) {
+      const start = new Date(`${formData.startDate}T${formData.startTime}`);
+      const end = new Date(`${formData.endDate}T${formData.endTime}`);
+      return Boolean(formData.startDate && formData.startTime && formData.endDate && formData.endTime && end > start);
+    }
     return false;
   };
+
+  if (eventId && isLoading)
+    return (
+      <PageLayout background="var(--color-orchid-subtle)">
+        <PageContent />
+      </PageLayout>
+    );
+  if (eventId && !isLoading && !editingEvent)
+    return (
+      <PageLayout background="var(--color-orchid-subtle)">
+        <PageContent />
+      </PageLayout>
+    );
 
   return (
     <PageLayout background="var(--color-orchid-subtle)">
@@ -93,6 +183,7 @@ export function CreateEvent() {
               street={formData.street}
               houseNumber={formData.houseNumber}
               postcode={formData.postcode}
+              registrationLink={formData.registrationLink}
               onChange={update}
               onNext={handleNext}
               onBack={handleBack}
@@ -101,12 +192,14 @@ export function CreateEvent() {
           )}
           {step === 3 && (
             <StepDateTime
-              date={formData.date}
-              time={formData.time}
+              startDate={formData.startDate}
+              startTime={formData.startTime}
+              endDate={formData.endDate}
+              endTime={formData.endTime}
               onChange={update}
               onBack={handleBack}
               onSubmit={handleSubmit}
-              isSubmitEnabled={isNextEnabled()}
+              isSubmitEnabled={isNextEnabled() && !createEvent.isPending && !updateEvent.isPending}
             />
           )}
         </Card>

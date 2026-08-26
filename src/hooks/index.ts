@@ -4,6 +4,7 @@ export * from "./useGetOpportunity";
 export * from "./useGetVolunteer";
 export * from "./useGetQuery";
 export * from "./useMutationQuery";
+export * from "./useEvents";
 export * from "./useSwipe";
 export * from "./useUpdateAgentStatus";
 export * from "./useUpdateVolunteerStatus";
