@@ -18,7 +18,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
   const { id, title, volunteerType, location, languages } = opportunity;
   // statusMatch is not yet in ApiVolunteerOpportunityGetList SDK type
   const statusMatch = (opportunity as ApiVolunteerOpportunityGetList & { statusMatch?: string }).statusMatch;
-  const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
+  const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
   return (
@@ -36,7 +36,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
         {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
       </TableCell>
       <TableCell data-testid={`opportunity-languages-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.languages}>
-        {mainCommunication || "—"}
+        {recipientLanguage || "—"}
       </TableCell>
       <TableCell data-testid={`opportunity-district-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.district}>
         {districtText || "—"}
