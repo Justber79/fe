@@ -45,7 +45,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
       ? formatSchedule(availability, t)
       : null;
 
-  const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
+  const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
   const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
   const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
@@ -68,7 +68,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
         {isMatched ? <MatchedBadge>{statusLabel}</MatchedBadge> : <TruncatedText>{statusLabel}</TruncatedText>}
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
-        <TruncatedText>{mainCommunication || "—"}</TruncatedText>
+        <TruncatedText>{recipientLanguage || "—"}</TruncatedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
         <TruncatedText>{districtText}</TruncatedText>
