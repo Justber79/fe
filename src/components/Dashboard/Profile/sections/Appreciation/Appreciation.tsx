@@ -6,6 +6,8 @@ import {
   ApiAppreciationPost,
   VolunteerStateAppreciationType,
   ApiAppreciationPatch,
+  ApiAppreciationGet,
+  AppreciationStatusType,
 } from "need4deed-sdk";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +27,6 @@ import {
 } from "@/components/core/common/Table";
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
-import { AppreciationWithStatus, DeliveryStatus } from "./types";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -38,8 +39,8 @@ export type AppreciationRef = {
 export const Appreciation = forwardRef<AppreciationRef, Props>(function Appreciation({ volunteer }, ref) {
   const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<AppreciationWithStatus | undefined>(undefined);
-  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<AppreciationWithStatus | null>(null);
+  const [editingEntry, setEditingEntry] = useState<ApiAppreciationGet | undefined>(undefined);
+  const [deleteConfirmEntry, setDeleteConfirmEntry] = useState<ApiAppreciationGet | null>(null);
 
   const { appreciations, createAppreciation, updateAppreciation, deleteAppreciation } = useAppreciationTracker(
     volunteer.id,
@@ -54,12 +55,12 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     handleAddNew,
   }));
 
-  const handleEdit = (entry: AppreciationWithStatus) => {
+  const handleEdit = (entry: ApiAppreciationGet) => {
     setEditingEntry(entry);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (entry: AppreciationWithStatus) => {
+  const handleDelete = (entry: ApiAppreciationGet) => {
     setDeleteConfirmEntry(entry);
   };
 
@@ -77,10 +78,10 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     title: VolunteerStateAppreciationType;
     dateDue: Date | null;
     dateDelivery: Date | null;
-    status: DeliveryStatus;
+    status: AppreciationStatusType;
   }) => {
     if (data.id) {
-      const payload: ApiAppreciationPatch & { status: DeliveryStatus } = {
+      const payload: ApiAppreciationPatch = {
         title: data.title,
         dateDue: data.dateDue,
         dateDelivery: data.dateDelivery,
@@ -88,7 +89,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
       };
       updateAppreciation({ id: data.id, data: payload }, { onSuccess: () => setIsDialogOpen(false) });
     } else {
-      const payload: ApiAppreciationPost & { status: DeliveryStatus } = {
+      const payload: ApiAppreciationPost = {
         title: data.title,
         dateDue: data.dateDue || new Date(),
         dateDelivery: data.dateDelivery ?? undefined,
@@ -98,15 +99,17 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     }
   };
 
-  const getStatus = (entry: AppreciationWithStatus) => entry.status;
+  const getStatus = (entry: ApiAppreciationGet) => entry.status;
 
-  const STATUS_LABEL: Record<DeliveryStatus, (entry: AppreciationWithStatus) => string> = {
-    received: () => t("dashboard.appreciationSection.statusReceived"),
-    pending: (entry) => `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue ?? undefined)}`,
-    post: (entry) => `${t("dashboard.appreciationSection.statusMailedOn")} ${formatDate(entry.dateDue ?? undefined)}`,
+  const STATUS_LABEL: Record<AppreciationStatusType, (entry: ApiAppreciationGet) => string> = {
+    [AppreciationStatusType.RECEIVED]: () => t("dashboard.appreciationSection.statusReceived"),
+    [AppreciationStatusType.PENDING]: (entry) =>
+      `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue ?? undefined)}`,
+    [AppreciationStatusType.POST]: (entry) =>
+      `${t("dashboard.appreciationSection.statusMailedOn")} ${formatDate(entry.dateDue ?? undefined)}`,
   };
 
-  const getStatusLabel = (entry: AppreciationWithStatus) => STATUS_LABEL[entry.status](entry);
+  const getStatusLabel = (entry: ApiAppreciationGet) => STATUS_LABEL[entry.status](entry);
 
   return (
     <SectionWrapper data-testid="appreciation-container">

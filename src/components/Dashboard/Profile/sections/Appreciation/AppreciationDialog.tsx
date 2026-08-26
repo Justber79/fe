@@ -2,7 +2,7 @@ import { Button } from "@/components/core/button";
 import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
 import { Modal } from "@/components/core/modal";
 import { de, enUS, Locale } from "date-fns/locale";
-import { VolunteerStateAppreciationType } from "need4deed-sdk";
+import { VolunteerStateAppreciationType, ApiAppreciationGet, AppreciationStatusType } from "need4deed-sdk";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SelectableOption } from "../shared/SelectableOption";
@@ -16,7 +16,6 @@ import {
   SubOptionContainer,
   SubQuestion,
 } from "./styles";
-import { AppreciationWithStatus, DeliveryStatus } from "./types";
 
 type Props = {
   isOpen: boolean;
@@ -26,9 +25,9 @@ type Props = {
     title: VolunteerStateAppreciationType;
     dateDue: Date | null;
     dateDelivery: Date | null;
-    status: DeliveryStatus;
+    status: AppreciationStatusType;
   }) => void;
-  initialData?: AppreciationWithStatus;
+  initialData?: ApiAppreciationGet;
 };
 
 const APPRECIATION_TYPES = [
@@ -56,8 +55,30 @@ const APPRECIATION_TYPES = [
   },
 ];
 
+const DELIVERY_STATUSES = [
+  {
+    status: AppreciationStatusType.RECEIVED,
+    labelKey: "dashboard.appreciationSection.volunteerReceivedIt",
+    dateLabelKey: "dashboard.appreciationSection.receivedOnRequired",
+    testId: "received-date-field",
+  },
+  {
+    status: AppreciationStatusType.PENDING,
+    labelKey: "dashboard.appreciationSection.needToGiveIt",
+    dateLabelKey: "dashboard.appreciationSection.dueDateRequired",
+    testId: "due-date-field",
+    allowFuture: true,
+  },
+  {
+    status: AppreciationStatusType.POST,
+    labelKey: "dashboard.appreciationSection.volunteerPostIt",
+    dateLabelKey: "dashboard.appreciationSection.postOnRequired",
+    testId: "post-date-field",
+  },
+];
+
 type DeliveryStatusOptionProps = {
-  status: DeliveryStatus;
+  status: AppreciationStatusType;
   isSelected: boolean;
   label: string;
   onSelect: () => void;
@@ -110,7 +131,7 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
   const locale = i18n.language === "de" ? de : enUS;
 
   const [selectedType, setSelectedType] = useState<VolunteerStateAppreciationType | undefined>(undefined);
-  const [deliveryStatus, setDeliveryStatus] = useState<DeliveryStatus | undefined>(undefined);
+  const [deliveryStatus, setDeliveryStatus] = useState<AppreciationStatusType | undefined>(undefined);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
@@ -141,7 +162,7 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
     }
   };
 
-  const handleDeliveryStatusSelect = (status: DeliveryStatus) => {
+  const handleDeliveryStatusSelect = (status: AppreciationStatusType) => {
     setDeliveryStatus(status);
     if (!selectedDate) {
       setSelectedDate(new Date());
@@ -155,8 +176,8 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
     onSave({
       id: initialData?.id,
       title: selectedType,
-      dateDue: deliveryStatus === "received" ? null : selectedDate,
-      dateDelivery: deliveryStatus === "received" ? selectedDate : null,
+      dateDue: deliveryStatus === AppreciationStatusType.RECEIVED ? null : selectedDate,
+      dateDelivery: deliveryStatus === AppreciationStatusType.RECEIVED ? selectedDate : null,
       status: deliveryStatus,
     });
   };
@@ -191,46 +212,23 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
                   <ExpandedSection data-testid="expanded-section">
                     <SubQuestion>{t("dashboard.appreciationSection.didVolunteerReceive")}</SubQuestion>
                     <SubOptionContainer>
-                      <DeliveryStatusOption
-                        status="received"
-                        isSelected={deliveryStatus === "received"}
-                        label={t("dashboard.appreciationSection.volunteerReceivedIt")}
-                        onSelect={() => handleDeliveryStatusSelect("received")}
-                        showDatePicker={deliveryStatus === "received"}
-                        date={selectedDate}
-                        onDateSelect={setSelectedDate}
-                        locale={locale}
-                        dateLabel={t("dashboard.appreciationSection.receivedOnRequired")}
-                        todayText={todayText}
-                        testId="received-date-field"
-                      />
-                      <DeliveryStatusOption
-                        status="pending"
-                        isSelected={deliveryStatus === "pending"}
-                        label={t("dashboard.appreciationSection.needToGiveIt")}
-                        onSelect={() => handleDeliveryStatusSelect("pending")}
-                        showDatePicker={deliveryStatus === "pending"}
-                        date={selectedDate}
-                        onDateSelect={setSelectedDate}
-                        locale={locale}
-                        dateLabel={t("dashboard.appreciationSection.dueDateRequired")}
-                        todayText={todayText}
-                        allowFuture
-                        testId="due-date-field"
-                      />
-                      <DeliveryStatusOption
-                        status="post"
-                        isSelected={deliveryStatus === "post"}
-                        label={t("dashboard.appreciationSection.volunteerPostIt")}
-                        onSelect={() => handleDeliveryStatusSelect("post")}
-                        showDatePicker={deliveryStatus === "post"}
-                        date={selectedDate}
-                        onDateSelect={setSelectedDate}
-                        locale={locale}
-                        dateLabel={t("dashboard.appreciationSection.postOnRequired")}
-                        todayText={todayText}
-                        testId="post-date-field"
-                      />
+                      {DELIVERY_STATUSES.map((option) => (
+                        <DeliveryStatusOption
+                          key={option.status}
+                          status={option.status}
+                          isSelected={deliveryStatus === option.status}
+                          label={t(option.labelKey)}
+                          onSelect={() => handleDeliveryStatusSelect(option.status)}
+                          showDatePicker={deliveryStatus === option.status}
+                          date={selectedDate}
+                          onDateSelect={setSelectedDate}
+                          locale={locale}
+                          dateLabel={t(option.dateLabelKey)}
+                          todayText={todayText}
+                          allowFuture={option.allowFuture}
+                          testId={option.testId}
+                        />
+                      ))}
                     </SubOptionContainer>
                   </ExpandedSection>
                 )}
