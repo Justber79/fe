@@ -56,7 +56,7 @@
       "footerButton": "Siehe Ehrenamtsbedarfe"
     },
     "processSteps": {
-      "headline": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können",
+      "headline": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen kannst",
       "stepsHeadline": "So fängst Du an",
       "steps": {
         "1": {
@@ -74,7 +74,7 @@
         "3": {
           "title": "Wir suchen Deinen Einsatzort",
           "week": "WOCHE 1",
-          "infoText1": "Währenddessen suchen wir nach dem besten Match mit der Ehenamtskoordination einer Unterkunft für Geflüchtete, die Unterstützung benötigt"
+          "infoText1": "Währenddessen suchen wir nach dem besten Match mit der Ehrenamtskoordination einer Unterkunft für Geflüchtete, die Unterstützung benötigt"
         },
         "4": {
           "title": "Wir finden eine passende Stelle!",
@@ -89,7 +89,7 @@
         "6": {
           "title": "Du kannst anfangen, Dich freiwillig zu engagieren!",
           "week": "WOCHE 3-4",
-          "infoText1": "Du solltest inzwischen das erweitertes Führungszeugnis per Post erhalten haben – dieses zeigst Du in der Unterkinft für Geflüchtete vor"
+          "infoText1": "Du solltest inzwischen das erweiterte Führungszeugnis per Post erhalten haben – dieses zeigst Du in der Unterkunft für Geflüchtete vor"
         },
         "lastStep": {
           "text": "Falls Du mehrsprachig bist, wirst Du möglicherweise gebeten, bei Bedarf zu begleiten und zu dolmetschen"

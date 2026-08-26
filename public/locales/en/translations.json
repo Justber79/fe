@@ -64,7 +64,7 @@
         "1": {
           "title": "Sign Up",
           "week": "WEEK 1",
-          "infoText1": "Click become a volunteer",
+          "infoText1": "Click the 'Become a volunteer' button",
           "infoText2": "Use our online form to fill out basic information, skills and preferences"
         },
         "2": {
@@ -94,7 +94,7 @@
           "infoText1": "You should receive your Certificate of Good Conduct by now, by post - which you bring to show at the Refugee Accommodation Centre"
         },
         "lastStep": {
-          "text": "Incase you are multilingual, you may be asked to accompany and translate when needed"
+          "text": "In case you are multilingual, you may be asked to accompany and translate when needed"
         }
       }
     }
