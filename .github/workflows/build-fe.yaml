@@ -1,0 +1,52 @@
+name: build-fe
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      digest:
+        description: Digest of the pushed fe image
+        value: ${{ jobs.build.outputs.digest }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      # Explicit repository+ref: a reusable workflow called cross-repo
+      # (infra's release-prod.yaml does) checks out the CALLER's repo by
+      # default, not this one.
+      - uses: actions/checkout@v4
+        with:
+          repository: need4deed-org/fe
+          ref: develop
+
+      # github.sha would be the CALLER's commit in a cross-repo
+      # workflow_call, not this repo's - resolve the real one explicitly
+      # so GIT_COMMIT_SHA below is always this checkout's actual HEAD.
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push fe image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/need4deed-org/fe:develop
+          build-args: |
+            API_URL=http://be:8000
+            NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
+            NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
+            GIT_COMMIT_SHA=${{ steps.sha.outputs.sha }}

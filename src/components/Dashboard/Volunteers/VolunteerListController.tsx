@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { ApiOptionLists, ApiVolunteerGetList, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, ApiVolunteerGetList, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
 import { serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
@@ -11,6 +11,7 @@ import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -40,6 +41,15 @@ export function VolunteerListController({
   if (opportunityId) {
     serializedFilter.set("opportunity", opportunityId);
   }
+
+  const emailsFilter = new URLSearchParams(serializedFilter);
+
+  if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT)) {
+    DEFAULT_VOLUNTEER_ENGAGEMENTS.forEach((defaultEngagement) =>
+      serializedFilter.append(QueryParamsKeys.ENGAGEMENT, defaultEngagement.replace(/^vol-/, "")),
+    );
+  }
+
   const params = {
     limit,
     page: currentPage,
@@ -56,7 +66,7 @@ export function VolunteerListController({
     staleTime: cacheTTL,
   });
   const volunteers = data || [];
-  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", serializedFilter);
+  const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", emailsFilter);
   const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
