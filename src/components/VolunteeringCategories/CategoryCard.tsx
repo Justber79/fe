@@ -7,7 +7,7 @@ import { BaseCard, IconDiv } from "../styled/container";
 const Card = styled(BaseCard)`
   background-color: var(--color-sand);
   width: var(--homepage-volunteering-category-card-width);
-  height: var(--homepage-volunteering-category-card-height);
+  min-height: var(--homepage-volunteering-category-card-height);
   padding-top: var(--homepage-volunteering-category-card-padding-top);
   padding-right: var(--homepage-volunteering-category-card-padding-right);
   padding-bottom: var(--homepage-volunteering-category-card-padding-bottom);

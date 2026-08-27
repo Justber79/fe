@@ -59,6 +59,11 @@ export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
   },
 };
 
+// Every engagement except inactive. Derived so new SDK values are visible by default
+export const DEFAULT_VOLUNTEER_ENGAGEMENTS = Object.values(VolunteerStateEngagementType).filter(
+  (engagement) => engagement !== VolunteerStateEngagementType.INACTIVE,
+);
+
 export const SEPARATOR = "~";
 export type AvailabilityKeys = keyof VolunteerCardsFilter["availability"];
 export type AvailabilitySubKeys = TimeSlot | ByDay | OccasionalType;

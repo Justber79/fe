@@ -50,6 +50,22 @@ export const IconDiv = styled.div<IconDiVProps>`
   }
 `;
 
+interface NumberingDivProps {
+  "background-color"?: string;
+}
+
+export const NumberingDiv = styled.div<NumberingDivProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--numbering-div-width);
+  height: var(--numbering-div-height);
+  min-width: var(--numbering-div-width);
+  min-height: var(--numbering-div-height);
+  border-radius: var(--numbering-div-border-radius);
+  background-color: ${(props) => props["background-color"] || "var(--color-orchid-dark)"};
+`;
+
 export const DashboardBaseContainer = styled.div`
   flex: 1;
   min-width: 0;
