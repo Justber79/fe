@@ -1,4 +1,3 @@
-import type React from "react";
 import {
   BinocularsIcon,
   ChartLineIcon,
@@ -12,6 +11,7 @@ import {
   StopCircleIcon,
 } from "@phosphor-icons/react";
 import { AgentEngagementStatusType, AgentTrustType, AgentVolunteerSearchType } from "need4deed-sdk";
+import type React from "react";
 
 export type StatusValue = AgentEngagementStatusType | AgentVolunteerSearchType | AgentTrustType;
 
