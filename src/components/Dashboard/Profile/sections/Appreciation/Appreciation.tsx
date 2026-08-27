@@ -27,6 +27,7 @@ import {
 } from "@/components/core/common/Table";
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
+import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -109,7 +110,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
       `${t("dashboard.appreciationSection.statusMailedOn")} ${formatDate(entry.dateDue ?? undefined)}`,
   };
 
-  const getStatusLabel = (entry: ApiAppreciationGet) => STATUS_LABEL[entry.status](entry);
+  const getStatusLabel = (entry: ApiAppreciationGet) => STATUS_LABEL[entry.status]?.(entry) ?? EMPTY_PLACEHOLDER_VALUE;
 
   return (
     <SectionWrapper data-testid="appreciation-container">
