@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Paragraph } from "../../../styled/text";
@@ -13,6 +14,7 @@ import {
   HeaderContainer,
   HeaderFilterItem,
   HeaderFilterItemContainer,
+  HeaderTitleRow,
   HyphenatedHeading2,
   SearchBarSectionContainer,
   TabHeading,
@@ -46,6 +48,10 @@ type Props = {
   onClearAllFilters?: () => void;
   onClearFilter: (filter: string, parentKey?: string) => void;
   entityFilter?: EntityFilter;
+  // Optional slot next to the header title — e.g. a coordinator-only "+"
+  // button to create a record directly (fe#911). No consumer needs it yet
+  // beyond Agents, so it's a generic slot rather than a named prop per action.
+  headerAction?: ReactNode;
 };
 
 export default function CardsHeader({
@@ -66,12 +72,16 @@ export default function CardsHeader({
   onClearAllFilters,
   onClearFilter,
   entityFilter,
+  headerAction,
 }: Props) {
   const { t } = useTranslation();
 
   return (
     <HeaderContainer>
-      <HyphenatedHeading2>{header}</HyphenatedHeading2>
+      <HeaderTitleRow>
+        <HyphenatedHeading2>{header}</HyphenatedHeading2>
+        {headerAction}
+      </HeaderTitleRow>
 
       <TabsSearchBarContainer>
         <TabsSectionContainer>

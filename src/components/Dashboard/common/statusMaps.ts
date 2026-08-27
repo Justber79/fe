@@ -15,12 +15,13 @@ import { AgentEngagementStatusType, AgentTrustType, AgentVolunteerSearchType } f
 
 export type StatusValue = AgentEngagementStatusType | AgentVolunteerSearchType | AgentTrustType;
 
-// @ts-expect-error - TODO: Add INCONTACT and TRIED_TO_CONTACT types
 export const statusColorMap: Record<StatusValue, string> = {
   [AgentEngagementStatusType.ACTIVE]: "var(--color-green-100)",
   [AgentEngagementStatusType.UNRESPONSIVE]: "var(--color-grey-50)",
   [AgentEngagementStatusType.INACTIVE]: "var(--color-grey-50)",
   [AgentEngagementStatusType.NEW]: "var(--color-green-100)",
+  [AgentEngagementStatusType.INCONTACT]: "var(--color-green-100)",
+  [AgentEngagementStatusType.TRIED_TO_CONTACT]: "var(--color-green-100)",
   [AgentVolunteerSearchType.NOT_NEEDED]: "var(--color-grey-50)",
   [AgentVolunteerSearchType.VOLUNTEERS_FOUND]: "var(--color-green-100)",
   [AgentVolunteerSearchType.SEARCHING]: "var(--color-red-50)",
@@ -31,12 +32,13 @@ export const statusColorMap: Record<StatusValue, string> = {
 
 type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
 
-// @ts-expect-error - TODO: Add INCONTACT and TRIED_TO_CONTACT types
 export const statusIconMap: Record<StatusValue, IconComponent> = {
   [AgentEngagementStatusType.ACTIVE]: ChartLineIcon,
   [AgentEngagementStatusType.UNRESPONSIVE]: PhoneXIcon,
   [AgentEngagementStatusType.INACTIVE]: StopCircleIcon,
   [AgentEngagementStatusType.NEW]: SparkleIcon,
+  [AgentEngagementStatusType.INCONTACT]: SparkleIcon,
+  [AgentEngagementStatusType.TRIED_TO_CONTACT]: SparkleIcon,
   [AgentVolunteerSearchType.NOT_NEEDED]: HandPalmIcon,
   [AgentVolunteerSearchType.VOLUNTEERS_FOUND]: CheckCircleIcon,
   [AgentVolunteerSearchType.SEARCHING]: BinocularsIcon,

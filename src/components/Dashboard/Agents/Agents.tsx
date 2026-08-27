@@ -1,9 +1,11 @@
 "use client";
 
+import { PlusIcon } from "@phosphor-icons/react";
 import { DashboardLayout } from "@/components/Layout";
 import { AgentListController } from "./AgentListController";
+import { CreateAgentDialog } from "./CreateAgentDialog/CreateAgentDialog";
 import { PendingMemberships } from "./PendingMemberships";
-import { AgentsContainer, ContentRow } from "./styles";
+import { AgentsContainer, ContentRow, CreateAgentButton } from "./styles";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -27,9 +29,11 @@ import { ConfirmationDialog } from "../Profile/sections/shared/ConfirmationDialo
 export const Agents = () => {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
+  const canCreateAgent = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
   const { t, i18n } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isCreateAgentOpen, setIsCreateAgentOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
   const [numOfAgents, setNumOfAgents] = useState(0);
   const [cardsFilter, setCardsFilter] = useState(defaultAgentCardsFilter);
@@ -131,6 +135,17 @@ export const Agents = () => {
           activeFilters={activeFilters}
           onClearAllFilters={handleClearAllFilters}
           onClearFilter={handleClearFilter}
+          headerAction={
+            canCreateAgent && (
+              <CreateAgentButton
+                type="button"
+                onClick={() => setIsCreateAgentOpen(true)}
+                aria-label={t("dashboard.agents.createAgent.button")}
+              >
+                <PlusIcon size={16} weight="bold" />
+              </CreateAgentButton>
+            )
+          }
         />
         <PendingMemberships />
         <ContentRow>
@@ -161,6 +176,7 @@ export const Agents = () => {
           onConfirm={handleTransferConfirm}
         />
       )}
+      {canCreateAgent && <CreateAgentDialog isOpen={isCreateAgentOpen} onClose={() => setIsCreateAgentOpen(false)} />}
     </DashboardLayout>
   );
 };

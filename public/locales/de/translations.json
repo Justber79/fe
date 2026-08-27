@@ -29,6 +29,9 @@
         "cookies": "Cookies"
       }
     },
+    "iframeTitles": {
+      "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
+    },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
       "headerParagraph": "Was Ehrenamtliche und Unterkünfte sagen"
@@ -51,6 +54,47 @@
         "accompanyARefugeeInfo": "Sprichst Du fließend Deutsch und eine weitere Sprache? Begleite Geflüchtete zu Ämtern, Ärzt*innen oder anderen Terminen, um bei den bürokratischen Anliegen und der Übersetzung zu helfen."
       },
       "footerButton": "Siehe Ehrenamtsbedarfe"
+    },
+    "processSteps": {
+      "headline": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen kannst",
+      "stepsHeadline": "So fängst Du an",
+      "steps": {
+        "1": {
+          "title": "Anmelden",
+          "week": "WOCHE 1",
+          "infoText1": "Klick auf „Jetzt sich engagieren“",
+          "infoText2": "Nutze unser Online-Formular, um grundlegende Informationen, Fähigkeiten und Präferenzen einzugeben"
+        },
+        "2": {
+          "title": "Zusätzliche Dokumente beantragen und einreichen",
+          "week": "WOCHE 1",
+          "infoText1": "Beantrage ein erweitertes Führungszeugnis individuell oder mit Hilfe von Need4Deed",
+          "infoText2": "Stelle sicher, dass ein Masernschutz vorliegt."
+        },
+        "3": {
+          "title": "Wir suchen Deinen Einsatzort",
+          "week": "WOCHE 1",
+          "infoText1": "Währenddessen suchen wir nach dem besten Match mit der Ehrenamtskoordination einer Unterkunft für Geflüchtete, die Unterstützung benötigt"
+        },
+        "4": {
+          "title": "Wir finden eine passende Stelle!",
+          "week": "WOCHE 1-2",
+          "infoText1": "Wir finden eine Unterkunft für Geflüchtete, die du aufgrund deiner Fähigkeiten und Präferenzen am besten unterstützen kannst"
+        },
+        "5": {
+          "title": "Erster Kontakt und Kennenlerntreffen",
+          "week": "WOCHE 2-3",
+          "infoText1": "Wir verbinden Dich per E-Mail mit der Ehrenamtskoordination der Unterkunft, die Dich zu einem Kennenlerntreffen einlädt, bei dem Du mehr über Deinen ersten Einsatz erfährst"
+        },
+        "6": {
+          "title": "Du kannst anfangen, Dich freiwillig zu engagieren!",
+          "week": "WOCHE 3-4",
+          "infoText1": "Du solltest inzwischen das erweiterte Führungszeugnis per Post erhalten haben – dieses zeigst Du in der Unterkunft für Geflüchtete vor"
+        },
+        "lastStep": {
+          "text": "Falls Du mehrsprachig bist, wirst Du möglicherweise gebeten, bei Bedarf zu begleiten und zu dolmetschen"
+        }
+      }
     }
   },
   "form": {
@@ -830,7 +874,21 @@
         "confirmMessage": "Dadurch wird \"{{opportunityName}}\" zu {{agentName}} verschoben. Die Kontaktdaten der antragstellenden Person bleiben gleich; zugewiesene Freiwillige werden mit übertragen.",
         "confirmButton": "Übertragen",
         "success": "Möglichkeit erfolgreich übertragen"
-      }
+      },
+      "createAgent": {
+        "button": "Neue NGO hinzufügen",
+        "title": "Neue NGO hinzufügen",
+        "name": "Name der Organisation",
+        "addressStreet": "Straße",
+        "addressPostcode": "Postleitzahl",
+        "cancel": "Abbrechen",
+        "submit": "Erstellen",
+        "success": "NGO erfolgreich erstellt",
+        "validation": {
+          "titleRequired": "Name der Organisation ist erforderlich"
+        }
+      },
+      "unclaimed": "Nicht übernommen"
     },
     "opportunities": {
       "opportunities": "Ehrenamtsbedarfe",
@@ -1017,7 +1075,7 @@
         "need4deedCertificate": "Need4Deed-Zertifikat",
         "cap": "Cap",
         "notebook": "Notizbuch",
-        "cityCertificate": "Städtisches Zertifikat"
+        "cityCertificate": "Senatsurkunde"
       },
       "addAppreciation": "Anerkennung hinzufügen",
       "editAppreciation": "Anerkennung bearbeiten",
@@ -1077,7 +1135,9 @@
           "new": "Neu",
           "active": "Aktiv",
           "unresponsive": "Nicht erreichbar",
-          "inactive": "Inaktiv"
+          "inactive": "Inaktiv",
+          "incontact": "In Kontakt",
+          "triedToContact": "Kontaktversuch unternommen"
         },
         "volunteerSearch": {
           "notNeeded": "Nicht benötigt",
@@ -1109,7 +1169,9 @@
           "unresponsive": "Nicht erreichbar",
           "unresponsive_description": "Diese Einrichtung/dieses Projekt antwortet nicht.",
           "inactive": "Inaktiv",
-          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen."
+          "inactive_description": "Diese Einrichtung/dieses Projekt arbeitet nicht mehr mit der Organisation zusammen.",
+          "incontact_description": "Diese Einrichtung/dieses Projekt ist in Kontakt mit der Organisation.",
+          "triedToContact_description": "Es wurde versucht, diese Einrichtung/dieses Projekt zu kontaktieren."
         },
         "optionsVolSearch": {
           "agent-not-needed": "Keine Ehrenamtlichen mehr benötigt",
@@ -1375,7 +1437,7 @@
           "descriptionTooLong": "Beschreibung ist zu lang",
           "numberOfVolunteersRequired": "Anzahl der Ehrenamtlichen muss mindestens 1 sein",
           "languageRequired": "Mindestens eine Sprache ist erforderlich",
-          "mainCommunicationInvalid": "Hauptkommunikation muss ausschließlich Deutsch oder Deutsch und Englisch sein",
+          "mainCommunicationInvalid": "Hauptkommunikation muss Deutsch, Englisch oder beides sein",
           "availabilityRequired": "Mindestens ein Zeitfenster muss ausgewählt werden",
           "activitiesRequired": "Mindestens eine Aktivität ist erforderlich",
           "skillsRequired": "Mindestens eine Fähigkeit ist erforderlich"
