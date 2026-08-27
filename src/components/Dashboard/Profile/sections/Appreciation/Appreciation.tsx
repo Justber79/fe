@@ -9,7 +9,7 @@ import {
   ApiAppreciationGet,
   AppreciationStatusType,
 } from "need4deed-sdk";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppreciationDialog } from "./AppreciationDialog";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
@@ -28,6 +28,7 @@ import {
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { createAppreciationStatusLabelMap } from "./constants";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -100,17 +101,8 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     }
   };
 
-  const getStatus = (entry: ApiAppreciationGet) => entry.status;
-
-  const STATUS_LABEL: Record<AppreciationStatusType, (entry: ApiAppreciationGet) => string> = {
-    [AppreciationStatusType.RECEIVED]: () => t("dashboard.appreciationSection.statusReceived"),
-    [AppreciationStatusType.PENDING]: (entry) =>
-      `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue ?? undefined)}`,
-    [AppreciationStatusType.POST]: (entry) =>
-      `${t("dashboard.appreciationSection.statusMailedOn")} ${formatDate(entry.dateDue ?? undefined)}`,
-  };
-
-  const getStatusLabel = (entry: ApiAppreciationGet) => STATUS_LABEL[entry.status]?.(entry) ?? EMPTY_PLACEHOLDER_VALUE;
+  const statusLabels = useMemo(() => createAppreciationStatusLabelMap(t), [t]);
+  const getStatusLabel = (entry: ApiAppreciationGet) => statusLabels[entry.status]?.(entry) ?? EMPTY_PLACEHOLDER_VALUE;
 
   return (
     <SectionWrapper data-testid="appreciation-container">
@@ -135,7 +127,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
                 >
                   <TableCell>{getAppreciationTypeLabel(t, entry.title)}</TableCell>
                   <TableCell $width="227px">
-                    <StatusBadge $status={getStatus(entry)}>{getStatusLabel(entry)}</StatusBadge>
+                    <StatusBadge $status={entry.status}>{getStatusLabel(entry)}</StatusBadge>
                   </TableCell>
                   <TableCell $width="146px" $noWrap>
                     {entry.dateDelivery ? formatDate(entry.dateDelivery) : <EmptyPlaceholder />}

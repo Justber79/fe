@@ -7,14 +7,14 @@ export const AppreciationTableContainer = styled(TableContainer)`
   margin-top: var(--spacing-24);
 `;
 
-export const StatusBadge = styled.div<{ $status: AppreciationStatusType }>`
-  background: ${(props) =>
-    props.$status === AppreciationStatusType.RECEIVED
-      ? "var(--color-green-100)"
-      : props.$status === AppreciationStatusType.POST
-        ? "var(--color-blue-100)"
-        : "var(--color-red-50)"};
+const statusColorMap: Record<AppreciationStatusType, string> = {
+  [AppreciationStatusType.RECEIVED]: "var(--color-green-100)",
+  [AppreciationStatusType.POST]: "var(--color-blue-100)",
+  [AppreciationStatusType.PENDING]: "var(--color-red-50)",
+};
 
+export const StatusBadge = styled.div<{ $status: AppreciationStatusType }>`
+  background: ${(props) => statusColorMap[props.$status]};
   padding: var(--spacing-12);
   border-radius: var(--border-radius-xs);
   font-weight: var(--font-weight-semi-bold);
