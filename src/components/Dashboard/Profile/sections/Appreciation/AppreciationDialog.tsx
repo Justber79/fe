@@ -164,6 +164,15 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
 
   const handleDeliveryStatusSelect = (status: AppreciationStatusType) => {
     setDeliveryStatus(status);
+
+    const allowsFuture = DELIVERY_STATUSES.find((option) => option.status === status)?.allowFuture ?? false;
+    const isFuture = selectedDate !== undefined && selectedDate > new Date();
+
+    if (isFuture && !allowsFuture) {
+      setSelectedDate(undefined);
+      return;
+    }
+
     if (!selectedDate) {
       setSelectedDate(new Date());
     }
