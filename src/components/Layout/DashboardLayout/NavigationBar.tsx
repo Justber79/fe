@@ -134,12 +134,12 @@ export default function NavigationBar() {
             Icon: UserCheckIcon,
             route: DashboardRoutes.Volunteers,
           },
-          {
-            label: t("dashboard.home.sidebar.opportunities"),
-            Icon: ShootingStarIcon,
-            route: DashboardRoutes.Opportunities,
-          },
         ]),
+    {
+      label: t("dashboard.home.sidebar.opportunities"),
+      Icon: ShootingStarIcon,
+      route: DashboardRoutes.Opportunities,
+    },
     {
       label: t("dashboard.home.sidebar.agents"),
       Icon: BookOpenTextIcon,
