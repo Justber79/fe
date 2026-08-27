@@ -92,7 +92,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     } else {
       const payload: ApiAppreciationPost = {
         title: data.title,
-        dateDue: data.dateDue || new Date(),
+        dateDue: data.dateDue,
         dateDelivery: data.dateDelivery ?? undefined,
         status: data.status,
       };
