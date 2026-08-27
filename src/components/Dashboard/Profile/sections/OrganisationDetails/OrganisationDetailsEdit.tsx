@@ -37,7 +37,7 @@ export const OrganisationDetailsEdit = ({
   const displayOperators = useCallback(
     (value: string) => {
       if (value?.length >= 3) {
-        return operatorOptions.filter((op) => op.includes(value.toLowerCase()));
+        return operatorOptions.filter((op) => op.toLowerCase().includes(value.toLowerCase()));
       } else {
         return [];
       }

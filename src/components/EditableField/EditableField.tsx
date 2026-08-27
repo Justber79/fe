@@ -562,7 +562,12 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
         {type === "autocomplete" && (
           <DropdownWrapper ref={wrapperRef}>
-            <DropdownButton $hasError={!!errorMessage} onClick={() => setOpen((o) => !o)}>
+            <DropdownButton
+              $hasError={!!errorMessage}
+              onClick={() => {
+                if (value) setOpen(true);
+              }}
+            >
               <InputWrapper>
                 <input
                   type="text"
@@ -590,8 +595,6 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                   </ClearButton>
                 )}
               </InputWrapper>
-
-              <Arrow className={open ? "open" : ""} />
             </DropdownButton>
 
             {open && options.length > 0 && (
