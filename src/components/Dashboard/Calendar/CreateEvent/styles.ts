@@ -38,6 +38,24 @@ export const StyledInput = styled.input`
   }
 `;
 
+export const StyledSelect = styled.select`
+  width: 100%;
+  border: var(--border-width-thin) solid var(--color-grey-400);
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-12) var(--spacing-16);
+  font-size: var(--font-size-sm);
+  color: var(--color-midnight);
+  background: var(--color-white);
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--color-midnight);
+  }
+`;
+
 export const StyledTextarea = styled.textarea`
   width: 100%;
   border: var(--border-width-thin) solid var(--color-grey-400);

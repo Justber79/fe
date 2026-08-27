@@ -1513,6 +1513,7 @@
       "management": "Event management",
       "events": "Events",
       "upcomingEvents": "Upcoming events",
+      "noUpcomingEvents": "No upcoming events this month",
       "upcomingHelp": "Events visible to volunteers",
       "calendarTitle": "Calendar",
       "calendarHelp": "Select an empty date to create an event",
@@ -1539,6 +1540,9 @@
       },
       "createForm": {
         "eventTitle": "Event Title",
+        "typeLabel": "Event type",
+        "typeWorkshop": "Workshop",
+        "typeParty": "Party",
         "titleLabel": "Title of the voluntary offer",
         "titlePlaceholder": "Title",
         "titleHelper": "e.g. \"Escort to the eye clinic\", \"Arts & Crafts\"",

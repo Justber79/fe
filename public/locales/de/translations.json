@@ -1525,6 +1525,7 @@
       "management": "Veranstaltungsverwaltung",
       "events": "Veranstaltungen",
       "upcomingEvents": "Kommende Veranstaltungen",
+      "noUpcomingEvents": "Keine kommenden Veranstaltungen in diesem Monat",
       "upcomingHelp": "Für Freiwillige sichtbare Veranstaltungen",
       "calendarTitle": "Kalender",
       "calendarHelp": "Wählen Sie ein freies Datum, um eine Veranstaltung zu erstellen",
@@ -1551,6 +1552,9 @@
       },
       "createForm": {
         "eventTitle": "Veranstaltungstitel",
+        "typeLabel": "Veranstaltungsart",
+        "typeWorkshop": "Workshop",
+        "typeParty": "Feier",
         "titleLabel": "Titel der ehrenamtlichen Tätigkeit",
         "titlePlaceholder": "Titel",
         "titleHelper": "z.B. \"Begleitung zur Augenklinik\", \"Basteln & Malen\"",

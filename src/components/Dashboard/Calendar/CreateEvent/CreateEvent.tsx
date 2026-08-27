@@ -6,13 +6,14 @@ import styled from "styled-components";
 import { EventN4DType, Lang, type ApiEventN4DCreate } from "need4deed-sdk";
 
 import { PageLayout } from "@/components/Layout";
-import { useCreateEvent, useEvents, useUpdateEvent } from "@/hooks";
+import { useCreateEvent, useEvent, useUpdateEvent } from "@/hooks";
 
 import { StepDateTime } from "./StepDateTime";
 import { StepLocation } from "./StepLocation";
 import { DESCRIPTION_MAX, StepTitle } from "./StepTitle";
 
 export interface EventFormData {
+  type: EventN4DType;
   title: string;
   description: string;
   street: string;
@@ -55,6 +56,7 @@ export function CreateEvent({ eventId }: Props) {
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<EventFormData>({
+    type: EventN4DType.WORKSHOP,
     title: "",
     description: "",
     street: "",
@@ -67,14 +69,14 @@ export function CreateEvent({ eventId }: Props) {
     endTime: "",
   });
   const [initializedEventId, setInitializedEventId] = useState<number | null>(null);
-  const { data: events = [], isLoading } = useEvents();
-  const editingEvent = eventId ? events.find((event) => event.id === eventId) : undefined;
+  const { data: editingEvent, isLoading } = useEvent(eventId);
 
   useEffect(() => {
     if (!eventId || !editingEvent || initializedEventId === eventId) return;
     const start = dateParts(editingEvent.date);
     const end = dateParts(editingEvent.dateEnd ?? editingEvent.date);
     setFormData({
+      type: editingEvent.type,
       title: editingEvent.title,
       description: editingEvent.description,
       ...parseAddress(editingEvent.address),
@@ -106,7 +108,7 @@ export function CreateEvent({ eventId }: Props) {
   const toPayload = (): ApiEventN4DCreate => ({
     date: new Date(`${formData.startDate}T${formData.startTime}`),
     dateEnd: new Date(`${formData.endDate}T${formData.endTime}`),
-    type: EventN4DType.WORKSHOP,
+    type: formData.type,
     linkRSVP: formData.registrationLink,
     address: `${formData.street} ${formData.houseNumber}, ${formData.postcode} Berlin`,
     active: true,
@@ -170,6 +172,7 @@ export function CreateEvent({ eventId }: Props) {
         <Card>
           {step === 1 && (
             <StepTitle
+              type={formData.type}
               title={formData.title}
               description={formData.description}
               onChange={update}

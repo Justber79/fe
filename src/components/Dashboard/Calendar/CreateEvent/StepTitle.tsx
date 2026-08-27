@@ -1,14 +1,25 @@
 "use client";
 import Button from "@/components/core/button/Button/Button";
 import { Heading2, Heading3 } from "@/components/styled/text";
+import { EventN4DType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { EventFormData } from "./CreateEvent";
-import { ButtonRow, CharCount, FieldGroup, FieldLabel, HelperText, StyledInput, StyledTextarea } from "./styles";
+import {
+  ButtonRow,
+  CharCount,
+  FieldGroup,
+  FieldLabel,
+  HelperText,
+  StyledInput,
+  StyledSelect,
+  StyledTextarea,
+} from "./styles";
 
 const TITLE_MAX = 128;
 export const DESCRIPTION_MAX = 512;
 
 interface Props {
+  type: EventN4DType;
   title: string;
   description: string;
   onChange: (fields: Partial<EventFormData>) => void;
@@ -17,12 +28,25 @@ interface Props {
   isNextEnabled: boolean;
 }
 
-export function StepTitle({ title, description, onChange, onNext, onCancel, isNextEnabled }: Props) {
+export function StepTitle({ type, title, description, onChange, onNext, onCancel, isNextEnabled }: Props) {
   const { t } = useTranslation();
 
   return (
     <>
       <Heading2>{t("dashboard.calendar.createForm.eventTitle")}</Heading2>
+
+      <FieldGroup>
+        <FieldLabel htmlFor="event-type">{t("dashboard.calendar.createForm.typeLabel")}</FieldLabel>
+        <StyledSelect
+          id="event-type"
+          value={type}
+          aria-required="true"
+          onChange={(event) => onChange({ type: event.target.value as EventN4DType })}
+        >
+          <option value={EventN4DType.WORKSHOP}>{t("dashboard.calendar.createForm.typeWorkshop")}</option>
+          <option value={EventN4DType.PARTY}>{t("dashboard.calendar.createForm.typeParty")}</option>
+        </StyledSelect>
+      </FieldGroup>
 
       <FieldGroup>
         <FieldLabel htmlFor="event-title">{t("dashboard.calendar.createForm.titleLabel")}</FieldLabel>

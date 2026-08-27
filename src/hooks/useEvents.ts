@@ -11,6 +11,14 @@ export function useEvents() {
   return useGetQuery<ApiEventN4DGetList[]>({ queryKey: EVENT_QUERY_KEY, apiPath: apiPathEvent });
 }
 
+export function useEvent(id?: number) {
+  const query = useEvents();
+  return {
+    ...query,
+    data: id ? query.data?.find((event) => event.id === id) : undefined,
+  };
+}
+
 export function useCreateEvent(onSuccess: (event: ApiEventN4DGet) => void) {
   return useMutationQuery<ApiEventN4DCreate, { data: ApiEventN4DGet }>({
     apiPath: apiPathEvent,
