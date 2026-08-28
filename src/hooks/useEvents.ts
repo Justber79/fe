@@ -1,5 +1,4 @@
 import { apiPathEvent } from "@/config/constants";
-import axios from "axios";
 import type { ApiEventN4DCreate, ApiEventN4DGet, ApiEventN4DGetList, ApiEventN4DPatch } from "need4deed-sdk";
 
 import { useGetQuery } from "./useGetQuery";
@@ -38,9 +37,10 @@ export function useUpdateEvent(id: number, onSuccess: () => void) {
   });
 }
 
-export function useDeleteEvent() {
-  return useMutationQuery<number, unknown>({
-    mutationFn: (id) => axios.delete(`${apiPathEvent}/${id}`).then((response) => response.data),
+export function useDeleteEvent(id?: number) {
+  return useMutationQuery<unknown, unknown>({
+    apiPath: `${apiPathEvent}/${id ?? 0}`,
+    method: "delete",
     queryKeyToInvalidate: EVENT_QUERY_KEY,
     successMessage: "dashboard.calendar.messages.deleted",
   });

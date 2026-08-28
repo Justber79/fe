@@ -3,9 +3,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { EventN4DType, Lang, type ApiEventN4DCreate } from "need4deed-sdk";
+import { EventN4DType, Lang, type ApiEventN4DCreate, type ApiEventN4DPatch } from "need4deed-sdk";
 
 import { PageLayout } from "@/components/Layout";
+import Button from "@/components/core/button/Button/Button";
 import { useCreateEvent, useEvent, useUpdateEvent } from "@/hooks";
 
 import { StepDateTime } from "./StepDateTime";
@@ -24,6 +25,7 @@ export interface EventFormData {
   startTime: string;
   endDate: string;
   endTime: string;
+  unstructuredAddress: boolean;
 }
 
 const TOTAL_STEPS = 3;
@@ -44,12 +46,21 @@ function dateParts(value?: Date) {
 function parseAddress(address = "") {
   const match = address.match(/^(.*)\s+(\S+),\s*(\d{5})/);
   return match
-    ? { street: match[1], houseNumber: match[2], postcode: match[3] }
-    : { street: address, houseNumber: "", postcode: "" };
+    ? { street: match[1], houseNumber: match[2], postcode: match[3], unstructuredAddress: false }
+    : { street: address, houseNumber: "", postcode: "", unstructuredAddress: Boolean(address) };
+}
+
+function isHttpUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 export function CreateEvent({ eventId }: Props) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const prefilledDate = searchParams.get("date") ?? "";
@@ -67,9 +78,10 @@ export function CreateEvent({ eventId }: Props) {
     startTime: "",
     endDate: prefilledDate,
     endTime: "",
+    unstructuredAddress: false,
   });
   const [initializedEventId, setInitializedEventId] = useState<number | null>(null);
-  const { data: editingEvent, isLoading } = useEvent(eventId);
+  const { data: editingEvent, isLoading, isError } = useEvent(eventId);
 
   useEffect(() => {
     if (!eventId || !editingEvent || initializedEventId === eventId) return;
@@ -89,7 +101,12 @@ export function CreateEvent({ eventId }: Props) {
     setInitializedEventId(eventId);
   }, [editingEvent, eventId, initializedEventId]);
 
-  const update = (fields: Partial<EventFormData>) => setFormData((prev) => ({ ...prev, ...fields }));
+  const update = (fields: Partial<EventFormData>) =>
+    setFormData((prev) => ({
+      ...prev,
+      ...fields,
+      unstructuredAddress: "houseNumber" in fields || "postcode" in fields ? false : prev.unstructuredAddress,
+    }));
 
   const handleNext = () => setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   const handleBack = () => {
@@ -105,25 +122,35 @@ export function CreateEvent({ eventId }: Props) {
   const createEvent = useCreateEvent(returnToEvents);
   const updateEvent = useUpdateEvent(eventId ?? 0, returnToEvents);
 
-  const toPayload = (): ApiEventN4DCreate => ({
+  const translation = {
+    language: i18n.language === Lang.DE ? Lang.DE : Lang.EN,
+    title: formData.title,
+    subTitle: editingEvent?.subTitle,
+    menuTitle: formData.title,
+    locationComment: editingEvent?.locationComment,
+    description: formData.description,
+    shortDescription: formData.description,
+    additionalTitle: editingEvent?.additionalTitle,
+    additionalInfo: editingEvent?.additionalInfo,
+  };
+  const address = formData.unstructuredAddress
+    ? formData.street.trim()
+    : `${formData.street.trim()} ${formData.houseNumber.trim()}, ${formData.postcode.trim()} Berlin`;
+  const toCreatePayload = (): ApiEventN4DCreate => ({
     date: new Date(`${formData.startDate}T${formData.startTime}`),
     dateEnd: new Date(`${formData.endDate}T${formData.endTime}`),
     type: formData.type,
     linkRSVP: formData.registrationLink,
-    address: `${formData.street} ${formData.houseNumber}, ${formData.postcode} Berlin`,
+    address,
     active: true,
-    translations: [
-      {
-        language: i18n.language === Lang.DE ? Lang.DE : Lang.EN,
-        title: formData.title,
-        menuTitle: formData.title,
-        description: formData.description,
-        shortDescription: formData.description,
-      },
-    ],
+    translations: [translation],
+  });
+  const toUpdatePayload = (): ApiEventN4DPatch => ({
+    ...toCreatePayload(),
+    active: editingEvent?.active,
   });
 
-  const handleSubmit = () => (eventId ? updateEvent.mutate(toPayload()) : createEvent.mutate(toPayload()));
+  const handleSubmit = () => (eventId ? updateEvent.mutate(toUpdatePayload()) : createEvent.mutate(toCreatePayload()));
 
   const isNextEnabled = () => {
     if (step === 1)
@@ -135,9 +162,9 @@ export function CreateEvent({ eventId }: Props) {
     if (step === 2)
       return (
         formData.street.trim().length > 0 &&
-        formData.houseNumber.trim().length > 0 &&
-        formData.postcode.trim().length > 0 &&
-        /^https?:\/\//.test(formData.registrationLink)
+        (formData.unstructuredAddress ||
+          (formData.houseNumber.trim().length > 0 && formData.postcode.trim().length > 0)) &&
+        isHttpUrl(formData.registrationLink)
       );
     if (step === 3) {
       const start = new Date(`${formData.startDate}T${formData.startTime}`);
@@ -150,13 +177,25 @@ export function CreateEvent({ eventId }: Props) {
   if (eventId && isLoading)
     return (
       <PageLayout background="var(--color-orchid-subtle)">
-        <PageContent />
+        <PageContent>
+          <StateMessage role="status">{t("dashboard.calendar.editLoading")}</StateMessage>
+        </PageContent>
       </PageLayout>
     );
-  if (eventId && !isLoading && !editingEvent)
+  if (eventId && !isLoading && (isError || !editingEvent))
     return (
       <PageLayout background="var(--color-orchid-subtle)">
-        <PageContent />
+        <PageContent>
+          <StateMessage role="alert">
+            <p>{t("dashboard.calendar.editLoadError")}</p>
+            <Button
+              text={t("dashboard.calendar.backToCalendar")}
+              onClick={returnToEvents}
+              width="auto"
+              padding="var(--button-padding)"
+            />
+          </StateMessage>
+        </PageContent>
       </PageLayout>
     );
 
@@ -245,4 +284,16 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-24);
+`;
+
+const StateMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-32);
+  border-radius: var(--border-radius-large);
+  background: var(--color-white);
+  color: var(--color-midnight);
+  text-align: center;
 `;

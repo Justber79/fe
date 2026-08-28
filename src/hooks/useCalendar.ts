@@ -15,7 +15,7 @@ export function useCalendar() {
   const [showPast, setShowPast] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState<ApiEventN4DGetList | null>(null);
   const { data: events = [], isLoading, isError } = useEvents();
-  const remove = useDeleteEvent();
+  const remove = useDeleteEvent(deletingEvent?.id);
 
   const monthEvents = useMemo(() => {
     const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
@@ -49,11 +49,9 @@ export function useCalendar() {
   };
 
   const changeMonth = (offset: number) => {
-    setMonthDate((current) => {
-      const next = new Date(current.getFullYear(), current.getMonth() + offset, 1);
-      setShowPast(next < new Date(today.getFullYear(), today.getMonth(), 1));
-      return next;
-    });
+    const next = new Date(monthDate.getFullYear(), monthDate.getMonth() + offset, 1);
+    setMonthDate(next);
+    setShowPast(next < new Date(today.getFullYear(), today.getMonth(), 1));
     setSelectedDateKey(null);
   };
 
@@ -76,7 +74,7 @@ export function useCalendar() {
     requestDelete: setDeletingEvent,
     cancelDelete: () => setDeletingEvent(null),
     confirmDelete: () => {
-      if (deletingEvent) remove.mutate(deletingEvent.id, { onSettled: () => setDeletingEvent(null) });
+      if (deletingEvent) remove.mutate(undefined, { onSettled: () => setDeletingEvent(null) });
     },
   };
 }

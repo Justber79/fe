@@ -16,7 +16,7 @@ export function CalendarContent() {
     <Page>
       <PageHeading>
         <Heading2>{t("dashboard.calendar.calendarTitle")}</Heading2>
-        <CreateEventCta onCreate={() => calendar.createEvent()} />
+        <CreateEventCta onCreate={() => calendar.createEvent(calendar.selectedDateKey ?? undefined)} />
       </PageHeading>
       <Calendar
         events={calendar.monthEvents}

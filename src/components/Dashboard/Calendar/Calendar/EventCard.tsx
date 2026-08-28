@@ -15,6 +15,7 @@ interface Props {
 
 export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) {
   const { t, i18n } = useTranslation();
+  const registrationUrl = getHttpUrl(event.linkRSVP);
 
   if (variant === "bar") {
     return (
@@ -56,9 +57,13 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
       </Meta>
       <Meta>
         <LinkIcon size={18} />
-        <Registration href={event.linkRSVP} target="_blank" rel="noopener noreferrer">
-          {t("dashboard.calendar.openRegistration")}
-        </Registration>
+        {registrationUrl ? (
+          <Registration href={registrationUrl} target="_blank" rel="noopener noreferrer">
+            {t("dashboard.calendar.openRegistration")}
+          </Registration>
+        ) : (
+          <span>{t("dashboard.calendar.registrationUnavailable")}</span>
+        )}
       </Meta>
       <Actions>
         <Button
@@ -83,6 +88,16 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
       </Actions>
     </Card>
   );
+}
+
+function getHttpUrl(value?: string) {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 const Card = styled.article`
