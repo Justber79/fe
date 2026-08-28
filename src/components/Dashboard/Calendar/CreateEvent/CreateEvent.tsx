@@ -136,19 +136,28 @@ export function CreateEvent({ eventId }: Props) {
   const address = formData.unstructuredAddress
     ? formData.street.trim()
     : `${formData.street.trim()} ${formData.houseNumber.trim()}, ${formData.postcode.trim()} Berlin`;
-  const toCreatePayload = (): ApiEventN4DCreate => ({
+  const toBasePayload = (): Omit<ApiEventN4DCreate, "translations"> => ({
     date: new Date(`${formData.startDate}T${formData.startTime}`),
     dateEnd: new Date(`${formData.endDate}T${formData.endTime}`),
     type: formData.type,
     linkRSVP: formData.registrationLink,
     address,
     active: true,
+  });
+  const toCreatePayload = (): ApiEventN4DCreate => ({
+    ...toBasePayload(),
     translations: [translation],
   });
-  const toUpdatePayload = (): ApiEventN4DPatch => ({
-    ...toCreatePayload(),
-    active: editingEvent?.active,
-  });
+  const toUpdatePayload = (): ApiEventN4DPatch => {
+    const translationChanged =
+      formData.title !== editingEvent?.title || formData.description !== editingEvent?.description;
+
+    return {
+      ...toBasePayload(),
+      active: editingEvent?.active,
+      ...(translationChanged ? { translations: [translation] } : {}),
+    };
+  };
 
   const handleSubmit = () => (eventId ? updateEvent.mutate(toUpdatePayload()) : createEvent.mutate(toCreatePayload()));
 
@@ -164,7 +173,7 @@ export function CreateEvent({ eventId }: Props) {
         formData.street.trim().length > 0 &&
         (formData.unstructuredAddress ||
           (formData.houseNumber.trim().length > 0 && formData.postcode.trim().length > 0)) &&
-        isHttpUrl(formData.registrationLink)
+        (formData.registrationLink === editingEvent?.linkRSVP || isHttpUrl(formData.registrationLink))
       );
     if (step === 3) {
       const start = new Date(`${formData.startDate}T${formData.startTime}`);
