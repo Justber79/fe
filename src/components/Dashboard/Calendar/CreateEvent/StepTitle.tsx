@@ -1,7 +1,10 @@
 "use client";
 import Button from "@/components/core/button/Button/Button";
 import { Heading2, Heading3 } from "@/components/styled/text";
+import { useClickOutside } from "@/hooks";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import { EventN4DType } from "need4deed-sdk";
+import { type KeyboardEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EventFormData } from "./CreateEvent";
 import {
@@ -10,8 +13,11 @@ import {
   FieldGroup,
   FieldLabel,
   HelperText,
+  SelectButton,
+  SelectContainer,
+  SelectOption,
+  SelectOptions,
   StyledInput,
-  StyledSelect,
   StyledTextarea,
 } from "./styles";
 
@@ -30,6 +36,54 @@ interface Props {
 
 export function StepTitle({ type, title, description, onChange, onNext, onCancel, isNextEnabled }: Props) {
   const { t } = useTranslation();
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [activeTypeIndex, setActiveTypeIndex] = useState(0);
+  const typeSelectRef = useRef<HTMLDivElement>(null);
+  const typeButtonRef = useRef<HTMLButtonElement>(null);
+  const typeOptions = [
+    { value: EventN4DType.WORKSHOP, label: t("dashboard.calendar.createForm.typeWorkshop") },
+    { value: EventN4DType.PARTY, label: t("dashboard.calendar.createForm.typeParty") },
+  ];
+  const selectedType = typeOptions.find((option) => option.value === type) ?? typeOptions[0];
+
+  useClickOutside(typeSelectRef, () => setIsTypeOpen(false));
+
+  const openTypeSelect = () => {
+    setActiveTypeIndex(
+      Math.max(
+        0,
+        typeOptions.findIndex((option) => option.value === type),
+      ),
+    );
+    setIsTypeOpen(true);
+  };
+
+  const selectType = (value: EventN4DType) => {
+    onChange({ type: value });
+    setIsTypeOpen(false);
+    typeButtonRef.current?.focus();
+  };
+
+  const handleTypeKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Escape") {
+      setIsTypeOpen(false);
+      return;
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!isTypeOpen) {
+        openTypeSelect();
+        return;
+      }
+      const direction = event.key === "ArrowDown" ? 1 : -1;
+      setActiveTypeIndex((index) => (index + direction + typeOptions.length) % typeOptions.length);
+      return;
+    }
+    if ((event.key === "Enter" || event.key === " ") && isTypeOpen) {
+      event.preventDefault();
+      selectType(typeOptions[activeTypeIndex].value);
+    }
+  };
 
   return (
     <>
@@ -37,15 +91,40 @@ export function StepTitle({ type, title, description, onChange, onNext, onCancel
 
       <FieldGroup>
         <FieldLabel htmlFor="event-type">{t("dashboard.calendar.createForm.typeLabel")}</FieldLabel>
-        <StyledSelect
-          id="event-type"
-          value={type}
-          aria-required="true"
-          onChange={(event) => onChange({ type: event.target.value as EventN4DType })}
-        >
-          <option value={EventN4DType.WORKSHOP}>{t("dashboard.calendar.createForm.typeWorkshop")}</option>
-          <option value={EventN4DType.PARTY}>{t("dashboard.calendar.createForm.typeParty")}</option>
-        </StyledSelect>
+        <SelectContainer ref={typeSelectRef}>
+          <SelectButton
+            ref={typeButtonRef}
+            id="event-type"
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded={isTypeOpen}
+            aria-controls="event-type-options"
+            aria-activedescendant={isTypeOpen ? `event-type-option-${activeTypeIndex}` : undefined}
+            onClick={() => (isTypeOpen ? setIsTypeOpen(false) : openTypeSelect())}
+            onKeyDown={handleTypeKeyDown}
+          >
+            <span>{selectedType.label}</span>
+            <CaretDownIcon aria-hidden="true" />
+          </SelectButton>
+          {isTypeOpen && (
+            <SelectOptions id="event-type-options" role="listbox" aria-labelledby="event-type">
+              {typeOptions.map((option, index) => (
+                <SelectOption
+                  id={`event-type-option-${index}`}
+                  key={option.value}
+                  type="button"
+                  role="option"
+                  aria-selected={option.value === type}
+                  $active={index === activeTypeIndex}
+                  onMouseEnter={() => setActiveTypeIndex(index)}
+                  onClick={() => selectType(option.value)}
+                >
+                  {option.label}
+                </SelectOption>
+              ))}
+            </SelectOptions>
+          )}
+        </SelectContainer>
       </FieldGroup>
 
       <FieldGroup>
