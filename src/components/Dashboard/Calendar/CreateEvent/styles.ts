@@ -38,6 +38,65 @@ export const StyledInput = styled.input`
   }
 `;
 
+export const SelectContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const SelectButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-12);
+  width: 100%;
+  border: var(--border-width-thin) solid var(--color-grey-400);
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-12) var(--spacing-16);
+  font-size: var(--font-size-sm);
+  color: var(--color-midnight);
+  background: var(--color-white);
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--color-midnight);
+  }
+`;
+
+export const SelectOptions = styled.div`
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  overflow: hidden;
+  border: var(--border-width-thin) solid var(--color-grey-400);
+  border-radius: var(--border-radius-small);
+  background: var(--color-white);
+  box-shadow: var(--dropdown-box-shadow);
+  box-sizing: border-box;
+`;
+
+export const SelectOption = styled.button<{ $active: boolean }>`
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: var(--spacing-12) var(--spacing-16);
+  background: ${({ $active }) => ($active ? "var(--color-grey-50)" : "var(--color-white)")};
+  color: var(--color-midnight);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-grey-50);
+    outline: none;
+  }
+`;
+
 export const StyledTextarea = styled.textarea`
   width: 100%;
   border: var(--border-width-thin) solid var(--color-grey-400);
