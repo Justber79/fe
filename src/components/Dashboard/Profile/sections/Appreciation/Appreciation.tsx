@@ -114,6 +114,8 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
             <TableHeader>
               <TableHeaderCell>{t("dashboard.appreciationSection.typeOfAppreciation")}</TableHeaderCell>
               <TableHeaderCell $width="227px">{t("dashboard.appreciationSection.status")}</TableHeaderCell>
+              <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusDueTo")}</TableHeaderCell>
+              <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusMailedOn")}</TableHeaderCell>
               <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.receivedOn")}</TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
@@ -129,6 +131,21 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
                   <TableCell $width="227px">
                     <StatusBadge $status={entry.status}>{getStatusLabel(entry)}</StatusBadge>
                   </TableCell>
+                  <TableCell $width="146px" $noWrap>
+                    {entry.status === AppreciationStatusType.PENDING && entry.dateDue ? (
+                      formatDate(entry.dateDue)
+                    ) : (
+                      <EmptyPlaceholder />
+                    )}
+                  </TableCell>
+                  <TableCell $width="146px" $noWrap>
+                    {entry.status === AppreciationStatusType.POST && entry.dateDue ? (
+                      formatDate(entry.dateDue)
+                    ) : (
+                      <EmptyPlaceholder />
+                    )}
+                  </TableCell>
+
                   <TableCell $width="146px" $noWrap>
                     {entry.dateDelivery ? formatDate(entry.dateDelivery) : <EmptyPlaceholder />}
                   </TableCell>

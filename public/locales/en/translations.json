@@ -1055,6 +1055,8 @@
       "status": "Status",
       "receivedOn": "Received on",
       "statusReceived": "Received",
+      "statusPending": "Pending",
+      "statusPost": "Mailed",
       "statusDueTo": "Due on",
       "statusMailedOn": "Mailed on",
       "typeOptions": {

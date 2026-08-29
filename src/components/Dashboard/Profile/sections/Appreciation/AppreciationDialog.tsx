@@ -57,12 +57,6 @@ const APPRECIATION_TYPES = [
 
 const DELIVERY_STATUSES = [
   {
-    status: AppreciationStatusType.RECEIVED,
-    labelKey: "dashboard.appreciationSection.volunteerReceivedIt",
-    dateLabelKey: "dashboard.appreciationSection.receivedOnRequired",
-    testId: "received-date-field",
-  },
-  {
     status: AppreciationStatusType.PENDING,
     labelKey: "dashboard.appreciationSection.needToGiveIt",
     dateLabelKey: "dashboard.appreciationSection.dueDateRequired",
@@ -74,6 +68,12 @@ const DELIVERY_STATUSES = [
     labelKey: "dashboard.appreciationSection.volunteerPostIt",
     dateLabelKey: "dashboard.appreciationSection.postOnRequired",
     testId: "post-date-field",
+  },
+  {
+    status: AppreciationStatusType.RECEIVED,
+    labelKey: "dashboard.appreciationSection.volunteerReceivedIt",
+    dateLabelKey: "dashboard.appreciationSection.receivedOnRequired",
+    testId: "received-date-field",
   },
 ];
 

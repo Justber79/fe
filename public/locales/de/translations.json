@@ -1067,6 +1067,8 @@
       "status": "Status",
       "receivedOn": "Erhalten am",
       "statusReceived": "Erhalten",
+      "statusPending": "Ausstehend",
+      "statusPost": "Geschickt",
       "statusDueTo": "Fällig am",
       "statusMailedOn": "Geschickt am",
       "typeOptions": {
