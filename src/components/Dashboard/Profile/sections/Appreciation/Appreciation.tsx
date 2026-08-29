@@ -102,7 +102,7 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
   };
 
   const statusLabels = useMemo(() => createAppreciationStatusLabelMap(t), [t]);
-  const getStatusLabel = (entry: ApiAppreciationGet) => statusLabels[entry.status]?.(entry) ?? EMPTY_PLACEHOLDER_VALUE;
+  const getStatusLabel = (entry: ApiAppreciationGet) => statusLabels[entry.status] ?? EMPTY_PLACEHOLDER_VALUE;
 
   return (
     <SectionWrapper data-testid="appreciation-container">

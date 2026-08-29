@@ -14,7 +14,7 @@ const statusColorMap: Record<AppreciationStatusType, string> = {
 };
 
 export const StatusBadge = styled.div<{ $status: AppreciationStatusType }>`
-  background: ${(props) => statusColorMap[props.$status]};
+  background: ${(props) => statusColorMap[props.$status] ?? "var(--color-grey-50)"};
   padding: var(--spacing-12);
   border-radius: var(--border-radius-xs);
   font-weight: var(--font-weight-semi-bold);
