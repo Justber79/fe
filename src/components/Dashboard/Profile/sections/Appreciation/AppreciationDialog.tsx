@@ -77,6 +77,12 @@ const DELIVERY_STATUSES = [
   },
 ];
 
+function withoutDisallowedFuture(date: Date | undefined, status: AppreciationStatusType | undefined): Date | undefined {
+  if (!date || !status) return date;
+  const allowsFuture = DELIVERY_STATUSES.find((option) => option.status === status)?.allowFuture ?? false;
+  return !allowsFuture && date > new Date() ? undefined : date;
+}
+
 type DeliveryStatusOptionProps = {
   status: AppreciationStatusType;
   isSelected: boolean;
@@ -136,17 +142,17 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
 
   useEffect(() => {
     if (!isOpen) return;
-
     if (initialData) {
       setSelectedType(initialData.title);
       setDeliveryStatus(initialData.status);
-      setSelectedDate(
-        initialData.dateDelivery
-          ? new Date(initialData.dateDelivery)
-          : initialData.dateDue
-            ? new Date(initialData.dateDue)
-            : undefined,
-      );
+
+      const storedDate = initialData.dateDelivery
+        ? new Date(initialData.dateDelivery)
+        : initialData.dateDue
+          ? new Date(initialData.dateDue)
+          : undefined;
+
+      setSelectedDate(withoutDisallowedFuture(storedDate, initialData.status));
     } else {
       setSelectedType(undefined);
       setDeliveryStatus(undefined);
@@ -164,11 +170,7 @@ export function AppreciationDialog({ isOpen, onClose, onSave, initialData }: Pro
 
   const handleDeliveryStatusSelect = (status: AppreciationStatusType) => {
     setDeliveryStatus(status);
-
-    const allowsFuture = DELIVERY_STATUSES.find((option) => option.status === status)?.allowFuture ?? false;
-    const isFuture = selectedDate !== undefined && selectedDate > new Date();
-
-    if (isFuture && !allowsFuture) {
+    if (selectedDate && !withoutDisallowedFuture(selectedDate, status)) {
       setSelectedDate(undefined);
       return;
     }
