@@ -11,13 +11,23 @@ interface Props {
   street: string;
   houseNumber: string;
   postcode: string;
+  registrationLink: string;
   onChange: (fields: Partial<EventFormData>) => void;
   onNext: () => void;
   onBack: () => void;
   isNextEnabled: boolean;
 }
 
-export function StepLocation({ street, houseNumber, postcode, onChange, onNext, onBack, isNextEnabled }: Props) {
+export function StepLocation({
+  street,
+  houseNumber,
+  postcode,
+  registrationLink,
+  onChange,
+  onNext,
+  onBack,
+  isNextEnabled,
+}: Props) {
   const { t } = useTranslation();
 
   return (
@@ -64,6 +74,18 @@ export function StepLocation({ street, houseNumber, postcode, onChange, onNext, 
         <CharCount>
           {postcode.length}/{FIELD_MAX}
         </CharCount>
+      </FieldGroup>
+
+      <FieldGroup>
+        <FieldLabel htmlFor="registration-link">{t("dashboard.calendar.createForm.registrationLink")}</FieldLabel>
+        <StyledInput
+          id="registration-link"
+          type="url"
+          value={registrationLink}
+          placeholder="https://…"
+          aria-required="true"
+          onChange={(e) => onChange({ registrationLink: e.target.value })}
+        />
       </FieldGroup>
 
       <HelperText>{t("dashboard.calendar.createForm.locationHelper")}</HelperText>

@@ -9,6 +9,7 @@ export const apiPathComment = `/${apiPrefix}/comment`;
 export const apiPathCommunication = `/${apiPrefix}/communication`;
 export const apiPathAppreciation = `/${apiPrefix}/appreciation`;
 export const apiPathActivityLog = `/${apiPrefix}/activity-log`;
+export const apiPathEvent = `/${apiPrefix}/event`;
 export const apiPathLogin = `/${apiPrefix}/auth/login`;
 export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
 export const apiPathAuthLogout = `/${apiPrefix}/auth/logout`;
@@ -39,6 +40,8 @@ export const screenSizeThresholds = {
   tablet: 768,
   desktop: 1440,
 };
+
+export const videoGuideURL = "https://www.youtube.com/embed/tk5akHPd9oo?si=k01Klx7SxIWwKHO_&rel=0&autoplay=0";
 
 export const eightDays = 1000 * 60 * 60 * 24 * 8;
 export const twoDays = 1000 * 60 * 60 * 24 * 2;
