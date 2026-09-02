@@ -8,7 +8,6 @@ import { UserRole } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import { validateStep } from "@/components/AgentRegistration/helpers";
 import { AccountStep } from "@/components/AgentRegistration/steps/AccountStep";
 import {
@@ -19,23 +18,13 @@ import {
   ExistingUserWrapper,
   PageSubtitle,
   PageTitle,
+  PageWrapper,
   SuccessText,
   SuccessTitle,
   SuccessWrapper,
-  Wrapper,
 } from "@/components/AgentRegistration/styled";
 import { AccountRegistrationData, defaultAccountRegistrationData } from "@/components/AgentRegistration/types";
 import Link from "next/link";
-
-const NAMESPACE = "volunteerRegistration";
-
-// Wrapper's own min-height: 100vh would double up with PageLayout's flex: 1
-// container, adding a spurious extra viewport of empty space (see the same
-// override in AgentRegistration.tsx).
-const PageWrapper = styled(Wrapper)`
-  min-height: 0;
-  flex: 1;
-`;
 
 export function VolunteerRegistration() {
   const { t, i18n } = useTranslation();
@@ -65,7 +54,7 @@ export function VolunteerRegistration() {
   };
 
   const handleSubmit = async () => {
-    const stepErrors = validateStep(1, formData, t, NAMESPACE);
+    const stepErrors = validateStep(1, formData, t, "volunteerRegistration");
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -109,8 +98,8 @@ export function VolunteerRegistration() {
         <PageWrapper>
           <Card>
             <SuccessWrapper>
-              <SuccessTitle>{t(`${NAMESPACE}.checkEmail.title`)}</SuccessTitle>
-              <SuccessText>{t(`${NAMESPACE}.checkEmail.description`)}</SuccessText>
+              <SuccessTitle>{t("volunteerRegistration.checkEmail.title")}</SuccessTitle>
+              <SuccessText>{t("volunteerRegistration.checkEmail.description")}</SuccessText>
             </SuccessWrapper>
           </Card>
         </PageWrapper>
@@ -122,22 +111,22 @@ export function VolunteerRegistration() {
     <PageLayout>
       <PageWrapper>
         <Card>
-          <PageTitle>{t(`${NAMESPACE}.title`)}</PageTitle>
-          <PageSubtitle>{t(`${NAMESPACE}.subtitle`)}</PageSubtitle>
+          <PageTitle>{t("volunteerRegistration.title")}</PageTitle>
+          <PageSubtitle>{t("volunteerRegistration.subtitle")}</PageSubtitle>
 
           <ExistingUserWrapper>
-            <ExistingUserText>{t(`${NAMESPACE}.alreadyUser`)}</ExistingUserText>
-            <Link href="/login">{t(`${NAMESPACE}.loginLink`)}</Link>
+            <ExistingUserText>{t("volunteerRegistration.alreadyUser")}</ExistingUserText>
+            <Link href="/login">{t("volunteerRegistration.loginLink")}</Link>
           </ExistingUserWrapper>
 
           {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
 
-          <AccountStep data={formData} onChange={update} errors={errors} namespace={NAMESPACE} />
+          <AccountStep data={formData} onChange={update} errors={errors} namespace="volunteerRegistration" />
 
           <Actions>
             <div />
             <Button
-              text={t(`${NAMESPACE}.next`)}
+              text={t("volunteerRegistration.next")}
               backgroundcolor="var(--color-aubergine)"
               textColor="var(--color-white)"
               onClick={handleSubmit}

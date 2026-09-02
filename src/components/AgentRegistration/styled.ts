@@ -18,6 +18,16 @@ export const Card = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 `;
 
+// Wrapper's own min-height: 100vh would double up with PageLayout's flex: 1
+// container (which already fills the viewport minus header/footer), adding
+// a spurious extra viewport of empty space. Used by AgentRegistration and
+// VolunteerRegistration, both rendered inside PageLayout — not by
+// ProfileCompletion, which isn't.
+export const PageWrapper = styled(Wrapper)`
+  min-height: 0;
+  flex: 1;
+`;
+
 export const PageTitle = styled.h1`
   font-size: 1.625rem;
   font-weight: 700;
