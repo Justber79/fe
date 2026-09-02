@@ -2,7 +2,7 @@ import { apiPathAppreciation, apiPathVolunteer } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import axios from "axios";
-import { ApiAppreciationGet, ApiAppreciationPatch, ApiAppreciationPost } from "need4deed-sdk";
+import { ApiAppreciationPatch, ApiAppreciationPost, ApiAppreciationGet } from "need4deed-sdk";
 
 export const useAppreciationTracker = (volunteerId: number) => {
   const queryKey = ["volunteer", String(volunteerId), "appreciations"];

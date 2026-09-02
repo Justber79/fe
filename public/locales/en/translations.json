@@ -34,6 +34,12 @@
     "iframeTitles": {
       "howToVolunteer": "How you can support refugees in your community"
     },
+    "events": {
+      "headline": "Upcoming Events",
+      "button": "Learn More & Register",
+      "loading": "Loading upcoming events…",
+      "empty": "No upcoming event is currently available."
+    },
     "testimonials": {
       "header": "TESTIMONIALS",
       "headerParagraph": "What Volunteers & Coordinators Say"
@@ -1056,7 +1062,10 @@
       "status": "Status",
       "receivedOn": "Received on",
       "statusReceived": "Received",
+      "statusPending": "Pending",
+      "statusPost": "Mailed",
       "statusDueTo": "Due on",
+      "statusMailedOn": "Mailed on",
       "typeOptions": {
         "tshirt": "T-shirt",
         "toteBag": "Tote bag",
@@ -1074,6 +1083,8 @@
       "volunteerReceivedIt": "The volunteer received it",
       "needToGiveIt": "Need to give it to the volunteer",
       "receivedOnRequired": "Received on*",
+      "volunteerPostIt": "It was mailed to the volunteer",
+      "postOnRequired": "Mailed on*",
       "today": "today",
       "cancel": "Cancel",
       "save": "Save",

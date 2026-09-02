@@ -32,6 +32,12 @@
     "iframeTitles": {
       "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
     },
+    "events": {
+      "headline": "Kommende Veranstaltungen",
+      "button": "Mehr erfahren & anmelden",
+      "loading": "Kommende Veranstaltungen werden geladen…",
+      "empty": "Aktuell ist keine kommende Veranstaltung verfügbar."
+    },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
       "headerParagraph": "Was Ehrenamtliche und Unterkünfte sagen"
@@ -1068,7 +1074,10 @@
       "status": "Status",
       "receivedOn": "Erhalten am",
       "statusReceived": "Erhalten",
+      "statusPending": "Ausstehend",
+      "statusPost": "Geschickt",
       "statusDueTo": "Fällig am",
+      "statusMailedOn": "Geschickt am",
       "typeOptions": {
         "tshirt": "T-Shirt",
         "toteBag": "Stofftasche",
@@ -1086,6 +1095,8 @@
       "volunteerReceivedIt": "Der*die Ehrenamtliche hat es erhalten",
       "needToGiveIt": "Muss dem*der Ehrenamtlichen gegeben werden",
       "receivedOnRequired": "Erhalten am*",
+      "volunteerPostIt": "Wurde dem*der Ehrenamtlichen per Post geschickt",
+      "postOnRequired": "Geschickt am*",
       "today": "heute",
       "cancel": "Abbrechen",
       "save": "Speichern",

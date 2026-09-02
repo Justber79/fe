@@ -54,7 +54,7 @@ export const eventsSectionContainerId = "events-section-container";
 export const eventsPublicLandingUrl = "https://www.need4deed.org/event-page";
 export const opportunityCardsPublicUrl = "https://www.need4deed.org/opportunity-cards";
 
-export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
+export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL ?? "https://d2nwrdddg8skub.cloudfront.net/images";
 
 export const minPLZGermany = 1067;
 export const maxPLZGermany = 99998;
