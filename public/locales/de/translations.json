@@ -32,6 +32,12 @@
     "iframeTitles": {
       "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
     },
+    "events": {
+      "headline": "Kommende Veranstaltungen",
+      "button": "Mehr erfahren & anmelden",
+      "loading": "Kommende Veranstaltungen werden geladen…",
+      "empty": "Aktuell ist keine kommende Veranstaltung verfügbar."
+    },
     "testimonials": {
       "header": "ERFAHRUNGSBERICHTE",
       "headerParagraph": "Was Ehrenamtliche und Unterkünfte sagen"

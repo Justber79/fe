@@ -34,6 +34,12 @@
     "iframeTitles": {
       "howToVolunteer": "How you can support refugees in your community"
     },
+    "events": {
+      "headline": "Upcoming Events",
+      "button": "Learn More & Register",
+      "loading": "Loading upcoming events…",
+      "empty": "No upcoming event is currently available."
+    },
     "testimonials": {
       "header": "TESTIMONIALS",
       "headerParagraph": "What Volunteers & Coordinators Say"
