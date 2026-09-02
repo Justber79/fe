@@ -5,6 +5,7 @@ export * from "./useGetVolunteer";
 export * from "./useGetQuery";
 export * from "./useMutationQuery";
 export * from "./useEvents";
+export * from "./usePosts";
 export * from "./useCalendar";
 export * from "./useSwipe";
 export * from "./useUpdateAgentStatus";
