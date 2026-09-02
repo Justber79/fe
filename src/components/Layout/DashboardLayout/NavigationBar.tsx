@@ -114,7 +114,6 @@ export default function NavigationBar() {
   const isAgent = user?.role === UserRole.AGENT;
   const isVolunteer = user?.role === UserRole.VOLUNTEER;
   const canSeeStaffNav = !isAgent && !isVolunteer;
-  const canSeeCalendar = !isAgent && !isVolunteer;
 
   const userInitials = user?.fullName
     ? user.fullName
@@ -142,15 +141,15 @@ export default function NavigationBar() {
       Icon: ShootingStarIcon,
       route: DashboardRoutes.Opportunities,
     },
-    ...(canSeeStaffNav
-      ? [
+    ...(isVolunteer
+      ? []
+      : [
           {
             label: t("dashboard.home.sidebar.agents"),
             Icon: BookOpenTextIcon,
             route: DashboardRoutes.Agents,
           },
-        ]
-      : []),
+        ]),
     ...(canSeeStaffNav
       ? [
           {
@@ -160,7 +159,7 @@ export default function NavigationBar() {
           },
         ]
       : []),
-    ...(canSeeCalendar
+    ...(canSeeStaffNav
       ? [
           {
             label: t("dashboard.home.sidebar.calendar"),
