@@ -4,11 +4,9 @@ import {
   CalendarBlankIcon,
   CalendarXIcon,
   ChartLineIcon,
-  ChatsCircleIcon,
   CheckCircleIcon,
   HandPalmIcon,
   HourglassIcon,
-  PhoneDisconnectIcon,
   PhoneXIcon,
   ProhibitInsetIcon,
   QuestionIcon,
@@ -27,6 +25,7 @@ import {
   VolunteerStateTypeType,
 } from "need4deed-sdk";
 import type React from "react";
+import { agentEngagementStatusConfig } from "../../common/agentEngagementStatusConfig";
 import { OpportunityMatchStatusType } from "../../Opportunities/OpportunityCard.helpers";
 import { OpportunityManualStatusType } from "../sections/ProfileHeader/opportunity/constants";
 import { AgentEngagementStatus, AgentTrustLevel, AgentVolunteerSearch } from "../types";
@@ -97,12 +96,15 @@ export const statusColorMap: Record<StatusValue, string> = {
     [AgentTrustLevel.UNKNOWN, "var(--color-grey-50)"],
     [AgentTrustLevel.LOW, "var(--color-red-50)"],
     [AgentTrustLevel.HIGH, "var(--color-green-100)"],
-    [AgentEngagementStatusType.NEW, "var(--color-violet-100)"],
-    [AgentEngagementStatusType.ACTIVE, "var(--color-green-100)"],
-    [AgentEngagementStatusType.INACTIVE, "var(--color-grey-50)"],
-    [AgentEngagementStatusType.UNRESPONSIVE, "var(--color-grey-50)"],
-    [AgentEngagementStatusType.INCONTACT, "var(--color-green-500)"],
-    [AgentEngagementStatusType.TRIED_TO_CONTACT, "var(--color-grey-200)"],
+    [AgentEngagementStatusType.NEW, agentEngagementStatusConfig[AgentEngagementStatusType.NEW].color],
+    [AgentEngagementStatusType.ACTIVE, agentEngagementStatusConfig[AgentEngagementStatusType.ACTIVE].color],
+    [AgentEngagementStatusType.INACTIVE, agentEngagementStatusConfig[AgentEngagementStatusType.INACTIVE].color],
+    [AgentEngagementStatusType.UNRESPONSIVE, agentEngagementStatusConfig[AgentEngagementStatusType.UNRESPONSIVE].color],
+    [AgentEngagementStatusType.INCONTACT, agentEngagementStatusConfig[AgentEngagementStatusType.INCONTACT].color],
+    [
+      AgentEngagementStatusType.TRIED_TO_CONTACT,
+      agentEngagementStatusConfig[AgentEngagementStatusType.TRIED_TO_CONTACT].color,
+    ],
   ]),
   ...manualStatusColorMap,
 };
@@ -147,12 +149,15 @@ export const statusIconMap: Record<StatusValue, IconComponent> = {
     [AgentTrustLevel.UNKNOWN, QuestionIcon],
     [AgentTrustLevel.LOW, SmileySadIcon],
     [AgentTrustLevel.HIGH, SmileyIcon],
-    [AgentEngagementStatusType.NEW, SparkleIcon],
-    [AgentEngagementStatusType.ACTIVE, ChartLineIcon],
-    [AgentEngagementStatusType.INACTIVE, StopCircleIcon],
-    [AgentEngagementStatusType.UNRESPONSIVE, PhoneXIcon],
-    [AgentEngagementStatusType.INCONTACT, ChatsCircleIcon],
-    [AgentEngagementStatusType.TRIED_TO_CONTACT, PhoneDisconnectIcon],
+    [AgentEngagementStatusType.NEW, agentEngagementStatusConfig[AgentEngagementStatusType.NEW].icon],
+    [AgentEngagementStatusType.ACTIVE, agentEngagementStatusConfig[AgentEngagementStatusType.ACTIVE].icon],
+    [AgentEngagementStatusType.INACTIVE, agentEngagementStatusConfig[AgentEngagementStatusType.INACTIVE].icon],
+    [AgentEngagementStatusType.UNRESPONSIVE, agentEngagementStatusConfig[AgentEngagementStatusType.UNRESPONSIVE].icon],
+    [AgentEngagementStatusType.INCONTACT, agentEngagementStatusConfig[AgentEngagementStatusType.INCONTACT].icon],
+    [
+      AgentEngagementStatusType.TRIED_TO_CONTACT,
+      agentEngagementStatusConfig[AgentEngagementStatusType.TRIED_TO_CONTACT].icon,
+    ],
   ]),
   ...manualStatusIconMap,
 };
