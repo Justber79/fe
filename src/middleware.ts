@@ -41,6 +41,14 @@ export function middleware(request: NextRequest) {
     const userObject = decodeJwtPayload(token);
     const isAuthorized =
       (userObject && userObject.role === UserRole.ADMIN) || (userObject && userObject.role === UserRole.COORDINATOR);
+
+    const volunteerRestrictedRegex = /^(?:\/[a-z]{2})?\/dashboard\/(volunteers|agents|posts|calendar)(?:\/|$)/;
+    if (userObject?.role === UserRole.VOLUNTEER && volunteerRestrictedRegex.test(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+
     const match = pathname.match(authorizedRoutes.AGENT.regex);
     if (match) {
       if (isAuthorized || userObject.role === UserRole.AGENT) {

@@ -112,7 +112,8 @@ export default function NavigationBar() {
   const currentPathname = usePathname();
   const user = useCurrentUser();
   const isAgent = user?.role === UserRole.AGENT;
-  const canSeeCalendar = !isAgent;
+  const isVolunteer = user?.role === UserRole.VOLUNTEER;
+  const canSeeStaffNav = !isAgent && !isVolunteer;
 
   const userInitials = user?.fullName
     ? user.fullName
@@ -126,35 +127,39 @@ export default function NavigationBar() {
 
   const options: BarOptions[] = [
     { label: t("dashboard.home.sidebar.home"), Icon: HouseIcon, route: DashboardRoutes.Home },
-    ...(isAgent
-      ? []
-      : [
+    ...(canSeeStaffNav
+      ? [
           {
             label: t("dashboard.home.sidebar.volunteers"),
             Icon: UserCheckIcon,
             route: DashboardRoutes.Volunteers,
           },
-        ]),
+        ]
+      : []),
     {
       label: t("dashboard.home.sidebar.opportunities"),
       Icon: ShootingStarIcon,
       route: DashboardRoutes.Opportunities,
     },
-    {
-      label: t("dashboard.home.sidebar.agents"),
-      Icon: BookOpenTextIcon,
-      route: DashboardRoutes.Agents,
-    },
-    ...(isAgent
+    ...(isVolunteer
       ? []
       : [
+          {
+            label: t("dashboard.home.sidebar.agents"),
+            Icon: BookOpenTextIcon,
+            route: DashboardRoutes.Agents,
+          },
+        ]),
+    ...(canSeeStaffNav
+      ? [
           {
             label: t("dashboard.home.sidebar.posts"),
             Icon: NotepadIcon,
             route: DashboardRoutes.Posts,
           },
-        ]),
-    ...(canSeeCalendar
+        ]
+      : []),
+    ...(canSeeStaffNav
       ? [
           {
             label: t("dashboard.home.sidebar.calendar"),

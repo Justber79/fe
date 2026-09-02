@@ -1,14 +1,15 @@
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
-import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { useAppreciationTracker } from "@/hooks/useAppreciationTracker";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
 import {
   ApiVolunteerGet,
-  ApiAppreciationGet,
   ApiAppreciationPost,
   VolunteerStateAppreciationType,
+  ApiAppreciationPatch,
+  ApiAppreciationGet,
+  AppreciationStatusType,
 } from "need4deed-sdk";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppreciationDialog } from "./AppreciationDialog";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
@@ -26,6 +27,8 @@ import {
 } from "@/components/core/common/Table";
 import { formatDate } from "../shared/utils/formatDate";
 import { getAppreciationTypeLabel } from "./utils/translations";
+import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { createAppreciationStatusLabelMap } from "./constants";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -77,36 +80,29 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
     title: VolunteerStateAppreciationType;
     dateDue: Date | null;
     dateDelivery: Date | null;
+    status: AppreciationStatusType;
   }) => {
     if (data.id) {
-      const payload = {
+      const payload: ApiAppreciationPatch = {
         title: data.title,
         dateDue: data.dateDue,
         dateDelivery: data.dateDelivery,
+        status: data.status,
       };
       updateAppreciation({ id: data.id, data: payload }, { onSuccess: () => setIsDialogOpen(false) });
     } else {
       const payload: ApiAppreciationPost = {
         title: data.title,
-        dateDue: data.dateDue || new Date(),
+        dateDue: data.dateDue,
         dateDelivery: data.dateDelivery ?? undefined,
+        status: data.status,
       };
       createAppreciation(payload, { onSuccess: () => setIsDialogOpen(false) });
     }
   };
 
-  const getStatus = (entry: ApiAppreciationGet): "received" | "pending" =>
-    entry.dateDelivery ? "received" : "pending";
-
-  const getStatusLabel = (entry: ApiAppreciationGet): string => {
-    if (entry.dateDelivery) {
-      return t("dashboard.appreciationSection.statusReceived");
-    }
-    if (entry.dateDue) {
-      return `${t("dashboard.appreciationSection.statusDueTo")} ${formatDate(entry.dateDue)}`;
-    }
-    return EMPTY_PLACEHOLDER_VALUE;
-  };
+  const statusLabels = useMemo(() => createAppreciationStatusLabelMap(t), [t]);
+  const getStatusLabel = (entry: ApiAppreciationGet) => statusLabels[entry.status] ?? EMPTY_PLACEHOLDER_VALUE;
 
   return (
     <SectionWrapper data-testid="appreciation-container">
@@ -118,6 +114,8 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
             <TableHeader>
               <TableHeaderCell>{t("dashboard.appreciationSection.typeOfAppreciation")}</TableHeaderCell>
               <TableHeaderCell $width="227px">{t("dashboard.appreciationSection.status")}</TableHeaderCell>
+              <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusDueTo")}</TableHeaderCell>
+              <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusMailedOn")}</TableHeaderCell>
               <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.receivedOn")}</TableHeaderCell>
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
               <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
@@ -131,8 +129,23 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
                 >
                   <TableCell>{getAppreciationTypeLabel(t, entry.title)}</TableCell>
                   <TableCell $width="227px">
-                    <StatusBadge $status={getStatus(entry)}>{getStatusLabel(entry)}</StatusBadge>
+                    <StatusBadge $status={entry.status}>{getStatusLabel(entry)}</StatusBadge>
                   </TableCell>
+                  <TableCell $width="146px" $noWrap>
+                    {entry.status === AppreciationStatusType.PENDING && entry.dateDue ? (
+                      formatDate(entry.dateDue)
+                    ) : (
+                      <EmptyPlaceholder />
+                    )}
+                  </TableCell>
+                  <TableCell $width="146px" $noWrap>
+                    {entry.status === AppreciationStatusType.POST && entry.dateDue ? (
+                      formatDate(entry.dateDue)
+                    ) : (
+                      <EmptyPlaceholder />
+                    )}
+                  </TableCell>
+
                   <TableCell $width="146px" $noWrap>
                     {entry.dateDelivery ? formatDate(entry.dateDelivery) : <EmptyPlaceholder />}
                   </TableCell>
