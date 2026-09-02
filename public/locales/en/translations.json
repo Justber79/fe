@@ -528,7 +528,19 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
-      "empty": "No posts yet. Be the first to post a message."
+      "empty": "No posts yet. Be the first to post a message.",
+      "options": "Post options",
+      "edit": "Edit post",
+      "delete": "Delete post",
+      "save": "Save",
+      "cancel": "Cancel",
+      "updated": "Post updated successfully",
+      "deleted": "Post deleted successfully",
+      "unknownUser": "user",
+      "deleteDialog": {
+        "title": "Delete post?",
+        "message": "This post will be permanently deleted."
+      }
     },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
