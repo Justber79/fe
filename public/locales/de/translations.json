@@ -2209,6 +2209,40 @@
       "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
     }
   },
+  "volunteerRegistration": {
+    "title": "Ehrenamtlich werden",
+    "subtitle": "Erstellen Sie ein Konto, um sich ehrenamtlich für Geflüchtete in Berlin zu engagieren.",
+    "next": "Weiter",
+    "alreadyUser": "Bereits registriert?",
+    "loginLink": "In Ihrem Konto anmelden",
+    "steps": {
+      "account": {
+        "title": "Ihr Konto",
+        "description": "Geben Sie Ihre persönlichen Daten ein, um ein Login zu erstellen."
+      }
+    },
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "phone": "Telefonnummer",
+      "consent": {
+        "header": "Hiermit stimme ich zu:",
+        "and": "und"
+      }
+    },
+    "errors": {
+      "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
+      "passwordMismatch": "Die Passwörter stimmen nicht überein",
+      "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein"
+    },
+    "checkEmail": {
+      "title": "Prüfen Sie Ihre E-Mail",
+      "description": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Klicken Sie darauf, um die Einrichtung Ihres Kontos fortzusetzen."
+    }
+  },
   "formInput": {
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen"
