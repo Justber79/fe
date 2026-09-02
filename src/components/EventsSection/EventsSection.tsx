@@ -54,6 +54,10 @@ const EventTitleTag = styled.div`
   background-color: var(--color-orchid);
 `;
 
+const EventDescription = styled(Heading4)`
+  white-space: pre-line;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   align-items: flex-end;
@@ -138,9 +142,9 @@ export function EventsSection() {
                       {formatEventDate(upcomingEvent, i18n.language)}
                     </Heading4>
                   </EventHeadline>
-                  <Heading4 color="var(--color-white)" margin={0}>
-                    {upcomingEvent.shortDescription.replace(/\\n/g, "\n")}
-                  </Heading4>
+                  <EventDescription color="var(--color-white)" margin={0}>
+                    {upcomingEvent.shortDescription}
+                  </EventDescription>
                 </>
               ) : (
                 <Heading4 color="var(--color-white)" margin={0}>
