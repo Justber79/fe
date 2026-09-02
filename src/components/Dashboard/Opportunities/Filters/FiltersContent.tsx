@@ -15,8 +15,15 @@ export default function FiltersContent({ setFilter, filter }: Props) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
 
-  const { districtFilters, languageFilters, statusFilters, typeFilters, activityFilters, availabilityFilters } =
-    createOpportunityFilterItems(filter, setFilter, t);
+  const {
+    districtFilters,
+    languageFilters,
+    statusFilters,
+    typeFilters,
+    activityFilters,
+    skillFilters,
+    availabilityFilters,
+  } = createOpportunityFilterItems(filter, setFilter, t);
   return (
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
@@ -24,6 +31,7 @@ export default function FiltersContent({ setFilter, filter }: Props) {
       <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
+      <AccordionFilter header={t("dashboard.volunteers.filters.skills")} items={skillFilters} />
       {isAuthorized && (
         <AccordionFilter
           header={t("dashboard.opportunities.filters.schedule.header")}

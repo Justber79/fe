@@ -26,6 +26,7 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
     [OpportunityType.REGULAR]: false,
   },
   [EntityTableName.ACTIVITY]: {},
+  [EntityTableName.SKILL]: {},
   [QueryParamsKeys.AVAILABILITY]: {
     times: {
       [TimeSlot.morning]: false,

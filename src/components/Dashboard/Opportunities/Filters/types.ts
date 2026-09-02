@@ -8,6 +8,7 @@ export interface OpportunityCardsFilter {
   status: SelectionMap;
   type: SelectionMap;
   [EntityTableName.ACTIVITY]: SelectionMap;
+  [EntityTableName.SKILL]: SelectionMap;
   [QueryParamsKeys.AVAILABILITY]: ScheduleFilter;
 }
 
