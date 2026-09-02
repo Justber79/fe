@@ -43,10 +43,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   const details = agent.agentDetails;
   const languagesForForm = toLanguagesForForm(apiLanguages, i18n.language);
-  const schema = createOrganisationDetailsSchema(
-    t,
-    organizations?.map((org) => org.title),
-  );
+  const schema = createOrganisationDetailsSchema(t);
 
   // organizationType/services come back from GET /agent as { id, title: {en,de} }
   // (both languages at once); resolve by id to the title already translated to

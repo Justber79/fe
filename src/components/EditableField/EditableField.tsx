@@ -565,7 +565,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
             <DropdownButton
               $hasError={!!errorMessage}
               onClick={() => {
-                if (value) setOpen(true);
+                if (localValue) setOpen((o) => !o);
               }}
             >
               <InputWrapper>
@@ -579,15 +579,19 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                     setValue(v);
                     setOpen(true);
                   }}
+                  onBlur={handleSubmit}
+                  onKeyDown={handleKeyDown}
                   style={{ border: "none", padding: 0 }}
                 />
                 {Boolean(localValue) && (
                   <ClearButton
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       const v = "" as T;
                       setLocalValue(v);
                       setValue(v);
+                      setOpen(false);
                     }}
                     style={{ alignSelf: "flex-start", marginTop: "0px", marginRight: "0px" }}
                   >
@@ -597,7 +601,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
               </InputWrapper>
             </DropdownButton>
 
-            {open && options.length > 0 && (
+            {open && (
               <DropdownList>
                 {options.map((option) => {
                   const isSelected = localValue === option;
@@ -612,7 +616,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                         setOpen(false);
                       }}
                     >
-                      <input type={"radio"} name={label} value={option} checked={isSelected} onChange={() => {}} />
+                      <input type="radio" name={label} value={option} checked={isSelected} onChange={() => {}} />
                       <Text>{option}</Text>
                     </OptionRow>
                   );
