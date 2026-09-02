@@ -29,6 +29,30 @@ export const DEFAULT_SORT_ORDER: string = SortOrder.NewToOld;
 export const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 export type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
 
+const ID_MAPPED_FILTER_KEYS = [
+  EntityTableName.DISTRICT,
+  EntityTableName.LANGUAGE,
+  EntityTableName.ACTIVITY,
+  EntityTableName.SKILL,
+] as const;
+const PLAIN_FILTER_KEYS = [STATUS_PARAM, "type"] as const;
+
+function appendIdMappedFilter(
+  params: URLSearchParams,
+  filter: OpportunityCardsFilter,
+  name: (typeof ID_MAPPED_FILTER_KEYS)[number],
+  options?: SerializeFiltersOptions,
+) {
+  params.delete(name);
+  Object.entries(filter[name]).forEach(([key, value]) => {
+    if (value === true) {
+      const paramValue =
+        (options?.serializeToIDs && options.apiFilterOptions?.[name]?.find((d) => d.title === key)?.id) || key;
+      params.append(name, String(paramValue));
+    }
+  });
+}
+
 export function isAppointmentSort(sort: string): sort is AppointmentSort {
   return (APPOINTMENT_SORT_VALUES as readonly string[]).includes(sort);
 }
@@ -63,45 +87,12 @@ export function serializeOpportunityFilters(
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);
 
-  params.delete(QueryParamsKeys.DISTRICT);
-  Object.entries(filter.district).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.district?.find((d) => d.title === key)?.id) || key;
-      params.append(QueryParamsKeys.DISTRICT, String(paramValue));
-    }
-  });
-
-  params.delete(QueryParamsKeys.LANGUAGE);
-  Object.entries(filter.language).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.language?.find((d) => d.title === key)?.id) || key;
-      params.append(QueryParamsKeys.LANGUAGE, String(paramValue));
-    }
-  });
-
-  params.delete(STATUS_PARAM);
-  Object.entries(filter.status).forEach(([key, value]) => {
-    if (value === true) {
-      params.append(STATUS_PARAM, key);
-    }
-  });
-
-  params.delete("type");
-  Object.entries(filter.type).forEach(([key, value]) => {
-    if (value === true) {
-      params.append("type", key);
-    }
-  });
-
-  params.delete(EntityTableName.ACTIVITY);
-  Object.entries(filter.activity).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id) || key;
-      params.append(EntityTableName.ACTIVITY, String(paramValue));
-    }
+  ID_MAPPED_FILTER_KEYS.forEach((name) => appendIdMappedFilter(params, filter, name, options));
+  PLAIN_FILTER_KEYS.forEach((name) => {
+    params.delete(name);
+    Object.entries(filter[name]).forEach(([key, value]) => {
+      if (value === true) params.append(name, key);
+    });
   });
 
   params.delete(QueryParamsKeys.AVAILABILITY);
@@ -126,28 +117,10 @@ export function deserializeOpportunityFilters(
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) newFilter.search = search;
 
-  const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
-  queryDistricts.forEach((d) => {
-    newFilter.district[d] = true;
-  });
-  const queryLanguages = searchParams.getAll(QueryParamsKeys.LANGUAGE);
-  queryLanguages.forEach((l) => {
-    newFilter.language[l] = true;
-  });
-
-  const queryStatus = searchParams.getAll(STATUS_PARAM);
-  queryStatus.forEach((s) => {
-    newFilter.status[s] = true;
-  });
-
-  const queryType = searchParams.getAll("type");
-  queryType.forEach((s) => {
-    newFilter.type[s] = true;
-  });
-
-  const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
-  queryActivities.forEach((l) => {
-    newFilter.activity[l] = true;
+  [...ID_MAPPED_FILTER_KEYS, ...PLAIN_FILTER_KEYS].forEach((name) => {
+    searchParams.getAll(name).forEach((value) => {
+      newFilter[name][value] = true;
+    });
   });
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);

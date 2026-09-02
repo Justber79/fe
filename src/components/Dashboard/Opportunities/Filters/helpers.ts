@@ -42,9 +42,24 @@ export const createOpportunityFilterItems = (
     (key) => key,
   );
 
+  const skillFilters = generateNestedFilterControlItems(
+    filter[EntityTableName.SKILL],
+    setFilter,
+    EntityTableName.SKILL,
+    (key) => key,
+  );
+
   const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
 
-  return { districtFilters, languageFilters, statusFilters, typeFilters, activityFilters, availabilityFilters };
+  return {
+    districtFilters,
+    languageFilters,
+    statusFilters,
+    typeFilters,
+    activityFilters,
+    skillFilters,
+    availabilityFilters,
+  };
 };
 
 /**
@@ -86,8 +101,15 @@ export const createSelectedOpportunityFiltersAsFlatArray = (
   setFilter: SetFilter<OpportunityCardsFilter>,
   t: TFunction,
 ) => {
-  const { districtFilters, languageFilters, statusFilters, typeFilters, activityFilters, availabilityFilters } =
-    createOpportunityFilterItems(filter, setFilter, t);
+  const {
+    districtFilters,
+    languageFilters,
+    statusFilters,
+    typeFilters,
+    activityFilters,
+    skillFilters,
+    availabilityFilters,
+  } = createOpportunityFilterItems(filter, setFilter, t);
   const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
   return [
     ...districtFilters,
@@ -95,6 +117,7 @@ export const createSelectedOpportunityFiltersAsFlatArray = (
     ...statusFilters,
     ...typeFilters,
     ...activityFilters,
+    ...skillFilters,
     ...flatAvFilters,
   ].filter((f) => f.checked);
 };
