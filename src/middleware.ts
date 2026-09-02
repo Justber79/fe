@@ -58,6 +58,13 @@ export function middleware(request: NextRequest) {
       url.pathname = "/dashboard";
       return NextResponse.redirect(url);
     }
+
+    const volunteerRestrictedRegex = /^(?:\/[a-z]{2})?\/dashboard\/(volunteers|agents|posts|calendar)(?:\/|$)/;
+    if (userObject?.role === UserRole.VOLUNTEER && volunteerRestrictedRegex.test(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   const localePrefixRegex = /^\/([a-z]{2})(?:\/|$)/i;
