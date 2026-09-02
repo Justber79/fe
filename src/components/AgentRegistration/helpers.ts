@@ -4,6 +4,7 @@ export function validateStep(
   step: number,
   data: AgentRegistrationData,
   t: (k: string) => string,
+  namespace: string = "agentRegistration",
 ): Partial<Record<keyof AgentRegistrationData, string>> {
   const errors: Partial<Record<keyof AgentRegistrationData, string>> = {};
   const required = t("form.error.required");
@@ -14,12 +15,11 @@ export function validateStep(
     if (!data.email.trim()) errors.email = required;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = t("form.error.email");
     if (!data.password) errors.password = required;
-    else if (data.password.length < 8) errors.password = t("agentRegistration.errors.passwordTooShort");
+    else if (data.password.length < 8) errors.password = t(`${namespace}.errors.passwordTooShort`);
     if (!data.confirmPassword) errors.confirmPassword = required;
-    else if (data.password !== data.confirmPassword)
-      errors.confirmPassword = t("agentRegistration.errors.passwordMismatch");
+    else if (data.password !== data.confirmPassword) errors.confirmPassword = t(`${namespace}.errors.passwordMismatch`);
     if (!data.phone.trim()) errors.phone = required;
-    else if (data.phone.trim().length < 7) errors.phone = t("agentRegistration.errors.phoneTooShort");
+    else if (data.phone.trim().length < 7) errors.phone = t(`${namespace}.errors.phoneTooShort`);
     if (!data.consent) errors.consent = required;
   }
 

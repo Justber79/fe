@@ -10,76 +10,77 @@ type Props = {
   data: AgentRegistrationData;
   onChange: (fields: Partial<AgentRegistrationData>) => void;
   errors: Partial<Record<keyof AgentRegistrationData, string>>;
+  namespace?: string;
 };
 
-export function AccountStep({ data, onChange, errors }: Props) {
+export function AccountStep({ data, onChange, errors, namespace = "agentRegistration" }: Props) {
   const { t } = useTranslation();
 
   return (
     <div>
-      <StepTitle>{t("agentRegistration.steps.account.title")}</StepTitle>
-      <StepDescription>{t("agentRegistration.steps.account.description")}</StepDescription>
+      <StepTitle>{t(`${namespace}.steps.account.title`)}</StepTitle>
+      <StepDescription>{t(`${namespace}.steps.account.description`)}</StepDescription>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.firstName")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.firstName`)}</FieldLabel>
         <FormInput
           value={data.firstName}
           onInputChange={(v) => onChange({ firstName: v })}
-          placeHolder={t("agentRegistration.fields.firstName")}
+          placeHolder={t(`${namespace}.fields.firstName`)}
           errors={errors.firstName ? [errors.firstName] : []}
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.lastName")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.lastName`)}</FieldLabel>
         <FormInput
           value={data.lastName}
           onInputChange={(v) => onChange({ lastName: v })}
-          placeHolder={t("agentRegistration.fields.lastName")}
+          placeHolder={t(`${namespace}.fields.lastName`)}
           errors={errors.lastName ? [errors.lastName] : []}
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.email")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.email`)}</FieldLabel>
         <FormInput
           type="email"
           value={data.email}
           onInputChange={(v) => onChange({ email: v })}
-          placeHolder={t("agentRegistration.fields.email")}
+          placeHolder={t(`${namespace}.fields.email`)}
           errors={errors.email ? [errors.email] : []}
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.password")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.password`)}</FieldLabel>
         <FormInput
           type="password"
           value={data.password}
           onInputChange={(v) => onChange({ password: v })}
-          placeHolder={t("agentRegistration.fields.password")}
+          placeHolder={t(`${namespace}.fields.password`)}
           errors={errors.password ? [errors.password] : []}
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.confirmPassword")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.confirmPassword`)}</FieldLabel>
         <FormInput
           type="password"
           value={data.confirmPassword}
           onInputChange={(v) => onChange({ confirmPassword: v })}
-          placeHolder={t("agentRegistration.fields.confirmPassword")}
+          placeHolder={t(`${namespace}.fields.confirmPassword`)}
           errors={errors.confirmPassword ? [errors.confirmPassword] : []}
         />
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t("agentRegistration.fields.phone")}</FieldLabel>
+        <FieldLabel>{t(`${namespace}.fields.phone`)}</FieldLabel>
         <FormInput
           type="tel"
           value={data.phone}
           onInputChange={(v) => onChange({ phone: v })}
-          placeHolder={t("agentRegistration.fields.phone")}
+          placeHolder={t(`${namespace}.fields.phone`)}
           errors={errors.phone ? [errors.phone] : []}
         />
       </FieldWrapper>
@@ -93,10 +94,10 @@ export function AccountStep({ data, onChange, errors }: Props) {
             onChange={(e) => onChange({ consent: e.target.checked })}
           />
           <span>
-            {t("agentRegistration.fields.consent.header")}{" "}
+            {t(`${namespace}.fields.consent.header`)}{" "}
             <a href={`/${Subpage.DATA_PRIVACY}`}>{t("homepage.footer.legal.dataPrivacy")}</a>,{" "}
             <a href={`/${Subpage.RAC_GUIDELINES}`}>{t("homepage.footer.legal.guidelines")}</a>{" "}
-            {t("agentRegistration.fields.consent.and")}{" "}
+            {t(`${namespace}.fields.consent.and`)}{" "}
             <a href={`/${Subpage.AGREEMENT}`}>{t("homepage.footer.legal.agreement")}</a>{" "}
           </span>
         </FieldConsent>

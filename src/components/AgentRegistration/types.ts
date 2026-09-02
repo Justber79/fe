@@ -37,6 +37,11 @@ export const defaultAgentRegistrationData: AgentRegistrationData = {
   consent: false,
 };
 
+// The account step (name/email/password/phone/consent) is identical for the
+// agent and volunteer registration flows, only the translation copy differs.
+export type AccountRegistrationData = AgentRegistrationData;
+export const defaultAccountRegistrationData = defaultAgentRegistrationData;
+
 export const TOTAL_STEPS = 1;
 export const TOTAL_COMPLETION_STEPS = 3;
 
