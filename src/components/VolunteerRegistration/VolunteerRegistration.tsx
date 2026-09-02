@@ -8,9 +8,8 @@ import { UserRole } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { validateRACEmail } from "@/components/forms/validators";
-import { validateStep } from "./helpers";
-import { AccountStep } from "./steps/AccountStep";
+import { validateStep } from "@/components/AgentRegistration/helpers";
+import { AccountStep } from "@/components/AgentRegistration/steps/AccountStep";
 import {
   Actions,
   Card,
@@ -23,18 +22,16 @@ import {
   SuccessText,
   SuccessTitle,
   SuccessWrapper,
-} from "./styled";
-import { AgentRegistrationData, defaultAgentRegistrationData } from "./types";
+} from "@/components/AgentRegistration/styled";
+import { AccountRegistrationData, defaultAccountRegistrationData } from "@/components/AgentRegistration/types";
 import Link from "next/link";
 
-const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; SameSite=Lax; Secure";
-
-export function AgentRegistration() {
+export function VolunteerRegistration() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const user = useCurrentUser(true);
-  const [formData, setFormData] = useState<AgentRegistrationData>(defaultAgentRegistrationData);
-  const [errors, setErrors] = useState<Partial<Record<keyof AgentRegistrationData, string>>>({});
+  const [formData, setFormData] = useState<AccountRegistrationData>(defaultAccountRegistrationData);
+  const [errors, setErrors] = useState<Partial<Record<keyof AccountRegistrationData, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -44,9 +41,9 @@ export function AgentRegistration() {
     router.push(`/${i18n.language}${DashboardRoutes.Home}`);
   }, [user, i18n.language, router]);
 
-  const update = (fields: Partial<AgentRegistrationData>) => {
+  const update = (fields: Partial<AccountRegistrationData>) => {
     setFormData((prev) => ({ ...prev, ...fields }));
-    const touchedKeys = Object.keys(fields) as (keyof AgentRegistrationData)[];
+    const touchedKeys = Object.keys(fields) as (keyof AccountRegistrationData)[];
     if (touchedKeys.some((k) => errors[k])) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -57,7 +54,7 @@ export function AgentRegistration() {
   };
 
   const handleSubmit = async () => {
-    const stepErrors = validateStep(1, formData, t);
+    const stepErrors = validateStep(1, formData, t, "volunteerRegistration");
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -67,17 +64,10 @@ export function AgentRegistration() {
     setIsSubmitting(true);
 
     try {
-      const domainError = await validateRACEmail(formData.email, t("agentRegistration.errors.emailDomainNotAllowed"));
-      if (domainError) {
-        setErrors((prev) => ({ ...prev, email: domainError }));
-        setIsSubmitting(false);
-        return;
-      }
-
       await axios.post(apiPathUser, {
         email: formData.email,
         password: formData.password,
-        role: UserRole.AGENT,
+        role: UserRole.VOLUNTEER,
         person: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -85,16 +75,12 @@ export function AgentRegistration() {
         },
       });
 
-      document.cookie = PENDING_ROLE_COOKIE;
       setIsSuccess(true);
     } catch (err) {
       let message = t("message.errorGeneric");
       if (axios.isAxiosError(err)) {
-        const data = err.response?.data as { error?: string; message?: string } | undefined;
-        message =
-          data?.error === "InvalidOrganizationEmailError"
-            ? t("agentRegistration.errors.invalidOrganizationEmail")
-            : (data?.message ?? message);
+        const data = err.response?.data as { message?: string } | undefined;
+        message = data?.message ?? message;
       }
       setSubmitError(message);
     } finally {
@@ -112,8 +98,8 @@ export function AgentRegistration() {
         <PageWrapper>
           <Card>
             <SuccessWrapper>
-              <SuccessTitle>{t("agentRegistration.checkEmail.title")}</SuccessTitle>
-              <SuccessText>{t("agentRegistration.checkEmail.description")}</SuccessText>
+              <SuccessTitle>{t("volunteerRegistration.checkEmail.title")}</SuccessTitle>
+              <SuccessText>{t("volunteerRegistration.checkEmail.description")}</SuccessText>
             </SuccessWrapper>
           </Card>
         </PageWrapper>
@@ -125,22 +111,22 @@ export function AgentRegistration() {
     <PageLayout>
       <PageWrapper>
         <Card>
-          <PageTitle>{t("agentRegistration.title")}</PageTitle>
-          <PageSubtitle>{t("agentRegistration.subtitle")}</PageSubtitle>
+          <PageTitle>{t("volunteerRegistration.title")}</PageTitle>
+          <PageSubtitle>{t("volunteerRegistration.subtitle")}</PageSubtitle>
 
           <ExistingUserWrapper>
-            <ExistingUserText>{t("agentRegistration.alreadyUser")}</ExistingUserText>
-            <Link href="/login">{t("agentRegistration.loginLink")}</Link>
+            <ExistingUserText>{t("volunteerRegistration.alreadyUser")}</ExistingUserText>
+            <Link href="/login">{t("volunteerRegistration.loginLink")}</Link>
           </ExistingUserWrapper>
 
           {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
 
-          <AccountStep data={formData} onChange={update} errors={errors} />
+          <AccountStep data={formData} onChange={update} errors={errors} namespace="volunteerRegistration" />
 
           <Actions>
             <div />
             <Button
-              text={t("agentRegistration.next")}
+              text={t("volunteerRegistration.next")}
               backgroundcolor="var(--color-aubergine)"
               textColor="var(--color-white)"
               onClick={handleSubmit}

@@ -64,7 +64,7 @@ export default function HeroContent() {
           <Button
             backgroundcolor="var(--color-orchid-light)"
             textColor="var(--color-midnight)"
-            onClick={() => router.push(`/${i18n.language}/forms/volunteer`)}
+            onClick={() => router.push(`/${i18n.language}/register/volunteer`)}
             text={t("dashboard.heroSection.buttonJoinVolunteer")}
           />
           <Button

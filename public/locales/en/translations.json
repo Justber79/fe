@@ -1866,6 +1866,40 @@
       "description": "An administrator will review your request to join this organisation. You'll get access once it's approved."
     }
   },
+  "volunteerRegistration": {
+    "title": "Become a volunteer",
+    "subtitle": "Create an account to start volunteering with refugees in Berlin.",
+    "next": "Next",
+    "alreadyUser": "Already registered?",
+    "loginLink": "Login to your account",
+    "steps": {
+      "account": {
+        "title": "Your account",
+        "description": "Enter your personal details to create a login."
+      }
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "phone": "Phone number",
+      "consent": {
+        "header": "I hereby agree to the:",
+        "and": "and"
+      }
+    },
+    "errors": {
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "phoneTooShort": "Phone number must be at least 7 characters"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "description": "We sent a confirmation link to your email address. Click it to continue setting up your account."
+    }
+  },
   "formInput": {
     "showPassword": "Show password",
     "hidePassword": "Hide password"

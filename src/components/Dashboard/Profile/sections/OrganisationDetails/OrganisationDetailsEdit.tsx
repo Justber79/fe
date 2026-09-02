@@ -136,19 +136,17 @@ export const OrganisationDetailsEdit = ({
           name="operator"
           control={control}
           render={({ field }) => (
-            <>
-              <EditableField
-                mode="edit"
-                type="autocomplete"
-                label={t(`${i18nPrefix}.operator`)}
-                value={field.value}
-                setValue={field.onChange}
-                errorMessage={errors.operator?.message}
-                options={displayOperators(field.value)}
-                placeholder={t(`${i18nPrefix}.placeholders.operatorPlaceholder`)}
-                hint={t(`dashboard.agentProfile.organisationDetails.validation.operatorHint`)}
-              />
-            </>
+            <EditableField
+              mode="edit"
+              type="autocomplete"
+              label={t(`${i18nPrefix}.operator`)}
+              value={field.value}
+              setValue={field.onChange}
+              errorMessage={errors.operator?.message}
+              options={displayOperators(field.value)}
+              placeholder={t(`${i18nPrefix}.placeholders.operatorPlaceholder`)}
+              hint={t(`dashboard.agentProfile.organisationDetails.validation.operatorHint`)}
+            />
           )}
         />
         <Controller
