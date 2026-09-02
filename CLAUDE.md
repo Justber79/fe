@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Need4Deed frontend — a Next.js 15 PWA for a Berlin NGO connecting volunteers with refugee accommodation centers. Deployed on AWS CloudFront. Open-source with volunteer contributors of varying experience levels.
+Need4Deed frontend — a Next.js 15 PWA for a Berlin NGO connecting volunteers with refugee accommodation centers. Deployed on Kubernetes (k3s) — prod on a dedicated Infomaniak VPS, dev/pre on the shared AITS VPS; see the `infra` repo (`infra/CLAUDE.md`, `infra/docs/dev-guide.md`). Open-source with volunteer contributors of varying experience levels.
 
 **Domain vocabulary (required reading):**
 

@@ -120,6 +120,7 @@ export function Opportunities() {
         district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
         language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
         activity: createFilterFromOption(apiFilterOptions, EntityTableName.ACTIVITY),
+        skill: createFilterFromOption(apiFilterOptions, EntityTableName.SKILL),
       };
 
       return deserializeOpportunityFilters(baseFilters, searchParams);

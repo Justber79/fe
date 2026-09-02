@@ -11,6 +11,7 @@ type Props = {
   cancelText?: string;
   onCancel: () => void;
   onConfirm: () => void;
+  compact?: boolean;
 };
 
 const Title = styled.h3`
@@ -38,7 +39,15 @@ const ButtonGroup = styled.div`
   margin-top: var(--spacing-24);
 `;
 
-export function ConfirmationDialog({ title, message, confirmText, cancelText, onCancel, onConfirm }: Props) {
+export function ConfirmationDialog({
+  title,
+  message,
+  confirmText,
+  cancelText,
+  onCancel,
+  onConfirm,
+  compact = false,
+}: Props) {
   const { t } = useTranslation();
 
   return (
@@ -56,12 +65,18 @@ export function ConfirmationDialog({ title, message, confirmText, cancelText, on
             backgroundcolor="transparent"
             textColor="var(--color-aubergine)"
             border="var(--border-width-medium) solid var(--color-aubergine)"
+            height={compact ? "40px" : undefined}
+            padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
+            textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />
           <Button
             text={confirmText || t("dashboard.communicationSection.delete", "Delete")}
             onClick={onConfirm}
             backgroundcolor="var(--color-aubergine)"
             textColor="var(--color-white)"
+            height={compact ? "40px" : undefined}
+            padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
+            textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />
         </ButtonGroup>
       </div>
