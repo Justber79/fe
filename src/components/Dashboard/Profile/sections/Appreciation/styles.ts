@@ -1,13 +1,20 @@
 import styled from "styled-components";
 import { TableContainer } from "@/components/core/common/Table";
 import { FlexColumn } from "@/components/styled/FlexColumn";
+import { AppreciationStatusType } from "need4deed-sdk";
 
 export const AppreciationTableContainer = styled(TableContainer)`
   margin-top: var(--spacing-24);
 `;
 
-export const StatusBadge = styled.div<{ $status: "received" | "pending" }>`
-  background: ${(props) => (props.$status === "received" ? "var(--color-green-100)" : "var(--color-red-50)")};
+const statusColorMap: Record<AppreciationStatusType, string> = {
+  [AppreciationStatusType.RECEIVED]: "var(--color-green-100)",
+  [AppreciationStatusType.POST]: "var(--color-blue-100)",
+  [AppreciationStatusType.PENDING]: "var(--color-red-50)",
+};
+
+export const StatusBadge = styled.div<{ $status: AppreciationStatusType }>`
+  background: ${(props) => statusColorMap[props.$status] ?? "var(--color-grey-50)"};
   padding: var(--spacing-12);
   border-radius: var(--border-radius-xs);
   font-weight: var(--font-weight-semi-bold);
