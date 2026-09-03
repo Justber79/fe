@@ -6,8 +6,8 @@ import { Button } from "@/components/core/button";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { DashboardLayout } from "@/components/Layout";
 
-import { EmptyState, NewPostSection, PostsContainer } from "./styles";
-import { Paragraph } from "../../styled/text";
+import PostFeed from "./PostFeed";
+import { NewPostSection, PostsContainer } from "./styles";
 
 export function Posts() {
   const { t } = useTranslation();
@@ -15,9 +15,7 @@ export function Posts() {
   return (
     <DashboardLayout>
       <PostsContainer>
-        <EmptyState>
-          <Paragraph>{t("dashboard.posts.empty")}</Paragraph>
-        </EmptyState>
+        <PostFeed />
         <NewPostSection>
           <EditableField
             placeholder={t("dashboard.posts.inputPlaceholder")}
