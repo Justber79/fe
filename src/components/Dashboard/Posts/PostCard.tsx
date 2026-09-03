@@ -24,6 +24,7 @@ import {
   PostHeader,
   PostHeaderText,
   PostMenuButton,
+  PostMenuWrapper,
   PostText,
   PostTimestamp,
 } from "./styles";
@@ -38,13 +39,14 @@ export function PostCard({ post }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [editText, setEditText] = useState(post.text);
-
-  const closeEdit = useCallback(() => {
-    setIsEditing(false);
-    setEditText(post.text);
-  }, [post.text]);
   const updatePost = useUpdatePost(post.id, () => setIsEditing(false));
   const deletePost = useDeletePost(post.id, () => setIsDeleteOpen(false));
+
+  const closeEdit = useCallback(() => {
+    if (updatePost.isPending) return;
+    setIsEditing(false);
+    setEditText(post.text);
+  }, [post.text, updatePost.isPending]);
 
   const canManage =
     currentUser?.personId === post.author.id ||
@@ -84,10 +86,22 @@ export function PostCard({ post }: Props) {
 
   const saveEdit = () => {
     let formattedText = editText.trim();
-    post.taggedPersons.forEach((person) => {
-      formattedText = formattedText.replaceAll(`@${person.fullName}`, `<@${person.id}>`);
+    const taggedPersonIds: number[] = [];
+    [...post.taggedPersons]
+      .sort((first, second) => second.fullName.length - first.fullName.length)
+      .forEach((person) => {
+        const escapedName = person.fullName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
+        formattedText = formattedText.replace(mentionPattern, () => {
+          taggedPersonIds.push(person.id);
+          return `<@${person.id}>`;
+        });
+      });
+    updatePost.mutate({
+      text: formattedText,
+      taggedPersonIds: [...new Set(taggedPersonIds)],
+      linkedOpportunityIds: post.linkedOpportunities.map(({ id }) => id),
     });
-    updatePost.mutate({ text: formattedText });
   };
 
   return (
@@ -103,7 +117,7 @@ export function PostCard({ post }: Props) {
           <PostTimestamp dateTime={createdAt.toISOString()}>{createdAt.toLocaleString(i18n.language)}</PostTimestamp>
         </PostHeaderText>
         {canManage && (
-          <div style={{ position: "relative", marginLeft: "auto" }}>
+          <PostMenuWrapper>
             <PostMenuButton
               type="button"
               aria-label={t("dashboard.posts.options")}
@@ -125,7 +139,7 @@ export function PostCard({ post }: Props) {
                 setIsDeleteOpen(true);
               }}
             />
-          </div>
+          </PostMenuWrapper>
         )}
       </PostHeader>
 
@@ -134,7 +148,7 @@ export function PostCard({ post }: Props) {
           <>
             <EditTextArea value={editText} onChange={(event) => setEditText(event.target.value)} autoFocus />
             <EditActions>
-              <EditButton type="button" onClick={closeEdit}>
+              <EditButton type="button" disabled={updatePost.isPending} onClick={closeEdit}>
                 {t("dashboard.posts.cancel")}
               </EditButton>
               <EditButton type="button" $primary disabled={!editText.trim() || updatePost.isPending} onClick={saveEdit}>
@@ -168,7 +182,11 @@ export function PostCard({ post }: Props) {
           confirmText={t("dashboard.posts.delete")}
           cancelText={t("dashboard.posts.cancel")}
           onCancel={() => setIsDeleteOpen(false)}
-          onConfirm={() => deletePost.mutate()}
+          onConfirm={() => {
+            if (!deletePost.isPending) deletePost.mutate();
+          }}
+          cancelDisabled={deletePost.isPending}
+          confirmDisabled={deletePost.isPending}
           compact
         />
       )}

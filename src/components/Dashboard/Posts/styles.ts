@@ -153,6 +153,11 @@ export const PostMenuButton = styled.button`
   }
 `;
 
+export const PostMenuWrapper = styled.div`
+  position: relative;
+  margin-left: auto;
+`;
+
 export const ActionMenu = styled.div`
   position: absolute;
   z-index: 10;

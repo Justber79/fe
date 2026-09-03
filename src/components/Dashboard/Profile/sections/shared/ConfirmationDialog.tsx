@@ -12,6 +12,8 @@ type Props = {
   onCancel: () => void;
   onConfirm: () => void;
   compact?: boolean;
+  cancelDisabled?: boolean;
+  confirmDisabled?: boolean;
 };
 
 const Title = styled.h3`
@@ -47,11 +49,13 @@ export function ConfirmationDialog({
   onCancel,
   onConfirm,
   compact = false,
+  cancelDisabled = false,
+  confirmDisabled = false,
 }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Modal isOpen onClose={onCancel}>
+    <Modal isOpen onClose={cancelDisabled ? () => undefined : onCancel}>
       <div
         data-testid="confirmation-dialog"
         style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-24)" }}
@@ -62,6 +66,7 @@ export function ConfirmationDialog({
           <Button
             text={cancelText || t("dashboard.communicationSection.cancel", "Cancel")}
             onClick={onCancel}
+            disabled={cancelDisabled}
             backgroundcolor="transparent"
             textColor="var(--color-aubergine)"
             border="var(--border-width-medium) solid var(--color-aubergine)"
@@ -72,6 +77,7 @@ export function ConfirmationDialog({
           <Button
             text={confirmText || t("dashboard.communicationSection.delete", "Delete")}
             onClick={onConfirm}
+            disabled={confirmDisabled}
             backgroundcolor="var(--color-aubergine)"
             textColor="var(--color-white)"
             height={compact ? "40px" : undefined}

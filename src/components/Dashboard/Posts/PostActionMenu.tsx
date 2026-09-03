@@ -1,3 +1,4 @@
+import { useClickOutside } from "@/hooks";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -13,21 +14,17 @@ type Props = {
 export function PostActionMenu({ isOpen, onClose, onEdit, onDelete }: Props) {
   const { t } = useTranslation();
   const menuRef = useRef<HTMLDivElement>(null);
+  useClickOutside(menuRef, onClose);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const closeOnOutsideClick = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) onClose();
-    };
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
 
-    document.addEventListener("mousedown", closeOnOutsideClick);
     document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.removeEventListener("mousedown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [isOpen, onClose]);
