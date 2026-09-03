@@ -264,7 +264,7 @@ const StepperValue = styled.span`
   user-select: none;
 `;
 
-type EditableFieldType = "text" | "textarea" | "number" | "stepper" | "checkbox-list" | "radio-list" | "autocomplete";
+type EditableFieldType = "text" | "textarea" | "number" | "stepper" | "checkbox-list" | "radio-list";
 
 export interface EditableFieldRef<T> {
   getValue: () => T;
