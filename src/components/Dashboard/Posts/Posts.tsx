@@ -3,6 +3,7 @@
 import { DashboardLayout } from "@/components/Layout";
 
 import PostFeed from "./PostFeed";
+import PostComposer from "./PostComposer";
 import { PostsContainer } from "./styles";
 
 export function Posts() {
@@ -10,6 +11,7 @@ export function Posts() {
     <DashboardLayout>
       <PostsContainer>
         <PostFeed />
+        <PostComposer />
       </PostsContainer>
     </DashboardLayout>
   );

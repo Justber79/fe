@@ -2,7 +2,7 @@ import { apiPathPost } from "@/config/constants";
 import { fetchData } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { ApiPostGet, ApiPostPatch, Lang } from "need4deed-sdk";
+import type { ApiPostGet, ApiPostPatch, ApiPostPost, Lang } from "need4deed-sdk";
 import { useParams } from "next/navigation";
 
 export const POSTS_QUERY_KEY = ["posts"];
@@ -43,6 +43,15 @@ export function useDeletePost(postId: number, onSuccess: () => void) {
     method: "delete",
     queryKeyToInvalidate: POSTS_QUERY_KEY,
     successMessage: "dashboard.posts.deleted",
+    onSuccessCallback: onSuccess,
+  });
+}
+
+export function useCreatePost(onSuccess: () => void) {
+  return useMutationQuery<ApiPostPost, unknown>({
+    apiPath: apiPathPost,
+    queryKeyToInvalidate: POSTS_QUERY_KEY,
+    successMessage: "dashboard.posts.created",
     onSuccessCallback: onSuccess,
   });
 }
