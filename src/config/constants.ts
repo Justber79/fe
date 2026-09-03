@@ -10,6 +10,7 @@ export const apiPathCommunication = `/${apiPrefix}/communication`;
 export const apiPathAppreciation = `/${apiPrefix}/appreciation`;
 export const apiPathActivityLog = `/${apiPrefix}/activity-log`;
 export const apiPathEvent = `/${apiPrefix}/event`;
+export const apiPathPost = `/${apiPrefix}/post`;
 export const apiPathLogin = `/${apiPrefix}/auth/login`;
 export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
 export const apiPathAuthLogout = `/${apiPrefix}/auth/logout`;
