@@ -138,7 +138,7 @@ export const OrganisationDetailsEdit = ({
           render={({ field }) => (
             <EditableField
               mode="edit"
-              type="autocomplete"
+              type="radio-list"
               label={t(`${i18nPrefix}.operator`)}
               value={field.value}
               setValue={field.onChange}
@@ -146,6 +146,7 @@ export const OrganisationDetailsEdit = ({
               options={displayOperators(field.value)}
               placeholder={t(`${i18nPrefix}.placeholders.operatorPlaceholder`)}
               hint={t(`dashboard.agentProfile.organisationDetails.validation.operatorHint`)}
+              isAutocomplete={true}
             />
           )}
         />
