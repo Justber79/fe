@@ -19,6 +19,17 @@ export const PostsContainer = styled.div`
         )
     )
   );
+
+  @media (max-width: 767px) {
+    height: max(
+      520px,
+      calc(
+        100dvh - var(--layout-static-page-header-height) - var(--dashboard-base-container-padding-top) - var(
+            --dashboard-base-container-padding-bottom
+          ) - var(--dashboard-navigation-bar-mobile-height)
+      )
+    );
+  }
 `;
 
 export const EmptyState = styled.div`
