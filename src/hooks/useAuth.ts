@@ -5,11 +5,11 @@ export const useAuth = (compareId?: Id) => {
   const user = useCurrentUser();
   const personId = user?.personId;
   const agentId = user?.agentId;
+  const isAgent = user?.role === UserRole.AGENT;
 
   const isAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
   const isOwnProfile =
-    (user?.role === UserRole.VOLUNTEER && personId === compareId) ||
-    (user?.role === UserRole.AGENT && agentId === compareId);
+    (user?.role === UserRole.VOLUNTEER && personId === compareId) || (isAgent && agentId === compareId);
 
-  return { isAuthorized, isOwnProfile };
+  return { isAuthorized, isOwnProfile, isAgent };
 };

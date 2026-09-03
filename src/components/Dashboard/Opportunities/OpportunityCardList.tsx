@@ -26,10 +26,11 @@ export function OpportunityCardList({
   activitiesList,
   districtsList,
 }: Props) {
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, isAgent } = useAuth();
+  const canSeeFullView = isAuthorized || isAgent;
 
   const items = opportunities.map((opp) =>
-    isAuthorized ? (
+    canSeeFullView ? (
       <OpportunityCard
         key={opp.id}
         opportunity={opp}
