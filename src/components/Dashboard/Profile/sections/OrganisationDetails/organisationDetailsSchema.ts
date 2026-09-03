@@ -28,7 +28,7 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string, vali
     organizationType: z.string().min(1, required),
     operator: z
       .string()
-      .min(3, required)
+      .min(3, t(`${i18nPrefix}.operatorRequired`))
       .refine((val) => validOperators.includes(val), { message: t(`${i18nPrefix}.operatorInvalid`) }),
     services: z.array(z.string()).min(1, required),
     clientLanguages: z.array(languageObjectSchema).min(1, t(`${i18nPrefix}.clientLanguagesRequired`)),
