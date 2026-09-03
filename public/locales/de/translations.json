@@ -103,6 +103,15 @@
       }
     }
   },
+  "eventPage": {
+    "about": "Über diese Veranstaltung",
+    "details": "Veranstaltungsdetails",
+    "register": "Jetzt anmelden",
+    "registrationUnavailable": "Die Anmeldung ist noch nicht verfügbar.",
+    "loading": "Veranstaltung wird geladen…",
+    "empty": "Keine kommende Veranstaltung",
+    "emptyDescription": "Schau bald wieder vorbei, um unsere nächste Veranstaltung zu sehen."
+  },
   "form": {
     "error": {
       "required": "Dieses Feld ist erforderlich",
