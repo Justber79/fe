@@ -47,5 +47,8 @@ dev/
 dev.*
 .env.local
 
+# claude code local worktree scratch
+.claude/worktrees/
+
 # prettier
 .prettierignore

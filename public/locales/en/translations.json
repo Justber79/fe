@@ -1249,7 +1249,13 @@
         "validation": {
           "required": "This field is required",
           "websiteInvalid": "Website must start with http:// or https://",
+          "operatorRequired": "A minimum of 3 characters is needed",
+          "operatorHint": "Type first three letters for the list to appear and select from the list. If the list doesn't appear, Operator is invalid.",
+          "operatorInvalid": "Operator invalid. Either select from the list or try another Operator",
           "clientLanguagesRequired": "At least one language is required"
+        },
+        "placeholders": {
+          "operatorPlaceholder": "Type the first three letters of the operator"
         },
         "addressStreet": "Street",
         "addressPostcode": "Postcode"
