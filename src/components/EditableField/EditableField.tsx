@@ -286,6 +286,7 @@ interface EditableFieldProps<T = string | number | string[]> {
   maxLength?: number;
   labels?: string[];
   displayValue?: string;
+  isAutocomplete?: boolean;
 }
 
 export const EditableField = forwardRef(function EditableField<T extends string | number | string[]>(
@@ -304,6 +305,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     maxLength,
     labels,
     displayValue,
+    isAutocomplete = false,
   }: EditableFieldProps<T>,
   ref: React.Ref<EditableFieldRef<T>>,
 ) {
@@ -505,16 +507,58 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
         {(type === "checkbox-list" || type === "radio-list") && (
           <DropdownWrapper ref={wrapperRef}>
-            <DropdownButton $hasError={!!errorMessage} onClick={() => setOpen((o) => !o)}>
-              <span>
-                {type === "checkbox-list"
-                  ? Array.isArray(localValue) && localValue.length > 0
-                    ? localValue.join(", ")
-                    : t("dashboard.common.selectOptions")
-                  : displayValue || localValue || t("dashboard.common.selectOption")}
-              </span>
+            <DropdownButton
+              $hasError={!!errorMessage}
+              onClick={() => {
+                if (isAutocomplete && localValue) setOpen((o) => !o);
+                else if (!isAutocomplete) setOpen((o) => !o);
+              }}
+            >
+              {!isAutocomplete ? (
+                <>
+                  <span>
+                    {type === "checkbox-list"
+                      ? Array.isArray(localValue) && localValue.length > 0
+                        ? localValue.join(", ")
+                        : t("dashboard.common.selectOptions")
+                      : displayValue || localValue || t("dashboard.common.selectOption")}
+                  </span>
 
-              <Arrow className={open ? "open" : ""} />
+                  <Arrow className={open ? "open" : ""} />
+                </>
+              ) : (
+                <InputWrapper>
+                  <input
+                    type="text"
+                    value={localValue}
+                    placeholder={placeholder}
+                    onChange={(e) => {
+                      const v = e.target.value as T;
+                      setLocalValue(v);
+                      setValue(v);
+                      setOpen(true);
+                    }}
+                    onBlur={handleSubmit}
+                    onKeyDown={handleKeyDown}
+                    style={{ border: "none", padding: 0 }}
+                  />
+                  {Boolean(localValue) && (
+                    <ClearButton
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const v = "" as T;
+                        setLocalValue(v);
+                        setValue(v);
+                        setOpen(false);
+                      }}
+                      style={{ alignSelf: "flex-start", marginTop: "0px", marginRight: "0px" }}
+                    >
+                      <XCircleIcon size={20} weight="bold" />
+                    </ClearButton>
+                  )}
+                </InputWrapper>
+              )}
             </DropdownButton>
 
             {open && (

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
@@ -27,7 +27,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function Opportunities() {
   const user = useCurrentUser(true);
-  const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
@@ -39,16 +38,14 @@ export function Opportunities() {
   const sortOrder = parseSortParam(searchParams.get(SORT_PARAM));
   const tabs = !user
     ? []
-    : isAgent
-      ? [t("dashboard.opportunities.tabs.tab2"), t("dashboard.opportunities.tabs.tab3")]
-      : [
-          t("dashboard.opportunities.tabs.tab1"),
-          t("dashboard.opportunities.tabs.tab2"),
-          t("dashboard.opportunities.tabs.tab3"),
-        ];
+    : [
+        t("dashboard.opportunities.tabs.tab1"),
+        t("dashboard.opportunities.tabs.tab2"),
+        t("dashboard.opportunities.tabs.tab3"),
+      ];
 
   const urlViewParam = searchParams.get("view");
-  const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
   const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
   const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];

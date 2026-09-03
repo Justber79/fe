@@ -16,7 +16,6 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
   const { t } = useTranslation();
   const { watch } = useFormContext<OrganisationDetailsFormData>();
   const values = watch();
-
   return (
     <FormDetails data-testid="organisation-details-display">
       <EditableField

@@ -18,6 +18,7 @@ import { apiLanguagesToFormValues, toLanguagesForForm } from "./formatters";
 import { OrganisationDetailsDisplay } from "./OrganisationDetailsDisplay";
 import { OrganisationDetailsEdit } from "./OrganisationDetailsEdit";
 import { createOrganisationDetailsSchema, OrganisationDetailsFormData } from "./organisationDetailsSchema";
+import { useGetOrganization } from "@/hooks/useGetOrganization";
 
 type Props = {
   agent: ApiAgentProfileGet;
@@ -35,12 +36,17 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
   const { data: apiLanguages } = useApiLanguages();
   const { data: apiAgentTypes = [] } = useApiAgentTypes();
   const { data: apiServices = [] } = useApiServices();
+  const { data: organizations = [] } = useGetOrganization();
   const agentTypeMapping = useMemo(() => createMapping(apiAgentTypes), [apiAgentTypes]);
   const serviceMapping = useMemo(() => createMapping(apiServices), [apiServices]);
+  const organizationMapping = useMemo(() => createMapping(organizations), [organizations]);
 
   const details = agent.agentDetails;
   const languagesForForm = toLanguagesForForm(apiLanguages, i18n.language);
-  const schema = createOrganisationDetailsSchema(t);
+  const schema = createOrganisationDetailsSchema(
+    t,
+    organizations?.map((org) => org.title),
+  );
 
   // organizationType/services come back from GET /agent as { id, title: {en,de} }
   // (both languages at once); resolve by id to the title already translated to
@@ -96,6 +102,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
     const serviceIds = values.services
       .map((title) => serviceMapping.titleToId[title])
       .filter((id): id is number => id !== undefined);
+    const organizationId = organizationMapping.titleToId[values.operator];
 
     updateOrganization(
       {
@@ -106,6 +113,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
         addressPostcode: values.addressPostcode,
         ...(typeId !== undefined && { typeId }),
         serviceIds,
+        ...(organizationId !== undefined && { organizationId }),
       },
       {
         onSuccess: () => {
@@ -124,6 +132,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
             languagesForForm={languagesForForm}
             organizationTypeOptions={apiAgentTypes.map((agentType) => agentType.title)}
             servicesOptions={apiServices.map((service) => service.title)}
+            operatorOptions={organizations.map((org) => org.title)}
             onCancel={handleCancel}
             onSubmit={handleSubmit(onSubmit)}
           />

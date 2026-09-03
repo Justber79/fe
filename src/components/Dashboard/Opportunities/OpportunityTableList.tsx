@@ -29,16 +29,17 @@ export function OpportunityTableList({
   volunteerId,
 }: TableListProps) {
   const { t } = useTranslation();
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, isAgent } = useAuth();
+  const canSeeFullView = isAuthorized || isAgent;
 
   const columns = useMemo(() => createOpportunityTableColumns(t), [t]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   return (
     <EntityTableList
-      columns={isAuthorized ? columns : readOnlyColumns}
+      columns={canSeeFullView ? columns : readOnlyColumns}
       data={opportunities}
       renderRow={(opportunity, isLast) =>
-        isAuthorized ? (
+        canSeeFullView ? (
           <OpportunityTableRow
             key={opportunity.id}
             opportunity={opportunity}
