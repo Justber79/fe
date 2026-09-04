@@ -111,6 +111,7 @@
     "register": "Register now",
     "registrationUnavailable": "Registration is not available yet.",
     "loading": "Loading event…",
+    "loadError": "The event could not be loaded. Please try again.",
     "empty": "No upcoming event",
     "emptyDescription": "Please check back soon for our next event."
   },

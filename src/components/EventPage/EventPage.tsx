@@ -6,6 +6,7 @@ import { Heading1, Heading2, Paragraph } from "@/components/styled/text";
 import { useEvents } from "@/hooks/useEvents";
 import { formatEventDate, getHttpUrl, getUpcomingEvent } from "@/utils/events";
 import { CalendarBlankIcon, MapPinIcon } from "@phosphor-icons/react";
+import { EventN4DType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -88,9 +89,13 @@ const EmptyState = styled.div`
 
 export function EventPage() {
   const { t, i18n } = useTranslation();
-  const { data: events, isLoading } = useEvents();
+  const { data: events, isError, isLoading } = useEvents();
   const event = useMemo(() => getUpcomingEvent(events), [events]);
   const registrationUrl = getHttpUrl(event?.linkRSVP);
+  const eventTypeLabel =
+    event?.type === EventN4DType.PARTY
+      ? t("dashboard.calendar.createForm.typeParty")
+      : t("dashboard.calendar.createForm.typeWorkshop");
 
   return (
     <PageLayout>
@@ -99,10 +104,14 @@ export function EventPage() {
           <EmptyState aria-live="polite">
             <Heading2>{t("eventPage.loading")}</Heading2>
           </EmptyState>
+        ) : isError ? (
+          <EmptyState role="alert">
+            <Heading2>{t("eventPage.loadError")}</Heading2>
+          </EmptyState>
         ) : event ? (
           <EventCard>
             <Hero>
-              <EventType>{event.type}</EventType>
+              <EventType>{eventTypeLabel}</EventType>
               <Heading1 margin={0}>{event.title}</Heading1>
               {event.subTitle && <Subtitle fontSize="var(--font-size-lg)">{event.subTitle}</Subtitle>}
             </Hero>
@@ -117,8 +126,8 @@ export function EventPage() {
                       <Heading2 margin="var(--spacing-32) 0 0">{event.additionalTitle}</Heading2>
                     )}
                     <AdditionalInfo>
-                      {event.additionalInfo.map((item) => (
-                        <li key={item}>{item}</li>
+                      {event.additionalInfo.map((item, index) => (
+                        <li key={index}>{item}</li>
                       ))}
                     </AdditionalInfo>
                   </>
