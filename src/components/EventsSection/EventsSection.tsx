@@ -8,11 +8,11 @@ import { eventsPublicLandingUrl, ScreenTypes } from "@/config/constants";
 import { useScreenType } from "@/context/DeviceContext";
 import { useEvents } from "@/hooks/useEvents";
 import { getImageUrl } from "@/utils/helpers";
-import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { EventN4DType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { formatEventDate, getUpcomingEvent } from "@/utils/events";
 
 const EventsSectionContainer = styled(OverlayingSectionContainer)`
   height: var(--homepage-events-section-container-height);
@@ -77,24 +77,6 @@ const imageNamesMap: Record<EventN4DType, Record<ScreenTypes, string>> = {
   },
 };
 
-function getUpcomingEvent(events?: ApiEventN4DGetList[]) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return events
-    ?.filter((event) => event.active && new Date(event.dateEnd ?? event.date) >= today)
-    .sort((first, second) => new Date(first.date).getTime() - new Date(second.date).getTime())[0];
-}
-
-function formatEventDate(event: ApiEventN4DGetList, locale: string) {
-  const format = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" });
-  const start = format.format(new Date(event.date));
-  if (!event.dateEnd) return start;
-
-  const end = format.format(new Date(event.dateEnd));
-  return start === end ? start : `${start} – ${end}`;
-}
-
 export function EventsSection() {
   const { t, i18n } = useTranslation();
   const screenType = useScreenType();
@@ -157,7 +139,7 @@ export function EventsSection() {
               <ButtonContainer>
                 <Button
                   text={t("homepage.events.button")}
-                  onClick={() => window.location.assign(eventsPublicLandingUrl)}
+                  onClick={() => window.location.assign(`/${i18n.language}${eventsPublicLandingUrl}`)}
                 />
               </ButtonContainer>
             )}
