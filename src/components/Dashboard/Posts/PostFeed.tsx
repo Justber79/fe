@@ -1,19 +1,11 @@
 import { Paragraph } from "@/components/styled/text";
 import { usePostsFeed } from "@/hooks";
-import type { ApiPostGet } from "need4deed-sdk";
 import { useParams } from "next/navigation";
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  EmptyState,
-  FeedPost,
-  FeedScrollContainer,
-  LoadOlderIndicator,
-  PostAuthor,
-  PostHeader,
-  PostTimestamp,
-} from "./styles";
+import { EmptyState, FeedScrollContainer, LoadOlderIndicator } from "./styles";
+import PostCard from "./PostCard";
 
 const LOAD_OLDER_THRESHOLD = 80;
 
@@ -22,22 +14,8 @@ interface ScrollMetrics {
   top: number;
 }
 
-function renderPost(post: ApiPostGet, locale: string) {
-  const createdAt = new Date(post.createdAt);
-
-  return (
-    <FeedPost key={post.id}>
-      <PostHeader>
-        <PostAuthor>{post.author.fullName}</PostAuthor>
-        <PostTimestamp dateTime={createdAt.toISOString()}>{createdAt.toLocaleString(locale)}</PostTimestamp>
-      </PostHeader>
-      <Paragraph $textWrap="pretty">{post.text}</Paragraph>
-    </FeedPost>
-  );
-}
-
 export function PostFeed() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const feedRef = useRef<HTMLDivElement>(null);
   const didScrollToNewest = useRef(false);
@@ -138,7 +116,9 @@ export function PostFeed() {
           {isError ? t("message.errorGeneric") : isFetchingNextPage ? "…" : null}
         </LoadOlderIndicator>
       )}
-      {posts.map((post) => renderPost(post, i18n.language))}
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
     </FeedScrollContainer>
   );
 }
