@@ -1,12 +1,7 @@
 import axios from "axios";
 import { apiPathVolunteerRegister } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-import { ProfileCompletionData } from "@/components/VolunteerRegistration/types";
-import { ApiVolunteerGet } from "need4deed-sdk";
-
-type VolunteerRegistrationPayload = {
-  volunteer: ProfileCompletionData;
-};
+import { ApiVolunteerGet, ApiVolunteerRegisterNew } from "need4deed-sdk";
 
 type Props = {
   token: string | null;
@@ -14,8 +9,8 @@ type Props = {
 };
 
 export const useRegisterVolunteer = ({ token, onSuccess }: Props) => {
-  return useMutationQuery<VolunteerRegistrationPayload, { message: string; data: ApiVolunteerGet }>({
-    mutationFn: async (payload: VolunteerRegistrationPayload) => {
+  return useMutationQuery<ApiVolunteerRegisterNew, { message: string; data: ApiVolunteerGet }>({
+    mutationFn: async (payload: ApiVolunteerRegisterNew) => {
       if (!token) {
         throw new Error("Token is required for volunteer registration");
       }

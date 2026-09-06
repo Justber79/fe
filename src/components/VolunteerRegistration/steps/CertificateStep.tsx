@@ -8,10 +8,10 @@ import { useForm } from "@tanstack/react-form";
 import { ApiOptionLists } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper } from "../styled";
-import { ProfileCompletionData } from "../types";
+import { DefaultVolunteerRegistrationData } from "../types";
 
 type Props = {
-  form: ReturnType<typeof useForm<ProfileCompletionData>>;
+  form: ReturnType<typeof useForm<DefaultVolunteerRegistrationData>>;
   optionLists?: ApiOptionLists;
 };
 
@@ -24,7 +24,7 @@ export function CertificateStep({ form, optionLists }: Props) {
   return (
     <div>
       <form.Field
-        name="certOfGoodConduct"
+        name="goodConductCertificate"
         validators={{
           onChange: ({ value }) => (value === undefined ? t("form.error.required") : undefined),
         }}
@@ -56,7 +56,7 @@ export function CertificateStep({ form, optionLists }: Props) {
       </form.Field>
 
       <form.Field
-        name="certMeaslesVaccination"
+        name="measlesVaccination"
         validators={{
           onChange: ({ value }) => (value === undefined ? t("form.error.required") : undefined),
         }}

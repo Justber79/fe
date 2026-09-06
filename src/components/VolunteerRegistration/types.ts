@@ -1,11 +1,9 @@
-import { LanguageObject } from "@/types";
-import { VolunteerFormData } from "need4deed-sdk";
 import { Availability } from "@/components/forms/types/availabilityTypes";
 import { getScheduleState } from "../forms/utils";
+import { LanguageObject } from "@/types";
+import { OptionById, OptionId } from "need4deed-sdk";
 
-export type ApiVolunteerRegister = { volunteer: VolunteerFormData };
-
-export interface ProfileCompletionData {
+export interface DefaultVolunteerRegistrationData {
   addressPostcode: string;
   locations: number[];
   languages: LanguageObject[];
@@ -13,21 +11,21 @@ export interface ProfileCompletionData {
   activities: number[];
   skills: number[];
   leadFrom: number[];
-  certOfGoodConduct: boolean | undefined;
-  certMeaslesVaccination: boolean | undefined;
+  goodConductCertificate: boolean | undefined;
+  measlesVaccination: boolean | undefined;
   comments: string;
 }
 
-export const defaultVolunteerRegistrationData: ProfileCompletionData = {
+export const defaultVolunteerRegistrationData: DefaultVolunteerRegistrationData = {
   addressPostcode: "",
   locations: [],
-  languages: [{ id: 1, language: "", level: "" }],
+  languages: [{ id: 0, language: "", level: "" }],
   availability: getScheduleState(),
   activities: [],
   skills: [],
   leadFrom: [],
-  certOfGoodConduct: undefined,
-  certMeaslesVaccination: undefined,
+  goodConductCertificate: undefined,
+  measlesVaccination: undefined,
   comments: "",
 };
 

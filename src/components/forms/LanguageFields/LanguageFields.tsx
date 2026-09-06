@@ -17,6 +17,7 @@ type Props = {
 };
 
 export function LanguageFields({ languages, onChange, onFocus, t, availableLanguages, showLevel = true }: Props) {
+  console.log("aval", availableLanguages);
   const updateLanguage = (id: number, newLang: string) => {
     onChange(languages.map((item) => (item.id === id ? { ...item, language: newLang } : item)));
   };
@@ -46,12 +47,12 @@ export function LanguageFields({ languages, onChange, onFocus, t, availableLangu
 
   return (
     <div className={style["form-languages-wrapper"]} data-testid="language-fields-container" onFocus={onFocus}>
-      {languages.map((lang) => (
+      {languages.map((lang, index) => (
         <LanguageFieldRow
           key={`${lang.id}-${lang.language}-${lang.level}`}
           language={lang}
           disabledLanguages={disabledLanguages}
-          showRemove={lang.id !== 1}
+          showRemove={index !== 0}
           showLevel={showLevel}
           onUpdateLanguage={updateLanguage}
           onUpdateLevel={updateLevel}

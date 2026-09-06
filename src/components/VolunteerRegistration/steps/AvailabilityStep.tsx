@@ -9,10 +9,10 @@ import { useForm } from "@tanstack/react-form";
 import { ApiOptionLists, Lang } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper } from "../styled";
-import { ProfileCompletionData } from "../types";
+import { DefaultVolunteerRegistrationData } from "../types";
 
 type Props = {
-  form: ReturnType<typeof useForm<ProfileCompletionData>>;
+  form: ReturnType<typeof useForm<DefaultVolunteerRegistrationData>>;
   optionLists?: ApiOptionLists;
 };
 

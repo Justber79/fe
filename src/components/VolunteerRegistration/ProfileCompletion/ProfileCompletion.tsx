@@ -6,17 +6,24 @@ import { useRegisterVolunteer } from "@/hooks/useRegisterVolunteer";
 import { setAuthHint } from "@/utils/helpers";
 import { useForm } from "@tanstack/react-form";
 import i18next from "i18next";
-import { ApiOptionLists } from "need4deed-sdk";
+import { ApiOptionLists, ApiVolunteerRegisterNew, DocumentStatusType } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ProgressBar } from "../ProgressBar";
 import { AddressStep } from "../steps/AddressStep";
 import { AvailabilityStep } from "../steps/AvailabilityStep";
 import { CertificateStep } from "../steps/CertificateStep";
 import { Actions, Card, ErrorBanner, PageSubtitle, PageTitle, StepDescription, StepTitle, Wrapper } from "../styled";
-import { defaultVolunteerRegistrationData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
+import { DefaultVolunteerRegistrationData, defaultVolunteerRegistrationData, TOTAL_COMPLETION_STEPS } from "../types";
 import { useGetQuery } from "@/hooks";
+import { formToApiAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/availabilityUtils";
+import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
+import {
+  mapToApiItems,
+  transformLanguagesToApi,
+} from "@/components/Dashboard/Profile/sections/VolunteerProfile/transformers";
+import { ApiLanguageOption } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 
 export function ProfileCompletion() {
   const { t } = useTranslation();
@@ -32,6 +39,42 @@ export function ProfileCompletion() {
     apiPath: apiPathOption,
   });
 
+  const languageMapping = useMemo(
+    () => createMapping(optionLists?.language as ApiLanguageOption[]),
+    [optionLists?.language],
+  );
+  const activityMapping = useMemo(
+    () => createMapping(optionLists?.activity as ApiLanguageOption[]),
+    [optionLists?.activity],
+  );
+  const skillMapping = useMemo(() => createMapping(optionLists?.skill as ApiLanguageOption[]), [optionLists?.language]);
+
+  const leadMapping = useMemo(
+    () => createMapping(optionLists?.lead_from as ApiLanguageOption[]),
+    [optionLists?.lead_from],
+  );
+  const processCertOfGoodConduct = (value: boolean | undefined) => {
+    if (value) return DocumentStatusType.YES;
+    else return DocumentStatusType.NO;
+  };
+  const processCertOfMeaslesCert = (value: boolean | undefined) => {
+    if (value) return DocumentStatusType.YES;
+    else return DocumentStatusType.NO;
+  };
+
+  const formToApiVolunteer = (value: DefaultVolunteerRegistrationData): ApiVolunteerRegisterNew => ({
+    addressPostcode: value.addressPostcode,
+    locations: value.locations.map((id) => ({ id })),
+    languages: transformLanguagesToApi(value.languages, languageMapping),
+    availability: formToApiAvailability(value.availability),
+    activities: mapToApiItems(value.activities.map(String), activityMapping),
+    skills: mapToApiItems(value.skills.map(String), skillMapping),
+    leadFrom: mapToApiItems(value.leadFrom.map(String), leadMapping),
+    goodConductCertificate: processCertOfGoodConduct(value.goodConductCertificate),
+    measlesVaccination: processCertOfMeaslesCert(value.measlesVaccination),
+    comments: value.comments,
+  });
+
   const registerMutation = useRegisterVolunteer({
     token,
     onSuccess: () => {
@@ -40,7 +83,7 @@ export function ProfileCompletion() {
     },
   });
 
-  const formVolunteer = useForm<ProfileCompletionData>({
+  const formVolunteer = useForm<DefaultVolunteerRegistrationData>({
     defaultValues: defaultVolunteerRegistrationData,
     onSubmit: async ({ value }) => {
       if (!token) {
@@ -49,7 +92,7 @@ export function ProfileCompletion() {
       }
       setSubmitError(null);
       try {
-        await registerMutation.mutateAsync({ volunteer: value });
+        await registerMutation.mutateAsync(formToApiVolunteer(value));
       } catch (error) {
         showSubmitError(t("message.errorGeneric"));
         console.error(error);
@@ -79,7 +122,7 @@ export function ProfileCompletion() {
 
   const handleBack = () => {
     Object.keys(formVolunteer.state.values).forEach((fieldName) => {
-      formVolunteer.setFieldMeta(fieldName as keyof ProfileCompletionData, (prev) => ({
+      formVolunteer.setFieldMeta(fieldName as keyof DefaultVolunteerRegistrationData, (prev) => ({
         ...prev,
         errors: [],
         errorMap: {},
