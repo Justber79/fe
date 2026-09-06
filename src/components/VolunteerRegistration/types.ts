@@ -1,7 +1,6 @@
 import { Availability } from "@/components/forms/types/availabilityTypes";
 import { getScheduleState } from "../forms/utils";
 import { LanguageObject } from "@/types";
-import { OptionById, OptionId } from "need4deed-sdk";
 
 export interface DefaultVolunteerRegistrationData {
   addressPostcode: string;

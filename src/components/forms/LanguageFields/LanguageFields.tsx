@@ -17,7 +17,6 @@ type Props = {
 };
 
 export function LanguageFields({ languages, onChange, onFocus, t, availableLanguages, showLevel = true }: Props) {
-  console.log("aval", availableLanguages);
   const updateLanguage = (id: number, newLang: string) => {
     onChange(languages.map((item) => (item.id === id ? { ...item, language: newLang } : item)));
   };
