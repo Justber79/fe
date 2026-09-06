@@ -103,6 +103,16 @@
       }
     }
   },
+  "eventPage": {
+    "about": "Über diese Veranstaltung",
+    "details": "Veranstaltungsdetails",
+    "register": "Jetzt anmelden",
+    "registrationUnavailable": "Die Anmeldung ist noch nicht verfügbar.",
+    "loading": "Veranstaltung wird geladen…",
+    "loadError": "Die Veranstaltung konnte nicht geladen werden. Bitte versuche es erneut.",
+    "empty": "Keine kommende Veranstaltung",
+    "emptyDescription": "Schau bald wieder vorbei, um unsere nächste Veranstaltung zu sehen."
+  },
   "form": {
     "error": {
       "required": "Dieses Feld ist erforderlich",
@@ -534,7 +544,19 @@
     "posts": {
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
-      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet."
+      "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet.",
+      "options": "Beitragsoptionen",
+      "edit": "Beitrag bearbeiten",
+      "delete": "Beitrag löschen",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "updated": "Beitrag erfolgreich aktualisiert",
+      "deleted": "Beitrag erfolgreich gelöscht",
+      "unknownUser": "Benutzer",
+      "deleteDialog": {
+        "title": "Beitrag löschen?",
+        "message": "Dieser Beitrag wird unwiderruflich gelöscht."
+      }
     },
     "found": "gefunden",
     "searchPlaceHolder": "Ehrenamtliche suchen",

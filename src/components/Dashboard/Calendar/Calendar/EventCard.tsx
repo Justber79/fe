@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import { eventDateRange } from "@/utils/calendar";
+import { getHttpUrl } from "@/utils/events";
 
 interface Props {
   event: ApiEventN4DGetList;
@@ -88,16 +89,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
       </Actions>
     </Card>
   );
-}
-
-function getHttpUrl(value?: string) {
-  if (!value) return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : null;
-  } catch {
-    return null;
-  }
 }
 
 const Card = styled.article`

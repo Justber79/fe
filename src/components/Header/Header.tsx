@@ -64,7 +64,7 @@ export function Header({
       t("homepage.heroSection.menuItems.volunteeringOpportunities"),
       isAgent ? opportunityCardsPublicUrl : `${DashboardRoutes.Opportunities}?view=cards`,
     ],
-    [t("homepage.heroSection.menuItems.events"), eventsPublicLandingUrl],
+    [t("homepage.heroSection.menuItems.events"), `/${i18n.language}${eventsPublicLandingUrl}`],
   ];
 
   return (

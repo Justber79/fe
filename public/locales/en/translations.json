@@ -105,6 +105,16 @@
       }
     }
   },
+  "eventPage": {
+    "about": "About this event",
+    "details": "Event details",
+    "register": "Register now",
+    "registrationUnavailable": "Registration is not available yet.",
+    "loading": "Loading event…",
+    "loadError": "The event could not be loaded. Please try again.",
+    "empty": "No upcoming event",
+    "emptyDescription": "Please check back soon for our next event."
+  },
   "form": {
     "error": {
       "required": "This field is required",
@@ -528,7 +538,19 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
-      "empty": "No posts yet. Be the first to post a message."
+      "empty": "No posts yet. Be the first to post a message.",
+      "options": "Post options",
+      "edit": "Edit post",
+      "delete": "Delete post",
+      "save": "Save",
+      "cancel": "Cancel",
+      "updated": "Post updated successfully",
+      "deleted": "Post deleted successfully",
+      "unknownUser": "user",
+      "deleteDialog": {
+        "title": "Delete post?",
+        "message": "This post will be permanently deleted."
+      }
     },
     "found": "found",
     "searchPlaceHolder": "Search volunteers",
