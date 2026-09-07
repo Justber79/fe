@@ -12,6 +12,7 @@ import { createVolunteerTableColumns } from "./volunteerTableColumns";
 import { VolunteerTableRow } from "./VolunteerTableRow";
 import { EntityTableList } from "../common/EntityTableList";
 import { CopyButton } from "../common/CopyButton";
+import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
   volunteers: ApiVolunteerGetList[];
@@ -23,6 +24,12 @@ interface TableListProps {
   onCopyEmails: () => void;
   isCopying: boolean;
   canSeeContactColumns: boolean;
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+    engagementFilters: FilterItem[];
+    languageFilters: FilterItem[];
+    typeFilters: FilterItem[];
+  };
 }
 
 export function VolunteerTableList({
@@ -35,6 +42,7 @@ export function VolunteerTableList({
   onCopyEmails,
   isCopying,
   canSeeContactColumns,
+  dropdownFilters,
 }: TableListProps) {
   const { t } = useTranslation();
   const engagementLabels = useMemo(() => createEngagementStatusLabelMap(t), [t]);
@@ -48,7 +56,7 @@ export function VolunteerTableList({
         ariaLabel={t("dashboard.common.copyEmails.copyAriaAllVolunteers")}
       />
     );
-    return createVolunteerTableColumns(t, copyButton, canSeeContactColumns);
+    return createVolunteerTableColumns(t, copyButton, canSeeContactColumns, dropdownFilters);
   }, [t, onCopyEmails, isCopying, canSeeContactColumns]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 

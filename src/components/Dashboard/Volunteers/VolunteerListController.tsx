@@ -12,11 +12,14 @@ import { ViewMode } from "../common/types";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
+import { createFilterItems } from "./Filters/helpers";
+import { useTranslation } from "react-i18next";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
   sortOrder: SortOrder;
   filter: VolunteerCardsFilter;
+  setFilter: (newFilter: VolunteerCardsFilter | ((prev: VolunteerCardsFilter) => VolunteerCardsFilter)) => void;
   apiFilterOptions?: ApiOptionLists;
   opportunityId?: string;
   viewMode: ViewMode;
@@ -26,6 +29,7 @@ export function VolunteerListController({
   setNumOfVols,
   sortOrder,
   filter,
+  setFilter,
   apiFilterOptions,
   opportunityId,
   viewMode,
@@ -33,10 +37,18 @@ export function VolunteerListController({
   const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
+  const { t } = useTranslation();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
   }) as URLSearchParams;
+  const { languageFilters, districtFilters, typeFilters, engagementFilters } = createFilterItems(filter, setFilter, t);
+  const dropdownFilters = {
+    typeFilters,
+    languageFilters,
+    districtFilters,
+    engagementFilters,
+  };
 
   if (opportunityId) {
     serializedFilter.set("opportunity", opportunityId);
@@ -74,6 +86,22 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols]);
 
+  if (isLoading && isListView)
+    return (
+      <VolunteerTableList
+        volunteers={volunteers}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        opportunityId={opportunityId}
+        onCopyEmails={handleCopyEmails}
+        isCopying={isCopying}
+        canSeeContactColumns={canSeeContactColumns}
+        dropdownFilters={dropdownFilters}
+      />
+    );
+
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -88,6 +116,7 @@ export function VolunteerListController({
         onCopyEmails={handleCopyEmails}
         isCopying={isCopying}
         canSeeContactColumns={canSeeContactColumns}
+        dropdownFilters={dropdownFilters}
       />
     );
   }

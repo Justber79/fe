@@ -2,6 +2,8 @@ import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 import { ReactNode } from "react";
+import DropdownAccordionFilter from "./DropdownAccordionFilter";
+import { FilterItem } from "../common/CardsFilter/types";
 
 const FULL_WIDTHS = {
   name: COLUMN_WIDTH.SM,
@@ -28,20 +30,48 @@ export const createVolunteerTableColumns = (
   t: TFunction,
   copyButton: ReactNode,
   canSeeContactColumns: boolean,
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+    engagementFilters: FilterItem[];
+    languageFilters: FilterItem[];
+    typeFilters: FilterItem[];
+  },
 ): Column[] => {
   const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
   const columns: Column[] = [
     { key: "name", label: t("dashboard.volunteers.table.name"), width: VOLUNTEER_COL_WIDTHS.name },
-    { key: "type", label: t("dashboard.volunteers.table.type"), width: VOLUNTEER_COL_WIDTHS.type },
+    {
+      key: "type",
+      label: t("dashboard.volunteers.table.type"),
+      width: VOLUNTEER_COL_WIDTHS.type,
+      headerAction: <DropdownAccordionFilter items={dropdownFilters.typeFilters} width={VOLUNTEER_COL_WIDTHS.type} />,
+    },
     {
       key: "engagement",
       label: t("dashboard.volunteers.table.engagementStatus"),
       width: VOLUNTEER_COL_WIDTHS.engagement,
+      headerAction: (
+        <DropdownAccordionFilter items={dropdownFilters.engagementFilters} width={VOLUNTEER_COL_WIDTHS.engagement} />
+      ),
     },
     { key: "matching", label: t("dashboard.volunteers.table.matchingStatus"), width: VOLUNTEER_COL_WIDTHS.matching },
-    { key: "language", label: t("dashboard.volunteers.table.language"), width: VOLUNTEER_COL_WIDTHS.language },
-    { key: "district", label: t("dashboard.volunteers.table.district"), width: VOLUNTEER_COL_WIDTHS.district },
+    {
+      key: "language",
+      label: t("dashboard.volunteers.table.language"),
+      width: VOLUNTEER_COL_WIDTHS.language,
+      headerAction: (
+        <DropdownAccordionFilter items={dropdownFilters.languageFilters} width={VOLUNTEER_COL_WIDTHS.language} />
+      ),
+    },
+    {
+      key: "district",
+      label: t("dashboard.volunteers.table.district"),
+      width: VOLUNTEER_COL_WIDTHS.district,
+      headerAction: (
+        <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={VOLUNTEER_COL_WIDTHS.district} />
+      ),
+    },
   ];
 
   if (canSeeContactColumns) {
