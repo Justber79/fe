@@ -1,7 +1,7 @@
 import Autocomplete from "@/components/Dashboard/Profile/sections/Comments/common/Autocomplete";
 import { useCommentTag } from "@/components/Dashboard/Profile/sections/Comments/common/hooks/useCommentTag";
-import { apiPathOpportunity, MAX_PAGE_LIMIT } from "@/config/constants";
-import { useCreatePost, useGetQuery } from "@/hooks";
+import { apiPathOpportunity, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
+import { useClickOutside, useCreatePost, useGetQuery } from "@/hooks";
 import { ApiOpportunityGetList } from "need4deed-sdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,16 +29,19 @@ export default function PostComposer() {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
-  const mention = useCommentTag(text, setText, textareaRef);
-  const { setShowAutocomplete } = mention;
+  const mention = useCommentTag(text, setText, textareaRef, null);
+  const { resetTags, setShowAutocomplete } = mention;
   const { data: opportunities } = useGetQuery<ApiOpportunityGetList[]>({
     queryKey: ["post-composer-opportunities"],
     apiPath: `${apiPathOpportunity}/`,
     params: { page: 1, limit: MAX_PAGE_LIMIT },
+    staleTime: cacheTTL,
+    enabled: opportunityOpen,
   });
   const reset = () => {
     setText("");
     setSelected([]);
+    resetTags();
   };
   const createPost = useCreatePost(reset);
   const closeOpportunityPicker = useCallback(() => {
@@ -46,28 +49,23 @@ export default function PostComposer() {
     setQuery("");
   }, []);
 
+  const closePickers = useCallback(() => {
+    closeOpportunityPicker();
+    setEmojiOpen(false);
+    setShowAutocomplete(false);
+  }, [closeOpportunityPicker, setShowAutocomplete]);
+
+  useClickOutside(composerRef, closePickers);
+
   useEffect(() => {
-    const close = (event: MouseEvent) => {
-      if (!composerRef.current?.contains(event.target as Node)) {
-        closeOpportunityPicker();
-        setEmojiOpen(false);
-        setShowAutocomplete(false);
-      }
-    };
     const escape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeOpportunityPicker();
-        setEmojiOpen(false);
-        setShowAutocomplete(false);
+        closePickers();
       }
     };
-    document.addEventListener("mousedown", close);
     document.addEventListener("keydown", escape);
-    return () => {
-      document.removeEventListener("mousedown", close);
-      document.removeEventListener("keydown", escape);
-    };
-  }, [closeOpportunityPicker, setShowAutocomplete]);
+    return () => document.removeEventListener("keydown", escape);
+  }, [closePickers]);
 
   const insertAtCursor = useCallback(
     (value: string) => {
@@ -92,12 +90,18 @@ export default function PostComposer() {
   );
   const submit = () => {
     let formatted = text.trim();
-    const activeTags = mention.tags.filter((tag) => formatted.includes(`@${tag.name}`));
-    activeTags.forEach((tag) => {
-      formatted = formatted.replaceAll(`@${tag.name}`, `<@${tag.id}>`);
-    });
-    const taggedPersonIds = [...new Set(activeTags.map((tag) => tag.personId))];
-    if (formatted.includes("@all"))
+    const taggedPersonIds: number[] = [];
+    [...mention.tags]
+      .sort((first, second) => second.name.length - first.name.length)
+      .forEach((tag) => {
+        const escapedName = tag.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
+        formatted = formatted.replace(mentionPattern, () => {
+          taggedPersonIds.push(tag.personId);
+          return `<@${tag.id}>`;
+        });
+      });
+    if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted))
       mention.users?.forEach((user) => {
         if (user.personId) taggedPersonIds.push(user.personId);
       });

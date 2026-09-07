@@ -1,4 +1,4 @@
-import { apiPathUser, cacheTTL } from "@/config/constants";
+import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useState, useCallback, useEffect } from "react";
@@ -10,6 +10,7 @@ export function useCommentTag(
   value: string,
   setNewCommentText?: (text: string) => void,
   textAreaRef?: React.RefObject<HTMLTextAreaElement | null> | null,
+  userRole: UserRole | null = UserRole.COORDINATOR,
 ) {
   const [tags, setTags] = useState<{ id: number; name: string; personId: number }[]>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -18,11 +19,12 @@ export function useCommentTag(
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
   const { data: users } = useGetQuery<ApiUserGetWithPersonId[]>({
-    queryKey: ["users", "coordinators"],
+    queryKey: ["users", userRole ?? "all"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
-      role: UserRole.COORDINATOR,
+      ...(userRole ? { role: userRole } : {}),
+      ...(userRole === null ? { limit: MAX_PAGE_LIMIT } : {}),
     },
     staleTime: cacheTTL,
     enabled: !!setNewCommentText,
@@ -94,6 +96,8 @@ export function useCommentTag(
     },
     [setNewCommentText, textAreaRef, value],
   );
+
+  const resetTags = useCallback(() => setTags([]), []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!showAutocomplete || filteredListLength === 0) return;
@@ -186,6 +190,7 @@ export function useCommentTag(
     setShowAutocomplete,
     handleTagAdd,
     tags,
+    resetTags,
     activeRowIndex,
     setFilteredListLength,
     setOnSelectTrigger,
