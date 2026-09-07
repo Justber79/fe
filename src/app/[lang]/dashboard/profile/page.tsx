@@ -11,7 +11,7 @@ export default function DashboardProfilePage() {
   const { t } = useTranslation();
   const { agentId, isLoading } = useGetCurrentAgent();
   const data = useCurrentUser();
-  const volunteerId = data?.volunteerId ?? null;
+  const volunteerId = data?.volunteerId;
 
   // test multiple agentIds here
   const agentIds: Array<number> = [];
