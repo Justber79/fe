@@ -538,7 +538,20 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
+      "sendReply": "Send reply",
       "created": "Post created successfully",
+      "reply": "Reply",
+      "replyingTo": "Replying to {{name}}",
+      "cancelReply": "Cancel reply",
+      "showReplies_one": "Show 1 reply",
+      "showReplies_other": "Show {{count}} replies",
+      "hideReplies": "Hide replies",
+      "loadingReplies": "Loading replies…",
+      "noReplies": "No replies yet.",
+      "repliesError": "Replies could not be loaded. Please try again.",
+      "replyCreated": "Reply sent successfully",
+      "replyUpdated": "Reply updated successfully",
+      "replyDeleted": "Reply deleted successfully",
       "linkOpportunity": "Link opportunity",
       "searchOpportunities": "Search opportunities",
       "done": "Done",
@@ -561,6 +574,10 @@
       "deleteDialog": {
         "title": "Delete post?",
         "message": "This post will be permanently deleted."
+      },
+      "deleteReplyDialog": {
+        "title": "Delete reply?",
+        "message": "This reply will be permanently deleted."
       }
     },
     "found": "found",

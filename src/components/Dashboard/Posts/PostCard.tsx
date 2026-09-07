@@ -27,11 +27,19 @@ import {
   PostMenuWrapper,
   PostText,
   PostTimestamp,
+  PostReplyActions,
 } from "./styles";
+import RepliesThread from "./RepliesThread";
+import type { ReplyTarget } from "./types";
 
-type Props = { post: ApiPostGet };
+type Props = {
+  post: ApiPostGet;
+  isRepliesExpanded: boolean;
+  onReply: (target: ReplyTarget) => void;
+  onToggleReplies: () => void;
+};
 
-export function PostCard({ post }: Props) {
+export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: Props) {
   const { t, i18n } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const currentUser = useCurrentUser(true);
@@ -173,6 +181,29 @@ export function PostCard({ post }: Props) {
             ))}
           </OpportunityList>
         )}
+        <PostReplyActions>
+          {post.replyCount > 0 && (
+            <EditButton type="button" onClick={onToggleReplies}>
+              {t(isRepliesExpanded ? "dashboard.posts.hideReplies" : "dashboard.posts.showReplies", {
+                count: post.replyCount,
+              })}
+            </EditButton>
+          )}
+          <EditButton
+            type="button"
+            onClick={() =>
+              onReply({
+                postId: post.id,
+                authorName: post.author.fullName,
+                createdAt: post.createdAt,
+                text: post.text,
+              })
+            }
+          >
+            {t("dashboard.posts.reply")}
+          </EditButton>
+        </PostReplyActions>
+        {isRepliesExpanded && <RepliesThread postId={post.id} onReply={onReply} />}
       </PostBody>
 
       {isDeleteOpen && (
