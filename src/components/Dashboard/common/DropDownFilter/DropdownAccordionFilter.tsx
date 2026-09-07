@@ -1,7 +1,7 @@
 import React from "react";
-import AccordionFilter from "../common/CardsFilter/AccordionFilter";
+import AccordionFilter from "../CardsFilter/AccordionFilter";
 import { FilterWrapper, ItemCount, OuterContainer, RelativeContainer } from "./styles";
-import { FilterItem } from "../common/CardsFilter/types";
+import { FilterItem } from "../CardsFilter/types";
 
 type Props = {
   items: FilterItem[];

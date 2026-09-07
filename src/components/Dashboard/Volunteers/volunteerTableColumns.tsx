@@ -2,7 +2,7 @@ import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 import { ReactNode } from "react";
-import DropdownAccordionFilter from "./DropdownAccordionFilter";
+import DropdownAccordionFilter from "../common/DropDownFilter/DropdownAccordionFilter";
 import { FilterItem } from "../common/CardsFilter/types";
 
 const FULL_WIDTHS = {

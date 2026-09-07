@@ -14,6 +14,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 import { createFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
+import { LoadingVolunteerTableList } from "./LoadingVolunteerTableList";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -87,20 +88,7 @@ export function VolunteerListController({
   }, [count, setNumOfVols]);
 
   if (isLoading && isListView)
-    return (
-      <VolunteerTableList
-        volunteers={volunteers}
-        count={count}
-        itemsPerPage={limit}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        opportunityId={opportunityId}
-        onCopyEmails={handleCopyEmails}
-        isCopying={isCopying}
-        canSeeContactColumns={canSeeContactColumns}
-        dropdownFilters={dropdownFilters}
-      />
-    );
+    return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
 
   if (isLoading) return <DashboardListLoading />;
 

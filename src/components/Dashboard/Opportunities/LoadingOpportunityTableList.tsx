@@ -1,24 +1,21 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { createVolunteerTableColumns } from "./volunteerTableColumns";
+import { createOpportunityTableColumns } from "./opportunitiesTableColumns";
 import { EntityTableList } from "../common/EntityTableList";
 import { FilterItem } from "../common/CardsFilter/types";
 import { DashboardListLoading } from "../common/DashboardListLoading";
 
 interface TableListProps {
-  canSeeContactColumns: boolean;
   dropdownFilters: {
     districtFilters: FilterItem[];
-    engagementFilters: FilterItem[];
     languageFilters: FilterItem[];
-    typeFilters: FilterItem[];
   };
 }
 
-export function LoadingVolunteerTableList({ canSeeContactColumns, dropdownFilters }: TableListProps) {
+export function LoadingOpportunityTableList({ dropdownFilters }: TableListProps) {
   const { t } = useTranslation();
-  const columns = createVolunteerTableColumns(t, null, canSeeContactColumns, dropdownFilters);
+  const columns = createOpportunityTableColumns(t, dropdownFilters);
 
   return (
     <div>
@@ -27,10 +24,10 @@ export function LoadingVolunteerTableList({ canSeeContactColumns, dropdownFilter
         data={[]}
         renderRow={() => <div />}
         count={0}
-        itemsPerPage={100}
+        itemsPerPage={0}
         currentPage={0}
         setCurrentPage={() => null}
-        testIdPrefix="loading-volunteers"
+        testIdPrefix="loading-opportunities"
       />
       <DashboardListLoading />
     </div>

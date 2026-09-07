@@ -1,6 +1,9 @@
 import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
+import React from "react";
+import DropdownAccordionFilter from "../common/DropDownFilter/DropdownAccordionFilter";
+import { FilterItem } from "../common/CardsFilter/types";
 
 export const OPPORTUNITY_COL_WIDTHS = {
   title: COLUMN_WIDTH.LG,
@@ -20,7 +23,13 @@ export const OPPORTUNITY_READ_ONLY_COL_WIDTHS = {
   district: COLUMN_WIDTH.XXXL,
 };
 
-export const createOpportunityTableColumns = (t: TFunction): Column[] => [
+export const createOpportunityTableColumns = (
+  t: TFunction,
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+    languageFilters: FilterItem[];
+  },
+): Column[] => [
   { key: "title", label: t("dashboard.opportunities.table.title"), width: OPPORTUNITY_COL_WIDTHS.title },
   { key: "schedule", label: t("dashboard.opportunities.table.schedule"), width: OPPORTUNITY_COL_WIDTHS.schedule },
   {
@@ -28,8 +37,24 @@ export const createOpportunityTableColumns = (t: TFunction): Column[] => [
     label: t("dashboard.opportunities.table.matchingStatus"),
     width: OPPORTUNITY_COL_WIDTHS.statusMatch,
   },
-  { key: "languages", label: t("dashboard.opportunities.table.languages"), width: OPPORTUNITY_COL_WIDTHS.languages },
-  { key: "district", label: t("dashboard.opportunities.table.district"), width: OPPORTUNITY_COL_WIDTHS.district },
+  {
+    key: "languages",
+    label: t("dashboard.opportunities.table.languages"),
+    width: OPPORTUNITY_COL_WIDTHS.languages,
+    headerAction: React.createElement(DropdownAccordionFilter, {
+      items: dropdownFilters.languageFilters,
+      width: OPPORTUNITY_COL_WIDTHS.languages,
+    }),
+  },
+  {
+    key: "district",
+    label: t("dashboard.opportunities.table.district"),
+    width: OPPORTUNITY_COL_WIDTHS.district,
+    headerAction: React.createElement(DropdownAccordionFilter, {
+      items: dropdownFilters.districtFilters,
+      width: OPPORTUNITY_COL_WIDTHS.district,
+    }),
+  },
   {
     key: "numberOfVolunteers",
     label: t("dashboard.opportunities.table.volunteersNeeded"),

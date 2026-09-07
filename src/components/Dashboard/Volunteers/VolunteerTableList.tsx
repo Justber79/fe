@@ -57,11 +57,12 @@ export function VolunteerTableList({
       />
     );
     return createVolunteerTableColumns(t, copyButton, canSeeContactColumns, dropdownFilters);
-  }, [t, onCopyEmails, isCopying, canSeeContactColumns]);
+  }, [t, onCopyEmails, isCopying, canSeeContactColumns, dropdownFilters]);
   const matchLabels = useMemo(() => createMatchStatusLabelMap(t), [t]);
 
   return (
     <EntityTableList
+      isFewResults={volunteers.length < 5}
       columns={columns}
       data={volunteers}
       renderRow={(volunteer, isLast) => (
