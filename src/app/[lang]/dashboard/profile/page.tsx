@@ -3,12 +3,15 @@ import CenteredWrapper from "@/components/core/common/CenteredWrapper";
 import { MultipleProfilesController } from "@/components/Dashboard/Profile/MultipleProfilesController";
 import ProfileLayout from "@/components/Dashboard/Profile/ProfileLayout";
 import { Paragraph } from "@/components/styled/text";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useTranslation } from "react-i18next";
 
 export default function DashboardProfilePage() {
   const { t } = useTranslation();
   const { agentId, isLoading } = useGetCurrentAgent();
+  const data = useCurrentUser();
+  const volunteerId = data?.volunteerId ?? null;
 
   // test multiple agentIds here
   const agentIds: Array<number> = [];
@@ -21,7 +24,7 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId && agentIds.length === 0) {
+  if (!agentId && agentIds.length === 0 && !volunteerId) {
     return (
       <CenteredWrapper>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -29,9 +32,13 @@ export default function DashboardProfilePage() {
     );
   }
 
+  if (volunteerId) {
+    return <ProfileLayout entityId={String(volunteerId)} entityType={"volunteer"} />;
+  }
+
   return agentIds.length > 1 ? (
     <MultipleProfilesController agentIds={agentIds} />
   ) : (
-    <ProfileLayout entityId={String(String(agentId))} entityType={"agent"} />
+    <ProfileLayout entityId={String(agentId)} entityType={"agent"} />
   );
 }
