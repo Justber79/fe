@@ -17,6 +17,8 @@ type Props = {
   setFilteredListLength: (length: number) => void;
   setOnSelectTrigger: (callback: (() => void) | null) => void;
   users?: ApiUserGetWithPersonId[] | undefined;
+  onSelectAll?: () => void;
+  allLabel?: string;
 };
 
 export default function Autocomplete({
@@ -27,6 +29,8 @@ export default function Autocomplete({
   setFilteredListLength,
   setOnSelectTrigger,
   users,
+  onSelectAll,
+  allLabel = "Everyone",
 }: Props) {
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,11 +39,11 @@ export default function Autocomplete({
     if (!newCommentText || !textAreaRef?.current) return "";
     const cursorPosition = textAreaRef?.current.selectionStart;
     const textBeforeCaret = newCommentText.substring(0, cursorPosition);
-    if (newCommentText[0] !== "@" && newCommentText.length > 1 && !textBeforeCaret.includes(" @")) return null;
     const lastAtIndex = textBeforeCaret.lastIndexOf("@");
-    if (lastAtIndex === -1) return "";
+    if (lastAtIndex === -1) return null;
+    if (lastAtIndex > 0 && !/\s/.test(textBeforeCaret[lastAtIndex - 1])) return null;
     const textAfterAt = textBeforeCaret.substring(lastAtIndex + 1);
-    if (textAfterAt.includes(" ")) return null;
+    if (/\s/.test(textAfterAt)) return null;
     return textAfterAt.toLowerCase();
   }, [newCommentText, textAreaRef]);
 
@@ -47,16 +51,21 @@ export default function Autocomplete({
     if (userFilter === null) return;
     return users?.filter((user) => user?.fullName?.toLowerCase().includes(userFilter) && user?.personId != null);
   }, [userFilter, users]);
+  const showAll = !!onSelectAll && userFilter !== null && "all".startsWith(userFilter);
 
   useEffect(() => {
     if (!filteredUsers) return;
-    setFilteredListLength(filteredUsers?.length);
+    setFilteredListLength(filteredUsers.length + (showAll ? 1 : 0));
     return () => setFilteredListLength(0);
-  }, [filteredUsers, setFilteredListLength]);
+  }, [filteredUsers, setFilteredListLength, showAll]);
 
   useEffect(() => {
     if (!filteredUsers) return;
-    const activeUser = filteredUsers[activeRowIndex];
+    if (showAll && activeRowIndex === 0) {
+      setOnSelectTrigger(() => onSelectAll ?? null);
+      return () => setOnSelectTrigger(null);
+    }
+    const activeUser = filteredUsers[activeRowIndex - (showAll ? 1 : 0)];
     if (activeUser) {
       setOnSelectTrigger(() => () => {
         if (activeUser.personId == null) return;
@@ -66,7 +75,7 @@ export default function Autocomplete({
       setOnSelectTrigger(null);
     }
     return () => setOnSelectTrigger(null);
-  }, [filteredUsers, activeRowIndex, setOnSelectTrigger]);
+  }, [filteredUsers, activeRowIndex, setOnSelectTrigger, showAll, onSelectAll, handleTagAdd]);
 
   useEffect(() => {
     if (!containerRef.current || filteredUsers?.length === 0) return;
@@ -115,7 +124,7 @@ export default function Autocomplete({
 
   return (
     filteredUsers &&
-    filteredUsers.length > 0 && (
+    (filteredUsers.length > 0 || showAll) && (
       <AutocompleteContainer
         ref={containerRef}
         role="listbox"
@@ -125,8 +134,22 @@ export default function Autocomplete({
           left: `${coords.left}px`,
         }}
       >
+        {showAll && (
+          <AutocompleteRow
+            role="option"
+            aria-selected={activeRowIndex === 0}
+            onClick={onSelectAll}
+            style={{
+              backgroundColor: activeRowIndex === 0 ? "var(--editableField-optionRow-selectedBg)" : "transparent",
+              cursor: "pointer",
+            }}
+          >
+            <strong>@all</strong>
+            <span>{allLabel}</span>
+          </AutocompleteRow>
+        )}
         {filteredUsers?.map((user, index) => {
-          const isActive = index === activeRowIndex;
+          const isActive = index + (showAll ? 1 : 0) === activeRowIndex;
 
           return (
             <AutocompleteRow
