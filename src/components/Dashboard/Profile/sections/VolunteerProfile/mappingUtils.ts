@@ -11,7 +11,7 @@ export function createMapping(items: ApiLanguageOption[]): Mapping {
   const titleToId: Record<string, number> = {};
   const titleToIdLower: Record<string, number> = {};
 
-  items.forEach((item) => {
+  items?.forEach((item) => {
     idToTitle[item.id] = item.title;
     titleToId[item.title] = item.id;
     titleToIdLower[item.title.toLowerCase()] = item.id;
