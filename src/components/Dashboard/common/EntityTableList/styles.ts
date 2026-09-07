@@ -12,7 +12,7 @@ export const Wrapper = styled.div<WrapperProps>`
   gap: var(--entity-table-gap);
   flex: 1;
   min-width: 0;
-  height: ${({ $isFewResults }) => ($isFewResults ? "50dvh" : "auto")};
+  height: ${({ $isFewResults }) => ($isFewResults ? "75dvh" : "auto")};
 `;
 
 export const ScrollableTableContainer = styled(TableContainer)`

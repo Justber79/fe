@@ -1,5 +1,4 @@
 import { TFunction } from "i18next";
-import React from "react";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 import { ReactNode } from "react";
@@ -44,10 +43,7 @@ export const createAgentTableColumns = (
     key: "district",
     label: t("dashboard.agents.table.district"),
     width: AGENT_COL_WIDTHS.district,
-    headerAction: React.createElement(DropdownAccordionFilter, {
-      items: dropdownFilters.districtFilters,
-      width: AGENT_COL_WIDTHS.district,
-    }),
+    headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={AGENT_COL_WIDTHS.district} />,
   },
   {
     key: "activeVolunteers",

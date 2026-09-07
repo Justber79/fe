@@ -1,7 +1,6 @@
 import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
-import React from "react";
 import DropdownAccordionFilter from "../common/DropDownFilter/DropdownAccordionFilter";
 import { FilterItem } from "../common/CardsFilter/types";
 
@@ -41,19 +40,17 @@ export const createOpportunityTableColumns = (
     key: "languages",
     label: t("dashboard.opportunities.table.languages"),
     width: OPPORTUNITY_COL_WIDTHS.languages,
-    headerAction: React.createElement(DropdownAccordionFilter, {
-      items: dropdownFilters.languageFilters,
-      width: OPPORTUNITY_COL_WIDTHS.languages,
-    }),
+    headerAction: (
+      <DropdownAccordionFilter items={dropdownFilters.languageFilters} width={OPPORTUNITY_COL_WIDTHS.languages} />
+    ),
   },
   {
     key: "district",
     label: t("dashboard.opportunities.table.district"),
     width: OPPORTUNITY_COL_WIDTHS.district,
-    headerAction: React.createElement(DropdownAccordionFilter, {
-      items: dropdownFilters.districtFilters,
-      width: OPPORTUNITY_COL_WIDTHS.district,
-    }),
+    headerAction: (
+      <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={OPPORTUNITY_COL_WIDTHS.district} />
+    ),
   },
   {
     key: "numberOfVolunteers",
