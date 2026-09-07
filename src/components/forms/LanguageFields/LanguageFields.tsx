@@ -46,12 +46,12 @@ export function LanguageFields({ languages, onChange, onFocus, t, availableLangu
 
   return (
     <div className={style["form-languages-wrapper"]} data-testid="language-fields-container" onFocus={onFocus}>
-      {languages.map((lang) => (
+      {languages.map((lang, index) => (
         <LanguageFieldRow
           key={`${lang.id}-${lang.language}-${lang.level}`}
           language={lang}
           disabledLanguages={disabledLanguages}
-          showRemove={lang.id !== 1}
+          showRemove={index !== 0}
           showLevel={showLevel}
           onUpdateLanguage={updateLanguage}
           onUpdateLevel={updateLevel}
