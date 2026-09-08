@@ -55,3 +55,12 @@ export function useCreatePost(onSuccess: () => void) {
     onSuccessCallback: onSuccess,
   });
 }
+
+export function useTogglePostBookmark(postId: number, bookmarked: boolean) {
+  return useMutationQuery<void, unknown>({
+    apiPath: `${apiPathPost}/${postId}/bookmark`,
+    method: bookmarked ? "delete" : "post",
+    queryKeyToInvalidate: POSTS_QUERY_KEY,
+    successMessage: bookmarked ? "dashboard.posts.bookmarkRemoved" : "dashboard.posts.bookmarkAdded",
+  });
+}

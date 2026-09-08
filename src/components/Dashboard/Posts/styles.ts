@@ -155,7 +155,21 @@ export const PostMenuButton = styled.button`
 
 export const PostMenuWrapper = styled.div`
   position: relative;
+`;
+
+export const PostHeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
   margin-left: auto;
+`;
+
+export const BookmarkButton = styled(PostMenuButton)`
+  color: var(--color-aubergine);
+
+  &[aria-pressed="true"] {
+    background: var(--color-pink-50);
+  }
 `;
 
 export const ActionMenu = styled.div`

@@ -538,6 +538,10 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
+      "addBookmark": "Save post for later",
+      "removeBookmark": "Remove post from saved items",
+      "bookmarkAdded": "Post saved for later",
+      "bookmarkRemoved": "Post removed from saved items",
       "created": "Post created successfully",
       "linkOpportunity": "Link opportunity",
       "searchOpportunities": "Search opportunities",
