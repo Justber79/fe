@@ -12,9 +12,10 @@ interface Props {
   variant?: "card" | "bar";
   onEdit: (event: ApiEventN4DGetList) => void;
   onDelete: (event: ApiEventN4DGetList) => void;
+  onPublicationChange: (event: ApiEventN4DGetList) => void;
 }
 
-export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) {
+export function EventCard({ event, variant = "card", onEdit, onDelete, onPublicationChange }: Props) {
   const { t, i18n } = useTranslation();
   const registrationUrl = getHttpUrl(event.linkRSVP);
 
@@ -26,6 +27,9 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
           <time>{eventDateRange(event, i18n.language)}</time>
         </BarDetails>
         <BarActions>
+          <TextButton type="button" onClick={() => onPublicationChange(event)}>
+            {t(event.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent")}
+          </TextButton>
           <TextButton type="button" onClick={() => onEdit(event)}>
             {t("dashboard.calendar.editEvent")}
           </TextButton>
@@ -67,6 +71,16 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
         )}
       </Meta>
       <Actions>
+        <Button
+          text={t(event.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent")}
+          onClick={() => onPublicationChange(event)}
+          height="40px"
+          width="auto"
+          textFontSize="var(--font-size-sm)"
+          padding="var(--spacing-8) var(--spacing-16)"
+          backgroundcolor="var(--color-aubergine)"
+          textColor="var(--color-white)"
+        />
         <Button
           text={t("dashboard.calendar.editEvent")}
           onClick={() => onEdit(event)}

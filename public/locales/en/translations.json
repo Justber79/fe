@@ -1573,6 +1573,12 @@
       "noPastEvents": "No past events to display.",
       "published": "Published",
       "draft": "Draft",
+      "publishEvent": "Publish event",
+      "unpublishEvent": "Unpublish",
+      "publishConfirmTitle": "Publish this event?",
+      "publishConfirmText": "Would you like to publish \"{{title}}\"?",
+      "unpublishConfirmTitle": "Unpublish this event?",
+      "unpublishConfirmText": "Would you like to unpublish \"{{title}}\"?",
       "editEvent": "Edit event",
       "deleteEvent": "Delete event",
       "openRegistration": "Open registration link",
@@ -1591,7 +1597,9 @@
       "messages": {
         "created": "Event created successfully",
         "updated": "Event updated successfully",
-        "deleted": "Event deleted successfully"
+        "deleted": "Event deleted successfully",
+        "published": "Event published successfully",
+        "unpublished": "Event unpublished successfully"
       },
       "createForm": {
         "eventTitle": "Event Title",
@@ -1623,6 +1631,8 @@
         "back": "Back",
         "next": "Next",
         "submit": "Submit",
+        "saveDraft": "Save as draft",
+        "saveChanges": "Save changes",
         "locationHelper": "e.g. Elsenstr., No. 87, 12435"
       }
     },

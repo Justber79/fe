@@ -37,6 +37,16 @@ export function useUpdateEvent(id: number, onSuccess: () => void) {
   });
 }
 
+export function useSetEventPublished(id?: number, active?: boolean, onSuccess?: () => void) {
+  return useMutationQuery<Pick<ApiEventN4DPatch, "active">, unknown>({
+    apiPath: `${apiPathEvent}/${id ?? 0}`,
+    method: "patch",
+    queryKeyToInvalidate: EVENT_QUERY_KEY,
+    successMessage: active ? "dashboard.calendar.messages.published" : "dashboard.calendar.messages.unpublished",
+    onSuccessCallback: onSuccess,
+  });
+}
+
 export function useDeleteEvent(id?: number) {
   return useMutationQuery<unknown, unknown>({
     apiPath: `${apiPathEvent}/${id ?? 0}`,

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { dateKey, eventOccursOnDate } from "@/utils/calendar";
-import { useDeleteEvent, useEvents } from "./useEvents";
+import { useDeleteEvent, useEvents, useSetEventPublished } from "./useEvents";
 
 export function useCalendar() {
   const { i18n } = useTranslation();
@@ -14,8 +14,12 @@ export function useCalendar() {
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const [showPast, setShowPast] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState<ApiEventN4DGetList | null>(null);
+  const [publicationEvent, setPublicationEvent] = useState<ApiEventN4DGetList | null>(null);
   const { data: events = [], isLoading, isError } = useEvents();
   const remove = useDeleteEvent(deletingEvent?.id);
+  const setPublished = useSetEventPublished(publicationEvent?.id, !publicationEvent?.active, () =>
+    setPublicationEvent(null),
+  );
 
   const monthEvents = useMemo(() => {
     const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
@@ -63,6 +67,7 @@ export function useCalendar() {
     selectedDateKey,
     showPast,
     deletingEvent,
+    publicationEvent,
     isLoading,
     isError,
     createEvent,
@@ -72,6 +77,12 @@ export function useCalendar() {
     nextMonth: () => changeMonth(1),
     togglePast: () => setShowPast((value) => !value),
     requestDelete: setDeletingEvent,
+    requestPublicationChange: setPublicationEvent,
+    cancelPublicationChange: () => setPublicationEvent(null),
+    confirmPublicationChange: () => {
+      if (publicationEvent) setPublished.mutate({ active: !publicationEvent.active });
+    },
+    isPublicationPending: setPublished.isPending,
     cancelDelete: () => setDeletingEvent(null),
     confirmDelete: () => {
       if (deletingEvent) remove.mutate(undefined, { onSettled: () => setDeletingEvent(null) });

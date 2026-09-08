@@ -23,9 +23,14 @@ interface Props {
   onTogglePast: () => void;
   onEdit: (event: ApiEventN4DGetList) => void;
   onDelete: (event: ApiEventN4DGetList) => void;
+  onPublicationChange: (event: ApiEventN4DGetList) => void;
   deletingEvent: ApiEventN4DGetList | null;
   onCancelDelete: () => void;
   onConfirmDelete: () => void;
+  publicationEvent: ApiEventN4DGetList | null;
+  onCancelPublicationChange: () => void;
+  onConfirmPublicationChange: () => void;
+  isPublicationPending: boolean;
 }
 
 export function Calendar(props: Props) {
@@ -55,6 +60,7 @@ export function Calendar(props: Props) {
           isError={props.isError}
           onEdit={props.onEdit}
           onDelete={props.onDelete}
+          onPublicationChange={props.onPublicationChange}
         />
         <PastEvents
           events={props.pastEvents}
@@ -63,6 +69,7 @@ export function Calendar(props: Props) {
           onToggle={props.onTogglePast}
           onEdit={props.onEdit}
           onDelete={props.onDelete}
+          onPublicationChange={props.onPublicationChange}
         />
       </Agenda>
       {props.deletingEvent && (
@@ -74,6 +81,30 @@ export function Calendar(props: Props) {
           compact
           onCancel={props.onCancelDelete}
           onConfirm={props.onConfirmDelete}
+        />
+      )}
+      {props.publicationEvent && (
+        <ConfirmationDialog
+          title={t(
+            props.publicationEvent.active
+              ? "dashboard.calendar.unpublishConfirmTitle"
+              : "dashboard.calendar.publishConfirmTitle",
+          )}
+          message={t(
+            props.publicationEvent.active
+              ? "dashboard.calendar.unpublishConfirmText"
+              : "dashboard.calendar.publishConfirmText",
+            { title: props.publicationEvent.title },
+          )}
+          confirmText={t(
+            props.publicationEvent.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent",
+          )}
+          cancelText={t("dashboard.calendar.createForm.cancel")}
+          compact
+          onCancel={props.onCancelPublicationChange}
+          onConfirm={props.onConfirmPublicationChange}
+          cancelDisabled={props.isPublicationPending}
+          confirmDisabled={props.isPublicationPending}
         />
       )}
     </Layout>

@@ -13,6 +13,7 @@ interface Props {
   onChange: (fields: Partial<EventFormData>) => void;
   onBack: () => void;
   onSubmit: () => void;
+  submitLabel: string;
   isSubmitEnabled: boolean;
 }
 
@@ -24,6 +25,7 @@ export function StepDateTime({
   onChange,
   onBack,
   onSubmit,
+  submitLabel,
   isSubmitEnabled,
 }: Props) {
   const { t } = useTranslation();
@@ -65,7 +67,7 @@ export function StepDateTime({
           padding="var(--button-padding)"
         />
         <Button
-          text={t("dashboard.calendar.createForm.submit")}
+          text={submitLabel}
           onClick={onSubmit}
           disabled={!isSubmitEnabled}
           width="auto"

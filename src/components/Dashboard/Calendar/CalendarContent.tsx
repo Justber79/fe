@@ -33,9 +33,14 @@ export function CalendarContent() {
         onTogglePast={calendar.togglePast}
         onEdit={calendar.editEvent}
         onDelete={calendar.requestDelete}
+        onPublicationChange={calendar.requestPublicationChange}
         deletingEvent={calendar.deletingEvent}
         onCancelDelete={calendar.cancelDelete}
         onConfirmDelete={calendar.confirmDelete}
+        publicationEvent={calendar.publicationEvent}
+        onCancelPublicationChange={calendar.cancelPublicationChange}
+        onConfirmPublicationChange={calendar.confirmPublicationChange}
+        isPublicationPending={calendar.isPublicationPending}
       />
     </Page>
   );

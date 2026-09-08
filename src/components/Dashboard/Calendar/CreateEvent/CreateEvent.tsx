@@ -142,7 +142,7 @@ export function CreateEvent({ eventId }: Props) {
     type: formData.type,
     linkRSVP: formData.registrationLink,
     address,
-    active: true,
+    active: false,
   });
   const toCreatePayload = (): ApiEventN4DCreate => ({
     ...toBasePayload(),
@@ -250,6 +250,9 @@ export function CreateEvent({ eventId }: Props) {
               onChange={update}
               onBack={handleBack}
               onSubmit={handleSubmit}
+              submitLabel={t(
+                eventId ? "dashboard.calendar.createForm.saveChanges" : "dashboard.calendar.createForm.saveDraft",
+              )}
               isSubmitEnabled={isNextEnabled() && !createEvent.isPending && !updateEvent.isPending}
             />
           )}

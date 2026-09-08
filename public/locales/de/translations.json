@@ -1585,6 +1585,12 @@
       "noPastEvents": "Keine vergangenen Veranstaltungen vorhanden.",
       "published": "Veröffentlicht",
       "draft": "Entwurf",
+      "publishEvent": "Veranstaltung veröffentlichen",
+      "unpublishEvent": "Veröffentlichung aufheben",
+      "publishConfirmTitle": "Diese Veranstaltung veröffentlichen?",
+      "publishConfirmText": "Möchten Sie \"{{title}}\" veröffentlichen?",
+      "unpublishConfirmTitle": "Veröffentlichung dieser Veranstaltung aufheben?",
+      "unpublishConfirmText": "Möchten Sie die Veröffentlichung von \"{{title}}\" aufheben?",
       "editEvent": "Veranstaltung bearbeiten",
       "deleteEvent": "Veranstaltung löschen",
       "openRegistration": "Anmeldelink öffnen",
@@ -1603,7 +1609,9 @@
       "messages": {
         "created": "Veranstaltung erfolgreich erstellt",
         "updated": "Veranstaltung erfolgreich aktualisiert",
-        "deleted": "Veranstaltung erfolgreich gelöscht"
+        "deleted": "Veranstaltung erfolgreich gelöscht",
+        "published": "Veranstaltung erfolgreich veröffentlicht",
+        "unpublished": "Veröffentlichung der Veranstaltung erfolgreich aufgehoben"
       },
       "createForm": {
         "eventTitle": "Veranstaltungstitel",
@@ -1635,6 +1643,8 @@
         "back": "Zurück",
         "next": "Weiter",
         "submit": "Absenden",
+        "saveDraft": "Als Entwurf speichern",
+        "saveChanges": "Änderungen speichern",
         "locationHelper": "z.B. Elsenstr., Nr. 87, 12435"
       }
     },
