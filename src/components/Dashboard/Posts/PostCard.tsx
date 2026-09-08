@@ -82,6 +82,15 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
     });
   }, [post.id, post.taggedPersons, post.text, t]);
 
+  const replyContextText = useMemo(
+    () =>
+      post.text.replace(/<@(\d+)>/g, (_token, id) => {
+        const person = post.taggedPersons.find(({ id: personId }) => personId === Number(id));
+        return `@${person?.fullName ?? t("dashboard.posts.unknownUser")}`;
+      }),
+    [post.taggedPersons, post.text, t],
+  );
+
   const startEdit = () => {
     const editableText = post.text.replace(/<@(\d+)>/g, (token, id) => {
       const person = post.taggedPersons.find((taggedPerson) => taggedPerson.id === Number(id));
@@ -196,7 +205,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
                 postId: post.id,
                 authorName: post.author.fullName,
                 createdAt: post.createdAt,
-                text: post.text,
+                text: replyContextText,
               })
             }
           >
