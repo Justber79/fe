@@ -49,7 +49,6 @@ export function Calendar(props: Props) {
       <Agenda>
         <UpcomingEvents
           events={props.upcomingEvents}
-          hasMonthEvents={props.events.length > 0}
           selectedDateKey={props.selectedDateKey}
           isLoading={props.isLoading}
           isError={props.isError}

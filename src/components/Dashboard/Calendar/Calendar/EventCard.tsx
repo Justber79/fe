@@ -41,7 +41,9 @@ export function EventCard({ event, variant = "card", onEdit, onDelete }: Props) 
     <Card>
       <CardHeader>
         <div>
-          <h4>{event.title}</h4>
+          <EventTitle type="button" onClick={() => onEdit(event)}>
+            {event.title}
+          </EventTitle>
           {event.shortDescription && <Description>{event.shortDescription}</Description>}
         </div>
         <Status $active={event.active}>
@@ -102,10 +104,23 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-16);
-  h4 {
-    margin: 0;
-    font-size: var(--font-size-md);
-    color: var(--color-midnight);
+`;
+const EventTitle = styled.button`
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-midnight);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  text-align: left;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-aubergine);
+    text-decoration: underline;
   }
 `;
 const Description = styled.p`
