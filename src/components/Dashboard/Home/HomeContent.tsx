@@ -1,5 +1,5 @@
 "use client";
-import { Heading2, Heading3, Heading4 } from "@/components/styled/text";
+import { Heading2, Heading3 } from "@/components/styled/text";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { UserRole } from "need4deed-sdk";
 import React from "react";
@@ -8,7 +8,7 @@ import { AgentOpportunityCards } from "./AgentOpportunityCards";
 import { CreateOpportunityButton } from "./CreateOpportunityButton";
 import { NewestOpportunities } from "./NewestOpportunities";
 import { NewestVolunteers } from "./NewestVolunteers";
-import { DashboardCardContainer, DashboardContentContainer } from "./styles";
+import { DashboardCardContainer, DashboardContentContainer, RelevantOppsWrapper } from "./styles";
 import { NewestTaggedComments } from "./NewestTaggedComments";
 import { VolunteerMostRelevantOppCards } from "./VolunteerMostRelevantOppCards";
 
@@ -32,8 +32,10 @@ export default function DashboardHomeContent() {
     return (
       <DashboardContentContainer>
         <Heading2>{t("dashboard.home.content.header")}</Heading2>
-        <Heading3>Most relevant opportunities</Heading3>
-        <Heading4>(based on district and availability)</Heading4>
+        <RelevantOppsWrapper>
+          <Heading3 margin={0}>{t("dashboard.home.content.mostRelevantOpp")}</Heading3>
+          <span>{t("dashboard.home.content.mostRelevantOppDesc")}</span>
+        </RelevantOppsWrapper>
         <VolunteerMostRelevantOppCards volunteerId={user?.volunteerId} />
       </DashboardContentContainer>
     );

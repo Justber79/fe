@@ -23,15 +23,19 @@ export function VolunteerMostRelevantOppCards({ volunteerId }: { volunteerId: nu
 
   return (
     <DashboardCardContainer>
-      {opportunities?.map((opp) => (
-        <OpportunityCard
-          key={String(opp.id)}
-          opportunity={opp as ApiVolunteerOpportunityGetList}
-          volunteerId={undefined}
-          activitiesList={activitiesList}
-          districtsList={districtsList}
-        />
-      ))}
+      {opportunities && opportunities?.length > 0 ? (
+        opportunities.map((opp) => (
+          <OpportunityCard
+            key={String(opp.id)}
+            opportunity={opp as ApiVolunteerOpportunityGetList}
+            volunteerId={undefined}
+            activitiesList={activitiesList}
+            districtsList={districtsList}
+          />
+        ))
+      ) : (
+        <Heading4>{t("dashboard.home.content.mostRelevantNoResults")}</Heading4>
+      )}
     </DashboardCardContainer>
   );
 }
