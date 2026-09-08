@@ -1,12 +1,12 @@
 "use client";
 import { apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
-import { ApiOptionLists, ApiVolunteerOpportunityGetList } from "need4deed-sdk";
+import { ApiOptionLists } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { Heading4 } from "@/components/styled/text";
 import { DashboardCardContainer } from "./styles";
-import { OpportunityCard } from "../Opportunities/OpportunityCard";
 import { useGetMostRelevantOpportunities } from "@/hooks/useGetMostRelevantOpportunities";
+import { OpportunityReadOnlyCard } from "../Opportunities/OpportunityReadOnlyCard";
 
 export function VolunteerMostRelevantOppCards({ volunteerId }: { volunteerId: number | undefined }) {
   const { t } = useTranslation();
@@ -18,20 +18,13 @@ export function VolunteerMostRelevantOppCards({ volunteerId }: { volunteerId: nu
   if (isLoading) return <Heading4>{t("dashboard.home.content.loading")}</Heading4>;
   if (isError) return <Heading4>{t("dashboard.home.content.error")}</Heading4>;
 
-  const activitiesList = apiFilterOptions?.activity ?? undefined;
   const districtsList = apiFilterOptions?.district ?? undefined;
 
   return (
     <DashboardCardContainer>
       {opportunities && opportunities?.length > 0 ? (
         opportunities.map((opp) => (
-          <OpportunityCard
-            key={String(opp.id)}
-            opportunity={opp as ApiVolunteerOpportunityGetList}
-            volunteerId={undefined}
-            activitiesList={activitiesList}
-            districtsList={districtsList}
-          />
+          <OpportunityReadOnlyCard key={opp.id} opportunity={opp} districtsList={districtsList} />
         ))
       ) : (
         <Heading4>{t("dashboard.home.content.mostRelevantNoResults")}</Heading4>

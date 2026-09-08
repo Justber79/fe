@@ -47,6 +47,6 @@ export const TagRow = styled.div<{ $isRead: boolean }>`
 `;
 
 export const RelevantOppsWrapper = styled.div`
-  display: flex,
-  flex-direction: column
+  display: flex;
+  flex-direction: column;
 `;
