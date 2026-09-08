@@ -1,4 +1,4 @@
-import { apiPathPost } from "@/config/constants";
+import { apiPathPost, cacheTTL } from "@/config/constants";
 import { fetchData } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -71,15 +71,15 @@ export function useGetPostReplies(postId: number, enabled: boolean) {
     queryKey: postRepliesQueryKey(postId),
     apiPath: `${apiPathPost}/${postId}/reply`,
     enabled,
+    staleTime: cacheTTL,
   });
 }
 
-export function useCreateReply(postId: number, onSuccess: () => void) {
+export function useCreateReply(postId: number) {
   return useMutationQuery<ApiPostReplyPost, unknown>({
     apiPath: `${apiPathPost}/${postId}/reply`,
     queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
     successMessage: "dashboard.posts.replyCreated",
-    onSuccessCallback: onSuccess,
   });
 }
 

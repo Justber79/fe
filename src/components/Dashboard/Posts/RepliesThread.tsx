@@ -39,7 +39,7 @@ export function RepliesThread({ postId, onReply }: Props) {
   return (
     <RepliesList>
       {grouped.roots.map((reply) => (
-        <ReplyCard key={reply.id} reply={reply} childReplies={grouped.children.get(reply.id) ?? []} onReply={onReply} />
+        <ReplyCard key={reply.id} reply={reply} childrenByParent={grouped.children} onReply={onReply} />
       ))}
       {grouped.roots.length === 0 && <ReplyState>{t("dashboard.posts.noReplies")}</ReplyState>}
     </RepliesList>

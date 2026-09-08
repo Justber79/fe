@@ -37,6 +37,8 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
+  const replyTargetRef = useRef(replyTarget);
+  replyTargetRef.current = replyTarget;
   const mention = useCommentTag(text, setText, textareaRef, null);
   const { resetTags, setShowAutocomplete } = mention;
   const { data: opportunities } = useGetQuery<ApiOpportunityGetList[]>({
@@ -61,10 +63,7 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
     [onCancelReply, resetTags],
   );
   const createPost = useCreatePost(reset);
-  const createReply = useCreateReply(replyTarget?.postId ?? 0, () => {
-    reset();
-    onCancelReply(false);
-  });
+  const createReply = useCreateReply(replyTarget?.postId ?? 0);
   const closeOpportunityPicker = useCallback(() => {
     setOpportunityOpen(false);
     setQuery("");
@@ -89,13 +88,17 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
     return () => document.removeEventListener("keydown", escape);
   }, [cancelReplyMode, closePickers, replyTarget]);
 
+  const replyTargetKey = replyTarget?.targetKey;
+
   useEffect(() => {
-    if (!replyTarget) return;
+    if (!replyTargetKey) return;
     setText("");
     setSelected([]);
+    setOpportunityOpen(false);
+    setQuery("");
     resetTags();
     textareaRef.current?.focus();
-  }, [replyTarget, resetTags]);
+  }, [replyTargetKey, resetTags]);
 
   const insertAtCursor = useCallback(
     (value: string) => {
@@ -120,11 +123,21 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   );
   const submit = () => {
     if (replyTarget) {
-      createReply.mutate({
-        postId: replyTarget.postId,
-        parentReplyId: replyTarget.parentReplyId,
-        text: text.trim(),
-      });
+      const submittedTargetKey = replyTarget.targetKey;
+      createReply.mutate(
+        {
+          postId: replyTarget.postId,
+          parentReplyId: replyTarget.parentReplyId,
+          text: text.trim(),
+        },
+        {
+          onSuccess: () => {
+            if (replyTargetRef.current?.targetKey !== submittedTargetKey) return;
+            reset();
+            onCancelReply(false);
+          },
+        },
+      );
       return;
     }
 

@@ -30,13 +30,13 @@ import type { ReplyTarget } from "./types";
 
 interface Props {
   reply: ApiPostReplyGet;
-  childReplies?: ApiPostReplyGet[];
+  childrenByParent: Map<number, ApiPostReplyGet[]>;
   onReply: (target: ReplyTarget) => void;
   nested?: boolean;
   conversationParentId?: number;
 }
 
-export function ReplyCard({ reply, childReplies = [], onReply, nested = false, conversationParentId }: Props) {
+export function ReplyCard({ reply, childrenByParent, onReply, nested = false, conversationParentId }: Props) {
   const { t, i18n } = useTranslation();
   const currentUser = useCurrentUser(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,6 +56,7 @@ export function ReplyCard({ reply, childReplies = [], onReply, nested = false, c
     .map((name) => name[0]?.toUpperCase())
     .join("");
   const createdAt = new Date(reply.createdAt);
+  const childReplies = childrenByParent.get(reply.id) ?? [];
 
   const closeEdit = useCallback(() => {
     if (updateReply.isPending) return;
@@ -132,6 +133,7 @@ export function ReplyCard({ reply, childReplies = [], onReply, nested = false, c
           type="button"
           onClick={() =>
             onReply({
+              targetKey: `reply-${reply.id}`,
               postId: reply.postId,
               parentReplyId: conversationParentId ?? reply.id,
               authorName: reply.author.fullName,
@@ -147,7 +149,14 @@ export function ReplyCard({ reply, childReplies = [], onReply, nested = false, c
       {childReplies.length > 0 && (
         <ChildReplies>
           {childReplies.map((child) => (
-            <ReplyCard key={child.id} reply={child} onReply={onReply} nested conversationParentId={reply.id} />
+            <ReplyCard
+              key={child.id}
+              reply={child}
+              childrenByParent={childrenByParent}
+              onReply={onReply}
+              nested
+              conversationParentId={conversationParentId ?? reply.id}
+            />
           ))}
         </ChildReplies>
       )}

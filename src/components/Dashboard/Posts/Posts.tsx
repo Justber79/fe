@@ -14,7 +14,7 @@ export function Posts() {
 
   const startReply = useCallback((target: ReplyTarget) => {
     setReplyTarget(target);
-    setExpandedPostIds(new Set([target.postId]));
+    setExpandedPostIds((current) => new Set(current).add(target.postId));
   }, []);
 
   const toggleReplies = useCallback((postId: number) => {
@@ -27,18 +27,19 @@ export function Posts() {
     setReplyTarget((current) => (current?.postId === postId ? null : current));
   }, []);
 
-  const cancelReply = useCallback((collapseThread = false) => {
-    setReplyTarget((current) => {
-      if (collapseThread && current) {
+  const cancelReply = useCallback(
+    (collapseThread = false) => {
+      if (collapseThread && replyTarget) {
         setExpandedPostIds((ids) => {
           const next = new Set(ids);
-          next.delete(current.postId);
+          next.delete(replyTarget.postId);
           return next;
         });
       }
-      return null;
-    });
-  }, []);
+      setReplyTarget(null);
+    },
+    [replyTarget],
+  );
 
   return (
     <DashboardLayout>

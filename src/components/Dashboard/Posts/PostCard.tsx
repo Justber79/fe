@@ -191,7 +191,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
           </OpportunityList>
         )}
         <PostReplyActions>
-          {post.replyCount > 0 && (
+          {(post.replyCount > 0 || isRepliesExpanded) && (
             <EditButton type="button" onClick={onToggleReplies}>
               {t(isRepliesExpanded ? "dashboard.posts.hideReplies" : "dashboard.posts.showReplies", {
                 count: post.replyCount,
@@ -202,6 +202,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
             type="button"
             onClick={() =>
               onReply({
+                targetKey: `post-${post.id}`,
                 postId: post.id,
                 authorName: post.author.fullName,
                 createdAt: post.createdAt,
