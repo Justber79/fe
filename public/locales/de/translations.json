@@ -544,6 +544,17 @@
     "posts": {
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
+      "created": "Beitrag erfolgreich erstellt",
+      "linkOpportunity": "Ehrenamtsbedarf verknüpfen",
+      "searchOpportunities": "Ehrenamtsbedarfe suchen",
+      "done": "Fertig",
+      "addEmoji": "Emoji hinzufügen",
+      "searchEmoji": "Emojis suchen",
+      "quickEmoji": "Häufig verwendet",
+      "browseEmoji": "Kategorien durchsuchen",
+      "everyone": "Alle",
+      "removeOpportunity": "Ehrenamtsbedarf entfernen",
+      "noOpportunities": "Keine Ehrenamtsbedarfe gefunden",
       "empty": "Noch keine Beiträge. Sei der Erste, der eine Nachricht postet.",
       "options": "Beitragsoptionen",
       "edit": "Beitrag bearbeiten",
@@ -2247,12 +2258,34 @@
     "title": "Ehrenamtlich werden",
     "subtitle": "Erstellen Sie ein Konto, um sich ehrenamtlich für Geflüchtete in Berlin zu engagieren.",
     "next": "Weiter",
+    "back": "Zurück",
+    "submit": "Absenden",
     "alreadyUser": "Bereits registriert?",
     "loginLink": "In Ihrem Konto anmelden",
+    "completion": {
+      "title": "Schließen Sie die Einrichtung Ihres Kontos ab",
+      "subtitle": "Erzählen Sie uns etwas über sich"
+    },
     "steps": {
       "account": {
         "title": "Ihr Konto",
         "description": "Geben Sie Ihre persönlichen Daten ein, um ein Login zu erstellen."
+      },
+      "availabilityInfo": {
+        "title": "Verfügbarkeit, Aktivitäten & Fähigkeiten",
+        "description": "Wann sind Sie verfügbar, an welchen Aktivitäten sind Sie interessiert und welche Fähigkeiten bringen Sie mit?"
+      },
+      "address": {
+        "title": "Standort & Sprachen",
+        "description": "Wo befinden Sie sich und welche Sprachen sprechen Sie?"
+      },
+      "certificates": {
+        "title": "Letzte Details",
+        "description": "Geben Sie an, ob Sie die folgenden Zertifikate besitzen und wie Sie von uns erfahren haben."
+      },
+      "review": {
+        "title": "Überprüfung",
+        "description": "Bitte überprüfen Sie Ihre Angaben vor dem Absenden."
       }
     },
     "fields": {
@@ -2265,12 +2298,87 @@
       "consent": {
         "header": "Hiermit stimme ich zu:",
         "and": "und"
-      }
+      },
+      "postcode": "PLZ (Berlin) Deines Wohnorts*",
+      "locations": {
+        "header": "Bevorzugte Bezirke* (Berlin)",
+        "para": "*Denke daran, dass die meisten Unterkünfte außerhalb des Rings liegen!",
+        "error": "",
+        "helpText": "Die möglichen ehrenamtlichen Tätigkeiten, die wir Dir schicken, basieren sowohl auf Deinen bevorzugten Bezirken als auch auf der Postleitzahl Deines Wohnorts.",
+        "helpTitle": ""
+      },
+      "availability": {
+        "header": "Verfügbarkeit*",
+        "para": "*Denke daran, dass die meisten Tätigkeiten innerhalb der regulären Arbeitszeit von 9-17 Uhr stattfinden, zumindest am Anfang!",
+        "error": "",
+        "helpText": "Die Verfügbarkeiten von Mo-So beziehen sich auf regelmäßige ehrenamtliche Tätigkeiten. Wenn Deine Verfügbarkeiten auf bestimmte Zeiträume begrenzt sind oder erklärt werden müssen, schreibe dies bitte im letzten Abschnitt in die Kommentare.",
+        "helpTitle": ""
+      },
+      "languages": {
+        "header": "Sprachen*",
+        "headerWithoutAsterick": "Sprachen",
+        "para": "*Wenn Du Deine Sprache nicht findest, wähle bitte \"Andere\" und gib Deine bevorzugte Sprache im Kommentarfeld unten an",
+        "addLanguage": "Sprache hinzufügen",
+        "chooseLanguage": "Sprache auswählen",
+        "chooseLevel": "Niveau auswählen",
+        "removeLanguage": "Entfernen",
+        "language": "Sprache",
+        "level": "Niveau",
+        "languagesNative": {
+          "header": "Muttersprache",
+          "error": ""
+        },
+        "languagesFluent": {
+          "header": "Fließend",
+          "error": "Bitte wähle mindestens eine Sprache aus"
+        },
+        "languagesIntermediate": {
+          "header": "Mittelstufe"
+        },
+        "singleLevelError": "Bitte gib nur ein Niveau pro Sprache an",
+        "helpText": "Fließend bedeutet, dass Du denkst, dass Du bei Bedarf in dieser Sprache übersetzen kannst. Die wählbaren Sprachen orientieren sich an den Bedarfen der Geflüchteten. Wenn die Sprache, die Du als Muttersprache oder fließend beherrschst, nicht hier aufgelistet ist, füge sie bitte im letzten Kommentarfeld hinzu!",
+        "helpTitle": ""
+      },
+      "activities": {
+        "header": "Bevorzugte Aktivitäten*",
+        "error": "Bitte wähle mindestens eine Aktivität aus",
+        "helpText": "Dies sind die häufigsten Bedarfe, die ehrenamtliche Unterstützung erfordern. Manchmal können sie sich ändern, sobald Du mit der ehrenamtlichen Arbeit beginnst.",
+        "helpTitle": ""
+      },
+      "skills": {
+        "header": "Zusätzliche Fähigkeiten oder Erfahrungen",
+        "helpText": "Alles, was Du an Erfahrungen, Fähigkeiten oder Fachwissen teilen kannst, kann nützlich sein. Aber keine Sorge, es ist keine Voraussetzung für ehrenamtliches Engagement!",
+        "helpTitle": ""
+      },
+      "certOfGoodConduct": {
+        "header": "Erweitertes Führungszeugnis*",
+        "error": "Bitte wähle mindestens eine Option aus",
+        "why": "Warum brauche ich ein Führungszeugnis?",
+        "true": "Ich habe ein erweitertes Führungszeugnis.",
+        "false": "Es muss beantragt werden.",
+        "helpText": "",
+        "helpTitle": ""
+      },
+      "certMeaslesVaccination": {
+        "header": "Masernimpfnachweis*",
+        "error": "Bitte wähle mindestens eine Option aus",
+        "true": "Ich habe einen Masernimpfnachweis.",
+        "false": "Ich habe noch keinen Nachweis und reiche ihn nach.",
+        "helpText": "",
+        "helpTitle": ""
+      },
+      "leadFrom": "Wie hast Du von uns erfahren?",
+      "comments": "Kommentare (andere Sprachen, Zeiten, Standorte, Aktivitäten usw.)"
     },
     "errors": {
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
       "passwordMismatch": "Die Passwörter stimmen nicht überein",
-      "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein"
+      "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein",
+      "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail."
+    },
+    "success": {
+      "title": "Registrierung erfolgreich!",
+      "description": "Ihr Konto wurde erstellt. Sie werden in Kürze zur Anmeldeseite weitergeleitet."
     },
     "checkEmail": {
       "title": "Prüfen Sie Ihre E-Mail",

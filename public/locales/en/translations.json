@@ -538,6 +538,17 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
+      "created": "Post created successfully",
+      "linkOpportunity": "Link opportunity",
+      "searchOpportunities": "Search opportunities",
+      "done": "Done",
+      "addEmoji": "Add emoji",
+      "searchEmoji": "Search emojis",
+      "quickEmoji": "Quick emojis",
+      "browseEmoji": "Browse categories",
+      "everyone": "Everyone",
+      "removeOpportunity": "Remove opportunity",
+      "noOpportunities": "No opportunities found",
       "empty": "No posts yet. Be the first to post a message.",
       "options": "Post options",
       "edit": "Edit post",
@@ -1903,12 +1914,34 @@
     "title": "Become a volunteer",
     "subtitle": "Create an account to start volunteering with refugees in Berlin.",
     "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
     "alreadyUser": "Already registered?",
     "loginLink": "Login to your account",
+    "completion": {
+      "title": "Finish setting up your account",
+      "subtitle": "Tell us about your yourself"
+    },
     "steps": {
       "account": {
         "title": "Your account",
         "description": "Enter your personal details to create a login."
+      },
+      "availabilityInfo": {
+        "title": "Availability, activities & skills",
+        "description": "When are you available, what activities are you interested in and what skills do you have?"
+      },
+      "address": {
+        "title": "Location & languages",
+        "description": "Where are you located and what languages do you speak?"
+      },
+      "certificates": {
+        "title": "Final details",
+        "description": "Declare whether you have the following certificates along with how you heard of us"
+      },
+      "review": {
+        "title": "Review",
+        "description": "Please check your details before submitting."
       }
     },
     "fields": {
@@ -1921,12 +1954,76 @@
       "consent": {
         "header": "I hereby agree to the:",
         "and": "and"
-      }
+      },
+      "postcode": "PLZ (Berlin) of your place of residence*",
+      "locations": {
+        "header": "Preferred districts* (Berlin)",
+        "para": "*keep in mind that most accommodation centers are outside the ring!",
+        "helpText": "The offers we send you will be based on your preferred districts and the zip code of your place of residence.",
+        "helpTitle": ""
+      },
+      "availability": {
+        "header": "Availability*",
+        "para": "*keep in mind that most opportunities are limited to the 9-17 working hours, at least for the beginning!",
+        "helpText": "The Mon-Sun availabilities refer to regularly repeating volunteering. If the time frames are limited to some periods or need explaining, please write in the comments at the last section",
+        "helpTitle": ""
+      },
+      "languages": {
+        "header": "Languages*",
+        "headerWithoutAsterick": "Languages",
+        "para": "*if you can't find your language, please select \"Other\" and indicate your preferable language in comments section bellow",
+        "addLanguage": "Add language",
+        "chooseLanguage": "Choose a language",
+        "chooseLevel": "Choose a level",
+        "removeLanguage": "Remove",
+        "language": "Language",
+        "level": "Level",
+        "languagesNative": {
+          "header": "Native"
+        },
+        "languagesFluent": {
+          "header": "Fluent",
+          "error": "Please pick at least one language"
+        },
+        "languagesIntermediate": {
+          "header": "Intermediate"
+        },
+        "singleLevelError": "Please pick a language at one level only",
+        "helpText": "Fluent means you think you can support it in case some translations between languages are needed\nThese languages are oriented by the needs of refugees, if the language you are native or fluent at is not here, please add it in the last comment section!",
+        "helpTitle": ""
+      },
+      "activities": {
+        "header": "Preferred Activities*",
+        "error": "Please pick at least one activity",
+        "helpText": "These are the most common needs that require voluntary support. Sometimes they can change once you started volunteering."
+      },
+      "skills": {
+        "header": "Additional skills or experience",
+        "helpText": "Anything you feel that you can share from your experience, abilities or expertise can  be useful to know, but don't worry, its not a must for volunteering!"
+      },
+      "certOfGoodConduct": {
+        "header": "Certificate of Good Conduct (Erweitertes Führungszeungnis)*",
+        "why": "Why do I need this?",
+        "true": "I have one",
+        "false": " Need to apply"
+      },
+      "certMeaslesVaccination": {
+        "header": "Certificate of Measles Vaccination*",
+        "true": "I have one",
+        "false": "Will turn in later"
+      },
+      "leadFrom": "Where did you hear about us?",
+      "comments": "Comments (other languages, times, locations, activities, etc.)"
+    },
+    "success": {
+      "title": "Registration successful!",
+      "description": "Your account has been created. You will be redirected to the login page shortly."
     },
     "errors": {
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
-      "phoneTooShort": "Phone number must be at least 7 characters"
+      "phoneTooShort": "Phone number must be at least 7 characters",
+      "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email."
     },
     "checkEmail": {
       "title": "Check your email",
