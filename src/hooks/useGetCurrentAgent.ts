@@ -17,6 +17,8 @@ export const useGetCurrentAgent = () => {
   });
 
   const agentId = user?.agentId;
+  const volunteerId = user?.volunteerId;
+  const userRole = user?.role;
   // test here for multiple ngos, add more agentids
   const agentIds = [agentId];
 
@@ -43,5 +45,7 @@ export const useGetCurrentAgent = () => {
     agentId,
     isLoading: userLoading || agentQueries.some((q) => q.isLoading),
     currentAgents,
+    volunteerId,
+    userRole,
   };
 };
