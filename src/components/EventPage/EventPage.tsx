@@ -4,7 +4,8 @@ import { Button } from "@/components/core/button";
 import { PageLayout } from "@/components/Layout";
 import { Heading1, Heading2, Paragraph } from "@/components/styled/text";
 import { useEvents } from "@/hooks/useEvents";
-import { formatEventDate, getHttpUrl, getUpcomingEvent } from "@/utils/events";
+import { eventDateRange } from "@/utils/calendar";
+import { getHttpUrl, getUpcomingEvent } from "@/utils/events";
 import { CalendarBlankIcon, MapPinIcon } from "@phosphor-icons/react";
 import { EventN4DType } from "need4deed-sdk";
 import { useMemo } from "react";
@@ -137,7 +138,7 @@ export function EventPage() {
               <Details aria-label={t("eventPage.details")}>
                 <Detail>
                   <CalendarBlankIcon size={22} aria-hidden />
-                  <span>{formatEventDate(event, i18n.language)}</span>
+                  <span>{eventDateRange(event, i18n.language)}</span>
                 </Detail>
                 <Detail>
                   <MapPinIcon size={22} aria-hidden />
