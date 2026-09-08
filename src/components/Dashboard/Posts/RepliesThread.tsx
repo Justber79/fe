@@ -19,9 +19,10 @@ export function RepliesThread({ postId, onReply }: Props) {
   const grouped = useMemo(() => {
     const children = new Map<number, ApiPostReplyGet[]>();
     const roots: ApiPostReplyGet[] = [];
+    const replyIds = new Set(replies.map((reply) => reply.id));
 
     replies.forEach((reply) => {
-      if (reply.parentReplyId === null) roots.push(reply);
+      if (reply.parentReplyId === null || !replyIds.has(reply.parentReplyId)) roots.push(reply);
       else children.set(reply.parentReplyId, [...(children.get(reply.parentReplyId) ?? []), reply]);
     });
 

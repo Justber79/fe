@@ -38,6 +38,7 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const replyTargetRef = useRef(replyTarget);
+  const previousReplyTargetKeyRef = useRef(replyTarget?.targetKey);
   replyTargetRef.current = replyTarget;
   const mention = useCommentTag(text, setText, textareaRef, null);
   const { resetTags, setShowAutocomplete } = mention;
@@ -91,13 +92,18 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   const replyTargetKey = replyTarget?.targetKey;
 
   useEffect(() => {
-    if (!replyTargetKey) return;
-    setText("");
-    setSelected([]);
-    setOpportunityOpen(false);
-    setQuery("");
-    resetTags();
-    textareaRef.current?.focus();
+    const wasReplying = Boolean(previousReplyTargetKeyRef.current);
+
+    if (replyTargetKey || wasReplying) {
+      setText("");
+      setSelected([]);
+      setOpportunityOpen(false);
+      setQuery("");
+      resetTags();
+    }
+    if (replyTargetKey) textareaRef.current?.focus();
+
+    previousReplyTargetKeyRef.current = replyTargetKey;
   }, [replyTargetKey, resetTags]);
 
   const insertAtCursor = useCallback(
@@ -122,6 +128,11 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
     [opportunities, query],
   );
   const submit = () => {
+    // Reply mode may be cleared by the parent when its thread is collapsed.
+    // Do not allow that reply draft to become a top-level post before the
+    // cleanup effect has cleared the composer state.
+    if (!replyTarget && previousReplyTargetKeyRef.current) return;
+
     if (replyTarget) {
       const submittedTargetKey = replyTarget.targetKey;
       createReply.mutate(
