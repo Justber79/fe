@@ -1,4 +1,4 @@
-import { apiPathUser, cacheTTL } from "@/config/constants";
+import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useState, useCallback, useEffect } from "react";
@@ -10,6 +10,7 @@ export function useCommentTag(
   value: string,
   setNewCommentText?: (text: string) => void,
   textAreaRef?: React.RefObject<HTMLTextAreaElement | null> | null,
+  userRole: UserRole | null = UserRole.COORDINATOR,
 ) {
   const [tags, setTags] = useState<{ id: number; name: string; personId: number }[]>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -18,11 +19,12 @@ export function useCommentTag(
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
   const { data: users } = useGetQuery<ApiUserGetWithPersonId[]>({
-    queryKey: ["users", "coordinators"],
+    queryKey: ["users", userRole ?? "all"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
-      role: UserRole.COORDINATOR,
+      ...(userRole ? { role: userRole } : {}),
+      ...(userRole === null ? { limit: MAX_PAGE_LIMIT } : {}),
     },
     staleTime: cacheTTL,
     enabled: !!setNewCommentText,
@@ -79,18 +81,23 @@ export function useCommentTag(
     return elements;
   }, [value, tags, users]);
 
-  const handleTagAdd = (userId: number, fullName: string, personId: number) => {
-    if (!value || !textAreaRef?.current) return null;
-    const cursorPosition = textAreaRef.current.selectionStart;
-    const textBeforeCaret = value.substring(0, cursorPosition);
-    const textAfterCaret = value.substring(cursorPosition);
-    const lastAtIndex = textBeforeCaret.lastIndexOf("@");
+  const handleTagAdd = useCallback(
+    (userId: number, fullName: string, personId: number) => {
+      if (!value || !textAreaRef?.current) return null;
+      const cursorPosition = textAreaRef.current.selectionStart;
+      const textBeforeCaret = value.substring(0, cursorPosition);
+      const textAfterCaret = value.substring(cursorPosition);
+      const lastAtIndex = textBeforeCaret.lastIndexOf("@");
 
-    const newText = textBeforeCaret.substring(0, lastAtIndex) + `@${fullName} ` + textAfterCaret;
-    setNewCommentText?.(newText);
-    setTags((prev) => [...prev, { id: userId, name: fullName, personId }]);
-    setShowAutocomplete(false);
-  };
+      const newText = textBeforeCaret.substring(0, lastAtIndex) + `@${fullName} ` + textAfterCaret;
+      setNewCommentText?.(newText);
+      setTags((prev) => [...prev, { id: userId, name: fullName, personId }]);
+      setShowAutocomplete(false);
+    },
+    [setNewCommentText, textAreaRef, value],
+  );
+
+  const resetTags = useCallback(() => setTags([]), []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!showAutocomplete || filteredListLength === 0) return;
@@ -183,6 +190,7 @@ export function useCommentTag(
     setShowAutocomplete,
     handleTagAdd,
     tags,
+    resetTags,
     activeRowIndex,
     setFilteredListLength,
     setOnSelectTrigger,
