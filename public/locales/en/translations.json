@@ -521,7 +521,11 @@
         "noTaggedComments": "You are currently not tagged in any comments",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "error": "There was an error when loading the page. Please refresh",
+        "mostRelevantOpp": "Most relevant opportunities",
+        "mostRelevantOppDesc": "(based on district and availability)",
+        "mostRelevantNoResults": "No results are showing. Try adjusting your availability or district on your profile to see more results"
       },
       "sidebar": {
         "home": "Home",
@@ -587,7 +591,8 @@
     },
     "login": {
       "login": "Log in",
-      "createAccount": "Create account",
+      "createNgoAccount": "Create an NGO account",
+      "createVolunteerAccount": "Create a volunteer account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
@@ -1149,6 +1154,7 @@
     },
     "profile": {
       "loading": "Loading profile...",
+      "notVolProfSetUp": "Your volunteer profile is not set up yet — please complete registration.",
       "notSetUp": "Your organisation profile is not set up yet — please complete registration.",
       "nextNgoProfile": "Next NGO Profile",
       "prevNgoProfile": "Previous NGO Profile"
