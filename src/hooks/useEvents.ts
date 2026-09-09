@@ -27,22 +27,16 @@ export function useCreateEvent(onSuccess: (event: ApiEventN4DGet) => void) {
   });
 }
 
-export function useUpdateEvent(id: number, onSuccess: () => void) {
+export function useUpdateEvent(
+  id: number,
+  onSuccess: () => void | Promise<void>,
+  successMessage = "dashboard.calendar.messages.updated",
+) {
   return useMutationQuery<ApiEventN4DPatch, unknown>({
     apiPath: `${apiPathEvent}/${id}`,
     method: "patch",
     queryKeyToInvalidate: EVENT_QUERY_KEY,
-    successMessage: "dashboard.calendar.messages.updated",
-    onSuccessCallback: onSuccess,
-  });
-}
-
-export function useSetEventPublished(id?: number, active?: boolean, onSuccess?: () => void) {
-  return useMutationQuery<Pick<ApiEventN4DPatch, "active">, unknown>({
-    apiPath: `${apiPathEvent}/${id ?? 0}`,
-    method: "patch",
-    queryKeyToInvalidate: EVENT_QUERY_KEY,
-    successMessage: active ? "dashboard.calendar.messages.published" : "dashboard.calendar.messages.unpublished",
+    successMessage,
     onSuccessCallback: onSuccess,
   });
 }

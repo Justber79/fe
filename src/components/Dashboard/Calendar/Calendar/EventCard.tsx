@@ -18,6 +18,9 @@ interface Props {
 export function EventCard({ event, variant = "card", onEdit, onDelete, onPublicationChange }: Props) {
   const { t, i18n } = useTranslation();
   const registrationUrl = getHttpUrl(event.linkRSVP);
+  const publicationActionLabel = t(
+    event.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent",
+  );
 
   if (variant === "bar") {
     return (
@@ -28,7 +31,7 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         </BarDetails>
         <BarActions>
           <TextButton type="button" onClick={() => onPublicationChange(event)}>
-            {t(event.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent")}
+            {publicationActionLabel}
           </TextButton>
           <TextButton type="button" onClick={() => onEdit(event)}>
             {t("dashboard.calendar.editEvent")}
@@ -72,7 +75,7 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
       </Meta>
       <Actions>
         <Button
-          text={t(event.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent")}
+          text={publicationActionLabel}
           onClick={() => onPublicationChange(event)}
           height="40px"
           width="auto"

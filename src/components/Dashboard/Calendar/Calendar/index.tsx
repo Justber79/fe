@@ -27,6 +27,7 @@ interface Props {
   deletingEvent: ApiEventN4DGetList | null;
   onCancelDelete: () => void;
   onConfirmDelete: () => void;
+  isDeletePending: boolean;
   publicationEvent: ApiEventN4DGetList | null;
   onCancelPublicationChange: () => void;
   onConfirmPublicationChange: () => void;
@@ -35,6 +36,39 @@ interface Props {
 
 export function Calendar(props: Props) {
   const { t } = useTranslation();
+  const publicationAction = props.publicationEvent
+    ? {
+        title: t(
+          props.publicationEvent.active
+            ? "dashboard.calendar.unpublishConfirmTitle"
+            : "dashboard.calendar.publishConfirmTitle",
+        ),
+        message: t(
+          props.publicationEvent.active
+            ? "dashboard.calendar.unpublishConfirmText"
+            : "dashboard.calendar.publishConfirmText",
+          { title: props.publicationEvent.title },
+        ),
+        confirmText: t(
+          props.publicationEvent.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent",
+        ),
+        onCancel: props.onCancelPublicationChange,
+        onConfirm: props.onConfirmPublicationChange,
+        pending: props.isPublicationPending,
+      }
+    : null;
+  const deleteAction = props.deletingEvent
+    ? {
+        title: t("dashboard.calendar.deleteConfirmTitle"),
+        message: t("dashboard.calendar.deleteConfirmText", { title: props.deletingEvent.title }),
+        confirmText: t("dashboard.calendar.deleteEvent"),
+        onCancel: props.onCancelDelete,
+        onConfirm: props.onConfirmDelete,
+        pending: props.isDeletePending,
+      }
+    : null;
+  const confirmationAction = publicationAction ?? deleteAction;
+
   return (
     <Layout>
       <CalendarAside>
@@ -72,39 +106,17 @@ export function Calendar(props: Props) {
           onPublicationChange={props.onPublicationChange}
         />
       </Agenda>
-      {props.deletingEvent && (
+      {confirmationAction && (
         <ConfirmationDialog
-          title={t("dashboard.calendar.deleteConfirmTitle")}
-          message={t("dashboard.calendar.deleteConfirmText", { title: props.deletingEvent.title })}
-          confirmText={t("dashboard.calendar.deleteEvent")}
+          title={confirmationAction.title}
+          message={confirmationAction.message}
+          confirmText={confirmationAction.confirmText}
           cancelText={t("dashboard.calendar.createForm.cancel")}
           compact
-          onCancel={props.onCancelDelete}
-          onConfirm={props.onConfirmDelete}
-        />
-      )}
-      {props.publicationEvent && (
-        <ConfirmationDialog
-          title={t(
-            props.publicationEvent.active
-              ? "dashboard.calendar.unpublishConfirmTitle"
-              : "dashboard.calendar.publishConfirmTitle",
-          )}
-          message={t(
-            props.publicationEvent.active
-              ? "dashboard.calendar.unpublishConfirmText"
-              : "dashboard.calendar.publishConfirmText",
-            { title: props.publicationEvent.title },
-          )}
-          confirmText={t(
-            props.publicationEvent.active ? "dashboard.calendar.unpublishEvent" : "dashboard.calendar.publishEvent",
-          )}
-          cancelText={t("dashboard.calendar.createForm.cancel")}
-          compact
-          onCancel={props.onCancelPublicationChange}
-          onConfirm={props.onConfirmPublicationChange}
-          cancelDisabled={props.isPublicationPending}
-          confirmDisabled={props.isPublicationPending}
+          onCancel={confirmationAction.onCancel}
+          onConfirm={confirmationAction.onConfirm}
+          cancelDisabled={confirmationAction.pending}
+          confirmDisabled={confirmationAction.pending}
         />
       )}
     </Layout>
