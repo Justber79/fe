@@ -1162,6 +1162,7 @@
     "profile": {
       "loading": "Profil wird geladen...",
       "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
+      "notVolProfSetUp": "Ihr Ehrenamtsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
       "nextNgoProfile": "Nächstes NGO-Profil",
       "prevNgoProfile": "Vorheriges NGO-Profil"
     },
