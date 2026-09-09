@@ -591,7 +591,8 @@
     },
     "login": {
       "login": "Log in",
-      "createAccount": "Create account",
+      "createNgoAccount": "Create an NGO account",
+      "createVolunteerAccount": "Create a volunteer account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",

@@ -597,7 +597,8 @@
     },
     "login": {
       "login": "Anmelden",
-      "createAccount": "Konto erstellen",
+      "createNgoAccount": "NGO-Konto erstellen",
+      "createVolunteerAccount": "Freiwilligenkonto erstellen",
       "email": "Email",
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
