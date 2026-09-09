@@ -1,11 +1,21 @@
 import { apiPathOpportunity, apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "./useGetQuery";
-import { ApiVolunteerGet, ApiVolunteerOpportunityGetList, OpportunityStatusType } from "need4deed-sdk";
-import { STATUS_PARAM } from "@/components/Dashboard/Opportunities/Filters/constants";
+import {
+  ApiVolunteerGet,
+  ApiVolunteerOpportunityGetList,
+  EntityTableName,
+  OpportunityStatusType,
+  QueryParamsKeys,
+} from "need4deed-sdk";
+import { SEPARATOR, STATUS_PARAM } from "@/components/Dashboard/Opportunities/Filters/constants";
 
 export const useGetMostRelevantOpportunities = (volunteerId: number) => {
-  const { data: volunteer } = useGetQuery<ApiVolunteerGet>({
-    queryKey: ["volunteer", String(volunteerId) ?? ""],
+  const {
+    data: volunteer,
+    isLoading: isVolunteerLoading,
+    isError: isVolunteerError,
+  } = useGetQuery<ApiVolunteerGet>({
+    queryKey: ["volunteer", String(volunteerId)],
     apiPath: `${apiPathVolunteer}/${volunteerId}`,
     staleTime: cacheTTL,
     enabled: !!volunteerId,
@@ -23,15 +33,15 @@ export const useGetMostRelevantOpportunities = (volunteerId: number) => {
 
     availability?.forEach(({ day, daytime }) => {
       if (day && day !== "occasionally") {
-        params.append("availability", `days~${day}`);
+        params.append(QueryParamsKeys.AVAILABILITY, `days${SEPARATOR}${day}`);
       }
       if (daytime) {
         const availabilityGroup = daytime === "weekdays" || daytime === "weekends" ? "occasional" : "times";
-        params.append("availability", `${availabilityGroup}~${daytime}`);
+        params.append(QueryParamsKeys.AVAILABILITY, `${availabilityGroup}${SEPARATOR}${daytime}`);
       }
     });
     districts?.forEach(({ id }) => {
-      params.append("district", String(id));
+      params.append(EntityTableName.DISTRICT, String(id));
     });
     return params;
   };
@@ -42,8 +52,8 @@ export const useGetMostRelevantOpportunities = (volunteerId: number) => {
 
   const {
     data: opportunities,
-    isLoading,
-    isError,
+    isLoading: isOpportunitiesLoading,
+    isError: isOpportunitiesError,
   } = useGetQuery<ApiVolunteerOpportunityGetList[]>({
     queryKey: ["opportunities", String(volunteerId)],
     apiPath: `${apiPathOpportunity}/`,
@@ -54,5 +64,9 @@ export const useGetMostRelevantOpportunities = (volunteerId: number) => {
     enabled: !!volunteer,
   });
 
-  return { opportunities, isLoading, isError };
+  return {
+    opportunities,
+    isLoading: isVolunteerLoading || isOpportunitiesLoading,
+    isError: isVolunteerError || isOpportunitiesError,
+  };
 };
