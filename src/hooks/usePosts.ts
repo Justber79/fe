@@ -61,6 +61,7 @@ export function useTogglePostBookmark(postId: number, bookmarked: boolean) {
     apiPath: `${apiPathPost}/${postId}/bookmark`,
     method: bookmarked ? "delete" : "post",
     queryKeyToInvalidate: POSTS_QUERY_KEY,
+    awaitQueryInvalidation: true,
     successMessage: bookmarked ? "dashboard.posts.bookmarkRemoved" : "dashboard.posts.bookmarkAdded",
   });
 }

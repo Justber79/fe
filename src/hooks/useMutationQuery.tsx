@@ -10,6 +10,7 @@ type DataMutationOptions<TResponse, TData> = {
   successMessage?: string;
   onSuccessCallback?: (data: TResponse) => void;
   queryKeyToInvalidate?: QueryKey | QueryKey[];
+  awaitQueryInvalidation?: boolean;
 
   noToast?: boolean;
 } & (
@@ -45,6 +46,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
   successMessage,
   onSuccessCallback,
   queryKeyToInvalidate,
+  awaitQueryInvalidation = false,
   mutationFn,
   noToast = false,
 }: DataMutationOptions<TResponse, TData>) => {
@@ -59,7 +61,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
       return mutateData(apiPath, method, data);
     },
 
-    onSuccess: (responseData) => {
+    onSuccess: async (responseData) => {
       if (!noToast) toast.success(t(successMessage || "message.successful") + " 🎉");
 
       if (queryKeyToInvalidate) {
@@ -67,9 +69,8 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
           ? (queryKeyToInvalidate as QueryKey[])
           : [queryKeyToInvalidate];
 
-        keysToInvalidate.forEach((queryKey) => {
-          queryClient.invalidateQueries({ queryKey });
-        });
+        const invalidations = keysToInvalidate.map((queryKey) => queryClient.invalidateQueries({ queryKey }));
+        if (awaitQueryInvalidation) await Promise.all(invalidations);
       }
 
       // Execute the custom callback for component-specific logic (e.g., closing a modal)
