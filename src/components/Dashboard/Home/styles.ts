@@ -45,3 +45,8 @@ export const TagRow = styled.div<{ $isRead: boolean }>`
     background-color: ${({ $isRead }) => ($isRead ? "var(--color-orchid)" : " var(--color-orchid-subtle)")};
   }
 `;
+
+export const RelevantOppsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
