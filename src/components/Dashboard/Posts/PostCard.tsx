@@ -1,9 +1,10 @@
 import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
-import { useDeletePost, useUpdatePost } from "@/hooks";
+import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
+import { useDeletePost, useGetQuery, useUpdatePost } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getImageUrl } from "@/utils";
 import { DotsThreeOutline } from "@phosphor-icons/react";
-import { ApiPostGet, UserRole } from "need4deed-sdk";
+import { ApiPostGet, ApiUserGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Fragment, useCallback, useMemo, useState } from "react";
@@ -41,6 +42,12 @@ export function PostCard({ post }: Props) {
   const [editText, setEditText] = useState(post.text);
   const updatePost = useUpdatePost(post.id, () => setIsEditing(false));
   const deletePost = useDeletePost(post.id, () => setIsDeleteOpen(false));
+  const { data: users } = useGetQuery<ApiUserGet[]>({
+    queryKey: ["users", "all"],
+    apiPath: apiPathUser,
+    params: { limit: MAX_PAGE_LIMIT },
+    staleTime: cacheTTL,
+  });
 
   const closeEdit = useCallback(() => {
     if (updatePost.isPending) return;
@@ -60,23 +67,36 @@ export function PostCard({ post }: Props) {
     .map((name) => name[0]?.toUpperCase())
     .join("");
 
+  const resolveTaggedPerson = useCallback(
+    (mentionId: number) => {
+      const person = post.taggedPersons.find(({ id }) => id === mentionId);
+      if (person) return person;
+
+      // Older posts stored a user ID in the mention token. Resolve it through
+      // that user's linked person while the existing data is still present.
+      const legacyUser = users?.find(({ id }) => id === mentionId);
+      return post.taggedPersons.find(({ id }) => id === legacyUser?.personId);
+    },
+    [post.taggedPersons, users],
+  );
+
   const displayText = useMemo(() => {
     const parts = post.text.split(/(<@\d+>)/g);
     return parts.map((part, index) => {
       const match = part.match(/^<@(\d+)>$/);
       if (!match) return <Fragment key={`${post.id}-text-${index}`}>{part}</Fragment>;
-      const person = post.taggedPersons.find(({ id }) => id === Number(match[1]));
+      const person = resolveTaggedPerson(Number(match[1]));
       return (
         <strong className="tag" key={`${post.id}-tag-${index}`}>
           @{person?.fullName ?? t("dashboard.posts.unknownUser")}
         </strong>
       );
     });
-  }, [post.id, post.taggedPersons, post.text, t]);
+  }, [post.id, post.text, resolveTaggedPerson, t]);
 
   const startEdit = () => {
     const editableText = post.text.replace(/<@(\d+)>/g, (token, id) => {
-      const person = post.taggedPersons.find((taggedPerson) => taggedPerson.id === Number(id));
+      const person = resolveTaggedPerson(Number(id));
       return person ? `@${person.fullName}` : token;
     });
     setEditText(editableText);
