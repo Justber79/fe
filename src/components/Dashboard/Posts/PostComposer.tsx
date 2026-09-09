@@ -98,7 +98,7 @@ export default function PostComposer() {
         const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
         formatted = formatted.replace(mentionPattern, () => {
           taggedPersonIds.push(tag.personId);
-          return `<@${tag.personId}>`;
+          return `<@person:${tag.personId}>`;
         });
       });
     if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted))
