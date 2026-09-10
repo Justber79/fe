@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { EmptyState, FeedScrollContainer, LoadOlderIndicator } from "./styles";
 import PostCard from "./PostCard";
+import type { ReplyTarget } from "./types";
 
 const LOAD_OLDER_THRESHOLD = 80;
 
@@ -14,7 +15,13 @@ interface ScrollMetrics {
   top: number;
 }
 
-export function PostFeed() {
+interface Props {
+  expandedPostIds: Set<number>;
+  onReply: (target: ReplyTarget) => void;
+  onToggleReplies: (postId: number) => void;
+}
+
+export function PostFeed({ expandedPostIds, onReply, onToggleReplies }: Props) {
   const { t } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const feedRef = useRef<HTMLDivElement>(null);
@@ -117,7 +124,13 @@ export function PostFeed() {
         </LoadOlderIndicator>
       )}
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
+        <PostCard
+          key={post.id}
+          post={post}
+          isRepliesExpanded={expandedPostIds.has(post.id)}
+          onReply={onReply}
+          onToggleReplies={() => onToggleReplies(post.id)}
+        />
       ))}
     </FeedScrollContainer>
   );

@@ -2,6 +2,8 @@ import { TFunction } from "i18next";
 import { Column } from "../common/EntityTableList";
 import { COLUMN_WIDTH } from "../common/EntityTableList/columnWidths";
 import { ReactNode } from "react";
+import DropdownAccordionFilter from "../common/DropDownFilter/DropdownAccordionFilter";
+import { FilterItem } from "../common/CardsFilter/types";
 
 export const AGENT_COL_WIDTHS = {
   title: COLUMN_WIDTH.XL,
@@ -19,15 +21,30 @@ export const AGENT_READ_ONLY_COL_WIDTHS = {
   district: COLUMN_WIDTH.XXXL,
 };
 
-export const createAgentTableColumns = (t: TFunction, copyButton: ReactNode): Column[] => [
+export const createAgentTableColumns = (
+  t: TFunction,
+  copyButton: ReactNode,
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+  },
+): Column[] => [
   { key: "title", label: t("dashboard.agents.table.title"), width: AGENT_COL_WIDTHS.title },
-  { key: "type", label: t("dashboard.agents.table.type"), width: AGENT_COL_WIDTHS.type },
+  {
+    key: "type",
+    label: t("dashboard.agents.table.type"),
+    width: AGENT_COL_WIDTHS.type,
+  },
   {
     key: "volunteerSearch",
     label: t("dashboard.agents.table.volunteerSearch"),
     width: AGENT_COL_WIDTHS.volunteerSearch,
   },
-  { key: "district", label: t("dashboard.agents.table.district"), width: AGENT_COL_WIDTHS.district },
+  {
+    key: "district",
+    label: t("dashboard.agents.table.district"),
+    width: AGENT_COL_WIDTHS.district,
+    headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={AGENT_COL_WIDTHS.district} />,
+  },
   {
     key: "activeVolunteers",
     label: t("dashboard.agents.table.activeVolunteers"),
