@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { abbreviateDistrict, getLanguagesByPurpose } from "./helpers";
+import Link from "next/link";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -14,15 +15,16 @@ interface TableRowProps {
 }
 
 export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id, title, volunteerType, location, languages } = opportunity;
-  // statusMatch is not yet in ApiVolunteerOpportunityGetList SDK type
-  const statusMatch = (opportunity as ApiVolunteerOpportunityGetList & { statusMatch?: string }).statusMatch;
+  const statusMatch = opportunity.statusMatch;
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
+
+  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
   return (
-    <ClickableRow $isLast={isLast} $cursor={"auto"} data-testid={`opportunity-row-${id}`}>
+    <ClickableRow as={Link} href={profileUrl} $isLast={isLast} $cursor="pointer" data-testid={`opportunity-row-${id}`}>
       <TableCell data-testid={`opportunity-title-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.title}>
         {title}
       </TableCell>

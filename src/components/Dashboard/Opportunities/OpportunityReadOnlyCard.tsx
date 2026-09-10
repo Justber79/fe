@@ -7,6 +7,7 @@ import { IconName } from "../Volunteers/icon";
 import { matchStatusColorMap, matchStatusIconMap, volunteerTypeIconMap } from "./OpportunityCard.helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
 import { getLanguagesByPurpose } from "./helpers";
+import Link from "next/link";
 
 type Props = {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -16,20 +17,24 @@ type Props = {
 };
 
 export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const { title, volunteerType, location, languages, statusMatch } = opportunity as ApiVolunteerOpportunityGetList & {
-    accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
-    statusMatch?: string;
-    district?: { id: number };
-  };
+  const { id, title, volunteerType, location, languages, statusMatch } =
+    opportunity as ApiVolunteerOpportunityGetList & {
+      accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
+      statusMatch?: string;
+      district?: { id: number };
+    };
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
 
   const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+
+  const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
+
   return (
-    <Card data-testid="opportunity-card" $cursor={"auto"}>
+    <Card as={Link} data-testid="opportunity-card" href={profileUrl}>
       <StatusTagsDiv>
         {statusMatch && (
           <StatusDiv>
