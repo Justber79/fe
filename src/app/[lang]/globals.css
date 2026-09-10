@@ -594,6 +594,9 @@ html {
   --dashboard-login-checkbox-label-fontSize: 20px;
   --dashboard-login-forgot-password-label-fontWeight: 600;
   --dashboard-login-forgot-password-email-message-gap: 16px;
+  --dropdown-filters-content-accordion-padding: 2rem;
+  --dropdown-filters-content-accordion-border: 2px solid var(--color-orchid);
+  --dropdown-filters-content-accordion-border-radius: 20px;
   --filters-container-width: min(340px, calc(100vw - 32px));
   --filters-container-border-radius: 16px;
   --filters-description-font-size: 16px;

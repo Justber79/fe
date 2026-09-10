@@ -4,13 +4,15 @@ import { VolunteerCardsFilter } from "./types";
 import { createFilterItems } from "./helpers";
 import AccordionFilter from "../../common/CardsFilter/AccordionFilter";
 import { SetFilter } from "../../common/CardsFilter/types";
+import { ViewMode } from "../../common/types";
 
 interface Props {
   filter: VolunteerCardsFilter;
   setFilter: SetFilter<VolunteerCardsFilter>;
+  viewMode: ViewMode;
 }
 
-export default function FiltersContent({ setFilter, filter }: Props) {
+export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   const { t } = useTranslation();
 
   const {
@@ -25,11 +27,19 @@ export default function FiltersContent({ setFilter, filter }: Props) {
 
   return (
     <FiltersContentContainer>
-      <AccordionFilter header={t("dashboard.volunteers.filters.volunteerType_title")} items={typeFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.engagement.header")} items={engagementFilters} />
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.volunteerType_title")} items={typeFilters} />
+      )}
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.engagement.header")} items={engagementFilters} />
+      )}
       <AccordionFilter header={t("dashboard.volunteers.filters.matchStatus.header")} items={statusMatchFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
+      )}
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
+      )}
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
       <AccordionFilter
         header={t("dashboard.volunteers.filters.preferredAv.header")}

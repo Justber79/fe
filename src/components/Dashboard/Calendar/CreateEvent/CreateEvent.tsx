@@ -136,16 +136,16 @@ export function CreateEvent({ eventId }: Props) {
   const address = formData.unstructuredAddress
     ? formData.street.trim()
     : `${formData.street.trim()} ${formData.houseNumber.trim()}, ${formData.postcode.trim()} Berlin`;
-  const toBasePayload = (): Omit<ApiEventN4DCreate, "translations"> => ({
+  const toBasePayload = () => ({
     date: new Date(`${formData.startDate}T${formData.startTime}`),
     dateEnd: new Date(`${formData.endDate}T${formData.endTime}`),
     type: formData.type,
     linkRSVP: formData.registrationLink,
     address,
-    active: true,
   });
   const toCreatePayload = (): ApiEventN4DCreate => ({
     ...toBasePayload(),
+    active: false,
     translations: [translation],
   });
   const toUpdatePayload = (): ApiEventN4DPatch => {
@@ -154,7 +154,6 @@ export function CreateEvent({ eventId }: Props) {
 
     return {
       ...toBasePayload(),
-      active: editingEvent?.active,
       ...(translationChanged ? { translations: [translation] } : {}),
     };
   };
@@ -250,6 +249,11 @@ export function CreateEvent({ eventId }: Props) {
               onChange={update}
               onBack={handleBack}
               onSubmit={handleSubmit}
+              submitLabel={t(
+                editingEvent?.active
+                  ? "dashboard.calendar.createForm.saveChanges"
+                  : "dashboard.calendar.createForm.saveDraft",
+              )}
               isSubmitEnabled={isNextEnabled() && !createEvent.isPending && !updateEvent.isPending}
             />
           )}

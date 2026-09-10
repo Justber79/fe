@@ -14,6 +14,7 @@ interface Props {
   isError: boolean;
   onEdit: (event: ApiEventN4DGetList) => void;
   onDelete: (event: ApiEventN4DGetList) => void;
+  onPublicationChange: (event: ApiEventN4DGetList) => void;
 }
 
 export function UpcomingEvents({
@@ -24,6 +25,7 @@ export function UpcomingEvents({
   isError,
   onEdit,
   onDelete,
+  onPublicationChange,
 }: Props) {
   const { t, i18n } = useTranslation();
   const groups = groupEventsByDate(events);
@@ -59,7 +61,13 @@ export function UpcomingEvents({
             })}
           </DateHeading>
           {groupedEvents.map((event) => (
-            <EventCard key={event.id} event={event} onEdit={onEdit} onDelete={onDelete} />
+            <EventCard
+              key={event.id}
+              event={event}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onPublicationChange={onPublicationChange}
+            />
           ))}
         </DateGroup>
       ))}
