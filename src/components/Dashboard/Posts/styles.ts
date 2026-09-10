@@ -416,3 +416,124 @@ export const PickerEmpty = styled.p`
   font-size: var(--font-size-sm);
   text-align: center;
 `;
+
+export const PostReplyActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-8);
+  border-top: 1px solid var(--color-grey-200);
+`;
+
+export const RepliesList = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding-top: var(--spacing-8);
+`;
+
+export const ReplyState = styled.div`
+  padding: var(--spacing-12);
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
+`;
+
+export const ReplyArticle = styled.article<{ $nested: boolean }>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding: var(--spacing-16);
+  margin-left: ${({ $nested }) => ($nested ? "var(--spacing-24)" : "0")};
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--card-border-radius);
+  background: ${({ $nested }) => ($nested ? "var(--color-grey-50)" : "var(--color-white)")};
+
+  ${({ $nested }) =>
+    $nested &&
+    `
+      &::before {
+        content: "";
+        position: absolute;
+        top: -13px;
+        left: -13px;
+        width: 13px;
+        height: 30px;
+        border-left: 2px solid var(--color-orchid);
+        border-bottom: 2px solid var(--color-orchid);
+        border-bottom-left-radius: 8px;
+      }
+    `}
+
+  ${Avatar},
+  ${AvatarInitials} {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+`;
+
+export const ChildReplies = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+`;
+
+export const ReplyFooter = styled.div`
+  display: flex;
+  min-height: 1px;
+  justify-content: flex-end;
+`;
+
+export const ReplyContext = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-12);
+  margin-bottom: var(--spacing-8);
+  padding: var(--spacing-12);
+  border-left: 3px solid var(--color-aubergine);
+  border-radius: var(--border-radius-small);
+  background: var(--color-pink-50);
+  color: var(--color-midnight);
+
+  div {
+    min-width: 0;
+  }
+
+  strong,
+  span {
+    display: block;
+  }
+
+  span {
+    margin-top: var(--spacing-4);
+    color: var(--color-grey-500);
+    font-size: var(--font-size-xs);
+  }
+
+  p {
+    display: -webkit-box;
+    margin: var(--spacing-8) 0 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
+  }
+`;
+
+export const ReplyContextClose = styled.button`
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-aubergine);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-100);
+  }
+`;

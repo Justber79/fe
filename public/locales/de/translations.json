@@ -527,7 +527,11 @@
         "noTaggedComments": "Du bist derzeit in keinen Kommentaren markiert",
         "newOpportunities": "Neueste Ehrenamtsbedarfe",
         "newVolunteers": "Neueste Ehrenamtliche",
-        "loading": "Wird geladen..."
+        "loading": "Wird geladen...",
+        "error": "Beim Laden der Seite ist ein Fehler aufgetreten. Bitte aktualisieren Sie die Seite.",
+        "mostRelevantOpp": "Relevanteste Angebote",
+        "mostRelevantOppDesc": "(basierend auf Bezirk und Verfügbarkeit)",
+        "mostRelevantNoResults": "Es werden keine Ergebnisse angezeigt. Versuchen Sie, Ihre Verfügbarkeit oder Ihren Bezirk in Ihrem Profil anzupassen, um mehr Ergebnisse zu sehen."
       },
       "sidebar": {
         "home": "Startseite",
@@ -544,7 +548,20 @@
     "posts": {
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
+      "sendReply": "Antwort senden",
       "created": "Beitrag erfolgreich erstellt",
+      "reply": "Antworten",
+      "replyingTo": "Antwort an {{name}}",
+      "cancelReply": "Antwort abbrechen",
+      "showReplies_one": "1 Antwort anzeigen",
+      "showReplies_other": "{{count}} Antworten anzeigen",
+      "hideReplies": "Antworten ausblenden",
+      "loadingReplies": "Antworten werden geladen…",
+      "noReplies": "Noch keine Antworten.",
+      "repliesError": "Antworten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "replyCreated": "Antwort erfolgreich gesendet",
+      "replyUpdated": "Antwort erfolgreich aktualisiert",
+      "replyDeleted": "Antwort erfolgreich gelöscht",
       "linkOpportunity": "Ehrenamtsbedarf verknüpfen",
       "searchOpportunities": "Ehrenamtsbedarfe suchen",
       "done": "Fertig",
@@ -567,6 +584,10 @@
       "deleteDialog": {
         "title": "Beitrag löschen?",
         "message": "Dieser Beitrag wird unwiderruflich gelöscht."
+      },
+      "deleteReplyDialog": {
+        "title": "Antwort löschen?",
+        "message": "Diese Antwort wird unwiderruflich gelöscht."
       }
     },
     "found": "gefunden",
@@ -593,7 +614,8 @@
     },
     "login": {
       "login": "Anmelden",
-      "createAccount": "Konto erstellen",
+      "createNgoAccount": "NGO-Konto erstellen",
+      "createVolunteerAccount": "Freiwilligenkonto erstellen",
       "email": "Email",
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
@@ -1162,6 +1184,7 @@
     "profile": {
       "loading": "Profil wird geladen...",
       "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
+      "notVolProfSetUp": "Ihr Ehrenamtsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
       "nextNgoProfile": "Nächstes NGO-Profil",
       "prevNgoProfile": "Vorheriges NGO-Profil"
     },

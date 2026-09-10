@@ -521,7 +521,11 @@
         "noTaggedComments": "You are currently not tagged in any comments",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "error": "There was an error when loading the page. Please refresh",
+        "mostRelevantOpp": "Most relevant opportunities",
+        "mostRelevantOppDesc": "(based on district and availability)",
+        "mostRelevantNoResults": "No results are showing. Try adjusting your availability or district on your profile to see more results"
       },
       "sidebar": {
         "home": "Home",
@@ -538,7 +542,20 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
+      "sendReply": "Send reply",
       "created": "Post created successfully",
+      "reply": "Reply",
+      "replyingTo": "Replying to {{name}}",
+      "cancelReply": "Cancel reply",
+      "showReplies_one": "Show 1 reply",
+      "showReplies_other": "Show {{count}} replies",
+      "hideReplies": "Hide replies",
+      "loadingReplies": "Loading replies…",
+      "noReplies": "No replies yet.",
+      "repliesError": "Replies could not be loaded. Please try again.",
+      "replyCreated": "Reply sent successfully",
+      "replyUpdated": "Reply updated successfully",
+      "replyDeleted": "Reply deleted successfully",
       "linkOpportunity": "Link opportunity",
       "searchOpportunities": "Search opportunities",
       "done": "Done",
@@ -561,6 +578,10 @@
       "deleteDialog": {
         "title": "Delete post?",
         "message": "This post will be permanently deleted."
+      },
+      "deleteReplyDialog": {
+        "title": "Delete reply?",
+        "message": "This reply will be permanently deleted."
       }
     },
     "found": "found",
@@ -587,7 +608,8 @@
     },
     "login": {
       "login": "Log in",
-      "createAccount": "Create account",
+      "createNgoAccount": "Create an NGO account",
+      "createVolunteerAccount": "Create a volunteer account",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
@@ -1149,6 +1171,7 @@
     },
     "profile": {
       "loading": "Loading profile...",
+      "notVolProfSetUp": "Your volunteer profile is not set up yet — please complete registration.",
       "notSetUp": "Your organisation profile is not set up yet — please complete registration.",
       "nextNgoProfile": "Next NGO Profile",
       "prevNgoProfile": "Previous NGO Profile"
