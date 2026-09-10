@@ -89,7 +89,9 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      ...(hasEditingRights && {
+      // Coordinator/admin only (fe#1003) — a volunteer sees their own
+      // matched/suggested opportunities but can't find or suggest new ones.
+      ...(isAuthorized && {
         headerButtonName: opportunityId
           ? t("dashboard.volunteerProfile.suggestButtonName")
           : t("dashboard.volunteerProfile.findOppButtonName"),
