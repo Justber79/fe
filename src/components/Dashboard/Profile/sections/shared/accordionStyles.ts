@@ -50,6 +50,10 @@ export const SplitContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--volunteer-profile-opportunities-accordion-split-container-gap);
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const DetailSection = styled.div`

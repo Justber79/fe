@@ -11,7 +11,8 @@ import {
   ShootingStarIcon,
   UserCheckIcon,
 } from "@phosphor-icons/react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ElementType } from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationBadge } from "./NotificationBadge";
@@ -33,13 +34,15 @@ const BarContainer = styled.div`
 
   @media (max-width: 767px) {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: flex-start;
     position: fixed;
     top: unset;
     bottom: 0;
+    z-index: 20;
     width: 100%;
     height: var(--dashboard-navigation-bar-mobile-height);
+    box-sizing: border-box;
     gap: 4px;
     padding: 8px 4px;
     border-radius: var(--dashboard-navigation-bar-border-radius) var(--dashboard-navigation-bar-border-radius) 0 0;
@@ -47,12 +50,23 @@ const BarContainer = styled.div`
   }
 `;
 
-const Option = styled.div`
+const Option = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--dashboard-navigation-bar-option-gap);
   cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-decoration: none;
+
+  @media (max-width: 767px) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 `;
 
 interface IconDivProps {
@@ -107,8 +121,7 @@ interface BarOptions {
 }
 
 export default function NavigationBar() {
-  const { t } = useTranslation();
-  const router = useRouter();
+  const { t, i18n } = useTranslation();
   const currentPathname = usePathname();
   const user = useCurrentUser();
   const isAgent = user?.role === UserRole.AGENT;
@@ -179,15 +192,13 @@ export default function NavigationBar() {
     <div>
       <BarContainer>
         {options.map(({ label, Icon, text, route }) => {
-          const isSelected = currentPathname.startsWith(route);
+          const localizedRoute = `/${i18n.language}${route}`;
+          const isSelected =
+            currentPathname === localizedRoute ||
+            (route !== DashboardRoutes.Home && currentPathname.startsWith(`${localizedRoute}/`));
 
           return (
-            <Option
-              key={label}
-              onClick={() => {
-                router.push(route);
-              }}
-            >
+            <Option href={localizedRoute} aria-current={isSelected ? "page" : undefined} aria-label={label} key={label}>
               <IconDiv $isSelected={isSelected}>
                 {label === t("dashboard.home.sidebar.home") && <NotificationBadge />}
                 {(Icon && <Icon size={24} color={isSelected ? "var(--color-orchid)" : "var(--color-midnight)"} />) ||

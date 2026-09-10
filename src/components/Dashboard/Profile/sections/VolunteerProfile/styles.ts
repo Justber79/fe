@@ -12,6 +12,12 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  @media (max-width: 480px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
 `;
 
 export const TitleRow = styled.div`
@@ -44,4 +50,9 @@ export const ButtonRow = styled.div`
   align-items: center;
   gap: var(--spacing-24);
   width: 100%;
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    gap: var(--spacing-12);
+  }
 `;

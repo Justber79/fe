@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ABOUT",
         "volunteeringOpportunities": "VOLUNTEERING OPPORTUNITIES",
-        "events": "EVENTS"
+        "events": "EVENTS",
+        "openMenu": "Open menu"
       },
       "content": {
         "heroText": "Voluntary support for refugees",

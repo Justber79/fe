@@ -6,6 +6,13 @@ export const TabsContainer = styled.div`
   margin-top: var(--volunteer-profile-opportunities-tabs-margin-top);
   gap: var(--volunteer-profile-opportunities-tabs-gap);
   border-bottom: var(--volunteer-profile-opportunities-tabs-border-bottom);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 type TabHeadingProps = {
@@ -22,6 +29,7 @@ export const TabHeading = styled(Heading4)<TabHeadingProps>`
   color: ${(props) => (props.$isSelected ? "var(--color-violet-500)" : "none")};
   padding: var(--volunteer-profile-opportunities-tab-heading-padding);
   margin: var(--volunteer-profile-opportunities-tab-heading-margin);
+  flex-shrink: 0;
 `;
 
 export const CountBadge = styled.span`

@@ -5,6 +5,10 @@ export const HomeContainer = styled.div`
   flex-direction: row;
   padding: var(--dashboard-home-container-padding);
   gap: var(--dashboard-home-container-gap);
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 `;
 
 export const DashboardContentContainer = styled.div`

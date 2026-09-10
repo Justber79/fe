@@ -17,6 +17,11 @@ const FieldRow = styled.div`
   &:last-child {
     border-bottom: none;
   }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
 `;
 
 const FieldLabel = styled.div`
@@ -25,6 +30,10 @@ const FieldLabel = styled.div`
   color: var(--color-midnight);
   width: 220px;
   flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 const FieldValue = styled.div`
@@ -32,6 +41,9 @@ const FieldValue = styled.div`
   color: var(--color-midnight);
   flex: 1;
   line-height: 1.5;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  width: 100%;
 `;
 
 const TagsWrapper = styled.div`

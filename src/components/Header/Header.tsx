@@ -33,6 +33,45 @@ const HeaderContainer = styled.div<HeaderContainerProps>`
   background-color: var(--color-orchid-subtle);
   width: -webkit-fill-available;
   gap: var(--space-sm);
+  box-sizing: border-box;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+
+    > svg {
+      width: 96px;
+      height: auto;
+      flex-shrink: 0;
+    }
+  }
+`;
+
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  @media (max-width: 767px) {
+    gap: 4px;
+    min-width: 0;
+  }
+`;
+
+const MenuButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+`;
+
+const DashboardLink = styled(Link)`
+  text-decoration: none;
 `;
 
 interface Props {
@@ -71,29 +110,36 @@ export function Header({
     <HeaderContainer id="header-container" height={height} padding={padding}>
       {logo}
 
-      {isBurgerMenu ? (
-        <>
-          <ListIcon size={32} color={menuItemColor} onClick={() => setIsBurgerMenuOpen(true)} />
-          {isBurgerMenuOpen && (
-            <BurgerMenuItems
-              isOpen={isBurgerMenuOpen}
-              setIsOpen={setIsBurgerMenuOpen}
-              items={menuItems}
-              menuItemColor={burgerMenuItemColor}
-            />
-          )}
-        </>
-      ) : (
-        <MenuItems items={menuItems} menuItemColor={menuItemColor} />
-      )}
-      <LanguageSwitcher textColor={menuItemColor} />
+      {!isBurgerMenu && <MenuItems items={menuItems} menuItemColor={menuItemColor} />}
 
-      {user && (
-        <Link href={`/${i18n.language}/dashboard`} style={{ textDecoration: "none" }}>
-          <MenuItem text={t("dashboard.header.button.dashboard")} color={menuItemColor} />
-        </Link>
+      <HeaderActions>
+        <LanguageSwitcher textColor={menuItemColor} />
+        {user && (
+          <DashboardLink href={`/${i18n.language}/dashboard`}>
+            <MenuItem text={t("dashboard.header.button.dashboard")} color={menuItemColor} />
+          </DashboardLink>
+        )}
+        {user ? <UserProfile /> : <LoginRegister />}
+        {isBurgerMenu && (
+          <MenuButton
+            type="button"
+            aria-label={t("homepage.heroSection.menuItems.openMenu", { defaultValue: "Open menu" })}
+            aria-expanded={isBurgerMenuOpen}
+            onClick={() => setIsBurgerMenuOpen(true)}
+          >
+            <ListIcon size={32} color={menuItemColor} />
+          </MenuButton>
+        )}
+      </HeaderActions>
+
+      {isBurgerMenu && isBurgerMenuOpen && (
+        <BurgerMenuItems
+          isOpen={isBurgerMenuOpen}
+          setIsOpen={setIsBurgerMenuOpen}
+          items={menuItems}
+          menuItemColor={burgerMenuItemColor}
+        />
       )}
-      {user ? <UserProfile /> : <LoginRegister />}
     </HeaderContainer>
   );
 }

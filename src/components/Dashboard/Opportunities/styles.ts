@@ -41,6 +41,11 @@ export const Card = styled(BaseCard)<{ $cursor?: string }>`
   text-decoration: none;
   color: inherit;
 
+  @media (max-width: 767px) {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
   &:hover {
     background-color: var(--color-orchid);
   }

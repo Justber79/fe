@@ -22,6 +22,7 @@ export default function FiltersButton({ setIsFiltersOpen }: Props) {
       onClick={() => setIsFiltersOpen(true)}
       iconName={IconName.Faders}
       iconSize="var(--opportunities-filters-button-icon-size)"
+      aria-label={t("dashboard.filters.button")}
     />
   );
 }

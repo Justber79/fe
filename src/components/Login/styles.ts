@@ -9,6 +9,11 @@ export const EmailSentMessageDiv = styled.div`
 export const EmailButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
 `;
 
 export const StyledForm = styled.form`
@@ -22,6 +27,12 @@ export const FormActions = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 480px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
 `;
 
 export const LoginButtonDiv = styled.div`

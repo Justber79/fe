@@ -85,9 +85,16 @@ export default function CardsHeader({
 
       <TabsSearchBarContainer>
         <TabsSectionContainer>
-          <Tabs>
+          <Tabs role="tablist">
             {tabs.map((tab, index) => (
-              <TabHeading key={tab} onClick={() => setSelectedTabIndex(index)} $isSelected={selectedTabIndex === index}>
+              <TabHeading
+                type="button"
+                role="tab"
+                aria-selected={selectedTabIndex === index}
+                key={tab}
+                onClick={() => setSelectedTabIndex(index)}
+                $isSelected={selectedTabIndex === index}
+              >
                 {tab}
               </TabHeading>
             ))}

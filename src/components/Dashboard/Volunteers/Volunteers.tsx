@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark } from "@/config/constants";
+import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
 import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,10 +23,12 @@ import {
 import { VolunteerListController } from "./VolunteerListController";
 import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useScreenType } from "@/context/DeviceContext";
 
 export function Volunteers() {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
+  const screenType = useScreenType();
   const { t } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -41,6 +43,10 @@ export function Volunteers() {
   const viewMode = isAgent ? ViewMode.CARDS : Object.values(ViewMode)[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
+
+  useEffect(() => {
+    if (screenType === ScreenTypes.MOBILE && user && !isAgent) setSelectedTabIndex(1);
+  }, [isAgent, screenType, user]);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, [QueryParamsKeys.SEARCH]: searchInput }));

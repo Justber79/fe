@@ -5,6 +5,7 @@ export const ACTION_COLUMN_WIDTH = "56px";
 export const DocumentTableContainer = styled.div`
   margin-top: var(--spacing-24);
   width: 100%;
+  overflow-x: auto;
 `;
 
 export const Container = styled.div`
@@ -49,6 +50,7 @@ export const Table = styled.div`
   border: var(--document-section-table-border-width) solid var(--color-blue-50);
   border-radius: var(--document-section-table-border-radius);
   width: 100%;
+  min-width: 620px;
   overflow: hidden;
 `;
 

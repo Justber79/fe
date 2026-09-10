@@ -12,6 +12,14 @@ const FlexWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: var(--dashboard-cards-header-user-profile-container-gap);
+
+  @media (max-width: 767px) {
+    gap: 0;
+
+    > svg {
+      display: none;
+    }
+  }
 `;
 
 const UserIconDiv = styled.div<{ $size?: "m" | "l" }>`
@@ -42,6 +50,8 @@ const UserTextColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
+  min-width: 0;
+  max-width: min(240px, calc(100vw - 96px));
 `;
 
 const UserInfoBlockTextContainer = styled.div`
@@ -57,12 +67,16 @@ const UserInfoNameText = styled.div`
   line-height: var(--line-height-24);
   font-weight: var(--font-weight-semibold);
   color: var(--color-midnight);
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const UserInfoEmailText = styled.div`
   font-size: var(--font-size-14);
   color: var(--color-grey-500);
   line-height: var(--line-height-20);
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const getInitials = (fullName: string | undefined): string => {

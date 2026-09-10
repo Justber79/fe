@@ -11,6 +11,11 @@ export const ProfileContent = styled.div`
   flex-direction: row;
   gap: var(--spacing-24);
   align-items: center;
+
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `;
 
 export const AvatarContainer = styled.div`
@@ -20,6 +25,11 @@ export const AvatarContainer = styled.div`
   border-radius: var(--percent-50);
   overflow: hidden;
   flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    height: min(220px, calc(100vw - 64px));
+    width: min(220px, calc(100vw - 64px));
+  }
 `;
 
 export const IconContainer = styled.div`
@@ -31,6 +41,11 @@ export const IconContainer = styled.div`
   border-radius: var(--percent-50);
   background-color: var(--color-blue-50);
   flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    height: min(220px, calc(100vw - 64px));
+    width: min(220px, calc(100vw - 64px));
+  }
 `;
 
 export const ProfileInfo = styled.div`
@@ -38,6 +53,8 @@ export const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-16);
+  min-width: 0;
+  width: 100%;
 `;
 
 export const TitleSection = styled.div`

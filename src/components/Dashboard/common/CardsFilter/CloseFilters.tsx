@@ -3,7 +3,7 @@ import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
 import { Heading4 } from "@/components/styled/text";
 
-const CloseFiltersDiv = styled.div`
+const CloseFiltersButton = styled.button`
   display: flex;
   align-items: center;
   background: var(--color-orchid-light);
@@ -12,6 +12,10 @@ const CloseFiltersDiv = styled.div`
   gap: var(--opportunities-filters-close-filter-gap);
   padding: var(--opportunities-filters-close-filter-padding);
   cursor: pointer;
+  width: 100%;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
 
   svg {
     color: var(--color-midnight);
@@ -35,11 +39,11 @@ export default function CloseFilters({ setIsFiltersOpen }: Props) {
   const { t } = useTranslation();
 
   return (
-    <CloseFiltersDiv onClick={() => setIsFiltersOpen(false)}>
+    <CloseFiltersButton type="button" onClick={() => setIsFiltersOpen(false)}>
       <ArrowRightIcon size={32} />
       <Heading4 margin={0} color="var(--color-midnight)">
         {t("dashboard.filters.closeFilters")}
       </Heading4>
-    </CloseFiltersDiv>
+    </CloseFiltersButton>
   );
 }

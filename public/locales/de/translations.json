@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ÜBER UNS",
         "volunteeringOpportunities": "Ehrenamtsbedarfe",
-        "events": "VERANSTALTUNGEN"
+        "events": "VERANSTALTUNGEN",
+        "openMenu": "Menü öffnen"
       },
       "content": {
         "heroText": "Ehrenamtliche Unterstützung für Geflüchtete",

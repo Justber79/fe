@@ -20,6 +20,11 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: var(--dashboard-login-container-height);
+
+  @media (max-width: 767px) {
+    height: auto;
+    min-height: calc(100dvh - 72px);
+  }
 `;
 
 const LoginSubContainer = styled.div`
@@ -27,6 +32,14 @@ const LoginSubContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1;
+
+  @media (max-width: 767px) {
+    padding: var(--spacing-32) var(--spacing-16);
+
+    &:last-child {
+      display: none;
+    }
+  }
 `;
 
 const LoginContentContainer = styled.div`
@@ -34,6 +47,11 @@ const LoginContentContainer = styled.div`
   flex-direction: column;
   width: var(--dashboard-login-content-container-width);
   gap: var(--dashboard-login-content-container-gap);
+
+  @media (max-width: 767px) {
+    width: 100%;
+    gap: var(--spacing-24);
+  }
 `;
 
 type Props = {
