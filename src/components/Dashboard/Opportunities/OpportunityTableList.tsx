@@ -8,6 +8,7 @@ import { createOpportunityTableColumns, createReadOnlyAgentTableColumns } from "
 import { OpportunityTableRow } from "./OpportunityTableRow";
 import { OpportunityReadOnlyTableRow } from "./OpportunityReadOnlyTableRow";
 import { useAuth } from "@/hooks/useAuth";
+import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
   opportunities: ApiVolunteerOpportunityGetList[];
@@ -17,6 +18,10 @@ interface TableListProps {
   setCurrentPage: (page: number) => void;
   districtsList?: OptionItem[];
   volunteerId?: string;
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+    languageFilters: FilterItem[];
+  };
 }
 
 export function OpportunityTableList({
@@ -27,15 +32,17 @@ export function OpportunityTableList({
   setCurrentPage,
   districtsList,
   volunteerId,
+  dropdownFilters,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized, isAgent } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
 
-  const columns = useMemo(() => createOpportunityTableColumns(t), [t]);
+  const columns = useMemo(() => createOpportunityTableColumns(t, dropdownFilters), [t, dropdownFilters]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   return (
     <EntityTableList
+      isFewResults={opportunities.length < 5}
       columns={canSeeFullView ? columns : readOnlyColumns}
       data={opportunities}
       renderRow={(opportunity, isLast) =>
