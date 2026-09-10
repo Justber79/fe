@@ -14,9 +14,18 @@ interface Props {
   onToggle: () => void;
   onEdit: (event: ApiEventN4DGetList) => void;
   onDelete: (event: ApiEventN4DGetList) => void;
+  onPublicationChange: (event: ApiEventN4DGetList) => void;
 }
 
-export function PastEvents({ events, selectedDateKey, expanded, onToggle, onEdit, onDelete }: Props) {
+export function PastEvents({
+  events,
+  selectedDateKey,
+  expanded,
+  onToggle,
+  onEdit,
+  onDelete,
+  onPublicationChange,
+}: Props) {
   const { t, i18n } = useTranslation();
   const groups = groupEventsByDate(events);
   return (
@@ -43,7 +52,14 @@ export function PastEvents({ events, selectedDateKey, expanded, onToggle, onEdit
                 })}
               </DateHeading>
               {groupedEvents.map((event) => (
-                <EventCard key={event.id} event={event} variant="bar" onEdit={onEdit} onDelete={onDelete} />
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  variant="bar"
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onPublicationChange={onPublicationChange}
+                />
               ))}
             </DateGroup>
           ))

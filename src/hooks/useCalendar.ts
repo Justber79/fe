@@ -1,21 +1,33 @@
 import type { ApiEventN4DGetList } from "need4deed-sdk";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { dateKey, eventOccursOnDate } from "@/utils/calendar";
-import { useDeleteEvent, useEvents } from "./useEvents";
+import { EVENT_QUERY_KEY, useDeleteEvent, useEvents, useUpdateEvent } from "./useEvents";
 
 export function useCalendar() {
   const { i18n } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const today = useMemo(() => new Date(), []);
   const [monthDate, setMonthDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const [showPast, setShowPast] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState<ApiEventN4DGetList | null>(null);
+  const [publicationEvent, setPublicationEvent] = useState<ApiEventN4DGetList | null>(null);
   const { data: events = [], isLoading, isError } = useEvents();
   const remove = useDeleteEvent(deletingEvent?.id);
+  const willPublish = publicationEvent ? !publicationEvent.active : false;
+  const setPublished = useUpdateEvent(
+    publicationEvent?.id ?? 0,
+    async () => {
+      await queryClient.refetchQueries({ queryKey: EVENT_QUERY_KEY });
+      setPublicationEvent(null);
+    },
+    willPublish ? "dashboard.calendar.messages.published" : "dashboard.calendar.messages.unpublished",
+  );
 
   const monthEvents = useMemo(() => {
     const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
@@ -63,6 +75,7 @@ export function useCalendar() {
     selectedDateKey,
     showPast,
     deletingEvent,
+    publicationEvent,
     isLoading,
     isError,
     createEvent,
@@ -72,9 +85,16 @@ export function useCalendar() {
     nextMonth: () => changeMonth(1),
     togglePast: () => setShowPast((value) => !value),
     requestDelete: setDeletingEvent,
+    requestPublicationChange: setPublicationEvent,
+    cancelPublicationChange: () => setPublicationEvent(null),
+    confirmPublicationChange: () => {
+      if (publicationEvent) setPublished.mutate({ active: willPublish });
+    },
+    isPublicationPending: setPublished.isPending,
     cancelDelete: () => setDeletingEvent(null),
     confirmDelete: () => {
       if (deletingEvent) remove.mutate(undefined, { onSettled: () => setDeletingEvent(null) });
     },
+    isDeletePending: remove.isPending,
   };
 }

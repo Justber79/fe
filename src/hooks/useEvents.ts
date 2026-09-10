@@ -27,12 +27,16 @@ export function useCreateEvent(onSuccess: (event: ApiEventN4DGet) => void) {
   });
 }
 
-export function useUpdateEvent(id: number, onSuccess: () => void) {
+export function useUpdateEvent(
+  id: number,
+  onSuccess: () => void | Promise<void>,
+  successMessage = "dashboard.calendar.messages.updated",
+) {
   return useMutationQuery<ApiEventN4DPatch, unknown>({
     apiPath: `${apiPathEvent}/${id}`,
     method: "patch",
     queryKeyToInvalidate: EVENT_QUERY_KEY,
-    successMessage: "dashboard.calendar.messages.updated",
+    successMessage,
     onSuccessCallback: onSuccess,
   });
 }
