@@ -24,6 +24,7 @@ import { formatDate, getDisplayLabel, getContactMethodLabel, getLoggedByLabel } 
 type Props = {
   entityId: number;
   entityType: EntityType;
+  canEdit: boolean;
 };
 
 export type CommunicationTrackerRef = {
@@ -31,7 +32,7 @@ export type CommunicationTrackerRef = {
 };
 
 export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(function CommunicationTracker(
-  { entityId, entityType },
+  { entityId, entityType, canEdit },
   ref,
 ) {
   const { t } = useTranslation();
@@ -125,8 +126,12 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
               </TableHeaderCell>
               <TableHeaderCell $width="152px">{t("dashboard.communicationSection.date")}</TableHeaderCell>
               <TableHeaderCell $width="140px">{t("dashboard.communicationSection.loggedBy")}</TableHeaderCell>
-              <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
-              <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
+              {canEdit && (
+                <>
+                  <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
+                  <TableHeaderCell $width="var(--communication-tracker-action-column-width)"></TableHeaderCell>
+                </>
+              )}
             </TableHeader>
             <TableBody>
               {communications.map((entry, index) => (
@@ -143,16 +148,20 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
                   <TableCell $width="140px" $noWrap>
                     {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
                   </TableCell>
-                  <ActionCell>
-                    <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
-                      <PencilSimple size={20} weight="regular" />
-                    </ActionButton>
-                  </ActionCell>
-                  <ActionCell>
-                    <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
-                      <Trash size={20} weight="regular" />
-                    </ActionButton>
-                  </ActionCell>
+                  {canEdit && (
+                    <>
+                      <ActionCell>
+                        <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
+                          <PencilSimple size={20} weight="regular" />
+                        </ActionButton>
+                      </ActionCell>
+                      <ActionCell>
+                        <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
+                          <Trash size={20} weight="regular" />
+                        </ActionButton>
+                      </ActionCell>
+                    </>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
