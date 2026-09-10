@@ -1,12 +1,22 @@
-import { apiPathPost } from "@/config/constants";
+import { apiPathPost, cacheTTL } from "@/config/constants";
 import { fetchData } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { ApiPostGet, ApiPostPatch, ApiPostPost, Lang } from "need4deed-sdk";
+import type {
+  ApiPostGet,
+  ApiPostPatch,
+  ApiPostPost,
+  ApiPostReplyGet,
+  ApiPostReplyPatch,
+  ApiPostReplyPost,
+  Lang,
+} from "need4deed-sdk";
 import { useParams } from "next/navigation";
+import { useGetQuery } from "./useGetQuery";
 
 export const POSTS_QUERY_KEY = ["posts"];
 export const POSTS_PAGE_SIZE = 20;
+export const postRepliesQueryKey = (postId: number) => ["post-replies", String(postId)];
 
 export function usePostsFeed() {
   const { lang } = useParams<{ lang: Lang }>();
@@ -52,6 +62,43 @@ export function useCreatePost(onSuccess: () => void) {
     apiPath: apiPathPost,
     queryKeyToInvalidate: POSTS_QUERY_KEY,
     successMessage: "dashboard.posts.created",
+    onSuccessCallback: onSuccess,
+  });
+}
+
+export function useGetPostReplies(postId: number, enabled: boolean) {
+  return useGetQuery<ApiPostReplyGet[]>({
+    queryKey: postRepliesQueryKey(postId),
+    apiPath: `${apiPathPost}/${postId}/reply`,
+    enabled,
+    staleTime: cacheTTL,
+  });
+}
+
+export function useCreateReply(postId: number) {
+  return useMutationQuery<ApiPostReplyPost, unknown>({
+    apiPath: `${apiPathPost}/${postId}/reply`,
+    queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
+    successMessage: "dashboard.posts.replyCreated",
+  });
+}
+
+export function useUpdateReply(postId: number, replyId: number, onSuccess: () => void) {
+  return useMutationQuery<ApiPostReplyPatch, unknown>({
+    apiPath: `${apiPathPost}/reply/${replyId}`,
+    method: "patch",
+    queryKeyToInvalidate: postRepliesQueryKey(postId),
+    successMessage: "dashboard.posts.replyUpdated",
+    onSuccessCallback: onSuccess,
+  });
+}
+
+export function useDeleteReply(postId: number, replyId: number, onSuccess: () => void) {
+  return useMutationQuery<void, unknown>({
+    apiPath: `${apiPathPost}/reply/${replyId}`,
+    method: "delete",
+    queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
+    successMessage: "dashboard.posts.replyDeleted",
     onSuccessCallback: onSuccess,
   });
 }

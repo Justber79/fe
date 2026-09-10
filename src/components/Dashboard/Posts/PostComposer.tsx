@@ -1,7 +1,7 @@
 import Autocomplete from "@/components/Dashboard/Profile/sections/Comments/common/Autocomplete";
 import { useCommentTag } from "@/components/Dashboard/Profile/sections/Comments/common/hooks/useCommentTag";
 import { apiPathOpportunity, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
-import { useClickOutside, useCreatePost, useGetQuery } from "@/hooks";
+import { useClickOutside, useCreatePost, useCreateReply, useGetQuery } from "@/hooks";
 import { ApiOpportunityGetList } from "need4deed-sdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,10 +18,18 @@ import {
   PickerEmpty,
   PickerResults,
   PickerSearch,
+  ReplyContext,
+  ReplyContextClose,
 } from "./styles";
+import type { ReplyTarget } from "./types";
 
-export default function PostComposer() {
-  const { t } = useTranslation();
+interface Props {
+  replyTarget: ReplyTarget | null;
+  onCancelReply: (collapseThread?: boolean) => void;
+}
+
+export default function PostComposer({ replyTarget, onCancelReply }: Props) {
+  const { t, i18n } = useTranslation();
   const [text, setText] = useState("");
   const [selected, setSelected] = useState<ApiOpportunityGetList[]>([]);
   const [opportunityOpen, setOpportunityOpen] = useState(false);
@@ -29,6 +37,9 @@ export default function PostComposer() {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
+  const replyTargetRef = useRef(replyTarget);
+  const previousReplyTargetKeyRef = useRef(replyTarget?.targetKey);
+  replyTargetRef.current = replyTarget;
   const mention = useCommentTag(text, setText, textareaRef, null);
   const { resetTags, setShowAutocomplete } = mention;
   const { data: opportunities } = useGetQuery<ApiOpportunityGetList[]>({
@@ -43,7 +54,17 @@ export default function PostComposer() {
     setSelected([]);
     resetTags();
   };
+  const cancelReplyMode = useCallback(
+    (collapseThread = false) => {
+      setText("");
+      setSelected([]);
+      resetTags();
+      onCancelReply(collapseThread);
+    },
+    [onCancelReply, resetTags],
+  );
   const createPost = useCreatePost(reset);
+  const createReply = useCreateReply(replyTarget?.postId ?? 0);
   const closeOpportunityPicker = useCallback(() => {
     setOpportunityOpen(false);
     setQuery("");
@@ -61,11 +82,29 @@ export default function PostComposer() {
     const escape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closePickers();
+        if (replyTarget) cancelReplyMode(true);
       }
     };
     document.addEventListener("keydown", escape);
     return () => document.removeEventListener("keydown", escape);
-  }, [closePickers]);
+  }, [cancelReplyMode, closePickers, replyTarget]);
+
+  const replyTargetKey = replyTarget?.targetKey;
+
+  useEffect(() => {
+    const wasReplying = Boolean(previousReplyTargetKeyRef.current);
+
+    if (replyTargetKey || wasReplying) {
+      setText("");
+      setSelected([]);
+      setOpportunityOpen(false);
+      setQuery("");
+      resetTags();
+    }
+    if (replyTargetKey) textareaRef.current?.focus();
+
+    previousReplyTargetKeyRef.current = replyTargetKey;
+  }, [replyTargetKey, resetTags]);
 
   const insertAtCursor = useCallback(
     (value: string) => {
@@ -89,6 +128,30 @@ export default function PostComposer() {
     [opportunities, query],
   );
   const submit = () => {
+    // Reply mode may be cleared by the parent when its thread is collapsed.
+    // Do not allow that reply draft to become a top-level post before the
+    // cleanup effect has cleared the composer state.
+    if (!replyTarget && previousReplyTargetKeyRef.current) return;
+
+    if (replyTarget) {
+      const submittedTargetKey = replyTarget.targetKey;
+      createReply.mutate(
+        {
+          postId: replyTarget.postId,
+          parentReplyId: replyTarget.parentReplyId,
+          text: text.trim(),
+        },
+        {
+          onSuccess: () => {
+            if (replyTargetRef.current?.targetKey !== submittedTargetKey) return;
+            reset();
+            onCancelReply(false);
+          },
+        },
+      );
+      return;
+    }
+
     let formatted = text.trim();
     const taggedPersonIds: number[] = [];
     [...mention.tags]
@@ -114,6 +177,22 @@ export default function PostComposer() {
 
   return (
     <Composer ref={composerRef}>
+      {replyTarget && (
+        <ReplyContext>
+          <div>
+            <strong>{t("dashboard.posts.replyingTo", { name: replyTarget.authorName })}</strong>
+            <span>{new Date(replyTarget.createdAt).toLocaleString(i18n.language)}</span>
+            <p>{replyTarget.text}</p>
+          </div>
+          <ReplyContextClose
+            type="button"
+            aria-label={t("dashboard.posts.cancelReply")}
+            onClick={() => cancelReplyMode(false)}
+          >
+            ×
+          </ReplyContextClose>
+        </ReplyContext>
+      )}
       {mention.showAutocomplete && (
         <Autocomplete
           {...mention}
@@ -151,17 +230,19 @@ export default function PostComposer() {
         </OpportunityList>
       )}
       <ComposerActions>
-        <ComposerButton
-          type="button"
-          aria-expanded={opportunityOpen}
-          onClick={() => {
-            setOpportunityOpen((open) => !open);
-            setEmojiOpen(false);
-            setShowAutocomplete(false);
-          }}
-        >
-          {t("dashboard.posts.linkOpportunity")}
-        </ComposerButton>
+        {!replyTarget && (
+          <ComposerButton
+            type="button"
+            aria-expanded={opportunityOpen}
+            onClick={() => {
+              setOpportunityOpen((open) => !open);
+              setEmojiOpen(false);
+              setShowAutocomplete(false);
+            }}
+          >
+            {t("dashboard.posts.linkOpportunity")}
+          </ComposerButton>
+        )}
         <ComposerButton
           type="button"
           aria-label={t("dashboard.posts.addEmoji")}
@@ -174,8 +255,13 @@ export default function PostComposer() {
         >
           😊
         </ComposerButton>
-        <ComposerButton type="button" $primary disabled={!text.trim() || createPost.isPending} onClick={submit}>
-          {t("dashboard.posts.send")}
+        <ComposerButton
+          type="button"
+          $primary
+          disabled={!text.trim() || createPost.isPending || createReply.isPending}
+          onClick={submit}
+        >
+          {t(replyTarget ? "dashboard.posts.sendReply" : "dashboard.posts.send")}
         </ComposerButton>
       </ComposerActions>
       {opportunityOpen && (
