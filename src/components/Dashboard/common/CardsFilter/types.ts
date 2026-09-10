@@ -13,7 +13,7 @@ export interface ScheduleFilter {
 
 export type FilterItem = {
   label: string;
-  checked: unknown;
+  checked: boolean;
   onChange: (checked: boolean) => void;
   keyValue: string;
   parentKey?: string;

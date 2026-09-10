@@ -29,11 +29,19 @@ import {
   PostText,
   PostTimestamp,
   BookmarkButton,
+  PostReplyActions,
 } from "./styles";
+import RepliesThread from "./RepliesThread";
+import type { ReplyTarget } from "./types";
 
-type Props = { post: ApiPostGet };
+type Props = {
+  post: ApiPostGet;
+  isRepliesExpanded: boolean;
+  onReply: (target: ReplyTarget) => void;
+  onToggleReplies: () => void;
+};
 
-export function PostCard({ post }: Props) {
+export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: Props) {
   const { t, i18n } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const currentUser = useCurrentUser(true);
@@ -76,6 +84,15 @@ export function PostCard({ post }: Props) {
       );
     });
   }, [post.id, post.taggedPersons, post.text, t]);
+
+  const replyContextText = useMemo(
+    () =>
+      post.text.replace(/<@(\d+)>/g, (_token, id) => {
+        const person = post.taggedPersons.find(({ id: personId }) => personId === Number(id));
+        return `@${person?.fullName ?? t("dashboard.posts.unknownUser")}`;
+      }),
+    [post.taggedPersons, post.text, t],
+  );
 
   const startEdit = () => {
     const editableText = post.text.replace(/<@(\d+)>/g, (token, id) => {
@@ -187,6 +204,30 @@ export function PostCard({ post }: Props) {
             ))}
           </OpportunityList>
         )}
+        <PostReplyActions>
+          {(post.replyCount > 0 || isRepliesExpanded) && (
+            <EditButton type="button" onClick={onToggleReplies}>
+              {t(isRepliesExpanded ? "dashboard.posts.hideReplies" : "dashboard.posts.showReplies", {
+                count: post.replyCount,
+              })}
+            </EditButton>
+          )}
+          <EditButton
+            type="button"
+            onClick={() =>
+              onReply({
+                targetKey: `post-${post.id}`,
+                postId: post.id,
+                authorName: post.author.fullName,
+                createdAt: post.createdAt,
+                text: replyContextText,
+              })
+            }
+          >
+            {t("dashboard.posts.reply")}
+          </EditButton>
+        </PostReplyActions>
+        {isRepliesExpanded && <RepliesThread postId={post.id} onReply={onReply} />}
       </PostBody>
 
       {isDeleteOpen && (

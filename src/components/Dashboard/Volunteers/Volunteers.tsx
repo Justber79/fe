@@ -121,6 +121,7 @@ export function Volunteers() {
             setNumOfVols={setNumOfVols}
             sortOrder={sortOrder}
             filter={cardsFilter}
+            setFilter={handleFilterUpdate}
             apiFilterOptions={apiFilterOptions}
             opportunityId={opportunityId}
             viewMode={viewMode}
@@ -128,7 +129,7 @@ export function Volunteers() {
           <Filters
             isFiltersOpen={isFiltersOpen}
             setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
           />
         </ContentRow>
       </VolunteersContainer>
