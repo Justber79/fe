@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 type DataMutationOptions<TResponse, TData> = {
   method?: HttpMethod;
   successMessage?: string;
-  onSuccessCallback?: (data: TResponse) => void;
+  onSuccessCallback?: (data: TResponse) => void | Promise<void>;
   queryKeyToInvalidate?: QueryKey | QueryKey[];
 
   noToast?: boolean;
