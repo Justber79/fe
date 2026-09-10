@@ -114,22 +114,31 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ChatsTeardrop,
       title: t("dashboard.communicationSection.title"),
-      ...(hasEditingRights && {
+      // Coordinator/admin only (fe#1003) — a volunteer sees their own
+      // communication log but can't add, edit, or delete entries in it.
+      ...(isAuthorized && {
         headerButtonName: t("dashboard.communicationSection.addNew"),
         onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
       }),
       subComponent: (
-        <CommunicationTracker ref={communicationTrackerRef} entityId={volunteer.id} entityType="volunteer" />
+        <CommunicationTracker
+          ref={communicationTrackerRef}
+          entityId={volunteer.id}
+          entityType="volunteer"
+          canEdit={isAuthorized}
+        />
       ),
     },
     {
       iconName: IconName.Gift,
       title: t("dashboard.appreciationSection.title"),
-      ...(hasEditingRights && {
+      // Coordinator/admin only (fe#1003) — same reasoning as the
+      // communication tracker above.
+      ...(isAuthorized && {
         headerButtonName: t("dashboard.appreciationSection.addNew"),
         onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
       }),
-      subComponent: <Appreciation ref={appreciationRef} volunteer={volunteer} />,
+      subComponent: <Appreciation ref={appreciationRef} volunteer={volunteer} canEdit={isAuthorized} />,
     },
     {
       iconName: IconName.ChartLine,
