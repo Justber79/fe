@@ -27,7 +27,7 @@ export const OpportunityCardListContainer = styled.div`
   --card-width: var(--dashboard-volunteers-card-width);
 `;
 
-export const Card = styled(BaseCard)<{ $cursor?: string }>`
+export const Card = styled(BaseCard)`
   background-color: var(--color-orchid-subtle);
   width: var(--dashboard-volunteers-card-width);
   min-height: var(--dashboard-volunteers-card-height);
@@ -36,7 +36,7 @@ export const Card = styled(BaseCard)<{ $cursor?: string }>`
   transition:
     transform 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
-  cursor: ${(props) => props.$cursor || "pointer"};
+  cursor: pointer;
 
   text-decoration: none;
   color: inherit;
