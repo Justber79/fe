@@ -5,13 +5,15 @@ import { SetFilter } from "../../common/CardsFilter/types";
 import { createOpportunityFilterItems } from "./helpers";
 import { FiltersContentContainer } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
+import { ViewMode } from "../../common/types";
 
 type Props = {
   filter: OpportunityCardsFilter;
   setFilter: SetFilter<OpportunityCardsFilter>;
+  viewMode: ViewMode;
 };
 
-export default function FiltersContent({ setFilter, filter }: Props) {
+export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   const { t } = useTranslation();
   const { isAuthorized, isAgent } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
@@ -29,8 +31,12 @@ export default function FiltersContent({ setFilter, filter }: Props) {
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
       <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
+      )}
+      {viewMode === ViewMode.CARDS && (
+        <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
+      )}
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
       <AccordionFilter header={t("dashboard.volunteers.filters.skills")} items={skillFilters} />
       {canSeeFullView && (

@@ -10,6 +10,7 @@ import { createVolunteerSearchMap } from "./constants";
 import { CopyButton } from "../common/CopyButton";
 import { AgentReadOnlyTableRow } from "./AgentReadOnlyTableRow";
 import { useAuth } from "@/hooks/useAuth";
+import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
   agents: ApiAgentGetList[];
@@ -21,6 +22,11 @@ interface TableListProps {
   onCopyEmails: () => void;
   isCopying: boolean;
   onSelect?: (agent: ApiAgentGetList) => void;
+  dropdownFilters: {
+    districtFilters: FilterItem[];
+    typeFilters: FilterItem[];
+    volunteerSearchFilters: FilterItem[];
+  };
 }
 
 export function AgentTableList({
@@ -33,6 +39,7 @@ export function AgentTableList({
   onCopyEmails,
   isCopying,
   onSelect,
+  dropdownFilters,
 }: TableListProps) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
@@ -46,13 +53,14 @@ export function AgentTableList({
         ariaLabel={t("dashboard.common.copyEmails.copyAriaAllAgents")}
       />
     );
-    return createAgentTableColumns(t, copyButton);
-  }, [t, onCopyEmails, isCopying]);
+    return createAgentTableColumns(t, copyButton, dropdownFilters);
+  }, [t, onCopyEmails, isCopying, dropdownFilters]);
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   const searchLabels = useMemo(() => createVolunteerSearchMap(t), [t]);
 
   return (
     <EntityTableList
+      isFewResults={agents.length < 5}
       columns={isAuthorized ? columns : readOnlyColumns}
       data={agents}
       renderRow={(agent, isLast) =>

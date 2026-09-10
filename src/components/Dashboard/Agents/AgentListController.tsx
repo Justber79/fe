@@ -9,19 +9,32 @@ import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
 import { AgentTableList } from "./AgentTableList";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
+import { createAgentFilterItems } from "./Filters/helpers";
+import { useTranslation } from "react-i18next";
+import { LoadingAgentTableList } from "./LoadingAgentTableList";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
   sortOrder: SortOrder;
   filter: AgentCardsFilter;
+  setFilter: (newFilter: AgentCardsFilter | ((prev: AgentCardsFilter) => AgentCardsFilter)) => void;
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
   viewMode: ViewMode;
   onSelect?: (agent: ApiAgentGetList) => void;
 };
 
-export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilterOptions, viewMode, onSelect }: Props) => {
+export const AgentListController = ({
+  setNumOfAgents,
+  sortOrder,
+  filter,
+  setFilter,
+  apiFilterOptions,
+  viewMode,
+  onSelect,
+}: Props) => {
   const { currentPage, setCurrentPage } = usePageParam();
+  const { t } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
@@ -47,10 +60,14 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilt
 
   const agents: ApiAgentGetList[] = data || [];
   const { handleCopyEmails, isCopying } = useCopyEmails(`${apiPathAgent}/`, "agents-emails", serializedFilter);
+  const { districtFilters, typeFilters, volunteerSearchFilters } = createAgentFilterItems(filter, setFilter, t);
+  const dropdownFilters = { districtFilters, typeFilters, volunteerSearchFilters };
 
   useEffect(() => {
     setNumOfAgents(count);
   }, [count, setNumOfAgents]);
+
+  if (isLoading && isListView) return <LoadingAgentTableList dropdownFilters={dropdownFilters} />;
 
   if (isLoading) return <DashboardListLoading />;
 
@@ -66,6 +83,7 @@ export const AgentListController = ({ setNumOfAgents, sortOrder, filter, apiFilt
         onCopyEmails={handleCopyEmails}
         isCopying={isCopying}
         onSelect={onSelect}
+        dropdownFilters={dropdownFilters}
       />
     );
   }
