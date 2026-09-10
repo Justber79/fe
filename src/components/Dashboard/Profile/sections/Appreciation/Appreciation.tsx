@@ -32,13 +32,14 @@ import { createAppreciationStatusLabelMap } from "./constants";
 
 type Props = {
   volunteer: ApiVolunteerGet;
+  canEdit: boolean;
 };
 
 export type AppreciationRef = {
   handleAddNew: () => void;
 };
 
-export const Appreciation = forwardRef<AppreciationRef, Props>(function Appreciation({ volunteer }, ref) {
+export const Appreciation = forwardRef<AppreciationRef, Props>(function Appreciation({ volunteer, canEdit }, ref) {
   const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiAppreciationGet | undefined>(undefined);
@@ -117,8 +118,12 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
               <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusDueTo")}</TableHeaderCell>
               <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.statusMailedOn")}</TableHeaderCell>
               <TableHeaderCell $width="146px">{t("dashboard.appreciationSection.receivedOn")}</TableHeaderCell>
-              <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
-              <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
+              {canEdit && (
+                <>
+                  <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
+                  <TableHeaderCell $width="var(--communication-tracker-action-column-width)" />
+                </>
+              )}
             </TableHeader>
             <TableBody>
               {appreciations.map((entry, index) => (
@@ -149,16 +154,20 @@ export const Appreciation = forwardRef<AppreciationRef, Props>(function Apprecia
                   <TableCell $width="146px" $noWrap>
                     {entry.dateDelivery ? formatDate(entry.dateDelivery) : <EmptyPlaceholder />}
                   </TableCell>
-                  <ActionCell>
-                    <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
-                      <PencilSimple size={20} weight="regular" />
-                    </ActionButton>
-                  </ActionCell>
-                  <ActionCell>
-                    <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
-                      <Trash size={20} weight="regular" />
-                    </ActionButton>
-                  </ActionCell>
+                  {canEdit && (
+                    <>
+                      <ActionCell>
+                        <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
+                          <PencilSimple size={20} weight="regular" />
+                        </ActionButton>
+                      </ActionCell>
+                      <ActionCell>
+                        <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
+                          <Trash size={20} weight="regular" />
+                        </ActionButton>
+                      </ActionCell>
+                    </>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
