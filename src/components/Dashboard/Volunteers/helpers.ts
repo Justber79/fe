@@ -188,15 +188,15 @@ export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, search
 
   const queryEngagement = searchParams.getAll(QueryParamsKeys.ENGAGEMENT);
   queryEngagement.forEach((e) => {
-    if (newFilter.engagement[e] !== undefined) {
-      newFilter.engagement[e] = true;
+    if (newFilter.engagement[`vol-${e}`] !== undefined) {
+      newFilter.engagement[`vol-${e}`] = true;
     }
   });
 
   const queryStatusMatch = searchParams.getAll(VolunteerStatusMatch.MATCH);
   queryStatusMatch.forEach((e) => {
-    if (newFilter.match[e] !== undefined) {
-      newFilter.match[e] = true;
+    if (newFilter.match[`vol-${e}`] !== undefined) {
+      newFilter.match[`vol-${e}`] = true;
     }
   });
 
