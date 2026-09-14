@@ -324,10 +324,31 @@ export const OpportunityPickerPanel = styled(ComposerPanel)`
   border-radius: 12px;
   box-shadow: 0 16px 40px -12px rgba(38, 23, 44, 0.28);
 `;
-export const EmojiPickerPanel = styled(ComposerPanel)`
+export const EmojiPickerPanel = styled(ComposerPanel)<{
+  $placement?: "composer" | "reaction";
+  $align?: "left" | "right";
+}>`
   gap: var(--spacing-8);
-  max-height: 390px;
+  bottom: calc(100% + var(--spacing-8));
+  width: min(320px, calc(100% - 32px));
+  max-height: 260px;
+  padding: var(--spacing-12);
+  overflow-x: hidden;
   overflow-y: auto;
+
+  ${({ $placement, $align }) =>
+    $placement === "reaction" &&
+    `
+      bottom: calc(100% + var(--spacing-8));
+      left: ${$align === "right" ? "auto" : "0"};
+      right: ${$align === "right" ? "0" : "auto"};
+      width: min(360px, calc(100vw - 64px));
+    `}
+
+  @media (max-width: 420px) {
+    width: min(280px, calc(100vw - 48px));
+    max-height: 240px;
+  }
 `;
 export const EmojiSectionLabel = styled.span`
   color: var(--color-grey-500);
@@ -338,6 +359,10 @@ export const EmojiGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(8, minmax(32px, 1fr));
   gap: var(--spacing-4);
+
+  @media (max-width: 420px) {
+    grid-template-columns: repeat(7, minmax(28px, 1fr));
+  }
 `;
 export const EmojiCategoryButton = styled.button<{ $selected: boolean }>`
   padding: var(--spacing-8);
@@ -425,6 +450,148 @@ export const PostReplyActions = styled.div`
   border-top: 1px solid var(--color-grey-200);
 `;
 
+export const ReactionControls = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-8);
+`;
+
+export const ReactionSummary = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+`;
+
+export const ReactionPill = styled.button<{ $selected: boolean }>`
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-12);
+  border: 1px solid ${({ $selected }) => ($selected ? "var(--color-aubergine)" : "var(--color-grey-200)")};
+  border-radius: 999px;
+  background: ${({ $selected }) => ($selected ? "var(--color-pink-100)" : "var(--color-white)")};
+  color: var(--color-midnight);
+  font: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-aubergine);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+`;
+
+export const ReactionMenu = styled.div<{ $align: "left" | "right" }>`
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + var(--spacing-8));
+  left: ${({ $align }) => ($align === "right" ? "auto" : "0")};
+  right: ${({ $align }) => ($align === "right" ? "0" : "auto")};
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 999px;
+  background: var(--color-white);
+  box-shadow: 0 8px 24px rgb(38 15 54 / 16%);
+
+  @media (max-width: 420px) {
+    max-width: calc(100vw - var(--spacing-32));
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
+export const ReactionQuickButton = styled.button<{ $selected: boolean }>`
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: ${({ $selected }) => ($selected ? "var(--color-pink-100)" : "transparent")};
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-100);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+`;
+
+export const ReactionPickerWrapper = styled.div`
+  position: relative;
+`;
+
+export const ReactionAddIcon = styled.span`
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+`;
+
+export const ReactionAddBadge = styled.span`
+  position: absolute;
+  right: -5px;
+  bottom: -3px;
+  display: grid;
+  width: 12px;
+  height: 12px;
+  place-items: center;
+  border: 1px solid var(--color-white);
+  border-radius: 50%;
+  background: var(--color-aubergine);
+  color: var(--color-white);
+`;
+
+export const ReactionTrigger = styled.button<{ $selected: boolean }>`
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-12);
+  border: 1px solid ${({ $selected }) => ($selected ? "var(--color-aubergine)" : "var(--color-grey-200)")};
+  border-radius: 999px;
+  background: ${({ $selected }) => ($selected ? "var(--color-pink-100)" : "var(--color-white)")};
+  color: var(--color-midnight);
+  font: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-aubergine);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+`;
+
 export const RepliesList = styled.section`
   display: flex;
   flex-direction: column;
@@ -482,7 +649,9 @@ export const ChildReplies = styled.div`
 export const ReplyFooter = styled.div`
   display: flex;
   min-height: 1px;
+  align-items: center;
   justify-content: flex-end;
+  gap: var(--spacing-8);
 `;
 
 export const ReplyContext = styled.div`

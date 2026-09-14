@@ -10,6 +10,7 @@ import { Fragment, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PostActionMenu from "./PostActionMenu";
+import PostReactions from "./PostReactions";
 import {
   Avatar,
   AvatarInitials,
@@ -191,6 +192,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
           </OpportunityList>
         )}
         <PostReplyActions>
+          <PostReactions itemId={post.id} reactions={post.reactions} myReaction={post.myReaction} />
           {(post.replyCount > 0 || isRepliesExpanded) && (
             <EditButton type="button" onClick={onToggleReplies}>
               {t(isRepliesExpanded ? "dashboard.posts.hideReplies" : "dashboard.posts.showReplies", {

@@ -39,7 +39,15 @@ const emojiCategories = [
 
 const quickEmojis = ["👍", "❤️", "😊", "😂", "👏", "🙏", "🎉", "✅"];
 
-export default function EmojiPicker({ onChoose }: { onChoose: (emoji: string) => void }) {
+export default function EmojiPicker({
+  onChoose,
+  placement = "composer",
+  align = "left",
+}: {
+  onChoose: (emoji: string) => void;
+  placement?: "composer" | "reaction";
+  align?: "left" | "right";
+}) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(0);
@@ -51,8 +59,9 @@ export default function EmojiPicker({ onChoose }: { onChoose: (emoji: string) =>
     : emojiCategories[category].emojis;
 
   return (
-    <EmojiPickerPanel>
+    <EmojiPickerPanel $placement={placement} $align={align}>
       <PickerSearch
+        autoFocus={placement === "reaction"}
         aria-label={t("dashboard.posts.searchEmoji")}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
