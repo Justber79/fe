@@ -27,6 +27,10 @@ export function useCommentTag(
   const enabled = !!setNewCommentText;
   const isStaffMode = userRole === undefined;
   const primaryRole = isStaffMode ? UserRole.COORDINATOR : userRole;
+  // Only fetch once tagging is actually relevant: an in-progress @-mention,
+  // or text that already contains one (e.g. CommentEdit's initial value) -
+  // not on every mount of a comment box nobody ends up tagging in.
+  const needsTagData = showAutocomplete || value.includes("@");
 
   const { data: primaryUsers, isLoading: isPrimaryLoading } = useGetQuery<ApiUserGetWithPersonId[]>({
     queryKey: ["users", primaryRole ?? "all"],
@@ -42,6 +46,8 @@ export function useCommentTag(
 
   // GET /user only takes a single `role` value, so staff mode fetches admins
   // via a second, separately-enabled query rather than widening the schema.
+  // Gated on needsTagData too, so a comment box nobody tags anyone in only
+  // ever pays for the (pre-existing) primary fetch, not this added one.
   const { data: admins, isLoading: isAdminsLoading } = useGetQuery<ApiUserGetWithPersonId[]>({
     queryKey: ["users", UserRole.ADMIN],
     apiPath: apiPathUser,
@@ -51,14 +57,16 @@ export function useCommentTag(
       limit: MAX_PAGE_LIMIT,
     },
     staleTime: cacheTTL,
-    enabled: enabled && isStaffMode,
+    enabled: enabled && isStaffMode && needsTagData,
   });
 
-  // Wait for every query this mode depends on before exposing a merged
-  // list — otherwise a consumer (e.g. convertDbTextToEditable) can see a
-  // partial list as "loaded" and permanently rewrite a not-yet-loaded
-  // admin's tag to a fallback placeholder.
-  const isUsersLoading = isPrimaryLoading || (isStaffMode && isAdminsLoading);
+  // isAdminsLoading is already false whenever the query above is disabled,
+  // so this doesn't need its own isStaffMode check.
+  const isUsersLoading = isPrimaryLoading || isAdminsLoading;
+  // Exposed so a consumer can block saving while true instead of silently
+  // treating an incomplete tag list as final (see convertDbTextToEditable /
+  // initTags below, both of which no-op on `!users`).
+  const isTagDataPending = needsTagData && isUsersLoading;
 
   const users = useMemo(() => {
     if (!enabled) return undefined;
@@ -235,5 +243,6 @@ export function useCommentTag(
     convertDbTextToEditable,
     initTags,
     users,
+    isTagDataPending,
   };
 }
