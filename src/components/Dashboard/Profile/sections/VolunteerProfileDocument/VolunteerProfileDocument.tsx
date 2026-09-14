@@ -16,9 +16,10 @@ import { DocumentRow, enrichDocuments, extractDocumentUrl } from "./utils";
 
 type Props = {
   volunteer: ApiVolunteerGet;
+  isAuthorized: boolean;
 };
 
-export function VolunteerProfileDocument({ volunteer }: Props) {
+export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   const { t } = useTranslation();
   const {
     deleteDocument: deleteDialogDocument,
@@ -50,6 +51,7 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
   const docStatusMutation = useUpdateVolunteerDocStatus(volunteer.id);
 
   const handleToggleReceived = (type: DocumentType, currentIsReceived: boolean) => {
+    if (!isAuthorized) return;
     switch (type) {
       case DocumentType.MEASLES_VACCINATION:
         docStatusMutation.mutate({
@@ -130,7 +132,6 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
   if (isError) {
     return <div>Error loading documents.</div>;
   }
-
   return (
     <>
       <SectionWrapper data-testid="volunteer-profile-document-container">
@@ -141,14 +142,18 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
               <HeaderCell $width="120px" $noWrap>
                 {t("dashboard.documentSection.received")}
               </HeaderCell>
-              <HeaderCell $width="180px">{t("dashboard.documentSection.status")}</HeaderCell>
-              <HeaderCell $width="152px" $noWrap>
-                {t("dashboard.documentSection.uploadedOn")}
-              </HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+              {isAuthorized && (
+                <>
+                  <HeaderCell $width="180px">{t("dashboard.documentSection.status")}</HeaderCell>
+                  <HeaderCell $width="152px" $noWrap>
+                    {t("dashboard.documentSection.uploadedOn")}
+                  </HeaderCell>
+                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+                </>
+              )}
             </TableHeader>
 
             {documentRows.map((row, index) => (
@@ -161,6 +166,7 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
                 onDownload={() => handleDownload(row)}
                 onDelete={() => openDialog("delete", row)}
                 onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
+                isAuthorized={isAuthorized}
               />
             ))}
           </Table>
