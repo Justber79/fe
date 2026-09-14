@@ -170,6 +170,11 @@ export const BookmarkButton = styled(PostMenuButton)`
   &[aria-pressed="true"] {
     background: var(--color-pink-50);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 export const ActionMenu = styled.div`

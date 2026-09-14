@@ -1,7 +1,8 @@
 import { apiPathPost, cacheTTL } from "@/config/constants";
 import { fetchData } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import type {
   ApiPostGet,
   ApiPostPatch,
@@ -12,11 +13,20 @@ import type {
   Lang,
 } from "need4deed-sdk";
 import { useParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { useGetQuery } from "./useGetQuery";
 
 export const POSTS_QUERY_KEY = ["posts"];
 export const POSTS_PAGE_SIZE = 20;
 export const postRepliesQueryKey = (postId: number) => ["post-replies", String(postId)];
+
+type PostsPage = {
+  message: string;
+  data: ApiPostGet[];
+  count: number;
+};
+
+type PostsFeedData = InfiniteData<PostsPage, number>;
 
 export function usePostsFeed() {
   const { lang } = useParams<{ lang: Lang }>();
@@ -67,13 +77,51 @@ export function useCreatePost(onSuccess: () => void) {
 }
 
 export function useTogglePostBookmark(postId: number, bookmarked: boolean) {
-  return useMutationQuery<void, unknown>({
-    apiPath: `${apiPathPost}/${postId}/bookmark`,
-    method: bookmarked ? "delete" : "post",
-    queryKeyToInvalidate: POSTS_QUERY_KEY,
-    awaitQueryInvalidation: true,
+  const queryClient = useQueryClient();
+  const bookmarkedRef = useRef(bookmarked);
+  const isRequestInFlight = useRef(false);
+
+  useEffect(() => {
+    bookmarkedRef.current = bookmarked;
+  }, [bookmarked]);
+
+  const mutation = useMutationQuery<boolean, boolean>({
+    mutationFn: async (nextBookmarked) => {
+      if (nextBookmarked) await axios.post(`${apiPathPost}/${postId}/bookmark`);
+      else await axios.delete(`${apiPathPost}/${postId}/bookmark`);
+      return nextBookmarked;
+    },
     successMessage: bookmarked ? "dashboard.posts.bookmarkRemoved" : "dashboard.posts.bookmarkAdded",
+    onSuccessCallback: (nextBookmarked) => {
+      bookmarkedRef.current = nextBookmarked;
+
+      queryClient.getQueriesData<PostsFeedData>({ queryKey: POSTS_QUERY_KEY }).forEach(([queryKey, data]) => {
+        if (!data) return;
+
+        queryClient.setQueryData<PostsFeedData>(queryKey, {
+          ...data,
+          pages: data.pages.map((page) => ({
+            ...page,
+            data: page.data.map((post) => (post.id === postId ? { ...post, bookmarked: nextBookmarked } : post)),
+          })),
+        });
+      });
+    },
   });
+
+  return {
+    ...mutation,
+    mutate: () => {
+      if (isRequestInFlight.current) return;
+
+      isRequestInFlight.current = true;
+      mutation.mutate(!bookmarkedRef.current, {
+        onSettled: () => {
+          isRequestInFlight.current = false;
+        },
+      });
+    },
+  };
 }
 
 export function useGetPostReplies(postId: number, enabled: boolean) {
