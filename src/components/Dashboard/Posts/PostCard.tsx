@@ -1,15 +1,14 @@
 import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
-import { apiPathUser, cacheTTL } from "@/config/constants";
-import { fetchData, useDeletePost, useUpdatePost } from "@/hooks";
+import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
+import { useDeletePost, useGetQuery, useUpdatePost } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getImageUrl } from "@/utils";
 import { DotsThreeOutline } from "@phosphor-icons/react";
-import { ApiPostGet, ApiUserGet, Lang, UserRole } from "need4deed-sdk";
+import { ApiPostGet, ApiUserGet, Lang, SortOrder, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useQueries } from "@tanstack/react-query";
 
 import PostActionMenu from "./PostActionMenu";
 import {
@@ -54,30 +53,14 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
   const [editText, setEditText] = useState(post.text);
   const updatePost = useUpdatePost(post.id, () => setIsEditing(false));
   const deletePost = useDeletePost(post.id, () => setIsDeleteOpen(false));
-  const legacyMentionIds = useMemo(
-    () =>
-      [...post.text.matchAll(/<@(\d+)>/g)]
-        .map((match) => Number(match[1]))
-        .filter((id, index, ids) => ids.indexOf(id) === index),
-    [post.text],
-  );
-  const legacyUserQueries = useQueries({
-    queries: legacyMentionIds.map((userId) => ({
-      queryKey: ["users", "by-id", userId, lang],
-      queryFn: () => fetchData<ApiUserGet>(`${apiPathUser}/${userId}`, { language: lang }),
-      staleTime: cacheTTL,
-    })),
+  const hasLegacyMentions = /<@\d+>/.test(post.text);
+  const { data: users } = useGetQuery<ApiUserGet[]>({
+    queryKey: ["users", "all"],
+    apiPath: apiPathUser,
+    params: { sortOrder: SortOrder.NewToOld, limit: MAX_PAGE_LIMIT },
+    staleTime: cacheTTL,
+    enabled: hasLegacyMentions,
   });
-  const legacyUsers = useMemo(
-    () =>
-      new Map(
-        legacyMentionIds.flatMap((userId, index) => {
-          const user = legacyUserQueries[index]?.data?.data;
-          return user ? [[userId, user] as const] : [];
-        }),
-      ),
-    [legacyMentionIds, legacyUserQueries],
-  );
 
   const closeEdit = useCallback(() => {
     if (updatePost.isPending) return;
@@ -101,10 +84,17 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
     (mentionId: number, isPersonToken: boolean) => {
       if (isPersonToken) return post.taggedPersons.find(({ id }) => id === mentionId);
 
-      const legacyUser = legacyUsers.get(mentionId);
-      return post.taggedPersons.find(({ id }) => id === legacyUser?.personId);
+      const directPerson = post.taggedPersons.find(({ id }) => id === mentionId);
+      const legacyUser = users?.find(({ id }) => id === mentionId);
+      const legacyPerson = post.taggedPersons.find(({ id }) => id === legacyUser?.personId);
+
+      // Bare tokens were historically written with either a Person id (post
+      // editing) or a User id (the old composer). Never silently attribute an
+      // ambiguous collision to the wrong tagged person.
+      if (directPerson && legacyPerson && directPerson.id !== legacyPerson.id) return undefined;
+      return directPerson ?? legacyPerson;
     },
-    [legacyUsers, post.taggedPersons],
+    [post.taggedPersons, users],
   );
 
   const displayText = useMemo(() => {
