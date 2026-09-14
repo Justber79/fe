@@ -52,7 +52,7 @@ export function NewOpportunity() {
   const headerMethods = useForm<HeaderFormData>({
     resolver: zodResolver(createHeaderSchema(t)),
     mode: "onChange",
-    defaultValues: { title: "", volunteerType: VolunteerStateTypeType.REGULAR, agentId: 0 },
+    defaultValues: { title: "", volunteerType: undefined, agentId: 0 },
   });
   const { watch: watchHeader, setValue: setAgentId } = headerMethods;
   const selectedType = watchHeader("volunteerType");
@@ -161,21 +161,6 @@ export function NewOpportunity() {
       <FormProvider {...headerMethods}>
         <OpportunityHeaderCard selectedType={selectedType} agentTitles={agentTitles} />
       </FormProvider>
-      <SectionCard
-        iconName={IconName.Wrench}
-        title={t("dashboard.opportunityProfile.opportunityDetails.title")}
-        subComponent={
-          <FormProvider {...detailsMethods}>
-            <OpportunityDetailsFields
-              isEvent={isEvent}
-              apiLanguages={apiLanguages}
-              apiActivities={apiActivities}
-              apiSkills={apiSkills}
-              isAccompanying={isAccompanying}
-            />
-          </FormProvider>
-        }
-      />
       {isAccompanying && (
         <SectionCard
           iconName={IconName.Users}
@@ -200,6 +185,21 @@ export function NewOpportunity() {
           }
         />
       )}
+      <SectionCard
+        iconName={IconName.Wrench}
+        title={t("dashboard.opportunityProfile.opportunityDetails.title")}
+        subComponent={
+          <FormProvider {...detailsMethods}>
+            <OpportunityDetailsFields
+              isEvent={isEvent}
+              apiLanguages={apiLanguages}
+              apiActivities={apiActivities}
+              apiSkills={apiSkills}
+              isAccompanying={isAccompanying}
+            />
+          </FormProvider>
+        }
+      />
       <SaveRow>
         <Button
           text={t("dashboard.newOpportunity.submit")}

@@ -212,3 +212,8 @@ export const TimeInput = styled.input<{ $hasError?: boolean }>`
   font-size: var(--font-size-lg);
   color: var(--color-midnight);
 `;
+
+export const ErrorMessageContainer = styled.div`
+  display: flex;
+  justify-content: end;
+`;

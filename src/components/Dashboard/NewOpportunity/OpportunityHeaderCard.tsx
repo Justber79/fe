@@ -11,10 +11,18 @@ import { ShootingStarIcon } from "@phosphor-icons/react";
 import { useFormContext, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { VolunteerStateTypeType } from "need4deed-sdk";
-import { VolunteerTypeRow, TypeButtons, TypeButton, NGOTypeRow, NGOnonEditableRow } from "./styled";
+import {
+  VolunteerTypeRow,
+  TypeButtons,
+  TypeButton,
+  NGOTypeRow,
+  NGOnonEditableRow,
+  ErrorMessageContainer,
+} from "./styled";
 import { Heading3, Heading4 } from "@/components/styled/text";
 import { createVolunteerTypeLabelMap } from "@/components/Dashboard/Profile/sections/ProfileHeader/common/labelMaps";
 import { HeaderFormData } from "./headerSchema";
+import { ErrorMessage } from "@/components/core/common";
 
 const SELECTABLE_VOLUNTEER_TYPES = [
   VolunteerStateTypeType.REGULAR,
@@ -76,6 +84,11 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
                 ))}
               </TypeButtons>
             </VolunteerTypeRow>
+            {errors.volunteerType?.message && (
+              <ErrorMessageContainer>
+                <ErrorMessage message={errors.volunteerType?.message} />
+              </ErrorMessageContainer>
+            )}
           </StatusSection>
 
           <NGOTypeRow>
