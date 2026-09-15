@@ -41,6 +41,7 @@ export function CommentEdit({ commentId, edit }: Props) {
     convertDbTextToEditable,
     handleKeyDown,
     users,
+    isTagDataPending,
   } = useCommentTag(edit.text, edit.onTextChange, editTextAreaRef);
 
   const handleScroll = () => {
@@ -85,7 +86,7 @@ export function CommentEdit({ commentId, edit }: Props) {
         </EditCancelButton>
         <EditSaveButton
           onClick={edit.onSave}
-          disabled={!edit.canSave || edit.isUpdating}
+          disabled={!edit.canSave || edit.isUpdating || isTagDataPending}
           data-testid={`save-edit-${commentId}`}
         >
           {t("dashboard.commentsSection.saveEdit")}
