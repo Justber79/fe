@@ -132,7 +132,9 @@ export default function PostReactions({ itemId, myReaction, reactions, postId, a
             </ReactionQuickButton>
           </ReactionMenu>
         ) : null}
-        {pickerMode === "full" ? <EmojiPicker onChoose={chooseReaction} placement="reaction" align={align} /> : null}
+        {pickerMode === "full" ? (
+          <EmojiPicker onChoose={chooseReaction} placement="reaction" align={align} anchorRef={pickerRef} />
+        ) : null}
       </ReactionPickerWrapper>
     </ReactionControls>
   );

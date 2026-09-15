@@ -350,12 +350,12 @@ export const EmojiPickerPanel = styled(ComposerPanel)`
   overflow-y: auto;
 `;
 
-export const ReactionEmojiPickerPanel = styled.div<{ $align: "left" | "right" }>`
-  position: absolute;
+export const ReactionEmojiPickerPanel = styled.div<{ $left?: number; $top?: number }>`
+  position: fixed;
   z-index: 20;
-  bottom: calc(100% + var(--spacing-8));
-  left: ${({ $align }) => ($align === "right" ? "auto" : "0")};
-  right: ${({ $align }) => ($align === "right" ? "0" : "auto")};
+  top: ${({ $top }) => ($top === undefined ? "0" : `${$top}px`)};
+  left: ${({ $left }) => ($left === undefined ? "0" : `${$left}px`)};
+  visibility: ${({ $left }) => ($left === undefined ? "hidden" : "visible")};
   display: flex;
   flex-direction: column;
   gap: var(--spacing-8);

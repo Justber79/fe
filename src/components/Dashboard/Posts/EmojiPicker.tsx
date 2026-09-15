@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import {
   EmojiCategoryButton,
@@ -44,14 +44,60 @@ export default function EmojiPicker({
   onChoose,
   placement = "composer",
   align = "left",
+  anchorRef,
 }: {
   onChoose: (emoji: string) => void;
   placement?: "composer" | "reaction";
   align?: "left" | "right";
+  anchorRef?: RefObject<HTMLDivElement | null>;
 }) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(0);
+  const reactionPanelRef = useRef<HTMLDivElement>(null);
+  const [reactionPosition, setReactionPosition] = useState<{ left: number; top: number }>();
+
+  useLayoutEffect(() => {
+    if (placement !== "reaction") return;
+
+    const positionPanel = () => {
+      const anchor = anchorRef?.current;
+      const panel = reactionPanelRef.current;
+      if (!anchor || !panel) return;
+
+      const anchorBox = anchor.getBoundingClientRect();
+      const panelBox = panel.getBoundingClientRect();
+      const edgeGap = 16;
+      const left = Math.max(
+        edgeGap,
+        Math.min(
+          align === "right" ? anchorBox.right - panelBox.width : anchorBox.left,
+          window.innerWidth - panelBox.width - edgeGap,
+        ),
+      );
+      const above = anchorBox.top - panelBox.height - 8;
+      const below = anchorBox.bottom + 8;
+      const top =
+        above >= edgeGap
+          ? above
+          : below + panelBox.height <= window.innerHeight - edgeGap
+            ? below
+            : Math.max(edgeGap, Math.min(below, window.innerHeight - panelBox.height - edgeGap));
+
+      setReactionPosition({ left, top });
+    };
+
+    positionPanel();
+    const observer = new ResizeObserver(positionPanel);
+    if (reactionPanelRef.current) observer.observe(reactionPanelRef.current);
+    window.addEventListener("resize", positionPanel);
+    window.addEventListener("scroll", positionPanel, true);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", positionPanel);
+      window.removeEventListener("scroll", positionPanel, true);
+    };
+  }, [align, anchorRef, placement]);
   const normalizedQuery = query.trim().toLowerCase();
   const visibleEmojis = normalizedQuery
     ? emojiCategories.flatMap(({ emojis, keywords }) =>
@@ -104,7 +150,9 @@ export default function EmojiPicker({
   );
 
   return placement === "reaction" ? (
-    <ReactionEmojiPickerPanel $align={align}>{pickerContent}</ReactionEmojiPickerPanel>
+    <ReactionEmojiPickerPanel ref={reactionPanelRef} $left={reactionPosition?.left} $top={reactionPosition?.top}>
+      {pickerContent}
+    </ReactionEmojiPickerPanel>
   ) : (
     <EmojiPickerPanel>{pickerContent}</EmojiPickerPanel>
   );
