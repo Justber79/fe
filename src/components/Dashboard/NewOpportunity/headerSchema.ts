@@ -6,7 +6,7 @@ export const createHeaderSchema = (t: (key: string) => string) =>
     title: z.string().min(1, t("form.error.required")),
     volunteerType: z.enum(
       [VolunteerStateTypeType.REGULAR, VolunteerStateTypeType.ACCOMPANYING, VolunteerStateTypeType.EVENTS],
-      { message: t("form.error.required") },
+      { error: t("form.error.required") },
     ),
     agentId: z.number().min(1, t("form.error.required")),
   });
