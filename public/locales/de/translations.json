@@ -548,6 +548,10 @@
     "posts": {
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
+      "addBookmark": "Beitrag für später speichern",
+      "removeBookmark": "Beitrag aus gespeicherten Elementen entfernen",
+      "bookmarkAdded": "Beitrag für später gespeichert",
+      "bookmarkRemoved": "Beitrag aus gespeicherten Elementen entfernt",
       "sendReply": "Antwort senden",
       "created": "Beitrag erfolgreich erstellt",
       "reply": "Antworten",
