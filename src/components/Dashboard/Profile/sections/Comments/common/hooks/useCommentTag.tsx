@@ -1,7 +1,7 @@
 import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 
 // personId is not yet in ApiUserGet SDK type — cast until SDK is updated
 type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
@@ -10,7 +10,13 @@ export function useCommentTag(
   value: string,
   setNewCommentText?: (text: string) => void,
   textAreaRef?: React.RefObject<HTMLTextAreaElement | null> | null,
-  userRole: UserRole | null = UserRole.COORDINATOR,
+  // undefined (the default, omitted by every comment call site) = the
+  // comment-tagging roles (coordinator + admin, the only roles that can see
+  // comments); null (PostComposer) = no role filter, tag anyone; an explicit
+  // UserRole = that role only. Kept distinct from UserRole.COORDINATOR so a
+  // future caller can request COORDINATOR alone without silently also
+  // getting ADMIN.
+  userRole?: UserRole | null,
 ) {
   const [tags, setTags] = useState<{ id: number; name: string; personId: number }[]>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -18,17 +24,56 @@ export function useCommentTag(
   const [filteredListLength, setFilteredListLength] = useState(0);
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
-  const { data: users } = useGetQuery<ApiUserGetWithPersonId[]>({
-    queryKey: ["users", userRole ?? "all"],
+  const enabled = !!setNewCommentText;
+  const isStaffMode = userRole === undefined;
+  const primaryRole = isStaffMode ? UserRole.COORDINATOR : userRole;
+  // Only fetch once tagging is actually relevant: an in-progress @-mention,
+  // or text that already contains one (e.g. CommentEdit's initial value) -
+  // not on every mount of a comment box nobody ends up tagging in.
+  const needsTagData = showAutocomplete || value.includes("@");
+
+  const { data: primaryUsers, isLoading: isPrimaryLoading } = useGetQuery<ApiUserGetWithPersonId[]>({
+    queryKey: ["users", primaryRole ?? "all"],
     apiPath: apiPathUser,
     params: {
       sortOrder: SortOrder.NewToOld,
-      ...(userRole ? { role: userRole } : {}),
-      ...(userRole === null ? { limit: MAX_PAGE_LIMIT } : {}),
+      ...(primaryRole ? { role: primaryRole } : {}),
+      limit: MAX_PAGE_LIMIT,
     },
     staleTime: cacheTTL,
-    enabled: !!setNewCommentText,
+    enabled,
   });
+
+  // GET /user only takes a single `role` value, so staff mode fetches admins
+  // via a second, separately-enabled query rather than widening the schema.
+  // Gated on needsTagData too, so a comment box nobody tags anyone in only
+  // ever pays for the (pre-existing) primary fetch, not this added one.
+  const { data: admins, isLoading: isAdminsLoading } = useGetQuery<ApiUserGetWithPersonId[]>({
+    queryKey: ["users", UserRole.ADMIN],
+    apiPath: apiPathUser,
+    params: {
+      sortOrder: SortOrder.NewToOld,
+      role: UserRole.ADMIN,
+      limit: MAX_PAGE_LIMIT,
+    },
+    staleTime: cacheTTL,
+    enabled: enabled && isStaffMode && needsTagData,
+  });
+
+  // isAdminsLoading is already false whenever the query above is disabled,
+  // so this doesn't need its own isStaffMode check.
+  const isUsersLoading = isPrimaryLoading || isAdminsLoading;
+  // Exposed so a consumer can block saving while true instead of silently
+  // treating an incomplete tag list as final (see convertDbTextToEditable /
+  // initTags below, both of which no-op on `!users`).
+  const isTagDataPending = needsTagData && isUsersLoading;
+
+  const users = useMemo(() => {
+    if (!enabled) return undefined;
+    if (!isStaffMode) return primaryUsers;
+    if (isUsersLoading) return undefined;
+    return [...(primaryUsers ?? []), ...(admins ?? [])];
+  }, [enabled, primaryUsers, admins, isStaffMode, isUsersLoading]);
 
   useEffect(() => {
     setActiveRowIndex(0);
@@ -198,5 +243,6 @@ export function useCommentTag(
     convertDbTextToEditable,
     initTags,
     users,
+    isTagDataPending,
   };
 }
