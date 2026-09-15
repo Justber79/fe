@@ -542,6 +542,10 @@
     "posts": {
       "inputPlaceholder": "Type a message...",
       "send": "Send",
+      "addBookmark": "Save post for later",
+      "removeBookmark": "Remove post from saved items",
+      "bookmarkAdded": "Post saved for later",
+      "bookmarkRemoved": "Post removed from saved items",
       "sendReply": "Send reply",
       "created": "Post created successfully",
       "reply": "Reply",
