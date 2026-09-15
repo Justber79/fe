@@ -343,26 +343,31 @@ export const OpportunityPickerPanel = styled(ComposerPanel)`
   border-radius: 12px;
   box-shadow: 0 16px 40px -12px rgba(38, 23, 44, 0.28);
 `;
-export const EmojiPickerPanel = styled(ComposerPanel)<{
-  $placement?: "composer" | "reaction";
-  $align?: "left" | "right";
-}>`
+export const EmojiPickerPanel = styled(ComposerPanel)`
   gap: var(--spacing-8);
+  max-height: 390px;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
+
+export const ReactionEmojiPickerPanel = styled.div<{ $align: "left" | "right" }>`
+  position: absolute;
+  z-index: 20;
   bottom: calc(100% + var(--spacing-8));
-  width: min(320px, calc(100% - 32px));
+  left: ${({ $align }) => ($align === "right" ? "auto" : "0")};
+  right: ${({ $align }) => ($align === "right" ? "0" : "auto")};
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  width: min(360px, calc(100vw - 64px));
   max-height: 260px;
   padding: var(--spacing-12);
   overflow-x: hidden;
   overflow-y: auto;
-
-  ${({ $placement, $align }) =>
-    $placement === "reaction" &&
-    `
-      bottom: calc(100% + var(--spacing-8));
-      left: ${$align === "right" ? "auto" : "0"};
-      right: ${$align === "right" ? "0" : "auto"};
-      width: min(360px, calc(100vw - 64px));
-    `}
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-small);
+  background: var(--color-white);
+  box-shadow: 0 10px 30px rgba(38, 23, 44, 0.18);
 
   @media (max-width: 420px) {
     width: min(280px, calc(100vw - 48px));
@@ -584,32 +589,7 @@ export const ReactionAddBadge = styled.span`
   color: var(--color-white);
 `;
 
-export const ReactionTrigger = styled.button<{ $selected: boolean }>`
-  display: inline-flex;
-  min-width: 48px;
-  min-height: 40px;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-4);
-  padding: var(--spacing-4) var(--spacing-12);
-  border: 1px solid ${({ $selected }) => ($selected ? "var(--color-aubergine)" : "var(--color-grey-200)")};
-  border-radius: 999px;
-  background: ${({ $selected }) => ($selected ? "var(--color-pink-100)" : "var(--color-white)")};
-  color: var(--color-midnight);
-  font: inherit;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--color-aubergine);
-    outline: none;
-  }
-
-  &:disabled {
-    cursor: wait;
-    opacity: 0.6;
-  }
-`;
+export const ReactionTrigger = ReactionPill;
 
 export const RepliesList = styled.section`
   display: flex;

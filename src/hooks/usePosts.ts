@@ -162,36 +162,19 @@ export function useDeleteReply(postId: number, replyId: number, onSuccess: () =>
   });
 }
 
-export function useSetPostReaction(postId: number) {
+export function useSetReaction(itemId: number, postId?: number) {
   return useMutationQuery<ApiPostReactionPost, unknown>({
-    apiPath: `${apiPathPost}/${postId}/reaction`,
-    queryKeyToInvalidate: POSTS_QUERY_KEY,
+    apiPath: postId !== undefined ? `${apiPathPost}/reply/${itemId}/reaction` : `${apiPathPost}/${itemId}/reaction`,
+    queryKeyToInvalidate: postId !== undefined ? postRepliesQueryKey(postId) : POSTS_QUERY_KEY,
     noToast: true,
   });
 }
 
-export function useDeletePostReaction(postId: number) {
+export function useDeleteReaction(itemId: number, postId?: number) {
   return useMutationQuery<void, unknown>({
-    apiPath: `${apiPathPost}/${postId}/reaction`,
+    apiPath: postId !== undefined ? `${apiPathPost}/reply/${itemId}/reaction` : `${apiPathPost}/${itemId}/reaction`,
     method: "delete",
-    queryKeyToInvalidate: POSTS_QUERY_KEY,
-    noToast: true,
-  });
-}
-
-export function useSetReplyReaction(postId: number, replyId: number) {
-  return useMutationQuery<ApiPostReactionPost, unknown>({
-    apiPath: `${apiPathPost}/reply/${replyId}/reaction`,
-    queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
-    noToast: true,
-  });
-}
-
-export function useDeleteReplyReaction(postId: number, replyId: number) {
-  return useMutationQuery<void, unknown>({
-    apiPath: `${apiPathPost}/reply/${replyId}/reaction`,
-    method: "delete",
-    queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
+    queryKeyToInvalidate: postId !== undefined ? postRepliesQueryKey(postId) : POSTS_QUERY_KEY,
     noToast: true,
   });
 }

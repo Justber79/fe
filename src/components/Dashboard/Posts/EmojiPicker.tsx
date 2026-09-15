@@ -4,6 +4,7 @@ import {
   EmojiCategoryButton,
   EmojiGrid,
   EmojiPickerPanel,
+  ReactionEmojiPickerPanel,
   EmojiSectionLabel,
   PickerItem,
   PickerSearch,
@@ -58,8 +59,8 @@ export default function EmojiPicker({
       )
     : emojiCategories[category].emojis;
 
-  return (
-    <EmojiPickerPanel $placement={placement} $align={align}>
+  const pickerContent = (
+    <>
       <PickerSearch
         autoFocus={placement === "reaction"}
         aria-label={t("dashboard.posts.searchEmoji")}
@@ -99,6 +100,12 @@ export default function EmojiPicker({
           </PickerItem>
         ))}
       </EmojiGrid>
-    </EmojiPickerPanel>
+    </>
+  );
+
+  return placement === "reaction" ? (
+    <ReactionEmojiPickerPanel $align={align}>{pickerContent}</ReactionEmojiPickerPanel>
+  ) : (
+    <EmojiPickerPanel>{pickerContent}</EmojiPickerPanel>
   );
 }

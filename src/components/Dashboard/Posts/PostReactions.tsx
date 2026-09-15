@@ -1,10 +1,4 @@
-import {
-  useClickOutside,
-  useDeletePostReaction,
-  useDeleteReplyReaction,
-  useSetPostReaction,
-  useSetReplyReaction,
-} from "@/hooks";
+import { useClickOutside, useDeleteReaction, useSetReaction } from "@/hooks";
 import { Plus, Smiley } from "@phosphor-icons/react";
 import type { ApiPostReactionSummary } from "need4deed-sdk";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -35,32 +29,25 @@ type Props = {
 
 export default function PostReactions({ itemId, myReaction, reactions, postId, align = "left" }: Props) {
   const { t } = useTranslation();
-  const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
-  const [isFullPickerOpen, setIsFullPickerOpen] = useState(false);
+  const [pickerMode, setPickerMode] = useState<"closed" | "quick" | "full">("closed");
   const pickerRef = useRef<HTMLDivElement>(null);
-  const isReply = postId !== undefined;
-  const setPostReaction = useSetPostReaction(itemId);
-  const deletePostReaction = useDeletePostReaction(itemId);
-  const setReplyReaction = useSetReplyReaction(postId ?? itemId, itemId);
-  const deleteReplyReaction = useDeleteReplyReaction(postId ?? itemId, itemId);
-  const isPending = isReply
-    ? setReplyReaction.isPending || deleteReplyReaction.isPending
-    : setPostReaction.isPending || deletePostReaction.isPending;
+  const setReaction = useSetReaction(itemId, postId);
+  const deleteReaction = useDeleteReaction(itemId, postId);
+  const isPending = setReaction.isPending || deleteReaction.isPending;
 
   const closePicker = useCallback(() => {
-    setIsQuickMenuOpen(false);
-    setIsFullPickerOpen(false);
+    setPickerMode("closed");
   }, []);
   useClickOutside(pickerRef, closePicker);
 
   useEffect(() => {
-    if (!isQuickMenuOpen && !isFullPickerOpen) return;
+    if (pickerMode === "closed") return;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") closePicker();
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
-  }, [closePicker, isFullPickerOpen, isQuickMenuOpen]);
+  }, [closePicker, pickerMode]);
 
   useEffect(() => {
     if (myReaction) closePicker();
@@ -70,12 +57,9 @@ export default function PostReactions({ itemId, myReaction, reactions, postId, a
     if (isPending) return;
     if (myReaction && emoji !== myReaction) return;
     if (emoji === myReaction) {
-      if (isReply) deleteReplyReaction.mutate();
-      else deletePostReaction.mutate();
-    } else if (isReply) {
-      setReplyReaction.mutate({ emoji });
+      deleteReaction.mutate();
     } else {
-      setPostReaction.mutate({ emoji });
+      setReaction.mutate({ emoji });
     }
     closePicker();
   };
@@ -108,11 +92,8 @@ export default function PostReactions({ itemId, myReaction, reactions, postId, a
           disabled={isPending || Boolean(myReaction)}
           aria-label={t("dashboard.posts.chooseReaction")}
           title={myReaction ? t("dashboard.posts.removeReactionFirst") : undefined}
-          aria-expanded={isQuickMenuOpen || isFullPickerOpen}
-          onClick={() => {
-            setIsQuickMenuOpen((isOpen) => !isOpen);
-            setIsFullPickerOpen(false);
-          }}
+          aria-expanded={pickerMode !== "closed"}
+          onClick={() => setPickerMode((mode) => (mode === "closed" ? "quick" : "closed"))}
         >
           <ReactionAddIcon aria-hidden="true">
             <Smiley size={20} />
@@ -121,14 +102,14 @@ export default function PostReactions({ itemId, myReaction, reactions, postId, a
             </ReactionAddBadge>
           </ReactionAddIcon>
         </ReactionTrigger>
-        {isQuickMenuOpen ? (
+        {pickerMode === "quick" ? (
           <ReactionMenu $align={align} role="group" aria-label={t("dashboard.posts.quickReactions")}>
             {quickReactions.map((emoji) => (
               <ReactionQuickButton
                 key={emoji}
                 type="button"
                 $selected={myReaction === emoji}
-                disabled={isPending}
+                disabled={isPending || Boolean(myReaction && myReaction !== emoji)}
                 aria-pressed={myReaction === emoji}
                 aria-label={t(myReaction === emoji ? "dashboard.posts.removeReaction" : "dashboard.posts.addReaction", {
                   emoji,
@@ -141,17 +122,17 @@ export default function PostReactions({ itemId, myReaction, reactions, postId, a
             <ReactionQuickButton
               type="button"
               $selected={false}
+              disabled={isPending || Boolean(myReaction)}
               aria-label={t("dashboard.posts.moreReactions")}
               onClick={() => {
-                setIsQuickMenuOpen(false);
-                setIsFullPickerOpen(true);
+                setPickerMode("full");
               }}
             >
               <Plus size={16} weight="bold" aria-hidden />
             </ReactionQuickButton>
           </ReactionMenu>
         ) : null}
-        {isFullPickerOpen ? <EmojiPicker onChoose={chooseReaction} placement="reaction" align={align} /> : null}
+        {pickerMode === "full" ? <EmojiPicker onChoose={chooseReaction} placement="reaction" align={align} /> : null}
       </ReactionPickerWrapper>
     </ReactionControls>
   );
