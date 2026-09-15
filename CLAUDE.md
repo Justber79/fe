@@ -1,3 +1,5 @@
+@.claude/shared-rules.md
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -16,29 +18,18 @@ Need4Deed frontend — a Next.js 15 PWA for a Berlin NGO connecting volunteers w
 
 ## Commands
 
-```bash
-yarn dev              # start dev server (Next.js + Turbopack)
-yarn build            # production build
-yarn lint             # ESLint
-yarn typecheck        # tsc --noEmit
-yarn dev:docker       # start local backend via Docker Compose
-```
-
-No test framework is configured.
+`package.json`'s `scripts` has the standard ones (dev, build, lint, typecheck, dev:docker). No test framework is configured.
 
 ## Local setup
 
 ```bash
-# All three repos must be siblings
 git clone https://github.com/need4deed-org/fe.git
-git clone https://github.com/need4deed-org/sdk.git
-cd fe && yarn install
-yarn install ../sdk   # links local SDK for type safety
+cd fe && yarn install   # pulls need4deed-sdk from npm per the pinned version in package.json
 cp .env.example .env.local
 yarn dev
 ```
 
-After pulling SDK changes: `cd fe && yarn install ../sdk` again.
+To pick up a new SDK release: `yarn upgrade need4deed-sdk --latest` (see API contract below — never `file:../sdk`, `npm link`, or any other local-linking of the SDK dependency).
 
 ## Architecture
 
