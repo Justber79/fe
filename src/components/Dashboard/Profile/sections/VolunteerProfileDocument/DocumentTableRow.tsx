@@ -38,6 +38,7 @@ export function DocumentTableRow({
           onChange={onToggleReceived}
           aria-label={t("dashboard.documentSection.received")}
           $isAuthorized={isAuthorized}
+          disabled={!isAuthorized}
         />
       </ReceivedCell>
       {isAuthorized && (

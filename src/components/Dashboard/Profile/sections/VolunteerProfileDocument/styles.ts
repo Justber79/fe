@@ -155,7 +155,6 @@ interface CheckboxProps {
 export const ReceivedCheckbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   width: 18px;
   height: 18px;
-  cursor: pointer;
   accent-color: var(--color-aubergine);
   cursor: ${(props) => (props.$isAuthorized ? "pointer" : "not-allowed")};
   opacity: ${(props) => (props.$isAuthorized ? "1" : "0.5")};

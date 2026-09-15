@@ -8,11 +8,11 @@ import { ConfirmationDialog } from "../shared/ConfirmationDialog";
 import { SectionWrapper } from "../shared/styles";
 import { DocumentPreviewDialog } from "./DocumentPreviewDialog";
 import { DocumentTableRow } from "./DocumentTableRow";
-import { ACTION_COLUMN_WIDTH, DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
+import { DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
 import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
 import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
-import { DocumentRow, enrichDocuments, extractDocumentUrl } from "./utils";
+import { DocumentRow, enrichDocuments, extractDocumentUrl, getColumns } from "./utils";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -37,6 +37,8 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   const [passportReceivedAt, setPassportReceivedAt] = useState<Date | null>(null);
 
   const { data: fetchedDocuments, isLoading, isError } = useVolunteerDocuments(volunteer.id);
+
+  const documentColumns = getColumns(isAuthorized, t);
 
   const documentRows = useMemo(
     () => (fetchedDocuments ? enrichDocuments(fetchedDocuments, volunteer, passportReceived, passportReceivedAt) : []),
@@ -138,22 +140,11 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
         <DocumentTableContainer>
           <Table>
             <TableHeader>
-              <HeaderCell>{t("dashboard.documentSection.typeOfDocument")}</HeaderCell>
-              <HeaderCell $width="120px" $noWrap>
-                {t("dashboard.documentSection.received")}
-              </HeaderCell>
-              {isAuthorized && (
-                <>
-                  <HeaderCell $width="180px">{t("dashboard.documentSection.status")}</HeaderCell>
-                  <HeaderCell $width="152px" $noWrap>
-                    {t("dashboard.documentSection.uploadedOn")}
-                  </HeaderCell>
-                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-                  <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-                </>
-              )}
+              {documentColumns.map((col) => (
+                <HeaderCell key={col.id} $width={col.width} $noWrap={col.noWrap}>
+                  {col.header}
+                </HeaderCell>
+              ))}
             </TableHeader>
 
             {documentRows.map((row, index) => (
