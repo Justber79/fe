@@ -1,8 +1,8 @@
 import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
-import { useDeletePost, useUpdatePost } from "@/hooks";
+import { useDeletePost, useTogglePostBookmark, useUpdatePost } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getImageUrl } from "@/utils";
-import { DotsThreeOutline } from "@phosphor-icons/react";
+import { BookmarkSimple, DotsThreeOutline } from "@phosphor-icons/react";
 import { ApiPostGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -20,6 +20,7 @@ import {
   OpportunityChip,
   OpportunityList,
   PostAuthor,
+  PostHeaderActions,
   PostBody,
   PostHeader,
   PostHeaderText,
@@ -27,6 +28,7 @@ import {
   PostMenuWrapper,
   PostText,
   PostTimestamp,
+  BookmarkButton,
   PostReplyActions,
 } from "./styles";
 import RepliesThread from "./RepliesThread";
@@ -49,6 +51,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
   const [editText, setEditText] = useState(post.text);
   const updatePost = useUpdatePost(post.id, () => setIsEditing(false));
   const deletePost = useDeletePost(post.id, () => setIsDeleteOpen(false));
+  const toggleBookmark = useTogglePostBookmark(post.id, post.bookmarked);
 
   const closeEdit = useCallback(() => {
     if (updatePost.isPending) return;
@@ -133,31 +136,42 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
           <PostAuthor>{post.author.fullName}</PostAuthor>
           <PostTimestamp dateTime={createdAt.toISOString()}>{createdAt.toLocaleString(i18n.language)}</PostTimestamp>
         </PostHeaderText>
-        {canManage && (
-          <PostMenuWrapper>
-            <PostMenuButton
-              type="button"
-              aria-label={t("dashboard.posts.options")}
-              aria-expanded={isMenuOpen}
-              onMouseDown={(event) => event.stopPropagation()}
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsMenuOpen((isOpen) => !isOpen);
-              }}
-            >
-              <DotsThreeOutline size={24} weight="fill" />
-            </PostMenuButton>
-            <PostActionMenu
-              isOpen={isMenuOpen}
-              onClose={() => setIsMenuOpen(false)}
-              onEdit={startEdit}
-              onDelete={() => {
-                setIsMenuOpen(false);
-                setIsDeleteOpen(true);
-              }}
-            />
-          </PostMenuWrapper>
-        )}
+        <PostHeaderActions>
+          <BookmarkButton
+            type="button"
+            aria-label={t(post.bookmarked ? "dashboard.posts.removeBookmark" : "dashboard.posts.addBookmark")}
+            aria-pressed={post.bookmarked}
+            disabled={toggleBookmark.isPending}
+            onClick={() => toggleBookmark.mutate()}
+          >
+            <BookmarkSimple size={24} weight={post.bookmarked ? "fill" : "regular"} />
+          </BookmarkButton>
+          {canManage && (
+            <PostMenuWrapper>
+              <PostMenuButton
+                type="button"
+                aria-label={t("dashboard.posts.options")}
+                aria-expanded={isMenuOpen}
+                onMouseDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsMenuOpen((isOpen) => !isOpen);
+                }}
+              >
+                <DotsThreeOutline size={24} weight="fill" />
+              </PostMenuButton>
+              <PostActionMenu
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onEdit={startEdit}
+                onDelete={() => {
+                  setIsMenuOpen(false);
+                  setIsDeleteOpen(true);
+                }}
+              />
+            </PostMenuWrapper>
+          )}
+        </PostHeaderActions>
       </PostHeader>
 
       <PostBody>
