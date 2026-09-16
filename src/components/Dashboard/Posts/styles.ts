@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const PostsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-16);
   height: max(
     520px,
     calc(
@@ -23,6 +22,324 @@ export const PostsContainer = styled.div`
       )
     );
   }
+
+`;
+
+export const PostsMain = styled.div`
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  gap: var(--spacing-16);
+`;
+
+export const DiscoveryToolbar = styled.div`
+  position: relative;
+  display: flex;
+  min-height: 52px;
+  flex: 0 0 auto;
+  margin-inline: var(--spacing-8);
+  align-items: stretch;
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--card-border-radius);
+  background: var(--color-white);
+  box-shadow: 0 4px 16px rgba(38, 23, 44, 0.06);
+
+  &:focus-within {
+    border-color: var(--color-aubergine);
+  }
+
+  @media (max-width: 767px) {
+    min-height: auto;
+    flex-direction: column;
+  }
+`;
+
+export const SearchField = styled.div`
+  display: flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  flex-grow: 1;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-height: 52px;
+  padding: 0 var(--spacing-16);
+  color: var(--color-midnight);
+`;
+
+export const SearchInput = styled.input`
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-midnight);
+  font: inherit;
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+`;
+
+export const SearchClearButton = styled.button`
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-midnight);
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-50);
+  }
+`;
+
+export const PeopleDescription = styled.p`
+  margin: 0;
+  color: var(--color-grey-500);
+  font-size: var(--font-size-xs);
+`;
+
+export const PeopleFilterWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+
+  @media (max-width: 767px) {
+    border-top: 1px solid var(--color-grey-200);
+  }
+`;
+
+export const PeopleFilterButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  min-width: 220px;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--spacing-10);
+  padding: var(--spacing-8) var(--spacing-16) var(--spacing-8) var(--spacing-24);
+  border: 0;
+  border-left: 1px solid var(--color-grey-200);
+  border-radius: 0 var(--card-border-radius) var(--card-border-radius) 0;
+  background: ${({ $active }) => ($active ? "var(--color-pink-50)" : "transparent")};
+  color: var(--color-midnight);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  > svg:last-child {
+    margin-left: auto;
+    transition: transform 160ms ease;
+  }
+
+  &[aria-expanded="true"] > svg:last-child {
+    transform: rotate(180deg);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-50);
+    outline: none;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--spacing-16);
+    border-left: 0;
+    border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+  }
+`;
+
+export const PeopleFilterButtonText = styled.span`
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+
+  span {
+    color: var(--color-grey-500);
+    font-size: var(--font-size-xs);
+  }
+
+  strong {
+    max-width: 150px;
+    overflow: hidden;
+    color: var(--color-midnight);
+    font-size: var(--font-size-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+export const PeopleDropdown = styled.div`
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + var(--spacing-8));
+  right: 0;
+  display: flex;
+  width: min(360px, calc(100vw - 32px));
+  max-height: min(520px, calc(100dvh - 180px));
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding: var(--spacing-16);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--card-border-radius);
+  background: var(--color-white);
+  box-shadow: 0 18px 44px -14px rgba(38, 23, 44, 0.28);
+
+  @media (max-width: 767px) {
+    right: calc(var(--spacing-8) * -1);
+    left: calc(var(--spacing-8) * -1);
+    width: auto;
+  }
+`;
+
+export const PeopleDropdownHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    color: var(--color-midnight);
+    font-size: var(--font-size-md);
+  }
+`;
+
+export const PeopleSearchField = styled.label`
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: 0 var(--spacing-8);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-small);
+  color: var(--color-grey-500);
+
+  &:focus-within {
+    border-color: var(--color-aubergine);
+  }
+
+`;
+
+export const PeopleSearchInput = styled.input`
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-midnight);
+  font: inherit;
+  font-size: var(--font-size-sm);
+`;
+
+export const PeopleList = styled.div`
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--color-grey-400) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--color-grey-300);
+  }
+`;
+
+export const PeopleItem = styled.button<{ $selected: boolean }>`
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-8);
+  border: 0;
+  border-radius: var(--border-radius-small);
+  background: ${({ $selected }) => ($selected ? "var(--color-pink-50)" : "transparent")};
+  color: var(--color-midnight);
+  text-align: left;
+  cursor: pointer;
+
+  > svg:last-child {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: var(--color-aubergine);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-50);
+  }
+`;
+
+export const PeopleAvatar = styled.img`
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+export const PeopleAvatarInitials = styled.span`
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-pink-50);
+  color: var(--color-aubergine);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+`;
+
+export const PeopleText = styled.span`
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+
+  strong,
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  strong {
+    font-size: var(--font-size-sm);
+  }
+
+  span {
+    color: var(--color-grey-500);
+    font-size: var(--font-size-xs);
+  }
+`;
+
+export const PeopleEmptyState = styled.p`
+  margin: 0;
+  padding: var(--spacing-12) var(--spacing-8);
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
+  text-align: center;
+
 `;
 
 export const EmptyState = styled.div`
@@ -274,6 +591,7 @@ export const EditButton = styled.button<{ $primary?: boolean }>`
 export const Composer = styled.div`
   position: relative;
   flex-shrink: 0;
+  margin-inline: var(--spacing-8);
   padding: var(--spacing-16);
   border: 1px solid var(--color-grey-200);
   border-radius: var(--card-border-radius);
