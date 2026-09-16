@@ -36,6 +36,7 @@ import { buildCreatePayload } from "./helper";
 import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
 import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
+import DescriptionField from "./fields/DescriptionField";
 
 export function NewOpportunity() {
   const { t, i18n } = useTranslation();
@@ -52,7 +53,7 @@ export function NewOpportunity() {
   const headerMethods = useForm<HeaderFormData>({
     resolver: zodResolver(createHeaderSchema(t)),
     mode: "onChange",
-    defaultValues: { title: "", volunteerType: VolunteerStateTypeType.REGULAR, agentId: 0 },
+    defaultValues: { title: "", volunteerType: undefined, agentId: 0 },
   });
   const { watch: watchHeader, setValue: setAgentId } = headerMethods;
   const selectedType = watchHeader("volunteerType");
@@ -161,40 +162,45 @@ export function NewOpportunity() {
       <FormProvider {...headerMethods}>
         <OpportunityHeaderCard selectedType={selectedType} agentTitles={agentTitles} />
       </FormProvider>
-      <SectionCard
-        iconName={IconName.Wrench}
-        title={t("dashboard.opportunityProfile.opportunityDetails.title")}
-        subComponent={
-          <FormProvider {...detailsMethods}>
-            <OpportunityDetailsFields
-              isEvent={isEvent}
-              apiLanguages={apiLanguages}
-              apiActivities={apiActivities}
-              apiSkills={apiSkills}
-              isAccompanying={isAccompanying}
-            />
-          </FormProvider>
-        }
-      />
-      {isAccompanying && (
+      {isAccompanying ? (
         <SectionCard
           iconName={IconName.Users}
           title={t("dashboard.opportunityProfile.accompanyingDetailsTitle")}
           subComponent={
-            <FormProvider {...accompanyingMethods}>
-              <AccompanyingDetailsEdit
-                locale={locale}
-                languageOptions={apiLanguages.map((l) => l.title)}
-                keyToLabel={keyToLabel}
-                labelToKey={labelToKey}
-                appointmentLanguageOptions={appointmentLanguageKeys.map((k) => appointmentLanguageKeyToLabel[k])}
-                appointmentLanguageKeyToLabel={appointmentLanguageKeyToLabel}
-                appointmentLanguageLabelToKey={appointmentLanguageLabelToKey}
-                onCancel={() => {}}
-                onSubmit={() => {}}
-                isPending={false}
-                minAppointmentDate={minAppointmentDate}
-                hideButtons
+            <>
+              <FormProvider {...accompanyingMethods}>
+                <AccompanyingDetailsEdit
+                  locale={locale}
+                  languageOptions={apiLanguages.map((l) => l.title)}
+                  keyToLabel={keyToLabel}
+                  labelToKey={labelToKey}
+                  appointmentLanguageOptions={appointmentLanguageKeys.map((k) => appointmentLanguageKeyToLabel[k])}
+                  appointmentLanguageKeyToLabel={appointmentLanguageKeyToLabel}
+                  appointmentLanguageLabelToKey={appointmentLanguageLabelToKey}
+                  onCancel={() => {}}
+                  onSubmit={() => {}}
+                  isPending={false}
+                  minAppointmentDate={minAppointmentDate}
+                  hideButtons
+                />
+              </FormProvider>
+              <FormProvider {...detailsMethods}>
+                <DescriptionField prefix={"dashboard.opportunityProfile.opportunityDetails"} />
+              </FormProvider>
+            </>
+          }
+        />
+      ) : (
+        <SectionCard
+          iconName={IconName.Wrench}
+          title={t("dashboard.opportunityProfile.opportunityDetails.title")}
+          subComponent={
+            <FormProvider {...detailsMethods}>
+              <OpportunityDetailsFields
+                isEvent={isEvent}
+                apiLanguages={apiLanguages}
+                apiActivities={apiActivities}
+                apiSkills={apiSkills}
               />
             </FormProvider>
           }
