@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/core/button";
 import { PageLayout } from "@/components/Layout";
-import { Heading1, Heading2, Paragraph } from "@/components/styled/text";
+import { Body, Description, Detail, Details, EventCard, Hero, PageContent } from "@/components/styled/eventPageLayout";
+import { Heading1, Heading2 } from "@/components/styled/text";
 import { CalendarBlankIcon, MapPinIcon, TicketIcon } from "@phosphor-icons/react";
 import { Lang } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
@@ -16,55 +17,6 @@ import styled from "styled-components";
 // confusion with that unrelated, API-driven page.
 const REGISTRATION_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfsr2Nppw6YGSkyFL54LRk44jv1jGtS2Q5uIPLCBTINJ1g2EA/viewform?usp=dialog";
-
-const PageContent = styled.main`
-  width: min(100% - 32px, 960px);
-  margin: 0 auto;
-  padding: clamp(40px, 7vw, 88px) 0;
-`;
-
-const EventCard = styled.article`
-  overflow: hidden;
-  border: 1px solid var(--color-orchid-light, var(--color-orchid));
-  border-radius: 24px;
-  background: var(--color-white);
-  box-shadow: 0 16px 40px rgb(40 25 47 / 10%);
-`;
-
-const Hero = styled.header`
-  padding: clamp(28px, 6vw, 64px);
-  background: linear-gradient(135deg, var(--color-orchid-subtle), var(--color-orchid));
-`;
-
-const Body = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  gap: clamp(32px, 6vw, 72px);
-  padding: clamp(28px, 6vw, 64px);
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Description = styled(Paragraph)`
-  margin-top: var(--spacing-20);
-  white-space: pre-line;
-`;
-
-const Details = styled.aside`
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-20);
-`;
-
-const Detail = styled.div`
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  gap: var(--spacing-12);
-  align-items: start;
-  color: var(--color-midnight);
-`;
 
 const CommunityTagline = styled.div`
   margin-top: var(--spacing-32);
@@ -166,8 +118,8 @@ export function EventPageOne() {
           <CommunityTagline>
             <LtrTag>Підтримуємо всі спільноти!</LtrTag>
             <LtrTag>Поддерживаем все сообщества!</LtrTag>
-            <RtlTag>!حمایت از همه جوامع</RtlTag>
-            <RtlTag>!ندعم جميع المجتمعات</RtlTag>
+            <RtlTag>حمایت از همه جوامع!</RtlTag>
+            <RtlTag>ندعم جميع المجتمعات!</RtlTag>
           </CommunityTagline>
         </EventCard>
       </PageContent>
