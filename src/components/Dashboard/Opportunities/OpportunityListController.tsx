@@ -12,6 +12,9 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants"
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
+import { LoadingMapView } from "../common/MapView/styles";
+import { createOpportunityMarkers } from "../common/MapView/helpers";
+import { MapView } from "../common/MapView/MapView";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -56,6 +59,7 @@ export function OpportunityListController({
   const { currentPage, setCurrentPage } = usePageParam();
   const { t } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
+  const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
@@ -95,8 +99,11 @@ export function OpportunityListController({
   useEffect(() => {
     setNumOfOpps(count);
   }, [count, setNumOfOpps]);
+  console.log("opp", opportunities);
+  const markers = createOpportunityMarkers(opportunities);
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
+  if (isLoading && isMapView) return <LoadingMapView />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -112,6 +119,10 @@ export function OpportunityListController({
         dropdownFilters={dropdownFilters}
       />
     );
+  }
+
+  if (isMapView) {
+    return <MapView markers={markers} />;
   }
 
   return (
