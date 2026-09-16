@@ -15,6 +15,7 @@ import { VolunteerTypeRow, TypeButtons, TypeButton, NGOTypeRow, NGOnonEditableRo
 import { Heading3, Heading4 } from "@/components/styled/text";
 import { createVolunteerTypeLabelMap } from "@/components/Dashboard/Profile/sections/ProfileHeader/common/labelMaps";
 import { HeaderFormData } from "./headerSchema";
+import { ErrorMessage } from "@/components/core/common";
 
 const SELECTABLE_VOLUNTEER_TYPES = [
   VolunteerStateTypeType.REGULAR,
@@ -23,7 +24,7 @@ const SELECTABLE_VOLUNTEER_TYPES = [
 ] as const;
 
 type Props = {
-  selectedType: VolunteerStateTypeType;
+  selectedType: VolunteerStateTypeType | undefined;
   agentTitles: { id: number; title: string }[];
 };
 
@@ -76,6 +77,9 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
                 ))}
               </TypeButtons>
             </VolunteerTypeRow>
+            {errors.volunteerType?.message && (
+              <ErrorMessage message={errors.volunteerType?.message} justifyContent="end" />
+            )}
           </StatusSection>
 
           <NGOTypeRow>

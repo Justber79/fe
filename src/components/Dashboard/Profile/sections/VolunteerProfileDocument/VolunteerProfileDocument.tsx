@@ -8,17 +8,18 @@ import { ConfirmationDialog } from "../shared/ConfirmationDialog";
 import { SectionWrapper } from "../shared/styles";
 import { DocumentPreviewDialog } from "./DocumentPreviewDialog";
 import { DocumentTableRow } from "./DocumentTableRow";
-import { ACTION_COLUMN_WIDTH, DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
+import { DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
 import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
 import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
-import { DocumentRow, enrichDocuments, extractDocumentUrl } from "./utils";
+import { DocumentRow, enrichDocuments, extractDocumentUrl, getColumns } from "./utils";
 
 type Props = {
   volunteer: ApiVolunteerGet;
+  isAuthorized: boolean;
 };
 
-export function VolunteerProfileDocument({ volunteer }: Props) {
+export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   const { t } = useTranslation();
   const {
     deleteDocument: deleteDialogDocument,
@@ -37,6 +38,8 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
 
   const { data: fetchedDocuments, isLoading, isError } = useVolunteerDocuments(volunteer.id);
 
+  const documentColumns = getColumns(isAuthorized, t);
+
   const documentRows = useMemo(
     () => (fetchedDocuments ? enrichDocuments(fetchedDocuments, volunteer, passportReceived, passportReceivedAt) : []),
     [fetchedDocuments, volunteer, passportReceived, passportReceivedAt],
@@ -50,6 +53,7 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
   const docStatusMutation = useUpdateVolunteerDocStatus(volunteer.id);
 
   const handleToggleReceived = (type: DocumentType, currentIsReceived: boolean) => {
+    if (!isAuthorized) return;
     switch (type) {
       case DocumentType.MEASLES_VACCINATION:
         docStatusMutation.mutate({
@@ -130,25 +134,17 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
   if (isError) {
     return <div>Error loading documents.</div>;
   }
-
   return (
     <>
       <SectionWrapper data-testid="volunteer-profile-document-container">
         <DocumentTableContainer>
           <Table>
             <TableHeader>
-              <HeaderCell>{t("dashboard.documentSection.typeOfDocument")}</HeaderCell>
-              <HeaderCell $width="120px" $noWrap>
-                {t("dashboard.documentSection.received")}
-              </HeaderCell>
-              <HeaderCell $width="180px">{t("dashboard.documentSection.status")}</HeaderCell>
-              <HeaderCell $width="152px" $noWrap>
-                {t("dashboard.documentSection.uploadedOn")}
-              </HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
-              <HeaderCell $width={ACTION_COLUMN_WIDTH}></HeaderCell>
+              {documentColumns.map((col) => (
+                <HeaderCell key={col.id} $width={col.width} $noWrap={col.noWrap}>
+                  {col.header}
+                </HeaderCell>
+              ))}
             </TableHeader>
 
             {documentRows.map((row, index) => (
@@ -161,6 +157,7 @@ export function VolunteerProfileDocument({ volunteer }: Props) {
                 onDownload={() => handleDownload(row)}
                 onDelete={() => openDialog("delete", row)}
                 onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
+                isAuthorized={isAuthorized}
               />
             ))}
           </Table>
