@@ -22,3 +22,13 @@ export const LoadingMapView = styled.div`
   border: var(--dashboard-map-border);
   animation: ${pulse} 3s ease-in-out infinite;
 `;
+
+export const PopupWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  & > span:first-child {
+    font-weight: bold;
+  }
+`;
