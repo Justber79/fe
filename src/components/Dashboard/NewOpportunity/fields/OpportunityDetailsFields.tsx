@@ -16,13 +16,11 @@ export function OpportunityDetailsFields({
   apiLanguages,
   apiActivities,
   apiSkills,
-  isAccompanying,
 }: {
   isEvent: boolean;
   apiLanguages: ApiLanguageOption[];
   apiActivities: ApiLanguageOption[];
   apiSkills: ApiLanguageOption[];
-  isAccompanying: boolean;
 }) {
   const { i18n } = useTranslation();
   const lang = i18n.language;
@@ -35,16 +33,12 @@ export function OpportunityDetailsFields({
   return (
     <FormDetails>
       <DescriptionField prefix={prefix} />
-      {!isAccompanying ? (
-        <>
-          <MainCommunicationField prefix={prefix} languagesForForm={languagesForForm} />
-          <ResidentsSpeakField prefix={prefix} languagesForForm={languagesForForm} />
-          {isEvent ? <EventDateTimeFields prefix={prefix} /> : <AvailabilityField prefix={prefix} />}
-          <NumberOfVolunteersField prefix={prefix} />
-          <ActivitiesField prefix={prefix} apiActivities={apiActivities} />
-          <SkillsField prefix={prefix} apiSkills={apiSkills} />
-        </>
-      ) : null}
+      <MainCommunicationField prefix={prefix} languagesForForm={languagesForForm} />
+      <ResidentsSpeakField prefix={prefix} languagesForForm={languagesForForm} />
+      {isEvent ? <EventDateTimeFields prefix={prefix} /> : <AvailabilityField prefix={prefix} />}
+      <NumberOfVolunteersField prefix={prefix} />
+      <ActivitiesField prefix={prefix} apiActivities={apiActivities} />
+      <SkillsField prefix={prefix} apiSkills={apiSkills} />
     </FormDetails>
   );
 }
