@@ -536,7 +536,8 @@
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
-        "profile": "Profile"
+        "profile": "Profile",
+        "more": "More"
       },
       "createOpportunity": "Create New Opportunity"
     },
