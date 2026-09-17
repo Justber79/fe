@@ -1,5 +1,10 @@
 import { LatLngExpression } from "leaflet";
-import { ApiOpportunityGetList, OpportunityStatusType } from "need4deed-sdk";
+import {
+  ApiOpportunityGetList,
+  ApiVolunteerGetList,
+  OpportunityStatusType,
+  VolunteerStateEngagementType,
+} from "need4deed-sdk";
 
 export type Markers = Array<{
   lat: number;
@@ -46,4 +51,30 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[])
     }
   });
   return Array.from(oppMap.values());
+};
+
+export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[]): Markers => {
+  const volMap = new Map<
+    string,
+    { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
+  >();
+
+  volunteers?.forEach((vol) => {
+    if (!vol.lat || !vol.lon) return;
+    if (
+      vol.statusEngagement !== VolunteerStateEngagementType.AVAILABLE &&
+      vol.statusEngagement !== VolunteerStateEngagementType.ACTIVE
+    )
+      return;
+    const childItem = { title: vol.name, link: `volunteers/${vol.id}` };
+
+    volMap.set(String(vol.id), {
+      lat: vol.lat,
+      lon: vol.lon,
+      label: vol.name,
+      children: [childItem],
+      onClick: () => null,
+    });
+  });
+  return Array.from(volMap.values());
 };
