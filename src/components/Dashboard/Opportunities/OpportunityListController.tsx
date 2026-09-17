@@ -9,6 +9,9 @@ import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
 import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
+import { createOpportunityFilterItems } from "./Filters/helpers";
+import { useTranslation } from "react-i18next";
+import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -35,6 +38,7 @@ type Props = {
   setNumOfOpps: (num: number) => void;
   sortOrder: string;
   filter: OpportunityCardsFilter;
+  setFilter: (newFilter: OpportunityCardsFilter | ((prev: OpportunityCardsFilter) => OpportunityCardsFilter)) => void;
   apiFilterOptions?: ApiOptionLists;
   volunteerId?: string;
   viewMode: ViewMode;
@@ -44,11 +48,13 @@ export function OpportunityListController({
   setNumOfOpps,
   sortOrder,
   filter,
+  setFilter,
   apiFilterOptions,
   volunteerId,
   viewMode,
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
+  const { t } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
@@ -80,6 +86,8 @@ export function OpportunityListController({
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
+  const { districtFilters, languageFilters } = createOpportunityFilterItems(filter, setFilter, t);
+  const dropdownFilters = { districtFilters, languageFilters };
   const opportunities = isAppointmentSort(sortOrder)
     ? sortByAppointmentDate(rawOpportunities, sortOrder)
     : rawOpportunities;
@@ -88,6 +96,7 @@ export function OpportunityListController({
     setNumOfOpps(count);
   }, [count, setNumOfOpps]);
 
+  if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -100,6 +109,7 @@ export function OpportunityListController({
         setCurrentPage={setCurrentPage}
         districtsList={apiFilterOptions?.district ?? undefined}
         volunteerId={volunteerId}
+        dropdownFilters={dropdownFilters}
       />
     );
   }

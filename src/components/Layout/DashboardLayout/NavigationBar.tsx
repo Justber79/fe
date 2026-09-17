@@ -150,15 +150,15 @@ export default function NavigationBar() {
             route: DashboardRoutes.Agents,
           },
         ]),
-    ...(canSeeStaffNav
-      ? [
+    ...(isVolunteer
+      ? []
+      : [
           {
             label: t("dashboard.home.sidebar.posts"),
             Icon: NotepadIcon,
             route: DashboardRoutes.Posts,
           },
-        ]
-      : []),
+        ]),
     ...(canSeeStaffNav
       ? [
           {

@@ -2,12 +2,17 @@ import { TableCell } from "@/components/core/common/Table/styles";
 import styled from "styled-components";
 import { Table, TableContainer } from "@/components/core/common/Table";
 
-export const Wrapper = styled.div`
+interface WrapperProps {
+  $isFewResults?: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
   gap: var(--entity-table-gap);
   flex: 1;
   min-width: 0;
+  height: ${({ $isFewResults }) => ($isFewResults ? "75dvh" : "auto")};
 `;
 
 export const ScrollableTableContainer = styled(TableContainer)`

@@ -32,16 +32,31 @@ export function calendarCells(year: number, month: number) {
   return result;
 }
 
-export function eventDateRange(event: ApiEventN4DGetList, locale: string) {
+export function eventDateRange(event: ApiEventN4DGetList, locale: string, timeZone?: string) {
   const start = new Date(event.date);
   const end = event.dateEnd ? new Date(event.dateEnd) : undefined;
-  const dateOptions: Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
-  const timeOptions: Intl.DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit" };
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone,
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone,
+    timeZoneName: timeZone ? "short" : undefined,
+  };
   const startDate = start.toLocaleDateString(locale, dateOptions);
   const startTime = start.toLocaleTimeString(locale, timeOptions);
   if (!end) return `${startDate} · ${startTime}`;
   const endTime = end.toLocaleTimeString(locale, timeOptions);
-  if (dateKey(start) === dateKey(end)) return `${startDate} · ${startTime}–${endTime}`;
+  const dateKeyOptions: Intl.DateTimeFormatOptions = { year: "numeric", month: "2-digit", day: "2-digit", timeZone };
+  const dateKeyFormatter = new Intl.DateTimeFormat("en-CA", dateKeyOptions);
+  if (dateKeyFormatter.format(start) === dateKeyFormatter.format(end)) {
+    return `${startDate} · ${startTime}–${endTime}`;
+  }
   return `${startDate} · ${startTime} – ${end.toLocaleDateString(locale, dateOptions)} · ${endTime}`;
 }
 

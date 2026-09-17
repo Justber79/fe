@@ -15,6 +15,7 @@ export function EntityTableList<T extends { id: string | number }>({
   setCurrentPage,
   testIdPrefix,
   noFixedWidth = false,
+  isFewResults = false,
 }: EntityTableListProps<T>) {
   const totalPages = Math.ceil(count / itemsPerPage);
   const goToPage = (page: number) => {
@@ -22,7 +23,7 @@ export function EntityTableList<T extends { id: string | number }>({
   };
 
   return (
-    <Wrapper data-testid={`${testIdPrefix}-table`}>
+    <Wrapper data-testid={`${testIdPrefix}-table`} $isFewResults={isFewResults}>
       <ScrollableTableContainer>
         <ScrollableTable>
           <TableHeader>

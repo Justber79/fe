@@ -7,6 +7,7 @@ const CheckboxContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-8);
+  cursor: pointer;
 `;
 
 export interface CheckboxProps {
@@ -29,8 +30,8 @@ export function Checkbox({
   checked,
 }: CheckboxProps) {
   return (
-    <CheckboxContainer>
-      <CheckboxSVG width={width} height={height} checked={checked} onClick={() => onChange(!checked)} color={color} />
+    <CheckboxContainer onClick={() => onChange(!checked)}>
+      <CheckboxSVG width={width} height={height} checked={checked} color={color} />
 
       {label && (
         <Paragraph

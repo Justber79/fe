@@ -33,6 +33,13 @@ export default function Page() {
             // Forward the verify token — the agent form uses it as the
             // querystring auth for POST /agent/register.
             router.push(`/${lang}/register/agent/complete?token=${encodeURIComponent(token)}`);
+          } else if (roleFromUrl === "volunteer") {
+            // Same reasoning as the agent branch above: a volunteer account
+            // has no profile yet at this point (just the bare user), and
+            // POST /volunteer/register requires this same verify token as its
+            // auth — landing on /dashboard instead would skip profile
+            // completion entirely and leave the volunteer stuck logged out.
+            router.push(`/${lang}/register/volunteer/complete?token=${encodeURIComponent(token)}`);
           } else {
             router.push(`/${lang}/dashboard`);
           }

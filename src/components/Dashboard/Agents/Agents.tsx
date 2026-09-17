@@ -153,6 +153,7 @@ export const Agents = () => {
             setNumOfAgents={setNumOfAgents}
             sortOrder={sortOrder}
             filter={cardsFilter}
+            setFilter={handleFilterUpdate}
             apiFilterOptions={apiFilterOptions}
             viewMode={viewMode}
             onSelect={transferOpportunityId ? setAgentToTransferTo : undefined}
@@ -160,7 +161,7 @@ export const Agents = () => {
           <Filters
             isFiltersOpen={isFiltersOpen}
             setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
           />
         </ContentRow>
       </AgentsContainer>

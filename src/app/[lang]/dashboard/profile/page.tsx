@@ -4,11 +4,12 @@ import { MultipleProfilesController } from "@/components/Dashboard/Profile/Multi
 import ProfileLayout from "@/components/Dashboard/Profile/ProfileLayout";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
+import { UserRole } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 
 export default function DashboardProfilePage() {
   const { t } = useTranslation();
-  const { agentId, isLoading } = useGetCurrentAgent();
+  const { agentId, volunteerId, userRole, isLoading } = useGetCurrentAgent();
 
   // test multiple agentIds here
   const agentIds: Array<number> = [];
@@ -21,7 +22,15 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId && agentIds.length === 0) {
+  if (userRole === UserRole.VOLUNTEER && !volunteerId) {
+    return (
+      <CenteredWrapper>
+        <Paragraph>{t("dashboard.profile.notVolProfSetUp")}</Paragraph>
+      </CenteredWrapper>
+    );
+  }
+
+  if (!agentId && agentIds.length === 0 && !volunteerId) {
     return (
       <CenteredWrapper>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -29,9 +38,13 @@ export default function DashboardProfilePage() {
     );
   }
 
+  if (volunteerId) {
+    return <ProfileLayout entityId={String(volunteerId)} entityType={"volunteer"} />;
+  }
+
   return agentIds.length > 1 ? (
     <MultipleProfilesController agentIds={agentIds} />
   ) : (
-    <ProfileLayout entityId={String(String(agentId))} entityType={"agent"} />
+    <ProfileLayout entityId={String(agentId)} entityType={"agent"} />
   );
 }

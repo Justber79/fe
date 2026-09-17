@@ -154,6 +154,7 @@ export function Opportunities() {
             setNumOfOpps={setNumOfOpps}
             sortOrder={sortOrder}
             filter={cardsFilter}
+            setFilter={handleFilterUpdate}
             apiFilterOptions={apiFilterOptions}
             volunteerId={volunteerId}
             viewMode={viewMode}
@@ -161,7 +162,7 @@ export function Opportunities() {
           <Filters
             isFiltersOpen={isFiltersOpen}
             setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} />}
+            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
           />
         </ContentRow>
       </OpportunitiesContainer>

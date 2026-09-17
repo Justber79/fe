@@ -77,7 +77,14 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
         headerButtonName: t("dashboard.communicationSection.addNew"),
         onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
       }),
-      subComponent: <CommunicationTracker ref={communicationTrackerRef} entityId={agent.id} entityType="agent" />,
+      subComponent: (
+        <CommunicationTracker
+          ref={communicationTrackerRef}
+          entityId={agent.id}
+          entityType="agent"
+          canEdit={hasEditingRights}
+        />
+      ),
     },
   ];
 
