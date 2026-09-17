@@ -28,7 +28,6 @@ export function Volunteers() {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
   const { t } = useTranslation();
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfVols, setNumOfVols] = useState(0);
   const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
@@ -37,8 +36,19 @@ export function Volunteers() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const tabs = !user || isAgent ? [] : [t("dashboard.volunteers.tabs.tab1"), t("dashboard.volunteers.tabs.tab2")];
-  const viewMode = isAgent ? ViewMode.CARDS : Object.values(ViewMode)[selectedTabIndex];
+  const tabs =
+    !user || isAgent
+      ? []
+      : [
+          t("dashboard.volunteers.tabs.tab1"),
+          t("dashboard.volunteers.tabs.tab2"),
+          t("dashboard.opportunities.tabs.tab3"),
+        ];
+  const urlViewParam = searchParams.get("view");
+  const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
+  const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
+  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
 
@@ -48,6 +58,15 @@ export function Volunteers() {
 
   const handleSortChange = (sortOrder: string) => {
     setSortOrder(sortOrder as SortOrder);
+  };
+
+  const handleTabChange = (index: number) => {
+    const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", targetViewMode);
+
+    router.push(pathname + questionMark + params.toString());
   };
 
   const handleFilterUpdate = (
@@ -103,7 +122,7 @@ export function Volunteers() {
           resultText={t("dashboard.home.sidebar.volunteers")}
           tabs={tabs}
           selectedTabIndex={selectedTabIndex}
-          setSelectedTabIndex={setSelectedTabIndex}
+          setSelectedTabIndex={handleTabChange}
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
