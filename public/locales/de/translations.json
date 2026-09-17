@@ -1603,6 +1603,7 @@
       "management": "Veranstaltungsverwaltung",
       "events": "Veranstaltungen",
       "upcomingEvents": "Kommende Veranstaltungen",
+      "draftEvents": "Veranstaltungsentwürfe",
       "noUpcomingEvents": "Keine kommenden Veranstaltungen",
       "showMoreEvents": "Mehr anzeigen",
       "upcomingHelp": "Für Freiwillige sichtbare Veranstaltungen",

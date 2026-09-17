@@ -20,6 +20,7 @@ export function CalendarContent() {
       </PageHeading>
       <Calendar
         events={calendar.monthEvents}
+        draftEvents={calendar.draftEvents}
         upcomingEvents={calendar.upcomingEvents}
         pastEvents={calendar.pastEvents}
         monthDate={calendar.monthDate}

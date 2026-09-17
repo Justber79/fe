@@ -4,12 +4,14 @@ import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 
 import { CalendarGrid } from "./CalendarGrid";
+import { DraftEvents } from "./DraftEvents";
 import { PastEvents } from "./PastEvents";
 import { UpcomingEvents } from "./UpcomingEvents";
 import { Agenda, CalendarAside, Layout, SectionHeading } from "./styles";
 
 interface Props {
   events: ApiEventN4DGetList[];
+  draftEvents: ApiEventN4DGetList[];
   upcomingEvents: ApiEventN4DGetList[];
   pastEvents: ApiEventN4DGetList[];
   monthDate: Date;
@@ -86,6 +88,13 @@ export function Calendar(props: Props) {
         />
       </CalendarAside>
       <Agenda>
+        <DraftEvents
+          events={props.draftEvents}
+          selectedDateKey={props.selectedDateKey}
+          onEdit={props.onEdit}
+          onDelete={props.onDelete}
+          onPublicationChange={props.onPublicationChange}
+        />
         <UpcomingEvents
           events={props.upcomingEvents}
           hasMonthEvents={props.events.length > 0}

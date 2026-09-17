@@ -1591,6 +1591,7 @@
       "management": "Event management",
       "events": "Events",
       "upcomingEvents": "Upcoming events",
+      "draftEvents": "Draft events",
       "noUpcomingEvents": "No upcoming events",
       "showMoreEvents": "Show more",
       "upcomingHelp": "Events visible to volunteers",
