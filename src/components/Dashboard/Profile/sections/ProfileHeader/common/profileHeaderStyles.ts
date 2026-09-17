@@ -29,6 +29,7 @@ export const AvatarContainer = styled.div`
   @media (max-width: 767px) {
     height: min(220px, calc(100vw - 64px));
     width: min(220px, calc(100vw - 64px));
+    align-self: center;
   }
 `;
 
@@ -45,6 +46,7 @@ export const IconContainer = styled.div`
   @media (max-width: 767px) {
     height: min(220px, calc(100vw - 64px));
     width: min(220px, calc(100vw - 64px));
+    align-self: center;
   }
 `;
 
@@ -70,6 +72,7 @@ export const Title = styled.h2`
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-blue-700);
   margin: 0;
+  overflow-wrap: anywhere;
 `;
 
 export const Subtitle = styled.p`
@@ -79,6 +82,7 @@ export const Subtitle = styled.p`
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-blue-700);
   margin: 0;
+  overflow-wrap: anywhere;
 `;
 
 export const StatusSection = styled.div`

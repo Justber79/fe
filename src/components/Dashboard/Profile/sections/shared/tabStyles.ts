@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 export const TabsContainer = styled.div`
   display: flex;
+  width: 100%;
+  min-width: 0;
   margin-top: var(--volunteer-profile-opportunities-tabs-margin-top);
   gap: var(--volunteer-profile-opportunities-tabs-gap);
   border-bottom: var(--volunteer-profile-opportunities-tabs-border-bottom);

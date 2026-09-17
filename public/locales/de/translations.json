@@ -1070,6 +1070,8 @@
       "uploadedOn": "Aktualisiert am",
       "received": "Erhalten",
       "receivedOn": "Erhalten am",
+      "scrollHint": "Horizontal wischen, um mehr zu sehen",
+      "scrollRegion": "Dokumententabelle. Horizontal scrollen, um alle Spalten zu sehen.",
       "actions": "Aktionen",
       "uploaded": "Hochgeladen",
       "missing": "Fehlend",
