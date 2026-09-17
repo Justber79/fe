@@ -164,7 +164,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     sections.push({
       iconName: IconName.ClipboardText,
       title: t("dashboard.volunteerProfile.documents"),
-      subComponent: <VolunteerProfileDocument volunteer={volunteer} />,
+      subComponent: <VolunteerProfileDocument volunteer={volunteer} isAuthorized={isAuthorized} />,
     });
   }
 
