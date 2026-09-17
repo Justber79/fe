@@ -1,5 +1,5 @@
 import { LatLngExpression } from "leaflet";
-import { ApiOpportunityGetList } from "need4deed-sdk";
+import { ApiOpportunityGetList, OpportunityStatusType } from "need4deed-sdk";
 
 export type Markers = Array<{
   lat: number;
@@ -19,7 +19,11 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[])
 
   opportunities?.forEach((opp) => {
     if (!opp.lat || !opp.lon) return;
-
+    if (
+      opp.statusOpportunity !== OpportunityStatusType.NEW &&
+      opp.statusOpportunity !== OpportunityStatusType.SEARCHING
+    )
+      return;
     const childItem = { title: opp.title, link: `opportunities/${opp.id}` };
 
     if (!oppMap.has(opp.agentTitle)) {
