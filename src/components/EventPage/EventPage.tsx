@@ -90,7 +90,9 @@ export function EventPage() {
               <Details aria-label={t("eventPage.details")}>
                 <Detail>
                   <CalendarBlankIcon size={22} aria-hidden />
-                  <span>{eventDateRange(event, i18n.language, "Europe/Berlin")}</span>
+                  <span>
+                    {eventDateRange(event, i18n.language, "Europe/Berlin")} {t("eventPage.berlinTime")}
+                  </span>
                 </Detail>
                 <Detail>
                   <MapPinIcon size={22} aria-hidden />
