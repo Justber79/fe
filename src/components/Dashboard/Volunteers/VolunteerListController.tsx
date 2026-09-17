@@ -91,7 +91,7 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols, viewMode]);
 
-  const markers = createVolunteerMarkers(volunteers);
+  const markers = createVolunteerMarkers(volunteers, t);
 
   if (isLoading && isListView)
     return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
