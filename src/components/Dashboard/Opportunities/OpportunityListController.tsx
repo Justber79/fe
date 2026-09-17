@@ -12,9 +12,9 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants"
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
-import { LoadingMapView } from "../common/MapView/styles";
+import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { createOpportunityMarkers } from "../common/MapView/helpers";
-import { MapView } from "../common/MapView/MapView";
+import { OpportunityMapView } from "./OpportunityMapView";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -99,11 +99,11 @@ export function OpportunityListController({
   useEffect(() => {
     setNumOfOpps(count);
   }, [count, setNumOfOpps]);
-  console.log("opp", opportunities);
+
   const markers = createOpportunityMarkers(opportunities);
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
-  if (isLoading && isMapView) return <LoadingMapView />;
+  if (isLoading && isMapView) return <LoadingMapView showSideBar={true} />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -122,7 +122,7 @@ export function OpportunityListController({
   }
 
   if (isMapView) {
-    return <MapView markers={markers} />;
+    return <OpportunityMapView count={count} setNumOfOpps={setNumOfOpps} markers={markers} />;
   }
 
   return (
