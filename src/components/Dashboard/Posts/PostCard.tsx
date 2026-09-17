@@ -1,9 +1,10 @@
 import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
-import { useDeletePost, useTogglePostBookmark, useUpdatePost } from "@/hooks";
+import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
+import { useDeletePost, useGetQuery, useTogglePostBookmark, useUpdatePost } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getImageUrl } from "@/utils";
 import { BookmarkSimple, DotsThreeOutline } from "@phosphor-icons/react";
-import { ApiPostGet, UserRole } from "need4deed-sdk";
+import { ApiPostGet, ApiUserGet, Lang, SortOrder, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Fragment, useCallback, useMemo, useState } from "react";
@@ -42,9 +43,12 @@ type Props = {
   onToggleReplies: () => void;
 };
 
+const POST_MENTION_TOKEN = /(<@(?:person:)?\d+>)/g;
+const EXACT_POST_MENTION_TOKEN = /^<@(person:)?(\d+)>$/;
+
 export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: Props) {
   const { t, i18n } = useTranslation();
-  const { lang } = useParams<{ lang: string }>();
+  const { lang } = useParams<{ lang: Lang }>();
   const currentUser = useCurrentUser(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -52,6 +56,14 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
   const [editText, setEditText] = useState(post.text);
   const updatePost = useUpdatePost(post.id, () => setIsEditing(false));
   const deletePost = useDeletePost(post.id, () => setIsDeleteOpen(false));
+  const hasLegacyMentions = /<@\d+>/.test(post.text);
+  const { data: users } = useGetQuery<ApiUserGet[]>({
+    queryKey: ["users", "all"],
+    apiPath: apiPathUser,
+    params: { sortOrder: SortOrder.NewToOld, limit: MAX_PAGE_LIMIT },
+    staleTime: cacheTTL,
+    enabled: hasLegacyMentions,
+  });
   const toggleBookmark = useTogglePostBookmark(post.id, post.bookmarked);
 
   const closeEdit = useCallback(() => {
@@ -72,32 +84,53 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
     .map((name) => name[0]?.toUpperCase())
     .join("");
 
+  const resolveTaggedPerson = useCallback(
+    (mentionId: number, isPersonToken: boolean) => {
+      if (isPersonToken) return post.taggedPersons.find(({ id }) => id === mentionId);
+
+      const directPerson = post.taggedPersons.find(({ id }) => id === mentionId);
+      const legacyUser = users?.find(({ id }) => id === mentionId);
+      const legacyPerson = post.taggedPersons.find(({ id }) => id === legacyUser?.personId);
+
+      // Bare tokens were historically written with either a Person id (post
+      // editing) or a User id (the old composer). Never silently attribute an
+      // ambiguous collision to the wrong tagged person.
+      if (directPerson && legacyPerson && directPerson.id !== legacyPerson.id) return undefined;
+      return directPerson ?? legacyPerson;
+    },
+    [post.taggedPersons, users],
+  );
+
   const displayText = useMemo(() => {
-    const parts = post.text.split(/(<@\d+>)/g);
+    const parts = post.text.split(POST_MENTION_TOKEN);
     return parts.map((part, index) => {
-      const match = part.match(/^<@(\d+)>$/);
+      const match = part.match(EXACT_POST_MENTION_TOKEN);
       if (!match) return <Fragment key={`${post.id}-text-${index}`}>{part}</Fragment>;
-      const person = post.taggedPersons.find(({ id }) => id === Number(match[1]));
+      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
       return (
         <strong className="tag" key={`${post.id}-tag-${index}`}>
           @{person?.fullName ?? t("dashboard.posts.unknownUser")}
         </strong>
       );
     });
-  }, [post.id, post.taggedPersons, post.text, t]);
+  }, [post.id, post.text, resolveTaggedPerson, t]);
 
   const replyContextText = useMemo(
     () =>
-      post.text.replace(/<@(\d+)>/g, (_token, id) => {
-        const person = post.taggedPersons.find(({ id: personId }) => personId === Number(id));
+      post.text.replace(POST_MENTION_TOKEN, (token) => {
+        const match = token.match(EXACT_POST_MENTION_TOKEN);
+        if (!match) return token;
+        const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
         return `@${person?.fullName ?? t("dashboard.posts.unknownUser")}`;
       }),
-    [post.taggedPersons, post.text, t],
+    [post.text, resolveTaggedPerson, t],
   );
 
   const startEdit = () => {
-    const editableText = post.text.replace(/<@(\d+)>/g, (token, id) => {
-      const person = post.taggedPersons.find((taggedPerson) => taggedPerson.id === Number(id));
+    const editableText = post.text.replace(POST_MENTION_TOKEN, (token) => {
+      const match = token.match(EXACT_POST_MENTION_TOKEN);
+      if (!match) return token;
+      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
       return person ? `@${person.fullName}` : token;
     });
     setEditText(editableText);
@@ -115,7 +148,7 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
         const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
         formattedText = formattedText.replace(mentionPattern, () => {
           taggedPersonIds.push(person.id);
-          return `<@${person.id}>`;
+          return `<@person:${person.id}>`;
         });
       });
     updatePost.mutate({
