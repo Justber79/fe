@@ -97,7 +97,7 @@ export const MapOpportunityList = styled.ul`
 
 export const MapOpportunityItem = styled.li`
   display: flex;
-  gap: --dashboard-map-opp-item-gap;
+  gap: var(--dashboard-map-opp-item-gap);
   background: var(--color-white);
   padding: var(--dashboard-map-marker-card-padding);
   border-radius: var(--card-border-radius);
