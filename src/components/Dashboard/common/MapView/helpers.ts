@@ -1,3 +1,4 @@
+import { TFunction } from "i18next";
 import { LatLngExpression } from "leaflet";
 import {
   ApiOpportunityGetList,
@@ -46,7 +47,7 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[],
   return Array.from(oppMap.values());
 };
 
-export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[]): Markers => {
+export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFunction): Markers => {
   const volMap = new Map<
     string,
     { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
@@ -64,7 +65,7 @@ export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[]): Marke
     volMap.set(String(vol.id), {
       lat: vol.lat,
       lon: vol.lon,
-      label: vol.name,
+      label: t(`dashboard.volunteers.filters.engagement.${vol.statusEngagement}`),
       children: [childItem],
       onClick: () => null,
     });
