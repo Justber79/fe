@@ -4,9 +4,8 @@ import { ApiOpportunityGetList } from "need4deed-sdk";
 export type Markers = Array<{
   lat: number;
   lon: number;
-  title: string;
-  ngo: string;
-  link: string;
+  label: string;
+  children?: Array<{ title: string; link: string }>;
   onClick: () => null;
 }>;
 
@@ -20,20 +19,27 @@ export const mapContainerStyle = {
 };
 
 export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[]): Markers => {
-  return (
-    opportunities?.flatMap((opp) => {
-      if (!opp.lat || !opp.lon) return [];
+  const oppMap = new Map<
+    string,
+    { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
+  >();
 
-      return [
-        {
-          lat: opp.lat,
-          lon: opp.lon,
-          title: opp.title,
-          ngo: opp.agentTitle,
-          link: `opportunities/${opp.id}`,
-          onClick: () => null,
-        },
-      ];
-    }) ?? []
-  );
+  opportunities?.forEach((opp) => {
+    if (!opp.lat || !opp.lon) return;
+
+    const childItem = { title: opp.title, link: `opportunities/${opp.id}` };
+
+    if (!oppMap.has(opp.agentTitle)) {
+      oppMap.set(opp.agentTitle, {
+        lat: opp.lat,
+        lon: opp.lon,
+        label: opp.agentTitle,
+        children: [childItem],
+        onClick: () => null,
+      });
+    } else {
+      oppMap.get(opp.agentTitle)?.children.push(childItem);
+    }
+  });
+  return Array.from(oppMap.values());
 };
