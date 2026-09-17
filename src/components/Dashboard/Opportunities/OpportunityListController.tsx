@@ -98,7 +98,7 @@ export function OpportunityListController({
 
   useEffect(() => {
     setNumOfOpps(count);
-  }, [count, setNumOfOpps]);
+  }, [count, setNumOfOpps, viewMode]);
 
   const markers = createOpportunityMarkers(opportunities);
 
