@@ -1,8 +1,9 @@
 import "./map.css";
-import { MapContainer, Marker, Popup, TileLayer, useMapEvent } from "react-leaflet";
-import { DEFAULT_CENTER, mapContainerStyle, Markers } from "./helpers";
-import Link from "next/link";
-import { PopupWrapper } from "./styles";
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
+import { DEFAULT_CENTER, Markers } from "./helpers";
+import { PopupContentWrapper, PopupHeader, PopupLink, StyledMapContainer } from "./styles";
+import { useEffect, useRef } from "react";
+import { LatLngExpression, Marker as LeafletMarker } from "leaflet";
 
 type Props = {
   markers?: Markers;
@@ -47,25 +48,39 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
       ? [markers[activeMarkerIndex].lat, markers[activeMarkerIndex].lon]
       : undefined;
   return (
-    <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={true} style={mapContainerStyle}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <SetViewOnClick />
-      {markers?.map((marker) => (
-        <Marker key={`${marker.title}${marker?.lat}${marker?.lon}`} position={[marker.lat, marker.lon]}>
-          <Link href={marker.link}>
-            <Popup className="map-view-popup">
-              <PopupWrapper>
-                <span>{marker.title}</span>
-                <span>{marker.ngo}</span>
-              </PopupWrapper>
+    <StyledMapContainer>
+      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={true}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <SetViewOnClick />
+        <MapFlyTo position={activePosition} />
+        {markers?.map((marker, idx) => (
+          <Marker
+            key={`${idx}-${marker?.lat}-${marker?.lon}`}
+            position={[marker.lat, marker.lon]}
+            ref={(ref) => {
+              if (ref) markerRefs.current[idx] = ref;
+            }}
+            eventHandlers={{
+              click: () => setActiveMarkerIndex(idx),
+            }}
+          >
+            <Popup>
+              <PopupContentWrapper>
+                <PopupHeader>{marker.label}</PopupHeader>
+                {marker.children?.map((child) => (
+                  <PopupLink href={child.link} key={child.title}>
+                    {child.title} →
+                  </PopupLink>
+                ))}
+              </PopupContentWrapper>
             </Popup>
-          </Link>
-        </Marker>
-      ))}
-    </MapContainer>
+          </Marker>
+        ))}
+      </MapContainer>
+    </StyledMapContainer>
   );
 };
 
