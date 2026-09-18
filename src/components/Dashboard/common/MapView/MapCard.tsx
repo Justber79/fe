@@ -3,7 +3,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "rea
 import { DEFAULT_CENTER, mapContainerStyle, Markers } from "./helpers";
 import { PopupContentWrapper, PopupHeader, PopupLink } from "./styles";
 import { useEffect, useRef } from "react";
-import { LatLngExpression, Marker as LeafletMarker } from "leaflet";
+import L, { LatLngExpression, Marker as LeafletMarker } from "leaflet";
 
 type Props = {
   markers?: Markers;
@@ -36,6 +36,16 @@ const MapFlyTo = ({ position }: { position: LatLngExpression | undefined }) => {
 const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) => {
   const markerRefs = useRef<Record<number, LeafletMarker | null>>({});
 
+  const generateCustomIcon = (url: string) => {
+    const defaultIcon = new L.Icon.Default();
+    if (!url) return defaultIcon;
+    return L.icon({
+      iconUrl: url,
+      iconAnchor: [25, 5],
+      className: "custom-icon",
+    });
+  };
+
   useEffect(() => {
     if (activeMarkerIndex !== undefined && markerRefs.current[activeMarkerIndex]) {
       const markerInstance = markerRefs.current[activeMarkerIndex];
@@ -65,6 +75,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
           eventHandlers={{
             click: () => setActiveMarkerIndex(idx),
           }}
+          icon={generateCustomIcon(marker?.avatarUrl ?? "")}
         >
           <Popup>
             <PopupContentWrapper>

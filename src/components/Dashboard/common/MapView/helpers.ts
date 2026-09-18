@@ -1,3 +1,5 @@
+import { defaultAvatarURL } from "@/config/constants";
+import { getImageUrl } from "@/utils";
 import { TFunction } from "i18next";
 import { LatLngExpression } from "leaflet";
 import {
@@ -13,6 +15,7 @@ export type Markers = Array<{
   label: string;
   children?: Array<{ title: string; link: string }>;
   onClick: () => null;
+  avatarUrl?: string;
 }>;
 
 export const DEFAULT_CENTER: LatLngExpression | undefined = [52.52, 13.405];
@@ -57,7 +60,14 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[])
 export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFunction): Markers => {
   const volMap = new Map<
     string,
-    { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
+    {
+      lat: number;
+      lon: number;
+      label: string;
+      children: Array<{ title: string; link: string }>;
+      avatarUrl: string;
+      onClick: () => null;
+    }
   >();
 
   volunteers?.forEach((vol) => {
@@ -74,6 +84,7 @@ export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFu
       lon: vol.lon,
       label: t(`dashboard.volunteers.filters.engagement.${vol.statusEngagement}`),
       children: [childItem],
+      avatarUrl: getImageUrl(vol?.avatarUrl || defaultAvatarURL),
       onClick: () => null,
     });
   });

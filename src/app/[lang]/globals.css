@@ -562,6 +562,9 @@ html {
   --dashboard-map-popup-link-border-radius: 6px;
   --dashboard-map-popup-wrapper-gap: 8px;
   --dashboard-map-container-gap: 1rem;
+  --dashboard-map-custom-icon-width: 50px;
+  --dashboard-map-custom-icon-border: solid var(--color-aubergine) 2px;
+  --dashboard-map-custom-icon-border-radius: 50%;
   --agent-profile-section-card-header-height: 56px;
   --agent-profile-section-card-header-info-gap: 24px;
   --agent-profile-section-card-info-gap: 5px;
