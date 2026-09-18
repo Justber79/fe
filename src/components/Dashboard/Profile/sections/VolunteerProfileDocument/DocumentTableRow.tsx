@@ -43,14 +43,14 @@ export function DocumentTableRow({
       </ReceivedCell>
       {isAuthorized && (
         <>
-          <Cell $width="180px" $align="center">
+          <Cell $width="140px" $align="center">
             <StatusBadge $status={isUploaded || isReceived ? "uploaded" : "missing"}>
               {isUploaded || isReceived
                 ? t("dashboard.documentSection.uploaded")
                 : t("dashboard.documentSection.missing")}
             </StatusBadge>
           </Cell>
-          <Cell $width="152px" $noWrap>
+          <Cell $width="120px" $noWrap>
             {document?.createdAt ? (
               new Date(document.createdAt).toLocaleDateString("de-DE", {
                 day: "2-digit",

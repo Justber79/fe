@@ -43,10 +43,9 @@ export function eventDateRange(event: ApiEventN4DGetList, locale: string, timeZo
     timeZone,
   };
   const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: "2-digit",
+    hour: "numeric",
     minute: "2-digit",
     timeZone,
-    timeZoneName: timeZone ? "short" : undefined,
   };
   const startDate = start.toLocaleDateString(locale, dateOptions);
   const startTime = start.toLocaleTimeString(locale, timeOptions);

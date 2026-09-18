@@ -8,8 +8,11 @@ import { ProfileStatusBadge } from "./ProfileStatusBadge";
 const StatusRow = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  column-gap: var(--spacing-16);
+  row-gap: var(--spacing-8);
   padding: var(--spacing-16) 0;
   border-bottom: var(--border-width-thin) solid var(--color-blue-50);
 
@@ -23,6 +26,19 @@ const StatusRow = styled.div`
     width: var(--volunteer-header-label-width);
     flex-shrink: 0;
   }
+
+  @media (max-width: 767px) {
+    align-items: stretch;
+    flex-direction: column;
+
+    h4 {
+      width: auto;
+    }
+
+    > button {
+      align-self: flex-start;
+    }
+  }
 `;
 
 const FieldContainer = styled.div`
@@ -31,14 +47,23 @@ const FieldContainer = styled.div`
   gap: var(--spacing-8);
   align-items: center;
   flex: 1;
+  min-width: 0;
 `;
 
 const TextAndChip = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--spacing-32);
-  flex: 1;
+  gap: var(--spacing-16);
+  flex: 1 1 360px;
+  min-width: 0;
+
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    flex-basis: auto;
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
 `;
 
 type Props = {
