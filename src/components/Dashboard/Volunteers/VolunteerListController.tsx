@@ -98,6 +98,7 @@ export function VolunteerListController({
 
   if (isLoading) return <DashboardListLoading />;
   if (isLoading && isMapView) return <LoadingMapView />;
+
   if (isListView) {
     return (
       <VolunteerTableList
