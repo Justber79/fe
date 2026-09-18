@@ -97,7 +97,7 @@ export function VolunteerListController({
     return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
 
   if (isLoading) return <DashboardListLoading />;
-  if (isLoading && isMapView) return <LoadingMapView showSideBar={true} />;
+  if (isLoading && isMapView) return <LoadingMapView />;
   if (isListView) {
     return (
       <VolunteerTableList
