@@ -41,7 +41,7 @@ export function usePostsFeed({ search, authorId }: ApiPostListQuery = {}) {
         page: pageParam,
         limit: POSTS_PAGE_SIZE,
         ...(search ? { search } : {}),
-        ...(authorId ? { authorId } : {}),
+        ...(authorId != null ? { authorId } : {}),
       }),
     getNextPageParam: (lastPage, pages) => {
       const loadedPostCount = pages.reduce((count, page) => count + page.data.length, 0);

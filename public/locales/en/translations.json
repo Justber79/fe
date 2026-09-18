@@ -550,8 +550,6 @@
       "everyoneDescription": "Show posts from everyone",
       "findPerson": "Find a person",
       "noPeople": "No matching people found.",
-      "showMore": "Show {{count}} more",
-      "showLess": "Show less",
       "allPosts": "All posts",
       "roles": {
         "agent": "NGO",

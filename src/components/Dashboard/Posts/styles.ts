@@ -1,4 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const interactivePinkBackground = css`
+  &:hover,
+  &:focus-visible {
+    background: var(--color-pink-50);
+  }
+`;
 
 export const PostsContainer = styled.div`
   display: flex;
@@ -22,7 +29,6 @@ export const PostsContainer = styled.div`
       )
     );
   }
-
 `;
 
 export const PostsMain = styled.div`
@@ -95,10 +101,7 @@ export const SearchClearButton = styled.button`
   color: var(--color-midnight);
   cursor: pointer;
 
-  &:hover,
-  &:focus-visible {
-    background: var(--color-pink-50);
-  }
+  ${interactivePinkBackground}
 `;
 
 export const PeopleDescription = styled.p`
@@ -142,9 +145,9 @@ export const PeopleFilterButton = styled.button<{ $active: boolean }>`
     transform: rotate(180deg);
   }
 
-  &:hover,
+  ${interactivePinkBackground}
+
   &:focus-visible {
-    background: var(--color-pink-50);
     outline: none;
   }
 
@@ -225,7 +228,6 @@ export const PeopleSearchField = styled.label`
   &:focus-within {
     border-color: var(--color-aubergine);
   }
-
 `;
 
 export const PeopleSearchInput = styled.input`
@@ -283,10 +285,7 @@ export const PeopleItem = styled.button<{ $selected: boolean }>`
     color: var(--color-aubergine);
   }
 
-  &:hover,
-  &:focus-visible {
-    background: var(--color-pink-50);
-  }
+  ${interactivePinkBackground}
 `;
 
 export const PeopleAvatar = styled.img`
@@ -339,7 +338,6 @@ export const PeopleEmptyState = styled.p`
   color: var(--color-grey-500);
   font-size: var(--font-size-sm);
   text-align: center;
-
 `;
 
 export const EmptyState = styled.div`

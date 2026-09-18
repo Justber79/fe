@@ -1,5 +1,6 @@
 import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useClickOutside, useGetQuery } from "@/hooks";
+import { useDebounce } from "@/hooks/useDebounce";
 import { getImageUrl } from "@/utils";
 import { CaretDownIcon, CheckIcon, MagnifyingGlassIcon, UsersIcon } from "@phosphor-icons/react";
 import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
@@ -43,14 +44,25 @@ export default function PeopleWidget({ selectedPersonId, onSelect }: Props) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedPersonCache, setSelectedPersonCache] = useState<(ApiUserGet & { personId: number }) | undefined>();
+  const debouncedQuery = useDebounce(query.trim(), 300);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setIsOpen(false), []);
   useClickOutside(wrapperRef, close);
-  const { data: users, isLoading, isError } = useGetQuery<ApiUserGet[]>({
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useGetQuery<ApiUserGet[]>({
     queryKey: ["users", "all"],
     apiPath: apiPathUser,
-    params: { sortOrder: SortOrder.NewToOld, limit: MAX_PAGE_LIMIT },
+    params: {
+      sortOrder: SortOrder.NewToOld,
+      limit: MAX_PAGE_LIMIT,
+      ...(debouncedQuery ? { search: debouncedQuery } : {}),
+    },
     staleTime: cacheTTL,
+    enabled: isOpen,
   });
 
   const people = useMemo(
@@ -63,12 +75,14 @@ export default function PeopleWidget({ selectedPersonId, onSelect }: Props) {
         .sort((a, b) => a.fullName.localeCompare(b.fullName)),
     [users],
   );
-  const filteredPeople = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase();
-    if (!normalizedQuery) return people;
-    return people.filter((person) => person.fullName.toLocaleLowerCase().includes(normalizedQuery));
-  }, [people, query]);
-  const selectedPerson = people.find((person) => person.personId === selectedPersonId);
+  const personFromResults = people.find((person) => person.personId === selectedPersonId);
+  const selectedPerson =
+    personFromResults ?? (selectedPersonCache?.personId === selectedPersonId ? selectedPersonCache : undefined);
+
+  useEffect(() => {
+    if (personFromResults) setSelectedPersonCache(personFromResults);
+    else if (selectedPersonId == null) setSelectedPersonCache(undefined);
+  }, [personFromResults, selectedPersonId]);
 
   useEffect(() => {
     if (!isOpen) setQuery("");
@@ -83,8 +97,9 @@ export default function PeopleWidget({ selectedPersonId, onSelect }: Props) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close, isOpen]);
 
-  const selectPerson = (personId?: number) => {
-    onSelect(personId);
+  const selectPerson = (person?: ApiUserGet & { personId: number }) => {
+    setSelectedPersonCache(person);
+    onSelect(person?.personId);
     close();
   };
 
@@ -150,16 +165,16 @@ export default function PeopleWidget({ selectedPersonId, onSelect }: Props) {
               <PeopleEmptyState>{t("dashboard.home.content.loading")}</PeopleEmptyState>
             ) : isError ? (
               <PeopleEmptyState role="alert">{t("message.errorGeneric")}</PeopleEmptyState>
-            ) : filteredPeople.length === 0 ? (
+            ) : people.length === 0 ? (
               <PeopleEmptyState>{t("dashboard.posts.noPeople")}</PeopleEmptyState>
             ) : (
-              filteredPeople.map((person) => (
+              people.map((person) => (
                 <PeopleItem
                   type="button"
                   key={person.id}
                   $selected={selectedPersonId === person.personId}
                   aria-pressed={selectedPersonId === person.personId}
-                  onClick={() => selectPerson(person.personId)}
+                  onClick={() => selectPerson(person)}
                 >
                   {person.avatarUrl ? (
                     <PeopleAvatar src={getImageUrl(person.avatarUrl)} alt="" />

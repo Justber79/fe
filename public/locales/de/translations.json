@@ -556,8 +556,6 @@
       "everyoneDescription": "Beiträge von allen anzeigen",
       "findPerson": "Person suchen",
       "noPeople": "Keine passenden Personen gefunden.",
-      "showMore": "{{count}} weitere anzeigen",
-      "showLess": "Weniger anzeigen",
       "allPosts": "Alle Beiträge",
       "roles": {
         "agent": "Einrichtung/Projekt",
