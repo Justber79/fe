@@ -19,9 +19,13 @@ const SearchContainer = styled.div<SearchContainerProps>`
   align-items: center;
   padding: var(--search-container-padding);
   cursor: text;
+  box-sizing: border-box;
+  min-width: 0;
 `;
 
 const StyledInput = styled.input`
+  width: 100%;
+  min-width: 0;
   font-size: var(--search-input-font-size);
   border: none;
   background: transparent;

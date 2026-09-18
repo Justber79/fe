@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ApiAgentGetList, ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
 import { useGetQuery } from "@/hooks";
-import { apiPathOption, questionMark } from "@/config/constants";
+import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { AgentCardsFilter } from "./Filters/types";
 import { createSelectedAgentFiltersAsFlatArray } from "./Filters/helpers";
 import { defaultAgentCardsFilter } from "./Filters/constants";
@@ -25,10 +25,12 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useTransferOpportunityToAgent } from "@/hooks/useTransferOpportunityToAgent";
 import { ConfirmationDialog } from "../Profile/sections/shared/ConfirmationDialog";
+import { useScreenType } from "@/context/DeviceContext";
 
 export const Agents = () => {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
+  const screenType = useScreenType();
   const canCreateAgent = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
   const { t, i18n } = useTranslation();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -45,6 +47,10 @@ export const Agents = () => {
   const transferOpportunityId = searchParams.get("transferOpportunity") ?? undefined;
   const transferOpportunity = useGetOpportunity(transferOpportunityId);
   const [agentToTransferTo, setAgentToTransferTo] = useState<ApiAgentGetList | undefined>(undefined);
+
+  useEffect(() => {
+    if (screenType === ScreenTypes.MOBILE && user && !isAgent) setSelectedTabIndex(1);
+  }, [isAgent, screenType, user]);
 
   const { mutate: transferMutate } = useTransferOpportunityToAgent(Number(transferOpportunityId), () => {
     setAgentToTransferTo(undefined);

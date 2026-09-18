@@ -42,6 +42,7 @@ interface Params {
   language?: Lang;
   page?: number;
   limit?: number;
+  search?: string;
   sortOrder?: SortOrder;
   filter?: FilterParam;
   role?: UserRole;
