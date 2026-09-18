@@ -106,6 +106,7 @@
   },
   "eventPage": {
     "about": "Über diese Veranstaltung",
+    "berlinTime": "Uhr (Berliner Zeit)",
     "details": "Veranstaltungsdetails",
     "register": "Jetzt anmelden",
     "registrationUnavailable": "Die Anmeldung ist noch nicht verfügbar.",
