@@ -16,11 +16,12 @@ const StyledErrorMessage = styled.div`
 type Props = {
   message: string;
   paddingLeft?: string;
+  justifyContent?: string;
 };
 
-export function ErrorMessage({ message, paddingLeft = "0" }: Props) {
+export function ErrorMessage({ message, paddingLeft = "0", justifyContent = "start" }: Props) {
   return (
-    <StyledErrorMessage style={{ paddingLeft }}>
+    <StyledErrorMessage style={{ paddingLeft, justifyContent }}>
       <WarningCircle size={20} weight="fill" />
       {message}
     </StyledErrorMessage>
