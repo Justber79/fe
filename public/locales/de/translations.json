@@ -548,6 +548,22 @@
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
     "posts": {
+      "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",
+      "clearSearch": "Suche löschen",
+      "noSearchResults": "Keine passenden Beiträge gefunden.",
+      "peopleTitle": "Personen",
+      "peopleDescription": "Beiträge nach Community-Mitglied filtern",
+      "postedBy": "Verfasst von",
+      "anyone": "Alle",
+      "everyoneDescription": "Beiträge von allen anzeigen",
+      "findPerson": "Person suchen",
+      "noPeople": "Keine passenden Personen gefunden.",
+      "allPosts": "Alle Beiträge",
+      "roles": {
+        "agent": "Einrichtung/Projekt",
+        "coordinator": "Koordination",
+        "admin": "Administration"
+      },
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
       "addBookmark": "Beitrag für später speichern",
