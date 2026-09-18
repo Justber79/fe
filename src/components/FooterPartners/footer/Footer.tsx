@@ -12,12 +12,22 @@ const FooterContainer = styled.div`
   justify-content: var(--homepage-footer-partners-section-footer-container-justify-content);
   height: var(--homepage-footer-partners-section-footer-container-height);
   gap: var(--homepage-footer-partners-section-footer-container-gap);
+
+  @media (max-width: 359px) {
+    flex-direction: column;
+    height: auto;
+    gap: 32px;
+  }
 `;
 
 const FooterLinksN4DLogoContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  @media (max-width: 359px) {
+    width: 100%;
+  }
 `;
 
 interface FooterLinksContainerProps {

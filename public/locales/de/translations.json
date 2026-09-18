@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ÜBER UNS",
         "volunteeringOpportunities": "Ehrenamtsbedarfe",
-        "events": "VERANSTALTUNGEN"
+        "events": "VERANSTALTUNGEN",
+        "openMenu": "Menü öffnen"
       },
       "content": {
         "heroText": "Ehrenamtliche Unterstützung für Geflüchtete",
@@ -541,7 +542,8 @@
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
-        "profile": "Profil"
+        "profile": "Profil",
+        "more": "Mehr"
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
@@ -1077,6 +1079,8 @@
       "uploadedOn": "Aktualisiert am",
       "received": "Erhalten",
       "receivedOn": "Erhalten am",
+      "scrollHint": "Horizontal wischen, um mehr zu sehen",
+      "scrollRegion": "Dokumententabelle. Horizontal scrollen, um alle Spalten zu sehen.",
       "actions": "Aktionen",
       "uploaded": "Hochgeladen",
       "missing": "Fehlend",
