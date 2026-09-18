@@ -32,6 +32,8 @@ const FieldWrapper = styled.div<HasError & HasHint>`
 
   > span {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   input {
@@ -42,6 +44,20 @@ const FieldWrapper = styled.div<HasError & HasHint>`
     flex: 1;
     min-width: 0;
   }
+
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    label {
+      width: 100%;
+    }
+
+    > span {
+      width: 100%;
+    }
+  }
 `;
 
 const InputWrapper = styled.div<HasError>`
@@ -50,6 +66,7 @@ const InputWrapper = styled.div<HasError>`
   align-items: center;
   flex: 1;
   width: 100%;
+  min-width: 0;
 
   input,
   textarea {

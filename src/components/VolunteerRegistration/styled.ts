@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   justify-content: center;
   padding: 48px 16px;
   background: var(--layout-static-page-background-default, #f8f6f8);
+
+  @media (max-width: 767px) {
+    padding: 24px 12px;
+  }
 `;
 
 export const Card = styled.div`
@@ -16,6 +20,11 @@ export const Card = styled.div`
   width: 100%;
   max-width: 850px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+
+  @media (max-width: 767px) {
+    border-radius: 12px;
+    padding: 24px 16px;
+  }
 `;
 
 export const PageTitle = styled.h1`
@@ -37,6 +46,15 @@ export const Actions = styled.div`
   align-items: center;
   margin-top: 32px;
   gap: 12px;
+
+  @media (max-width: 480px) {
+    align-items: stretch;
+    flex-direction: column-reverse;
+
+    > * {
+      width: 100%;
+    }
+  }
 `;
 
 export const ErrorBanner = styled.div`
@@ -62,6 +80,7 @@ export const ExistingUserWrapper = styled.div`
   display: flex;
   gap: var(--agent-form-existing-user-gap);
   margin-bottom: var(--agent-form-existing-user-margin-bottom);
+  flex-wrap: wrap;
 `;
 
 export const ExistingUserText = styled.span`
@@ -114,7 +133,8 @@ export const StyledSelect = styled.select<SelectProps>`
   color: var(--color-midnight);
   font-size: var(--form-input-fontSize, 1rem);
   height: var(--form-input-container-height, 48px);
-  width: -webkit-fill-available;
+  width: 100%;
+  box-sizing: border-box;
   background-color: var(--color-white);
   border-radius: var(--form-input-container-border-radius, 8px);
   padding: var(--form-input-container-padding, 0 12px);
@@ -131,7 +151,8 @@ export const StyledSelect = styled.select<SelectProps>`
 export const StyledTextarea = styled.textarea`
   color: var(--color-midnight);
   font-size: var(--form-input-fontSize, 1rem);
-  width: -webkit-fill-available;
+  width: 100%;
+  box-sizing: border-box;
   background-color: var(--color-white);
   border-radius: var(--form-input-container-border-radius, 8px);
   padding: 12px;

@@ -11,6 +11,11 @@ const SortByContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: var(--dashboard-cards-header-sortBy-container-gap);
+  flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    align-self: flex-end;
+  }
 `;
 
 const SortBySwitcherContainer = styled.div`
@@ -18,6 +23,19 @@ const SortBySwitcherContainer = styled.div`
   flex-direction: column;
   background: transparent;
   position: relative;
+`;
+
+const SortMenuButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: var(--dashboard-cards-header-sortBy-circle-arrow-margin-left);
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 `;
 
 const OptionsDiv = styled.div`
@@ -87,13 +105,14 @@ export default function SortBy({ onChange, sortOrder, extraOptions }: Props) {
         )}
       </SortBySwitcherContainer>
 
-      <CircleArrow
-        style={{ marginLeft: "var(--dashboard-cards-header-sortBy-circle-arrow-margin-left)" }}
-        direction={isOptionsVisible ? "up" : "down"}
-        color="orchid"
-        isFilled
+      <SortMenuButton
+        type="button"
+        aria-label={t("dashboard.sortBy.sortBy")}
+        aria-expanded={isOptionsVisible}
         onClick={() => setIsOptionsVisible(!isOptionsVisible)}
-      />
+      >
+        <CircleArrow direction={isOptionsVisible ? "up" : "down"} color="orchid" isFilled aria-hidden />
+      </SortMenuButton>
     </SortByContainer>
   );
 }

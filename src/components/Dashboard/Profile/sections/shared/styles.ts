@@ -6,7 +6,9 @@ export const SectionWrapper = styled(FlexColumn).attrs({
   $gap: "var(--spacing-24)",
   $width: "100%",
   $alignItems: "flex-start",
-})``;
+})`
+  min-width: 0;
+`;
 
 export const SectionHeader = styled.div`
   display: flex;
@@ -102,6 +104,8 @@ export const FieldWrapper = styled.div<HasError>`
 
   > span {
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   input {
@@ -111,5 +115,19 @@ export const FieldWrapper = styled.div<HasError>`
     border: var(--editableField-fieldWrapper-input-border);
     flex: 1;
     min-width: 0;
+  }
+
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    label {
+      width: 100%;
+    }
+
+    > span {
+      width: 100%;
+    }
   }
 `;
