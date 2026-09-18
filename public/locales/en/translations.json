@@ -108,6 +108,7 @@
   },
   "eventPage": {
     "about": "About this event",
+    "berlinTime": "(Berlin time)",
     "details": "Event details",
     "register": "Register now",
     "registrationUnavailable": "Registration is not available yet.",
