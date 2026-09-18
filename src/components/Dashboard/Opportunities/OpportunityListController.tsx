@@ -103,7 +103,7 @@ export function OpportunityListController({
   const markers = createOpportunityMarkers(opportunities);
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
-  if (isLoading && isMapView) return <LoadingMapView showSideBar={true} />;
+  if (isLoading && isMapView) return <LoadingMapView />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {

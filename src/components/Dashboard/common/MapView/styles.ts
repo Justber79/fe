@@ -11,6 +11,7 @@ export const StyledMapContainer = styled.div`
     height: 100%;
     width: 100%;
     border-radius: var(--dashboard-map-border-radius);
+    z-index: 0;
   }
 `;
 
