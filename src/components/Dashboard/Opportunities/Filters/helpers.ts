@@ -26,7 +26,6 @@ export const createOpportunityFilterItems = (
       return translated !== translationKey ? translated : key;
     },
   );
-
   const statusFilters = generateNestedFilterControlItems(filter.status, setFilter, "status", (key) =>
     t(`dashboard.opportunities.filters.status.${key}`),
   );

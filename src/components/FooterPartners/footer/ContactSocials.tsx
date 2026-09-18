@@ -10,6 +10,12 @@ const ContactSocialsContainer = styled.div`
   flex-direction: var(--homepage-footer-partners-section-contact-socials-container-flex-direction);
   justify-content: var(--homepage-footer-partners-section-contact-socials-container-justify-content);
   gap: var(--homepage-footer-partners-section-contact-socials-container-gap);
+
+  @media (max-width: 359px) {
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
 `;
 
 const ContactContainer = styled.div`
