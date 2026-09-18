@@ -77,6 +77,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
             eventHandlers={{
               click: () => setActiveMarkerIndex(idx),
             }}
+            icon={generateCustomIcon(marker?.avatarUrl ?? "")}
           >
             <Popup autoClose={false}>
               <PopupContentWrapper>
