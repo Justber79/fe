@@ -12,7 +12,6 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants"
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
-import { MapView } from "../common/MapView/MapView";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -99,9 +98,7 @@ export function OpportunityListController({
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isLoading) return <DashboardListLoading />;
-  if (viewMode === ViewMode.MAP) {
-    return <MapView />;
-  }
+
   if (isListView) {
     return (
       <OpportunityTableList
