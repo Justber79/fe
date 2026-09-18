@@ -3,6 +3,7 @@ import { usePostsFeed } from "@/hooks";
 import { useParams } from "next/navigation";
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import type { ApiPostListQuery } from "need4deed-sdk";
 
 import { EmptyState, FeedScrollContainer, LoadOlderIndicator } from "./styles";
 import PostCard from "./PostCard";
@@ -16,19 +17,21 @@ interface ScrollMetrics {
 }
 
 interface Props {
+  filters: Pick<ApiPostListQuery, "search" | "authorId">;
   expandedPostIds: Set<number>;
   onReply: (target: ReplyTarget) => void;
   onToggleReplies: (postId: number) => void;
 }
 
-export function PostFeed({ expandedPostIds, onReply, onToggleReplies }: Props) {
+export function PostFeed({ filters, expandedPostIds, onReply, onToggleReplies }: Props) {
   const { t } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const feedRef = useRef<HTMLDivElement>(null);
   const didScrollToNewest = useRef(false);
   const pendingScrollMetrics = useRef<ScrollMetrics | null>(null);
   const previousScrollTop = useRef<number | null>(null);
-  const { data, fetchNextPage, hasNextPage, isError, isFetchingNextPage, isLoading } = usePostsFeed();
+  const { data, fetchNextPage, hasNextPage, isError, isFetchingNextPage, isLoading } = usePostsFeed(filters);
+  const filterKey = `${filters.search ?? ""}:${filters.authorId ?? ""}`;
 
   const posts = useMemo(() => data?.pages.flatMap((page) => page.data).reverse() ?? [], [data?.pages]);
 
@@ -36,7 +39,7 @@ export function PostFeed({ expandedPostIds, onReply, onToggleReplies }: Props) {
     didScrollToNewest.current = false;
     pendingScrollMetrics.current = null;
     previousScrollTop.current = null;
-  }, [lang]);
+  }, [filterKey, lang]);
 
   useLayoutEffect(() => {
     const feed = feedRef.current;
@@ -55,7 +58,7 @@ export function PostFeed({ expandedPostIds, onReply, onToggleReplies }: Props) {
       previousScrollTop.current = feed.scrollTop;
       pendingScrollMetrics.current = null;
     }
-  }, [posts.length]);
+  }, [filterKey, posts.length]);
 
   const loadOlderPosts = useCallback(async () => {
     const feed = feedRef.current;
@@ -111,7 +114,9 @@ export function PostFeed({ expandedPostIds, onReply, onToggleReplies }: Props) {
   if (posts.length === 0) {
     return (
       <EmptyState>
-        <Paragraph>{t("dashboard.posts.empty")}</Paragraph>
+        <Paragraph>
+          {t(filters.search || filters.authorId ? "dashboard.posts.noSearchResults" : "dashboard.posts.empty")}
+        </Paragraph>
       </EmptyState>
     );
   }
