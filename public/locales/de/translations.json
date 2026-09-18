@@ -35,6 +35,7 @@
     "events": {
       "headline": "Kommende Veranstaltungen",
       "button": "Mehr erfahren & anmelden",
+      "viewAll": "Alle {{count}} kommenden Veranstaltungen ansehen",
       "loading": "Kommende Veranstaltungen werden geladen…",
       "empty": "Aktuell ist keine kommende Veranstaltung verfügbar."
     },
@@ -104,8 +105,15 @@
     }
   },
   "eventPage": {
+    "eyebrow": "Was als Nächstes passiert",
+    "heading": "Kommende Veranstaltungen",
+    "intro": "Triff die Need4Deed-Community bei unseren kommenden Veranstaltungen in Berlin.",
     "about": "Über diese Veranstaltung",
+    "berlinTime": "Uhr (Berliner Zeit)",
     "details": "Veranstaltungsdetails",
+    "moreEvents": "Weitere kommende Veranstaltungen",
+    "viewDetails": "Veranstaltungsdetails ansehen",
+    "backToEvents": "Zurück zu allen kommenden Veranstaltungen",
     "register": "Jetzt anmelden",
     "registrationUnavailable": "Die Anmeldung ist noch nicht verfügbar.",
     "loading": "Veranstaltung wird geladen…",

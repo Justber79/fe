@@ -37,6 +37,7 @@
     "events": {
       "headline": "Upcoming Events",
       "button": "Learn More & Register",
+      "viewAll": "View all {{count}} upcoming events",
       "loading": "Loading upcoming events…",
       "empty": "No upcoming event is currently available."
     },
@@ -106,8 +107,15 @@
     }
   },
   "eventPage": {
+    "eyebrow": "What's happening next",
+    "heading": "Upcoming events",
+    "intro": "Join the Need4Deed community at our upcoming events in Berlin.",
     "about": "About this event",
+    "berlinTime": "(Berlin time)",
     "details": "Event details",
+    "moreEvents": "More upcoming events",
+    "viewDetails": "View event details",
+    "backToEvents": "Back to all upcoming events",
     "register": "Register now",
     "registrationUnavailable": "Registration is not available yet.",
     "loading": "Loading event…",
