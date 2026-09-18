@@ -121,7 +121,7 @@ export const getColumns = (isAuthorized: boolean, t: TFunction): DocumentColumn[
   {
     id: "received",
     header: t("dashboard.documentSection.received"),
-    width: "120px",
+    width: "100px",
     noWrap: true,
   },
   ...(isAuthorized
@@ -129,12 +129,12 @@ export const getColumns = (isAuthorized: boolean, t: TFunction): DocumentColumn[
         {
           id: "status",
           header: t("dashboard.documentSection.status"),
-          width: "180px",
+          width: "140px",
         },
         {
           id: "updatedOn",
           header: t("dashboard.documentSection.uploadedOn"),
-          width: "152px",
+          width: "120px",
           noWrap: true,
         },
         { id: "upload", header: null, width: ACTION_COLUMN_WIDTH },
