@@ -13,18 +13,45 @@ export const Card = styled.div`
   gap: var(--volunteer-profile-section-card-gap);
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;
 
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  height: var(--volunteer-profile-section-card-header-height);
+  min-height: var(--volunteer-profile-section-card-header-height);
+  gap: var(--spacing-16);
+
+  @media (max-width: 767px) {
+    align-items: stretch;
+    flex-direction: column;
+
+    > button {
+      align-self: flex-start;
+      max-width: 100%;
+      white-space: normal;
+    }
+  }
 `;
 
 const CardHeaderInfo = styled.div`
   display: flex;
   align-items: center;
   gap: var(--volunteer-profile-section-card-header-info-gap);
+  min-width: 0;
+
+  h2 {
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 360px) {
+    gap: var(--spacing-8);
+
+    h2 {
+      font-size: 1.75rem;
+      line-height: 1.15;
+    }
+  }
 `;
 
 export interface SectionCardProps extends PropsWithChildren {

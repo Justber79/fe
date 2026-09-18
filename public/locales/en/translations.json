@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ABOUT",
         "volunteeringOpportunities": "VOLUNTEERING OPPORTUNITIES",
-        "events": "EVENTS"
+        "events": "EVENTS",
+        "openMenu": "Open menu"
       },
       "content": {
         "heroText": "Voluntary support for refugees",
@@ -535,7 +536,8 @@
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
-        "profile": "Profile"
+        "profile": "Profile",
+        "more": "More"
       },
       "createOpportunity": "Create New Opportunity"
     },
@@ -828,6 +830,8 @@
       "uploadedOn": "Updated on",
       "received": "Received",
       "receivedOn": "Received on",
+      "scrollHint": "Swipe horizontally to see more",
+      "scrollRegion": "Documents table. Scroll horizontally to see all columns.",
       "actions": "Actions",
       "uploaded": "Uploaded",
       "missing": "Missing",
