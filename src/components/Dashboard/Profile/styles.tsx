@@ -6,6 +6,9 @@ export const PageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   width: var(--volunteer-profile-container-width);
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
   gap: var(--volunteer-profile-container-gap);
 `;
 
@@ -14,6 +17,8 @@ export const PageContentContainer = styled.div<{ $isFading?: boolean; $fadeDurat
   flex-direction: column;
   justify-content: center;
   width: var(--volunteer-profile-container-width);
+  max-width: 100%;
+  min-width: 0;
   gap: var(--volunteer-profile-container-gap);
   opacity: ${({ $isFading }) => ($isFading ? 0 : 1)};
   transition: opacity ${({ $fadeDuration }) => $fadeDuration}ms ease-in-out;

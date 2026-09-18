@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark } from "@/config/constants";
+import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
 import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,10 +23,12 @@ import {
 import { VolunteerListController } from "./VolunteerListController";
 import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useScreenType } from "@/context/DeviceContext";
 
 export function Volunteers() {
   const user = useCurrentUser(true);
   const isAgent = user?.role === UserRole.AGENT;
+  const screenType = useScreenType();
   const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfVols, setNumOfVols] = useState(0);
@@ -46,8 +48,10 @@ export function Volunteers() {
         ];
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const isMobileUser = screenType === ScreenTypes.MOBILE && user && !isAgent;
+  const defaultTabIndex = isMobileUser ? 1 : 0;
   const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
+  const selectedTabIndex = foundIndex === -1 ? defaultTabIndex : foundIndex;
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);

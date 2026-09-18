@@ -18,8 +18,13 @@ const StyledBadge = styled.div<{
   line-height: var(--line-height-24);
   letter-spacing: var(--letter-spacing-tight);
   width: fit-content;
+  max-width: 100%;
   background-color: ${({ $bg }) => $bg};
   color: ${({ $textColor }) => $textColor};
+
+  span {
+    overflow-wrap: anywhere;
+  }
 `;
 
 type Props = {
