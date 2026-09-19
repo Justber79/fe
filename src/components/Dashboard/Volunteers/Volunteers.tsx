@@ -48,15 +48,13 @@ export function Volunteers() {
         ];
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const isMobileUser = screenType === ScreenTypes.MOBILE && user && !isAgent;
+  const defaultTabIndex = isMobileUser ? 1 : 0;
   const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const selectedTabIndex = foundIndex === -1 ? 0 : foundIndex;
+  const selectedTabIndex = foundIndex === -1 ? defaultTabIndex : foundIndex;
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
-
-  useEffect(() => {
-    if (screenType === ScreenTypes.MOBILE && user && !isAgent) setSelectedTabIndex(1);
-  }, [isAgent, screenType, user]);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, [QueryParamsKeys.SEARCH]: searchInput }));
