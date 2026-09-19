@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { MapContainer } from "../common/MapView/styles";
 
 type Props = {
-  count: number;
   setNumOfOpps: (num: number) => void;
   markers: Markers;
 };

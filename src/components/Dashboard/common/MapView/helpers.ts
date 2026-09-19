@@ -11,7 +11,7 @@ export type Markers = Array<{
 
 export const DEFAULT_CENTER: LatLngExpression | undefined = [52.52, 13.405];
 
-export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[]): Markers => {
+export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[], lang: string): Markers => {
   const oppMap = new Map<
     string,
     { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
@@ -24,10 +24,10 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[])
       opp.statusOpportunity !== OpportunityStatusType.SEARCHING
     )
       return;
-    const childItem = { title: opp.title, link: `opportunities/${opp.id}` };
+    const childItem = { title: opp.title, link: `/${lang}/dashboard/opportunities/${opp.id}` };
 
-    if (!oppMap.has(opp.agentTitle)) {
-      oppMap.set(opp.agentTitle, {
+    if (!oppMap.has(String(opp.agentId))) {
+      oppMap.set(String(opp.agentId), {
         lat: opp.lat,
         lon: opp.lon,
         label: opp.agentTitle,
@@ -35,7 +35,7 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[])
         onClick: () => null,
       });
     } else {
-      oppMap.get(opp.agentTitle)?.children.push(childItem);
+      oppMap.get(String(opp.agentId))?.children.push(childItem);
     }
   });
   return Array.from(oppMap.values());

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
@@ -57,7 +57,7 @@ export function OpportunityListController({
   viewMode,
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
@@ -100,7 +100,7 @@ export function OpportunityListController({
     setNumOfOpps(count);
   }, [count, setNumOfOpps, viewMode]);
 
-  const markers = createOpportunityMarkers(opportunities);
+  const markers = useMemo(() => createOpportunityMarkers(opportunities, i18n.language), [opportunities]);
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isLoading && isMapView) return <LoadingMapView />;
@@ -122,7 +122,7 @@ export function OpportunityListController({
   }
 
   if (isMapView) {
-    return <OpportunityMapView count={count} setNumOfOpps={setNumOfOpps} markers={markers} />;
+    return <OpportunityMapView setNumOfOpps={setNumOfOpps} markers={markers} />;
   }
 
   return (

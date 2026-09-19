@@ -47,6 +47,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
     activeMarkerIndex !== undefined && markers?.[activeMarkerIndex]
       ? [markers[activeMarkerIndex].lat, markers[activeMarkerIndex].lon]
       : undefined;
+
   return (
     <StyledMapContainer>
       <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={true}>
@@ -67,7 +68,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
               click: () => setActiveMarkerIndex(idx),
             }}
           >
-            <Popup>
+            <Popup autoClose={false}>
               <PopupContentWrapper>
                 <PopupHeader>{marker.label}</PopupHeader>
                 {marker.children?.map((child) => (
