@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
@@ -42,7 +42,7 @@ export function VolunteerListController({
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
@@ -91,13 +91,13 @@ export function VolunteerListController({
     setNumOfVols(count);
   }, [count, setNumOfVols, viewMode]);
 
-  const markers = createVolunteerMarkers(volunteers, t);
+  const markers = useMemo(() => createVolunteerMarkers(volunteers, t, i18n.language), [volunteers]);
 
   if (isLoading && isListView)
     return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
-
-  if (isLoading) return <DashboardListLoading />;
   if (isLoading && isMapView) return <LoadingMapView />;
+  if (isLoading) return <DashboardListLoading />;
+
   if (isListView) {
     return (
       <VolunteerTableList

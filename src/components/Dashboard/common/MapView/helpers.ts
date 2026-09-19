@@ -50,7 +50,7 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[],
   return Array.from(oppMap.values());
 };
 
-export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFunction): Markers => {
+export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFunction, lang: string): Markers => {
   const volMap = new Map<
     string,
     {
@@ -70,7 +70,7 @@ export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFu
       vol.statusEngagement !== VolunteerStateEngagementType.ACTIVE
     )
       return;
-    const childItem = { title: vol.name, link: `volunteers/${vol.id}` };
+    const childItem = { title: vol.name, link: `/${lang}/dashboard/volunteers/${vol.id}` };
 
     volMap.set(String(vol.id), {
       lat: vol.lat,
