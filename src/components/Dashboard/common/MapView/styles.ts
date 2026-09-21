@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 
 export const StyledMapContainer = styled.div`
-  height: var(--dashboard-map-height);
+  width: 100%;
   aspect-ratio: 1/1;
   border-radius: var(--dashboard-map-border-radius);
   border: var(--dashboard-map-border);
@@ -34,7 +34,7 @@ const pulse = keyframes`
 `;
 
 export const LoadingMapCard = styled.div`
-  height: var(--dashboard-map-height);
+  width: 100%;
   aspect-ratio: 1/1;
   border-radius: var(--dashboard-map-border-radius);
   border: var(--dashboard-map-border);

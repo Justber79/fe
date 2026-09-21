@@ -61,7 +61,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopup
 
   return (
     <StyledMapContainer>
-      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={true}>
+      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -80,7 +80,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopup
             }}
             icon={generateCustomIcon(marker?.avatarUrl ?? "")}
           >
-            <Popup autoClose={false}>
+            <Popup>
               <PopupContentWrapper>
                 <PopupHeader>{marker.label}</PopupHeader>
                 {renderPopupContent(marker)}
