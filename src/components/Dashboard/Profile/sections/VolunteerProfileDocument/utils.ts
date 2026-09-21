@@ -1,4 +1,6 @@
+import { TFunction } from "i18next";
 import { ApiDocumentGet, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
+import { ACTION_COLUMN_WIDTH } from "./styles";
 
 // These fields are not yet in ApiVolunteerGet SDK type
 type ExtendedVolunteerGet = ApiVolunteerGet & {
@@ -103,3 +105,42 @@ export const enrichDocuments = (
     };
   });
 };
+
+export type DocumentColumn = {
+  id: string;
+  header: React.ReactNode;
+  width?: string;
+  noWrap?: boolean;
+};
+
+export const getColumns = (isAuthorized: boolean, t: TFunction): DocumentColumn[] => [
+  {
+    id: "type",
+    header: t("dashboard.documentSection.typeOfDocument"),
+  },
+  {
+    id: "received",
+    header: t("dashboard.documentSection.received"),
+    width: "100px",
+    noWrap: true,
+  },
+  ...(isAuthorized
+    ? [
+        {
+          id: "status",
+          header: t("dashboard.documentSection.status"),
+          width: "140px",
+        },
+        {
+          id: "updatedOn",
+          header: t("dashboard.documentSection.uploadedOn"),
+          width: "120px",
+          noWrap: true,
+        },
+        { id: "upload", header: null, width: ACTION_COLUMN_WIDTH },
+        { id: "preview", header: null, width: ACTION_COLUMN_WIDTH },
+        { id: "download", header: null, width: ACTION_COLUMN_WIDTH },
+        { id: "delete", header: null, width: ACTION_COLUMN_WIDTH },
+      ]
+    : []),
+];

@@ -13,6 +13,7 @@ type Props = {
   onDownload: () => void;
   onDelete: () => void;
   onToggleReceived: () => void;
+  isAuthorized: boolean;
 };
 
 export function DocumentTableRow({
@@ -23,6 +24,7 @@ export function DocumentTableRow({
   onDownload,
   onDelete,
   onToggleReceived,
+  isAuthorized,
 }: Props) {
   const { t } = useTranslation();
   const { nameKey, isUploaded, isReceived, receivedAt, document } = documentRow;
@@ -35,86 +37,94 @@ export function DocumentTableRow({
           checked={isReceived}
           onChange={onToggleReceived}
           aria-label={t("dashboard.documentSection.received")}
+          $isAuthorized={isAuthorized}
+          disabled={!isAuthorized}
         />
       </ReceivedCell>
-      <Cell $width="180px" $align="center">
-        <StatusBadge $status={isUploaded || isReceived ? "uploaded" : "missing"}>
-          {isUploaded || isReceived ? t("dashboard.documentSection.uploaded") : t("dashboard.documentSection.missing")}
-        </StatusBadge>
-      </Cell>
-      <Cell $width="152px" $noWrap>
-        {document?.createdAt ? (
-          new Date(document.createdAt).toLocaleDateString("de-DE", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })
-        ) : isReceived && receivedAt ? (
-          receivedAt.toLocaleDateString("de-DE", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })
-        ) : (
-          <EmptyPlaceholder />
-        )}
-      </Cell>
-      <ActionCell>
-        <ActionButtonWithTooltip
-          tooltipText={
-            !isUploaded
-              ? t("dashboard.documentSection.tooltips.upload")
-              : t("dashboard.documentSection.tooltips.uploadUnavailable")
-          }
-          disabled={isUploaded}
-          onClick={onUpload}
-          ariaLabel="Upload document"
-        >
-          <UploadSimple size={24} weight="regular" />
-        </ActionButtonWithTooltip>
-      </ActionCell>
-      <ActionCell>
-        <ActionButtonWithTooltip
-          tooltipText={
-            !isUploaded
-              ? t("dashboard.documentSection.tooltips.previewUnavailable")
-              : t("dashboard.documentSection.tooltips.preview")
-          }
-          disabled={!isUploaded}
-          onClick={onPreview}
-          ariaLabel="View document"
-        >
-          <Eye size={24} weight="regular" />
-        </ActionButtonWithTooltip>
-      </ActionCell>
-      <ActionCell>
-        <ActionButtonWithTooltip
-          tooltipText={
-            !isUploaded
-              ? t("dashboard.documentSection.tooltips.downloadUnavailable")
-              : t("dashboard.documentSection.tooltips.download")
-          }
-          disabled={!isUploaded}
-          onClick={onDownload}
-          ariaLabel="Download document"
-        >
-          <DownloadSimple size={24} weight="regular" />
-        </ActionButtonWithTooltip>
-      </ActionCell>
-      <ActionCell>
-        <ActionButtonWithTooltip
-          tooltipText={
-            !isUploaded
-              ? t("dashboard.documentSection.tooltips.deleteUnavailable")
-              : t("dashboard.documentSection.tooltips.delete")
-          }
-          disabled={!isUploaded}
-          onClick={onDelete}
-          ariaLabel="Delete document"
-        >
-          <Trash size={24} weight="regular" />
-        </ActionButtonWithTooltip>
-      </ActionCell>
+      {isAuthorized && (
+        <>
+          <Cell $width="140px" $align="center">
+            <StatusBadge $status={isUploaded || isReceived ? "uploaded" : "missing"}>
+              {isUploaded || isReceived
+                ? t("dashboard.documentSection.uploaded")
+                : t("dashboard.documentSection.missing")}
+            </StatusBadge>
+          </Cell>
+          <Cell $width="120px" $noWrap>
+            {document?.createdAt ? (
+              new Date(document.createdAt).toLocaleDateString("de-DE", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+            ) : isReceived && receivedAt ? (
+              receivedAt.toLocaleDateString("de-DE", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+            ) : (
+              <EmptyPlaceholder />
+            )}
+          </Cell>
+          <ActionCell>
+            <ActionButtonWithTooltip
+              tooltipText={
+                !isUploaded
+                  ? t("dashboard.documentSection.tooltips.upload")
+                  : t("dashboard.documentSection.tooltips.uploadUnavailable")
+              }
+              disabled={isUploaded}
+              onClick={onUpload}
+              ariaLabel="Upload document"
+            >
+              <UploadSimple size={24} weight="regular" />
+            </ActionButtonWithTooltip>
+          </ActionCell>
+          <ActionCell>
+            <ActionButtonWithTooltip
+              tooltipText={
+                !isUploaded
+                  ? t("dashboard.documentSection.tooltips.previewUnavailable")
+                  : t("dashboard.documentSection.tooltips.preview")
+              }
+              disabled={!isUploaded}
+              onClick={onPreview}
+              ariaLabel="View document"
+            >
+              <Eye size={24} weight="regular" />
+            </ActionButtonWithTooltip>
+          </ActionCell>
+          <ActionCell>
+            <ActionButtonWithTooltip
+              tooltipText={
+                !isUploaded
+                  ? t("dashboard.documentSection.tooltips.downloadUnavailable")
+                  : t("dashboard.documentSection.tooltips.download")
+              }
+              disabled={!isUploaded}
+              onClick={onDownload}
+              ariaLabel="Download document"
+            >
+              <DownloadSimple size={24} weight="regular" />
+            </ActionButtonWithTooltip>
+          </ActionCell>
+          <ActionCell>
+            <ActionButtonWithTooltip
+              tooltipText={
+                !isUploaded
+                  ? t("dashboard.documentSection.tooltips.deleteUnavailable")
+                  : t("dashboard.documentSection.tooltips.delete")
+              }
+              disabled={!isUploaded}
+              onClick={onDelete}
+              ariaLabel="Delete document"
+            >
+              <Trash size={24} weight="regular" />
+            </ActionButtonWithTooltip>
+          </ActionCell>
+        </>
+      )}
     </TableRow>
   );
 }

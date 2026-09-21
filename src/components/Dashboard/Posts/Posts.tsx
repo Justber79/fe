@@ -1,16 +1,23 @@
 "use client";
 
 import { DashboardLayout } from "@/components/Layout";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useCallback, useState } from "react";
 
 import PostFeed from "./PostFeed";
 import PostComposer from "./PostComposer";
-import { PostsContainer } from "./styles";
+import PeopleWidget from "./PeopleWidget";
+import PostsSearch from "./PostsSearch";
+import { DiscoveryToolbar, PostsContainer, PostsMain } from "./styles";
 import type { ReplyTarget } from "./types";
 
 export function Posts() {
   const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
   const [expandedPostIds, setExpandedPostIds] = useState<Set<number>>(new Set());
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedPersonId, setSelectedPersonId] = useState<number>();
+  const debouncedSearch = useDebounce(searchInput.trim(), 350);
+  const search = searchInput.trim() ? debouncedSearch : "";
 
   const startReply = useCallback((target: ReplyTarget) => {
     setReplyTarget(target);
@@ -44,8 +51,19 @@ export function Posts() {
   return (
     <DashboardLayout>
       <PostsContainer>
-        <PostFeed expandedPostIds={expandedPostIds} onReply={startReply} onToggleReplies={toggleReplies} />
-        <PostComposer replyTarget={replyTarget} onCancelReply={cancelReply} />
+        <PostsMain>
+          <DiscoveryToolbar>
+            <PostsSearch value={searchInput} onChange={setSearchInput} />
+            <PeopleWidget selectedPersonId={selectedPersonId} onSelect={setSelectedPersonId} />
+          </DiscoveryToolbar>
+          <PostFeed
+            filters={{ search: search || undefined, authorId: selectedPersonId }}
+            expandedPostIds={expandedPostIds}
+            onReply={startReply}
+            onToggleReplies={toggleReplies}
+          />
+          <PostComposer replyTarget={replyTarget} onCancelReply={cancelReply} />
+        </PostsMain>
       </PostsContainer>
     </DashboardLayout>
   );

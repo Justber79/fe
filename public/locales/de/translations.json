@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ÜBER UNS",
         "volunteeringOpportunities": "Ehrenamtsbedarfe",
-        "events": "VERANSTALTUNGEN"
+        "events": "VERANSTALTUNGEN",
+        "openMenu": "Menü öffnen"
       },
       "content": {
         "heroText": "Ehrenamtliche Unterstützung für Geflüchtete",
@@ -105,6 +106,7 @@
   },
   "eventPage": {
     "about": "Über diese Veranstaltung",
+    "berlinTime": "Uhr (Berliner Zeit)",
     "details": "Veranstaltungsdetails",
     "register": "Jetzt anmelden",
     "registrationUnavailable": "Die Anmeldung ist noch nicht verfügbar.",
@@ -541,11 +543,28 @@
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
-        "profile": "Profil"
+        "profile": "Profil",
+        "more": "Mehr"
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
     "posts": {
+      "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",
+      "clearSearch": "Suche löschen",
+      "noSearchResults": "Keine passenden Beiträge gefunden.",
+      "peopleTitle": "Personen",
+      "peopleDescription": "Beiträge nach Community-Mitglied filtern",
+      "postedBy": "Verfasst von",
+      "anyone": "Alle",
+      "everyoneDescription": "Beiträge von allen anzeigen",
+      "findPerson": "Person suchen",
+      "noPeople": "Keine passenden Personen gefunden.",
+      "allPosts": "Alle Beiträge",
+      "roles": {
+        "agent": "Einrichtung/Projekt",
+        "coordinator": "Koordination",
+        "admin": "Administration"
+      },
       "inputPlaceholder": "Nachricht eingeben...",
       "send": "Senden",
       "addBookmark": "Beitrag für später speichern",
@@ -1077,6 +1096,8 @@
       "uploadedOn": "Aktualisiert am",
       "received": "Erhalten",
       "receivedOn": "Erhalten am",
+      "scrollHint": "Horizontal wischen, um mehr zu sehen",
+      "scrollRegion": "Dokumententabelle. Horizontal scrollen, um alle Spalten zu sehen.",
       "actions": "Aktionen",
       "uploaded": "Hochgeladen",
       "missing": "Fehlend",

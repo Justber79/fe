@@ -1,10 +1,77 @@
 import styled from "styled-components";
 
-export const ACTION_COLUMN_WIDTH = "56px";
+export const ACTION_COLUMN_WIDTH = "48px";
+
+const DOCUMENT_TABLE_COLUMNS = "minmax(150px, 1fr) 100px 140px 120px repeat(4, 48px)";
+
+export const ScrollHint = styled.div`
+  display: none;
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    margin-top: var(--spacing-16);
+    color: var(--color-grey-500);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-20);
+  }
+`;
+
+export const TableViewport = styled.div<{ $showLeftFade: boolean; $showRightFade: boolean }>`
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: var(--spacing-24);
+    bottom: 6px;
+    z-index: 2;
+    width: var(--spacing-32);
+    pointer-events: none;
+    transition: opacity 160ms ease;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-white), transparent);
+    opacity: ${({ $showLeftFade }) => ($showLeftFade ? 1 : 0)};
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-white), transparent);
+    opacity: ${({ $showRightFade }) => ($showRightFade ? 1 : 0)};
+  }
+`;
 
 export const DocumentTableContainer = styled.div`
   margin-top: var(--spacing-24);
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--color-violet-500) var(--color-grey-50);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-grey-50);
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-violet-500);
+    border-radius: 999px;
+  }
 `;
 
 export const Container = styled.div`
@@ -49,12 +116,13 @@ export const Table = styled.div`
   border: var(--document-section-table-border-width) solid var(--color-blue-50);
   border-radius: var(--document-section-table-border-radius);
   width: 100%;
+  min-width: 702px;
   overflow: hidden;
 `;
 
 export const TableHeader = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: ${DOCUMENT_TABLE_COLUMNS};
   background: var(--color-pink-50);
 `;
 
@@ -68,9 +136,8 @@ export const HeaderCell = styled.div<{ $width?: string; $noWrap?: boolean }>`
   line-height: var(--document-section-header-cell-line-height);
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-midnight);
-  ${(props) => props.$width && `width: ${props.$width};`}
   ${(props) => props.$noWrap && `white-space: nowrap;`}
-  flex: ${(props) => (props.$width ? "none" : "1")};
+  min-width: 0;
 
   &:first-child {
     border-radius: var(--document-section-table-border-radius) 0 0 0;
@@ -83,8 +150,8 @@ export const HeaderCell = styled.div<{ $width?: string; $noWrap?: boolean }>`
 `;
 
 export const TableRow = styled.div<{ $isLast?: boolean }>`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: ${DOCUMENT_TABLE_COLUMNS};
   ${(props) =>
     !props.$isLast && `border-bottom: var(--document-section-table-border-width) solid var(--color-blue-50);`}
 
@@ -107,10 +174,9 @@ export const Cell = styled.div<{ $width?: string; $align?: string; $noWrap?: boo
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-midnight);
   border-right: var(--document-section-table-border-width) solid var(--color-blue-50);
-  ${(props) => props.$width && `width: ${props.$width};`}
   ${(props) => props.$align && `justify-content: ${props.$align};`}
   ${(props) => props.$noWrap && `white-space: nowrap;`}
-  flex: ${(props) => (props.$width ? "none" : "1")};
+  min-width: 0;
 
   &:last-child {
     border-right: none;
@@ -144,13 +210,16 @@ export const ReceivedCell = styled(Cell)`
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: 120px;
-  flex: none;
 `;
 
-export const ReceivedCheckbox = styled.input.attrs({ type: "checkbox" })`
+interface CheckboxProps {
+  $isAuthorized: boolean;
+}
+
+export const ReceivedCheckbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   width: 18px;
   height: 18px;
-  cursor: pointer;
   accent-color: var(--color-aubergine);
+  cursor: ${(props) => (props.$isAuthorized ? "pointer" : "not-allowed")};
+  opacity: ${(props) => (props.$isAuthorized ? "1" : "0.5")};
 `;

@@ -5,6 +5,7 @@ import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-
 import axios from "axios";
 import type {
   ApiPostGet,
+  ApiPostListQuery,
   ApiPostPatch,
   ApiPostPost,
   ApiPostReplyGet,
@@ -29,17 +30,19 @@ type PostsPage = {
 
 type PostsFeedData = InfiniteData<PostsPage, number>;
 
-export function usePostsFeed() {
+export function usePostsFeed({ search, authorId }: ApiPostListQuery = {}) {
   const { lang } = useParams<{ lang: Lang }>();
 
   return useInfiniteQuery({
-    queryKey: [...POSTS_QUERY_KEY, lang],
+    queryKey: [...POSTS_QUERY_KEY, lang, search ?? "", authorId ?? null],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       fetchData<ApiPostGet[]>(apiPathPost, {
         language: lang,
         page: pageParam,
         limit: POSTS_PAGE_SIZE,
+        ...(search ? { search } : {}),
+        ...(authorId != null ? { authorId } : {}),
       }),
     getNextPageParam: (lastPage, pages) => {
       const loadedPostCount = pages.reduce((count, page) => count + page.data.length, 0);

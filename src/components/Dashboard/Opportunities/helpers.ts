@@ -3,6 +3,7 @@ import {
   ApiOptionLists,
   EntityTableName,
   LangPurpose,
+  OpportunityStatusType,
   OptionById,
   OptionItem,
   QueryParamsKeys,
@@ -119,6 +120,11 @@ export function deserializeOpportunityFilters(
 
   [...ID_MAPPED_FILTER_KEYS, ...PLAIN_FILTER_KEYS].forEach((name) => {
     searchParams.getAll(name).forEach((value) => {
+      // The Active status filter was intentionally removed from the UI
+      // (fe#1009) — a stale/bookmarked `?status=opp-active` link must not
+      // resurrect it via the URL, or filtering silently narrows to
+      // ACTIVE-only with no visible way to remove it.
+      if (name === STATUS_PARAM && value === OpportunityStatusType.ACTIVE) return;
       newFilter[name][value] = true;
     });
   });
