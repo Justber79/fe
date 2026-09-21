@@ -1,14 +1,15 @@
 "use client";
 import { useVolunteerDocuments } from "@/hooks/useVolunteerDocuments";
 import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
-import { useMemo, useState } from "react";
+import { ArrowsLeftRight } from "@phosphor-icons/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { ConfirmationDialog } from "../shared/ConfirmationDialog";
 import { SectionWrapper } from "../shared/styles";
 import { DocumentPreviewDialog } from "./DocumentPreviewDialog";
 import { DocumentTableRow } from "./DocumentTableRow";
-import { DocumentTableContainer, HeaderCell, Table, TableHeader } from "./styles";
+import { DocumentTableContainer, HeaderCell, ScrollHint, Table, TableHeader, TableViewport } from "./styles";
 import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
 import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
@@ -35,6 +36,8 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
   const [passportReceived, setPassportReceived] = useState(false);
   const [passportReceivedAt, setPassportReceivedAt] = useState<Date | null>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollAffordance, setScrollAffordance] = useState({ hasOverflow: false, showLeft: false, showRight: false });
 
   const { data: fetchedDocuments, isLoading, isError } = useVolunteerDocuments(volunteer.id);
 
@@ -44,6 +47,25 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
     () => (fetchedDocuments ? enrichDocuments(fetchedDocuments, volunteer, passportReceived, passportReceivedAt) : []),
     [fetchedDocuments, volunteer, passportReceived, passportReceivedAt],
   );
+
+  const updateScrollAffordance = useCallback(() => {
+    const container = tableContainerRef.current;
+    if (!container) return;
+
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    const hasOverflow = maxScrollLeft > 1;
+    setScrollAffordance({
+      hasOverflow,
+      showLeft: hasOverflow && container.scrollLeft > 1,
+      showRight: hasOverflow && container.scrollLeft < maxScrollLeft - 1,
+    });
+  }, []);
+
+  useEffect(() => {
+    updateScrollAffordance();
+    window.addEventListener("resize", updateScrollAffordance);
+    return () => window.removeEventListener("resize", updateScrollAffordance);
+  }, [documentRows, updateScrollAffordance]);
 
   const uploadMutation = useUploadDocument(volunteer.id, () => closeDialog("upload"));
   const deleteMutation = useDeleteDocument(volunteer.id, () => {
@@ -137,31 +159,44 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   return (
     <>
       <SectionWrapper data-testid="volunteer-profile-document-container">
-        <DocumentTableContainer>
-          <Table>
-            <TableHeader>
-              {documentColumns.map((col) => (
-                <HeaderCell key={col.id} $width={col.width} $noWrap={col.noWrap}>
-                  {col.header}
-                </HeaderCell>
-              ))}
-            </TableHeader>
+        {scrollAffordance.hasOverflow && (
+          <ScrollHint>
+            <ArrowsLeftRight size={18} aria-hidden />
+            <span>{t("dashboard.documentSection.scrollHint")}</span>
+          </ScrollHint>
+        )}
+        <TableViewport $showLeftFade={scrollAffordance.showLeft} $showRightFade={scrollAffordance.showRight}>
+          <DocumentTableContainer
+            ref={tableContainerRef}
+            onScroll={updateScrollAffordance}
+            tabIndex={scrollAffordance.hasOverflow ? 0 : undefined}
+            aria-label={t("dashboard.documentSection.scrollRegion")}
+          >
+            <Table>
+              <TableHeader>
+                {documentColumns.map((col) => (
+                  <HeaderCell key={col.id} $width={col.width} $noWrap={col.noWrap}>
+                    {col.header}
+                  </HeaderCell>
+                ))}
+              </TableHeader>
 
-            {documentRows.map((row, index) => (
-              <DocumentTableRow
-                key={row.type}
-                documentRow={row}
-                isLast={index === documentRows.length - 1}
-                onUpload={() => openDialog("upload", row)}
-                onPreview={() => handlePreview(row)}
-                onDownload={() => handleDownload(row)}
-                onDelete={() => openDialog("delete", row)}
-                onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
-                isAuthorized={isAuthorized}
-              />
-            ))}
-          </Table>
-        </DocumentTableContainer>
+              {documentRows.map((row, index) => (
+                <DocumentTableRow
+                  key={row.type}
+                  documentRow={row}
+                  isLast={index === documentRows.length - 1}
+                  onUpload={() => openDialog("upload", row)}
+                  onPreview={() => handlePreview(row)}
+                  onDownload={() => handleDownload(row)}
+                  onDelete={() => openDialog("delete", row)}
+                  onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
+                  isAuthorized={isAuthorized}
+                />
+              ))}
+            </Table>
+          </DocumentTableContainer>
+        </TableViewport>
       </SectionWrapper>
 
       {isDeleteOpen && (

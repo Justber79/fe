@@ -4,7 +4,8 @@
       "menuItems": {
         "about": "ABOUT",
         "volunteeringOpportunities": "VOLUNTEERING OPPORTUNITIES",
-        "events": "EVENTS"
+        "events": "EVENTS",
+        "openMenu": "Open menu"
       },
       "content": {
         "heroText": "Voluntary support for refugees",
@@ -543,11 +544,28 @@
         "racs": "RAC's",
         "posts": "Posts",
         "calendar": "Calendar",
-        "profile": "Profile"
+        "profile": "Profile",
+        "more": "More"
       },
       "createOpportunity": "Create New Opportunity"
     },
     "posts": {
+      "searchPosts": "Search posts, replies, people, and opportunities",
+      "clearSearch": "Clear search",
+      "noSearchResults": "No matching posts found.",
+      "peopleTitle": "People here",
+      "peopleDescription": "Filter posts by community member",
+      "postedBy": "Posted by",
+      "anyone": "Anyone",
+      "everyoneDescription": "Show posts from everyone",
+      "findPerson": "Find a person",
+      "noPeople": "No matching people found.",
+      "allPosts": "All posts",
+      "roles": {
+        "agent": "NGO",
+        "coordinator": "Coordinator",
+        "admin": "Administrator"
+      },
       "inputPlaceholder": "Type a message...",
       "send": "Send",
       "addBookmark": "Save post for later",
@@ -836,6 +854,8 @@
       "uploadedOn": "Updated on",
       "received": "Received",
       "receivedOn": "Received on",
+      "scrollHint": "Swipe horizontally to see more",
+      "scrollRegion": "Documents table. Scroll horizontally to see all columns.",
       "actions": "Actions",
       "uploaded": "Uploaded",
       "missing": "Missing",
