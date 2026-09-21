@@ -16,10 +16,10 @@ interface TableRowProps {
 
 export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
   const { t, i18n } = useTranslation();
-  const { id, title, volunteerType, location, languages } = opportunity;
+  const { id, title, volunteerType, district, languages } = opportunity;
   const statusMatch = opportunity.statusMatch;
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
-  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtTitle = district?.id ? (districtsList?.find((item) => item.id === district.id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
 
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";

@@ -33,10 +33,10 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
   const { t, i18n } = useTranslation();
 
   const ext = opportunity as ExtendedOpportunity;
-  const { id, title, volunteerType, languages, availability, location, volunteerNames } = opportunity;
+  const { id, title, volunteerType, languages, availability, district, volunteerNames } = opportunity;
   const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
-  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtTitle = district?.id ? (districtsList?.find((item) => item.id === district.id)?.title ?? null) : null;
   const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
