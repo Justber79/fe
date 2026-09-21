@@ -43,6 +43,7 @@ const EmptyState = styled.div`
 `;
 
 const PageHeader = styled.header`
+  min-width: 0;
   max-width: 720px;
   margin-bottom: clamp(28px, 5vw, 48px);
 `;
@@ -60,12 +61,14 @@ const Eyebrow = styled.span`
 const EventStack = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: clamp(32px, 6vw, 56px);
 `;
 
 const MoreEvents = styled.section`
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: var(--spacing-20);
 `;
 
@@ -78,12 +81,18 @@ const UpcomingGrid = styled.div`
 const UpcomingCard = styled.article`
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: var(--spacing-16);
   padding: clamp(20px, 4vw, 28px);
   border: 1px solid var(--color-orchid-light, var(--color-orchid));
   border-radius: 20px;
   background: var(--color-white);
   box-shadow: 0 10px 28px rgb(40 25 47 / 8%);
+
+  @media (max-width: 480px) {
+    padding: 20px;
+    border-radius: 16px;
+  }
 `;
 
 const UpcomingMeta = styled.div`
@@ -96,20 +105,41 @@ const UpcomingMeta = styled.div`
 const MetaRow = styled.span`
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
+  min-width: 0;
   gap: var(--spacing-8);
   align-items: start;
+
+  > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
 `;
 
 const DetailsLink = styled(Link)`
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--spacing-8);
+  max-width: 100%;
   width: fit-content;
   margin-top: auto;
   color: var(--color-midnight);
   font-weight: var(--font-weight-semibold);
   text-decoration: underline;
   text-underline-offset: 4px;
+`;
+
+const ResponsiveHeading1 = styled(Heading1)`
+  overflow-wrap: anywhere;
+
+  @media (max-width: 480px) {
+    font-size: clamp(2rem, 11vw, 2.75rem);
+    line-height: 1.08;
+  }
+`;
+
+const ResponsiveHeading2 = styled(Heading2)`
+  overflow-wrap: anywhere;
 `;
 
 const BackLink = styled(DetailsLink)`
@@ -132,7 +162,7 @@ function EventDetails({ event }: { event: ApiEventN4DGetList }) {
     <EventCard>
       <Hero>
         <EventType>{eventTypeLabel}</EventType>
-        <Heading1 margin={0}>{event.title}</Heading1>
+        <ResponsiveHeading1 margin={0}>{event.title}</ResponsiveHeading1>
         {event.subTitle && <Subtitle fontSize="var(--font-size-lg)">{event.subTitle}</Subtitle>}
       </Hero>
 
@@ -214,7 +244,7 @@ export function EventPage({ eventId }: EventPageProps) {
             ) : (
               <PageHeader>
                 <Eyebrow>{t("eventPage.eyebrow")}</Eyebrow>
-                <Heading1 margin={0}>{t("eventPage.heading")}</Heading1>
+                <ResponsiveHeading1 margin={0}>{t("eventPage.heading")}</ResponsiveHeading1>
                 <Paragraph margin="var(--spacing-12) 0 0">{t("eventPage.intro")}</Paragraph>
               </PageHeader>
             )}
@@ -223,7 +253,7 @@ export function EventPage({ eventId }: EventPageProps) {
 
             {additionalEvents.length > 0 && (
               <MoreEvents>
-                <Heading2 margin={0}>{t("eventPage.moreEvents")}</Heading2>
+                <ResponsiveHeading2 margin={0}>{t("eventPage.moreEvents")}</ResponsiveHeading2>
                 <UpcomingGrid>
                   {additionalEvents.map((event) => (
                     <UpcomingCard key={event.id}>
@@ -232,7 +262,7 @@ export function EventPage({ eventId }: EventPageProps) {
                           ? t("dashboard.calendar.createForm.typeParty")
                           : t("dashboard.calendar.createForm.typeWorkshop")}
                       </EventType>
-                      <Heading2 margin={0}>{event.title}</Heading2>
+                      <ResponsiveHeading2 margin={0}>{event.title}</ResponsiveHeading2>
                       <Paragraph margin={0}>{event.shortDescription}</Paragraph>
                       <UpcomingMeta>
                         <MetaRow>
