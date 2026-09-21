@@ -1,15 +1,16 @@
 import "./map.css";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
-import { DEFAULT_CENTER, Markers } from "./helpers";
-import { PopupContentWrapper, PopupHeader, PopupLink, StyledMapContainer } from "./styles";
+import { DEFAULT_CENTER, EntityMarker } from "./helpers";
+import { PopupContentWrapper, PopupHeader, StyledMapContainer } from "./styles";
 import { useEffect, useRef } from "react";
-import { LatLngExpression, Marker as LeafletMarker } from "leaflet";
+import L, { LatLngExpression, Marker as LeafletMarker } from "leaflet";
 
-type Props = {
-  markers?: Markers;
+interface Props {
+  markers?: EntityMarker[];
   activeMarkerIndex?: number;
   setActiveMarkerIndex: (num: number) => void;
-};
+  renderPopupContent: (marker: EntityMarker) => React.ReactNode;
+}
 
 const SetViewOnClick = () => {
   const map = useMapEvent("click", (e) => {
@@ -33,8 +34,18 @@ const MapFlyTo = ({ position }: { position: LatLngExpression | undefined }) => {
   return null;
 };
 
-const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) => {
+const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopupContent }: Props) => {
   const markerRefs = useRef<Record<number, LeafletMarker | null>>({});
+
+  const generateCustomIcon = (url: string) => {
+    const defaultIcon = new L.Icon.Default();
+    if (!url) return defaultIcon;
+    return L.icon({
+      iconUrl: url,
+      iconAnchor: [25, 5],
+      className: "custom-icon",
+    });
+  };
 
   useEffect(() => {
     if (activeMarkerIndex !== undefined && markerRefs.current[activeMarkerIndex]) {
@@ -50,7 +61,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
 
   return (
     <StyledMapContainer>
-      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={true}>
+      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -67,15 +78,12 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
             eventHandlers={{
               click: () => setActiveMarkerIndex(idx),
             }}
+            icon={generateCustomIcon(marker?.avatarUrl ?? "")}
           >
-            <Popup autoClose={false}>
+            <Popup>
               <PopupContentWrapper>
                 <PopupHeader>{marker.label}</PopupHeader>
-                {marker.children?.map((child) => (
-                  <PopupLink href={child.link} key={child.title}>
-                    {child.title} →
-                  </PopupLink>
-                ))}
+                {renderPopupContent(marker)}
               </PopupContentWrapper>
             </Popup>
           </Marker>

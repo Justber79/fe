@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 
 export const StyledMapContainer = styled.div`
-  height: var(--dashboard-map-height);
+  width: 100%;
   aspect-ratio: 1/1;
   border-radius: var(--dashboard-map-border-radius);
   border: var(--dashboard-map-border);
@@ -12,6 +12,9 @@ export const StyledMapContainer = styled.div`
     width: 100%;
     border-radius: var(--dashboard-map-border-radius);
     z-index: 0;
+  }
+  .leaflet-popup-content p {
+    margin: 0;
   }
 `;
 
@@ -31,7 +34,7 @@ const pulse = keyframes`
 `;
 
 export const LoadingMapCard = styled.div`
-  height: var(--dashboard-map-height);
+  width: 100%;
   aspect-ratio: 1/1;
   border-radius: var(--dashboard-map-border-radius);
   border: var(--dashboard-map-border);
@@ -130,22 +133,24 @@ export const PopupContentWrapper = styled.div`
 export const PopupHeader = styled.div`
   font-size: var(--dashboard-map-popup-font-size);
   font-weight: bold;
-  color: var(--color-gray-500);
-  text-transform: uppercase;
 `;
 
 export const PopupLink = styled(Link)`
-  font-size: var(--dashboard-map-popup-link-font-size);
-  font-weight: 600;
   text-decoration: none;
   padding: var(--dashboard-map-popup-link-padding);
   background-color: var(--color-orchid-subtle);
   border-radius: var(--dashboard-map-popup-link-border-radius);
-  display: inline-block;
-  && {
-    color: var(--color-black);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: var(--dashboard-map-popup-link-gap);
   &:hover {
     background-color: var(--color-orchid);
   }
+`;
+
+export const PopupCardHeader = styled.p`
+  font-size: var(--dashboard-map-popup-card-header-font-size);
+  color: var(--color-black);
+  font-weight: var(--dashboard-map-popup-card-header-font-weight);
+  margin: 0;
 `;

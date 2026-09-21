@@ -100,7 +100,10 @@ export function OpportunityListController({
     setNumOfOpps(count);
   }, [count, setNumOfOpps, viewMode]);
 
-  const markers = useMemo(() => createOpportunityMarkers(opportunities, i18n.language), [opportunities, i18n.language]);
+  const markers = useMemo(
+    () => createOpportunityMarkers(opportunities, t, i18n.language),
+    [opportunities, i18n.language],
+  );
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isLoading && isMapView) return <LoadingMapView />;
