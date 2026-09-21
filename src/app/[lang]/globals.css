@@ -544,6 +544,10 @@ html {
   --dashboard-home-container-padding: 40px 16px 60px 16px;
   --dashboard-home-container-gap: 20px;
   --dashboard-home-container-min-height: 300px;
+  --dashboard-map-height: 700px;
+  --dashboard-map-border-radius: 30px;
+  --dashboard-map-border: var(--color-aubergine) solid 5px;
+
   --agent-profile-section-card-header-height: 56px;
   --agent-profile-section-card-header-info-gap: 24px;
   --agent-profile-section-card-info-gap: 5px;
