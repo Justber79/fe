@@ -1,15 +1,16 @@
 import "./map.css";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
-import { DEFAULT_CENTER, Markers } from "./helpers";
-import { PopupContentWrapper, PopupHeader, PopupLink, StyledMapContainer } from "./styles";
+import { DEFAULT_CENTER, EntityMarker } from "./helpers";
+import { PopupContentWrapper, PopupHeader, StyledMapContainer } from "./styles";
 import { useEffect, useRef } from "react";
 import L, { LatLngExpression, Marker as LeafletMarker } from "leaflet";
 
-type Props = {
-  markers?: Markers;
+interface Props {
+  markers?: EntityMarker[];
   activeMarkerIndex?: number;
   setActiveMarkerIndex: (num: number) => void;
-};
+  renderPopupContent: (marker: EntityMarker) => React.ReactNode;
+}
 
 const SetViewOnClick = () => {
   const map = useMapEvent("click", (e) => {
@@ -33,7 +34,7 @@ const MapFlyTo = ({ position }: { position: LatLngExpression | undefined }) => {
   return null;
 };
 
-const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) => {
+const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopupContent }: Props) => {
   const markerRefs = useRef<Record<number, LeafletMarker | null>>({});
 
   const generateCustomIcon = (url: string) => {
@@ -82,11 +83,7 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex }: Props) =>
             <Popup autoClose={false}>
               <PopupContentWrapper>
                 <PopupHeader>{marker.label}</PopupHeader>
-                {marker.children?.map((child) => (
-                  <PopupLink href={child.link} key={child.title}>
-                    {child.title} →
-                  </PopupLink>
-                ))}
+                {renderPopupContent(marker)}
               </PopupContentWrapper>
             </Popup>
           </Marker>

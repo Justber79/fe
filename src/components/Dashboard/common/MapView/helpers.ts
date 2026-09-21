@@ -8,22 +8,48 @@ import {
   OpportunityStatusType,
   VolunteerStateEngagementType,
 } from "need4deed-sdk";
+import { formatAvailabilityItem } from "../../Profile/sections/VolunteerProfile/formatters";
+import { getTopLanguages } from "../../Volunteers/helpers";
 
-export type Markers = Array<{
+export type OpportunityMarker = {
   lat: number;
   lon: number;
   label: string;
-  children?: Array<{ title: string; link: string }>;
+  children?: Array<{ title: string; link: string; language: string; availability: string }>;
   onClick: () => null;
   avatarUrl?: string;
-}>;
+};
+
+export type VolunteerMarker = {
+  lat: number;
+  lon: number;
+  label: string;
+  title: string;
+  link: string;
+  language: string;
+  availability: string;
+  avatarUrl: string;
+  onClick?: () => null;
+};
+
+export type EntityMarker = OpportunityMarker | VolunteerMarker;
 
 export const DEFAULT_CENTER: LatLngExpression | undefined = [52.52, 13.405];
 
-export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[], lang: string): Markers => {
+export const createOpportunityMarkers = (
+  opportunities: ApiOpportunityGetList[],
+  t: TFunction,
+  lang: string,
+): EntityMarker[] => {
   const oppMap = new Map<
     string,
-    { lat: number; lon: number; label: string; children: Array<{ title: string; link: string }>; onClick: () => null }
+    {
+      lat: number;
+      lon: number;
+      label: string;
+      children: Array<{ title: string; link: string; language: string; availability: string }>;
+      onClick: () => null;
+    }
   >();
 
   opportunities?.forEach((opp) => {
@@ -33,7 +59,20 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[],
       opp.statusOpportunity !== OpportunityStatusType.SEARCHING
     )
       return;
-    const childItem = { title: opp.title, link: `/${lang}/dashboard/opportunities/${opp.id}` };
+
+    const topLanguages = getTopLanguages(opp.languages, 2);
+    const languageOverflow = opp.languages.length - topLanguages.length;
+
+    const allAvailabilities = opp.availability
+      .filter((a): a is typeof a & { day: string; daytime: string } => Boolean(a.day && a.daytime))
+      .map((a) => formatAvailabilityItem(a.day, a.daytime, t));
+
+    const childItem = {
+      title: opp.title,
+      link: `/${lang}/dashboard/opportunities/${opp.id}`,
+      language: topLanguages.join(", ") + (languageOverflow > 0 ? ` +${languageOverflow}` : "") || "—",
+      availability: allAvailabilities.map((a) => a).join("; "),
+    };
 
     if (!oppMap.has(String(opp.agentId))) {
       oppMap.set(String(opp.agentId), {
@@ -50,16 +89,23 @@ export const createOpportunityMarkers = (opportunities: ApiOpportunityGetList[],
   return Array.from(oppMap.values());
 };
 
-export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFunction, lang: string): Markers => {
+export const createVolunteerMarkers = (
+  volunteers: ApiVolunteerGetList[],
+  t: TFunction,
+  lang: string,
+): EntityMarker[] => {
   const volMap = new Map<
     string,
     {
       lat: number;
       lon: number;
       label: string;
-      children: Array<{ title: string; link: string }>;
+      title: string;
+      link: string;
+      language: string;
+      availability: string;
       avatarUrl: string;
-      onClick: () => null;
+      onClick?: () => null;
     }
   >();
 
@@ -70,13 +116,22 @@ export const createVolunteerMarkers = (volunteers: ApiVolunteerGetList[], t: TFu
       vol.statusEngagement !== VolunteerStateEngagementType.ACTIVE
     )
       return;
-    const childItem = { title: vol.name, link: `/${lang}/dashboard/volunteers/${vol.id}` };
+
+    const topLanguages = getTopLanguages(vol.languages, 2);
+    const languageOverflow = vol.languages.length - topLanguages.length;
+
+    const allAvailabilities = vol.availability
+      .filter((a): a is typeof a & { day: string; daytime: string } => Boolean(a.day && a.daytime))
+      .map((a) => formatAvailabilityItem(a.day, a.daytime, t));
 
     volMap.set(String(vol.id), {
       lat: vol.lat,
       lon: vol.lon,
-      label: t(`dashboard.volunteers.filters.engagement.${vol.statusEngagement}`),
-      children: [childItem],
+      label: vol.name,
+      title: vol.name,
+      link: `/${lang}/dashboard/volunteers/${vol.id}`,
+      language: topLanguages.join(", ") + (languageOverflow > 0 ? ` +${languageOverflow}` : "") || "—",
+      availability: allAvailabilities.map((a) => a).join("; "),
       avatarUrl: getImageUrl(vol?.avatarUrl || defaultAvatarURL),
       onClick: () => null,
     });
