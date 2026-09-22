@@ -19,11 +19,10 @@ export const useGetCurrentAgent = () => {
   const agentId = user?.agentId;
   const volunteerId = user?.volunteerId;
   const userRole = user?.role;
-  // test here for multiple ngos, add more agentids
-  const agentIds = [agentId];
+  const agentIds = user?.agentMemberships?.map((agent) => agent.agentId);
 
   const agentQueries = useQueries({
-    queries: agentIds.map((id) => ({
+    queries: (agentIds ?? [])?.map((id) => ({
       queryKey: ["agent", String(id)],
       queryFn: async () => {
         try {
@@ -39,10 +38,11 @@ export const useGetCurrentAgent = () => {
     })),
   });
 
-  const currentAgents = agentQueries.map((q) => q.data?.data);
+  const currentAgents = agentQueries?.map((q) => q.data?.data);
 
   return {
     agentId,
+    agentIds,
     isLoading: userLoading || agentQueries.some((q) => q.isLoading),
     currentAgents,
     volunteerId,

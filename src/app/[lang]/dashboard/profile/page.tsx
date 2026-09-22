@@ -32,10 +32,7 @@ const ProfileState = ({ children }: { children: React.ReactNode }) => (
 
 export default function DashboardProfilePage() {
   const { t } = useTranslation();
-  const { agentId, volunteerId, userRole, isLoading } = useGetCurrentAgent();
-
-  // test multiple agentIds here
-  const agentIds: Array<number> = [];
+  const { agentId, agentIds, volunteerId, userRole, isLoading } = useGetCurrentAgent();
 
   if (isLoading) {
     return (
@@ -53,7 +50,7 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId && agentIds.length === 0 && !volunteerId) {
+  if (!agentId && agentIds?.length === 0 && !volunteerId) {
     return (
       <ProfileState>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -65,7 +62,7 @@ export default function DashboardProfilePage() {
     return <ProfileLayout entityId={String(volunteerId)} entityType={"volunteer"} />;
   }
 
-  return agentIds.length > 1 ? (
+  return agentIds && agentIds.length > 1 ? (
     <MultipleProfilesController agentIds={agentIds} />
   ) : (
     <ProfileLayout entityId={String(agentId)} entityType={"agent"} />
