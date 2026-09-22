@@ -30,7 +30,12 @@ export function Checkbox({
   checked,
 }: CheckboxProps) {
   return (
-    <CheckboxContainer onClick={() => onChange(!checked)}>
+    <CheckboxContainer
+      onClick={(e) => {
+        e.stopPropagation();
+        onChange(!checked);
+      }}
+    >
       <CheckboxSVG width={width} height={height} checked={checked} color={color} />
 
       {label && (

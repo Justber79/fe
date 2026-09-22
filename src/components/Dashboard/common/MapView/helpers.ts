@@ -10,29 +10,7 @@ import {
 } from "need4deed-sdk";
 import { formatAvailabilityItem } from "../../Profile/sections/VolunteerProfile/formatters";
 import { getTopLanguages } from "../../Volunteers/helpers";
-
-export type OpportunityMarker = {
-  lat: number;
-  lon: number;
-  label: string;
-  children?: Array<{ title: string; link: string; language: string; availability: string }>;
-  onClick: () => null;
-  avatarUrl?: string;
-};
-
-export type VolunteerMarker = {
-  lat: number;
-  lon: number;
-  label: string;
-  title: string;
-  link: string;
-  language: string;
-  availability: string;
-  avatarUrl: string;
-  onClick?: () => null;
-};
-
-export type EntityMarker = OpportunityMarker | VolunteerMarker;
+import { EntityMarker } from "./types";
 
 export const DEFAULT_CENTER: LatLngExpression | undefined = [52.52, 13.405];
 

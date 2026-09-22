@@ -414,6 +414,15 @@
         "copyAriaAllAgents": "Copy all NGO emails",
         "copyAriaAllVolunteers": "Copy all volunteer emails",
         "genericError": "Something went wrong. Please try again."
+      },
+      "copyAddress": {
+        "tooltipSingle": "Copy Address",
+        "success": "Copied {{count}} address",
+        "successSingle": "Address copied",
+        "copyAriaSingle": "Copy address of {{name}}",
+        "copyAriaAllAgents": "Copy all NGO address",
+        "copyAriaAllVolunteers": "Copy all volunteer address",
+        "genericError": "Something went wrong. Please try again."
       }
     },
     "volunteers": {
@@ -541,6 +550,17 @@
         "more": "More"
       },
       "createOpportunity": "Create New Opportunity"
+    },
+    "map": {
+      "address": "Address",
+      "legend": {
+        "title": "Legend",
+        "opportunity": "Opportunity",
+        "rac": "Refugee Accommodation Center",
+        "volunteer": "Volunteer"
+      },
+      "scrollZoom": "Enable Scroll Zoom",
+      "error": "Error occurred when fetching Berlin RACs"
     },
     "posts": {
       "searchPosts": "Search posts, replies, people, and opportunities",

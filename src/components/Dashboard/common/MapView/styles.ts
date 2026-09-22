@@ -154,3 +154,82 @@ export const PopupCardHeader = styled.p`
   font-weight: var(--dashboard-map-popup-card-header-font-weight);
   margin: 0;
 `;
+
+export const BerlinRacPopupContainer = styled.div`
+  padding: var(--dashboard-map-popup-link-padding);
+  background-color: var(--color-orchid-subtle);
+  border-radius: var(--dashboard-map-popup-link-border-radius);
+  display: flex;
+  flex-direction: column;
+  // gap: var(--dashboard-map-popup-link-gap);
+  &:hover {
+    background-color: var(--color-orchid);
+  }
+`;
+
+export const BerlinRacCopyAddressWrapper = styled.div`
+  align-self: end;
+  position: absolute;
+`;
+
+export const BerlinRacAddressContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+`;
+
+export const LegendCard = styled.div`
+  background: white;
+  padding: 12px 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+  font-size: 13px;
+  color: #333;
+`;
+
+export const LegendTitle = styled.strong`
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #111;
+`;
+
+export const LegendRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const IconSlot = styled.div`
+  width: 50px;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: auto;
+
+    &.ngo-pin {
+      filter: hue-rotate(90deg) saturate(0.8);
+    }
+
+    &.custom-icon {
+      border-radius: 50%;
+      object-fit: contain;
+    }
+  }
+`;
+
+export const ScrollZoomContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;

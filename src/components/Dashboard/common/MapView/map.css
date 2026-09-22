@@ -1,6 +1,6 @@
 @import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
 
-.leaflet-marker-icon:not(.custom-icon) {
+.leaflet-marker-icon.need4deed-icon {
   filter: hue-rotate(90deg) saturate(0.8);
 }
 

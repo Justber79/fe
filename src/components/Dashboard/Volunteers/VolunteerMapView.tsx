@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { MapView } from "../common/MapView/MapView";
-import { EntityMarker } from "../common/MapView/helpers";
 import { useEffect } from "react";
 import { MapContainer, PopupLink } from "../common/MapView/styles";
 import CardDetail from "./CardDetail";
 import { CardParagraph } from "./VolunteerCard";
 import { IconName } from "./icon";
 import { useTranslation } from "react-i18next";
+import { EntityMarker } from "../common/MapView/types";
 
 type Props = {
   count: number;
@@ -39,6 +39,7 @@ export function VolunteerMapView({ markers, setNumOfVols }: Props) {
   return (
     <MapContainer>
       <MapView
+        showOtherRacs={true}
         markers={markers}
         activeMarkerIndex={activeMarkerIndex}
         setActiveMarkerIndex={setActiveMarkerIndex}

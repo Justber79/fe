@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { MapView } from "../common/MapView/MapView";
-import { EntityMarker } from "../common/MapView/helpers";
 import { useEffect } from "react";
 import { MapContainer, PopupCardHeader, PopupLink } from "../common/MapView/styles";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { useTranslation } from "react-i18next";
 import { IconName } from "../Volunteers/icon";
+import { EntityMarker } from "../common/MapView/types";
 
 type Props = {
   setNumOfOpps: (num: number) => void;

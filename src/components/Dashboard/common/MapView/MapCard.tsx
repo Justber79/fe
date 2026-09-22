@@ -1,15 +1,20 @@
 import "./map.css";
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
-import { DEFAULT_CENTER, EntityMarker } from "./helpers";
+import { MapContainer, Marker, Popup, TileLayer, useMapEvent } from "react-leaflet";
+import { DEFAULT_CENTER } from "./helpers";
 import { PopupContentWrapper, PopupHeader, StyledMapContainer } from "./styles";
-import { useEffect, useRef } from "react";
-import L, { LatLngExpression, Marker as LeafletMarker } from "leaflet";
+import { useState } from "react";
+import L from "leaflet";
+import BerlinRacs from "./BerlinRacs";
+import { MapLegendControl } from "./MapLegend";
+import { MapScroll } from "./MapScroll";
+import { EntityMarker } from "./types";
 
 interface Props {
   markers?: EntityMarker[];
   activeMarkerIndex?: number;
   setActiveMarkerIndex: (num: number) => void;
   renderPopupContent: (marker: EntityMarker) => React.ReactNode;
+  showOtherRacs?: boolean;
 }
 
 const SetViewOnClick = () => {
@@ -22,24 +27,11 @@ const SetViewOnClick = () => {
   return null;
 };
 
-const MapFlyTo = ({ position }: { position: LatLngExpression | undefined }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (position) {
-      map.flyTo(position, 12, { duration: 1 });
-    }
-  }, [position, map]);
-
-  return null;
-};
-
-const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopupContent }: Props) => {
-  const markerRefs = useRef<Record<number, LeafletMarker | null>>({});
+const MapCard = ({ markers, renderPopupContent, showOtherRacs }: Props) => {
+  const [enableScroll, setEnableScroll] = useState<boolean>(true);
 
   const generateCustomIcon = (url: string) => {
-    const defaultIcon = new L.Icon.Default();
-    if (!url) return defaultIcon;
+    if (!url) return new L.Icon.Default({ className: "need4deed-icon" });
     return L.icon({
       iconUrl: url,
       iconAnchor: [25, 5],
@@ -47,38 +39,23 @@ const MapCard = ({ markers, activeMarkerIndex, setActiveMarkerIndex, renderPopup
     });
   };
 
-  useEffect(() => {
-    if (activeMarkerIndex !== undefined && markerRefs.current[activeMarkerIndex]) {
-      const markerInstance = markerRefs.current[activeMarkerIndex];
-      markerInstance.openPopup();
-    }
-  }, [activeMarkerIndex]);
-
-  const activePosition: LatLngExpression | undefined =
-    activeMarkerIndex !== undefined && markers?.[activeMarkerIndex]
-      ? [markers[activeMarkerIndex].lat, markers[activeMarkerIndex].lon]
-      : undefined;
-
   return (
     <StyledMapContainer>
-      <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom={false}>
+      <MapContainer center={DEFAULT_CENTER} zoom={11}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <SetViewOnClick />
-        <MapFlyTo position={activePosition} />
+        <MapLegendControl />
+        <MapScroll enableScroll={enableScroll} setEnabledScroll={setEnableScroll} />
+        {showOtherRacs && <BerlinRacs />}
         {markers?.map((marker, idx) => (
           <Marker
             key={`${idx}-${marker?.lat}-${marker?.lon}`}
             position={[marker.lat, marker.lon]}
-            ref={(ref) => {
-              if (ref) markerRefs.current[idx] = ref;
-            }}
-            eventHandlers={{
-              click: () => setActiveMarkerIndex(idx),
-            }}
             icon={generateCustomIcon(marker?.avatarUrl ?? "")}
+            zIndexOffset={marker?.avatarUrl ? 1000 : 0}
           >
             <Popup>
               <PopupContentWrapper>
