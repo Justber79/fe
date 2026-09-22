@@ -1,7 +1,7 @@
 import { apiPathOpportunity, apiPathOption, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerOpportunityGetList, OpportunityStatusType, SortOrder } from "need4deed-sdk";
-import { OpportunityCard } from "../Opportunities/OpportunityCard";
+import { OpportunityCard } from "../../Opportunities/OpportunityCard";
 import { useTranslation } from "react-i18next";
 import { Heading4 } from "@/components/styled/text";
 
