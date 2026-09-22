@@ -1,18 +1,17 @@
+import Button from "@/components/core/button/Button/Button";
 import { Heading3, Paragraph } from "@/components/styled/text";
 import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 
-import { eventOccursOnDate, groupEventsByDate } from "@/utils/calendar";
-import { EventCard } from "./EventCard";
-import { DateGroup, DateHeading, SectionHeading, State } from "./styles";
+import { EventDateGroups } from "./EventDateGroups";
+import { SectionHeading, State } from "./styles";
 
 const INITIAL_EVENT_COUNT = 3;
 
 interface Props {
   events: ApiEventN4DGetList[];
-  hasMonthEvents: boolean;
+  hasAnyEvents: boolean;
   selectedDateKey: string | null;
   isLoading: boolean;
   isError: boolean;
@@ -23,7 +22,7 @@ interface Props {
 
 export function UpcomingEvents({
   events,
-  hasMonthEvents,
+  hasAnyEvents,
   selectedDateKey,
   isLoading,
   isError,
@@ -31,10 +30,9 @@ export function UpcomingEvents({
   onDelete,
   onPublicationChange,
 }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showAll, setShowAll] = useState(false);
   const visibleEvents = showAll ? events : events.slice(0, INITIAL_EVENT_COUNT);
-  const groups = groupEventsByDate(visibleEvents);
 
   return (
     <>
@@ -46,60 +44,29 @@ export function UpcomingEvents({
       {!isLoading && !isError && !events.length && (
         <State>
           <Heading3>
-            {t(hasMonthEvents ? "dashboard.calendar.noUpcomingEvents" : "dashboard.calendar.emptyTitle")}
+            {t(hasAnyEvents ? "dashboard.calendar.noUpcomingEvents" : "dashboard.calendar.emptyTitle")}
           </Heading3>
-          {!hasMonthEvents && <Paragraph>{t("dashboard.calendar.emptyText")}</Paragraph>}
+          {!hasAnyEvents && <Paragraph>{t("dashboard.calendar.emptyText")}</Paragraph>}
         </State>
       )}
-      {Object.entries(groups).map(([key, groupedEvents]) => (
-        <DateGroup
-          id={`event-date-${key}`}
-          key={key}
-          $selected={Boolean(
-            selectedDateKey && groupedEvents.some((event) => eventOccursOnDate(event, selectedDateKey)),
-          )}
-        >
-          <DateHeading>
-            {new Date(groupedEvents[0].date).toLocaleDateString(i18n.language, {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-            })}
-          </DateHeading>
-          {groupedEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onPublicationChange={onPublicationChange}
-            />
-          ))}
-        </DateGroup>
-      ))}
+      <EventDateGroups
+        events={visibleEvents}
+        section="upcoming"
+        selectedDateKey={selectedDateKey}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onPublicationChange={onPublicationChange}
+      />
       {!showAll && events.length > INITIAL_EVENT_COUNT && (
-        <ShowMoreButton type="button" onClick={() => setShowAll(true)}>
-          {t("dashboard.calendar.showMoreEvents")}
-        </ShowMoreButton>
+        <Button
+          width="100%"
+          backgroundcolor="var(--color-white)"
+          border="var(--border-width-medium) solid var(--color-aubergine)"
+          textColor="var(--color-aubergine)"
+          text={t("dashboard.calendar.showMoreEvents")}
+          onClick={() => setShowAll(true)}
+        />
       )}
     </>
   );
 }
-
-const ShowMoreButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: var(--spacing-12) var(--spacing-16);
-  border: var(--border-width-medium) solid var(--color-aubergine);
-  border-radius: var(--border-radius-large);
-  background: var(--color-white);
-  color: var(--color-aubergine);
-  cursor: pointer;
-  font: inherit;
-  font-weight: var(--font-weight-semibold);
-
-  &:hover,
-  &:focus-visible {
-    background: var(--color-orchid-subtle);
-  }
-`;

@@ -66,10 +66,19 @@ export function useCalendar() {
       return;
     }
     const target = monthEvents.find((event) => eventOccursOnDate(event, key));
-    if (target && pastEvents.some((event) => event.id === target.id)) setShowPast(true);
+    const targetSection = target
+      ? pastEvents.some((event) => event.id === target.id)
+        ? "past"
+        : target.active
+          ? "upcoming"
+          : "draft"
+      : "upcoming";
+    if (targetSection === "past") setShowPast(true);
     window.requestAnimationFrame(() => {
       const targetKey = target ? dateKey(new Date(target.date)) : key;
-      document.getElementById(`event-date-${targetKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      document
+        .getElementById(`event-date-${targetSection}-${targetKey}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   };
 
@@ -92,6 +101,7 @@ export function useCalendar() {
     publicationEvent,
     isLoading,
     isError,
+    hasAnyEvents: events.length > 0,
     createEvent,
     editEvent,
     selectDate,

@@ -48,9 +48,11 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
     <Card>
       <CardHeader>
         <div>
-          <EventTitle type="button" onClick={() => onEdit(event)}>
-            {event.title}
-          </EventTitle>
+          <EventTitleHeading>
+            <EventTitle type="button" onClick={() => onEdit(event)}>
+              {event.title}
+            </EventTitle>
+          </EventTitleHeading>
           {event.shortDescription && <Description>{event.shortDescription}</Description>}
         </div>
         <Status $active={event.active}>
@@ -121,6 +123,9 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-16);
+`;
+const EventTitleHeading = styled.h4`
+  margin: 0;
 `;
 const EventTitle = styled.button`
   margin: 0;

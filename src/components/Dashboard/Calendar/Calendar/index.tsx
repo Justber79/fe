@@ -14,6 +14,7 @@ interface Props {
   draftEvents: ApiEventN4DGetList[];
   upcomingEvents: ApiEventN4DGetList[];
   pastEvents: ApiEventN4DGetList[];
+  hasAnyEvents: boolean;
   monthDate: Date;
   selectedDateKey: string | null;
   showPast: boolean;
@@ -97,7 +98,7 @@ export function Calendar(props: Props) {
         />
         <UpcomingEvents
           events={props.upcomingEvents}
-          hasMonthEvents={props.events.length > 0}
+          hasAnyEvents={props.hasAnyEvents}
           selectedDateKey={props.selectedDateKey}
           isLoading={props.isLoading}
           isError={props.isError}

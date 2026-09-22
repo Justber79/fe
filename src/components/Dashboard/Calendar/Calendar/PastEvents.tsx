@@ -3,9 +3,7 @@ import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { eventOccursOnDate, groupEventsByDate } from "@/utils/calendar";
-import { EventCard } from "./EventCard";
-import { DateGroup, DateHeading } from "./styles";
+import { EventDateGroups } from "./EventDateGroups";
 
 interface Props {
   events: ApiEventN4DGetList[];
@@ -26,8 +24,7 @@ export function PastEvents({
   onDelete,
   onPublicationChange,
 }: Props) {
-  const { t, i18n } = useTranslation();
-  const groups = groupEventsByDate(events);
+  const { t } = useTranslation();
   return (
     <Past>
       <PastToggle type="button" onClick={onToggle} aria-expanded={expanded}>
@@ -36,33 +33,15 @@ export function PastEvents({
       </PastToggle>
       {expanded &&
         (events.length ? (
-          Object.entries(groups).map(([key, groupedEvents]) => (
-            <DateGroup
-              id={`event-date-${key}`}
-              key={key}
-              $selected={Boolean(
-                selectedDateKey && groupedEvents.some((event) => eventOccursOnDate(event, selectedDateKey)),
-              )}
-            >
-              <DateHeading>
-                {new Date(groupedEvents[0].date).toLocaleDateString(i18n.language, {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}
-              </DateHeading>
-              {groupedEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  variant="bar"
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onPublicationChange={onPublicationChange}
-                />
-              ))}
-            </DateGroup>
-          ))
+          <EventDateGroups
+            events={events}
+            section="past"
+            selectedDateKey={selectedDateKey}
+            variant="bar"
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onPublicationChange={onPublicationChange}
+          />
         ) : (
           <Empty>{t("dashboard.calendar.noPastEvents")}</Empty>
         ))}

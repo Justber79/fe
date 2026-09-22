@@ -23,6 +23,7 @@ export function CalendarContent() {
         draftEvents={calendar.draftEvents}
         upcomingEvents={calendar.upcomingEvents}
         pastEvents={calendar.pastEvents}
+        hasAnyEvents={calendar.hasAnyEvents}
         monthDate={calendar.monthDate}
         selectedDateKey={calendar.selectedDateKey}
         showPast={calendar.showPast}
