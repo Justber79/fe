@@ -4,11 +4,12 @@ import { Button } from "@/components/core/button";
 import { PageLayout } from "@/components/Layout";
 import { Body, Description, Detail, Details, EventCard, Hero, PageContent } from "@/components/styled/eventPageLayout";
 import { Heading1, Heading2, Paragraph } from "@/components/styled/text";
-import { useEvents } from "@/hooks/useEvents";
+import { useEvent, useEvents } from "@/hooks/useEvents";
 import { eventDateRange } from "@/utils/calendar";
 import { getHttpUrl, getUpcomingEvents } from "@/utils/events";
 import { ArrowLeftIcon, ArrowRightIcon, CalendarBlankIcon, MapPinIcon } from "@phosphor-icons/react";
 import { ApiEventN4DGetList, EventN4DType } from "need4deed-sdk";
+import type { TFunction } from "i18next";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -150,13 +151,16 @@ interface EventPageProps {
   eventId?: number;
 }
 
+function getEventTypeLabel(type: EventN4DType, t: TFunction) {
+  return type === EventN4DType.PARTY
+    ? t("dashboard.calendar.createForm.typeParty")
+    : t("dashboard.calendar.createForm.typeWorkshop");
+}
+
 function EventDetails({ event }: { event: ApiEventN4DGetList }) {
   const { t, i18n } = useTranslation();
-  const registrationUrl = getHttpUrl(event?.linkRSVP);
-  const eventTypeLabel =
-    event?.type === EventN4DType.PARTY
-      ? t("dashboard.calendar.createForm.typeParty")
-      : t("dashboard.calendar.createForm.typeWorkshop");
+  const registrationUrl = getHttpUrl(event.linkRSVP);
+  const eventTypeLabel = getEventTypeLabel(event.type, t);
 
   return (
     <EventCard>
@@ -218,10 +222,12 @@ function EventDetails({ event }: { event: ApiEventN4DGetList }) {
 
 export function EventPage({ eventId }: EventPageProps) {
   const { t, i18n } = useTranslation();
+  const hasEventId = eventId !== undefined;
   const { data: events, isError, isLoading } = useEvents();
+  const { data: linkedEvent } = useEvent(eventId);
   const upcomingEvents = useMemo(() => getUpcomingEvents(events), [events]);
-  const selectedEvent = eventId ? upcomingEvents.find((event) => event.id === eventId) : upcomingEvents[0];
-  const additionalEvents = eventId ? [] : upcomingEvents.slice(1);
+  const selectedEvent = hasEventId ? linkedEvent : upcomingEvents[0];
+  const additionalEvents = hasEventId ? [] : upcomingEvents.slice(1);
 
   return (
     <PageLayout>
@@ -236,7 +242,7 @@ export function EventPage({ eventId }: EventPageProps) {
           </EmptyState>
         ) : selectedEvent ? (
           <EventStack>
-            {eventId ? (
+            {hasEventId ? (
               <BackLink href={`/${i18n.language}/event-page`}>
                 <ArrowLeftIcon size={18} aria-hidden />
                 {t("eventPage.backToEvents")}
@@ -257,11 +263,7 @@ export function EventPage({ eventId }: EventPageProps) {
                 <UpcomingGrid>
                   {additionalEvents.map((event) => (
                     <UpcomingCard key={event.id}>
-                      <EventType>
-                        {event.type === EventN4DType.PARTY
-                          ? t("dashboard.calendar.createForm.typeParty")
-                          : t("dashboard.calendar.createForm.typeWorkshop")}
-                      </EventType>
+                      <EventType>{getEventTypeLabel(event.type, t)}</EventType>
                       <ResponsiveHeading2 margin={0}>{event.title}</ResponsiveHeading2>
                       <Paragraph margin={0}>{event.shortDescription}</Paragraph>
                       <UpcomingMeta>

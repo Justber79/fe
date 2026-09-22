@@ -1,15 +1,11 @@
 import type { ApiEventN4DGetList } from "need4deed-sdk";
 
-export function getUpcomingEvent(events?: ApiEventN4DGetList[]) {
-  return getUpcomingEvents(events)[0];
-}
-
 export function getUpcomingEvents(events?: ApiEventN4DGetList[]) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   return (events ?? [])
-    ?.filter((event) => event.active && new Date(event.dateEnd ?? event.date) >= today)
+    .filter((event) => event.active && new Date(event.dateEnd ?? event.date) >= today)
     .sort((first, second) => new Date(first.date).getTime() - new Date(second.date).getTime());
 }
 
