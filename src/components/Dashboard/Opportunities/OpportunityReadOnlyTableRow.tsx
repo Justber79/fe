@@ -4,7 +4,7 @@ import { LangPurpose, type ApiVolunteerOpportunityGetList, type OptionItem } fro
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { abbreviateDistrict, getLanguagesByPurpose } from "./helpers";
+import { abbreviateDistrict, getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import Link from "next/link";
 
 interface TableRowProps {
@@ -19,7 +19,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
   const { id, title, volunteerType, district, languages } = opportunity;
   const statusMatch = opportunity.statusMatch;
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
-  const districtTitle = district?.id ? (districtsList?.find((item) => item.id === district.id)?.title ?? null) : null;
+  const districtTitle = getDistrictTitle(district, districtsList);
   const districtText = abbreviateDistrict(districtTitle) || "—";
 
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";

@@ -6,7 +6,13 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
 import { OPPORTUNITY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { abbreviateDistrict, formatAccompanyingDate, formatSchedule, getLanguagesByPurpose } from "./helpers";
+import {
+  abbreviateDistrict,
+  formatAccompanyingDate,
+  formatSchedule,
+  getDistrictTitle,
+  getLanguagesByPurpose,
+} from "./helpers";
 import { MatchedBadge } from "./styles";
 import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
 import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
@@ -36,7 +42,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
   const { id, title, volunteerType, languages, availability, district, volunteerNames } = opportunity;
   const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
-  const districtTitle = district?.id ? (districtsList?.find((item) => item.id === district.id)?.title ?? null) : null;
+  const districtTitle = getDistrictTitle(district, districtsList);
   const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
