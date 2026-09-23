@@ -1,1 +1,12 @@
 @import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+
+.leaflet-marker-icon.need4deed-icon {
+  filter: hue-rotate(90deg) saturate(0.8);
+}
+
+.custom-icon {
+  width: var(--dashboard-map-custom-icon-width) !important;
+  aspect-ratio: 1/1;
+  border: var(--dashboard-map-custom-icon-border);
+  border-radius: var(--dashboard-map-custom-icon-border-radius);
+}

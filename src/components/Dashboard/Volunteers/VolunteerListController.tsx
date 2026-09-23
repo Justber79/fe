@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
@@ -15,6 +15,9 @@ import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 import { createFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingVolunteerTableList } from "./LoadingVolunteerTableList";
+import { LoadingMapView } from "../common/MapView/LoadingMapView";
+import { VolunteerMapView } from "./VolunteerMapView";
+import { createVolunteerMarkers } from "../common/MapView/helpers";
 
 interface VolunteerListControllerProps {
   setNumOfVols: (numOfVols: number) => void;
@@ -36,9 +39,10 @@ export function VolunteerListController({
   viewMode,
 }: VolunteerListControllerProps) {
   const isListView = viewMode === ViewMode.LIST;
+  const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
@@ -85,11 +89,13 @@ export function VolunteerListController({
 
   useEffect(() => {
     setNumOfVols(count);
-  }, [count, setNumOfVols]);
+  }, [count, setNumOfVols, viewMode]);
+
+  const markers = useMemo(() => createVolunteerMarkers(volunteers, t, i18n.language), [volunteers, t, i18n.language]);
 
   if (isLoading && isListView)
     return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
-
+  if (isLoading && isMapView) return <LoadingMapView />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -107,6 +113,10 @@ export function VolunteerListController({
         dropdownFilters={dropdownFilters}
       />
     );
+  }
+
+  if (isMapView) {
+    return <VolunteerMapView count={count} setNumOfVols={setNumOfVols} markers={markers} />;
   }
 
   return (

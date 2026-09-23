@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
@@ -12,6 +12,9 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants"
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
+import { LoadingMapView } from "../common/MapView/LoadingMapView";
+import { createOpportunityMarkers } from "../common/MapView/helpers";
+import { OpportunityMapView } from "./OpportunityMapView";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -54,8 +57,9 @@ export function OpportunityListController({
   viewMode,
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
+  const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
 
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
@@ -94,9 +98,15 @@ export function OpportunityListController({
 
   useEffect(() => {
     setNumOfOpps(count);
-  }, [count, setNumOfOpps]);
+  }, [count, setNumOfOpps, viewMode]);
+
+  const markers = useMemo(
+    () => createOpportunityMarkers(opportunities, t, i18n.language),
+    [opportunities, i18n.language],
+  );
 
   if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
+  if (isLoading && isMapView) return <LoadingMapView />;
   if (isLoading) return <DashboardListLoading />;
 
   if (isListView) {
@@ -112,6 +122,10 @@ export function OpportunityListController({
         dropdownFilters={dropdownFilters}
       />
     );
+  }
+
+  if (isMapView) {
+    return <OpportunityMapView setNumOfOpps={setNumOfOpps} markers={markers} />;
   }
 
   return (

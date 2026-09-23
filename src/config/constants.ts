@@ -32,6 +32,9 @@ export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL;
 export const cacheTTL = 1000 * 60 * 5; // 5 minutes
 
+export const gdiBerlinRacApi =
+  "https://gdi.berlin.de/services/wfs/gefluechtetenunterkuenfte?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=gefluechtetenunterkuenfte&OUTPUTFORMAT=application/json";
+
 export enum ScreenTypes {
   MOBILE = "mobile",
   TABLET = "tablet",
@@ -66,6 +69,8 @@ export const maxPLZBerlin = 14199;
 
 export const defaultAvatarURL = "head-silhouette.webp";
 export const defaultAvatarVolunteerProfile = "all_genders_avatar.png";
+
+export const DEFAULT_LEAFLET_ICON_URL = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png";
 
 export enum DashboardRoutes {
   Home = "/dashboard",

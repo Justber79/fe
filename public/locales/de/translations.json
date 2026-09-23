@@ -427,6 +427,15 @@
         "copyAriaAllAgents": "Alle E-Mails der Einrichtungen/Projekte kopieren",
         "copyAriaAllVolunteers": "Alle E-Mails der Freiwilligen kopieren",
         "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
+      },
+      "copyAddress": {
+        "tooltipSingle": "Addresse kopieren",
+        "success": "{{count}} Addresse kopiert",
+        "successSingle": "Addresse kopiert",
+        "copyAriaSingle": "Addresse von {{name}} kopieren",
+        "copyAriaAllAgents": "Alle Addressen der Einrichtungen/Projekte kopieren",
+        "copyAriaAllVolunteers": "Alle Addressen der Freiwilligen kopieren",
+        "genericError": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
       }
     },
     "volunteers": {
@@ -554,6 +563,17 @@
         "more": "Mehr"
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
+    },
+    "map": {
+      "address": "Anschrift",
+      "legend": {
+        "title": "Legende",
+        "opportunity": "Möglichkeit",
+        "rac": "Unterkunft für Geflüchtete",
+        "volunteer": "Ehrenamtliche"
+      },
+      "scrollZoom": "Scroll-Zoom aktivieren",
+      "error": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
     },
     "posts": {
       "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",

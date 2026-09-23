@@ -31,10 +31,10 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
       <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       )}
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
       )}
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
