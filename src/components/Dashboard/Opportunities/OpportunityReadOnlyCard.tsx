@@ -6,7 +6,7 @@ import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
 import { matchStatusColorMap, matchStatusIconMap, volunteerTypeIconMap } from "./OpportunityCard.helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
-import { getLanguagesByPurpose } from "./helpers";
+import { getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import Link from "next/link";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const { t, i18n } = useTranslation();
 
-  const { id, title, volunteerType, location, languages, statusMatch } =
+  const { id, title, volunteerType, district, languages, statusMatch } =
     opportunity as ApiVolunteerOpportunityGetList & {
       accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
       statusMatch?: string;
@@ -29,7 +29,7 @@ export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
 
-  const districtTitle = location[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtTitle = getDistrictTitle(district, districtsList);
 
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
 
