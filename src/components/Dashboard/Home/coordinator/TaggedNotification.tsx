@@ -3,7 +3,7 @@ import { ChatCircleIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TagRow } from "./styles";
+import { TagRow } from "../styles";
 import { type DashboardEntityType } from "@/hooks/useGetEntityTitle";
 import { useGetEntityTitle } from "@/hooks/useGetEntityTitle";
 import { usePatchTaggedComments } from "@/hooks/usePatchTaggedComments";

@@ -3,10 +3,10 @@ import { apiPathOption } from "@/config/constants";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useGetQuery } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerOpportunityGetList } from "need4deed-sdk";
-import { OpportunityCard } from "../Opportunities/OpportunityCard";
+import { OpportunityCard } from "../../Opportunities/OpportunityCard";
 import { useTranslation } from "react-i18next";
 import { Heading4 } from "@/components/styled/text";
-import { DashboardCardContainer } from "./styles";
+import { DashboardCardContainer } from "../styles";
 import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLinked";
 
 export function AgentOpportunityCards() {
