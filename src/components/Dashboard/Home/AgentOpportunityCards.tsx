@@ -15,7 +15,7 @@ export function AgentOpportunityCards() {
 
   const { data: apiFilterOptions } = useGetQuery<ApiOptionLists>({ queryKey: ["options"], apiPath: apiPathOption });
 
-  const { allLinkedOpportunities: opportunities, isLoading } = useGetMultiOpportunityLinked(agentIds ?? []);
+  const { allLinkedOpportunities: opportunities, isLoading } = useGetMultiOpportunityLinked(agentIds);
 
   const activitiesList = apiFilterOptions?.activity ?? undefined;
   const districtsList = apiFilterOptions?.district ?? undefined;

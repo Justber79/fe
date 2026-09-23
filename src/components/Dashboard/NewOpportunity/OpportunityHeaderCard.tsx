@@ -25,7 +25,7 @@ const SELECTABLE_VOLUNTEER_TYPES = [
 
 type Props = {
   selectedType: VolunteerStateTypeType | undefined;
-  agentTitles: ApiAgentMembershipSummary[] | undefined;
+  agentTitles: ApiAgentMembershipSummary[];
 };
 
 export default function OpportunityHeaderCard({ selectedType, agentTitles }: Props) {
@@ -86,7 +86,7 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
               name="agentId"
               control={control}
               render={({ field }) =>
-                agentTitles && agentTitles.length > 1 ? (
+                agentTitles.length > 1 ? (
                   <EditableField
                     mode="edit"
                     type="radio-list"
@@ -101,7 +101,7 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
                 ) : (
                   <NGOnonEditableRow>
                     <Heading4>{t("dashboard.newOpportunity.fields.ngo")}</Heading4>
-                    <Heading3>{agentTitles && (agentTitles[0]?.agentTitle ?? "-")}</Heading3>
+                    <Heading3>{agentTitles[0]?.agentTitle ?? "-"}</Heading3>
                   </NGOnonEditableRow>
                 )
               }

@@ -45,7 +45,7 @@ export function NewOpportunity() {
   const router = useRouter();
 
   const userData = useCurrentUser();
-  const currentAgents = userData?.agentMemberships;
+  const currentAgents = userData?.agentMemberships ?? [];
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
@@ -62,7 +62,7 @@ export function NewOpportunity() {
 
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
-  const firstNGOId = currentAgents && currentAgents.length > 0 ? currentAgents[0].agentId : (userData?.agentId ?? 0);
+  const firstNGOId = currentAgents[0].agentId || (userData?.agentId ?? 0);
 
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
     resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
