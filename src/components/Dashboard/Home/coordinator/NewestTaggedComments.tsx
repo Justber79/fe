@@ -1,11 +1,11 @@
 import { Heading4 } from "@/components/styled/text";
 import { useTranslation } from "react-i18next";
 import TaggedNotification from "./TaggedNotification";
-import { processEntity } from "./helpers";
+import { processEntity } from "../helpers";
 import { useGetTaggedComments } from "@/hooks/useGetTaggedComments";
 import { DashboardEntityType } from "@/hooks/useGetEntityTitle";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { TagContainer } from "./styles";
+import { TagContainer } from "../styles";
 import { ApiComment } from "need4deed-sdk";
 
 export function NewestTaggedComments() {

@@ -1,14 +1,14 @@
 "use client";
 
-import DashboardHomeContent from "./HomeContent";
 import { DashboardLayout } from "@/components/Layout";
 import { HomeContainer } from "./styles";
+import HomeContentController from "./HomeContentController";
 
 export function DashboardHome() {
   return (
     <DashboardLayout>
       <HomeContainer>
-        <DashboardHomeContent />
+        <HomeContentController />
       </HomeContainer>
     </DashboardLayout>
   );

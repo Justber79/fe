@@ -4,9 +4,9 @@ import { useGetQuery } from "@/hooks";
 import { ApiOptionLists } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { Heading4 } from "@/components/styled/text";
-import { DashboardCardContainer } from "./styles";
 import { useGetMostRelevantOpportunities } from "@/hooks/useGetMostRelevantOpportunities";
-import { OpportunityReadOnlyCard } from "../Opportunities/OpportunityReadOnlyCard";
+import { DashboardCardContainer } from "../styles";
+import { OpportunityReadOnlyCard } from "../../Opportunities/OpportunityReadOnlyCard";
 
 export function VolunteerMostRelevantOppCards({ volunteerId }: { volunteerId: number | undefined }) {
   const { t } = useTranslation();

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export const HomeContainer = styled.div`
@@ -53,4 +54,23 @@ export const TagRow = styled.div<{ $isRead: boolean }>`
 export const RelevantOppsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const StyledLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--color-aubergine);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--button-border-radius, 8px);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: flex-start;
+
+  &:hover {
+    opacity: 0.88;
+  }
 `;

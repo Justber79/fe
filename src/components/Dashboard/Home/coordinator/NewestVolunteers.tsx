@@ -1,7 +1,7 @@
 import { apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import { ApiVolunteerGetList, SortOrder, VolunteerStateEngagementType } from "need4deed-sdk";
-import VolunteerCard from "../Volunteers/VolunteerCard";
+import VolunteerCard from "../../Volunteers/VolunteerCard";
 import { Heading4 } from "@/components/styled/text";
 import { useTranslation } from "react-i18next";
 
