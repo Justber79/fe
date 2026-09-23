@@ -6,7 +6,7 @@ import { Paragraph } from "@/components/styled/text";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
-import { formatAccompanyingDate, getActivityTitles, getLanguagesByPurpose } from "./helpers";
+import { formatAccompanyingDate, getActivityTitles, getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import {
   formatAvailability,
   matchStatusColorMap,
@@ -37,7 +37,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     availability,
     accompanyingDetails,
     statusMatch,
-    location,
+    district,
   } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
@@ -47,7 +47,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
-  const districtTitle = location?.[0]?.id ? (districtsList?.find((d) => d.id === location[0].id)?.title ?? null) : null;
+  const districtTitle = getDistrictTitle(district, districtsList);
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
   const scheduleText = isAccompanying
