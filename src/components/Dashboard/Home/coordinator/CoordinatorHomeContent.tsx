@@ -1,5 +1,4 @@
 import React from "react";
-import { CreateOpportunityButton } from "../agent/CreateOpportunityButton";
 import { Heading3 } from "@/components/styled/text";
 import { NewestTaggedComments } from "./NewestTaggedComments";
 import { DashboardCardContainer } from "../styles";
@@ -11,7 +10,6 @@ export function CoordinatorHomeContent() {
   const { t } = useTranslation();
   return (
     <>
-      <CreateOpportunityButton />
       <Heading3>{t("dashboard.home.content.newTags")}</Heading3>
       <NewestTaggedComments />
 
