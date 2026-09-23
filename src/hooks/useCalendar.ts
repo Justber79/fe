@@ -36,7 +36,20 @@ export function useCalendar() {
       .filter((event) => new Date(event.date) < monthEnd && new Date(event.dateEnd ?? event.date) >= monthStart)
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [events, monthDate]);
-  const upcomingEvents = monthEvents.filter((event) => new Date(event.dateEnd ?? event.date) >= today);
+  const upcomingEvents = useMemo(
+    () =>
+      events
+        .filter((event) => event.active && new Date(event.dateEnd ?? event.date) >= today)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    [events, today],
+  );
+  const draftEvents = useMemo(
+    () =>
+      events
+        .filter((event) => !event.active && new Date(event.dateEnd ?? event.date) >= today)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    [events, today],
+  );
   const pastEvents = monthEvents
     .filter((event) => new Date(event.dateEnd ?? event.date) < today)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -53,10 +66,19 @@ export function useCalendar() {
       return;
     }
     const target = monthEvents.find((event) => eventOccursOnDate(event, key));
-    if (target && pastEvents.some((event) => event.id === target.id)) setShowPast(true);
+    const targetSection = target
+      ? pastEvents.some((event) => event.id === target.id)
+        ? "past"
+        : target.active
+          ? "upcoming"
+          : "draft"
+      : "upcoming";
+    if (targetSection === "past") setShowPast(true);
     window.requestAnimationFrame(() => {
       const targetKey = target ? dateKey(new Date(target.date)) : key;
-      document.getElementById(`event-date-${targetKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      document
+        .getElementById(`event-date-${targetSection}-${targetKey}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   };
 
@@ -70,6 +92,7 @@ export function useCalendar() {
   return {
     monthDate,
     monthEvents,
+    draftEvents,
     upcomingEvents,
     pastEvents,
     selectedDateKey,
@@ -78,6 +101,7 @@ export function useCalendar() {
     publicationEvent,
     isLoading,
     isError,
+    hasAnyEvents: events.length > 0,
     createEvent,
     editEvent,
     selectDate,

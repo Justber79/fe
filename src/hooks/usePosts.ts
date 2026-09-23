@@ -11,6 +11,7 @@ import type {
   ApiPostReplyGet,
   ApiPostReplyPatch,
   ApiPostReplyPost,
+  ApiPostReactionPost,
   Lang,
 } from "need4deed-sdk";
 import { useParams } from "next/navigation";
@@ -161,5 +162,22 @@ export function useDeleteReply(postId: number, replyId: number, onSuccess: () =>
     queryKeyToInvalidate: [POSTS_QUERY_KEY, postRepliesQueryKey(postId)],
     successMessage: "dashboard.posts.replyDeleted",
     onSuccessCallback: onSuccess,
+  });
+}
+
+export function useSetReaction(itemId: number, postId?: number) {
+  return useMutationQuery<ApiPostReactionPost, unknown>({
+    apiPath: postId !== undefined ? `${apiPathPost}/reply/${itemId}/reaction` : `${apiPathPost}/${itemId}/reaction`,
+    queryKeyToInvalidate: postId !== undefined ? postRepliesQueryKey(postId) : POSTS_QUERY_KEY,
+    noToast: true,
+  });
+}
+
+export function useDeleteReaction(itemId: number, postId?: number) {
+  return useMutationQuery<void, unknown>({
+    apiPath: postId !== undefined ? `${apiPathPost}/reply/${itemId}/reaction` : `${apiPathPost}/${itemId}/reaction`,
+    method: "delete",
+    queryKeyToInvalidate: postId !== undefined ? postRepliesQueryKey(postId) : POSTS_QUERY_KEY,
+    noToast: true,
   });
 }

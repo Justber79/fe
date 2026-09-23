@@ -12,7 +12,7 @@ import { EventN4DType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { formatEventDate, getUpcomingEvent } from "@/utils/events";
+import { formatEventDate, getUpcomingEvents } from "@/utils/events";
 
 const EventsSectionContainer = styled(OverlayingSectionContainer)`
   height: var(--homepage-events-section-container-height);
@@ -81,7 +81,8 @@ export function EventsSection() {
   const { t, i18n } = useTranslation();
   const screenType = useScreenType();
   const { data: events, isLoading } = useEvents();
-  const upcomingEvent = useMemo(() => getUpcomingEvent(events), [events]);
+  const upcomingEvents = useMemo(() => getUpcomingEvents(events), [events]);
+  const upcomingEvent = upcomingEvents[0];
   const eventType = upcomingEvent?.type ?? EventN4DType.PARTY;
   const imageUrl = getImageUrl(imageNamesMap[eventType][screenType]);
 
@@ -138,7 +139,11 @@ export function EventsSection() {
             {upcomingEvent && (
               <ButtonContainer>
                 <Button
-                  text={t("homepage.events.button")}
+                  text={
+                    upcomingEvents.length > 1
+                      ? t("homepage.events.viewAll", { count: upcomingEvents.length })
+                      : t("homepage.events.button")
+                  }
                   onClick={() => window.location.assign(`/${i18n.language}${eventsPublicLandingUrl}`)}
                 />
               </ButtonContainer>
