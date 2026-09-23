@@ -151,6 +151,15 @@ export function getLanguagesByPurpose(languages: ApiLanguage[] | undefined, purp
     .join(", ");
 }
 
+export function getDistrictTitle(
+  district: ApiVolunteerOpportunityGetList["district"],
+  districtsList: OptionItem[] | undefined,
+): string | null {
+  if (district?.id == null || !districtsList?.length) return null;
+
+  return districtsList.find((item) => String(item.id) === String(district.id))?.title ?? null;
+}
+
 export function getOptionTitles(items: OptionById[] | undefined): string[] {
   if (!items || !Array.isArray(items)) return [];
   return items.map((item) => (typeof item.title === "string" ? item.title : "")).filter(Boolean);
