@@ -50,7 +50,7 @@ export default function DashboardProfilePage() {
     );
   }
 
-  if (!agentId && agentIds?.length === 0 && !volunteerId) {
+  if (!agentId && agentIds.length === 0 && !volunteerId) {
     return (
       <ProfileState>
         <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
@@ -62,9 +62,17 @@ export default function DashboardProfilePage() {
     return <ProfileLayout entityId={String(volunteerId)} entityType={"volunteer"} />;
   }
 
-  return agentIds && agentIds.length > 1 ? (
-    <MultipleProfilesController agentIds={agentIds} />
-  ) : (
-    <ProfileLayout entityId={String(agentId)} entityType={"agent"} />
+  if (agentIds.length > 1) {
+    return <MultipleProfilesController agentIds={agentIds} />;
+  }
+
+  if (agentId) {
+    return <ProfileLayout entityId={String(agentId)} entityType={"agent"} />;
+  }
+
+  return (
+    <ProfileState>
+      <Paragraph>{t("dashboard.profile.notSetUp")}</Paragraph>
+    </ProfileState>
   );
 }
