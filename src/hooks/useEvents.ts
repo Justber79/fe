@@ -14,7 +14,7 @@ export function useEvent(id?: number) {
   const query = useEvents();
   return {
     ...query,
-    data: id ? query.data?.find((event) => event.id === id) : undefined,
+    data: id !== undefined ? query.data?.find((event) => event.id === id) : undefined,
   };
 }
 
