@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PostActionMenu from "./PostActionMenu";
+import PostReactions from "./PostReactions";
 import {
   Avatar,
   AvatarInitials,
@@ -129,6 +130,13 @@ export function ReplyCard({ reply, childrenByParent, onReply, nested = false, co
       )}
 
       <ReplyFooter>
+        <PostReactions
+          itemId={reply.id}
+          postId={reply.postId}
+          reactions={reply.reactions}
+          myReaction={reply.myReaction}
+          align="right"
+        />
         <EditButton
           type="button"
           onClick={() =>
