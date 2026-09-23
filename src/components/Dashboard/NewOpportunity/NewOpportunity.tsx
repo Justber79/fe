@@ -16,7 +16,6 @@ import { IconName } from "@/components/Dashboard/Profile/types";
 import Button from "@/components/core/button/Button/Button";
 import { apiPathOpportunity, DashboardRoutes } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2 } from "@/components/styled/text";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
@@ -37,6 +36,7 @@ import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
 import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
 import DescriptionField from "./fields/DescriptionField";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function NewOpportunity() {
   const { t, i18n } = useTranslation();
@@ -44,7 +44,8 @@ export function NewOpportunity() {
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
 
-  const { currentAgents } = useGetCurrentAgent();
+  const userData = useCurrentUser();
+  const currentAgents = userData?.agentMemberships ?? [];
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
@@ -61,7 +62,7 @@ export function NewOpportunity() {
 
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
-  const firstNGOId = currentAgents[0]?.id;
+  const firstNGOId = currentAgents[0].agentId || (userData?.agentId ?? 0);
 
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
     resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
@@ -122,10 +123,6 @@ export function NewOpportunity() {
     ],
   });
 
-  const agentTitles = currentAgents
-    .map((agent) => ({ id: agent?.id, title: agent?.title }))
-    .filter((agent) => Boolean(agent?.id));
-
   const handleCreate = async () => {
     const headerValid = await headerMethods.trigger();
     const detailsValid = await detailsMethods.trigger();
@@ -160,7 +157,7 @@ export function NewOpportunity() {
       </BackButton>
       <Heading2>{t("dashboard.newOpportunity.title")}</Heading2>
       <FormProvider {...headerMethods}>
-        <OpportunityHeaderCard selectedType={selectedType} agentTitles={agentTitles} />
+        <OpportunityHeaderCard selectedType={selectedType} agentTitles={currentAgents} />
       </FormProvider>
       {isAccompanying ? (
         <SectionCard

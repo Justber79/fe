@@ -10,7 +10,7 @@ import {
 import { ShootingStarIcon } from "@phosphor-icons/react";
 import { useFormContext, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiAgentMembershipSummary, VolunteerStateTypeType } from "need4deed-sdk";
 import { VolunteerTypeRow, TypeButtons, TypeButton, NGOTypeRow, NGOnonEditableRow } from "./styled";
 import { Heading3, Heading4 } from "@/components/styled/text";
 import { createVolunteerTypeLabelMap } from "@/components/Dashboard/Profile/sections/ProfileHeader/common/labelMaps";
@@ -25,7 +25,7 @@ const SELECTABLE_VOLUNTEER_TYPES = [
 
 type Props = {
   selectedType: VolunteerStateTypeType | undefined;
-  agentTitles: { id: number; title: string }[];
+  agentTitles: ApiAgentMembershipSummary[];
 };
 
 export default function OpportunityHeaderCard({ selectedType, agentTitles }: Props) {
@@ -36,7 +36,6 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
     formState: { errors },
   } = useFormContext<HeaderFormData>();
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
-
   return (
     <Card>
       <ProfileContent>
@@ -87,22 +86,22 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
               name="agentId"
               control={control}
               render={({ field }) =>
-                agentTitles && agentTitles.length > 1 ? (
+                agentTitles.length > 1 ? (
                   <EditableField
                     mode="edit"
                     type="radio-list"
                     label={t("dashboard.newOpportunity.fields.ngo")}
                     value={field.value}
                     setValue={field.onChange}
-                    labels={agentTitles?.map((agent) => agent.title)}
-                    displayValue={agentTitles?.find((agent) => agent.id === field.value)?.title}
-                    options={agentTitles?.map((agent) => agent.id)}
+                    labels={agentTitles?.map((agent) => agent.agentTitle)}
+                    displayValue={agentTitles?.find((agent) => agent.agentId === field.value)?.agentTitle}
+                    options={agentTitles?.map((agent) => agent.agentId)}
                     errorMessage={errors.agentId?.message}
                   />
                 ) : (
                   <NGOnonEditableRow>
                     <Heading4>{t("dashboard.newOpportunity.fields.ngo")}</Heading4>
-                    <Heading3>{agentTitles[0]?.title ?? "-"}</Heading3>
+                    <Heading3>{agentTitles[0]?.agentTitle ?? "-"}</Heading3>
                   </NGOnonEditableRow>
                 )
               }

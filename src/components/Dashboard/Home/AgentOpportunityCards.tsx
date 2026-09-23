@@ -11,11 +11,11 @@ import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLink
 
 export function AgentOpportunityCards() {
   const { t } = useTranslation();
-  const { agentId } = useGetCurrentAgent();
+  const { agentIds } = useGetCurrentAgent();
 
   const { data: apiFilterOptions } = useGetQuery<ApiOptionLists>({ queryKey: ["options"], apiPath: apiPathOption });
 
-  const { allLinkedOpportunities: opportunities, isLoading } = useGetMultiOpportunityLinked([agentId ?? 0]);
+  const { allLinkedOpportunities: opportunities, isLoading } = useGetMultiOpportunityLinked(agentIds);
 
   const activitiesList = apiFilterOptions?.activity ?? undefined;
   const districtsList = apiFilterOptions?.district ?? undefined;
