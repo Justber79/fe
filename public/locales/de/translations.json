@@ -2189,6 +2189,7 @@
     "successful": "Erfolgreich",
     "errorGeneric": "Etwas ist schief gelaufen!",
     "validationFailed": "Validierung fehlgeschlagen",
+    "loginAgain": "Bitte melden Sie sich erneut an.",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",

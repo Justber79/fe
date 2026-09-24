@@ -1845,6 +1845,7 @@
     "successful": "Successful",
     "errorGeneric": "Something went wrong!",
     "validationFailed": "Validation failed",
+    "loginAgain": "Please log in again.",
     "uploadSuccess": "Document uploaded successfully!",
     "deleteSuccess": "Document deleted successfully!",
     "uploadError": "Upload failed. Please try again.",

@@ -95,6 +95,10 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
           errorMessage = t("message.validationFailed");
         }
 
+        if (["Refresh token is required.", "Invalid refresh token."].includes(errorMessage)) {
+          errorMessage = t("message.loginAgain");
+        }
+
         const commDeleteMatch = errorMessage.match(
           /^You do not have permission to delete communication with id:(\d+)\.$/,
         );
