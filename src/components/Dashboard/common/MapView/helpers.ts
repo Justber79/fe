@@ -31,7 +31,7 @@ export const createOpportunityMarkers = (
   >();
 
   opportunities?.forEach((opp) => {
-    if (!opp.lat || !opp.lon) return;
+    if (!opp.lat || !opp.lon || !opp.agentId) return;
     if (
       opp.statusOpportunity !== OpportunityStatusType.NEW &&
       opp.statusOpportunity !== OpportunityStatusType.SEARCHING
