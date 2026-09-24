@@ -74,20 +74,16 @@ export function AgentRegistration() {
         return;
       }
 
-      await axios.post(
-        apiPathUser,
-        {
-          email: formData.email,
-          password: formData.password,
-          role: UserRole.AGENT,
-          person: {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            phone: formData.phone,
-          },
+      await axios.post(apiPathUser, {
+        email: formData.email,
+        password: formData.password,
+        role: UserRole.AGENT,
+        person: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
         },
-        { skipAuthRefresh: true },
-      );
+      });
 
       document.cookie = PENDING_ROLE_COOKIE;
       setIsSuccess(true);

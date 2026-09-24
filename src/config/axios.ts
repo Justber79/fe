@@ -1,15 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { clearAuthHint } from "@/utils/helpers";
-import {
-  apiPathAgentRegister,
-  apiPathAuthEmailDomain,
-  apiPathAuthRefresh,
-  apiPathLogin,
-  apiPathPasswordReset,
-  apiPathRequestPasswordReset,
-  apiPathVolunteerRegister,
-} from "./constants";
+import { apiPathAuthRefresh } from "./constants";
 
 let isRefreshing = false;
 let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
@@ -25,17 +17,6 @@ const processQueue = (error: unknown | null, token = null) => {
   failedQueue = [];
 };
 
-const publicAuthPaths = [
-  apiPathLogin,
-  apiPathRequestPasswordReset,
-  apiPathPasswordReset,
-  apiPathAgentRegister,
-  apiPathVolunteerRegister,
-  apiPathAuthEmailDomain,
-];
-
-const isPublicAuthRequest = (url: string) => publicAuthPaths.some((path) => url.includes(path));
-
 // Don't set baseURL - let Next.js proxy handle the routing
 // axios.defaults.baseURL = apiURL;
 
@@ -44,15 +25,13 @@ axios.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Only retry protected requests on 401. Public auth requests must keep
-    // their original error instead of replacing it with a refresh error.
+    // Only retry on 401 (unauthorized), not 403 (forbidden - permission issue)
+    // Also skip if it's a refresh request itself or if already retried
     if (
-      !originalRequest?.url ||
       error.response?.status !== 401 ||
-      originalRequest.skipAuthRefresh ||
       originalRequest.url.includes(apiPathAuthRefresh) ||
-      isPublicAuthRequest(originalRequest.url) ||
-      originalRequest._retry
+      originalRequest._retry ||
+      !originalRequest.url
     ) {
       return Promise.reject(error);
     }
