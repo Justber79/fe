@@ -64,16 +64,20 @@ export function VolunteerRegistration() {
     setIsSubmitting(true);
 
     try {
-      await axios.post(apiPathUser, {
-        email: formData.email,
-        password: formData.password,
-        role: UserRole.VOLUNTEER,
-        person: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          phone: formData.phone,
+      await axios.post(
+        apiPathUser,
+        {
+          email: formData.email,
+          password: formData.password,
+          role: UserRole.VOLUNTEER,
+          person: {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            phone: formData.phone,
+          },
         },
-      });
+        { skipAuthRefresh: true },
+      );
 
       setIsSuccess(true);
     } catch (err) {

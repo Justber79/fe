@@ -49,6 +49,7 @@ axios.interceptors.response.use(
     if (
       !originalRequest?.url ||
       error.response?.status !== 401 ||
+      originalRequest.skipAuthRefresh ||
       originalRequest.url.includes(apiPathAuthRefresh) ||
       isPublicAuthRequest(originalRequest.url) ||
       originalRequest._retry
