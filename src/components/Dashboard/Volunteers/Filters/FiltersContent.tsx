@@ -27,17 +27,17 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
 
   return (
     <FiltersContentContainer>
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.volunteerType_title")} items={typeFilters} />
       )}
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.engagement.header")} items={engagementFilters} />
       )}
       <AccordionFilter header={t("dashboard.volunteers.filters.matchStatus.header")} items={statusMatchFilters} />
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       )}
-      {viewMode === ViewMode.CARDS && (
+      {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
       )}
       <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
