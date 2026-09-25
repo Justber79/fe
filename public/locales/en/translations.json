@@ -105,6 +105,24 @@
           "text": "In case you are multilingual, you may be asked to accompany and translate when needed"
         }
       }
+    },
+    "volunteeringOpportunities": {
+      "header": "Discover Volunteering Opportunities",
+      "languages": "Languages",
+      "schedule": "Schedule",
+      "district": "District",
+      "footerButton": "See all volunteering opportunities",
+      "dateOfAppointment": "Date Of Appointment",
+      "mainCommunication": "Main communication",
+      "defaultMainCommunication": "English, German",
+      "translationTo": "Translation to",
+      "residentsSpeak": "Residents speak",
+      "accompanyingTranslation": {
+        "en": "German, English",
+        "de": "German",
+        "no": "No Translation needed"
+      },
+      "otherCategory": "General Volunteering"
     }
   },
   "eventPage": {
@@ -2128,5 +2146,55 @@
   "formInput": {
     "showPassword": "Show password",
     "hidePassword": "Hide password"
+  },
+  "opportunityPage": {
+    "header": "Explore Volunteering Opportunities",
+    "popup": {
+      "register": {
+        "title": "New here? Register now",
+        "button": "Register and Apply"
+      },
+      "apply": {
+        "title": "Already Registered? Email:",
+        "button": "volunteer@need4deed.org"
+      }
+    },
+    "tabs": {
+      "tab1": "TABLE VIEW",
+      "tab2": "MAP VIEW"
+    },
+    "resultsFound": "results found",
+    "searchPlaceHolder": "Enter search term",
+    "mapViewMessage": "Will be available soon",
+    "filters": {
+      "button": "FILTERS",
+      "closeFilters": "CLOSE FILTERS",
+      "clearAllFilters": "CLEAR ALL FILTERS",
+      "accompanying": "Accompanying",
+      "accompanyingDesc": "Open to bring residents to individual appointments. One-time volunteering posts that require german language skills.",
+      "activityType": "Activity Type",
+      "district": "District",
+      "days": "Days",
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    }
+  },
+  "weekdays": {
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday",
+    "0": "Sunday"
+  },
+  "spinner": {
+    "header": "Loading opportunities...",
+    "para": ""
+  },
+  "emptyList": {
+    "header": "Opportunities are being updated...",
+    "para": "We are currently updating the volunteering opportunities. This may take a while. We recommend refreshing the page later on today.  If you have any specific question please contact us at volunteer@need4deed.org"
   }
 }
