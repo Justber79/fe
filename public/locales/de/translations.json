@@ -103,6 +103,24 @@
           "text": "Falls Du mehrsprachig bist, wirst Du möglicherweise gebeten, bei Bedarf zu begleiten und zu dolmetschen"
         }
       }
+    },
+    "volunteeringOpportunities": {
+      "header": "Ehrenamtsangebote entdecken",
+      "languages": "Sprachen",
+      "schedule": "Zeitplan",
+      "district": "Bezirk",
+      "footerButton": "Alle Ehrenamtsangebote ansehen",
+      "dateOfAppointment": "Datum des Termins",
+      "mainCommunication": "Hauptkommunikation",
+      "defaultMainCommunication": "Englisch, Deutsch",
+      "translationTo": "Übersetzung nach",
+      "residentsSpeak": "Bewohnende sprechen",
+      "accompanyingTranslation": {
+        "en": "Deutsch, Englisch",
+        "de": "Deutsch",
+        "no": "Sprachmittlung ist nicht nötig"
+      },
+      "otherCategory": "Allgemeines Engagement"
     }
   },
   "eventPage": {
@@ -2483,5 +2501,63 @@
   "formInput": {
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen"
+  },
+  "opportunityPage": {
+    "header": "Entdecke Ehrenamtsangebote",
+    "popup": {
+      "register": {
+        "title": "Neu hier? Jetzt registrieren",
+        "button": "Registrieren und Bewerben"
+      },
+      "apply": {
+        "title": "Bereits registriert? E-mail:",
+        "button": "volunteer@need4deed.org"
+      }
+    },
+    "tabs": {
+      "tab1": "TABELLE",
+      "tab2": "KARTE"
+    },
+    "resultsFound": "ergebnisse gefunden",
+    "searchPlaceHolder": "Suchbegriff eingeben",
+    "mapViewMessage": "Wird bald verfügbar sein",
+    "filters": {
+      "button": "FILTER",
+      "closeFilters": "FILTER SCLIEẞEN",
+      "clearAllFilters": "ALLE FILTER LÖSCHEN",
+      "accompanying": "Begleitung",
+      "accompanyingDesc": "Offen für die Begleitung von Bewohnern zu einzelnen Terminen. Einmalige Ehrenämter, die Deutschkenntnisse erfordern.",
+      "activityType": "Aktivitätstyp",
+      "district": "Bezirk",
+      "days": "Tage",
+      "morning": "Morgen",
+      "afternoon": "Nachmittag",
+      "evening": "Abend"
+    },
+    "categories": {
+      "germanLanguageSupport": "Deutsche Unterstützung",
+      "childcare": "Kinderbetreuung",
+      "skillsBasedVolunteering": "Ehrenamt mit Fachkenntnissen",
+      "events": "Veranstaltungen",
+      "sportsActivities": "Sportliche Aktivitäten",
+      "accompanyARefugee": "Flüchtlingen begleiten"
+    }
+  },
+  "weekdays": {
+    "0": "Sonntag",
+    "1": "Montag",
+    "2": "Dienstag",
+    "3": "Mittwoch",
+    "4": "Donnerstag",
+    "5": "Freitag",
+    "6": "Samstag"
+  },
+  "spinner": {
+    "header": "Lade Engagementangebote...",
+    "para": ""
+  },
+  "emptyList": {
+    "header": "Angebote werden aktualisiert...",
+    "para": "Wir aktualisieren gerade die Engagementangebote. Dies kann einige Zeit dauern. Wir empfehlen, die Seite später am Tag erneut zu aktualisieren. Wenn Du Fragen hast, wende Dich bitte an volunteer@need4deed.org"
   }
 }
