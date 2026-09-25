@@ -1,10 +1,10 @@
 "use client";
 
-import { LangPurpose, type ApiVolunteerOpportunityGetList, type OptionItem } from "need4deed-sdk";
+import { type ApiVolunteerOpportunityGetList, type OptionItem } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
-import { abbreviateDistrict, getDistrictTitle, getLanguagesByPurpose } from "./helpers";
+import { abbreviateDistrict, getDistrictTitle, getOpportunityDisplayLanguages } from "./helpers";
 import Link from "next/link";
 
 interface TableRowProps {
@@ -18,7 +18,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
   const { t, i18n } = useTranslation();
   const { id, title, volunteerType, district, languages } = opportunity;
   const statusMatch = opportunity.statusMatch;
-  const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
+  const displayLanguages = getOpportunityDisplayLanguages(languages);
   const districtTitle = getDistrictTitle(district, districtsList);
   const districtText = abbreviateDistrict(districtTitle) || "—";
 
@@ -38,7 +38,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
         {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
       </TableCell>
       <TableCell data-testid={`opportunity-languages-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.languages}>
-        {recipientLanguage || "—"}
+        {displayLanguages || "—"}
       </TableCell>
       <TableCell data-testid={`opportunity-district-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.district}>
         {districtText || "—"}

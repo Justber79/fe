@@ -1,7 +1,7 @@
 "use client";
 
 import type { ApiVolunteerOpportunityGetList, OptionItem } from "need4deed-sdk";
-import { LangPurpose, ProfileVolunteeringType } from "need4deed-sdk";
+import { ProfileVolunteeringType } from "need4deed-sdk";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell, TruncatedText, WrappedText } from "@/components/core/common/Table";
@@ -11,7 +11,7 @@ import {
   formatAccompanyingDate,
   formatSchedule,
   getDistrictTitle,
-  getLanguagesByPurpose,
+  getOpportunityDisplayLanguages,
 } from "./helpers";
 import { MatchedBadge } from "./styles";
 import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
@@ -51,7 +51,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
       ? formatSchedule(availability, t)
       : null;
 
-  const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
+  const displayLanguages = getOpportunityDisplayLanguages(languages);
   const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
   const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
   const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
@@ -74,7 +74,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
         {isMatched ? <MatchedBadge>{statusLabel}</MatchedBadge> : <TruncatedText>{statusLabel}</TruncatedText>}
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.languages} data-testid={`opportunity-languages-${id}`}>
-        <TruncatedText>{recipientLanguage || "—"}</TruncatedText>
+        <TruncatedText>{displayLanguages || "—"}</TruncatedText>
       </TableCell>
       <TableCell $noWrap $width={OPPORTUNITY_COL_WIDTHS.district} data-testid={`opportunity-district-${id}`}>
         <TruncatedText>{districtText}</TruncatedText>

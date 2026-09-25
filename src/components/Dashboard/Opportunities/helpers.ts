@@ -151,6 +151,18 @@ export function getLanguagesByPurpose(languages: ApiLanguage[] | undefined, purp
     .join(", ");
 }
 
+export function getOpportunityDisplayLanguages(languages: ApiLanguage[] | undefined) {
+  if (!languages) return "";
+
+  return Array.from(
+    new Set(
+      [LangPurpose.RECIPIENT, LangPurpose.GENERAL].flatMap((purpose) =>
+        languages.filter((language) => language.purpose === purpose).map((language) => language.title),
+      ),
+    ),
+  ).join(", ");
+}
+
 export function getDistrictTitle(
   district: ApiVolunteerOpportunityGetList["district"],
   districtsList: OptionItem[] | undefined,
