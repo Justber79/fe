@@ -32,8 +32,6 @@ export type FilterKey = (typeof FILTER_KEY)[keyof typeof FILTER_KEY];
 
 export const DASH = "-";
 
-export const langQueryParamKey = "language";
-
 export enum CategoryTitle {
   ACCOMPANYING = 6,
   SPORT_ACTIVITIES = 5,
@@ -42,6 +40,19 @@ export enum CategoryTitle {
   CHILD_CARE = 2,
   DE_LNG_SUPPORT = 1,
 }
+
+// Stable activity-type keys (used in the filter state and URL), derived from
+// category_id; labels are translated only for display.
+export const OTHER_CATEGORY = "other";
+
+export const categoryKeyById: Record<CategoryTitle, string> = {
+  [CategoryTitle.DE_LNG_SUPPORT]: "germanLanguageSupport",
+  [CategoryTitle.CHILD_CARE]: "childcare",
+  [CategoryTitle.SKILLS_BASED]: "skillsBasedVolunteering",
+  [CategoryTitle.EVENTS]: "events",
+  [CategoryTitle.SPORT_ACTIVITIES]: "sportsActivities",
+  [CategoryTitle.ACCOMPANYING]: "accompanyARefugee",
+};
 
 // `time_slot` values the legacy endpoint returns in `timeslots`.
 export enum LegacyTimeSlot {

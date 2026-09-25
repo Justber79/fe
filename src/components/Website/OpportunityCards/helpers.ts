@@ -3,12 +3,13 @@ import { Lang, OpportunityLegacyType, TranslatedIntoType } from "need4deed-sdk";
 import { IconName } from "@/components/VolunteeringCategories/types";
 import {
   CategoryTitle,
+  categoryKeyById,
+  OTHER_CATEGORY,
   DASH,
   FILTER_KEY,
   FILTER_KEY_LIST,
   FilterKey,
   LegacyTimeSlot,
-  langQueryParamKey,
 } from "./constants";
 import { CardsFilter, Day, DayKeys, Days, DaysKeys, LegacyTimeslot, Opportunity, OpportunityApi } from "./types";
 
@@ -21,13 +22,15 @@ const mapOpportunity = (opp: OpportunityApi, t: TFunction): Opportunity => {
     [TranslatedIntoType.NO_TRANSLATION]: t("homepage.volunteeringOpportunities.accompanyingTranslation.no"),
   };
 
-  const otherCategory = t("homepage.volunteeringOpportunities.otherCategory");
-
+  // be sends `category: null`, so derive it: accompaniments (which mostly
+  // have no category_id) by type; others by category_id, except a volunteering
+  // post filed under "accompanying", which counts as other.
+  const accompanyingKey = categoryKeyById[CategoryTitle.ACCOMPANYING];
+  const byId = categoryKeyById[opp.category_id as CategoryTitle];
   const category =
-    (opp.category_id === CategoryTitle.ACCOMPANYING && opp.opportunity_type === OpportunityLegacyType.VOLUNTEERING) ||
-    !opp.category
-      ? otherCategory
-      : opp.category;
+    opp.opportunity_type === OpportunityLegacyType.ACCOMPANYING
+      ? accompanyingKey
+      : (byId !== accompanyingKey && byId) || OTHER_CATEGORY;
 
   return {
     accompanyingDate: opp.accomp_datetime ? new Date(opp.accomp_datetime) : null,
@@ -203,19 +206,23 @@ export const filterOpportunity = (opportunity: Opportunity, reducedFilter: Reduc
 const createDefaultFilterFromSet = (set: Set<string>) =>
   Object.fromEntries([...set].map((key) => [key, false])) as Record<string, boolean>;
 
-export const extractCardsFilter = (opportunities: Opportunity[], t: TFunction): Partial<CardsFilter> => {
+export const getCategoryLabel = (category: string, t: TFunction) =>
+  category === OTHER_CATEGORY
+    ? t("homepage.volunteeringOpportunities.otherCategory")
+    : t(`opportunityPage.categories.${category}`);
+
+export const extractCardsFilter = (opportunities: Opportunity[]): Partial<CardsFilter> => {
   const categoriesSet = new Set<string>();
   const districtSet = new Set<string>();
 
   for (const opp of opportunities) {
     // "Accompanying" is its own switch, not an activity type.
-    if (opp.categoryId !== CategoryTitle.ACCOMPANYING) categoriesSet.add(opp.category);
+    if (opp.category !== categoryKeyById[CategoryTitle.ACCOMPANYING]) categoriesSet.add(opp.category);
     opp.locations.forEach((l) => districtSet.add(l));
   }
 
   // Keep "Other" last.
-  const otherCategory = t("homepage.volunteeringOpportunities.otherCategory");
-  if (categoriesSet.delete(otherCategory)) categoriesSet.add(otherCategory);
+  if (categoriesSet.delete(OTHER_CATEGORY)) categoriesSet.add(OTHER_CATEGORY);
 
   return { activityType: createDefaultFilterFromSet(categoriesSet), district: createDefaultFilterFromSet(districtSet) };
 };
@@ -227,7 +234,7 @@ const hasKey = <T extends object>(obj: T | null | undefined, key: PropertyKey): 
 
 /* Filter ⇄ URL query */
 
-export function serializeFilters(filters: CardsFilter, language: Lang) {
+export function serializeFilters(filters: CardsFilter) {
   const params = new URLSearchParams();
 
   if (filters.searchInput) params.set(FILTER_KEY.SEARCH_INPUT, filters.searchInput);
@@ -246,8 +253,6 @@ export function serializeFilters(filters: CardsFilter, language: Lang) {
       if (value) params.append(FILTER_KEY.DAYS, `${day}${DASH}${slot}`);
     });
   });
-
-  if (params.size) params.set(langQueryParamKey, language);
 
   return params;
 }

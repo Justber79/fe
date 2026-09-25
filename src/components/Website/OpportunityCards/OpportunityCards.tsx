@@ -1,7 +1,6 @@
 "use client";
-import { Lang } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { PageLayout } from "@/components/Layout";
@@ -20,12 +19,10 @@ import {
   serializeFilters,
 } from "./helpers";
 import OpportunityCardsHeader from "./OpportunityCardsHeader";
-import { CardsFilter } from "./types";
 
 /** Public opportunity browser, ported from the old website's /opportunity-cards. */
 export function OpportunityCards() {
-  const { t, i18n } = useTranslation();
-  const language = i18n.language as Lang;
+  const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -34,33 +31,36 @@ export function OpportunityCards() {
   const [cardsFilter, setCardsFilter] = useState(defaultFilter);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isFilterReady, setIsFilterReady] = useState(false);
 
   const mappedOpportunities = useMemo(() => getMappedOpportunities(opportunities ?? [], t), [opportunities, t]);
 
-  // Activity-type and district options come from the data (and their labels
-  // from the language), so rebuild them when either changes, then re-apply
-  // whatever the URL says is selected.
+  // Activity-type and district options come from the data, so build them once
+  // it arrives, then apply whatever the URL says is selected.
   useEffect(() => {
     if (!mappedOpportunities.length) return;
 
     setCardsFilter((prev) => {
-      const base = { ...prev, ...extractCardsFilter(mappedOpportunities, t) };
+      const base = { ...prev, ...extractCardsFilter(mappedOpportunities) };
       const hasFilterParams = FILTER_KEY_LIST.some((key) => searchParams.has(key));
       return hasFilterParams ? deserializeFilters(searchParams, base) : base;
     });
     if (openFilters(searchParams)) setIsFiltersOpen(true);
-    // searchParams is read once per data/language change on purpose: it is
-    // written from cardsFilter, so reacting to it would loop.
+    setIsFilterReady(true);
+    // searchParams is read only here, on purpose: the effect below writes it
+    // from cardsFilter, so reacting to it would loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mappedOpportunities, t]);
+  }, [mappedOpportunities]);
 
-  const updateFilter = (update: SetStateAction<CardsFilter>) => {
-    const next = typeof update === "function" ? update(cardsFilter) : update;
-    setCardsFilter(next);
+  // Mirror the filter into the URL so filtered views can be shared. Not before
+  // the URL has been read above, or the default filter would wipe it.
+  useEffect(() => {
+    if (!isFilterReady) return;
 
-    const query = serializeFilters(next, language).toString();
+    const query = serializeFilters(cardsFilter).toString();
+    if (query === window.location.search.slice(1)) return;
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  };
+  }, [cardsFilter, isFilterReady, pathname, router]);
 
   const filteredOpportunities = useMemo(() => {
     const reducedFilter = reduceFilter(cardsFilter);
@@ -78,12 +78,12 @@ export function OpportunityCards() {
           isFiltersOpen={isFiltersOpen}
           setIsFiltersOpen={setIsFiltersOpen}
           filter={cardsFilter}
-          setFilter={updateFilter}
+          setFilter={setCardsFilter}
         />
         <OpportunityCardsHeader
           numOfOpportunities={isCardsTab ? filteredOpportunities.length : 0}
           searchInput={cardsFilter.searchInput}
-          onSearchInputChange={(searchInput) => updateFilter((prev) => ({ ...prev, searchInput }))}
+          onSearchInputChange={(searchInput) => setCardsFilter((prev) => ({ ...prev, searchInput }))}
           tabs={[t("opportunityPage.tabs.tab1"), t("opportunityPage.tabs.tab2")]}
           selectedTabIndex={selectedTabIndex}
           setSelectedTabIndex={setSelectedTabIndex}

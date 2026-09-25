@@ -52,6 +52,7 @@ export interface Opportunity {
   updatedAt: Date;
   voInformation: string | null;
   categoryId: number | null;
+  /** Activity-type key: a `categoryKeyById` value or `OTHER_CATEGORY`. */
   category: string;
   lastEditedTimeNotion: Date;
   defaultMainCommunication: string;

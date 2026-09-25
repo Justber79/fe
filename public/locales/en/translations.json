@@ -2178,6 +2178,14 @@
       "morning": "Morning",
       "afternoon": "Afternoon",
       "evening": "Evening"
+    },
+    "categories": {
+      "germanLanguageSupport": "German Language Support",
+      "childcare": "Childcare",
+      "skillsBasedVolunteering": "Skills Based Volunteering",
+      "events": "Events",
+      "sportsActivities": "Sport activities",
+      "accompanyARefugee": "Accompany a Refugee"
     }
   },
   "weekdays": {

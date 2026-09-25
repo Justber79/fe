@@ -34,7 +34,9 @@ export default function Cards({ opportunities, loading }: Props) {
   if (!opportunities.length) return <Announcement copies={loading ? "spinner" : "emptyList"} />;
 
   const itemsPerPage = itemsPerPageByScreen[screenType];
-  const start = (currentPage - 1) * itemsPerPage;
+  // Page size changes with the screen type (e.g. rotating a phone); stay on a page that exists.
+  const page = Math.min(currentPage, Math.ceil(opportunities.length / itemsPerPage));
+  const start = (page - 1) * itemsPerPage;
 
   return (
     <CardsContainer>
@@ -55,7 +57,7 @@ export default function Cards({ opportunities, loading }: Props) {
           />
         ))}
         itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
+        currentPage={page}
         setCurrentPage={setCurrentPage}
         totalItemCounts={opportunities.length}
       />

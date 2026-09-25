@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { Button, SwitchButton } from "@/components/core/button";
 import { IconName } from "@/components/core/button/Button/icon";
 import { Heading4, Paragraph } from "@/components/styled/text";
-import { defaultFilter } from "../constants";
+import { defaultFilter, OTHER_CATEGORY } from "../constants";
+import { getCategoryLabel } from "../helpers";
 import { CardsFilter, DayKeys, DaysKeys, SetFilter } from "../types";
 import AccordionFilter from "./AccordionFilter";
 
@@ -38,10 +39,13 @@ export default function Filters({ isFiltersOpen, setIsFiltersOpen, filter, setFi
   const toggleIn = (group: "activityType" | "district", key: string) => (checked: boolean) =>
     setFilter((prev) => ({ ...prev, [group]: { ...prev[group], [key]: checked } }));
 
-  const toItems = (group: "activityType" | "district") =>
+  const toItems = (group: "activityType" | "district", getLabel: (key: string) => string = (key) => key) =>
     Object.keys(filter[group])
-      .sort()
-      .map((key) => ({ label: key, checked: filter[group][key], onChange: toggleIn(group, key) }));
+      .map((key) => ({ key, label: getLabel(key), checked: filter[group][key], onChange: toggleIn(group, key) }))
+      // Alphabetical by what the user reads; "Other" stays last.
+      .sort(
+        (a, b) => Number(a.key === OTHER_CATEGORY) - Number(b.key === OTHER_CATEGORY) || a.label.localeCompare(b.label),
+      );
 
   const daysFilterItems = weekDays.map((day) => ({
     label: `${t(`weekdays.${daysTranslationMap[day]}`)}s`,
@@ -98,7 +102,10 @@ export default function Filters({ isFiltersOpen, setIsFiltersOpen, filter, setFi
           </Paragraph>
         </AccompanyingFilter>
 
-        <AccordionFilter header={t("opportunityPage.filters.activityType")} items={toItems("activityType")} />
+        <AccordionFilter
+          header={t("opportunityPage.filters.activityType")}
+          items={toItems("activityType", (key) => getCategoryLabel(key, t))}
+        />
         <AccordionFilter header={t("opportunityPage.filters.district")} items={toItems("district")} />
         <AccordionFilter header={t("opportunityPage.filters.days")} groupedItems={daysFilterItems} />
       </FiltersContent>

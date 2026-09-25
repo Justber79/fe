@@ -2533,6 +2533,14 @@
       "morning": "Morgen",
       "afternoon": "Nachmittag",
       "evening": "Abend"
+    },
+    "categories": {
+      "germanLanguageSupport": "Deutsche Unterstützung",
+      "childcare": "Kinderbetreuung",
+      "skillsBasedVolunteering": "Ehrenamt mit Fachkenntnissen",
+      "events": "Veranstaltungen",
+      "sportsActivities": "Sportliche Aktivitäten",
+      "accompanyARefugee": "Flüchtlingen begleiten"
     }
   },
   "weekdays": {
