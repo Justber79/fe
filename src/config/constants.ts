@@ -29,7 +29,7 @@ export const apiPathPerson = `/${apiPrefix}/person/`;
 export const apiPathOrganization = `/${apiPrefix}/organization/`;
 export const apiPathRequestPasswordReset = `/${apiPrefix}/auth/request-reset`;
 export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
-export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL;
+export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL ?? "https://cdn.need4deed.org/data";
 export const cacheTTL = 1000 * 60 * 5; // 5 minutes
 
 export const gdiBerlinRacApi =
@@ -59,7 +59,7 @@ export const eventsSectionContainerId = "events-section-container";
 export const eventsPublicLandingUrl = "/event-page";
 export const opportunityCardsPublicUrl = "https://www.need4deed.org/opportunity-cards";
 
-export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL ?? "https://d2nwrdddg8skub.cloudfront.net/images";
+export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL ?? "https://cdn.need4deed.org/images";
 
 export const minPLZGermany = 1067;
 export const maxPLZGermany = 99998;
