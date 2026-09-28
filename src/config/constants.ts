@@ -1,7 +1,6 @@
 import { Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
-export const urlApi = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
 export const apiPrefix = "api";
 export const apiPathVolunteer = `/${apiPrefix}/volunteer`;
@@ -57,7 +56,6 @@ export const n4dLanguageLocalStorageKey = "n4d-language";
 
 export const eventsSectionContainerId = "events-section-container";
 export const eventsPublicLandingUrl = "/event-page";
-export const opportunityCardsPublicUrl = "https://www.need4deed.org/opportunity-cards";
 
 export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL ?? "https://cdn.need4deed.org/images";
 
