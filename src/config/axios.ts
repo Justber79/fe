@@ -1,7 +1,13 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { clearAuthHint } from "@/utils/helpers";
-import { apiPathAuthRefresh } from "./constants";
+import { apiPathAuthRefresh, apiPathLogin, apiPathPasswordReset, apiPathRequestPasswordReset } from "./constants";
+
+// Public auth endpoints: a 401 from these means bad credentials or an invalid
+// reset token, not an expired session, so there's nothing to refresh. Retrying
+// them via refresh would also replace the real error (e.g. "Bad credentials.")
+// with the refresh endpoint's "Refresh token is required.".
+const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPasswordReset, apiPathPasswordReset];
 
 let isRefreshing = false;
 let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
@@ -26,12 +32,12 @@ axios.interceptors.response.use(
     const originalRequest = error.config;
 
     // Only retry on 401 (unauthorized), not 403 (forbidden - permission issue)
-    // Also skip if it's a refresh request itself or if already retried
+    // Also skip public auth endpoints (incl. refresh itself) or if already retried
     if (
       error.response?.status !== 401 ||
-      originalRequest.url.includes(apiPathAuthRefresh) ||
-      originalRequest._retry ||
-      !originalRequest.url
+      !originalRequest.url ||
+      noRefreshPaths.some((path) => originalRequest.url.includes(path)) ||
+      originalRequest._retry
     ) {
       return Promise.reject(error);
     }
@@ -85,7 +91,9 @@ axios.interceptors.response.use(
         window.location.href = "/login";
       }
 
-      return Promise.reject(refreshError);
+      // Surface the original 401, not the refresh failure — the caller's toast
+      // should say why its own request failed.
+      return Promise.reject(error);
     } finally {
       isRefreshing = false;
     }

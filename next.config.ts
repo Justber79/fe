@@ -1,9 +1,7 @@
-import { apiPrefix } from "@/config/constants";
+import { apiPrefix, cloudfrontURL } from "@/config/constants";
 import type { NextConfig } from "next";
 
 const apiURL = process.env.API_URL || "http://localhost:5000";
-// Keep in sync with the Dockerfile's NEXT_PUBLIC_CLOUDFRONT_URL default.
-const DEFAULT_ASSET_URL = "https://d2nwrdddg8skub.cloudfront.net/images";
 
 function assetHostname(): string {
   const configured = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
@@ -12,7 +10,7 @@ function assetHostname(): string {
   if (configured !== undefined && configured.trim() === "") {
     throw new Error("NEXT_PUBLIC_CLOUDFRONT_URL is set but empty");
   }
-  const url = configured || DEFAULT_ASSET_URL;
+  const url = cloudfrontURL;
   try {
     return new URL(url).hostname;
   } catch {

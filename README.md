@@ -61,8 +61,8 @@ parent/
 └── sdk/        # Shared TypeScript SDK
 ```
 
-NEXT_PUBLIC_CLOUDFRONT_URL=https://d2nwrdddg8skub.cloudfront.net/images
-NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://d2nwrdddg8skub.cloudfront.net/data
+NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
+NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
 
 ### 1. Clone All Repositories
 
