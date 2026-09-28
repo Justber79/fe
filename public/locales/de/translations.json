@@ -1721,7 +1721,7 @@
         "eventTitle": "Veranstaltungstitel",
         "typeLabel": "Veranstaltungsart",
         "typeWorkshop": "Workshop",
-        "typeParty": "Feier",
+        "typeParty": "Veranstaltung",
         "titleLabel": "Titel der ehrenamtlichen Tätigkeit",
         "titlePlaceholder": "Titel",
         "titleHelper": "z.B. \"Begleitung zur Augenklinik\", \"Basteln & Malen\"",
