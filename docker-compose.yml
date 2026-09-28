@@ -63,15 +63,15 @@ services:
         NODE_ENV: ${NODE_ENV:-development}
         API_URL: "http://be:8000"
         # NEXT_PUBLIC_* is inlined at build time; env_file cannot set these.
-        NEXT_PUBLIC_CLOUDFRONT_URL: ${NEXT_PUBLIC_CLOUDFRONT_URL:-https://d2nwrdddg8skub.cloudfront.net/images}
-        NEXT_PUBLIC_CLOUDFRONT_DATA_URL: ${NEXT_PUBLIC_CLOUDFRONT_DATA_URL:-https://d2nwrdddg8skub.cloudfront.net/data}
+        NEXT_PUBLIC_CLOUDFRONT_URL: ${NEXT_PUBLIC_CLOUDFRONT_URL:-https://cdn.need4deed.org/images}
+        NEXT_PUBLIC_CLOUDFRONT_DATA_URL: ${NEXT_PUBLIC_CLOUDFRONT_DATA_URL:-https://cdn.need4deed.org/data}
     container_name: fe
     ports:
       - "3000:3000"
     env_file: .env
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-      - API_URL=http://localhost:8000
+
 volumes:
   be_database:
     driver: local

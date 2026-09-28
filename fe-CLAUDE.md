@@ -1,6 +1,7 @@
 # CLAUDE.md — Need4Deed Frontend (`fe`)
 
 ## What this repo is
+
 The volunteer-facing dashboard and public landing page for Need4Deed — a Berlin NGO
 connecting volunteers with refugee accommodation centers.
 
@@ -43,9 +44,10 @@ fe/                          ← you are here
 ```
 
 ### Key environment variables
+
 ```
-NEXT_PUBLIC_CLOUDFRONT_URL=https://d2nwrdddg8skub.cloudfront.net/images
-NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://d2nwrdddg8skub.cloudfront.net/data
+NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
+NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
 ```
 
 ---

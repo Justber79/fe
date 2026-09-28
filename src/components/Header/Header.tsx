@@ -3,10 +3,9 @@ import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { DashboardRoutes, eventsPublicLandingUrl, opportunityCardsPublicUrl } from "@/config/constants";
+import { eventsPublicLandingUrl } from "@/config/constants";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { MenuItemType, Subpage } from "@/types";
-import { UserRole } from "need4deed-sdk";
 import BurgerMenuItems from "./BurgerMenuItems";
 import LoginRegister from "./LoginRegister";
 import MenuItems from "./MenuItems";
@@ -95,14 +94,9 @@ export function Header({
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState<boolean>(false);
   const user = useCurrentUser();
 
-  const isAgent = user?.role === UserRole.AGENT;
-
   const menuItems: MenuItemType[] = [
     [t("homepage.heroSection.menuItems.about"), `/${Subpage.ABOUT}`],
-    [
-      t("homepage.heroSection.menuItems.volunteeringOpportunities"),
-      isAgent ? opportunityCardsPublicUrl : `${DashboardRoutes.Opportunities}?view=cards`,
-    ],
+    [t("homepage.heroSection.menuItems.volunteeringOpportunities"), `/${Subpage.OPPORTUNITY_CARDS}`],
     [t("homepage.heroSection.menuItems.events"), `/${i18n.language}${eventsPublicLandingUrl}`],
   ];
 
