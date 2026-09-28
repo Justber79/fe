@@ -1,7 +1,6 @@
 import { Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
-export const urlApi = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
 export const apiPrefix = "api";
 export const apiPathVolunteer = `/${apiPrefix}/volunteer`;
