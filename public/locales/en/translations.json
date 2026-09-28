@@ -1229,6 +1229,8 @@
       "deleteConfirmText": "\"{{entryType}}\" appreciation entry will be permanently deleted."
     },
     "activityLog": {
+      "activity": "Activity",
+      "dateAndTime": "Date & time",
       "date": "Date",
       "hours": "Hours",
       "total": "Total",

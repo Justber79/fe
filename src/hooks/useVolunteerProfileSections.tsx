@@ -23,6 +23,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "./useAuth";
+import { VolunteerActivityLog } from "@/components/Dashboard/Profile/sections/VolunteerActivityLog";
 
 export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefined) => {
   const { t, i18n } = useTranslation();
@@ -145,7 +146,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ChartLine,
       title: t("dashboard.volunteerProfile.activityLog"),
-      subComponent: <div>Activity Log sub-component. to be replaced...</div>,
+      subComponent: <VolunteerActivityLog volunteer={volunteer} />,
     },
   ];
 

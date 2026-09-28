@@ -1241,6 +1241,8 @@
       "deleteConfirmText": "\"{{entryType}}\" Anerkennungseintrag wird dauerhaft gelöscht."
     },
     "activityLog": {
+      "activity": "Aktivität",
+      "dateAndTime": "Datum & Uhrzeit",
       "date": "Datum",
       "hours": "Stunden",
       "total": "Gesamt",
