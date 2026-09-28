@@ -2,8 +2,8 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 ARG API_URL=http://localhost:8000
-ARG NEXT_PUBLIC_CLOUDFRONT_URL=https://d2nwrdddg8skub.cloudfront.net/images
-ARG NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://d2nwrdddg8skub.cloudfront.net/data
+ARG NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
+ARG NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
 
 COPY package.json yarn.lock* ./
 RUN yarn install --frozen-lockfile
