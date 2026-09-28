@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { clearAuthHint } from "@/utils/helpers";
-import { apiPathAuthRefresh } from "./constants";
+import { apiPathAuthRefresh, apiPathLogin } from "./constants";
 
 let isRefreshing = false;
 let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
@@ -29,9 +29,10 @@ axios.interceptors.response.use(
     // Also skip if it's a refresh request itself or if already retried
     if (
       error.response?.status !== 401 ||
+      !originalRequest?.url ||
+      originalRequest.url.includes(apiPathLogin) ||
       originalRequest.url.includes(apiPathAuthRefresh) ||
-      originalRequest._retry ||
-      !originalRequest.url
+      originalRequest._retry
     ) {
       return Promise.reject(error);
     }
