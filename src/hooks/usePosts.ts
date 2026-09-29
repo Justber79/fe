@@ -38,7 +38,6 @@ export function usePostsFeed({ search, authorId }: ApiPostListQuery = {}) {
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       fetchData<ApiPostGet[]>(apiPathPost, {
-        language: lang,
         page: pageParam,
         limit: POSTS_PAGE_SIZE,
         ...(search ? { search } : {}),

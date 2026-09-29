@@ -19,7 +19,6 @@ export const AgentOpportunities = ({ agentId }: Props) => {
     apiPath: `${apiPathAgent}/${agentId}/opportunity-linked`,
     staleTime: cacheTTL,
     enabled: !!agentId,
-    addLang: false,
   });
 
   const opportunities = data ?? [];
