@@ -11,7 +11,7 @@
         "heroText": "Voluntary support for refugees",
         "heroSupportingText": "We connect volunteers to accommodation centers in Berlin",
         "buttonJoinVolunteer": "Join as a volunteer",
-        "buttonJoinRefugeeCenter": "Join as an accommodation centre"
+        "buttonJoinRefugeeCenter": "For non-profits"
       }
     },
     "footer": {
@@ -674,7 +674,7 @@
       "heroText": "Need-based voluntary support for refugees in Berlin",
       "heroSupportingText": "We connect volunteers to refugees accommodation centers in need",
       "buttonJoinVolunteer": "Join as a volunteer",
-      "buttonJoinRefugeeCenter": "Join as a refugee centre"
+      "buttonJoinRefugeeCenter": "For non-profits"
     },
     "header": {
       "button": {
