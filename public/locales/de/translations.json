@@ -11,7 +11,7 @@
         "heroText": "Ehrenamtliche Unterstützung für Geflüchtete",
         "heroSupportingText": "Wir vermitteln Ehrenamtliche an Gemeinschaftsunterkünften in Berlin",
         "buttonJoinVolunteer": "Finde jetzt dein Ehrenamt",
-        "buttonJoinRefugeeCenter": "Unterstützung als Unterkunft beantragen"
+        "buttonJoinRefugeeCenter": "Für Einrichtungen"
       }
     },
     "footer": {
@@ -680,7 +680,7 @@
       "heroText": "Bedarfsorientierte ehrenamtliche Unterstützung für Geflüchtete in Berlin",
       "heroSupportingText": "Wir vermitteln Ehrenamtliche an Flüchtlingsunterkünfte in Not",
       "buttonJoinVolunteer": "Finde jetzt dein Ehrenamt",
-      "buttonJoinRefugeeCenter": "Unterstützung als Unterkunft beantragen"
+      "buttonJoinRefugeeCenter": "Für Einrichtungen"
     },
     "header": {
       "button": {
