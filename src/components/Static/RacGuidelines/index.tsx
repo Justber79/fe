@@ -253,11 +253,13 @@ function RacGuidelines() {
                     <Dash />
                   </DashContainer>
                   <BulletList>
-                    <li>{t("racGuidelines.bulletGovtOffice")}</li>
                     <li>{t("racGuidelines.bulletDoctorAppt")}</li>
-                    <li>{t("racGuidelines.bulletSchoolDaycare")}</li>
+                    <li>{t("racGuidelines.bulletGovtOffice")}</li>
                     <li>{t("racGuidelines.bulletCounsellingBank")}</li>
-                    <li>{t("racGuidelines.bulletNoInterpreting")}</li>
+                    <li>{t("racGuidelines.bulletAccountOpening")}</li>
+                    <li>{t("racGuidelines.bulletFlatViewing")}</li>
+                    <li>{t("racGuidelines.bulletSchoolDaycare")}</li>
+                    <li>{t("racGuidelines.bulletWayfinding")}</li>
                   </BulletList>
                 </AnswerRow>
               </Item>
