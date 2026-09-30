@@ -1555,7 +1555,7 @@
         },
         "appliedOn": "Beworben am",
         "tabs": {
-          "opp-pending": "Ausstehend",
+          "opp-pending": "Angefragt",
           "opp-matched": "Zugeordnet",
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
