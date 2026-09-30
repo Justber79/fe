@@ -10,6 +10,7 @@ import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHe
 import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
 import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
+import { RequestSuggestMenu } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/RequestSuggestMenu";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/SuggestDialog";
 import VolunteerOpportunities from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/VolunteerOpportunities";
 import { VolunteerProfile, VolunteerProfileRef } from "@/components/Dashboard/Profile/sections/VolunteerProfile";
@@ -17,8 +18,10 @@ import { VolunteerProfileDocument } from "@/components/Dashboard/Profile/section
 import { IconName } from "@/components/Dashboard/Profile/types";
 import { useDeleteVolunteer } from "@/hooks/useDeleteVolunteer";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useRequestVolunteerSuggestion } from "@/hooks/useRequestVolunteerSuggestion";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
-import { ApiVolunteerGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
+import { ApiVolunteerGet, OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,6 +34,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const searchParams = useSearchParams();
   const { isAuthorized, isOwnProfile } = useAuth(volunteer?.person.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
+  const isAgent = useCurrentUser()?.role === UserRole.AGENT;
 
   const contactDetailsRef = useRef<EditableSectionRef>(null);
   const volunteerProfileRef = useRef<VolunteerProfileRef>(null);
@@ -40,6 +44,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const [isContactEditing, setIsContactEditing] = useState(false);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [isSuggestDialogOpen, setIsSuggestDialogOpen] = useState(false);
+  const [isRequestMenuOpen, setIsRequestMenuOpen] = useState(false);
 
   const handleContactEditingChange = useCallback((editing: boolean) => setIsContactEditing(editing), []);
   const handleProfileEditingChange = useCallback((editing: boolean) => setIsProfileEditing(editing), []);
@@ -52,14 +57,19 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     router.push(`/${i18n.language}/dashboard/opportunities/${opportunityId}`);
   }, ["opportunity-volunteers", String(opportunityId)]);
 
+  const volunteerFullName = volunteer ? `${volunteer.person.firstName} ${volunteer.person.lastName}` : "";
+  const {
+    requestSuggestion,
+    isPending: isRequestPending,
+    hasContact,
+  } = useRequestVolunteerSuggestion(volunteer?.id ?? 0, volunteerFullName, isAgent && !!volunteer);
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteVolunteer(volunteer?.id ?? 0, () => {
     router.replace(`/${i18n.language}/dashboard/volunteers`);
   });
 
   if (!volunteer) return null;
-
-  const volunteerFullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
 
   const handleSuggestConfirm = () => {
     if (!opportunityId) return;
@@ -100,8 +110,22 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
           ? () => setIsSuggestDialogOpen(true)
           : () => router.push(`/${i18n.language}/dashboard/opportunities?volunteer=${volunteer.id}`),
       }),
+      // NGO only (fe#1092): ask need4deed to suggest this volunteer for one
+      // of the NGO's own opportunities.
+      ...(isAgent && {
+        headerButtonName: t("dashboard.volunteerProfile.requestSuggest.button"),
+        headerButtonDisabled: !hasContact || isRequestPending,
+        onHeaderButtonClick: () => setIsRequestMenuOpen(true),
+      }),
       subComponent: (
         <>
+          {isAgent && (
+            <RequestSuggestMenu
+              isOpen={isRequestMenuOpen}
+              onClose={() => setIsRequestMenuOpen(false)}
+              onSelect={requestSuggestion}
+            />
+          )}
           <VolunteerOpportunities volunteerId={volunteer.id} />
           {isSuggestDialogOpen && (
             <SuggestDialog
@@ -114,41 +138,48 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
         </>
       ),
     },
-    {
-      iconName: IconName.ChatsTeardrop,
-      title: t("dashboard.communicationSection.title"),
-      // Coordinator/admin only (fe#1003) — a volunteer sees their own
-      // communication log but can't add, edit, or delete entries in it.
-      ...(isAuthorized && {
-        headerButtonName: t("dashboard.communicationSection.addNew"),
-        onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
-      }),
-      subComponent: (
-        <CommunicationTracker
-          ref={communicationTrackerRef}
-          entityId={volunteer.id}
-          entityType="volunteer"
-          canEdit={isAuthorized}
-        />
-      ),
-    },
-    {
-      iconName: IconName.Gift,
-      title: t("dashboard.appreciationSection.title"),
-      // Coordinator/admin only (fe#1003) — same reasoning as the
-      // communication tracker above.
-      ...(isAuthorized && {
-        headerButtonName: t("dashboard.appreciationSection.addNew"),
-        onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
-      }),
-      subComponent: <Appreciation ref={appreciationRef} volunteer={volunteer} canEdit={isAuthorized} />,
-    },
-    {
-      iconName: IconName.ChartLine,
-      title: t("dashboard.volunteerProfile.activityLog"),
-      subComponent: <VolunteerActivityLog volunteer={volunteer} />,
-    },
   ];
+
+  // NGOs only see the profile and opportunities (fe#1092): no communication
+  // log, appreciation or activity log.
+  if (!isAgent) {
+    sections.push(
+      {
+        iconName: IconName.ChatsTeardrop,
+        title: t("dashboard.communicationSection.title"),
+        // Coordinator/admin only (fe#1003) — a volunteer sees their own
+        // communication log but can't add, edit, or delete entries in it.
+        ...(isAuthorized && {
+          headerButtonName: t("dashboard.communicationSection.addNew"),
+          onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
+        }),
+        subComponent: (
+          <CommunicationTracker
+            ref={communicationTrackerRef}
+            entityId={volunteer.id}
+            entityType="volunteer"
+            canEdit={isAuthorized}
+          />
+        ),
+      },
+      {
+        iconName: IconName.Gift,
+        title: t("dashboard.appreciationSection.title"),
+        // Coordinator/admin only (fe#1003) — same reasoning as the
+        // communication tracker above.
+        ...(isAuthorized && {
+          headerButtonName: t("dashboard.appreciationSection.addNew"),
+          onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),
+        }),
+        subComponent: <Appreciation ref={appreciationRef} volunteer={volunteer} canEdit={isAuthorized} />,
+      },
+      {
+        iconName: IconName.ChartLine,
+        title: t("dashboard.volunteerProfile.activityLog"),
+        subComponent: <VolunteerActivityLog volunteer={volunteer} />,
+      },
+    );
+  }
 
   if (hasEditingRights) {
     sections.unshift({

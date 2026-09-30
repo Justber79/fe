@@ -17,6 +17,7 @@ type Props = {
   personId: number;
   commentId: number;
   isRead: boolean;
+  requestText?: string;
 };
 
 export default function TaggedNotification({
@@ -28,6 +29,7 @@ export default function TaggedNotification({
   personId,
   commentId,
   isRead,
+  requestText,
 }: Props) {
   const { t } = useTranslation();
   const { mutate: updateReadTagComment } = usePatchTaggedComments(commentId, personId);
@@ -56,7 +58,13 @@ export default function TaggedNotification({
       >
         <ChatCircleIcon size={22} />
         <Heading4>
-          {t("dashboard.home.content.taggedComment", { user: authorName, entityTitle: title, entityType: entityType })}
+          {requestText
+            ? t("dashboard.home.content.requestSuggestNotification", { user: authorName, text: requestText })
+            : t("dashboard.home.content.taggedComment", {
+                user: authorName,
+                entityTitle: title,
+                entityType: entityType,
+              })}
         </Heading4>
       </Link>
     </TagRow>

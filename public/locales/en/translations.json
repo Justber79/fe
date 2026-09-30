@@ -555,6 +555,7 @@
         "newTags": "Newest Tags",
         "taggedComment": "{{user}} tagged you in {{entityType}}: {{entityTitle}}",
         "noTaggedComments": "You are currently not tagged in any comments",
+        "requestSuggestNotification": "{{user}}: {{text}}",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
         "loading": "Loading...",
@@ -725,6 +726,12 @@
       "editButtonName": "Edit",
       "findOppButtonName": "Find Opportunity",
       "suggestButtonName": "Suggest",
+      "requestSuggest": {
+        "button": "Request to suggest",
+        "commentText": "Requested: {{volunteer}} for {{opportunity}}",
+        "success": "Request sent",
+        "noOpportunities": "You have no opportunities yet"
+      },
       "suggestDialog": {
         "title": "Suggest to this volunteer?",
         "messageMid": "will be notified that you suggested",
