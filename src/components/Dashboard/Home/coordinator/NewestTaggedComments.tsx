@@ -11,8 +11,12 @@ import { REQUEST_SUGGEST_COMMENT_MARKER } from "@/config/constants";
 
 // NGO "request to suggest" comments (fe#1092) carry a marker; show their text
 // (minus the tag markup) instead of the generic "tagged you" line.
-const getRequestText = (comment: ApiComment) =>
-  comment.content?.includes(REQUEST_SUGGEST_COMMENT_MARKER) ? comment.content.replace(/<@\d+>/g, "").trim() : undefined;
+// Generated requests always read `<@id> 📩 ...`, so match the marker as the
+// first thing after the tag, not anywhere in a normal comment.
+const getRequestText = (comment: ApiComment) => {
+  const text = comment.content?.replace(/^<@\d+>\s*/, "");
+  return text?.startsWith(REQUEST_SUGGEST_COMMENT_MARKER) ? text.trim() : undefined;
+};
 
 export function NewestTaggedComments() {
   const { t, i18n } = useTranslation();
