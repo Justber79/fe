@@ -561,6 +561,7 @@
         "newTags": "Neueste Tags",
         "taggedComment": "{{user}} hat dich in {{entityType}}: {{entityTitle}} markiert",
         "noTaggedComments": "Du bist derzeit in keinen Kommentaren markiert",
+        "requestSuggestNotification": "{{user}} → {{entityTitle}}: {{text}}",
         "newOpportunities": "Neueste Ehrenamtsbedarfe",
         "newVolunteers": "Neueste Ehrenamtliche",
         "loading": "Wird geladen...",
@@ -731,6 +732,13 @@
       "editButtonName": "Bearbeiten",
       "findOppButtonName": "Ehrenamtliche Tätigkeiten finden",
       "suggestButtonName": "Vorschlagen",
+      "requestSuggest": {
+        "button": "Vorschlag anfragen",
+        "commentText": "Angefragt für {{opportunity}}",
+        "contactMissing": "Anfrage konnte nicht gesendet werden: need4deed-Kontakt nicht gefunden",
+        "success": "Anfrage gesendet",
+        "noOpportunities": "Du hast noch keine ehrenamtlichen Tätigkeiten"
+      },
       "suggestDialog": {
         "title": "Diesem*r Ehrenamtlichen vorschlagen?",
         "messageMid": "wird benachrichtigt, dass Sie",
