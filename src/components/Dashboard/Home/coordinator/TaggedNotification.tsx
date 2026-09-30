@@ -59,7 +59,11 @@ export default function TaggedNotification({
         <ChatCircleIcon size={22} />
         <Heading4>
           {requestText
-            ? t("dashboard.home.content.requestSuggestNotification", { user: authorName, text: requestText })
+            ? t("dashboard.home.content.requestSuggestNotification", {
+                user: authorName,
+                entityTitle: title,
+                text: requestText,
+              })
             : t("dashboard.home.content.taggedComment", {
                 user: authorName,
                 entityTitle: title,

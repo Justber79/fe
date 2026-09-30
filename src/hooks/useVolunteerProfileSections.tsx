@@ -57,12 +57,11 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     router.push(`/${i18n.language}/dashboard/opportunities/${opportunityId}`);
   }, ["opportunity-volunteers", String(opportunityId)]);
 
-  const volunteerFullName = volunteer ? `${volunteer.person.firstName} ${volunteer.person.lastName}` : "";
   const {
     requestSuggestion,
     isPending: isRequestPending,
-    hasContact,
-  } = useRequestVolunteerSuggestion(volunteer?.id ?? 0, volunteerFullName, isAgent && !!volunteer);
+    isContactLoading,
+  } = useRequestVolunteerSuggestion(volunteer?.id ?? 0, isAgent && !!volunteer);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteVolunteer(volunteer?.id ?? 0, () => {
@@ -70,6 +69,8 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   });
 
   if (!volunteer) return null;
+
+  const volunteerFullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
 
   const handleSuggestConfirm = () => {
     if (!opportunityId) return;
@@ -114,7 +115,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       // of the NGO's own opportunities.
       ...(isAgent && {
         headerButtonName: t("dashboard.volunteerProfile.requestSuggest.button"),
-        headerButtonDisabled: !hasContact || isRequestPending,
+        headerButtonDisabled: isContactLoading || isRequestPending,
         onHeaderButtonClick: () => setIsRequestMenuOpen(true),
       }),
       subComponent: (
