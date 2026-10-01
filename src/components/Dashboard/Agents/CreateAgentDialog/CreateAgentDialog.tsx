@@ -3,13 +3,18 @@
 import Button from "@/components/core/button/Button/Button";
 import { Modal } from "@/components/core/modal/Modal";
 import { EditableField } from "@/components/EditableField/EditableField";
+import { apiPathAgent, cacheTTL } from "@/config/constants";
+import { useGetQuery } from "@/hooks";
 import { useCreateAgent } from "@/hooks/useCreateAgent";
+import { ApiAgentGet, ApiAgentRegisterConflict } from "need4deed-sdk";
+import Link from "next/link";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ButtonRow, FormDetails } from "../../Profile/sections/shared/styles";
 import { CreateAgentFormData, createAgentFormSchema } from "./createAgentFormSchema";
-import { DialogTitle } from "./styles";
+import { ConflictBox, DialogTitle } from "./styles";
 
 type Props = {
   isOpen: boolean;
@@ -25,8 +30,17 @@ const emptyValues: CreateAgentFormData = { title: "", addressStreet: "", address
 // languages, about) are filled in later via the agent's own profile page,
 // same as any other agent.
 export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
-  const { t } = useTranslation();
-  const { mutate: createAgent, isPending } = useCreateAgent();
+  const { t, i18n } = useTranslation();
+  const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
+  const { mutate: createAgent, isPending } = useCreateAgent(setConflict);
+
+  // Coordinators can read any agent, so name the existing NGO (fe#1076).
+  const { data: conflictAgent } = useGetQuery<ApiAgentGet>({
+    queryKey: ["agent", String(conflict?.agentId)],
+    apiPath: `${apiPathAgent}/${conflict?.agentId}`,
+    enabled: !!conflict,
+    staleTime: cacheTTL,
+  });
 
   const schema = createAgentFormSchema(t);
   const {
@@ -42,10 +56,12 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
 
   const handleClose = () => {
     reset(emptyValues);
+    setConflict(null);
     onClose();
   };
 
   const onSubmit = (values: CreateAgentFormData) => {
+    setConflict(null);
     createAgent(
       {
         title: values.title,
@@ -105,6 +121,16 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
           )}
         />
       </FormDetails>
+      {conflict && (
+        <ConflictBox role="alert">
+          <span>{t(`dashboard.agents.createAgent.conflict.${conflict.conflict}`)}</span>
+          {/* Name on its own line, only once loaded (never a dangling blank). */}
+          {conflictAgent?.title && <strong>{conflictAgent.title}</strong>}
+          <Link href={`/${i18n.language}/dashboard/agents/${conflict.agentId}`} onClick={handleClose}>
+            {t("dashboard.agents.createAgent.conflict.open")}
+          </Link>
+        </ConflictBox>
+      )}
       <ButtonRow>
         <Button
           text={t("dashboard.agents.createAgent.cancel")}
