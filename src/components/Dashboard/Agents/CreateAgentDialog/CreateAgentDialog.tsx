@@ -123,11 +123,9 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
       </FormDetails>
       {conflict && (
         <ConflictBox role="alert">
-          <span>
-            {t(`dashboard.agents.createAgent.conflict.${conflict.conflict}`, {
-              name: conflictAgent?.title ?? "",
-            })}
-          </span>
+          <span>{t(`dashboard.agents.createAgent.conflict.${conflict.conflict}`)}</span>
+          {/* Name on its own line, only once loaded (never a dangling blank). */}
+          {conflictAgent?.title && <strong>{conflictAgent.title}</strong>}
           <Link href={`/${i18n.language}/dashboard/agents/${conflict.agentId}`} onClick={handleClose}>
             {t("dashboard.agents.createAgent.conflict.open")}
           </Link>

@@ -1067,8 +1067,8 @@
         "submit": "Create",
         "success": "NGO created successfully",
         "conflict": {
-          "title": "An NGO with this name already exists: {{name}}",
-          "address": "An NGO at this address already exists: {{name}}",
+          "title": "An NGO with this name already exists.",
+          "address": "An NGO at this address already exists.",
           "open": "Open existing NGO"
         },
         "validation": {
