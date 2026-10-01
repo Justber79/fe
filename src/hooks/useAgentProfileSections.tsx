@@ -67,6 +67,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
       title: t("dashboard.volunteerProfile.opportunities"),
       ...(hasEditingRights && {
         headerButtonName: t("dashboard.agentProfile.opportunitiesSec.postOpportunity"),
+        onHeaderButtonClick: () => router.push(`/${i18n.language}/dashboard/opportunities/new`),
       }),
       subComponent: <AgentOpportunities agentId={agent.id} />,
     },
