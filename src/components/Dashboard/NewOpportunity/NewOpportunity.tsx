@@ -22,7 +22,7 @@ import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TranslatedIntoType, VolunteerStateTypeType, OpportunityFormDataWithAgentSubmitter } from "need4deed-sdk";
 import { useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -43,6 +43,7 @@ export function NewOpportunity() {
   const lang = i18n.language;
   const locale = lang === "de" ? de : enUS;
   const router = useRouter();
+  const requestedAgentId = Number(useSearchParams().get("agentId")) || 0;
 
   const userData = useCurrentUser();
   const currentAgents = userData?.agentMemberships ?? [];
@@ -62,7 +63,10 @@ export function NewOpportunity() {
 
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
-  const firstNGOId = currentAgents[0].agentId || (userData?.agentId ?? 0);
+  // ?agentId= (from an NGO profile's "Post opportunity") preselects that NGO,
+  // but only if it's one of the user's own; otherwise fall back to the first.
+  const requestedIsOwn = currentAgents.some((agent) => agent.agentId === requestedAgentId);
+  const firstNGOId = requestedIsOwn ? requestedAgentId : currentAgents[0]?.agentId || (userData?.agentId ?? 0);
 
   const detailsMethods = useForm<NewOpportunityDetailsFormData>({
     resolver: zodResolver(createNewOpportunityDetailsSchema(t, getMainCommunicationLanguageOptions(apiLanguages))),
