@@ -1,4 +1,5 @@
 import { ApiLanguageOption } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { getMainCommunicationLanguageOptions } from "@/components/Dashboard/Profile/sections/OpportunityDetails/opportunityDetailsSchema";
 import { FormDetails } from "@/components/Dashboard/Profile/sections/shared/styles";
 import { Lang } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
@@ -25,15 +26,19 @@ export function OpportunityDetailsFields({
   const { i18n } = useTranslation();
   const lang = i18n.language;
   const prefix = "dashboard.opportunityProfile.opportunityDetails";
-  const languagesForForm = apiLanguages.map((l) => ({
+  const toFormOption = (l: ApiLanguageOption) => ({
     id: l.id,
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
-  }));
+  });
+  const languagesForForm = apiLanguages.map(toFormOption);
+  // Main communication is German and/or English only (fe#1039), matching the
+  // schema's validation and the edit form; residents may speak any language.
+  const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map(toFormOption);
 
   return (
     <FormDetails>
       <DescriptionField prefix={prefix} />
-      <MainCommunicationField prefix={prefix} languagesForForm={languagesForForm} />
+      <MainCommunicationField prefix={prefix} languagesForForm={mainCommunicationLanguagesForForm} />
       <ResidentsSpeakField prefix={prefix} languagesForForm={languagesForForm} />
       {isEvent ? <EventDateTimeFields prefix={prefix} /> : <AvailabilityField prefix={prefix} />}
       <NumberOfVolunteersField prefix={prefix} />

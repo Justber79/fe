@@ -2326,7 +2326,7 @@
       "password": "Passwort",
       "confirmPassword": "Passwort bestätigen",
       "phone": "Telefonnummer",
-      "organizationName": "Name der Organisation",
+      "organizationName": "Einrichtung (GU/Projekt)",
       "organizationType": "Art der Organisation",
       "selectOrganizationType": "Typ auswählen…",
       "about": "Über Ihre Einrichtung",
