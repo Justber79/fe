@@ -7,7 +7,7 @@ import {
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
-import { ShootingStarIcon } from "@phosphor-icons/react";
+import { QuestionIcon, ShootingStarIcon } from "@phosphor-icons/react";
 import { ApiOpportunityGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,13 +16,14 @@ import styled from "styled-components";
 import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, StatusRowField } from "../common";
 import { ChangeOpportunityStatusDialog } from "./ChangeOpportunityStatusDialog";
 import { ChangeOpportunityTypeDialog } from "./ChangeOpportunityTypeDialog/ChangeOpportunityTypeDialog";
-import { createOpportunityStatusLabelMap } from "./constants";
+import { createOpportunityStatusLabelMap, OpportunityManualStatusType } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { ChangeOpportunityAgentDialog } from "./ChangeOpportunityAgentDialog";
 import { useOpportunityAgentDialog } from "./useOpportunityAgentDialog";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
+import { Tooltip } from "@/components/Dashboard/common/ActionButtonWithTooltip/Tooltip";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -42,6 +43,9 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   const dialogAgent = useOpportunityAgentDialog(opportunity);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
+  const statusHelpAgent = t("dashboard.opportunityProfile.statusHelpAgent", {
+    status: statusLabelMap[OpportunityManualStatusType.SEARCHING],
+  });
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const { statusMatch } = opportunity as ApiOpportunityGet & { statusMatch?: string };
 
@@ -70,6 +74,18 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         title={t("dashboard.opportunityProfile.currentStatus")}
         status={dialogStatus.selected}
         label={statusLabelMap[dialogStatus.selected]}
+        extra={
+          // NGOs can only pick New/Inactive (fe#1048): explain why "searching"
+          // isn't offered to them.
+          canChangeStatus &&
+          !isAuthorized && (
+            <Tooltip text={statusHelpAgent}>
+              <StatusHelpButton type="button" aria-label={statusHelpAgent}>
+                <QuestionIcon size={20} />
+              </StatusHelpButton>
+            </Tooltip>
+          )
+        }
         action={
           canChangeStatus && (
             <EditButton onClick={dialogStatus.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
@@ -125,6 +141,15 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
     </HeaderCard>
   );
 };
+
+const StatusHelpButton = styled.button`
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-blue-700);
+  cursor: help;
+`;
 
 const MatchStatusBadge = styled.div<{ $color: string }>`
   display: inline-flex;
