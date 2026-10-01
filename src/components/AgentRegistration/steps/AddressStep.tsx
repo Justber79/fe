@@ -1,23 +1,22 @@
 "use client";
 import { FormInput } from "@/components/core/common";
-import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
-import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect } from "../styled";
+import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
 import { ProfileCompletionData } from "../types";
 
-type AddressData = Pick<ProfileCompletionData, "addressStreet" | "addressPostcode" | "districtId">;
+// No district picker (fe#1089): the backend derives the district from the
+// postcode (be#1059) and drops any districtId the client sends.
+type AddressData = Pick<ProfileCompletionData, "addressStreet" | "addressPostcode">;
 
 type Props = {
   data: AddressData;
   onChange: (fields: Partial<AddressData>) => void;
   errors: Partial<Record<string, string>>;
-  optionLists?: ApiOptionLists;
   hideStreet?: boolean;
 };
 
-export function AddressStep({ data, onChange, errors, optionLists, hideStreet = false }: Props) {
+export function AddressStep({ data, onChange, errors, hideStreet = false }: Props) {
   const { t } = useTranslation();
-  const districts = optionLists?.[EntityTableName.DISTRICT] ?? [];
 
   return (
     <div>
@@ -48,24 +47,6 @@ export function AddressStep({ data, onChange, errors, optionLists, hideStreet = 
           placeHolder="12345"
           errors={errors.addressPostcode ? [errors.addressPostcode] : []}
         />
-      </FieldWrapper>
-
-      <FieldWrapper>
-        <FieldLabel>
-          {t("agentRegistration.fields.district")} ({t("agentRegistration.optional")})
-        </FieldLabel>
-        <StyledSelect
-          value={data.districtId ?? ""}
-          onChange={(e) => onChange({ districtId: e.target.value ? Number(e.target.value) : null })}
-          $hasError={false}
-        >
-          <option value="">{t("agentRegistration.fields.selectDistrict")}</option>
-          {districts.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.title}
-            </option>
-          ))}
-        </StyledSelect>
       </FieldWrapper>
     </div>
   );

@@ -2333,8 +2333,6 @@
       "website": "Website",
       "addressStreet": "Straße und Hausnummer",
       "addressPostcode": "Postleitzahl",
-      "district": "Bezirk",
-      "selectDistrict": "Bezirk auswählen…",
       "services": "Angebotene Leistungen",
       "clientLanguages": "Von Bewohnenden gesprochene Sprachen",
       "consent": {
