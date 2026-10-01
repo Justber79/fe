@@ -2362,6 +2362,7 @@
     "completion": {
       "title": "Konto-Einrichtung abschließen",
       "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
+      "emailConfirmed": "E-Mail bestätigt. Jetzt nur noch Ihre Organisation vervollständigen.",
       "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "skip": "Nein, manuell eingeben",
