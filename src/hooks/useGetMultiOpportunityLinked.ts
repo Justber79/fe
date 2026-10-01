@@ -1,11 +1,14 @@
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
+import { Lang } from "need4deed-sdk";
+import { useParams } from "next/navigation";
 
 export const useGetMultiOpportunityLinked = (agentIds: number[]) => {
+  const { lang } = useParams<{ lang: Lang }>();
   const oppLinkedQueries = useQueries({
     queries: agentIds?.map((id) => ({
-      queryKey: ["agent-opportunities", String(id)],
+      queryKey: ["agent-opportunities", String(id), lang],
       queryFn: async () => {
         try {
           const res = await axios.get(`${apiPathAgent}/${id}/opportunity-linked`);

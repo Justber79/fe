@@ -10,7 +10,6 @@ export function useAgentContactOptions(opportunity: ApiOpportunityGet, isEnable:
     queryKey: ["agent", String(opportunity.agent.id)],
     enabled: isEnable,
     staleTime: cacheTTL,
-    addLang: false,
   });
   const contactOptions = useMemo(
     () =>
