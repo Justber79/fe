@@ -19,14 +19,13 @@ export const useCopyEmails = (apiPath: string, cacheKey: string, serializedFilte
 
   async function fetchEmailPage(page: number) {
     const res = await queryClient.fetchQuery({
-      queryKey: [cacheKey, serializedFilter.toString(), page],
+      queryKey: [cacheKey, lang, serializedFilter.toString(), page],
       staleTime: 0,
       queryFn: () =>
         fetchData<EmailRecord[]>(apiPath, {
           limit: MAX_PAGE_LIMIT,
           page,
           filter: getReducedFilter(serializedFilter),
-          language: lang,
         }),
     });
     return {

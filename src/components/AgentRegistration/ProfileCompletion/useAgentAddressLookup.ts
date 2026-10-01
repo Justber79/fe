@@ -27,7 +27,6 @@ export function useAgentAddressLookup(
     )}&street=${encodeURIComponent(debouncedAddress)}`,
     staleTime: cacheTTL,
     enabled,
-    addLang: false,
   });
 
   // The API returns every matching candidate, not a single "the" match —

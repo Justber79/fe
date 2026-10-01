@@ -7,7 +7,6 @@ export const useGetOrganization = () => {
     queryKey: ["organization"],
     apiPath: `${apiPathOrganization}`,
     staleTime: cacheTTL,
-    addLang: false,
   });
 
   return {

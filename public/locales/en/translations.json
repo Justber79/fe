@@ -1445,6 +1445,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "statusHelpAgent": "Only need4deed can mark an opportunity as “{{status}}”. Only then do we actively search for volunteers.",
       "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",
@@ -1989,8 +1990,6 @@
       "website": "Website",
       "addressStreet": "Street address",
       "addressPostcode": "Postcode",
-      "district": "District",
-      "selectDistrict": "Select district…",
       "services": "Services provided",
       "clientLanguages": "Languages spoken by residents",
       "consent": {
@@ -2017,6 +2016,7 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
+      "emailConfirmed": "Email confirmed. Now just complete your organisation's details.",
       "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
       "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",

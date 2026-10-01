@@ -1457,6 +1457,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "statusHelpAgent": "Nur need4deed kann eine Tätigkeit als „{{status}}“ markieren. Erst dann suchen wir aktiv nach Ehrenamtlichen.",
       "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
@@ -2333,8 +2334,6 @@
       "website": "Website",
       "addressStreet": "Straße und Hausnummer",
       "addressPostcode": "Postleitzahl",
-      "district": "Bezirk",
-      "selectDistrict": "Bezirk auswählen…",
       "services": "Angebotene Leistungen",
       "clientLanguages": "Von Bewohnenden gesprochene Sprachen",
       "consent": {
@@ -2361,6 +2360,7 @@
     "completion": {
       "title": "Konto-Einrichtung abschließen",
       "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
+      "emailConfirmed": "E-Mail bestätigt. Jetzt nur noch Ihre Organisation vervollständigen.",
       "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "skip": "Nein, manuell eingeben",

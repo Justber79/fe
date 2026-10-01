@@ -46,7 +46,6 @@ function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
     serviceIds: formData.services.length > 0 ? formData.services : undefined,
     addressStreet: formData.addressStreet || undefined,
     addressPostcode: formData.addressPostcode || undefined,
-    districtId: formData.districtId ?? undefined,
     languages: formData.clientLanguageIds.length > 0 ? formData.clientLanguageIds : undefined,
   };
 }
@@ -192,6 +191,17 @@ export function ProfileCompletion() {
         <PageTitle>{t("agentRegistration.completion.title")}</PageTitle>
         <PageSubtitle>{t("agentRegistration.completion.subtitle")}</PageSubtitle>
 
+        {/* The verify-email link lands here (fe#1097), after /verify-email has
+            already activated the account: confirm that, so the form doesn't
+            read as a fresh registration. Hidden once a submit fails (e.g. an
+            expired token) so it never sits next to an error. */}
+        {!tokenMissing && !submitError && (
+          <MatchBanner $matched role="status">
+            <CheckMark>✓</CheckMark>
+            <span>{t("agentRegistration.completion.emailConfirmed")}</span>
+          </MatchBanner>
+        )}
+
         {!isJoining && <ProgressBar currentStep={step} totalSteps={TOTAL_COMPLETION_STEPS} />}
 
         {submitError && <ErrorBanner ref={errorBannerRef}>{submitError}</ErrorBanner>}
@@ -255,7 +265,7 @@ export function ProfileCompletion() {
                   </>
                 )}
               </FieldWrapper>
-              <AddressStep data={formData} onChange={update} errors={errors} optionLists={optionLists} hideStreet />
+              <AddressStep data={formData} onChange={update} errors={errors} hideStreet />
             </div>
           ))}
 
