@@ -555,6 +555,7 @@
         "newTags": "Newest Tags",
         "taggedComment": "{{user}} tagged you in {{entityType}}: {{entityTitle}}",
         "noTaggedComments": "You are currently not tagged in any comments",
+        "requestSuggestNotification": "{{user}} → {{entityTitle}}: {{text}}",
         "newOpportunities": "Newest Opportunities",
         "newVolunteers": "Newest Volunteers",
         "loading": "Loading...",
@@ -725,6 +726,13 @@
       "editButtonName": "Edit",
       "findOppButtonName": "Find Opportunity",
       "suggestButtonName": "Suggest",
+      "requestSuggest": {
+        "button": "Request to suggest",
+        "commentText": "Requested for {{opportunity}}",
+        "contactMissing": "Request could not be sent: need4deed contact not found",
+        "success": "Request sent",
+        "noOpportunities": "You have no opportunities yet"
+      },
       "suggestDialog": {
         "title": "Suggest to this volunteer?",
         "messageMid": "will be notified that you suggested",
@@ -1437,6 +1445,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "statusHelpAgent": "Only need4deed can mark an opportunity as “{{status}}”. Only then do we actively search for volunteers.",
       "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",
@@ -2009,6 +2018,7 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
+      "emailConfirmed": "Email confirmed. Now just complete your organisation's details.",
       "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
       "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",

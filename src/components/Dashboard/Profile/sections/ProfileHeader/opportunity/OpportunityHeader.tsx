@@ -7,7 +7,7 @@ import {
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
-import { ShootingStarIcon } from "@phosphor-icons/react";
+import { QuestionIcon, ShootingStarIcon } from "@phosphor-icons/react";
 import { ApiOpportunityGet, UserRole } from "need4deed-sdk";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +16,7 @@ import styled from "styled-components";
 import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, StatusRowField } from "../common";
 import { ChangeOpportunityStatusDialog } from "./ChangeOpportunityStatusDialog";
 import { ChangeOpportunityTypeDialog } from "./ChangeOpportunityTypeDialog/ChangeOpportunityTypeDialog";
-import { createOpportunityStatusLabelMap } from "./constants";
+import { createOpportunityStatusLabelMap, OpportunityManualStatusType } from "./constants";
 import { useOpportunityStatusDialog } from "./useOpportunityStatusDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -42,6 +42,10 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   const dialogAgent = useOpportunityAgentDialog(opportunity);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
+  const [isStatusHelpOpen, setIsStatusHelpOpen] = useState(false);
+  const statusHelpAgent = t("dashboard.opportunityProfile.statusHelpAgent", {
+    status: statusLabelMap[OpportunityManualStatusType.SEARCHING],
+  });
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
   const { statusMatch } = opportunity as ApiOpportunityGet & { statusMatch?: string };
 
@@ -70,6 +74,26 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         title={t("dashboard.opportunityProfile.currentStatus")}
         status={dialogStatus.selected}
         label={statusLabelMap[dialogStatus.selected]}
+        extra={
+          // NGOs can only pick New/Inactive (fe#1048): explain why "searching"
+          // isn't offered to them.
+          canChangeStatus &&
+          !isAuthorized && (
+            <StatusHelp onMouseEnter={() => setIsStatusHelpOpen(true)} onMouseLeave={() => setIsStatusHelpOpen(false)}>
+              <StatusHelpButton
+                type="button"
+                aria-label={statusHelpAgent}
+                aria-expanded={isStatusHelpOpen}
+                onClick={() => setIsStatusHelpOpen((open) => !open)}
+                onFocus={() => setIsStatusHelpOpen(true)}
+                onBlur={() => setIsStatusHelpOpen(false)}
+              >
+                <QuestionIcon size={20} />
+              </StatusHelpButton>
+              {isStatusHelpOpen && <StatusHelpText role="tooltip">{statusHelpAgent}</StatusHelpText>}
+            </StatusHelp>
+          )
+        }
         action={
           canChangeStatus && (
             <EditButton onClick={dialogStatus.openDialog}>{t("dashboard.opportunityProfile.change_status")}</EditButton>
@@ -125,6 +149,39 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
     </HeaderCard>
   );
 };
+
+// Hover, tap and keyboard all open it, and the text wraps so it fits on phones
+// (the dashboard hover Tooltip is mouse-only and nowrap).
+const StatusHelp = styled.span`
+  position: relative;
+  display: inline-flex;
+`;
+
+const StatusHelpText = styled.span`
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: max-content;
+  max-width: min(260px, 80vw);
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: var(--border-radius-xs);
+  background: var(--document-tooltip-background);
+  color: var(--document-tooltip-color);
+  font-size: var(--document-tooltip-font-size);
+  line-height: var(--document-tooltip-line-height);
+  white-space: normal;
+`;
+
+const StatusHelpButton = styled.button`
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-blue-700);
+  cursor: help;
+`;
 
 const MatchStatusBadge = styled.div<{ $color: string }>`
   display: inline-flex;

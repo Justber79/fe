@@ -209,15 +209,15 @@ export default function NavigationBar() {
 
   const options: BarOptions[] = [
     { label: t("dashboard.home.sidebar.home"), Icon: HouseIcon, route: DashboardRoutes.Home },
-    ...(canSeeStaffNav
-      ? [
+    ...(isVolunteer
+      ? []
+      : [
           {
             label: t("dashboard.home.sidebar.volunteers"),
             Icon: UserCheckIcon,
             route: DashboardRoutes.Volunteers,
           },
-        ]
-      : []),
+        ]),
     {
       label: t("dashboard.home.sidebar.opportunities"),
       Icon: ShootingStarIcon,
