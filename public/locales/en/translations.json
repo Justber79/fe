@@ -1445,7 +1445,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
-      "statusHelpAgent": "Only need4deed can set an opportunity to “{{status}}”.",
+      "statusHelpAgent": "Only need4deed can mark an opportunity as “{{status}}”. Only then do we actively search for volunteers.",
       "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",

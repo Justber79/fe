@@ -23,7 +23,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { ChangeOpportunityAgentDialog } from "./ChangeOpportunityAgentDialog";
 import { useOpportunityAgentDialog } from "./useOpportunityAgentDialog";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
-import { Tooltip } from "@/components/Dashboard/common/ActionButtonWithTooltip/Tooltip";
 
 type Props = {
   opportunity: ApiOpportunityGet;
@@ -43,6 +42,7 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   const dialogAgent = useOpportunityAgentDialog(opportunity);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const statusLabelMap = createOpportunityStatusLabelMap(t);
+  const [isStatusHelpOpen, setIsStatusHelpOpen] = useState(false);
   const statusHelpAgent = t("dashboard.opportunityProfile.statusHelpAgent", {
     status: statusLabelMap[OpportunityManualStatusType.SEARCHING],
   });
@@ -79,11 +79,19 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
           // isn't offered to them.
           canChangeStatus &&
           !isAuthorized && (
-            <Tooltip text={statusHelpAgent}>
-              <StatusHelpButton type="button" aria-label={statusHelpAgent}>
+            <StatusHelp onMouseEnter={() => setIsStatusHelpOpen(true)} onMouseLeave={() => setIsStatusHelpOpen(false)}>
+              <StatusHelpButton
+                type="button"
+                aria-label={statusHelpAgent}
+                aria-expanded={isStatusHelpOpen}
+                onClick={() => setIsStatusHelpOpen((open) => !open)}
+                onFocus={() => setIsStatusHelpOpen(true)}
+                onBlur={() => setIsStatusHelpOpen(false)}
+              >
                 <QuestionIcon size={20} />
               </StatusHelpButton>
-            </Tooltip>
+              {isStatusHelpOpen && <StatusHelpText role="tooltip">{statusHelpAgent}</StatusHelpText>}
+            </StatusHelp>
           )
         }
         action={
@@ -141,6 +149,30 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
     </HeaderCard>
   );
 };
+
+// Hover, tap and keyboard all open it, and the text wraps so it fits on phones
+// (the dashboard hover Tooltip is mouse-only and nowrap).
+const StatusHelp = styled.span`
+  position: relative;
+  display: inline-flex;
+`;
+
+const StatusHelpText = styled.span`
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: max-content;
+  max-width: min(260px, 80vw);
+  padding: var(--spacing-8) var(--spacing-12);
+  border-radius: var(--border-radius-xs);
+  background: var(--document-tooltip-background);
+  color: var(--document-tooltip-color);
+  font-size: var(--document-tooltip-font-size);
+  line-height: var(--document-tooltip-line-height);
+  white-space: normal;
+`;
 
 const StatusHelpButton = styled.button`
   display: inline-flex;
