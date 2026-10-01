@@ -55,7 +55,6 @@ export const AgentListController = ({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
-    addLang: false,
   });
 
   const agents: ApiAgentGetList[] = data || [];

@@ -3,9 +3,11 @@ import { apiPathAgent, apiPathMe, AUTH_HINT_COOKIE_NAME, cacheTTL, USER_QUERY_KE
 import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { useQueries } from "@tanstack/react-query";
-import { ApiUserGet } from "need4deed-sdk";
+import { ApiUserGet, Lang } from "need4deed-sdk";
+import { useParams } from "next/navigation";
 
 export const useGetCurrentAgent = () => {
+  const { lang } = useParams<{ lang: Lang }>();
   const isLoggedIn = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
 
   const { data: user, isLoading: userLoading } = useGetQuery<ApiUserGet & { agentId?: number }>({
@@ -13,7 +15,6 @@ export const useGetCurrentAgent = () => {
     apiPath: apiPathMe,
     staleTime: cacheTTL,
     enabled: isLoggedIn,
-    addLang: false,
   });
 
   const agentId = user?.agentId;
@@ -23,7 +24,7 @@ export const useGetCurrentAgent = () => {
 
   const agentQueries = useQueries({
     queries: (agentIds ?? []).map((id) => ({
-      queryKey: ["agent", String(id)],
+      queryKey: ["agent", String(id), lang],
       queryFn: async () => {
         try {
           const response = await axios.get(`${apiPathAgent}/${id}`);

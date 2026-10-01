@@ -25,7 +25,6 @@ export function PendingMemberships() {
   const { data } = useGetQuery<ApiAgentMembership[]>({
     queryKey: PENDING_KEY,
     apiPath: `${apiPathAgentMembership}?status=${AgentMembershipStatus.PENDING}`,
-    addLang: false,
     enabled: canModerate,
   });
 
