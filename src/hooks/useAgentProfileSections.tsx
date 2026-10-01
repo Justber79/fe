@@ -65,8 +65,11 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      ...(hasEditingRights && {
+      // NGO's own users only (fe#1034): the create page offers just the
+      // user's own NGOs, so a coordinator can't post for this NGO from there.
+      ...(isOwnProfile && {
         headerButtonName: t("dashboard.agentProfile.opportunitiesSec.postOpportunity"),
+        onHeaderButtonClick: () => router.push(`/${i18n.language}/dashboard/opportunities/new?agentId=${agent.id}`),
       }),
       subComponent: <AgentOpportunities agentId={agent.id} />,
     },
