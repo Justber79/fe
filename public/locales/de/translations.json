@@ -1457,6 +1457,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "statusHelpAgent": "Nur need4deed kann eine Tätigkeit als „{{status}}“ markieren. Erst dann suchen wir aktiv nach Ehrenamtlichen.",
       "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
