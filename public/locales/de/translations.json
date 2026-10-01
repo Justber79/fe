@@ -1031,6 +1031,11 @@
         "cancel": "Abbrechen",
         "submit": "Erstellen",
         "success": "NGO erfolgreich erstellt",
+        "conflict": {
+          "title": "Eine NGO mit diesem Namen existiert bereits: {{name}}",
+          "address": "An dieser Adresse gibt es bereits eine NGO: {{name}}",
+          "open": "Bestehende NGO öffnen"
+        },
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
         }
