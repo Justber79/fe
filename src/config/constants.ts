@@ -102,3 +102,8 @@ export const TABLE_LIMIT = 20;
 export const CARD_LIMIT = 12;
 
 export const MAX_PAGE_LIMIT = 120; // BE hard cap per page
+
+// NGO "request to suggest" (fe#1092): the account tagged on every request and
+// the marker that lets the home feed tell a request apart from a plain tag.
+export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
+export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";
