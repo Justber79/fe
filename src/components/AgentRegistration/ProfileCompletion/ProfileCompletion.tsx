@@ -106,6 +106,7 @@ export function ProfileCompletion() {
       return;
     }
     setSubmitError(null);
+    setConflict(null);
     setIsSubmitting(true);
     try {
       const { data } = await axios.post<{ message: string; data: ApiAgentRegisterResponse }>(
