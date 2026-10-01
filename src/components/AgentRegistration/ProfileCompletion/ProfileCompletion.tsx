@@ -5,7 +5,7 @@ import { apiPathAgentRegister, apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
 import axios from "axios";
 import i18next from "i18next";
-import { ApiOptionLists } from "need4deed-sdk";
+import { ApiAgentRegisterConflict, ApiOptionLists } from "need4deed-sdk";
 import { AgentMembershipStatus, ApiAgentRegister, ApiAgentRegisterNew, ApiAgentRegisterResponse } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -61,9 +61,9 @@ export function ProfileCompletion() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pending, setPending] = useState(false);
-  // When a CREATE collides with an existing title, the API returns its id so we
-  // can offer to JOIN it instead.
-  const [titleConflictAgentId, setTitleConflictAgentId] = useState<number | null>(null);
+  // When a CREATE collides with an existing NGO (same name or same address),
+  // the API says which and returns its id, so we can offer to JOIN it instead.
+  const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
   const errorBannerRef = useRef<HTMLDivElement>(null);
 
   const { data: optionLists } = useGetQuery<ApiOptionLists>({
@@ -121,9 +121,11 @@ export function ProfileCompletion() {
       router.push(`/${i18next.language}/dashboard`);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
-        const conflictAgentId = (err.response.data as { agentId?: number })?.agentId;
-        setTitleConflictAgentId(conflictAgentId ?? null);
-        return;
+        const data = err.response.data as Partial<ApiAgentRegisterConflict> | undefined;
+        if (data?.agentId) {
+          setConflict({ conflict: data.conflict === "address" ? "address" : "title", agentId: data.agentId });
+          return;
+        }
       }
       showSubmitError(t("message.errorGeneric"));
     } finally {
@@ -206,15 +208,24 @@ export function ProfileCompletion() {
 
         {submitError && <ErrorBanner ref={errorBannerRef}>{submitError}</ErrorBanner>}
 
-        {titleConflictAgentId !== null && (
-          <MatchBanner $matched={false}>
-            <span>{t("agentRegistration.completion.titleTaken")}</span>
+        {conflict && (
+          <MatchBanner $matched={false} role="alert">
+            {/* fe#1098: say whether the name or the address matched, and what
+                joining means, so it doesn't read as "registration rejected". */}
+            <span>
+              {t(
+                conflict.conflict === "address"
+                  ? "agentRegistration.completion.addressTaken"
+                  : "agentRegistration.completion.titleTaken",
+              )}{" "}
+              {t("agentRegistration.completion.joinDescription")}
+            </span>
             <MatchActions>
-              <SmallButton $primary onClick={() => submitJoin(titleConflictAgentId)}>
+              <SmallButton $primary onClick={() => submitJoin(conflict.agentId)}>
                 {t("agentRegistration.completion.joinInstead")}
               </SmallButton>
-              <SmallButton onClick={() => setTitleConflictAgentId(null)}>
-                {t("agentRegistration.completion.skip")}
+              <SmallButton onClick={() => setConflict(null)}>
+                {t("agentRegistration.completion.editDetails")}
               </SmallButton>
             </MatchActions>
           </MatchBanner>
