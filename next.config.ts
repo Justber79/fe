@@ -24,6 +24,23 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  // Old website URLs (fe#1056), still in emails, flyers and QR codes since
+  // need4deed.org moved to fe. Redirects run before the middleware, and Next
+  // keeps the query string (e.g. ?id=&title= from old opportunity cards).
+  // The old site put the language last (/volunteer-form/de); a missing or
+  // unknown language goes to the bare path and the middleware picks one.
+  async redirects() {
+    const legacyForms = [
+      { from: "volunteer-form", to: "forms/volunteer" },
+      // The old NGO form is retired: send NGOs to sign-up instead.
+      { from: "opportunity-form", to: "register/agent" },
+    ];
+    return legacyForms.flatMap(({ from, to }) => [
+      { source: `/${from}/:lng(de|en)`, destination: `/:lng/${to}`, permanent: true },
+      { source: `/:lng(de|en)/${from}`, destination: `/:lng/${to}`, permanent: true },
+      { source: `/${from}/:rest*`, destination: `/${to}`, permanent: true },
+    ]);
+  },
   async rewrites() {
     return [{ source: `/${apiPrefix}/:path*`, destination: `${apiURL}/:path*` }];
   },
