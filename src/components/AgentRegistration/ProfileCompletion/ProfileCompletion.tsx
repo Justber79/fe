@@ -46,7 +46,6 @@ function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
     serviceIds: formData.services.length > 0 ? formData.services : undefined,
     addressStreet: formData.addressStreet || undefined,
     addressPostcode: formData.addressPostcode || undefined,
-    districtId: formData.districtId ?? undefined,
     languages: formData.clientLanguageIds.length > 0 ? formData.clientLanguageIds : undefined,
   };
 }
@@ -266,7 +265,7 @@ export function ProfileCompletion() {
                   </>
                 )}
               </FieldWrapper>
-              <AddressStep data={formData} onChange={update} errors={errors} optionLists={optionLists} hideStreet />
+              <AddressStep data={formData} onChange={update} errors={errors} hideStreet />
             </div>
           ))}
 

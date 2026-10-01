@@ -1990,8 +1990,6 @@
       "website": "Website",
       "addressStreet": "Street address",
       "addressPostcode": "Postcode",
-      "district": "District",
-      "selectDistrict": "Select district…",
       "services": "Services provided",
       "clientLanguages": "Languages spoken by residents",
       "consent": {

@@ -48,7 +48,6 @@ export const TOTAL_COMPLETION_STEPS = 3;
 export interface ProfileCompletionData {
   addressStreet: string;
   addressPostcode: string;
-  districtId: number | null;
   organizationName: string;
   // AgentType option id, picked from GET /option's agent_type list — like
   // clientLanguageIds below, ids rather than a translated title, since this
@@ -63,7 +62,6 @@ export interface ProfileCompletionData {
 export const defaultProfileCompletionData: ProfileCompletionData = {
   addressStreet: "",
   addressPostcode: "",
-  districtId: null,
   organizationName: "",
   organizationType: "",
   about: "",
