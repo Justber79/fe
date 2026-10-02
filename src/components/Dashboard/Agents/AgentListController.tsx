@@ -1,4 +1,4 @@
-import { type ApiAgentGetList, type ApiOptionLists, SortOrder } from "need4deed-sdk";
+import { type ApiAgentGetList, type ApiOptionLists, QueryParamsKeys, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
 import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
@@ -9,7 +9,8 @@ import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
 import { AgentTableList } from "./AgentTableList";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
-import { createAgentFilterItems } from "./Filters/helpers";
+import { createAgentFilterSections } from "./Filters/helpers";
+import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingAgentTableList } from "./LoadingAgentTableList";
 
@@ -59,8 +60,12 @@ export const AgentListController = ({
 
   const agents: ApiAgentGetList[] = data || [];
   const { handleCopyEmails, isCopying } = useCopyEmails(`${apiPathAgent}/`, "agents-emails", serializedFilter);
-  const { districtFilters, typeFilters, volunteerSearchFilters } = createAgentFilterItems(filter, setFilter, t);
-  const dropdownFilters = { districtFilters, typeFilters, volunteerSearchFilters };
+  const filterSections = createAgentFilterSections(filter, setFilter, t);
+  const dropdownFilters = {
+    districtFilters: getSectionItems(filterSections, QueryParamsKeys.DISTRICT),
+    typeFilters: getSectionItems(filterSections, "type"),
+    volunteerSearchFilters: getSectionItems(filterSections, "volunteerSearch"),
+  };
 
   useEffect(() => {
     setNumOfAgents(count);
