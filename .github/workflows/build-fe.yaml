@@ -50,3 +50,20 @@ jobs:
             NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
             NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
             GIT_COMMIT_SHA=${{ steps.sha.outputs.sha }}
+
+      # Guards the CI step, the Dockerfile ARG/ENV threading and the image
+      # against reporting a stale or "unknown" sha on /health.
+      - name: Check /health reports the built commit
+        env:
+          IMAGE: ghcr.io/need4deed-org/fe@${{ steps.build.outputs.digest }}
+          EXPECTED: ${{ steps.sha.outputs.sha }}
+        run: |
+          docker run -d --name fe-health -p 3000:3000 "$IMAGE"
+          for i in $(seq 1 30); do
+            body=$(curl -sf http://localhost:3000/health) && break
+            sleep 1
+          done
+          docker rm -f fe-health >/dev/null
+          commit=$(echo "$body" | jq -r .commit)
+          echo "/health commit: $commit, expected: $EXPECTED"
+          [ "$commit" = "$EXPECTED" ]
