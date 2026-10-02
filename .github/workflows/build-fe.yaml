@@ -38,7 +38,36 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push fe image
+      - name: Build fe image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ghcr.io/need4deed-org/fe:develop
+          build-args: |
+            API_URL=http://be:8000
+            NEXT_PUBLIC_CLOUDFRONT_URL=https://cdn.need4deed.org/images
+            NEXT_PUBLIC_CLOUDFRONT_DATA_URL=https://cdn.need4deed.org/data
+            GIT_COMMIT_SHA=${{ steps.sha.outputs.sha }}
+
+      # Runs before the push, so an image reporting a stale or "unknown" sha
+      # on /health never reaches the registry.
+      - name: Check /health reports the built commit
+        env:
+          IMAGE: ghcr.io/need4deed-org/fe:develop
+          EXPECTED: ${{ steps.sha.outputs.sha }}
+        run: |
+          docker run -d --name fe-health -p 3000:3000 "$IMAGE"
+          for i in $(seq 1 30); do
+            body=$(curl -sf http://localhost:3000/health) && break
+            sleep 1
+          done
+          docker rm -f fe-health >/dev/null
+          commit=$(echo "$body" | jq -r .commit)
+          echo "/health commit: $commit, expected: $EXPECTED"
+          [ "$commit" = "$EXPECTED" ]
+
+      - name: Push fe image
         id: build
         uses: docker/build-push-action@v6
         with:
