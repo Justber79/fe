@@ -23,26 +23,16 @@ import {
 } from "../common";
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { ChangeVolunteerTypeDialog } from "./ChangeVolunteerTypeDialog";
-import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
+import { ACTIVE_MATCH_STATUS, createEngagementLabelMap, createMatchLabelMap, HeaderMatchStatus } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
 import { useVolunteerTypeDialog } from "./useVolunteerTypeDialog";
 import { useAuth } from "@/hooks/useAuth";
 
-function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
-  if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
+function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): HeaderMatchStatus {
   const statuses = opportunities.map((o) => o.status);
-  if (
-    statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)
-  ) {
-    return VolunteerStateMatchType.MATCHED;
-  }
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PENDING)) {
-    return VolunteerStateMatchType.PENDING_MATCH;
-  }
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PAST)) {
-    // VolunteerStateMatchType.PAST no longer in SDK — fall back to NO_MATCHES
-    return VolunteerStateMatchType.NO_MATCHES;
-  }
+  if (statuses.includes(OpportunityVolunteerStatusType.ACTIVE)) return ACTIVE_MATCH_STATUS;
+  if (statuses.includes(OpportunityVolunteerStatusType.MATCHED)) return VolunteerStateMatchType.MATCHED;
+  if (statuses.includes(OpportunityVolunteerStatusType.PENDING)) return VolunteerStateMatchType.PENDING_MATCH;
   return VolunteerStateMatchType.NO_MATCHES;
 }
 

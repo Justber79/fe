@@ -800,6 +800,7 @@
         },
         "matchStatus_title": "Status der Zuweisung",
         "matchStatus_options": {
+          "active": "Aktiv",
           "noMatches": "Keine Zuweisungen",
           "pendingMatch": "Zuweisung ausstehend",
           "matched": "Zugewiesen",

@@ -1,6 +1,14 @@
 import { TFunction } from "i18next";
 import { VolunteerStateEngagementType, VolunteerStateMatchType } from "need4deed-sdk";
 
+// "Active" isn't set by hand: it shows in the matching status once an opportunity is active.
+export const MANUAL_ENGAGEMENT_STATUSES = Object.values(VolunteerStateEngagementType).filter(
+  (status) => status !== VolunteerStateEngagementType.ACTIVE,
+);
+
+export const ACTIVE_MATCH_STATUS = VolunteerStateEngagementType.ACTIVE;
+export type HeaderMatchStatus = VolunteerStateMatchType | typeof ACTIVE_MATCH_STATUS;
+
 export const ENGAGEMENT_DESCRIPTION_KEYS: Record<VolunteerStateEngagementType, string> = {
   [VolunteerStateEngagementType.NEW]: "new_description",
   [VolunteerStateEngagementType.ACTIVE]: "active_description",
@@ -29,7 +37,8 @@ export const createEngagementLabelMap = (t: TFunction): Record<VolunteerStateEng
   ),
 });
 
-export const createMatchLabelMap = (t: TFunction): Record<VolunteerStateMatchType, string> => ({
+export const createMatchLabelMap = (t: TFunction): Record<HeaderMatchStatus, string> => ({
+  [ACTIVE_MATCH_STATUS]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.active"),
   [VolunteerStateMatchType.NO_MATCHES]: t("dashboard.volunteerProfile.volunteerHeader.matchStatus_options.noMatches"),
   [VolunteerStateMatchType.PENDING_MATCH]: t(
     "dashboard.volunteerProfile.volunteerHeader.matchStatus_options.pendingMatch",

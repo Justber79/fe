@@ -793,6 +793,7 @@
         },
         "matchStatus_title": "Matching status",
         "matchStatus_options": {
+          "active": "Active",
           "noMatches": "No matches",
           "pendingMatch": "Pending match",
           "matched": "Matched",
