@@ -33,8 +33,10 @@ export const useEngagementStatusDialog = (volunteer: ApiVolunteerGet): UseEngage
     isSaveDisabled,
   });
 
+  // Start from the current value: it can change in the background (match status sync).
   const openDialog = () => {
     setDateReturn(initialDate);
+    dialog.setSelected(volunteer.statusEngagement);
     dialog.openDialog();
   };
 

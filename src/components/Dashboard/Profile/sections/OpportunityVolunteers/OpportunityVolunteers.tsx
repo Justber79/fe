@@ -2,7 +2,6 @@ import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
 } from "@/hooks/useUpdateOpportunityVolunteerStatus";
-import { useSyncVolunteerEngagement } from "@/hooks/useSyncVolunteerEngagement";
 import { Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +29,6 @@ export const OpportunityVolunteers = ({
 
   const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey);
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey);
-  const { mutate: syncEngagement } = useSyncVolunteerEngagement();
 
   const { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus } =
     useTabTransitions(volunteers);
@@ -40,19 +38,24 @@ export const OpportunityVolunteers = ({
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number) => {
+  const handleMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
   const handleNotAMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId }, { onSuccess: () => syncEngagement({ volunteerId }) });
+    deleteLink({ m2mId, volunteerId });
   };
 
-  const updateStatusAndEngagement = (m2mId: number, volunteerId: number, status: OpportunityVolunteerStatusType) => {
-    setItemStatus(m2mId, status);
-    updateStatus({ m2mId, status }, { onSuccess: () => syncEngagement({ volunteerId, status }) });
+  const handleMarkAsActive = (m2mId: number, volunteerId: number) => {
+    setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.ACTIVE });
+  };
+
+  const handleMarkAsPast = (m2mId: number, volunteerId: number) => {
+    setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.PAST });
   };
 
   if (isLoading) {
@@ -73,14 +76,10 @@ export const OpportunityVolunteers = ({
             volunteer={volunteer}
             currentStatus={currentTabStatus}
             hasEditingRights={hasEditingRights}
-            onMatch={() => handleMatch(volunteer.id)}
+            onMatch={() => handleMatch(volunteer.id, volunteer.volunteerId)}
             onNotAMatch={() => handleNotAMatch(volunteer.id, volunteer.volunteerId)}
-            onMarkAsActive={() =>
-              updateStatusAndEngagement(volunteer.id, volunteer.volunteerId, OpportunityVolunteerStatusType.ACTIVE)
-            }
-            onMarkAsPast={() =>
-              updateStatusAndEngagement(volunteer.id, volunteer.volunteerId, OpportunityVolunteerStatusType.PAST)
-            }
+            onMarkAsActive={() => handleMarkAsActive(volunteer.id, volunteer.volunteerId)}
+            onMarkAsPast={() => handleMarkAsPast(volunteer.id, volunteer.volunteerId)}
           />
         ))
       )}

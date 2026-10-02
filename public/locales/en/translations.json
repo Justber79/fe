@@ -1564,6 +1564,7 @@
         },
         "emptyState": "No volunteers in this category yet",
         "statusUpdateSuccess": "Volunteer status updated successfully",
+        "engagementSyncError": "The match was saved, but the volunteer's engagement status couldn't be updated. Please set it by hand.",
         "removeSuccess": "Volunteer removed successfully"
       },
       "opportunityDetails": {

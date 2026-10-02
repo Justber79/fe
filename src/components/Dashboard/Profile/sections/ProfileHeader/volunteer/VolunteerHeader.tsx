@@ -60,7 +60,7 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
   const linkStatuses = (opportunitiesData ?? []).map((o) => o.status);
   const matchStatus = deriveMatchStatus(linkStatuses);
   const hasActiveOpportunity = linkStatuses.includes(OpportunityVolunteerStatusType.ACTIVE);
-  const engagementStatus = hasActiveOpportunity ? VolunteerStateEngagementType.ACTIVE : dialog.selected;
+  const engagementStatus = hasActiveOpportunity ? VolunteerStateEngagementType.ACTIVE : volunteer.statusEngagement;
 
   const engagementLabelMap = createEngagementLabelMap(t);
   const matchLabelMap = createMatchLabelMap(t);
