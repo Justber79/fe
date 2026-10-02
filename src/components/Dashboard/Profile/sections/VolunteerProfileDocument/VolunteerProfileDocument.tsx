@@ -88,7 +88,6 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
         });
         break;
       case DocumentType.CGC_APPLICATION:
-        // If the cert itself is already confirmed (YES), the application stage is superseded — ignore
         if (volunteer.goodConductCertificate === DocumentStatusType.YES) return;
         docStatusMutation.mutate({
           goodConductCertificate: currentIsReceived ? DocumentStatusType.NO : DocumentStatusType.APPLIED_N4D,

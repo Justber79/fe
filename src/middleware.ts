@@ -73,7 +73,6 @@ export function middleware(request: NextRequest) {
 
   const currentLocale = match ? match[1] : null;
 
-  // Use cookie-saved language preference, fall back to DEFAULT_LOCALE
   const cookieLang = request.cookies.get(LANG_COOKIE)?.value;
   const preferredLocale = cookieLang && supportedLangs.includes(cookieLang) ? cookieLang : DEFAULT_LOCALE;
 
@@ -103,7 +102,6 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  // Persist the current locale in a cookie so bare URLs respect the user's choice
   if (currentLocale && supportedLangs.includes(currentLocale)) {
     response.cookies.set(LANG_COOKIE, currentLocale, {
       path: "/",
@@ -121,24 +119,6 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-/*
- *  The `config.matcher` array is used to selectively run the middleware
- * on specific paths. This is crucial for performance and preventing
- * middleware from running on static assets, API routes, or Next.js internals.
- */
 export const config = {
-  // The matcher accepts an array of path patterns to match.
-  // Patterns should use the format: '/:path*'
-  //
-  // 1. `/((?!_next|favicon.ico|api).*)`
-  //    - `((?! ... ))`: A negative lookahead, meaning "don't match any of the following patterns."
-  //    - `_next`: Excludes all Next.js internal paths (e.g., static files, build assets).
-  //    - `favicon.ico`: Explicitly excludes the favicon from middleware processing.
-  //    - `api`: Excludes all API routes in `/pages/api` or `/app/api`.
-  //    - `.*`: Matches every other path.
-  //
-  // This effectively runs the middleware on all pages/routes except Next.js internals,
-  // static assets, and API routes.
-  // Also excludes common file extensions like .pdf, .png, .jpg, etc.
   matcher: ["/((?!_next|static|favicon.ico|api|health|.well-known|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico).*)"],
 };

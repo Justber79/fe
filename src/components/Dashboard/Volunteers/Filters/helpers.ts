@@ -4,9 +4,6 @@ import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpe
 import { SelectionMap, SetFilter } from "../../common/CardsFilter/types";
 import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
 
-/**
- * Creates filter items for districts, languages, engagement, and availability.
- */
 export const createFilterItems = (
   filter: VolunteerCardsFilter,
   setFilter: SetFilter<VolunteerCardsFilter>,
@@ -64,9 +61,6 @@ export const createFilterItems = (
   };
 };
 
-/**
- * Builds availability-based filter sections (days, times, occasional).
- */
 export const createAvailabilityFilterItems = (
   availability: Availability,
   setFilter: SetFilter<VolunteerCardsFilter>,

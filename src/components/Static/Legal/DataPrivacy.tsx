@@ -32,7 +32,6 @@ function DataPrivacy() {
         <h2>{t("legal.dataPrivacy.header")}</h2>
         <p>{t("legal.dataPrivacy.intro1")}</p>
         <p>{t("legal.dataPrivacy.intro2")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.generalInfo.header")}</h3>
         <h6>{t("legal.dataPrivacy.generalInfo.responsible.header")}</h6>
         <p>{t("legal.dataPrivacy.generalInfo.responsible.title")}:</p>
@@ -111,7 +110,6 @@ function DataPrivacy() {
         <p>{t("legal.dataPrivacy.dataProcessing.duration.para")}</p>
         <h6>{t("legal.dataPrivacy.dataProcessing.possibility.header")}</h6>
         <p>{t("legal.dataPrivacy.dataProcessing.possibility.para")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.cookies.header")}</h3>
         <h6>{t("legal.dataPrivacy.cookies.description.header")}</h6>
         <p>{t("legal.dataPrivacy.cookies.description.para1")}</p>
@@ -141,7 +139,6 @@ function DataPrivacy() {
         <h6>{t("legal.dataPrivacy.cookies.possibility.header")}</h6>
         <p>{t("legal.dataPrivacy.cookies.possibility.para1")}</p>
         <p>{t("legal.dataPrivacy.cookies.possibility.para2")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.contact.header")}</h3>
         <h6>{t("legal.dataPrivacy.contact.description.header")}</h6>
         <p>{t("legal.dataPrivacy.contact.description.para1")}</p>
@@ -154,7 +151,6 @@ function DataPrivacy() {
         <p>{t("legal.dataPrivacy.contact.duration.para")}</p>
         <h6>{t("legal.dataPrivacy.contact.possibility.header")}</h6>
         <p>{t("legal.dataPrivacy.contact.possibility.para")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.social.header")}</h3>
         <p>{t("legal.dataPrivacy.social.para1")}</p>
         <p>
@@ -189,9 +185,7 @@ function DataPrivacy() {
             <strong>OK.RU{": "}</strong>https://ok.ru/privacypolicy#cmpnoscreen
           </a>
         </p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.trackers.header")}</h3>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.trackers.google.header")}</h4>
         <h6>{t("legal.dataPrivacy.trackers.google.description.header")}</h6>
         <p>{t("legal.dataPrivacy.trackers.google.description.para1")}</p>
@@ -216,9 +210,7 @@ function DataPrivacy() {
         <p>{t("legal.dataPrivacy.trackers.google.duration.para")}</p>
         <h6>{t("legal.dataPrivacy.trackers.google.possibility.header")}</h6>
         <p>{t("legal.dataPrivacy.trackers.google.possibility.para")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.tools.header")}</h3>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.tools.google.header")}</h4>
         <h6>{t("legal.dataPrivacy.tools.google.description.header")}</h6>
         <p>{t("legal.dataPrivacy.tools.google.description.para1")}</p>
@@ -237,7 +229,6 @@ function DataPrivacy() {
         <h6>{t("legal.dataPrivacy.tools.google.possibility.header")}</h6>
         <p>{t("legal.dataPrivacy.tools.google.possibility.para1")}</p>
         <p>{t("legal.dataPrivacy.tools.google.possibility.para2")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.tools.font.header")}</h4>
         <h6>{t("legal.dataPrivacy.tools.font.description.header")}</h6>
         <p>{t("legal.dataPrivacy.tools.font.description.para1")}</p>
@@ -272,7 +263,6 @@ function DataPrivacy() {
           </a>
           <span>{t("legal.dataPrivacy.tools.font.possibility.para22")}</span>
         </p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.transfer.header")}</h3>
         <p>{t("legal.dataPrivacy.transfer.para1")}</p>
         <p>
@@ -307,10 +297,8 @@ function DataPrivacy() {
           </strong>
           <span>{t("legal.dataPrivacy.transfer.bold4Text")}</span>
         </p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.rights.header")}</h3>
         <p>{t("legal.dataPrivacy.rights.para")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.revoke.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.revoke.para")}</p>
         <h4>{t("legal.dataPrivacy.rights.information.header")}</h4>
@@ -325,7 +313,6 @@ function DataPrivacy() {
           <li>{t("legal.dataPrivacy.rights.information.bullet7")}</li>
           <li>{t("legal.dataPrivacy.rights.information.bullet8")}</li>
         </ul>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.correction.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.correction.para1")}</p>
         <p>{t("legal.dataPrivacy.rights.correction.para2")}</p>
@@ -352,7 +339,6 @@ function DataPrivacy() {
           <li>{t("legal.dataPrivacy.rights.correction.bullet10")}</li>
           <li>{t("legal.dataPrivacy.rights.correction.bullet11")}</li>
         </ul>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.restriction.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.restriction.para1")}</p>
         <ul>
@@ -363,11 +349,9 @@ function DataPrivacy() {
         </ul>
         <p>{t("legal.dataPrivacy.rights.restriction.para2")}</p>
         <p>{t("legal.dataPrivacy.rights.restriction.para3")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.information2.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.information2.para1")}</p>
         <p>{t("legal.dataPrivacy.rights.information2.para2")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.portability.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.portability.para1")}</p>
         <ul>
@@ -376,15 +360,12 @@ function DataPrivacy() {
         </ul>
         <p>{t("legal.dataPrivacy.rights.portability.para2")}</p>
         <p>{t("legal.dataPrivacy.rights.portability.para3")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.object.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.object.para1")}</p>
         <p>{t("legal.dataPrivacy.rights.object.para2")}</p>
-        {/*  */}
         <h4>{t("legal.dataPrivacy.rights.complain.header")}</h4>
         <p>{t("legal.dataPrivacy.rights.complain.para1")}</p>
         <p>{t("legal.dataPrivacy.rights.complain.para2")}</p>
-        {/*  */}
         <h3>{t("legal.dataPrivacy.excercise.header")}</h3>
         <p>{t("legal.dataPrivacy.excercise.para1")}</p>
         <p>Kemal Webersohn von der WS Datenschutz GmbH</p>
@@ -398,7 +379,6 @@ function DataPrivacy() {
         <p>Dircksenstraße 51</p>
         <p>D-10178 Berlin</p>
 
-        {/*  */}
         <h3>{t("legal.dataPrivacy.change.header")}</h3>
         <p>{t("legal.dataPrivacy.change.para1")}</p>
         <p>{t("legal.dataPrivacy.change.para2")}</p>

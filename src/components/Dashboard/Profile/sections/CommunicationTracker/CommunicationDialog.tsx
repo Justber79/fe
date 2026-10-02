@@ -118,7 +118,6 @@ export function CommunicationDialog({ isOpen, onClose, onSave, initialData }: Pr
                     type="radio"
                     value={type}
                     checked={field.value === type}
-                    // React Hook Form's onChange expects the value
                     onChange={() => {
                       field.onChange(type);
                       const defaultMethod = getDefaultContactMethod(type);

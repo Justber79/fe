@@ -24,21 +24,12 @@ export default function Page() {
       .then((res) => {
         if (res.ok) {
           setVerified(true);
-          // role param in the URL is the primary signal; cookie is a fallback
-          // for links opened before this change was deployed.
           const roleFromUrl = searchParams.get("role");
           const pendingRole = getCookie("n4d_pending_role");
           if (roleFromUrl === "agent" || pendingRole === "agent") {
             document.cookie = "n4d_pending_role=; path=/; max-age=0";
-            // Forward the verify token — the agent form uses it as the
-            // querystring auth for POST /agent/register.
             router.push(`/${lang}/register/agent/complete?token=${encodeURIComponent(token)}`);
           } else if (roleFromUrl === "volunteer") {
-            // Same reasoning as the agent branch above: a volunteer account
-            // has no profile yet at this point (just the bare user), and
-            // POST /volunteer/register requires this same verify token as its
-            // auth — landing on /dashboard instead would skip profile
-            // completion entirely and leave the volunteer stuck logged out.
             router.push(`/${lang}/register/volunteer/complete?token=${encodeURIComponent(token)}`);
           } else {
             router.push(`/${lang}/dashboard`);

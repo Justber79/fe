@@ -6,7 +6,6 @@ import { AvatarImg } from "../../OpportunityVolunteers/styles";
 import { getImageUrl } from "@/utils";
 import getCaretCoordinates from "textarea-caret";
 
-// personId is not yet in ApiUserGet SDK type — cast until SDK is updated
 type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
 
 type Props = {

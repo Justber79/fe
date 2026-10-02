@@ -23,8 +23,6 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string, vali
       .optional(),
     addressStreet: z.string(),
     addressPostcode: z.string(),
-    // Stores the translated title (like `district` elsewhere), resolved
-    // back to an id at submit time via AgentType/Service option mappings.
     organizationType: z.string().min(1, required),
     operator: z
       .string()

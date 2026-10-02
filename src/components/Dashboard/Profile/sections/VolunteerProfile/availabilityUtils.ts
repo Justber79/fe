@@ -11,7 +11,6 @@ export function apiToFormAvailability(apiAvailability: ApiAvailability[] | undef
   apiAvailability.forEach((avail) => {
     if (!avail.daytime) return;
 
-    // Handle "occasionally" day type (weekdays/weekends)
     if (avail.day === Occasionally.OCCASIONALLY) {
       const dayIndex = formAvailability.findIndex((d) => d.weekday === 0);
       if (dayIndex !== -1) {
@@ -23,7 +22,6 @@ export function apiToFormAvailability(apiAvailability: ApiAvailability[] | undef
       return;
     }
 
-    // Handle regular days (Monday-Sunday)
     const weekdayNum = REVERSE_DAY_MAP[avail.day as string];
     if (!weekdayNum) return;
 
@@ -46,7 +44,6 @@ export function formToApiAvailability(formAvailability: Availability): ApiAvaila
     day.timeSlots.forEach((slot) => {
       if (!slot.selected) return;
 
-      // Handle occasional availability (weekday 0)
       if (day.weekday === 0) {
         result.push({
           day: Occasionally.OCCASIONALLY,
@@ -55,7 +52,6 @@ export function formToApiAvailability(formAvailability: Availability): ApiAvaila
         return;
       }
 
-      // Handle regular days (1-7)
       if (day.weekday >= 1 && day.weekday <= 7) {
         result.push({
           day: DAY_MAP[day.weekday],

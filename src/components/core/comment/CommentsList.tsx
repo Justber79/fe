@@ -43,8 +43,6 @@ export function CommentsList({ comments, onPatch, onDelete, onAdd, title = "Coor
 
 export default CommentsList;
 
-/* Styled Components */
-
 const CommentsCard = styled.div`
   display: flex;
   flex-direction: column;

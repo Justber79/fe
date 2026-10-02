@@ -49,7 +49,6 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
   },
 };
 
-// Every status except inactive. Derived so new SDK values are visible by default
 export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType).filter(
   (status) => status !== OpportunityStatusType.INACTIVE,
 );

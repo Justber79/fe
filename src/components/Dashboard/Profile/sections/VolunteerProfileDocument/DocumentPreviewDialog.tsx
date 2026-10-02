@@ -188,7 +188,6 @@ export function DocumentPreviewDialog({ isOpen, documentName, documentUrl, onClo
     setScale(1);
   };
 
-  // Detect file type from URL
   const fileExtension = documentUrl?.split('.').pop()?.toLowerCase();
   const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension || '');
   const isPdf = fileExtension === 'pdf';

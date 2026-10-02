@@ -11,9 +11,6 @@ type StatusUpdatePayload = {
 
 type DeletePayload = { m2mId: number };
 
-// "agent-volunteers" aggregates volunteers across all of an agent's
-// opportunities, so a status change made from there can affect both the
-// volunteer's own view and a single opportunity's volunteer list.
 const COMPLEMENTARY_PREFIXES: Record<string, string[]> = {
   "opportunity-volunteers": ["volunteer-opportunities"],
   "volunteer-opportunities": ["opportunity-volunteers"],

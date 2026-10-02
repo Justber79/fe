@@ -1,12 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import { Lang, OpportunityLegacyType, TranslatedIntoType } from "need4deed-sdk";
 
-// The endpoint also sends "events", which OpportunityLegacyType doesn't list.
 export type LegacyOpportunityType = OpportunityLegacyType | "events";
 
-/** Shape returned by `GET /opportunity/legacy` (the old website's data source). */
 export interface LegacyTimeslot {
-  day: number; // 1 = Monday … 7 = Sunday
+  day: number;
   time_slot: string;
 }
 
@@ -52,7 +50,6 @@ export interface Opportunity {
   updatedAt: Date;
   voInformation: string | null;
   categoryId: number | null;
-  /** Activity-type key: a `categoryKeyById` value or `OTHER_CATEGORY`. */
   category: string;
   lastEditedTimeNotion: Date;
   defaultMainCommunication: string;

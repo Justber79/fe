@@ -5,8 +5,6 @@ const apiURL = process.env.API_URL || "http://localhost:5000";
 
 function assetHostname(): string {
   const configured = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
-  // Set-but-empty would leave app code emitting root-relative image paths
-  // while this allowlist silently kept the default host.
   if (configured !== undefined && configured.trim() === "") {
     throw new Error("NEXT_PUBLIC_CLOUDFRONT_URL is set but empty");
   }
@@ -24,15 +22,9 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
-  // Old website URLs (fe#1056), still in emails, flyers and QR codes since
-  // need4deed.org moved to fe. Redirects run before the middleware, and Next
-  // keeps the query string (e.g. ?id=&title= from old opportunity cards).
-  // The old site put the language last (/volunteer-form/de); a missing or
-  // unknown language goes to the bare path and the middleware picks one.
   async redirects() {
     const legacyForms = [
       { from: "volunteer-form", to: "forms/volunteer" },
-      // The old NGO form is retired: send NGOs to sign-up instead.
       { from: "opportunity-form", to: "register/agent" },
     ];
     return legacyForms.flatMap(({ from, to }) => [
@@ -46,9 +38,6 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: [assetHostname()],
-    // The /_next/image optimizer returns 500 in production (fe#1087), which
-    // broke every next/image (e.g. the Become-a-volunteer logo). Assets are
-    // already optimized webp on the CDN, so load them directly.
     unoptimized: true,
   },
   output: "standalone",

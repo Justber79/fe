@@ -182,8 +182,6 @@ export function CommentDisplay({ comment, onPatch, onDelete }: CommentDisplayPro
 
 export default CommentDisplay;
 
-/* Styled Components */
-
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;

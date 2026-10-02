@@ -19,7 +19,7 @@ export function useListQuery() {
           fnDTO: ({ lists }) => lists,
         });
       }
-      return Promise.resolve(fallbackLists); // safer than casting
+      return Promise.resolve(fallbackLists);
     },
     staleTime: Infinity,
   });

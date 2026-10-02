@@ -15,7 +15,6 @@ export const useSwipe = (onSwipeLeft: () => void, onSwipeRight: () => void, thre
     }
   };
 
-  // ✅ Touch Events
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
   };

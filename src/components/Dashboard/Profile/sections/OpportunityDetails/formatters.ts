@@ -35,12 +35,6 @@ export function extractOptionTitles(items: OptionById[], lang: Lang): string[] {
   return items.map((item) => extractOptionTitle(item, lang)).filter(Boolean);
 }
 
-// Resolves a language form value back to its API option — the value is
-// either a numeric option id (picked from the dropdown) or a translated
-// name (set on initial load by languagesToFormValues). Returns undefined
-// for a value that doesn't match any option (empty, or a legacy/out-of-set
-// language no longer offered), so callers can tell "not selected" apart
-// from "selected but unresolvable".
 export function resolveFormLanguageToOption<T extends { id: number; title: string }>(
   language: string,
   apiLanguages: T[],

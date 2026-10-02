@@ -5,11 +5,8 @@ import axios from "axios";
 import { Lang } from "need4deed-sdk";
 import { useParams } from "next/navigation";
 
-const staleTime = 1000 * 60 * 60; // 1h
+const staleTime = 1000 * 60 * 60;
 
-// Public opportunity list the old website's /opportunity-cards used. The
-// endpoint returns a bare array (no {data, count} envelope), so useGetQuery
-// doesn't fit.
 export function useLegacyOpportunities() {
   const { lang } = useParams<{ lang: Lang }>();
   const { data, isLoading } = useQuery<OpportunityApi[]>({

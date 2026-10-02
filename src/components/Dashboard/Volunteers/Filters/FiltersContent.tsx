@@ -50,8 +50,6 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   );
 }
 
-/* Styles */
-
 const FiltersContentContainer = styled.div`
   display: flex;
   flex-direction: column;

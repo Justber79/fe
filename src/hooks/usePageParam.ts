@@ -1,10 +1,6 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-/**
- * Persists the current page number in the URL as `?page=X`.
- * Reading the URL means navigating back restores the previous page.
- */
 export function usePageParam() {
   const searchParams = useSearchParams();
   const pathname = usePathname();

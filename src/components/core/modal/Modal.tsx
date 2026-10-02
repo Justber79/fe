@@ -4,7 +4,6 @@ import React, { createContext, useContext, useRef, useCallback, useEffect, React
 import styled from "styled-components";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
-// Context to provide close function to children
 interface ModalContextType {
   close: () => void;
 }
@@ -19,7 +18,6 @@ export const useModal = () => {
   return context;
 };
 
-// Styled components
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
@@ -90,7 +88,6 @@ export function Modal({
     handler: handleOutsideClick,
   });
 
-  // Get all focusable elements inside the modal
   const getFocusableElements = useCallback((): HTMLElement[] => {
     if (!modalRef.current) return [];
 
@@ -106,17 +103,14 @@ export function Modal({
     return Array.from(modalRef.current.querySelectorAll<HTMLElement>(focusableSelectors));
   }, []);
 
-  // Focus trap: keep focus within the modal
   useEffect(() => {
     if (!isOpen || !modalRef.current) return;
 
     const modalElement = modalRef.current;
     const focusableElements = getFocusableElements();
 
-    // Save the element that had focus before opening the modal
     previousActiveElementRef.current = document.activeElement as HTMLElement;
 
-    // Focus the first focusable element or the modal itself
     if (focusableElements.length > 0) {
       focusableElements[0].focus();
     } else {
@@ -124,13 +118,11 @@ export function Modal({
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Close on Escape key
       if (e.key === "Escape") {
         onClose();
         return;
       }
 
-      // Focus trap: handle Tab key
       if (e.key !== "Tab") return;
 
       if (focusableElements.length === 0) {
@@ -143,13 +135,11 @@ export function Modal({
       const lastElement = focusableElements[focusableElements.length - 1];
 
       if (e.shiftKey) {
-        // Shift + Tab: going backwards
         if (document.activeElement === firstElement || document.activeElement === modalElement) {
           e.preventDefault();
           lastElement.focus();
         }
       } else {
-        // Tab: going forwards
         if (document.activeElement === lastElement) {
           e.preventDefault();
           firstElement.focus();
@@ -161,14 +151,12 @@ export function Modal({
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      // Restore focus to the previous active element
       if (previousActiveElementRef.current) {
         previousActiveElementRef.current.focus();
       }
     };
   }, [isOpen, onClose, getFocusableElements]);
 
-  // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

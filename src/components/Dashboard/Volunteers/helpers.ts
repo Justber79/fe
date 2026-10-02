@@ -26,11 +26,6 @@ interface GroupedLanguage {
   list: string[];
 }
 
-/**
- * Groups a list of languages by their proficiency level.
- * @param languages The input array of ApiLanguage objects.
- * @returns An array of GroupedLanguage objects.
- */
 export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLanguage[] => {
   const groupedLanguagesMap = new Map<LangProficiency, string[]>();
 
@@ -44,13 +39,11 @@ export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLa
     groupedLanguagesMap.get(proficiency || LangProficiency.BEGINNER)!.push(title);
   }
 
-  // Convert the Map to the desired array format
   const groupedLanguages: GroupedLanguage[] = [];
   groupedLanguagesMap.forEach((list, proficiency) => {
     groupedLanguages.push({ proficiency, list });
   });
 
-  // 👇️ Sorting Languages
   groupedLanguages.sort((a, b) => {
     return proficiencyOrder.indexOf(a.proficiency) - proficiencyOrder.indexOf(b.proficiency);
   });
@@ -80,7 +73,6 @@ export function serializeFilters(
     if (value === true) params.append("type", key);
   });
 
-  // 2. Clear all existing 'district' params
   params.delete(QueryParamsKeys.DISTRICT);
   Object.entries(filter.district).forEach(([key, value]) => {
     if (value === true) {
@@ -95,7 +87,6 @@ export function serializeFilters(
     }
   });
 
-  // 2. Clear all existing 'language' params
   params.delete(QueryParamsKeys.LANGUAGE);
   Object.entries(filter.language).forEach(([key, value]) => {
     if (value === true) {
@@ -110,8 +101,6 @@ export function serializeFilters(
     }
   });
 
-  // 2. Clear all existing 'engagement' params
-  // Strip the "vol-" prefix because the backend's engagementWorkaround re-adds it
   params.delete(QueryParamsKeys.ENGAGEMENT);
   Object.entries(filter.engagement).forEach(([key, value]) => {
     if (value === true) {
@@ -141,7 +130,6 @@ export function serializeFilters(
     }
   });
 
-  // 2. Clear all existing 'availability' params
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
     const availabilityKey = key as AvailabilityKeys;
@@ -173,7 +161,6 @@ export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, search
 
   const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
   queryDistricts.forEach((d) => {
-    // Check if the query param value is exist in the filters. if not, ignore that query param !!!
     if (newFilter.district[d] !== undefined) {
       newFilter.district[d] = true;
     }
