@@ -4,14 +4,15 @@ import { apiPathOpportunity, AUTH_HINT_COOKIE_NAME, cacheTTL, CARD_LIMIT, TABLE_
 import { useGetQuery, usePageParam } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getCookie } from "@/utils/helpers";
-import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiVolunteerOpportunityGetList, ApiOptionLists, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
 import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM, VOLUNTEER_OPPORTUNITY_STATUSES } from "./Filters/constants";
-import { createOpportunityFilterItems } from "./Filters/helpers";
+import { createOpportunityFilterSections } from "./Filters/helpers";
+import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
@@ -100,8 +101,11 @@ export function OpportunityListController({
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
-  const { districtFilters, languageFilters } = createOpportunityFilterItems(filter, setFilter, t);
-  const dropdownFilters = { districtFilters, languageFilters };
+  const filterSections = createOpportunityFilterSections(filter, setFilter, t);
+  const dropdownFilters = {
+    districtFilters: getSectionItems(filterSections, QueryParamsKeys.DISTRICT),
+    languageFilters: getSectionItems(filterSections, QueryParamsKeys.LANGUAGE),
+  };
   const opportunities = isAppointmentSort(sortOrder)
     ? sortByAppointmentDate(rawOpportunities, sortOrder)
     : rawOpportunities;
