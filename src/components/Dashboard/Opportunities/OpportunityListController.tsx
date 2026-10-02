@@ -1,14 +1,16 @@
 import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
+import { apiPathOpportunity, AUTH_HINT_COOKIE_NAME, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getCookie } from "@/utils/helpers";
+import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder, UserRole } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
-import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
+import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM, VOLUNTEER_OPPORTUNITY_STATUSES } from "./Filters/constants";
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
@@ -58,6 +60,10 @@ export function OpportunityListController({
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
   const { t, i18n } = useTranslation();
+  const user = useCurrentUser(true);
+  const isVolunteer = user?.role === UserRole.VOLUNTEER;
+  // Statuses depend on the role, so don't fetch until /me has resolved.
+  const isRoleKnown = Boolean(user) || getCookie(AUTH_HINT_COOKIE_NAME) !== "true";
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
@@ -71,7 +77,10 @@ export function OpportunityListController({
     serializedFilter.set("volunteer", volunteerId);
   }
 
-  if (!serializedFilter.has(STATUS_PARAM)) {
+  if (isVolunteer) {
+    serializedFilter.delete(STATUS_PARAM);
+    VOLUNTEER_OPPORTUNITY_STATUSES.forEach((status) => serializedFilter.append(STATUS_PARAM, status));
+  } else if (!serializedFilter.has(STATUS_PARAM)) {
     DEFAULT_OPPORTUNITY_STATUSES.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
   }
 
@@ -87,6 +96,7 @@ export function OpportunityListController({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
+    enabled: isRoleKnown,
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
@@ -105,9 +115,10 @@ export function OpportunityListController({
     [opportunities, i18n.language],
   );
 
-  if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
-  if (isLoading && isMapView) return <LoadingMapView />;
-  if (isLoading) return <DashboardListLoading />;
+  const isPending = isLoading || !isRoleKnown;
+  if (isPending && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
+  if (isPending && isMapView) return <LoadingMapView />;
+  if (isPending) return <DashboardListLoading />;
 
   if (isListView) {
     return (

@@ -15,7 +15,7 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   const { t } = useTranslation();
-  const { isAuthorized, isAgent } = useAuth();
+  const { isAuthorized, isAgent, isVolunteer } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
 
   const {
@@ -30,7 +30,9 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   return (
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
-      <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
+      {!isVolunteer && (
+        <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
+      )}
       {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       )}
