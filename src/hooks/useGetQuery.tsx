@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 
 export const fetchData = async <T,>(apiPath: string, params: Params) => {
   const response: AxiosResponse<ApiResponse<T>> = await axios.get(apiPath, { params });
@@ -71,17 +72,7 @@ export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, ena
   // Display a toast message when an error occurs
   useEffect(() => {
     if (isError) {
-      let errorMessage = t("message.errorGeneric");
-
-      if (error && axios.isAxiosError(error)) {
-        const errorData = error.response?.data;
-        errorMessage = errorData?.message || errorData;
-      } else if (error) {
-        // Fallback for non-Axios errors
-        errorMessage = error.message;
-      }
-
-      toast.error(errorMessage);
+      toast.error(getLocalizedErrorMessage(error, t));
     }
   }, [isError, error, t]);
 

@@ -1883,7 +1883,12 @@
     "deleteSuccess": "Document deleted successfully!",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
-    "previewError": "Preview failed. Please try again."
+    "previewError": "Preview failed. Please try again.",
+    "apiErrors": {
+      "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
+      "alreadyUsedToken": "This link has already been used.",
+      "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
+    }
   },
   "racGuidelines": {
     "heading": "Need4Deed Guidelines",
