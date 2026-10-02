@@ -22,8 +22,10 @@ import {
   StatusRowField,
 } from "../common";
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
+import { ChangeVolunteerTypeDialog } from "./ChangeVolunteerTypeDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
+import { useVolunteerTypeDialog } from "./useVolunteerTypeDialog";
 import { useAuth } from "@/hooks/useAuth";
 
 function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
@@ -51,6 +53,7 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
+  const volunteerTypeDialog = useVolunteerTypeDialog(volunteer);
   const { isAuthorized, isOwnProfile } = useAuth(volunteer.person.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
@@ -87,7 +90,12 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
       }
       title={fullName}
       subtitle={subtitle}
-      after={<ChangeEngagementStatusDialog dialog={dialog} />}
+      after={
+        <>
+          <ChangeEngagementStatusDialog dialog={dialog} />
+          <ChangeVolunteerTypeDialog dialog={volunteerTypeDialog} />
+        </>
+      }
     >
       <StatusRowField
         title={t("dashboard.volunteerProfile.volunteerHeader.engagementStatus_title")}
@@ -119,6 +127,13 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
         label={volunteer.statusType ? volunteerTypeLabelMap[volunteer.statusType] : undefined}
         extra={
           showBriefedCheck ? <CheckCircleIcon size={20} color="var(--color-green-700)" weight="fill" /> : undefined
+        }
+        action={
+          isAuthorized && (
+            <EditButton onClick={volunteerTypeDialog.openDialog}>
+              {t("dashboard.volunteerProfile.volunteerHeader.change_volunteerType")}
+            </EditButton>
+          )
         }
       />
     </HeaderCard>

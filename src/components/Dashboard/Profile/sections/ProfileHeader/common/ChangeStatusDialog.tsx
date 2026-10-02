@@ -19,7 +19,7 @@ import {
 type StatusOption<T extends string | number> = {
   value: T;
   label: string;
-  description: string;
+  description?: string;
   extra?: ReactNode;
 };
 
@@ -64,7 +64,7 @@ export const ChangeStatusDialog = <T extends string | number>({
                 <input type="radio" name={radioName} checked={selected === value} onChange={() => onSelect(value)} />
                 <OptionLabel>{label}</OptionLabel>
               </RadioOption>
-              <OptionDescription>{description}</OptionDescription>
+              {description && <OptionDescription>{description}</OptionDescription>}
               {extra}
             </OptionItem>
           ))}

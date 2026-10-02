@@ -2,7 +2,7 @@ import { getScheduleState } from "@/components/forms/utils";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { LanguageLevel, LanguageObject } from "@/types";
 import { TFunction } from "i18next";
-import { ApiVolunteerGet, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiVolunteerGet } from "need4deed-sdk";
 
 type VolunteerLanguages = ApiVolunteerGet["languages"];
 type VolunteerLocations = ApiVolunteerGet["locations"];
@@ -127,11 +127,6 @@ export function formatAvailability(avails: VolunteerAvailability, t: TFunction):
 export function extractTitles(items: { title: string }[]): string[] {
   if (!items || items.length === 0) return [];
   return items.map((item) => item.title);
-}
-
-export function getVolunteerTypeLabel(statusType: VolunteerStateTypeType | undefined, t: TFunction): string {
-  if (!statusType) return "";
-  return t(`dashboard.volunteerProfile.volunteerHeader.volunteerType_options.${statusType}`);
 }
 
 export function formatLocationsForDisplay(locations: VolunteerLocations): string {
