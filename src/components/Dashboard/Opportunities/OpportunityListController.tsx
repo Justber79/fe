@@ -1,9 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
+import { apiPathOpportunity, AUTH_HINT_COOKIE_NAME, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { useAuth } from "@/hooks/useAuth";
-import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getCookie } from "@/utils/helpers";
+import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder, UserRole } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
@@ -64,7 +65,10 @@ export function OpportunityListController({
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
   const { t, i18n } = useTranslation();
-  const { isVolunteer } = useAuth();
+  const user = useCurrentUser(true);
+  const isVolunteer = user?.role === UserRole.VOLUNTEER;
+  // Statuses depend on the role, so don't fetch until /me has resolved.
+  const isRoleKnown = Boolean(user) || getCookie(AUTH_HINT_COOKIE_NAME) !== "true";
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
@@ -103,6 +107,7 @@ export function OpportunityListController({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
+    enabled: isRoleKnown,
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
@@ -121,9 +126,10 @@ export function OpportunityListController({
     [opportunities, i18n.language],
   );
 
-  if (isLoading && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
-  if (isLoading && isMapView) return <LoadingMapView />;
-  if (isLoading) return <DashboardListLoading />;
+  const isPending = isLoading || !isRoleKnown;
+  if (isPending && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
+  if (isPending && isMapView) return <LoadingMapView />;
+  if (isPending) return <DashboardListLoading />;
 
   if (isListView) {
     return (
