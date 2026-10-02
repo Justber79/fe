@@ -1,13 +1,11 @@
 import { apiPathOpportunity, apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "./useGetQuery";
+import { ApiVolunteerGet, ApiVolunteerOpportunityGetList, EntityTableName, QueryParamsKeys } from "need4deed-sdk";
 import {
-  ApiVolunteerGet,
-  ApiVolunteerOpportunityGetList,
-  EntityTableName,
-  OpportunityStatusType,
-  QueryParamsKeys,
-} from "need4deed-sdk";
-import { SEPARATOR, STATUS_PARAM } from "@/components/Dashboard/Opportunities/Filters/constants";
+  SEPARATOR,
+  STATUS_PARAM,
+  VOLUNTEER_OPPORTUNITY_STATUSES,
+} from "@/components/Dashboard/Opportunities/Filters/constants";
 
 export const useGetMostRelevantOpportunities = (volunteerId: number) => {
   const {
@@ -27,9 +25,7 @@ export const useGetMostRelevantOpportunities = (volunteerId: number) => {
   ) => {
     const params = new URLSearchParams();
 
-    const activeStatuses = [OpportunityStatusType.ACTIVE, OpportunityStatusType.NEW, OpportunityStatusType.SEARCHING];
-
-    activeStatuses.forEach((defaultStatus) => params.append(STATUS_PARAM, defaultStatus));
+    VOLUNTEER_OPPORTUNITY_STATUSES.forEach((status) => params.append(STATUS_PARAM, status));
 
     availability?.forEach(({ day, daytime }) => {
       if (day && day !== "occasionally") {
