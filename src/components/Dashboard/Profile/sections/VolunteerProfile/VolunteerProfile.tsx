@@ -2,8 +2,7 @@
 import Button from "@/components/core/button/Button/Button";
 import { useUpdateVolunteerProfile } from "@/hooks/useUpdateVolunteerProfile";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApiVolunteerGet, Lang, VolunteerStateCommunicationType, VolunteerStateTypeType } from "need4deed-sdk";
-import { isBriefedAccompanying } from "../ProfileHeader/common";
+import { ApiVolunteerGet, Lang } from "need4deed-sdk";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -11,23 +10,12 @@ import { EditableSectionProps, EditableSectionRef } from "../shared/types";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
 import { formToApiAvailability } from "./availabilityUtils";
 import { DisplayFields } from "./DisplayFields";
-import {
-  extractTitles,
-  formatAvailability,
-  formatLanguagesForDisplay,
-  formatLocationsForDisplay,
-  getVolunteerTypeLabel,
-} from "./formatters";
+import { extractTitles, formatAvailability, formatLanguagesForDisplay, formatLocationsForDisplay } from "./formatters";
 import { FormFields } from "./FormFields";
 import { useApiActivities, useApiDistricts, useApiLanguages, useApiSkills } from "./hooks";
 import { createMapping } from "./mappingUtils";
 import { ButtonRow, Container, Details } from "./styles";
-import {
-  createFormDefaultValues,
-  createLabelToVolunteerTypeMap,
-  mapToApiItems,
-  transformLanguagesToApi,
-} from "./transformers";
+import { createFormDefaultValues, mapToApiItems, transformLanguagesToApi } from "./transformers";
 import { createVolunteerProfileSchema, VolunteerProfileFormData } from "./volunteerProfileSchema";
 
 type Props = {
@@ -70,14 +58,7 @@ export const VolunteerProfile = forwardRef<VolunteerProfileRef, Props>(function 
   const { control, handleSubmit, reset, trigger, formState } = useForm<VolunteerProfileFormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: createFormDefaultValues(
-      volunteer,
-      languageMapping,
-      districtMapping,
-      activityMapping,
-      skillMapping,
-      t,
-    ),
+    defaultValues: createFormDefaultValues(volunteer, languageMapping, districtMapping, activityMapping, skillMapping),
   });
 
   const { errors, isValid, isDirty } = formState;
@@ -85,14 +66,13 @@ export const VolunteerProfile = forwardRef<VolunteerProfileRef, Props>(function 
   useEffect(() => {
     if (!apiLanguages.length || !apiActivities.length || !apiSkills.length || !apiDistricts.length) return;
 
-    reset(createFormDefaultValues(volunteer, languageMapping, districtMapping, activityMapping, skillMapping, t));
+    reset(createFormDefaultValues(volunteer, languageMapping, districtMapping, activityMapping, skillMapping));
     trigger();
     setIsEditing(false);
   }, [
     volunteer,
     reset,
     trigger,
-    t,
     languageMapping,
     activityMapping,
     skillMapping,
@@ -117,12 +97,9 @@ export const VolunteerProfile = forwardRef<VolunteerProfileRef, Props>(function 
   };
 
   const onSubmit = (data: VolunteerProfileFormData) => {
-    const statusType = createLabelToVolunteerTypeMap(t)[data.volunteerType];
-
     updateProfile(
       {
         availability: formToApiAvailability(data.availability),
-        ...(statusType && Object.values(VolunteerStateTypeType).includes(statusType) && { statusType }),
         languages: transformLanguagesToApi(data.languages, languageMapping),
         locations: mapToApiItems(data.districts, districtMapping),
         activities: mapToApiItems(data.activities, activityMapping),
@@ -155,12 +132,6 @@ export const VolunteerProfile = forwardRef<VolunteerProfileRef, Props>(function 
             languages={formatLanguagesForDisplay(volunteer.languages, languageMapping.idToTitle, t)}
             availability={formatAvailability(volunteer.availability, t)}
             districts={formatLocationsForDisplay(volunteer.locations)}
-            volunteerType={getVolunteerTypeLabel(volunteer.statusType, t)}
-            volunteerTypeStatus={volunteer.statusType}
-            showBriefedCheck={isBriefedAccompanying(
-              volunteer.statusType,
-              volunteer.statusCommunication as VolunteerStateCommunicationType,
-            )}
             activities={extractTitles(volunteer.activities)}
             skills={extractTitles(volunteer.skills)}
             comments={volunteer.infoAbout}

@@ -786,6 +786,8 @@
           "unresponsive_description": "Hat nach mehreren Versuchen nie geantwortet"
         },
         "volunteerType_title": "Art der Tätigkeit",
+        "change_volunteerType": "Ändern",
+        "volunteerTypeModal_title": "Art der Tätigkeit ändern",
         "volunteerType_options": {
           "accompanying": "Begleitend",
           "regular": "Regelmäßig",
@@ -884,7 +886,6 @@
         "languages": "Sprachen",
         "availability": "Verfügbarkeit",
         "districts": "Bezirke",
-        "volunteerType": "Art der Tätigkeit",
         "activities": "Aktivitäten",
         "skills": "Fähigkeiten & Erfahrungen",
         "comments": "Kommentare",
@@ -896,7 +897,6 @@
           "levelRequired": "Wähle ein Niveau aus",
           "availabilityRequired": "Bitte wähle mindestens eine Verfügbarkeit aus",
           "districtsRequired": "Bitte wähle mindestens einen Bezirk aus",
-          "volunteerTypeRequired": "Art der Tätigkeit ist erforderlich",
           "activitiesRequired": "Bitte wähle mindestens eine Aktivität aus",
           "skillsRequired": "Fähigkeiten sind erforderlich"
         }
@@ -1576,6 +1576,7 @@
         },
         "emptyState": "Noch keine Ehrenamtlichen in dieser Kategorie",
         "statusUpdateSuccess": "Ehrenamtlichen-Status erfolgreich aktualisiert",
+        "engagementSyncError": "Die Zuordnung wurde gespeichert, aber der Engagement-Status konnte nicht aktualisiert werden. Bitte manuell setzen.",
         "removeSuccess": "Ehrenamtliche*r erfolgreich entfernt"
       },
       "opportunityDetails": {

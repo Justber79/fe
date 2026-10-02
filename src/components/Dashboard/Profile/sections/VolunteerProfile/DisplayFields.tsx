@@ -1,9 +1,6 @@
-import { CheckCircleIcon } from "@phosphor-icons/react";
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { Tags } from "@/components/core/common/Tags";
 import styled from "styled-components";
-import { StatusValue } from "../../common/statusMaps";
-import { ProfileStatusBadge } from "../ProfileHeader/common/ProfileStatusBadge";
 
 const FieldRow = styled.div`
   display: flex;
@@ -52,37 +49,17 @@ const TagsWrapper = styled.div`
   gap: var(--spacing-8);
 `;
 
-const BadgeWithCheck = styled.div`
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-8);
-`;
-
 type Props = {
   languages: string;
   availability: string;
   districts: string;
-  volunteerType: string;
-  volunteerTypeStatus: StatusValue | undefined;
-  showBriefedCheck?: boolean;
   activities: string[];
   skills: string[];
   comments: string | undefined;
   t: (key: string) => string;
 };
 
-export function DisplayFields({
-  languages,
-  availability,
-  districts,
-  volunteerType,
-  volunteerTypeStatus,
-  showBriefedCheck,
-  activities,
-  skills,
-  comments,
-  t,
-}: Props) {
+export function DisplayFields({ languages, availability, districts, activities, skills, comments, t }: Props) {
   return (
     <>
       <FieldRow>
@@ -98,20 +75,6 @@ export function DisplayFields({
       <FieldRow>
         <FieldLabel>{t("dashboard.volunteerProfile.profileSection.districts")}</FieldLabel>
         <FieldValue>{districts}</FieldValue>
-      </FieldRow>
-
-      <FieldRow>
-        <FieldLabel>{t("dashboard.volunteerProfile.profileSection.volunteerType")}</FieldLabel>
-        <FieldValue>
-          {volunteerType && volunteerTypeStatus ? (
-            <BadgeWithCheck>
-              <ProfileStatusBadge status={volunteerTypeStatus} label={volunteerType} />
-              {showBriefedCheck && <CheckCircleIcon size={20} color="var(--color-green-700)" weight="fill" />}
-            </BadgeWithCheck>
-          ) : (
-            <EmptyPlaceholder />
-          )}
-        </FieldValue>
       </FieldRow>
 
       <FieldRow>
