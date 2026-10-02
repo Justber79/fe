@@ -13,6 +13,7 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
+      "no-console": ["error", { allow: ["warn", "error"] }],
       "no-restricted-syntax": [
         "error",
         {
