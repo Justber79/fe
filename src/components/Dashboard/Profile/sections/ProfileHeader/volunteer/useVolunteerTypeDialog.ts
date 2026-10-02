@@ -12,9 +12,16 @@ export const useVolunteerTypeDialog = (volunteer: ApiVolunteerGet): UseVolunteer
     updateProfile({ statusType }, { onSuccess });
   };
 
-  return useStatusDialog<VolunteerStateTypeType | "">({
+  const dialog = useStatusDialog<VolunteerStateTypeType | "">({
     initial: volunteer.statusType ?? "",
     onSave,
     isSaveDisabled: (selected, original) => !selected || selected === original,
   });
+
+  const openDialog = () => {
+    dialog.setSelected(volunteer.statusType ?? "");
+    dialog.openDialog();
+  };
+
+  return { ...dialog, openDialog };
 };
