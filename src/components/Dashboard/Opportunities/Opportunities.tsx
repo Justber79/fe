@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
+import { ApiOptionLists } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
-import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
+import { opportunityFilterConfigs } from "./Filters/config";
 import { defaultOpportunityCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -114,13 +116,7 @@ export function Opportunities() {
     if (!apiFilterOptions) return;
 
     setCardsFilter((prev) => {
-      const baseFilters = {
-        ...prev,
-        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
-        language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
-        activity: createFilterFromOption(apiFilterOptions, EntityTableName.ACTIVITY),
-        skill: createFilterFromOption(apiFilterOptions, EntityTableName.SKILL),
-      };
+      const baseFilters = withOptionFilters(opportunityFilterConfigs, prev, apiFilterOptions);
 
       return deserializeOpportunityFilters(baseFilters, searchParams);
     });
