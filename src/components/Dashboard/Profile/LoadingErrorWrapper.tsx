@@ -1,6 +1,8 @@
 import CenteredWrapper from "@/components/core/common/CenteredWrapper";
 import { Paragraph } from "@/components/styled/text";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import styled from "styled-components";
 import { EntityType } from "./types";
 
@@ -23,6 +25,8 @@ type Props = {
 };
 
 export const LoadingErrorWrapper = ({ isLoading, isError, error, data, entityType, children }: Props) => {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <LoadingContainer>
@@ -32,26 +36,9 @@ export const LoadingErrorWrapper = ({ isLoading, isError, error, data, entityTyp
   }
 
   if (isError) {
-    let errorMessage = `Failed to load ${entityType} profile. Please try again.`;
-
-    if (error) {
-      if (typeof error === "string") {
-        errorMessage = error;
-      } else if (typeof error === "object" && error !== null) {
-        if ("message" in error && typeof error.message === "string") {
-          errorMessage = error.message;
-        } else if ("response" in error && typeof error.response === "object" && error.response !== null) {
-          const response = error.response as { data?: { message?: string } };
-          if (response.data?.message) {
-            errorMessage = response.data.message;
-          }
-        }
-      }
-    }
-
     return (
       <ErrorContainer>
-        <Paragraph>{errorMessage}</Paragraph>
+        <Paragraph>{getLocalizedErrorMessage(error, t)}</Paragraph>
       </ErrorContainer>
     );
   }

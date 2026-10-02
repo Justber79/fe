@@ -1674,8 +1674,7 @@
       "message": "Message",
       "today": "today",
       "futureDateError": "Date cannot be in the future",
-      "contactTypeRequired": "Contact type is required",
-      "deletePermissionError": "You do not have permission to delete communication with id: {{id}}."
+      "contactTypeRequired": "Contact type is required"
     },
     "calendar": {
       "createEvent": "Create an event",
@@ -1883,7 +1882,15 @@
     "deleteSuccess": "Document deleted successfully!",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
-    "previewError": "Preview failed. Please try again."
+    "previewError": "Preview failed. Please try again.",
+    "apiErrors": {
+      "unauthenticated": "Login failed or your session has expired. Please check your details and log in again.",
+      "unauthorized": "You don't have permission to do this.",
+      "notFound": "This item could not be found. It may have been deleted.",
+      "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
+      "alreadyUsedToken": "This link has already been used.",
+      "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
+    }
   },
   "racGuidelines": {
     "heading": "Need4Deed Guidelines",
