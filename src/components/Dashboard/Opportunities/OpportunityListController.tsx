@@ -2,13 +2,19 @@ import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathOpportunity, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
+import { useAuth } from "@/hooks/useAuth";
 import { ApiVolunteerOpportunityGetList, ApiOptionLists, SortOrder } from "need4deed-sdk";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from "./helpers";
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
-import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
+import {
+  DEFAULT_OPPORTUNITY_STATUSES,
+  STATUS_PARAM,
+  VOLUNTEER_DEFAULT_OPPORTUNITY_STATUSES,
+  VOLUNTEER_HIDDEN_STATUSES,
+} from "./Filters/constants";
 import { createOpportunityFilterItems } from "./Filters/helpers";
 import { useTranslation } from "react-i18next";
 import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
@@ -58,6 +64,7 @@ export function OpportunityListController({
 }: Props) {
   const { currentPage, setCurrentPage } = usePageParam();
   const { t, i18n } = useTranslation();
+  const { isVolunteer } = useAuth();
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
@@ -71,8 +78,17 @@ export function OpportunityListController({
     serializedFilter.set("volunteer", volunteerId);
   }
 
+  if (isVolunteer) {
+    const allowedStatuses = serializedFilter
+      .getAll(STATUS_PARAM)
+      .filter((status) => !VOLUNTEER_HIDDEN_STATUSES.includes(status));
+    serializedFilter.delete(STATUS_PARAM);
+    allowedStatuses.forEach((status) => serializedFilter.append(STATUS_PARAM, status));
+  }
+
   if (!serializedFilter.has(STATUS_PARAM)) {
-    DEFAULT_OPPORTUNITY_STATUSES.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
+    const defaultStatuses = isVolunteer ? VOLUNTEER_DEFAULT_OPPORTUNITY_STATUSES : DEFAULT_OPPORTUNITY_STATUSES;
+    defaultStatuses.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
   }
 
   const backendSortOrder = isAppointmentSort(sortOrder) ? SortOrder.NewToOld : (sortOrder as SortOrder);

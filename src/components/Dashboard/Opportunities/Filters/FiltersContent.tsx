@@ -6,6 +6,7 @@ import { createOpportunityFilterItems } from "./helpers";
 import { FiltersContentContainer } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { ViewMode } from "../../common/types";
+import { VOLUNTEER_HIDDEN_STATUSES } from "./constants";
 
 type Props = {
   filter: OpportunityCardsFilter;
@@ -15,7 +16,7 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   const { t } = useTranslation();
-  const { isAuthorized, isAgent } = useAuth();
+  const { isAuthorized, isAgent, isVolunteer } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
 
   const {
@@ -27,10 +28,13 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
     skillFilters,
     availabilityFilters,
   } = createOpportunityFilterItems(filter, setFilter, t);
+  const visibleStatusFilters = isVolunteer
+    ? statusFilters.filter(({ keyValue }) => !VOLUNTEER_HIDDEN_STATUSES.includes(keyValue))
+    : statusFilters;
   return (
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
-      <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
+      <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={visibleStatusFilters} />
       {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       )}
