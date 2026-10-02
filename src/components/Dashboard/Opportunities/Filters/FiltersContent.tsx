@@ -6,7 +6,6 @@ import { createOpportunityFilterItems } from "./helpers";
 import { FiltersContentContainer } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { ViewMode } from "../../common/types";
-import { VOLUNTEER_HIDDEN_STATUSES } from "./constants";
 
 type Props = {
   filter: OpportunityCardsFilter;
@@ -28,13 +27,12 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
     skillFilters,
     availabilityFilters,
   } = createOpportunityFilterItems(filter, setFilter, t);
-  const visibleStatusFilters = isVolunteer
-    ? statusFilters.filter(({ keyValue }) => !VOLUNTEER_HIDDEN_STATUSES.includes(keyValue))
-    : statusFilters;
   return (
     <FiltersContentContainer data-testid="opportunity-filters-content">
       <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
-      <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={visibleStatusFilters} />
+      {!isVolunteer && (
+        <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
+      )}
       {viewMode !== ViewMode.LIST && (
         <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
       )}
