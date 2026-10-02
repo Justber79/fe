@@ -1562,14 +1562,14 @@
           "title": "Für diese ehrenamtliche Tätigkeit vorschlagen?",
           "messageStart": "Der Verantwortliche von",
           "messageMid": "wird benachrichtigt, dass Sie",
-          "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"ausstehenden\" Ehrenamtlichen.",
+          "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"Angefragt\".",
           "confirm": "Vorschlagen",
           "cancel": "Abbrechen",
           "success": "Vorschlag erfolgreich gesendet"
         },
         "appliedOn": "Beworben am",
         "tabs": {
-          "opp-pending": "Ausstehend",
+          "opp-pending": "Angefragt",
           "opp-matched": "Zugeordnet",
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
