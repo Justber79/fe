@@ -1031,6 +1031,11 @@
         "cancel": "Abbrechen",
         "submit": "Erstellen",
         "success": "NGO erfolgreich erstellt",
+        "conflict": {
+          "title": "Eine NGO mit diesem Namen existiert bereits.",
+          "address": "An dieser Adresse gibt es bereits eine NGO.",
+          "open": "Bestehende NGO öffnen"
+        },
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
         }
@@ -1457,6 +1462,7 @@
       },
       "statusUpdateSuccess": "Status der ehrenamtlichen Tätigkeit erfolgreich aktualisiert",
       "change_status": "Status ändern",
+      "statusHelpAgent": "Nur need4deed kann eine Tätigkeit als „{{status}}“ markieren. Erst dann suchen wir aktiv nach Ehrenamtlichen.",
       "change_ngo": "Einrichtung/Projekt ändern",
       "typeUpdateSuccess": "Art der Tätigkeit erfolgreich aktualisiert",
       "change_type": "Typ ändern",
@@ -2238,12 +2244,14 @@
     "visitsPhotosTitle": "Besuche und Fotoaufnahmen",
     "visitsPhotosBody": "Gelegentlich besuchen wir die Einrichtungen, um Fotos der Aktivitäten zu machen. Diese dienen der Gewinnung neuer Freiwilliger. Wir stellen sicher, dass keine Gesichter von Kindern oder Geflüchteten zu sehen sind, es sei denn, es liegt eine ausdrückliche Erlaubnis vor.",
     "sectionAccompaniment": "Einsatzbereiche für Begleitungen",
-    "supportCasesTitle": "Freiwillige können in folgenden Fällen unterstützen:",
-    "bulletGovtOffice": "Termine bei Behörden (ausgenommen Standesamt und Gericht)",
-    "bulletDoctorAppt": "Arzttermine (wir vermitteln keine Begleitungen zu Terminen in Krankenhäusern)",
-    "bulletSchoolDaycare": "Termine in Schulen/Kitas",
-    "bulletCounsellingBank": "Termine bei Beratungsstellen, Bänke (keine Termine bei Anwält*innen)",
-    "bulletNoInterpreting": "Wegbegleitung ohne Sprachmittlung",
+    "supportCasesTitle": "Freiwillige können niedrigschwellige Unterstützung in folgenden Fällen begleiten:",
+    "bulletDoctorAppt": "Arzttermine (ausgenommen Termine bei der Charité und Vivantes sowie alle OP-Vor- und -Nachbereitungstermine und Termine bei den folgenden Fachärzt*innen: Chirurgie, Neurochirurgie, Anästhesiologie, Strahlentherapie);",
+    "bulletGovtOffice": "Termine bei Behörden (außer Standesamt und Gericht);",
+    "bulletCounsellingBank": "Termine bei Beratungsstellen, Bänke (keine Termine bei Anwält*innen);",
+    "bulletAccountOpening": "Kontoeröffnungen;",
+    "bulletFlatViewing": "Wohnungsbesichtigungen;",
+    "bulletSchoolDaycare": "Termine in Schulen und Kitas;",
+    "bulletWayfinding": "Wegbegleitung.",
     "interpreterNote": "Die Freiwilligen sind keine professionellen Dolmetscher*innen, sondern vermitteln nach bestem Wissen und Gewissen. Need4Deed und die Freiwilligen übernehmen keine Haftung für die Richtigkeit der Sprachmittlung. Freiwillige übernehmen keine Beratungsfunktion.",
     "miscTitle": "Fristen und Ablauf",
     "miscBody": "Begleitung zu Terminen muss mindestens 7 Werktage vor dem Termin angefragt werden. Termine sollten eine Dauer von 3 Stunden nicht überschreiten und nicht vor 9.00 Uhr beginnen. Sie bekommen spätestens 4 Werktage vor dem Termin eine Rückmeldung, ob wir jemanden für die Begleitung gefunden haben."
@@ -2325,7 +2333,7 @@
       "password": "Passwort",
       "confirmPassword": "Passwort bestätigen",
       "phone": "Telefonnummer",
-      "organizationName": "Name der Organisation",
+      "organizationName": "Einrichtung (GU/Projekt)",
       "organizationType": "Art der Organisation",
       "selectOrganizationType": "Typ auswählen…",
       "about": "Über Ihre Einrichtung",
@@ -2333,8 +2341,6 @@
       "website": "Website",
       "addressStreet": "Straße und Hausnummer",
       "addressPostcode": "Postleitzahl",
-      "district": "Bezirk",
-      "selectDistrict": "Bezirk auswählen…",
       "services": "Angebotene Leistungen",
       "clientLanguages": "Von Bewohnenden gesprochene Sprachen",
       "consent": {
@@ -2361,10 +2367,13 @@
     "completion": {
       "title": "Konto-Einrichtung abschließen",
       "subtitle": "Erzählen Sie uns von Ihrer Organisation.",
+      "emailConfirmed": "E-Mail bestätigt. Jetzt nur noch Ihre Organisation vervollständigen.",
       "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
+      "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",
       "joinTitle": "Einer bestehenden Organisation beitreten",

@@ -1066,6 +1066,11 @@
         "cancel": "Cancel",
         "submit": "Create",
         "success": "NGO created successfully",
+        "conflict": {
+          "title": "An NGO with this name already exists.",
+          "address": "An NGO at this address already exists.",
+          "open": "Open existing NGO"
+        },
         "validation": {
           "titleRequired": "Organization name is required"
         }
@@ -1445,6 +1450,7 @@
       },
       "statusUpdateSuccess": "Opportunity status updated successfully",
       "change_status": "Change status",
+      "statusHelpAgent": "Only need4deed can mark an opportunity as “{{status}}”. Only then do we actively search for volunteers.",
       "change_ngo": "Change NGO",
       "typeUpdateSuccess": "Opportunity type updated successfully",
       "change_type": "Change type",
@@ -1894,12 +1900,14 @@
     "visitsPhotosTitle": "Visits and Photography",
     "visitsPhotosBody": "Occasionally, we visit the centers to take photos of the activities. These are used to recruit new volunteers. We ensure that no faces of children or refugees are visible unless explicit permission has been granted.",
     "sectionAccompaniment": "Areas of Support for Accompaniment",
-    "supportCasesTitle": "Volunteers can provide support in the following cases:",
-    "bulletGovtOffice": "Appointments at public authorities (excluding the registry office and court)",
-    "bulletDoctorAppt": "Medical appointments (we do not arrange accompaniment for hospital appointments)",
-    "bulletSchoolDaycare": "Appointments at schools/daycare centers",
-    "bulletCounsellingBank": "Appointments at counseling centers or banks (no appointments with lawyers)",
-    "bulletNoInterpreting": "Wayfinding/route accompaniment without language mediation",
+    "supportCasesTitle": "Volunteers can provide low-threshold accompaniment in the following cases:",
+    "bulletDoctorAppt": "Medical appointments (excluding appointments at Charité and Vivantes, all pre- and post-operative appointments, and appointments with the following specialists: surgery, neurosurgery, anesthesiology, radiotherapy);",
+    "bulletGovtOffice": "Appointments at public authorities (except the registry office and court);",
+    "bulletCounsellingBank": "Appointments at counseling centers or banks (no appointments with lawyers);",
+    "bulletAccountOpening": "Opening bank accounts;",
+    "bulletFlatViewing": "Apartment viewings;",
+    "bulletSchoolDaycare": "Appointments at schools and daycare centers;",
+    "bulletWayfinding": "Wayfinding/route accompaniment.",
     "interpreterNote": "The volunteers are not professional interpreters; they mediate to the best of their knowledge and belief. Need4Deed and the volunteers assume no liability for the accuracy of the language mediation. Volunteers do not take on a counseling or advisory role.",
     "miscTitle": "Deadlines and Procedure",
     "miscBody": "Accompaniment for appointments must be requested at least 7 business days prior to the appointment. Appointments should not exceed a duration of 3 hours and should not begin before 9:00 AM. You will receive feedback no later than 4 business days before the appointment regarding whether we have found someone to provide accompaniment."
@@ -1981,7 +1989,7 @@
       "password": "Password",
       "confirmPassword": "Confirm password",
       "phone": "Phone number",
-      "organizationName": "Organisation name",
+      "organizationName": "Refugee center/project",
       "organizationType": "Organisation type",
       "selectOrganizationType": "Select type…",
       "about": "About your centre",
@@ -1989,8 +1997,6 @@
       "website": "Website",
       "addressStreet": "Street address",
       "addressPostcode": "Postcode",
-      "district": "District",
-      "selectDistrict": "Select district…",
       "services": "Services provided",
       "clientLanguages": "Languages spoken by residents",
       "consent": {
@@ -2017,10 +2023,13 @@
     "completion": {
       "title": "Finish setting up your account",
       "subtitle": "Tell us about your organisation.",
+      "emailConfirmed": "Email confirmed. Now just complete your organisation's details.",
       "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
       "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
       "skip": "No, enter manually",
       "titleTaken": "An organisation with this name already exists.",
+      "addressTaken": "An organisation is already registered at this address.",
+      "editDetails": "Edit details",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",
       "joinTitle": "Join an existing organisation",

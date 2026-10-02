@@ -10,6 +10,9 @@ type DataMutationOptions<TResponse, TData> = {
   successMessage?: string;
   onSuccessCallback?: (data: TResponse) => void | Promise<void>;
   queryKeyToInvalidate?: QueryKey | QueryKey[];
+  // Return true to mark an error as handled by the caller (e.g. shown inline),
+  // which skips the default error toast.
+  onErrorCallback?: (error: unknown) => boolean | void;
 
   noToast?: boolean;
 } & (
@@ -46,6 +49,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
   onSuccessCallback,
   queryKeyToInvalidate,
   mutationFn,
+  onErrorCallback,
   noToast = false,
 }: DataMutationOptions<TResponse, TData>) => {
   const { t } = useTranslation();
@@ -79,6 +83,8 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     },
 
     onError: (error) => {
+      if (onErrorCallback?.(error)) return;
+
       let errorMessage = t("message.errorGeneric");
 
       if (axios.isAxiosError(error)) {
