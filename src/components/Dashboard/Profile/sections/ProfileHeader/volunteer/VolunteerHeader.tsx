@@ -23,15 +23,18 @@ import {
 } from "../common";
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
 import { ChangeVolunteerTypeDialog } from "./ChangeVolunteerTypeDialog";
-import { ACTIVE_MATCH_STATUS, createEngagementLabelMap, createMatchLabelMap, HeaderMatchStatus } from "./constants";
+import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
 import { useVolunteerTypeDialog } from "./useVolunteerTypeDialog";
 import { useAuth } from "@/hooks/useAuth";
 
-function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): HeaderMatchStatus {
-  const statuses = opportunities.map((o) => o.status);
-  if (statuses.includes(OpportunityVolunteerStatusType.ACTIVE)) return ACTIVE_MATCH_STATUS;
-  if (statuses.includes(OpportunityVolunteerStatusType.MATCHED)) return VolunteerStateMatchType.MATCHED;
+function deriveMatchStatus(statuses: OpportunityVolunteerStatusType[]): VolunteerStateMatchType {
+  if (
+    statuses.includes(OpportunityVolunteerStatusType.MATCHED) ||
+    statuses.includes(OpportunityVolunteerStatusType.ACTIVE)
+  ) {
+    return VolunteerStateMatchType.MATCHED;
+  }
   if (statuses.includes(OpportunityVolunteerStatusType.PENDING)) return VolunteerStateMatchType.PENDING_MATCH;
   return VolunteerStateMatchType.NO_MATCHES;
 }
@@ -54,7 +57,10 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
     enabled: !!volunteer.id,
   });
 
-  const matchStatus = deriveMatchStatus(opportunitiesData ?? []);
+  const linkStatuses = (opportunitiesData ?? []).map((o) => o.status);
+  const matchStatus = deriveMatchStatus(linkStatuses);
+  const hasActiveOpportunity = linkStatuses.includes(OpportunityVolunteerStatusType.ACTIVE);
+  const engagementStatus = hasActiveOpportunity ? VolunteerStateEngagementType.ACTIVE : dialog.selected;
 
   const engagementLabelMap = createEngagementLabelMap(t);
   const matchLabelMap = createMatchLabelMap(t);
@@ -89,15 +95,16 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
     >
       <StatusRowField
         title={t("dashboard.volunteerProfile.volunteerHeader.engagementStatus_title")}
-        status={dialog.selected}
-        label={engagementLabelMap[dialog.selected]}
+        status={engagementStatus}
+        label={engagementLabelMap[engagementStatus]}
         extra={
-          dialog.selected === VolunteerStateEngagementType.TEMP_UNAVAILABLE && (
+          engagementStatus === VolunteerStateEngagementType.TEMP_UNAVAILABLE && (
             <ReturnDateText>{formatDateReturn(dialog.dateReturn)}</ReturnDateText>
           )
         }
         action={
-          isAuthorized && (
+          isAuthorized &&
+          !hasActiveOpportunity && (
             <EditButton onClick={dialog.openDialog}>
               {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
             </EditButton>
