@@ -2228,7 +2228,12 @@
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
-    "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut."
+    "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "apiErrors": {
+      "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
+      "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
+      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
+    }
   },
   "racGuidelines": {
     "heading": "Need4Deed Leitlinien",
