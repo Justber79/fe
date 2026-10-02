@@ -40,24 +40,24 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number) => {
+  const handleMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
-  const handleNotAMatch = (m2mId: number) => {
+  const handleNotAMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId });
+    deleteLink({ m2mId, volunteerId });
   };
 
-  const handleMarkAsActive = (m2mId: number) => {
+  const handleMarkAsActive = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.ACTIVE });
   };
 
-  const handleMarkAsPast = (m2mId: number) => {
+  const handleMarkAsPast = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.PAST });
   };
 
   if (isLoading) {
@@ -76,10 +76,10 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
               key={opportunity.id}
               opportunity={opportunity}
               currentStatus={currentTabStatus}
-              onMatch={() => handleMatch(opportunity.id)}
-              onNotAMatch={() => handleNotAMatch(opportunity.id)}
-              onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
-              onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
+              onMatch={() => handleMatch(opportunity.id, opportunity.volunteerId)}
+              onNotAMatch={() => handleNotAMatch(opportunity.id, opportunity.volunteerId)}
+              onMarkAsActive={() => handleMarkAsActive(opportunity.id, opportunity.volunteerId)}
+              onMarkAsPast={() => handleMarkAsPast(opportunity.id, opportunity.volunteerId)}
             />
           ) : (
             <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />

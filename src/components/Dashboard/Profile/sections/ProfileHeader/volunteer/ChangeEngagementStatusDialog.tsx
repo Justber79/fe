@@ -4,7 +4,7 @@ import { de, enUS } from "date-fns/locale";
 import { VolunteerStateEngagementType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { ChangeStatusDialog, DateFieldContainer } from "../common";
-import { createEngagementLabelMap, ENGAGEMENT_DESCRIPTION_KEYS } from "./constants";
+import { createEngagementLabelMap, ENGAGEMENT_DESCRIPTION_KEYS, MANUAL_ENGAGEMENT_STATUSES } from "./constants";
 import { UseEngagementStatusDialogReturn } from "./useEngagementStatusDialog";
 
 type Props = {
@@ -18,7 +18,7 @@ export const ChangeEngagementStatusDialog = ({
   const locale = i18n.language === "de" ? de : enUS;
   const engagementLabelMap = createEngagementLabelMap(t);
 
-  const options = Object.values(VolunteerStateEngagementType).map((status) => ({
+  const options = MANUAL_ENGAGEMENT_STATUSES.map((status) => ({
     value: status,
     label: engagementLabelMap[status],
     description: t(

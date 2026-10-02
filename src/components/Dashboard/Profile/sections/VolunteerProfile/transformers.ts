@@ -1,9 +1,8 @@
-import { TFunction } from "i18next";
-import { ApiLanguage, ApiVolunteerGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiLanguage, ApiVolunteerGet, LangPurpose } from "need4deed-sdk";
 import { LanguageLevel } from "@/types";
 import { apiToFormAvailability } from "./availabilityUtils";
 import { LEVEL_TO_PROFICIENCY } from "./constants";
-import { formatActivities, formatDistricts, formatLanguages, formatSkills, getVolunteerTypeLabel } from "./formatters";
+import { formatActivities, formatDistricts, formatLanguages, formatSkills } from "./formatters";
 import { Mapping } from "./mappingUtils";
 import { VolunteerProfileFormData } from "./volunteerProfileSchema";
 
@@ -13,26 +12,14 @@ export function createFormDefaultValues(
   districtMapping: Mapping,
   activityMapping: Mapping,
   skillMapping: Mapping,
-  t: TFunction,
 ): VolunteerProfileFormData {
   return {
     languages: formatLanguages(volunteer.languages, languageMapping.titleToIdLower),
     availability: apiToFormAvailability(volunteer.availability),
     districts: formatDistricts(volunteer.locations, districtMapping.titleToIdLower),
-    volunteerType: getVolunteerTypeLabel(volunteer.statusType, t),
     activities: formatActivities(volunteer.activities, activityMapping.titleToIdLower),
     skills: formatSkills(volunteer.skills, skillMapping.titleToIdLower),
   };
-}
-
-export function createLabelToVolunteerTypeMap(t: TFunction): Record<string, VolunteerStateTypeType> {
-  return Object.values(VolunteerStateTypeType).reduce(
-    (acc, type) => {
-      acc[t(`dashboard.volunteerProfile.volunteerHeader.volunteerType_options.${type}`)] = type;
-      return acc;
-    },
-    {} as Record<string, VolunteerStateTypeType>,
-  );
 }
 
 export function mapToApiItems(ids: string[], mapping: { idToTitle: Record<number, string> }) {

@@ -10,13 +10,15 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ApiAgentGetList, ApiOptionLists, EntityTableName, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiAgentGetList, ApiOptionLists, SortOrder, UserRole } from "need4deed-sdk";
 import { useGetQuery } from "@/hooks";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { AgentCardsFilter } from "./Filters/types";
 import { createSelectedAgentFiltersAsFlatArray } from "./Filters/helpers";
 import { defaultAgentCardsFilter } from "./Filters/constants";
-import { createFilterFromOption, getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
+import { agentFilterConfigs } from "./Filters/config";
 import { deserializeAgentFilters, serializeAgentFilters } from "./helpers";
 import Filters from "../common/CardsFilter/Filters";
 import FiltersContent from "./Filters/FiltersContent";
@@ -106,12 +108,7 @@ export const Agents = () => {
     if (!apiFilterOptions) return;
 
     setCardsFilter((prev) => {
-      const baseFilters = {
-        ...prev,
-        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
-        type: createFilterFromOption(apiFilterOptions, EntityTableName.AGENT_TYPE),
-        services: createFilterFromOption(apiFilterOptions, EntityTableName.SERVICE),
-      };
+      const baseFilters = withOptionFilters(agentFilterConfigs, prev, apiFilterOptions);
 
       return deserializeAgentFilters(baseFilters, searchParams);
     });

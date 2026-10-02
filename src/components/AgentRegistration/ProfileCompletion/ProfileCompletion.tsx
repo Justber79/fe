@@ -3,6 +3,7 @@ import { Button } from "@/components/core/button";
 import { FormInput } from "@/components/core/common";
 import { apiPathAgentRegister, apiPathOption } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
+import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import i18next from "i18next";
 import { ApiAgentRegisterConflict, ApiOptionLists } from "need4deed-sdk";
@@ -128,7 +129,7 @@ export function ProfileCompletion() {
           return;
         }
       }
-      showSubmitError(t("message.errorGeneric"));
+      showSubmitError(getLocalizedErrorMessage(err, t));
     } finally {
       setIsSubmitting(false);
     }

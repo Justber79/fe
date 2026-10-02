@@ -1,6 +1,11 @@
 import { TFunction } from "i18next";
 import { VolunteerStateEngagementType, VolunteerStateMatchType } from "need4deed-sdk";
 
+// "Active" isn't set by hand: it follows from the volunteer having an active opportunity.
+export const MANUAL_ENGAGEMENT_STATUSES = Object.values(VolunteerStateEngagementType).filter(
+  (status) => status !== VolunteerStateEngagementType.ACTIVE,
+);
+
 export const ENGAGEMENT_DESCRIPTION_KEYS: Record<VolunteerStateEngagementType, string> = {
   [VolunteerStateEngagementType.NEW]: "new_description",
   [VolunteerStateEngagementType.ACTIVE]: "active_description",

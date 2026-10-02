@@ -779,6 +779,8 @@
           "unresponsive_description": "Never replied after few times"
         },
         "volunteerType_title": "Volunteering type",
+        "change_volunteerType": "Change",
+        "volunteerTypeModal_title": "Change volunteering type",
         "volunteerType_options": {
           "accompanying": "Accompanying",
           "regular": "Regular",
@@ -877,7 +879,6 @@
         "languages": "Languages",
         "availability": "Availability",
         "districts": "Districts",
-        "volunteerType": "Volunteering type",
         "activities": "Activities",
         "skills": "Skills & experience",
         "comments": "Comments",
@@ -889,7 +890,6 @@
           "levelRequired": "Choose a level",
           "availabilityRequired": "Please select your availability",
           "districtsRequired": "Please select at least one district",
-          "volunteerTypeRequired": "Please select a volunteering type",
           "activitiesRequired": "Please select at least one activity",
           "skillsRequired": "Please select at least one skill"
         }
@@ -1564,6 +1564,7 @@
         },
         "emptyState": "No volunteers in this category yet",
         "statusUpdateSuccess": "Volunteer status updated successfully",
+        "engagementSyncError": "The match was saved, but the volunteer's engagement status couldn't be updated. Please set it by hand.",
         "removeSuccess": "Volunteer removed successfully"
       },
       "opportunityDetails": {
@@ -1883,7 +1884,12 @@
     "deleteSuccess": "Document deleted successfully!",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
-    "previewError": "Preview failed. Please try again."
+    "previewError": "Preview failed. Please try again.",
+    "apiErrors": {
+      "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
+      "alreadyUsedToken": "This link has already been used.",
+      "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
+    }
   },
   "racGuidelines": {
     "heading": "Need4Deed Guidelines",
@@ -2215,6 +2221,10 @@
     "5": "Friday",
     "6": "Saturday",
     "0": "Sunday"
+  },
+  "thankYou": {
+    "header": "Thank you!",
+    "para": ""
   },
   "spinner": {
     "header": "Loading opportunities...",

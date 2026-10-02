@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { OpportunityCardsFilter } from "./types";
 import AccordionFilter from "../../common/CardsFilter/AccordionFilter";
+import { getVisibleSelectionFilterSections } from "../../common/CardsFilter/selectionFilters";
 import { SetFilter } from "../../common/CardsFilter/types";
-import { createOpportunityFilterItems } from "./helpers";
+import { createAvailabilityFilterItems, createOpportunityFilterSections } from "./helpers";
 import { FiltersContentContainer } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { ViewMode } from "../../common/types";
+import { QueryParamsKeys } from "need4deed-sdk";
 
 type Props = {
   filter: OpportunityCardsFilter;
@@ -15,30 +17,22 @@ type Props = {
 
 export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
   const { t } = useTranslation();
-  const { isAuthorized, isAgent } = useAuth();
+  const { isAuthorized, isAgent, isVolunteer } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
 
-  const {
-    districtFilters,
-    languageFilters,
-    statusFilters,
-    typeFilters,
-    activityFilters,
-    skillFilters,
-    availabilityFilters,
-  } = createOpportunityFilterItems(filter, setFilter, t);
+  const sections = getVisibleSelectionFilterSections(createOpportunityFilterSections(filter, setFilter, t), {
+    viewMode,
+    isAuthorized,
+    isAgent,
+    isVolunteer,
+  });
+  const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
+
   return (
     <FiltersContentContainer data-testid="opportunity-filters-content">
-      <AccordionFilter header={t("dashboard.opportunities.filters.type.header")} items={typeFilters} />
-      <AccordionFilter header={t("dashboard.opportunities.filters.status.header")} items={statusFilters} />
-      {viewMode !== ViewMode.LIST && (
-        <AccordionFilter header={t("dashboard.volunteers.filters.district")} items={districtFilters} />
-      )}
-      {viewMode !== ViewMode.LIST && (
-        <AccordionFilter header={t("dashboard.volunteers.filters.languages")} items={languageFilters} />
-      )}
-      <AccordionFilter header={t("dashboard.volunteers.filters.activities")} items={activityFilters} />
-      <AccordionFilter header={t("dashboard.volunteers.filters.skills")} items={skillFilters} />
+      {sections.map(({ key, config, items }) => (
+        <AccordionFilter key={key} header={t(config.header)} items={items} />
+      ))}
       {canSeeFullView && (
         <AccordionFilter
           header={t("dashboard.opportunities.filters.schedule.header")}

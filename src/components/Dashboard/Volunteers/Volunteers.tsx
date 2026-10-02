@@ -6,20 +6,17 @@ import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
-import { ApiOptionLists, EntityTableName, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
+import { volunteerFilterConfigs } from "./Filters/config";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { VolunteerCardsFilter } from "./Filters/types";
-import {
-  createFilterFromOption,
-  createSelectedFilterItemsAsFlatArray,
-  deserializeVolunteerFilters,
-  serializeFilters,
-} from "./helpers";
+import { createSelectedFilterItemsAsFlatArray, deserializeVolunteerFilters, serializeFilters } from "./helpers";
 import { VolunteerListController } from "./VolunteerListController";
 import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -104,12 +101,7 @@ export function Volunteers() {
     if (!apiFilterOptions) return;
 
     setCardsFilter((prev) => {
-      const baseFilters = {
-        ...prev,
-        district: createFilterFromOption(apiFilterOptions, EntityTableName.DISTRICT),
-        language: createFilterFromOption(apiFilterOptions, EntityTableName.LANGUAGE),
-        activity: createFilterFromOption(apiFilterOptions, EntityTableName.ACTIVITY),
-      };
+      const baseFilters = withOptionFilters(volunteerFilterConfigs, prev, apiFilterOptions);
 
       return deserializeVolunteerFilters(baseFilters, searchParams);
     });
