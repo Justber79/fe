@@ -1686,7 +1686,8 @@
       "message": "Nachricht",
       "today": "heute",
       "futureDateError": "Datum darf nicht in der Zukunft liegen",
-      "contactTypeRequired": "Kontaktart ist erforderlich"
+      "contactTypeRequired": "Kontaktart ist erforderlich",
+      "deletePermissionError": "Sie haben keine Berechtigung, die Kommunikation mit der ID: {{id}} zu löschen."
     },
     "calendar": {
       "createEvent": "Veranstaltung erstellen",
@@ -2228,9 +2229,6 @@
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "apiErrors": {
-      "unauthenticated": "Anmeldung fehlgeschlagen oder Sitzung abgelaufen. Bitte prüfen Sie Ihre Angaben und melden Sie sich erneut an.",
-      "unauthorized": "Dafür haben Sie keine Berechtigung.",
-      "notFound": "Dieser Eintrag wurde nicht gefunden. Möglicherweise wurde er gelöscht.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
       "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
