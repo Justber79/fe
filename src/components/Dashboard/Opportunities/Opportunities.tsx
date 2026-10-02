@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists } from "need4deed-sdk";
+import { ApiOptionLists, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
-import { defaultOpportunityCardsFilter } from "./Filters/constants";
+import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
@@ -122,7 +122,10 @@ export function Opportunities() {
     });
   }, [apiFilterOptions, searchParams]);
 
-  const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t);
+  const isVolunteer = user?.role === UserRole.VOLUNTEER;
+  const activeFilters = createSelectedOpportunityFiltersAsFlatArray(cardsFilter, setCardsFilter, t).filter(
+    ({ parentKey }) => !isVolunteer || parentKey !== STATUS_PARAM,
+  );
 
   return (
     <DashboardLayout>
