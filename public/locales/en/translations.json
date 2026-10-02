@@ -2221,6 +2221,10 @@
     "6": "Saturday",
     "0": "Sunday"
   },
+  "thankYou": {
+    "header": "Thank you!",
+    "para": ""
+  },
   "spinner": {
     "header": "Loading opportunities...",
     "para": ""

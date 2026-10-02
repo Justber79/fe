@@ -2576,6 +2576,10 @@
     "5": "Freitag",
     "6": "Samstag"
   },
+  "thankYou": {
+    "header": "Danke!",
+    "para": ""
+  },
   "spinner": {
     "header": "Lade Engagementangebote...",
     "para": ""

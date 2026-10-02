@@ -54,6 +54,9 @@ export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType)
   (status) => status !== OpportunityStatusType.INACTIVE,
 );
 
+// Volunteers only ever see validated opportunities that are looking for volunteers.
+export const VOLUNTEER_OPPORTUNITY_STATUSES = [OpportunityStatusType.SEARCHING];
+
 export const STATUS_PARAM = "status";
 
 export const SEPARATOR = "~";
