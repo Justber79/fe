@@ -46,6 +46,10 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: [assetHostname()],
+    // The /_next/image optimizer returns 500 in production (fe#1087), which
+    // broke every next/image (e.g. the Become-a-volunteer logo). Assets are
+    // already optimized webp on the CDN, so load them directly.
+    unoptimized: true,
   },
   output: "standalone",
 };
