@@ -2,6 +2,7 @@ import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
 } from "@/hooks/useUpdateOpportunityVolunteerStatus";
+import { useSyncVolunteerEngagement } from "@/hooks/useSyncVolunteerEngagement";
 import { Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,7 @@ export const OpportunityVolunteers = ({
 
   const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey);
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey);
+  const { mutate: syncEngagement } = useSyncVolunteerEngagement();
 
   const { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus } =
     useTabTransitions(volunteers);
@@ -48,14 +50,9 @@ export const OpportunityVolunteers = ({
     deleteLink({ m2mId });
   };
 
-  const handleMarkAsActive = (m2mId: number) => {
-    setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE });
-  };
-
-  const handleMarkAsPast = (m2mId: number) => {
-    setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
+  const updateStatusAndEngagement = (m2mId: number, volunteerId: number, status: OpportunityVolunteerStatusType) => {
+    setItemStatus(m2mId, status);
+    updateStatus({ m2mId, status }, { onSuccess: () => syncEngagement({ volunteerId, status }) });
   };
 
   if (isLoading) {
@@ -78,8 +75,12 @@ export const OpportunityVolunteers = ({
             hasEditingRights={hasEditingRights}
             onMatch={() => handleMatch(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
+            onMarkAsActive={() =>
+              updateStatusAndEngagement(volunteer.id, volunteer.volunteerId, OpportunityVolunteerStatusType.ACTIVE)
+            }
+            onMarkAsPast={() =>
+              updateStatusAndEngagement(volunteer.id, volunteer.volunteerId, OpportunityVolunteerStatusType.PAST)
+            }
           />
         ))
       )}
