@@ -10,7 +10,8 @@ import axios from "axios";
 
 type SyncPayload = {
   volunteerId: number;
-  status: OpportunityVolunteerStatusType;
+  // `undefined` when the match was removed ("not a match").
+  status?: OpportunityVolunteerStatusType;
 };
 
 // "Active" engagement follows the volunteer's matches: set when one becomes active,
@@ -24,7 +25,7 @@ async function syncEngagement({ volunteerId, status }: SyncPayload) {
     await setEngagement(VolunteerStateEngagementType.ACTIVE);
     return;
   }
-  if (status !== OpportunityVolunteerStatusType.PAST) return;
+  if (status !== undefined && status !== OpportunityVolunteerStatusType.PAST) return;
 
   const [{ data: volunteer }, { data: links }] = await Promise.all([
     axios.get<{ data: ApiVolunteerGet }>(volunteerPath),

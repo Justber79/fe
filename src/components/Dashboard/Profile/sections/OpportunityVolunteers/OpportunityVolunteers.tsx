@@ -45,9 +45,9 @@ export const OpportunityVolunteers = ({
     updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
-  const handleNotAMatch = (m2mId: number) => {
+  const handleNotAMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId });
+    deleteLink({ m2mId }, { onSuccess: () => syncEngagement({ volunteerId }) });
   };
 
   const updateStatusAndEngagement = (m2mId: number, volunteerId: number, status: OpportunityVolunteerStatusType) => {
@@ -74,7 +74,7 @@ export const OpportunityVolunteers = ({
             currentStatus={currentTabStatus}
             hasEditingRights={hasEditingRights}
             onMatch={() => handleMatch(volunteer.id)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id)}
+            onNotAMatch={() => handleNotAMatch(volunteer.id, volunteer.volunteerId)}
             onMarkAsActive={() =>
               updateStatusAndEngagement(volunteer.id, volunteer.volunteerId, OpportunityVolunteerStatusType.ACTIVE)
             }
