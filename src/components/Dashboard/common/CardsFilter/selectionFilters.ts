@@ -97,11 +97,15 @@ export const serializeSelectionFilters = <TFilter>(
     params.delete(key);
     Object.entries(filter[key] as SelectionMap).forEach(([value, checked]) => {
       if (!checked) return;
-      const id =
-        options?.serializeToIDs && config.option
-          ? options.apiFilterOptions?.[config.option]?.find((option) => option.title === value)?.id
-          : undefined;
-      params.append(key, id !== undefined ? String(id) : (config.toParam?.(value) ?? value));
+      const optionList =
+        options?.serializeToIDs && config.option ? options.apiFilterOptions?.[config.option] : undefined;
+      if (optionList) {
+        // A stale title (e.g. while options reload) must not reach the API as an id.
+        const id = optionList.find((option) => option.title === value)?.id;
+        if (id !== undefined) params.append(key, String(id));
+        return;
+      }
+      params.append(key, config.toParam?.(value) ?? value);
     });
   });
 };
