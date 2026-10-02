@@ -54,11 +54,8 @@ export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType)
   (status) => status !== OpportunityStatusType.INACTIVE,
 );
 
-export const VOLUNTEER_HIDDEN_STATUSES: string[] = [OpportunityStatusType.INACTIVE, OpportunityStatusType.PAST];
-
-export const VOLUNTEER_DEFAULT_OPPORTUNITY_STATUSES = DEFAULT_OPPORTUNITY_STATUSES.filter(
-  (status) => !VOLUNTEER_HIDDEN_STATUSES.includes(status),
-);
+// Volunteers only ever see validated opportunities that are looking for volunteers.
+export const VOLUNTEER_OPPORTUNITY_STATUSES = [OpportunityStatusType.SEARCHING];
 
 export const STATUS_PARAM = "status";
 

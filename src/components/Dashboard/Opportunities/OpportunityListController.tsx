@@ -10,12 +10,7 @@ import { AppointmentSort, isAppointmentSort, serializeOpportunityFilters } from 
 import { OpportunityCardList } from "./OpportunityCardList";
 import { ViewMode } from "../common/types";
 import { OpportunityTableList } from "./OpportunityTableList";
-import {
-  DEFAULT_OPPORTUNITY_STATUSES,
-  STATUS_PARAM,
-  VOLUNTEER_DEFAULT_OPPORTUNITY_STATUSES,
-  VOLUNTEER_HIDDEN_STATUSES,
-} from "./Filters/constants";
+import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM, VOLUNTEER_OPPORTUNITY_STATUSES } from "./Filters/constants";
 import { createOpportunityFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
@@ -84,16 +79,10 @@ export function OpportunityListController({
   }
 
   if (isVolunteer) {
-    const allowedStatuses = serializedFilter
-      .getAll(STATUS_PARAM)
-      .filter((status) => !VOLUNTEER_HIDDEN_STATUSES.includes(status));
     serializedFilter.delete(STATUS_PARAM);
-    allowedStatuses.forEach((status) => serializedFilter.append(STATUS_PARAM, status));
-  }
-
-  if (!serializedFilter.has(STATUS_PARAM)) {
-    const defaultStatuses = isVolunteer ? VOLUNTEER_DEFAULT_OPPORTUNITY_STATUSES : DEFAULT_OPPORTUNITY_STATUSES;
-    defaultStatuses.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
+    VOLUNTEER_OPPORTUNITY_STATUSES.forEach((status) => serializedFilter.append(STATUS_PARAM, status));
+  } else if (!serializedFilter.has(STATUS_PARAM)) {
+    DEFAULT_OPPORTUNITY_STATUSES.forEach((defaultStatus) => serializedFilter.append(STATUS_PARAM, defaultStatus));
   }
 
   const backendSortOrder = isAppointmentSort(sortOrder) ? SortOrder.NewToOld : (sortOrder as SortOrder);

@@ -2,7 +2,6 @@ import { TFunction } from "i18next";
 import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
 import { SelectionFilterConfigs } from "../../common/CardsFilter/selectionFilters";
 import { ViewMode } from "../../common/types";
-import { VOLUNTEER_HIDDEN_STATUSES } from "./constants";
 import { OpportunityCardsFilter } from "./types";
 
 const languageLabel = (value: string, t: TFunction) => {
@@ -21,7 +20,7 @@ export const opportunityFilterConfigs: SelectionFilterConfigs<OpportunityCardsFi
   status: {
     header: "dashboard.opportunities.filters.status.header",
     label: (value, t) => t(`dashboard.opportunities.filters.status.${value}`),
-    isItemVisible: (value, { isVolunteer }) => !isVolunteer || !VOLUNTEER_HIDDEN_STATUSES.includes(value),
+    isVisible: ({ isVolunteer }) => !isVolunteer,
   },
   [QueryParamsKeys.DISTRICT]: {
     header: "dashboard.volunteers.filters.district",

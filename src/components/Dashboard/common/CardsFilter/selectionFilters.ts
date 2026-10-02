@@ -25,7 +25,6 @@ export type SelectionFilterConfig = {
   toParam?: (value: string) => string;
   fromParam?: (param: string) => string;
   isVisible?: (context: FilterVisibilityContext) => boolean;
-  isItemVisible?: (value: string, context: FilterVisibilityContext) => boolean;
 };
 
 // Keyed by filter key, which is also the URL param name. Every checkbox-style
@@ -63,15 +62,7 @@ export const createSelectionFilterSections = <TFilter>(
 export const getVisibleSelectionFilterSections = (
   sections: SelectionFilterSection[],
   context: FilterVisibilityContext,
-): SelectionFilterSection[] =>
-  sections
-    .filter(({ config }) => config.isVisible?.(context) ?? true)
-    .map((section) => ({
-      ...section,
-      items: section.config.isItemVisible
-        ? section.items.filter(({ keyValue }) => section.config.isItemVisible!(keyValue, context))
-        : section.items,
-    }));
+): SelectionFilterSection[] => sections.filter(({ config }) => config.isVisible?.(context) ?? true);
 
 export const getSelectedSelectionFilterItems = (sections: SelectionFilterSection[]): FilterItem[] =>
   sections.flatMap(({ items }) => items).filter((item) => item.checked);
