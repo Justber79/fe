@@ -1,6 +1,6 @@
 import { apiPathVolunteer, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks";
-import { ApiVolunteerGetList, SortOrder, VolunteerStateEngagementType } from "need4deed-sdk";
+import { ApiVolunteerGetList, QueryParamsKeys, SortOrder, VolunteerStateEngagementType } from "need4deed-sdk";
 import VolunteerCard from "../../Volunteers/VolunteerCard";
 import { Heading4 } from "@/components/styled/text";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,8 @@ export function NewestVolunteers() {
       limit: 2,
       page: 1,
       sortOrder: SortOrder.NewToOld,
-      filter: { status: VolunteerStateEngagementType.NEW },
+      // be expects engagement values without the "vol-" prefix (re-adds it itself)
+      filter: { [QueryParamsKeys.ENGAGEMENT]: VolunteerStateEngagementType.NEW.replace(/^vol-/, "") },
     },
     staleTime: cacheTTL,
   });
