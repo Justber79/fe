@@ -1,6 +1,7 @@
 "use client";
 
 import { getCookie } from "@/utils/helpers";
+import { ApiUserVerifyEmail } from "need4deed-sdk";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -21,8 +22,9 @@ export default function Page() {
       body: JSON.stringify({ token }),
       headers: { "Content-Type": "application/json" },
     })
-      .then((res) => {
+      .then(async (res) => {
         if (res.ok) {
+          const { hasVolunteerProfile } = (await res.json()) as ApiUserVerifyEmail;
           setVerified(true);
           // role param in the URL is the primary signal; cookie is a fallback
           // for links opened before this change was deployed.
@@ -33,6 +35,9 @@ export default function Page() {
             // Forward the verify token — the agent form uses it as the
             // querystring auth for POST /agent/register.
             router.push(`/${lang}/register/agent/complete?token=${encodeURIComponent(token)}`);
+          } else if (roleFromUrl === "volunteer" && hasVolunteerProfile) {
+            // This email already has a volunteer profile; the account just got activated.
+            router.push(`/${lang}/login`);
           } else if (roleFromUrl === "volunteer") {
             // Same reasoning as the agent branch above: a volunteer account
             // has no profile yet at this point (just the bare user), and
