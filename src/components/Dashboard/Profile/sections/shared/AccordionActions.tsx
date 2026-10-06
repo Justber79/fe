@@ -70,7 +70,7 @@ export const AccordionActions = ({ onNotAMatch, onMatch, onMarkAsActive, onMarkA
 
 type StatusAccordionActionsProps = {
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch: () => void;
+  onMatch?: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

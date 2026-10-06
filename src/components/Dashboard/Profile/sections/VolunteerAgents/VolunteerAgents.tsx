@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import {
@@ -18,6 +19,8 @@ type Props = { agentId: Id };
 
 export const VolunteerAgents = ({ agentId }: Props) => {
   const { t } = useTranslation();
+  // NGO users may change a match's status or remove it, but matching is for coordinators.
+  const { isAuthorized } = useAuth();
 
   const queryKey = ["agent-volunteers", String(agentId)];
 
@@ -33,32 +36,39 @@ export const VolunteerAgents = ({ agentId }: Props) => {
   const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey);
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey);
 
-  const { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus } =
-    useTabTransitions(volunteers);
+  const {
+    selectedTabIndex,
+    setSelectedTabIndex,
+    currentTabStatus,
+    tabCounts,
+    visibleItems,
+    setItemStatus,
+    clearItemStatus,
+  } = useTabTransitions(volunteers);
 
   const tabs = TAB_STATUS_ORDER.map((key, index) => ({
     label: t(`dashboard.volunteerProfile.opportunitiesSec.tabs.${key}`),
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number, volunteerId: number) => {
+  const handleMatch = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.MATCHED });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED }, { onError: () => clearItemStatus(m2mId) });
   };
 
-  const handleNotAMatch = (m2mId: number, volunteerId: number) => {
+  const handleNotAMatch = (m2mId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId, volunteerId });
+    deleteLink({ m2mId }, { onError: () => clearItemStatus(m2mId) });
   };
 
-  const handleMarkAsActive = (m2mId: number, volunteerId: number) => {
+  const handleMarkAsActive = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.ACTIVE });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE }, { onError: () => clearItemStatus(m2mId) });
   };
 
-  const handleMarkAsPast = (m2mId: number, volunteerId: number) => {
+  const handleMarkAsPast = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.PAST });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST }, { onError: () => clearItemStatus(m2mId) });
   };
 
   if (isLoading) {
@@ -76,10 +86,10 @@ export const VolunteerAgents = ({ agentId }: Props) => {
             key={volunteer.id}
             volunteer={volunteer}
             currentStatus={currentTabStatus}
-            onMatch={() => handleMatch(volunteer.id, volunteer.volunteerId)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id, volunteer.volunteerId)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id, volunteer.volunteerId)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id, volunteer.volunteerId)}
+            onMatch={isAuthorized ? () => handleMatch(volunteer.id) : undefined}
+            onNotAMatch={() => handleNotAMatch(volunteer.id)}
+            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
+            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
           />
         ))
       )}

@@ -55,5 +55,21 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   const setItemStatus = (id: number, status: StatusOverride) =>
     setStatusOverrides((prev) => ({ ...prev, [id]: status }));
 
-  return { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus };
+  // Puts the item back where the server has it, e.g. after a failed change.
+  const clearItemStatus = (id: number) =>
+    setStatusOverrides((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+
+  return {
+    selectedTabIndex,
+    setSelectedTabIndex,
+    currentTabStatus,
+    tabCounts,
+    visibleItems,
+    setItemStatus,
+    clearItemStatus,
+  };
 }
