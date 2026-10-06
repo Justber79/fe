@@ -2,7 +2,7 @@ import axios from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
 import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
-import { clearAuthHint } from "@/utils/helpers";
+import { clearAuthHint, setAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
   apiPathLogin,
@@ -17,19 +17,39 @@ import {
 // with the refresh endpoint's "Refresh token is required.".
 const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPasswordReset, apiPathPasswordReset];
 
-let isRefreshing = false;
-let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
+// A refresh answered with one of these means the session is gone; anything else
+// (429, 5xx, network) is a hiccup and must not log the user out.
+const SESSION_REJECTED_STATUSES = [400, 401, 403, 404];
+// A 401 this soon after a refresh was sent with the old cookie: retry, don't refresh again.
+const RECENT_REFRESH_MS = 3000;
 
-const processQueue = (error: unknown | null, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
+let refreshPromise: Promise<string> | null = null;
+let lastRefresh = { at: 0, access: "" };
+
+// One refresh for all concurrent 401s.
+const refreshSession = (): Promise<string> => {
+  if (Date.now() - lastRefresh.at < RECENT_REFRESH_MS) return Promise.resolve(lastRefresh.access);
+  if (!refreshPromise) {
+    refreshPromise = axios
+      .post(apiPathAuthRefresh)
+      .then((response) => {
+        setAuthHint();
+        lastRefresh = { at: Date.now(), access: response.data.access };
+        return lastRefresh.access;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+  return refreshPromise;
 };
+
+// Lets logout wait, so a refresh landing after it can't set the auth cookies again.
+export const waitForSessionRefresh = (): Promise<unknown> =>
+  refreshPromise?.catch(() => undefined) ?? Promise.resolve();
+
+const isSessionRejected = (refreshError: unknown) =>
+  axios.isAxiosError(refreshError) && SESSION_REJECTED_STATUSES.includes(refreshError.response?.status ?? 0);
 
 // Don't set baseURL - let Next.js proxy handle the routing
 // axios.defaults.baseURL = apiURL;
@@ -84,33 +104,12 @@ axios.interceptors.response.use(
 
     originalRequest._retry = true;
 
-    // If already refreshing, add to queue
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return axios(originalRequest);
-        })
-        .catch((err) => Promise.reject(err));
-    }
-
-    isRefreshing = true;
-
+    let access: string;
     try {
-      // Attempt to refresh token
-      const response = await axios.post(apiPathAuthRefresh);
-      const { access } = response.data;
-
-      // Update Authorization header for original request
-      originalRequest.headers.Authorization = `Bearer ${access}`;
-
-      // Process queue with new token
-      processQueue(null, access);
-
-      return axios(originalRequest);
+      access = await refreshSession();
     } catch (refreshError: unknown) {
+      if (!isSessionRejected(refreshError)) return Promise.reject(refreshError);
+
       clearAuthHint();
 
       // Only redirect if we aren't already on a public auth-flow/form entry page
@@ -123,20 +122,19 @@ axios.interceptors.response.use(
         window.location.pathname.includes("event-page")
       );
       if (isRedirecting) {
-        // Queued and retried requests fail the same way; the login page's
+        // Every request waiting on this refresh lands here; the login page's
         // "session expired" toast covers them all.
         rememberSessionExpired();
         markSessionExpired(error);
-        if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
         window.location.href = "/login";
       }
-      processQueue(refreshError, null);
 
       // Surface the original 401, not the refresh failure.
       return Promise.reject(error);
-    } finally {
-      isRefreshing = false;
     }
+
+    originalRequest.headers.Authorization = `Bearer ${access}`;
+    return axios(originalRequest);
   },
 );
 
