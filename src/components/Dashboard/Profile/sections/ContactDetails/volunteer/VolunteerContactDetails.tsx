@@ -71,9 +71,8 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
           ...volunteer.person,
           phone: values.phone,
           email: values.email,
+          // be resolves the volunteer's own address (or creates one); city isn't edited here.
           address: {
-            id: volunteer.person.address ? volunteer.person.address?.id : 0,
-            city: "",
             street: values.street,
             postcode: { code: values.postcode },
           },
