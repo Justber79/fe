@@ -2,10 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import { Lang, SortOrder, UserRole } from "need4deed-sdk";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 
 export const fetchData = async <T,>(apiPath: string, params: Params) => {
   const response: AxiosResponse<ApiResponse<T>> = await axios.get(apiPath, { params });
@@ -58,7 +54,6 @@ interface UseGetQuery {
 
 // The generic custom hook with pagination-sort-language params
 export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, enabled }: UseGetQuery) => {
-  const { t } = useTranslation();
   const { lang } = useParams<{ lang: Lang }>();
   const normalizedParams = { ...params, filter: getReducedFilter(params.filter) };
 
@@ -67,14 +62,8 @@ export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, ena
     queryFn: () => fetchData<T>(apiPath, normalizedParams),
     staleTime,
     enabled,
+    meta: { toastOnError: true },
   });
-
-  // Display a toast message when an error occurs
-  useEffect(() => {
-    if (isError) {
-      toast.error(getLocalizedErrorMessage(error, t));
-    }
-  }, [isError, error, t]);
 
   return {
     data: data?.data,

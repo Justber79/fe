@@ -1,7 +1,7 @@
 import axios from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { toast } from "react-toastify";
+import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
 import { clearAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
@@ -111,28 +111,28 @@ axios.interceptors.response.use(
 
       return axios(originalRequest);
     } catch (refreshError: unknown) {
-      // If refresh fails, process queue with error and redirect to login
-      processQueue(refreshError, null);
-
       clearAuthHint();
 
       // Only redirect if we aren't already on a public auth-flow/form entry page
       // (login, a standalone form, or the public event page) —
       // those pages shouldn't be hijacked by a stale/expired session.
-      if (
-        !(
-          window.location.pathname.includes("login") ||
-          window.location.pathname.includes("forms") ||
-          window.location.pathname.includes("register") ||
-          window.location.pathname.includes("event-page")
-        )
-      ) {
-        toast.error("Session expired. Please log in again.");
+      const isRedirecting = !(
+        window.location.pathname.includes("login") ||
+        window.location.pathname.includes("forms") ||
+        window.location.pathname.includes("register") ||
+        window.location.pathname.includes("event-page")
+      );
+      if (isRedirecting) {
+        // Queued and retried requests fail the same way; the login page's
+        // "session expired" toast covers them all.
+        rememberSessionExpired();
+        markSessionExpired(error);
+        if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
         window.location.href = "/login";
       }
+      processQueue(refreshError, null);
 
-      // Surface the original 401, not the refresh failure — the caller's toast
-      // should say why its own request failed.
+      // Surface the original 401, not the refresh failure.
       return Promise.reject(error);
     } finally {
       isRefreshing = false;

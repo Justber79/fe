@@ -3,7 +3,7 @@ import { useMutation, useQueryClient, type QueryKey } from "@tanstack/react-quer
 import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { getLocalizedErrorMessage } from "@/utils/apiErrors";
+import { getLocalizedErrorMessage, isSilentError } from "@/utils/apiErrors";
 
 // Define the options for the hook
 type DataMutationOptions<TResponse, TData> = {
@@ -84,7 +84,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     },
 
     onError: (error) => {
-      if (onErrorCallback?.(error)) return;
+      if (isSilentError(error) || onErrorCallback?.(error)) return;
 
       toast.error(getLocalizedErrorMessage(error, t));
     },

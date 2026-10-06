@@ -1878,6 +1878,7 @@
   },
   "message": {
     "successful": "Successful",
+    "sessionExpired": "Your session has expired. Please log in again.",
     "errorGeneric": "Something went wrong!",
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",
