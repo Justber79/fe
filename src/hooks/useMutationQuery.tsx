@@ -84,7 +84,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     },
 
     onError: (error) => {
-      if (onErrorCallback?.(error) || isSilentError(error)) return;
+      if (isSilentError(error) || onErrorCallback?.(error)) return;
 
       toast.error(getLocalizedErrorMessage(error, t));
     },

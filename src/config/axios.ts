@@ -1,8 +1,7 @@
 import axios from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { toast } from "react-toastify";
-import { markSessionExpired } from "@/utils/apiErrors";
+import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
 import { clearAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
@@ -124,8 +123,9 @@ axios.interceptors.response.use(
         window.location.pathname.includes("event-page")
       );
       if (isRedirecting) {
-        // Queued and retried requests fail the same way; one toast covers them all.
-        toast.error("Session expired. Please log in again.", { toastId: "session-expired" });
+        // Queued and retried requests fail the same way; the login page's
+        // "session expired" toast covers them all.
+        rememberSessionExpired();
         markSessionExpired(error);
         if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
         window.location.href = "/login";

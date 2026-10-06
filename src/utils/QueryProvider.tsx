@@ -16,7 +16,7 @@ const shouldRetry = (failureCount: number, error: unknown) => {
   return failureCount < MAX_RETRIES;
 };
 
-const createQueryClient = () =>
+export const createQueryClient = () =>
   new QueryClient({
     // Toasting here fires once per failed query, not once per component using it.
     queryCache: new QueryCache({
