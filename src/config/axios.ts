@@ -44,9 +44,17 @@ const refreshSession = (): Promise<string> => {
   return refreshPromise;
 };
 
-// Lets logout wait, so a refresh landing after it can't set the auth cookies again.
-export const waitForSessionRefresh = (): Promise<unknown> =>
-  refreshPromise?.catch(() => undefined) ?? Promise.resolve();
+let isLoggingOut = false;
+
+// From here on no refresh may run (it could set the auth cookies again after
+// logout); waits for one already in flight. Reset if the logout itself fails.
+export const startLogout = async (): Promise<void> => {
+  isLoggingOut = true;
+  await refreshPromise?.catch(() => undefined);
+};
+export const cancelLogout = (): void => {
+  isLoggingOut = false;
+};
 
 const isSessionRejected = (refreshError: unknown) =>
   axios.isAxiosError(refreshError) && SESSION_REJECTED_STATUSES.includes(refreshError.response?.status ?? 0);
@@ -103,6 +111,9 @@ axios.interceptors.response.use(
     }
 
     originalRequest._retry = true;
+    if (isLoggingOut) {
+      return Promise.reject(markSessionExpired(error));
+    }
 
     let access: string;
     try {
