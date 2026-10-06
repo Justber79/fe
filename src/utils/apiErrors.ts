@@ -12,6 +12,29 @@ const ERROR_CLASS_KEYS: Record<string, string> = {
   InvalidOrganizationEmailError: "agentRegistration.errors.invalidOrganizationEmail",
 };
 
+const SESSION_EXPIRED = Symbol("sessionExpired");
+
+let isLeavingPage = false;
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
+    isLeavingPage = true;
+  });
+}
+
+// The session-expired redirect already tells the user why these failed.
+export function markSessionExpired<T extends object>(error: T): T {
+  (error as Record<symbol, boolean>)[SESSION_EXPIRED] = true;
+  return error;
+}
+
+// No toast for these: the session-expired toast covers them, or the request was
+// cut off because the page is navigating away (logout, login redirect).
+export function isSilentError(error: unknown): boolean {
+  if (axios.isCancel(error)) return true;
+  if (typeof error === "object" && error !== null && SESSION_EXPIRED in error) return true;
+  return isLeavingPage && axios.isAxiosError(error) && !error.response;
+}
+
 const COMMUNICATION_DELETE_DENIED = /^You do not have permission to delete communication with id:(\d+)\.$/;
 
 export function getLocalizedErrorMessage(error: unknown, t: TFunction): string {
