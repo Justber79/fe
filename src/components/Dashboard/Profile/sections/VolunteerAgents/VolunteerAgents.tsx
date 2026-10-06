@@ -33,9 +33,6 @@ export const VolunteerAgents = ({ agentId }: Props) => {
 
   const volunteers = useMemo(() => data ?? [], [data]);
 
-  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey);
-  const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey);
-
   const {
     selectedTabIndex,
     setSelectedTabIndex,
@@ -46,6 +43,13 @@ export const VolunteerAgents = ({ agentId }: Props) => {
     clearItemStatus,
   } = useTabTransitions(volunteers);
 
+  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey, ({ m2mId, status }) =>
+    clearItemStatus(m2mId, status),
+  );
+  const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
+    clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
+  );
+
   const tabs = TAB_STATUS_ORDER.map((key, index) => ({
     label: t(`dashboard.volunteerProfile.opportunitiesSec.tabs.${key}`),
     count: tabCounts[index],
@@ -53,22 +57,22 @@ export const VolunteerAgents = ({ agentId }: Props) => {
 
   const handleMatch = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED }, { onError: () => clearItemStatus(m2mId) });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
   const handleNotAMatch = (m2mId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId }, { onError: () => clearItemStatus(m2mId) });
+    deleteLink({ m2mId });
   };
 
   const handleMarkAsActive = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE }, { onError: () => clearItemStatus(m2mId) });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE });
   };
 
   const handleMarkAsPast = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST }, { onError: () => clearItemStatus(m2mId) });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
   };
 
   if (isLoading) {

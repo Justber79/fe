@@ -26,7 +26,12 @@ function getComplementaryPrefixes(queryKey: string[]): string[] {
   return COMPLEMENTARY_PREFIXES[queryKey[0]] ?? ["opportunity-volunteers"];
 }
 
-export const useUpdateOpportunityVolunteerStatus = (queryKeyToInvalidate: string[]) => {
+// `onFailed` runs for every failed call (unlike per-call mutate callbacks, which
+// only fire for the latest one), e.g. to undo an optimistic tab move.
+export const useUpdateOpportunityVolunteerStatus = (
+  queryKeyToInvalidate: string[],
+  onFailed?: (payload: StatusUpdatePayload) => void,
+) => {
   const queryClient = useQueryClient();
 
   return useMutationQuery<StatusUpdatePayload, unknown>({
@@ -35,6 +40,9 @@ export const useUpdateOpportunityVolunteerStatus = (queryKeyToInvalidate: string
       return response.data;
     },
     successMessage: "dashboard.opportunityProfile.volunteersSec.statusUpdateSuccess",
+    onErrorCallback: (_error, payload) => {
+      onFailed?.(payload);
+    },
     queryKeyToInvalidate,
     onSuccessCallback: () => {
       [...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach((prefix) =>
@@ -44,7 +52,10 @@ export const useUpdateOpportunityVolunteerStatus = (queryKeyToInvalidate: string
   });
 };
 
-export const useDeleteOpportunityVolunteer = (queryKeyToInvalidate: string[]) => {
+export const useDeleteOpportunityVolunteer = (
+  queryKeyToInvalidate: string[],
+  onFailed?: (payload: DeletePayload) => void,
+) => {
   const queryClient = useQueryClient();
 
   return useMutationQuery<DeletePayload, unknown>({
@@ -53,6 +64,9 @@ export const useDeleteOpportunityVolunteer = (queryKeyToInvalidate: string[]) =>
       return response.data;
     },
     successMessage: "dashboard.opportunityProfile.volunteersSec.removeSuccess",
+    onErrorCallback: (_error, payload) => {
+      onFailed?.(payload);
+    },
     queryKeyToInvalidate,
     onSuccessCallback: () => {
       [...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach((prefix) =>
