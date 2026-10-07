@@ -12,7 +12,6 @@ export const useLogout = () => {
         const response = await axios.post(apiPathAuthLogout);
         return response.data;
       } catch (error) {
-        // Any failure, silent ones included, must re-enable session refresh.
         cancelLogout();
         throw error;
       }
