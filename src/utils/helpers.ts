@@ -62,3 +62,25 @@ export const decodeJwtPayload = (token: string) => {
     return null;
   }
 };
+
+// A one-off notice for the next page (a toast before a redirect is wiped by the
+// page load). Storage may be blocked; then the notice is simply skipped.
+export const rememberNotice = (key: string): void => {
+  try {
+    sessionStorage.setItem(key, "1");
+  } catch {
+    // Storage blocked.
+  }
+};
+
+export const consumeNotice = (key: string): boolean => {
+  try {
+    const present = sessionStorage.getItem(key) !== null;
+    sessionStorage.removeItem(key);
+    return present;
+  } catch {
+    return false;
+  }
+};
+
+export const ACCOUNT_READY_NOTICE = "n4d-account-ready";
