@@ -55,8 +55,7 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   const setItemStatus = (id: number, status: StatusOverride) =>
     setStatusOverrides((prev) => ({ ...prev, [id]: status }));
 
-  // Puts the item back where the server has it after a failed change, unless a
-  // newer action on the same item has replaced that change in the meantime.
+  // Skip if a newer action on this item has replaced the failed change.
   const clearItemStatus = (id: number, expected: StatusOverride) =>
     setStatusOverrides((prev) => {
       if (prev[id] !== expected) return prev;

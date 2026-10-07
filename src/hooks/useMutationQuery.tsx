@@ -14,8 +14,7 @@ type DataMutationOptions<TResponse, TData> = {
   // Return true to mark an error as handled by the caller (e.g. shown inline),
   // which skips the default error toast.
   onErrorCallback?: (error: unknown, variables: TData) => boolean | void;
-  // Runs for every failure, silent ones included: cleanup such as undoing an
-  // optimistic update, never UI.
+  // Runs for every failure, silent ones included; for cleanup, never UI.
   onFailure?: (variables: TData) => void;
 
   noToast?: boolean;

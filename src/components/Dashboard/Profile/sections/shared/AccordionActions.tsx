@@ -84,7 +84,6 @@ export const StatusAccordionActions = ({
   onMarkAsActive,
   onMarkAsPast,
 }: StatusAccordionActionsProps) => {
-  // NGO users may change a match's status or remove it; matching is for staff.
   const { isAuthorized } = useAuth();
   if (currentStatus === OpportunityVolunteerStatusType.PENDING) {
     return <AccordionActions onNotAMatch={onNotAMatch} onMatch={isAuthorized ? onMatch : undefined} />;

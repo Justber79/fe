@@ -26,7 +26,6 @@ function getComplementaryPrefixes(queryKey: string[]): string[] {
   return COMPLEMENTARY_PREFIXES[queryKey[0]] ?? ["opportunity-volunteers"];
 }
 
-// The lists showing this match, from every side, plus the volunteer views.
 const useInvalidateMatchLists = (queryKeyToInvalidate: string[]) => {
   const queryClient = useQueryClient();
   return () =>
@@ -35,9 +34,7 @@ const useInvalidateMatchLists = (queryKeyToInvalidate: string[]) => {
     );
 };
 
-// `onFailed` runs for every failed call (unlike per-call mutate callbacks, which
-// only fire for the latest one), e.g. to undo an optimistic tab move; the lists
-// are refetched too, so the card lands where the server has it.
+// Per-call mutate callbacks only fire for the latest call; onFailed runs for each.
 export const useUpdateOpportunityVolunteerStatus = (
   queryKeyToInvalidate: string[],
   onFailed?: (payload: StatusUpdatePayload) => void,
