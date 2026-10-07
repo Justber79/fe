@@ -12,7 +12,8 @@ import { ViewMode } from "../common/types";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
-import { createFilterItems } from "./Filters/helpers";
+import { createVolunteerFilterSections } from "./Filters/helpers";
+import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingVolunteerTableList } from "./LoadingVolunteerTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
@@ -47,12 +48,12 @@ export function VolunteerListController({
     serializeToIDs: true,
     apiFilterOptions,
   }) as URLSearchParams;
-  const { languageFilters, districtFilters, typeFilters, engagementFilters } = createFilterItems(filter, setFilter, t);
+  const filterSections = createVolunteerFilterSections(filter, setFilter, t);
   const dropdownFilters = {
-    typeFilters,
-    languageFilters,
-    districtFilters,
-    engagementFilters,
+    typeFilters: getSectionItems(filterSections, "type"),
+    languageFilters: getSectionItems(filterSections, QueryParamsKeys.LANGUAGE),
+    districtFilters: getSectionItems(filterSections, QueryParamsKeys.DISTRICT),
+    engagementFilters: getSectionItems(filterSections, QueryParamsKeys.ENGAGEMENT),
   };
 
   if (opportunityId) {

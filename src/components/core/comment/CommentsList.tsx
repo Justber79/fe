@@ -15,7 +15,13 @@ interface CommentsListProps {
   title?: string;
 }
 
-export function CommentsList({ comments, onPatch, onDelete, onAdd, title = "Coordinator Comments" }: CommentsListProps) {
+export function CommentsList({
+  comments,
+  onPatch,
+  onDelete,
+  onAdd,
+  title = "Coordinator Comments",
+}: CommentsListProps) {
   return (
     <CommentsCard>
       <CommentsHeader>
@@ -28,12 +34,7 @@ export function CommentsList({ comments, onPatch, onDelete, onAdd, title = "Coor
       </CommentsHeader>
       <CommentsListContainer>
         {comments.map((comment) => (
-          <CommentDisplay
-            key={comment.id}
-            comment={comment}
-            onPatch={onPatch}
-            onDelete={onDelete}
-          />
+          <CommentDisplay key={comment.id} comment={comment} onPatch={onPatch} onDelete={onDelete} />
         ))}
         <AddComment onSubmit={onAdd} />
       </CommentsListContainer>
@@ -57,7 +58,7 @@ const CommentsHeader = styled.div`
   align-items: center;
   gap: 8px;
   padding: 16px;
-  background-color: #FEF7FF;
+  background-color: #fef7ff;
 `;
 
 const CommentsListContainer = styled.div`
@@ -67,4 +68,3 @@ const CommentsListContainer = styled.div`
   padding: 16px;
   background-color: var(--color-white);
 `;
-

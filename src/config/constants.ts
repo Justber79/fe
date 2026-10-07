@@ -58,6 +58,7 @@ export const eventsSectionContainerId = "events-section-container";
 export const eventsPublicLandingUrl = "/event-page";
 
 export const cloudfrontURL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL ?? "https://cdn.need4deed.org/images";
+export const siteURL = "https://www.need4deed.org";
 
 export const minPLZGermany = 1067;
 export const maxPLZGermany = 99998;

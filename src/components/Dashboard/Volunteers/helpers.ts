@@ -2,16 +2,16 @@ import {
   ApiLanguage,
   ApiOptionLists,
   ApiVolunteerGetList,
-  EntityTableName,
   LangProficiency,
   OptionItem,
   QueryParamsKeys,
 } from "need4deed-sdk";
-export { createFilterFromOption } from "../common/CardsFilter/helpers";
 export { createSelectedFilterItemsAsFlatArray } from "./Filters/helpers";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
-import { VolunteerCardsFilter, VolunteerStatusMatch } from "./Filters/types";
+import { VolunteerCardsFilter } from "./Filters/types";
+import { deserializeSelectionFilters, serializeSelectionFilters } from "../common/CardsFilter/selectionFilters";
+import { volunteerFilterConfigs } from "./Filters/config";
 
 const proficiencyOrder = [
   LangProficiency.NATIVE,
@@ -68,67 +68,7 @@ export function serializeFilters(
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);
 
-  params.delete("type");
-  Object.entries(filter.type).forEach(([key, value]) => {
-    if (value === true) params.append("type", key);
-  });
-
-  params.delete(QueryParamsKeys.DISTRICT);
-  Object.entries(filter.district).forEach(([key, value]) => {
-    if (value === true) {
-      if (options?.serializeToIDs && options.apiFilterOptions) {
-        const districtId = options.apiFilterOptions.district?.find((d) => d.title === key)?.id;
-        if (districtId !== undefined) {
-          params.append(QueryParamsKeys.DISTRICT, String(districtId));
-        }
-      } else {
-        params.append(QueryParamsKeys.DISTRICT, key);
-      }
-    }
-  });
-
-  params.delete(QueryParamsKeys.LANGUAGE);
-  Object.entries(filter.language).forEach(([key, value]) => {
-    if (value === true) {
-      if (options?.serializeToIDs && options.apiFilterOptions) {
-        const languageId = options.apiFilterOptions.language?.find((d) => d.title === key)?.id;
-        if (languageId !== undefined) {
-          params.append(QueryParamsKeys.LANGUAGE, String(languageId));
-        }
-      } else {
-        params.append(QueryParamsKeys.LANGUAGE, key);
-      }
-    }
-  });
-
-  params.delete(QueryParamsKeys.ENGAGEMENT);
-  Object.entries(filter.engagement).forEach(([key, value]) => {
-    if (value === true) {
-      params.append(QueryParamsKeys.ENGAGEMENT, key.replace(/^vol-/, ""));
-    }
-  });
-
-  params.delete(VolunteerStatusMatch.MATCH);
-  Object.entries(filter.match).forEach(([key, value]) => {
-    if (value === true) {
-      params.append(VolunteerStatusMatch.MATCH, key.replace(/^vol-/, ""));
-    }
-  });
-
-  params.delete(EntityTableName.ACTIVITY);
-  Object.entries(filter.activity).forEach(([key, value]) => {
-    if (value === true) {
-      if (options?.serializeToIDs && options.apiFilterOptions) {
-        const activityId =
-          options?.serializeToIDs && options.apiFilterOptions?.activity?.find((d) => d.title === key)?.id;
-        if (activityId !== undefined) {
-          params.append(EntityTableName.ACTIVITY, String(activityId));
-        }
-      } else {
-        params.append(EntityTableName.ACTIVITY, key);
-      }
-    }
-  });
+  serializeSelectionFilters(volunteerFilterConfigs, filter, params, options);
 
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
@@ -152,47 +92,7 @@ export function deserializeVolunteerFilters(filter: VolunteerCardsFilter, search
     newFilter.search = search;
   }
 
-  const queryTypes = searchParams.getAll("type");
-  queryTypes.forEach((t) => {
-    if (newFilter.type[t] !== undefined) {
-      newFilter.type[t] = true;
-    }
-  });
-
-  const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
-  queryDistricts.forEach((d) => {
-    if (newFilter.district[d] !== undefined) {
-      newFilter.district[d] = true;
-    }
-  });
-
-  const queryLanguages = searchParams.getAll(QueryParamsKeys.LANGUAGE);
-  queryLanguages.forEach((l) => {
-    if (newFilter.language[l] !== undefined) {
-      newFilter.language[l] = true;
-    }
-  });
-
-  const queryEngagement = searchParams.getAll(QueryParamsKeys.ENGAGEMENT);
-  queryEngagement.forEach((e) => {
-    if (newFilter.engagement[`vol-${e}`] !== undefined) {
-      newFilter.engagement[`vol-${e}`] = true;
-    }
-  });
-
-  const queryStatusMatch = searchParams.getAll(VolunteerStatusMatch.MATCH);
-  queryStatusMatch.forEach((e) => {
-    if (newFilter.match[`vol-${e}`] !== undefined) {
-      newFilter.match[`vol-${e}`] = true;
-    }
-  });
-
-  const queryActivities = searchParams.getAll(EntityTableName.ACTIVITY);
-  queryActivities.forEach((l) => {
-    if (newFilter.activity[l] !== undefined) {
-      newFilter.activity[l] = true;
-    }
-  });
+  deserializeSelectionFilters(volunteerFilterConfigs, newFilter, searchParams);
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
   queryAvailability.forEach((item) => {

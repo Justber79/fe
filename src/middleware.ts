@@ -105,7 +105,7 @@ export function middleware(request: NextRequest) {
   if (currentLocale && supportedLangs.includes(currentLocale)) {
     response.cookies.set(LANG_COOKIE, currentLocale, {
       path: "/",
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: 60 * 60 * 24 * 365,
       sameSite: "lax",
     });
   }
@@ -120,5 +120,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|static|favicon.ico|api|health|.well-known|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico).*)"],
+  matcher: [
+    "/((?!_next|static|favicon.ico|api|health|.well-known|robots\\.txt|sitemap\\.xml|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico).*)",
+  ],
 };

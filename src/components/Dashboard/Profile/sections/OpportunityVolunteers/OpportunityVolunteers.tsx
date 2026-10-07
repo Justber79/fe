@@ -38,24 +38,24 @@ export const OpportunityVolunteers = ({
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number) => {
+  const handleMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
-  const handleNotAMatch = (m2mId: number) => {
+  const handleNotAMatch = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId });
+    deleteLink({ m2mId, volunteerId });
   };
 
-  const handleMarkAsActive = (m2mId: number) => {
+  const handleMarkAsActive = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.ACTIVE });
   };
 
-  const handleMarkAsPast = (m2mId: number) => {
+  const handleMarkAsPast = (m2mId: number, volunteerId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
+    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.PAST });
   };
 
   if (isLoading) {
@@ -76,10 +76,10 @@ export const OpportunityVolunteers = ({
             volunteer={volunteer}
             currentStatus={currentTabStatus}
             hasEditingRights={hasEditingRights}
-            onMatch={() => handleMatch(volunteer.id)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
+            onMatch={() => handleMatch(volunteer.id, volunteer.volunteerId)}
+            onNotAMatch={() => handleNotAMatch(volunteer.id, volunteer.volunteerId)}
+            onMarkAsActive={() => handleMarkAsActive(volunteer.id, volunteer.volunteerId)}
+            onMarkAsPast={() => handleMarkAsPast(volunteer.id, volunteer.volunteerId)}
           />
         ))
       )}

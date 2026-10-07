@@ -188,9 +188,9 @@ export function DocumentPreviewDialog({ isOpen, documentName, documentUrl, onClo
     setScale(1);
   };
 
-  const fileExtension = documentUrl?.split('.').pop()?.toLowerCase();
-  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension || '');
-  const isPdf = fileExtension === 'pdf';
+  const fileExtension = documentUrl?.split(".").pop()?.toLowerCase();
+  const isImage = ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension || "");
+  const isPdf = fileExtension === "pdf";
 
   return (
     <DialogOverlay isOpen={isOpen} onClose={onClose} zIndex={10002}>

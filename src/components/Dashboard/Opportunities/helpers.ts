@@ -1,16 +1,16 @@
 import {
   ApiLanguage,
   ApiOptionLists,
-  EntityTableName,
   LangPurpose,
-  OpportunityStatusType,
   OptionById,
   OptionItem,
   QueryParamsKeys,
   SortOrder,
 } from "need4deed-sdk";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR, STATUS_PARAM } from "./Filters/constants";
+import { deserializeSelectionFilters, serializeSelectionFilters } from "../common/CardsFilter/selectionFilters";
+import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
+import { opportunityFilterConfigs } from "./Filters/config";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { format } from "date-fns";
 import { utcHhmmToLocal } from "@/utils";
@@ -29,30 +29,6 @@ export const DEFAULT_SORT_ORDER: string = SortOrder.NewToOld;
 
 export const APPOINTMENT_SORT_VALUES = ["appointment-proximal", "appointment-distant"] as const;
 export type AppointmentSort = (typeof APPOINTMENT_SORT_VALUES)[number];
-
-const ID_MAPPED_FILTER_KEYS = [
-  EntityTableName.DISTRICT,
-  EntityTableName.LANGUAGE,
-  EntityTableName.ACTIVITY,
-  EntityTableName.SKILL,
-] as const;
-const PLAIN_FILTER_KEYS = [STATUS_PARAM, "type"] as const;
-
-function appendIdMappedFilter(
-  params: URLSearchParams,
-  filter: OpportunityCardsFilter,
-  name: (typeof ID_MAPPED_FILTER_KEYS)[number],
-  options?: SerializeFiltersOptions,
-) {
-  params.delete(name);
-  Object.entries(filter[name]).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.[name]?.find((d) => d.title === key)?.id) || key;
-      params.append(name, String(paramValue));
-    }
-  });
-}
 
 export function isAppointmentSort(sort: string): sort is AppointmentSort {
   return (APPOINTMENT_SORT_VALUES as readonly string[]).includes(sort);
@@ -88,13 +64,7 @@ export function serializeOpportunityFilters(
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);
 
-  ID_MAPPED_FILTER_KEYS.forEach((name) => appendIdMappedFilter(params, filter, name, options));
-  PLAIN_FILTER_KEYS.forEach((name) => {
-    params.delete(name);
-    Object.entries(filter[name]).forEach(([key, value]) => {
-      if (value === true) params.append(name, key);
-    });
-  });
+  serializeSelectionFilters(opportunityFilterConfigs, filter, params, options);
 
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
@@ -118,12 +88,7 @@ export function deserializeOpportunityFilters(
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) newFilter.search = search;
 
-  [...ID_MAPPED_FILTER_KEYS, ...PLAIN_FILTER_KEYS].forEach((name) => {
-    searchParams.getAll(name).forEach((value) => {
-      if (name === STATUS_PARAM && value === OpportunityStatusType.ACTIVE) return;
-      newFilter[name][value] = true;
-    });
-  });
+  deserializeSelectionFilters(opportunityFilterConfigs, newFilter, searchParams);
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
   queryAvailability.forEach((item) => {

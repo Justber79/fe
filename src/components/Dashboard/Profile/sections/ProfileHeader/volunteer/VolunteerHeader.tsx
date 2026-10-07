@@ -22,24 +22,20 @@ import {
   StatusRowField,
 } from "../common";
 import { ChangeEngagementStatusDialog } from "./ChangeEngagementStatusDialog";
+import { ChangeVolunteerTypeDialog } from "./ChangeVolunteerTypeDialog";
 import { createEngagementLabelMap, createMatchLabelMap } from "./constants";
 import { useEngagementStatusDialog } from "./useEngagementStatusDialog";
+import { useVolunteerTypeDialog } from "./useVolunteerTypeDialog";
 import { useAuth } from "@/hooks/useAuth";
 
-function deriveMatchStatus(opportunities: ApiOpportunityVolunteerGet[]): VolunteerStateMatchType {
-  if (!opportunities.length) return VolunteerStateMatchType.NO_MATCHES;
-  const statuses = opportunities.map((o) => o.status);
+function deriveMatchStatus(statuses: OpportunityVolunteerStatusType[]): VolunteerStateMatchType {
   if (
-    statuses.some((s) => s === OpportunityVolunteerStatusType.MATCHED || s === OpportunityVolunteerStatusType.ACTIVE)
+    statuses.includes(OpportunityVolunteerStatusType.MATCHED) ||
+    statuses.includes(OpportunityVolunteerStatusType.ACTIVE)
   ) {
     return VolunteerStateMatchType.MATCHED;
   }
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PENDING)) {
-    return VolunteerStateMatchType.PENDING_MATCH;
-  }
-  if (statuses.some((s) => s === OpportunityVolunteerStatusType.PAST)) {
-    return VolunteerStateMatchType.NO_MATCHES;
-  }
+  if (statuses.includes(OpportunityVolunteerStatusType.PENDING)) return VolunteerStateMatchType.PENDING_MATCH;
   return VolunteerStateMatchType.NO_MATCHES;
 }
 
@@ -50,6 +46,7 @@ type Props = {
 export const VolunteerHeader = ({ volunteer }: Props) => {
   const { t } = useTranslation();
   const dialog = useEngagementStatusDialog(volunteer);
+  const volunteerTypeDialog = useVolunteerTypeDialog(volunteer);
   const { isAuthorized, isOwnProfile } = useAuth(volunteer.person.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
@@ -60,7 +57,10 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
     enabled: !!volunteer.id,
   });
 
-  const matchStatus = deriveMatchStatus(opportunitiesData ?? []);
+  const linkStatuses = (opportunitiesData ?? []).map((o) => o.status);
+  const matchStatus = deriveMatchStatus(linkStatuses);
+  const hasActiveOpportunity = linkStatuses.includes(OpportunityVolunteerStatusType.ACTIVE);
+  const engagementStatus = hasActiveOpportunity ? VolunteerStateEngagementType.ACTIVE : volunteer.statusEngagement;
 
   const engagementLabelMap = createEngagementLabelMap(t);
   const matchLabelMap = createMatchLabelMap(t);
@@ -86,19 +86,25 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
       }
       title={fullName}
       subtitle={subtitle}
-      after={<ChangeEngagementStatusDialog dialog={dialog} />}
+      after={
+        <>
+          <ChangeEngagementStatusDialog dialog={dialog} />
+          <ChangeVolunteerTypeDialog dialog={volunteerTypeDialog} />
+        </>
+      }
     >
       <StatusRowField
         title={t("dashboard.volunteerProfile.volunteerHeader.engagementStatus_title")}
-        status={dialog.selected}
-        label={engagementLabelMap[dialog.selected]}
+        status={engagementStatus}
+        label={engagementLabelMap[engagementStatus]}
         extra={
-          dialog.selected === VolunteerStateEngagementType.TEMP_UNAVAILABLE && (
+          engagementStatus === VolunteerStateEngagementType.TEMP_UNAVAILABLE && (
             <ReturnDateText>{formatDateReturn(dialog.dateReturn)}</ReturnDateText>
           )
         }
         action={
-          isAuthorized && (
+          isAuthorized &&
+          !hasActiveOpportunity && (
             <EditButton onClick={dialog.openDialog}>
               {t("dashboard.volunteerProfile.volunteerHeader.change_status")}
             </EditButton>
@@ -118,6 +124,13 @@ export const VolunteerHeader = ({ volunteer }: Props) => {
         label={volunteer.statusType ? volunteerTypeLabelMap[volunteer.statusType] : undefined}
         extra={
           showBriefedCheck ? <CheckCircleIcon size={20} color="var(--color-green-700)" weight="fill" /> : undefined
+        }
+        action={
+          isAuthorized && (
+            <EditButton onClick={volunteerTypeDialog.openDialog}>
+              {t("dashboard.volunteerProfile.volunteerHeader.change_volunteerType")}
+            </EditButton>
+          )
         }
       />
     </HeaderCard>

@@ -3,12 +3,7 @@ import { Modal } from "@/components/core/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
-import {
-  ApiCommunicationGet,
-  CommunicationType,
-  ContactMethodType,
-  ContactType,
-} from "need4deed-sdk";
+import { ApiCommunicationGet, CommunicationType, ContactMethodType, ContactType } from "need4deed-sdk";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

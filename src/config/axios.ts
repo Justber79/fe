@@ -1,7 +1,7 @@
 import axios from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { toast } from "react-toastify";
+import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
 import { clearAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
@@ -91,21 +91,21 @@ axios.interceptors.response.use(
 
       return axios(originalRequest);
     } catch (refreshError: unknown) {
-      processQueue(refreshError, null);
-
       clearAuthHint();
 
-      if (
-        !(
-          window.location.pathname.includes("login") ||
-          window.location.pathname.includes("forms") ||
-          window.location.pathname.includes("register") ||
-          window.location.pathname.includes("event-page")
-        )
-      ) {
-        toast.error("Session expired. Please log in again.");
+      const isRedirecting = !(
+        window.location.pathname.includes("login") ||
+        window.location.pathname.includes("forms") ||
+        window.location.pathname.includes("register") ||
+        window.location.pathname.includes("event-page")
+      );
+      if (isRedirecting) {
+        rememberSessionExpired();
+        markSessionExpired(error);
+        if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
         window.location.href = "/login";
       }
+      processQueue(refreshError, null);
 
       return Promise.reject(error);
     } finally {

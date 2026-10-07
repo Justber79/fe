@@ -74,7 +74,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
     {
       iconName: IconName.ChatsTeardrop,
       title: t("dashboard.communicationSection.title"),
-      ...(hasEditingRights && {
+      ...(isAdminOrCoordinator && {
         headerButtonName: t("dashboard.communicationSection.addNew"),
         onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
       }),
@@ -83,7 +83,7 @@ export const useAgentProfileSections = (agent: ApiAgentProfileGet | undefined) =
           ref={communicationTrackerRef}
           entityId={agent.id}
           entityType="agent"
-          canEdit={hasEditingRights}
+          canEdit={isAdminOrCoordinator}
         />
       ),
     },

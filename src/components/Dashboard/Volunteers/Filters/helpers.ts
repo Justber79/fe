@@ -1,65 +1,18 @@
 import { TFunction } from "i18next";
-import { Availability, VolunteerCardsFilter, VolunteerStatusMatch } from "./types";
-import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
+import { Availability, VolunteerCardsFilter } from "./types";
+import {
+  createSelectionFilterSections,
+  getSelectedSelectionFilterItems,
+} from "../../common/CardsFilter/selectionFilters";
 import { SelectionMap, SetFilter } from "../../common/CardsFilter/types";
-import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
+import { QueryParamsKeys } from "need4deed-sdk";
+import { volunteerFilterConfigs } from "./config";
 
-export const createFilterItems = (
+export const createVolunteerFilterSections = (
   filter: VolunteerCardsFilter,
   setFilter: SetFilter<VolunteerCardsFilter>,
   t: TFunction,
-) => {
-  const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
-    t(`dashboard.volunteers.filters.volunteerType_options.${key}`),
-  );
-
-  const districtFilters = generateNestedFilterControlItems(
-    filter[QueryParamsKeys.DISTRICT],
-    setFilter,
-    QueryParamsKeys.DISTRICT,
-    (key) => key,
-  );
-
-  const languageFilters = generateNestedFilterControlItems(
-    filter[QueryParamsKeys.LANGUAGE],
-    setFilter,
-    QueryParamsKeys.LANGUAGE,
-    (key) => key,
-  );
-
-  const engagementFilters = generateNestedFilterControlItems(
-    filter[QueryParamsKeys.ENGAGEMENT],
-    setFilter,
-    QueryParamsKeys.ENGAGEMENT,
-    (key) => t(`dashboard.volunteers.filters.engagement.${key}`),
-  );
-
-  const statusMatchFilters = generateNestedFilterControlItems(
-    filter[VolunteerStatusMatch.MATCH],
-    setFilter,
-    VolunteerStatusMatch.MATCH,
-    (key) => t(`dashboard.volunteers.filters.matchStatus.${key}`),
-  );
-
-  const activityFilters = generateNestedFilterControlItems(
-    filter[EntityTableName.ACTIVITY],
-    setFilter,
-    EntityTableName.ACTIVITY,
-    (key) => key,
-  );
-
-  const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
-
-  return {
-    districtFilters,
-    languageFilters,
-    engagementFilters,
-    availabilityFilters,
-    typeFilters,
-    activityFilters,
-    statusMatchFilters,
-  };
-};
+) => createSelectionFilterSections(volunteerFilterConfigs, filter, setFilter, t);
 
 export const createAvailabilityFilterItems = (
   availability: Availability,
@@ -97,26 +50,9 @@ export const createSelectedFilterItemsAsFlatArray = (
   setFilter: SetFilter<VolunteerCardsFilter>,
   t: TFunction,
 ) => {
-  const filterItems = createFilterItems(filter, setFilter, t);
-
-  const {
-    districtFilters,
-    engagementFilters,
-    statusMatchFilters,
-    languageFilters,
-    availabilityFilters,
-    typeFilters,
-    activityFilters,
-  } = filterItems;
-  const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
-
-  return [
-    ...typeFilters,
-    ...districtFilters,
-    ...engagementFilters,
-    ...statusMatchFilters,
-    ...languageFilters,
-    ...activityFilters,
-    ...flatAvFilters,
-  ].filter((f) => f.checked);
+  const sections = createVolunteerFilterSections(filter, setFilter, t);
+  const availabilityItems = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t)
+    .flatMap(({ items }) => items)
+    .filter((item) => item.checked);
+  return [...getSelectedSelectionFilterItems(sections), ...availabilityItems];
 };

@@ -23,6 +23,7 @@ function DataPrivacy() {
     & a {
       text-decoration: none;
       color: var(--color-black);
+      overflow-wrap: anywhere;
     }
   `;
 
@@ -374,7 +375,7 @@ function DataPrivacy() {
             <a href="mailto:clubdialog@ws-datenschutz.de">clubdialog@ws-datenschutz.de</a>
           </strong>
         </p>
-        <p>{t("legal:dataPrivacy:excercise.para2")}</p>
+        <p>{t("legal.dataPrivacy.excercise.para2")}</p>
         <p>WS Datenschutz GmbH</p>
         <p>Dircksenstraße 51</p>
         <p>D-10178 Berlin</p>

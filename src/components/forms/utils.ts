@@ -142,7 +142,7 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
 
   const accomp_address = isAccompanying ? form.aaAddress || null : null;
   const accomp_postcode = isAccompanying ? form.aaPostcode || null : null;
-  const accomp_datetime = isAccompanying ? (form.dateTime || null) : null;
+  const accomp_datetime = isAccompanying ? form.dateTime || null : null;
   const accomp_name = isAccompanying ? form.refugeeName || null : null;
   const accomp_phone = isAccompanying ? form.refugeeNumber || null : null;
   const accomp_information = isAccompanying ? form.aaInformation || null : null;

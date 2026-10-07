@@ -3,6 +3,7 @@ import { Button } from "@/components/core/button";
 import { PageLayout } from "@/components/Layout";
 import { apiPathUser, DashboardRoutes } from "@/config/constants";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
 import { useRouter } from "next/navigation";
@@ -77,12 +78,7 @@ export function VolunteerRegistration() {
 
       setIsSuccess(true);
     } catch (err) {
-      let message = t("message.errorGeneric");
-      if (axios.isAxiosError(err)) {
-        const data = err.response?.data as { message?: string } | undefined;
-        message = data?.message ?? message;
-      }
-      setSubmitError(message);
+      setSubmitError(getLocalizedErrorMessage(err, t));
     } finally {
       setIsSubmitting(false);
     }

@@ -68,12 +68,7 @@ interface ModalProps {
   closeOnOutsideClick?: boolean;
 }
 
-export function Modal({
-  children,
-  isOpen,
-  onClose,
-  closeOnOutsideClick = true,
-}: ModalProps) {
+export function Modal({ children, isOpen, onClose, closeOnOutsideClick = true }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
@@ -97,7 +92,7 @@ export function Modal({
       "textarea:not([disabled])",
       "input:not([disabled])",
       "select:not([disabled])",
-      "[tabindex]:not([tabindex=\"-1\"])",
+      '[tabindex]:not([tabindex="-1"])',
     ].join(", ");
 
     return Array.from(modalRef.current.querySelectorAll<HTMLElement>(focusableSelectors));
@@ -147,10 +142,10 @@ export function Modal({
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
       if (previousActiveElementRef.current) {
         previousActiveElementRef.current.focus();
       }
@@ -189,4 +184,3 @@ export function Modal({
 }
 
 export default Modal;
-

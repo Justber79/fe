@@ -1,65 +1,18 @@
 import { TFunction } from "i18next";
-import { generateNestedFilterControlItems } from "../../common/CardsFilter/helpers";
+import {
+  createSelectionFilterSections,
+  getSelectedSelectionFilterItems,
+} from "../../common/CardsFilter/selectionFilters";
 import { ScheduleFilter, SelectionMap, SetFilter } from "../../common/CardsFilter/types";
-import { EntityTableName, QueryParamsKeys } from "need4deed-sdk";
+import { QueryParamsKeys } from "need4deed-sdk";
+import { opportunityFilterConfigs } from "./config";
 import { OpportunityCardsFilter } from "./types";
 
-export const createOpportunityFilterItems = (
+export const createOpportunityFilterSections = (
   filter: OpportunityCardsFilter,
   setFilter: SetFilter<OpportunityCardsFilter>,
   t: TFunction,
-) => {
-  const districtFilters = generateNestedFilterControlItems(
-    filter[QueryParamsKeys.DISTRICT],
-    setFilter,
-    QueryParamsKeys.DISTRICT,
-    (key) => key,
-  );
-
-  const languageFilters = generateNestedFilterControlItems(
-    filter[QueryParamsKeys.LANGUAGE],
-    setFilter,
-    QueryParamsKeys.LANGUAGE,
-    (key) => {
-      const translationKey = `languageNames.${key.toLowerCase()}`;
-      const translated = t(translationKey);
-      return translated !== translationKey ? translated : key;
-    },
-  );
-  const statusFilters = generateNestedFilterControlItems(filter.status, setFilter, "status", (key) =>
-    t(`dashboard.opportunities.filters.status.${key}`),
-  );
-
-  const typeFilters = generateNestedFilterControlItems(filter.type, setFilter, "type", (key) =>
-    t(`dashboard.opportunities.filters.type.${key}`),
-  );
-
-  const activityFilters = generateNestedFilterControlItems(
-    filter[EntityTableName.ACTIVITY],
-    setFilter,
-    EntityTableName.ACTIVITY,
-    (key) => key,
-  );
-
-  const skillFilters = generateNestedFilterControlItems(
-    filter[EntityTableName.SKILL],
-    setFilter,
-    EntityTableName.SKILL,
-    (key) => key,
-  );
-
-  const availabilityFilters = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t);
-
-  return {
-    districtFilters,
-    languageFilters,
-    statusFilters,
-    typeFilters,
-    activityFilters,
-    skillFilters,
-    availabilityFilters,
-  };
-};
+) => createSelectionFilterSections(opportunityFilterConfigs, filter, setFilter, t);
 
 export const createAvailabilityFilterItems = (
   availability: ScheduleFilter,
@@ -97,23 +50,9 @@ export const createSelectedOpportunityFiltersAsFlatArray = (
   setFilter: SetFilter<OpportunityCardsFilter>,
   t: TFunction,
 ) => {
-  const {
-    districtFilters,
-    languageFilters,
-    statusFilters,
-    typeFilters,
-    activityFilters,
-    skillFilters,
-    availabilityFilters,
-  } = createOpportunityFilterItems(filter, setFilter, t);
-  const flatAvFilters = availabilityFilters.map((avFilter) => avFilter.items).flat();
-  return [
-    ...districtFilters,
-    ...languageFilters,
-    ...statusFilters,
-    ...typeFilters,
-    ...activityFilters,
-    ...skillFilters,
-    ...flatAvFilters,
-  ].filter((f) => f.checked);
+  const sections = createOpportunityFilterSections(filter, setFilter, t);
+  const availabilityItems = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t)
+    .flatMap(({ items }) => items)
+    .filter((item) => item.checked);
+  return [...getSelectedSelectionFilterItems(sections), ...availabilityItems];
 };
