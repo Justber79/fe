@@ -8,13 +8,16 @@ export const useLogout = () => {
   return useMutationQuery<void, unknown>({
     mutationFn: async () => {
       await startLogout();
-      const response = await axios.post(apiPathAuthLogout);
-      return response.data;
+      try {
+        const response = await axios.post(apiPathAuthLogout);
+        return response.data;
+      } catch (error) {
+        // Any failure, silent ones included, must re-enable session refresh.
+        cancelLogout();
+        throw error;
+      }
     },
     noToast: true,
-    onErrorCallback: () => {
-      cancelLogout();
-    },
     // The full page load below resets the query cache.
     onSuccessCallback: () => {
       clearAuthHint();

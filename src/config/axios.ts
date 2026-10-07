@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
+import { toast } from "react-toastify";
+import { getLocalizedErrorMessage, markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
 import { clearAuthHint, setAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
@@ -20,22 +21,31 @@ const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPassword
 // A refresh answered with one of these means the session is gone; anything else
 // (429, 5xx, network) is a hiccup and must not log the user out.
 const SESSION_REJECTED_STATUSES = [400, 401, 403, 404];
-// A 401 this soon after a refresh was sent with the old cookie: retry, don't refresh again.
-const RECENT_REFRESH_MS = 3000;
+// After a refresh hiccup, 401s fail fast for a while instead of hitting the
+// refresh rate limit again.
+const REFRESH_COOLDOWN_MS = 10_000;
 
-let refreshPromise: Promise<string> | null = null;
-let lastRefresh = { at: 0, access: "" };
+type TrackedRequest = InternalAxiosRequestConfig & { sentAt?: number; _retry?: boolean };
+
+let refreshPromise: Promise<string | undefined> | null = null;
+let lastRefresh: { at: number; access?: string } = { at: 0 };
+let lastHiccup: { at: number; error?: unknown } = { at: 0 };
 
 // One refresh for all concurrent 401s.
-const refreshSession = (): Promise<string> => {
-  if (Date.now() - lastRefresh.at < RECENT_REFRESH_MS) return Promise.resolve(lastRefresh.access);
+const refreshSession = (): Promise<string | undefined> => {
+  if (Date.now() - lastHiccup.at < REFRESH_COOLDOWN_MS) return Promise.reject(lastHiccup.error);
   if (!refreshPromise) {
     refreshPromise = axios
       .post(apiPathAuthRefresh)
       .then((response) => {
+        const access = typeof response.data?.access === "string" ? response.data.access : undefined;
         setAuthHint();
-        lastRefresh = { at: Date.now(), access: response.data.access };
-        return lastRefresh.access;
+        lastRefresh = { at: Date.now(), access };
+        return access;
+      })
+      .catch((refreshError: unknown) => {
+        if (!isSessionRejected(refreshError)) lastHiccup = { at: Date.now(), error: refreshError };
+        throw refreshError;
       })
       .finally(() => {
         refreshPromise = null;
@@ -75,6 +85,8 @@ const getActiveLanguage = (): Lang => {
 };
 
 axios.interceptors.request.use((config) => {
+  (config as TrackedRequest).sentAt = Date.now();
+
   // Only decorate requests to our Next.js API proxy. External services and
   // presigned upload URLs must receive exactly the query string they expect.
   if (!config.url?.startsWith("/api/")) return config;
@@ -97,14 +109,14 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    const originalRequest = error.config as TrackedRequest;
 
     // Only retry on 401 (unauthorized), not 403 (forbidden - permission issue)
     // Also skip public auth endpoints (incl. refresh itself) or if already retried
     if (
       error.response?.status !== 401 ||
       !originalRequest.url ||
-      noRefreshPaths.some((path) => originalRequest.url.includes(path)) ||
+      noRefreshPaths.some((path) => originalRequest.url?.includes(path)) ||
       originalRequest._retry
     ) {
       return Promise.reject(error);
@@ -115,36 +127,48 @@ axios.interceptors.response.use(
       return Promise.reject(markSessionExpired(error));
     }
 
-    let access: string;
-    try {
-      access = await refreshSession();
-    } catch (refreshError: unknown) {
-      if (!isSessionRejected(refreshError)) return Promise.reject(refreshError);
+    let access: string | undefined;
+    if ((originalRequest.sentAt ?? 0) < lastRefresh.at) {
+      // Sent with the old cookie before the last refresh finished: just retry.
+      access = lastRefresh.access;
+    } else {
+      try {
+        access = await refreshSession();
+      } catch (refreshError: unknown) {
+        // A deliberate logout is under way: no "session expired" on top of it.
+        if (isLoggingOut) return Promise.reject(markSessionExpired(error));
 
-      clearAuthHint();
+        if (!isSessionRejected(refreshError)) {
+          // Every request waiting on this refresh lands here; one toast for all.
+          toast.error(getLocalizedErrorMessage(refreshError, i18next.t), { toastId: "session-refresh-failed" });
+          return Promise.reject(markSessionExpired(error));
+        }
 
-      // Only redirect if we aren't already on a public auth-flow/form entry page
-      // (login, a standalone form, or the public event page) —
-      // those pages shouldn't be hijacked by a stale/expired session.
-      const isRedirecting = !(
-        window.location.pathname.includes("login") ||
-        window.location.pathname.includes("forms") ||
-        window.location.pathname.includes("register") ||
-        window.location.pathname.includes("event-page")
-      );
-      if (isRedirecting) {
-        // Every request waiting on this refresh lands here; the login page's
-        // "session expired" toast covers them all.
-        rememberSessionExpired();
-        markSessionExpired(error);
-        window.location.href = "/login";
+        clearAuthHint();
+
+        // Only redirect if we aren't already on a public auth-flow/form entry page
+        // (login, a standalone form, or the public event page) —
+        // those pages shouldn't be hijacked by a stale/expired session.
+        const isRedirecting = !(
+          window.location.pathname.includes("login") ||
+          window.location.pathname.includes("forms") ||
+          window.location.pathname.includes("register") ||
+          window.location.pathname.includes("event-page")
+        );
+        if (isRedirecting) {
+          // Every request waiting on this refresh lands here; the login page's
+          // "session expired" toast covers them all.
+          rememberSessionExpired();
+          markSessionExpired(error);
+          window.location.href = "/login";
+        }
+
+        // Surface the original 401, not the refresh failure.
+        return Promise.reject(error);
       }
-
-      // Surface the original 401, not the refresh failure.
-      return Promise.reject(error);
     }
 
-    originalRequest.headers.Authorization = `Bearer ${access}`;
+    if (access) originalRequest.headers.Authorization = `Bearer ${access}`;
     return axios(originalRequest);
   },
 );
