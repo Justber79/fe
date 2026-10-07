@@ -63,8 +63,7 @@ export const decodeJwtPayload = (token: string) => {
   }
 };
 
-// A one-off notice for the next page (a toast before a redirect is wiped by the
-// page load). Storage may be blocked; then the notice is simply skipped.
+// A toast right before a redirect is wiped by the page load.
 export const rememberNotice = (key: string): void => {
   try {
     sessionStorage.setItem(key, "1");
