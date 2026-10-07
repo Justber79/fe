@@ -26,13 +26,23 @@ function getComplementaryPrefixes(queryKey: string[]): string[] {
   return COMPLEMENTARY_PREFIXES[queryKey[0]] ?? ["opportunity-volunteers"];
 }
 
+// The lists showing this match, from every side, plus the volunteer views.
+const useInvalidateMatchLists = (queryKeyToInvalidate: string[]) => {
+  const queryClient = useQueryClient();
+  return () =>
+    [queryKeyToInvalidate[0], ...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach(
+      (prefix) => queryClient.invalidateQueries({ queryKey: [prefix] }),
+    );
+};
+
 // `onFailed` runs for every failed call (unlike per-call mutate callbacks, which
-// only fire for the latest one), e.g. to undo an optimistic tab move.
+// only fire for the latest one), e.g. to undo an optimistic tab move; the lists
+// are refetched too, so the card lands where the server has it.
 export const useUpdateOpportunityVolunteerStatus = (
   queryKeyToInvalidate: string[],
   onFailed?: (payload: StatusUpdatePayload) => void,
 ) => {
-  const queryClient = useQueryClient();
+  const invalidateLists = useInvalidateMatchLists(queryKeyToInvalidate);
 
   return useMutationQuery<StatusUpdatePayload, unknown>({
     mutationFn: async ({ m2mId, status }: StatusUpdatePayload) => {
@@ -40,15 +50,12 @@ export const useUpdateOpportunityVolunteerStatus = (
       return response.data;
     },
     successMessage: "dashboard.opportunityProfile.volunteersSec.statusUpdateSuccess",
-    onErrorCallback: (_error, payload) => {
+    onFailure: (payload) => {
       onFailed?.(payload);
+      invalidateLists();
     },
     queryKeyToInvalidate,
-    onSuccessCallback: () => {
-      [...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach((prefix) =>
-        queryClient.invalidateQueries({ queryKey: [prefix] }),
-      );
-    },
+    onSuccessCallback: invalidateLists,
   });
 };
 
@@ -56,7 +63,7 @@ export const useDeleteOpportunityVolunteer = (
   queryKeyToInvalidate: string[],
   onFailed?: (payload: DeletePayload) => void,
 ) => {
-  const queryClient = useQueryClient();
+  const invalidateLists = useInvalidateMatchLists(queryKeyToInvalidate);
 
   return useMutationQuery<DeletePayload, unknown>({
     mutationFn: async ({ m2mId }: DeletePayload) => {
@@ -64,14 +71,11 @@ export const useDeleteOpportunityVolunteer = (
       return response.data;
     },
     successMessage: "dashboard.opportunityProfile.volunteersSec.removeSuccess",
-    onErrorCallback: (_error, payload) => {
+    onFailure: (payload) => {
       onFailed?.(payload);
+      invalidateLists();
     },
     queryKeyToInvalidate,
-    onSuccessCallback: () => {
-      [...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach((prefix) =>
-        queryClient.invalidateQueries({ queryKey: [prefix] }),
-      );
-    },
+    onSuccessCallback: invalidateLists,
   });
 };

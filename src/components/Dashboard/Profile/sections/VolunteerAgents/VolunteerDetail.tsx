@@ -14,7 +14,7 @@ import { MappedVolunteerAgent } from "./types";
 type Props = {
   volunteer: MappedVolunteerAgent;
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch?: () => void;
+  onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

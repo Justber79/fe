@@ -16,7 +16,7 @@ type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
   hasEditingRights: boolean;
-  onMatch?: () => void;
+  onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/useAuth";
 import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
@@ -21,8 +20,6 @@ export const OpportunityVolunteers = ({
   hasEditingRights: boolean;
 }) => {
   const { t } = useTranslation();
-  // NGO users may change a match's status or remove it, but matching is for coordinators.
-  const { isAuthorized } = useAuth();
 
   const queryKey = ["opportunity-volunteers", String(opportunityId)];
 
@@ -90,7 +87,7 @@ export const OpportunityVolunteers = ({
             volunteer={volunteer}
             currentStatus={currentTabStatus}
             hasEditingRights={hasEditingRights}
-            onMatch={isAuthorized ? () => handleMatch(volunteer.id) : undefined}
+            onMatch={() => handleMatch(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
             onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
             onMarkAsPast={() => handleMarkAsPast(volunteer.id)}

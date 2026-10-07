@@ -6,6 +6,7 @@ import { Button } from "@/components/core/button";
 import { Actions } from "./accordionStyles";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 type AccordionActionsProps = {
   onNotAMatch: () => void;
@@ -70,7 +71,7 @@ export const AccordionActions = ({ onNotAMatch, onMatch, onMarkAsActive, onMarkA
 
 type StatusAccordionActionsProps = {
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch?: () => void;
+  onMatch: () => void;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
@@ -83,8 +84,10 @@ export const StatusAccordionActions = ({
   onMarkAsActive,
   onMarkAsPast,
 }: StatusAccordionActionsProps) => {
+  // NGO users may change a match's status or remove it; matching is for staff.
+  const { isAuthorized } = useAuth();
   if (currentStatus === OpportunityVolunteerStatusType.PENDING) {
-    return <AccordionActions onNotAMatch={onNotAMatch} onMatch={onMatch} />;
+    return <AccordionActions onNotAMatch={onNotAMatch} onMatch={isAuthorized ? onMatch : undefined} />;
   }
   if (currentStatus === OpportunityVolunteerStatusType.MATCHED) {
     return <AccordionActions onNotAMatch={onNotAMatch} onMarkAsActive={onMarkAsActive} />;

@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/useAuth";
 import { apiPathAgent, cacheTTL } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import {
@@ -19,8 +18,6 @@ type Props = { agentId: Id };
 
 export const VolunteerAgents = ({ agentId }: Props) => {
   const { t } = useTranslation();
-  // NGO users may change a match's status or remove it, but matching is for coordinators.
-  const { isAuthorized } = useAuth();
 
   const queryKey = ["agent-volunteers", String(agentId)];
 
@@ -90,7 +87,7 @@ export const VolunteerAgents = ({ agentId }: Props) => {
             key={volunteer.id}
             volunteer={volunteer}
             currentStatus={currentTabStatus}
-            onMatch={isAuthorized ? () => handleMatch(volunteer.id) : undefined}
+            onMatch={() => handleMatch(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
             onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
             onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
