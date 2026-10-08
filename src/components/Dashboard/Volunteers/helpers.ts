@@ -26,11 +26,6 @@ interface GroupedLanguage {
   list: string[];
 }
 
-/**
- * Groups a list of languages by their proficiency level.
- * @param languages The input array of ApiLanguage objects.
- * @returns An array of GroupedLanguage objects.
- */
 export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLanguage[] => {
   const groupedLanguagesMap = new Map<LangProficiency, string[]>();
 
@@ -44,13 +39,11 @@ export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLa
     groupedLanguagesMap.get(proficiency || LangProficiency.BEGINNER)!.push(title);
   }
 
-  // Convert the Map to the desired array format
   const groupedLanguages: GroupedLanguage[] = [];
   groupedLanguagesMap.forEach((list, proficiency) => {
     groupedLanguages.push({ proficiency, list });
   });
 
-  // 👇️ Sorting Languages
   groupedLanguages.sort((a, b) => {
     return proficiencyOrder.indexOf(a.proficiency) - proficiencyOrder.indexOf(b.proficiency);
   });
@@ -77,7 +70,6 @@ export function serializeFilters(
 
   serializeSelectionFilters(volunteerFilterConfigs, filter, params, options);
 
-  // 2. Clear all existing 'availability' params
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
     const availabilityKey = key as AvailabilityKeys;

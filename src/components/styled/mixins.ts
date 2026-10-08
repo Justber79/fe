@@ -1,8 +1,5 @@
 import { css } from "styled-components";
 
-// Small circular "+"/pencil icon-button treatment shared by the agent
-// contact list's add/edit buttons and the Agents table header's "create
-// agent" button (fe#911).
 export const circleIconButtonStyles = css`
   display: flex;
   align-items: center;

@@ -35,7 +35,6 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
   const { id, name, languages, activities, skills, locations, availability, avatarUrl, statusEngagement, statusType } =
     getNormalizedVolunteer(volunteer);
 
-  // Cast until SDK PR #99 adds statusCommunication and statusMatch to ApiVolunteerGetList
   const { statusCommunication, statusMatch } = volunteer as ApiVolunteerGetList & {
     statusCommunication?: VolunteerStateCommunicationType;
     statusMatch?: VolunteerStateMatchType;
@@ -152,8 +151,6 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
 
 export default VolunteerCard;
 
-/* Helper maps */
-
 const stateMatchColorMap: Record<VolunteerStateMatchType, string> = {
   [VolunteerStateMatchType.NO_MATCHES]: "var(--color-grey-700)",
   [VolunteerStateMatchType.PENDING_MATCH]: "var(--color-blue-700)",
@@ -192,7 +189,6 @@ const stateEngagementIconMap: Record<VolunteerStateEngagementType, JSX.Element> 
   ),
 };
 
-/*  Helper components */
 interface CardParagraphProps {
   text: string;
   isBold?: boolean;
@@ -207,8 +203,6 @@ export const CardParagraph = ({ text, isBold }: CardParagraphProps) => (
     {text}
   </Paragraph>
 );
-
-/*  Styles */
 
 const Card = styled(BaseCard)`
   background-color: var(--color-orchid-subtle);

@@ -373,7 +373,6 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -403,7 +402,6 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     );
   }
 
-  // edit mode
   return (
     <EditModeWrapper>
       <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint}>

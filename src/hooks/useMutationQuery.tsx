@@ -5,16 +5,12 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { getLocalizedErrorMessage, isSilentError } from "@/utils/apiErrors";
 
-// Define the options for the hook
 type DataMutationOptions<TResponse, TData> = {
   method?: HttpMethod;
   successMessage?: string;
   onSuccessCallback?: (data: TResponse) => void | Promise<void>;
   queryKeyToInvalidate?: QueryKey | QueryKey[];
-  // Return true to mark an error as handled by the caller (e.g. shown inline),
-  // which skips the default error toast.
   onErrorCallback?: (error: unknown, variables: TData) => boolean | void;
-  // Runs for every failure, silent ones included; for cleanup, never UI.
   onFailure?: (variables: TData) => void;
 
   noToast?: boolean;
@@ -29,7 +25,6 @@ type DataMutationOptions<TResponse, TData> = {
     }
 );
 
-// Generic function to perform the API call
 async function mutateData<TData, TResponse>(apiPath: string, method: HttpMethod, data: TData): Promise<TResponse> {
   if (method === "delete") {
     const response = await axios.delete(apiPath);
@@ -39,12 +34,6 @@ async function mutateData<TData, TResponse>(apiPath: string, method: HttpMethod,
   return response.data;
 }
 
-/**
- * A generic hook for handling POST, PATCH, and PUT mutations.
- * @param TData The type of the payload sent to the API.
- * @param TResponse The type of the data expected in the API response.
- * @param TError The type of the error object.
- */
 export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message?: string }>>({
   apiPath,
   method = "post",
@@ -80,7 +69,6 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
         });
       }
 
-      // Execute the custom callback for component-specific logic (e.g., closing a modal)
       if (onSuccessCallback) {
         onSuccessCallback(responseData);
       }

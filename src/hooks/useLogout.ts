@@ -17,7 +17,6 @@ export const useLogout = () => {
       }
     },
     noToast: true,
-    // The full page load below resets the query cache.
     onSuccessCallback: () => {
       clearAuthHint();
       window.location.href = "/login";

@@ -154,8 +154,6 @@ export function Volunteers() {
 
 export default Volunteers;
 
-/** Styles */
-
 const VolunteersContainer = styled.div`
   display: flex;
   flex-direction: column;

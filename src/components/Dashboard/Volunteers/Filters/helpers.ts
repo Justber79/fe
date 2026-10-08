@@ -14,9 +14,6 @@ export const createVolunteerFilterSections = (
   t: TFunction,
 ) => createSelectionFilterSections(volunteerFilterConfigs, filter, setFilter, t);
 
-/**
- * Builds availability-based filter sections (days, times, occasional).
- */
 export const createAvailabilityFilterItems = (
   availability: Availability,
   setFilter: SetFilter<VolunteerCardsFilter>,

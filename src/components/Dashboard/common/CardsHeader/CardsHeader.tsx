@@ -48,9 +48,6 @@ type Props = {
   onClearAllFilters?: () => void;
   onClearFilter: (filter: string, parentKey?: string) => void;
   entityFilter?: EntityFilter;
-  // Optional slot next to the header title — e.g. a coordinator-only "+"
-  // button to create a record directly (fe#911). No consumer needs it yet
-  // beyond Agents, so it's a generic slot rather than a named prop per action.
   headerAction?: ReactNode;
 };
 

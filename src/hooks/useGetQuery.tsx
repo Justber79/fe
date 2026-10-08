@@ -13,15 +13,12 @@ export const getReducedFilter = (filter?: FilterParam) => {
 
   let reducedFilter: Record<string, unknown> = {};
 
-  //If URLSearchParams, convert to a flat object where multi-value keys become arrays.
   if (filter instanceof URLSearchParams) {
     filter.forEach((_value, key) => {
       const values = filter.getAll(key);
-      // If multiple values, use an array; otherwise, use the single value.
       reducedFilter[key] = values.length > 1 ? values : values[0];
     });
   } else {
-    // If it's a JSON object, use it directly.
     reducedFilter = filter as Record<string, unknown>;
   }
 
@@ -52,7 +49,6 @@ interface UseGetQuery {
   enabled?: boolean;
 }
 
-// The generic custom hook with pagination-sort-language params
 export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, enabled }: UseGetQuery) => {
   const { lang } = useParams<{ lang: Lang }>();
   const normalizedParams = { ...params, filter: getReducedFilter(params.filter) };

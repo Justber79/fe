@@ -63,13 +63,10 @@ export const decodeJwtPayload = (token: string) => {
   }
 };
 
-// A toast right before a redirect is wiped by the page load.
 export const rememberNotice = (key: string): void => {
   try {
     sessionStorage.setItem(key, "1");
-  } catch {
-    // Storage blocked.
-  }
+  } catch {}
 };
 
 export const consumeNotice = (key: string): boolean => {

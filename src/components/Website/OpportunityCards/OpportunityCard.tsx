@@ -25,7 +25,6 @@ interface Props {
   width?: string;
   height?: string;
   backgroundColor?: string;
-  /** Show the full description (used in the popup). */
   vo?: boolean;
   onClick?: () => void;
   enableHoverEffect?: boolean;
@@ -127,8 +126,6 @@ export default function OpportunityCard({
     </Card>
   );
 }
-
-/* Styles */
 
 interface CardProps {
   $width?: string;

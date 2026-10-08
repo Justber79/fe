@@ -101,8 +101,6 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     {
       iconName: IconName.ShootingStar,
       title: t("dashboard.volunteerProfile.opportunities"),
-      // Coordinator/admin only (fe#1003) — a volunteer sees their own
-      // matched/suggested opportunities but can't find or suggest new ones.
       ...(isAuthorized && {
         headerButtonName: opportunityId
           ? t("dashboard.volunteerProfile.suggestButtonName")
@@ -111,8 +109,6 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
           ? () => setIsSuggestDialogOpen(true)
           : () => router.push(`/${i18n.language}/dashboard/opportunities?volunteer=${volunteer.id}`),
       }),
-      // NGO only (fe#1092): ask need4deed to suggest this volunteer for one
-      // of the NGO's own opportunities.
       ...(isAgent && {
         headerButtonName: t("dashboard.volunteerProfile.requestSuggest.button"),
         headerButtonDisabled: isContactLoading || isRequestPending,
@@ -141,15 +137,11 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     },
   ];
 
-  // NGOs only see the profile and opportunities (fe#1092): no communication
-  // log, appreciation or activity log.
   if (!isAgent) {
     sections.push(
       {
         iconName: IconName.ChatsTeardrop,
         title: t("dashboard.communicationSection.title"),
-        // Coordinator/admin only (fe#1003) — a volunteer sees their own
-        // communication log but can't add, edit, or delete entries in it.
         ...(isAuthorized && {
           headerButtonName: t("dashboard.communicationSection.addNew"),
           onHeaderButtonClick: () => communicationTrackerRef.current?.handleAddNew(),
@@ -166,8 +158,6 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
       {
         iconName: IconName.Gift,
         title: t("dashboard.appreciationSection.title"),
-        // Coordinator/admin only (fe#1003) — same reasoning as the
-        // communication tracker above.
         ...(isAuthorized && {
           headerButtonName: t("dashboard.appreciationSection.addNew"),
           onHeaderButtonClick: () => appreciationRef.current?.handleAddNew(),

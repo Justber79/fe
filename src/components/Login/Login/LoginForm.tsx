@@ -63,7 +63,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           onChange: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChangeAsyncDebounceMs: 500,
           onChangeAsync: async ({ value }) => {
-            // Simulating a network request for validation
             await new Promise((resolve) => setTimeout(resolve, 500));
             return value.includes("@") ? undefined : t("dashboard.login.emailMissingAtChar");
           },
@@ -101,7 +100,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         <Checkbox
           checked={rememberMeChecked}
           onChange={() => setRememberMeChecked(!rememberMeChecked)}
-          // !Reason for fixed value: var() definition is not working for SVGs and a value should be given for initial SSR.
           height="24px"
           width="24px"
           label={t("dashboard.login.rememberMe")}

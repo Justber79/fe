@@ -9,10 +9,6 @@ import { TagContainer } from "../styles";
 import { ApiComment } from "need4deed-sdk";
 import { REQUEST_SUGGEST_COMMENT_MARKER } from "@/config/constants";
 
-// NGO "request to suggest" comments (fe#1092) carry a marker; show their text
-// (minus the tag markup) instead of the generic "tagged you" line.
-// Generated requests always read `<@id> 📩 ...`, so match the marker as the
-// first thing after the tag, not anywhere in a normal comment.
 const getRequestText = (comment: ApiComment) => {
   const text = comment.content?.replace(/^<@\d+>\s*/, "");
   return text?.startsWith(REQUEST_SUGGEST_COMMENT_MARKER) ? text.trim() : undefined;

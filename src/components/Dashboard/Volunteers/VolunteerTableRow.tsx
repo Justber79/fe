@@ -41,7 +41,6 @@ export function VolunteerTableRow({
   const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
-  // These fields are not yet in ApiVolunteerGetList SDK type
   const ext = volunteer as ApiVolunteerGetList & {
     statusMatch?: import("need4deed-sdk").VolunteerStateMatchType;
     email?: string;
