@@ -67,14 +67,16 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
   const onSubmit = (values: VolunteerContactDetailsFormData) => {
     updateContact(
       {
+        // A spread of the cached person could put back a stale name.
         person: {
-          ...volunteer.person,
-          phone: values.phone,
+          id: volunteer.person.id,
+          firstName: volunteer.person.firstName,
           email: values.email,
+          phone: values.phone,
+          // Older backends need the id to patch the right address.
           address: {
-            id: volunteer.person.address ? volunteer.person.address?.id : 0,
-            city: "",
-            street: values.street,
+            ...(volunteer.person.address?.id ? { id: volunteer.person.address.id } : {}),
+            street: values.street.trim(),
             postcode: { code: values.postcode },
           },
         },
