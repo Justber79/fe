@@ -1879,6 +1879,7 @@
   "message": {
     "successful": "Successful",
     "sessionExpired": "Your session has expired. Please log in again.",
+    "accountReady": "Your email is confirmed and your account is ready. Please log in.",
     "errorGeneric": "Something went wrong!",
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",
