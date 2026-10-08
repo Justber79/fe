@@ -27,11 +27,33 @@ const nextConfig: NextConfig = {
       { from: "volunteer-form", to: "forms/volunteer" },
       { from: "opportunity-form", to: "register/agent" },
     ];
-    return legacyForms.flatMap(({ from, to }) => [
+    const formRedirects = legacyForms.flatMap(({ from, to }) => [
       { source: `/${from}/:lng(de|en)`, destination: `/:lng/${to}`, permanent: true },
       { source: `/:lng(de|en)/${from}`, destination: `/:lng/${to}`, permanent: true },
       { source: `/${from}/:rest*`, destination: `/${to}`, permanent: true },
     ]);
+    const pages = [
+      "about",
+      "faq",
+      "agreement",
+      "legal-notice",
+      "data-privacy",
+      "rac-guidelines",
+      "announcement",
+      "event-page",
+    ];
+    const pageRedirects = pages.map((page) => ({
+      source: `/${page}/:lng(de|en)`,
+      destination: `/:lng/${page}`,
+      permanent: true,
+    }));
+    const vpaRedirects = [
+      { source: "/vpa/:lng(de|en)", destination: "/:lng/agreement", permanent: true },
+      { source: "/:lng(de|en)/vpa", destination: "/:lng/agreement", permanent: true },
+      { source: "/vpa", destination: "/agreement", permanent: true },
+    ];
+
+    return [...formRedirects, ...pageRedirects, ...vpaRedirects];
   },
   async rewrites() {
     return [{ source: `/${apiPrefix}/:path*`, destination: `${apiURL}/:path*` }];
