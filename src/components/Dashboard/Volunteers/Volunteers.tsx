@@ -101,10 +101,21 @@ export function Volunteers() {
 
     setCardsFilter((prev) => {
       const baseFilters = withOptionFilters(volunteerFilterConfigs, prev, apiFilterOptions);
+      const deserializedFilters = deserializeVolunteerFilters(baseFilters, searchParams);
 
-      return deserializeVolunteerFilters(baseFilters, searchParams);
+      if (isAgent) deserializedFilters.search = "";
+
+      return deserializedFilters;
     });
-  }, [apiFilterOptions, searchParams]);
+  }, [apiFilterOptions, isAgent, searchParams]);
+
+  useEffect(() => {
+    if (!isAgent || !searchParams.has(QueryParamsKeys.SEARCH)) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete(QueryParamsKeys.SEARCH);
+    router.replace(pathname + questionMark + params.toString());
+  }, [isAgent, pathname, router, searchParams]);
 
   const activeFilters = createSelectedFilterItemsAsFlatArray(cardsFilter, setCardsFilter, t);
 
@@ -121,7 +132,7 @@ export function Volunteers() {
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
-          showSearch={Boolean(user && !isAgent)}
+          showSearch={!isAgent}
           sortOrder={sortOrder}
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
