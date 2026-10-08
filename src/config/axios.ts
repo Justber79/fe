@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
-import { clearAuthHint } from "@/utils/helpers";
+import { toast } from "react-toastify";
+import { getLocalizedErrorMessage, markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
+import { clearAuthHint, setAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
   apiPathLogin,
@@ -17,19 +18,51 @@ import {
 // with the refresh endpoint's "Refresh token is required.".
 const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPasswordReset, apiPathPasswordReset];
 
-let isRefreshing = false;
-let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
+// Anything else (429, 5xx, network) is a hiccup and must not log the user out.
+const SESSION_REJECTED_STATUSES = [400, 401, 403, 404];
+const REFRESH_COOLDOWN_MS = 10_000;
 
-const processQueue = (error: unknown | null, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
+type TrackedRequest = InternalAxiosRequestConfig & { sentAt?: number; _retry?: boolean };
+
+let refreshPromise: Promise<string | undefined> | null = null;
+let lastRefresh: { at: number; access?: string } = { at: 0 };
+let lastHiccup: { at: number; error?: unknown } = { at: 0 };
+
+const refreshSession = (): Promise<string | undefined> => {
+  if (Date.now() - lastHiccup.at < REFRESH_COOLDOWN_MS) return Promise.reject(lastHiccup.error);
+  if (!refreshPromise) {
+    refreshPromise = axios
+      .post(apiPathAuthRefresh)
+      .then((response) => {
+        const access = typeof response.data?.access === "string" ? response.data.access : undefined;
+        setAuthHint();
+        lastRefresh = { at: Date.now(), access };
+        return access;
+      })
+      .catch((refreshError: unknown) => {
+        if (!isSessionRejected(refreshError)) lastHiccup = { at: Date.now(), error: refreshError };
+        throw refreshError;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+  return refreshPromise;
 };
+
+let isLoggingOut = false;
+
+// A refresh landing after logout would set the auth cookies again.
+export const startLogout = async (): Promise<void> => {
+  isLoggingOut = true;
+  await refreshPromise?.catch(() => undefined);
+};
+export const cancelLogout = (): void => {
+  isLoggingOut = false;
+};
+
+const isSessionRejected = (refreshError: unknown) =>
+  axios.isAxiosError(refreshError) && SESSION_REJECTED_STATUSES.includes(refreshError.response?.status ?? 0);
 
 // Don't set baseURL - let Next.js proxy handle the routing
 // axios.defaults.baseURL = apiURL;
@@ -47,6 +80,8 @@ const getActiveLanguage = (): Lang => {
 };
 
 axios.interceptors.request.use((config) => {
+  (config as TrackedRequest).sentAt = Date.now();
+
   // Only decorate requests to our Next.js API proxy. External services and
   // presigned upload URLs must receive exactly the query string they expect.
   if (!config.url?.startsWith("/api/")) return config;
@@ -69,74 +104,59 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    const originalRequest = error.config as TrackedRequest;
 
     // Only retry on 401 (unauthorized), not 403 (forbidden - permission issue)
     // Also skip public auth endpoints (incl. refresh itself) or if already retried
     if (
       error.response?.status !== 401 ||
       !originalRequest.url ||
-      noRefreshPaths.some((path) => originalRequest.url.includes(path)) ||
+      noRefreshPaths.some((path) => originalRequest.url?.includes(path)) ||
       originalRequest._retry
     ) {
       return Promise.reject(error);
     }
 
     originalRequest._retry = true;
-
-    // If already refreshing, add to queue
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return axios(originalRequest);
-        })
-        .catch((err) => Promise.reject(err));
+    if (isLoggingOut) {
+      return Promise.reject(markSessionExpired(error));
     }
 
-    isRefreshing = true;
+    let access: string | undefined;
+    if ((originalRequest.sentAt ?? 0) < lastRefresh.at) {
+      // Sent with the old cookie before the last refresh finished: just retry.
+      access = lastRefresh.access;
+    } else {
+      try {
+        access = await refreshSession();
+      } catch (refreshError: unknown) {
+        if (isLoggingOut) return Promise.reject(markSessionExpired(error));
 
-    try {
-      // Attempt to refresh token
-      const response = await axios.post(apiPathAuthRefresh);
-      const { access } = response.data;
+        if (!isSessionRejected(refreshError)) {
+          toast.error(getLocalizedErrorMessage(refreshError, i18next.t), { toastId: "session-refresh-failed" });
+          return Promise.reject(markSessionExpired(error));
+        }
 
-      // Update Authorization header for original request
-      originalRequest.headers.Authorization = `Bearer ${access}`;
+        clearAuthHint();
 
-      // Process queue with new token
-      processQueue(null, access);
+        const isRedirecting = !(
+          window.location.pathname.includes("login") ||
+          window.location.pathname.includes("forms") ||
+          window.location.pathname.includes("register") ||
+          window.location.pathname.includes("event-page")
+        );
+        if (isRedirecting) {
+          rememberSessionExpired();
+          markSessionExpired(error);
+          window.location.href = "/login";
+        }
 
-      return axios(originalRequest);
-    } catch (refreshError: unknown) {
-      clearAuthHint();
-
-      // Only redirect if we aren't already on a public auth-flow/form entry page
-      // (login, a standalone form, or the public event page) —
-      // those pages shouldn't be hijacked by a stale/expired session.
-      const isRedirecting = !(
-        window.location.pathname.includes("login") ||
-        window.location.pathname.includes("forms") ||
-        window.location.pathname.includes("register") ||
-        window.location.pathname.includes("event-page")
-      );
-      if (isRedirecting) {
-        // Queued and retried requests fail the same way; the login page's
-        // "session expired" toast covers them all.
-        rememberSessionExpired();
-        markSessionExpired(error);
-        if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
-        window.location.href = "/login";
+        return Promise.reject(error);
       }
-      processQueue(refreshError, null);
-
-      // Surface the original 401, not the refresh failure.
-      return Promise.reject(error);
-    } finally {
-      isRefreshing = false;
     }
+
+    if (access) originalRequest.headers.Authorization = `Bearer ${access}`;
+    return axios(originalRequest);
   },
 );
 
