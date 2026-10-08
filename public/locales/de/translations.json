@@ -742,7 +742,7 @@
       "suggestDialog": {
         "title": "Diesem*r Ehrenamtlichen vorschlagen?",
         "messageMid": "wird benachrichtigt, dass Sie",
-        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"ausstehende\" ehrenamtliche Tätigkeiten.",
+        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"Angefragt\".",
         "confirm": "Vorschlagen",
         "cancel": "Abbrechen",
         "success": "Vorschlag erfolgreich gesendet"
@@ -828,7 +828,7 @@
       },
       "opportunitiesSec": {
         "tabs": {
-          "opp-pending": "Ausstehend",
+          "opp-pending": "Angefragt",
           "opp-matched": "Zugeordnet",
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
