@@ -13,7 +13,9 @@ type DataMutationOptions<TResponse, TData> = {
   queryKeyToInvalidate?: QueryKey | QueryKey[];
   // Return true to mark an error as handled by the caller (e.g. shown inline),
   // which skips the default error toast.
-  onErrorCallback?: (error: unknown) => boolean | void;
+  onErrorCallback?: (error: unknown, variables: TData) => boolean | void;
+  // Runs for every failure, silent ones included; for cleanup, never UI.
+  onFailure?: (variables: TData) => void;
 
   noToast?: boolean;
 } & (
@@ -51,6 +53,7 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
   queryKeyToInvalidate,
   mutationFn,
   onErrorCallback,
+  onFailure,
   noToast = false,
 }: DataMutationOptions<TResponse, TData>) => {
   const { t } = useTranslation();
@@ -83,8 +86,9 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
       }
     },
 
-    onError: (error) => {
-      if (isSilentError(error) || onErrorCallback?.(error)) return;
+    onError: (error, variables) => {
+      onFailure?.(variables);
+      if (isSilentError(error) || onErrorCallback?.(error, variables)) return;
 
       toast.error(getLocalizedErrorMessage(error, t));
     },

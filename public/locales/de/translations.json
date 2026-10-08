@@ -1576,7 +1576,6 @@
         },
         "emptyState": "Noch keine Ehrenamtlichen in dieser Kategorie",
         "statusUpdateSuccess": "Ehrenamtlichen-Status erfolgreich aktualisiert",
-        "engagementSyncError": "Die Zuordnung wurde gespeichert, aber der Engagement-Status konnte nicht aktualisiert werden. Bitte manuell setzen.",
         "removeSuccess": "Ehrenamtliche*r erfolgreich entfernt"
       },
       "opportunityDetails": {
