@@ -3,8 +3,6 @@ import { useMutationQuery } from "@/hooks";
 import axios from "axios";
 import { ApiAgentCreateResponse, ApiAgentRegisterConflict, ApiAgentRegisterNew } from "need4deed-sdk";
 
-// A 409 names the NGO that already has this title/address (fe#1076); the
-// dialog shows it inline instead of the generic toast.
 export const getAgentConflict = (error: unknown): ApiAgentRegisterConflict | null => {
   if (!axios.isAxiosError(error) || error.response?.status !== 409) return null;
   const data = error.response.data as Partial<ApiAgentRegisterConflict> | undefined;

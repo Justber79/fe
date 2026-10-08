@@ -97,13 +97,6 @@ export default function AccordionFilter({
   );
 }
 
-/* Styles */
-
-// export interface FilterItem extends Pick<CheckboxProps, "onChange"> {
-//   label: string;
-//   checked: boolean;
-// }
-
 const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -6,8 +6,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import { ApiActivityLogEntry, ApiActivityLogPatch, ApiActivityLogPost } from "need4deed-sdk";
 
-// The backend's date columns are date-only; the API schema types `date` as a
-// `format: date` string, so serialize the form's Date to yyyy-MM-dd on the wire.
 const toRequestBody = (data: ApiActivityLogPatch): { date?: string; hours?: number } => ({
   ...(data.date !== undefined && { date: format(data.date, "yyyy-MM-dd") }),
   ...(data.hours !== undefined && { hours: data.hours }),
@@ -17,8 +15,6 @@ export const useActivityLog = (opportunityVolunteerId: number) => {
   const queryKey = ["activity-log", String(opportunityVolunteerId)];
   const matchPath = `${apiPathOpportunityVolunteer}/${opportunityVolunteerId}/activity-log`;
 
-  // The GET response envelope is { data, totalHours, count }; useGetQuery unwraps
-  // `data`, leaving the entry array. totalHours is summed client-side from those.
   const { data: entries = [], isLoading } = useGetQuery<ApiActivityLogEntry[]>({
     queryKey,
     apiPath: matchPath,

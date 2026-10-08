@@ -30,8 +30,6 @@ export function PaginatedGrid({ pageItems, itemsPerPage, currentPage, setCurrent
 
 export default PaginatedGrid;
 
-/** Styles */
-
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;

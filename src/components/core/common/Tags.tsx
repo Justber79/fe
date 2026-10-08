@@ -42,7 +42,6 @@ export function Tags({ tags, backgroundColor = defaultBGColor, icon, max }: Prop
 
 export default Tags;
 
-/** Styles */
 const OverflowTag = styled.span`
   display: inline-flex;
   align-items: center;

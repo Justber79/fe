@@ -70,11 +70,7 @@ export function formatLanguagesForDisplay(
     .join(", ");
 }
 
-/**
- * Formats a single availability item with proper translations
- */
 export function formatAvailabilityItem(day: string, daytime: string, t: TFunction): string {
-  // For "weekdays" and "weekends", the translation already includes "Gelegentlich"
   if (daytime === "weekdays" || daytime === "weekends") {
     return t(`form.schedule.${daytime}`);
   }

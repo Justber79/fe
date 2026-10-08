@@ -56,20 +56,16 @@ export function Search({
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Use useCallback to ensure the debounced function is stable
   const debouncedOnInputChange = useCallback(
     (value: string) => {
-      // Clear the previous timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      // Set a new timeout
       const id = setTimeout(() => {
         onInputChange(value);
       }, debounceTime);
 
-      // Store the new timeout ID
       timeoutRef.current = id;
     },
     [debounceTime, onInputChange],
@@ -85,7 +81,6 @@ export function Search({
     setInputValue(value);
   }, [value]);
 
-  // Cleanup the timeout when the component unmounts
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);

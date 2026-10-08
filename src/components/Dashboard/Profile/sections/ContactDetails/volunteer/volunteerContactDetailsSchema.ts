@@ -13,7 +13,7 @@ export const createVolunteerContactDetailsSchema = (t: (key: string) => string) 
       .string()
       .min(1, t("dashboard.volunteerProfile.contactDetails.validation.emailRequired"))
       .email(t("dashboard.volunteerProfile.contactDetails.validation.emailInvalid")),
-    street: z.string().min(1, t("dashboard.volunteerProfile.contactDetails.validation.streetRequired")),
+    street: z.string().trim().min(1, t("dashboard.volunteerProfile.contactDetails.validation.streetRequired")),
     postcode: z
       .string()
       .min(1, t("dashboard.volunteerProfile.contactDetails.validation.postcodeRequired"))

@@ -15,7 +15,6 @@ export function LogoN4D() {
   const [logoHeight, setLogoHeight] = useState(logoSizeMap[screenType].height);
 
   useEffect(() => {
-    // This code will only run on the client-side
     const computedHeight = getComputedStyle(document.documentElement).getPropertyValue(
       "--homepage-footer-partners-section-logo-n4d-height",
     );

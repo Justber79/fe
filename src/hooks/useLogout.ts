@@ -1,16 +1,23 @@
-import { apiPathAuthLogout, USER_QUERY_KEY } from "@/config/constants";
+import axios from "axios";
+import { cancelLogout, startLogout } from "@/config/axios";
+import { apiPathAuthLogout } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
 import { clearAuthHint } from "@/utils/helpers";
-import { useQueryClient } from "@tanstack/react-query";
 
 export const useLogout = () => {
-  const queryClient = useQueryClient();
-
   return useMutationQuery<void, unknown>({
-    apiPath: apiPathAuthLogout,
-    method: "post",
+    mutationFn: async () => {
+      await startLogout();
+      try {
+        const response = await axios.post(apiPathAuthLogout);
+        return response.data;
+      } catch (error) {
+        cancelLogout();
+        throw error;
+      }
+    },
+    noToast: true,
     onSuccessCallback: () => {
-      queryClient.removeQueries({ queryKey: USER_QUERY_KEY, exact: true });
       clearAuthHint();
       window.location.href = "/login";
     },

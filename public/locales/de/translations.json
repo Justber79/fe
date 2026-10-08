@@ -742,7 +742,7 @@
       "suggestDialog": {
         "title": "Diesem*r Ehrenamtlichen vorschlagen?",
         "messageMid": "wird benachrichtigt, dass Sie",
-        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"ausstehende\" ehrenamtliche Tätigkeiten.",
+        "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"Angefragt\".",
         "confirm": "Vorschlagen",
         "cancel": "Abbrechen",
         "success": "Vorschlag erfolgreich gesendet"
@@ -828,7 +828,7 @@
       },
       "opportunitiesSec": {
         "tabs": {
-          "opp-pending": "Ausstehend",
+          "opp-pending": "Angefragt",
           "opp-matched": "Zugeordnet",
           "opp-active": "Aktiv",
           "opp-past": "Vergangen"
@@ -1576,7 +1576,6 @@
         },
         "emptyState": "Noch keine Ehrenamtlichen in dieser Kategorie",
         "statusUpdateSuccess": "Ehrenamtlichen-Status erfolgreich aktualisiert",
-        "engagementSyncError": "Die Zuordnung wurde gespeichert, aber der Engagement-Status konnte nicht aktualisiert werden. Bitte manuell setzen.",
         "removeSuccess": "Ehrenamtliche*r erfolgreich entfernt"
       },
       "opportunityDetails": {
@@ -2222,6 +2221,8 @@
   },
   "message": {
     "successful": "Erfolgreich",
+    "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "accountReady": "Ihre E-Mail-Adresse ist bestätigt und Ihr Konto ist bereit. Bitte melden Sie sich an.",
     "errorGeneric": "Etwas ist schief gelaufen!",
     "validationFailed": "Validierung fehlgeschlagen",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",

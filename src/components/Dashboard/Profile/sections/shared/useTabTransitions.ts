@@ -19,7 +19,6 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [statusOverrides, setStatusOverrides] = useState<Record<number, StatusOverride>>({});
 
-  // Clear overrides once server data confirms the transition
   useEffect(() => {
     setStatusOverrides((prev) => {
       if (Object.keys(prev).length === 0) return prev;
@@ -32,10 +31,8 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
         const item = items.find((i) => i.id === id);
 
         if (item && (overrideStatus === ITEM_STATUS_REMOVED || item.status !== overrideStatus)) {
-          // Server hasn't caught up yet — keep the override
           next[id] = overrideStatus;
         } else {
-          // Server confirmed the change (or item was removed) — drop override
           changed = true;
         }
       }
@@ -55,5 +52,21 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   const setItemStatus = (id: number, status: StatusOverride) =>
     setStatusOverrides((prev) => ({ ...prev, [id]: status }));
 
-  return { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus };
+  const clearItemStatus = (id: number, expected: StatusOverride) =>
+    setStatusOverrides((prev) => {
+      if (prev[id] !== expected) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+
+  return {
+    selectedTabIndex,
+    setSelectedTabIndex,
+    currentTabStatus,
+    tabCounts,
+    visibleItems,
+    setItemStatus,
+    clearItemStatus,
+  };
 }

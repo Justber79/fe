@@ -46,13 +46,6 @@ type SdkStatusValue = Exclude<StatusValue, OpportunityManualStatusType>;
 
 type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
 
-// Several SDK enums share the same underlying string values (e.g. "new", "active",
-// "pending-match"). Object literals with computed duplicate keys are a TS error, so
-// the SDK entries are built from pairs — arrays have no such restriction and
-// the last entry for a given key wins, matching the original intended behaviour.
-// OpportunityManualStatusType values are unique ("opp-*") and use a typed Record
-// to preserve exhaustiveness checking.
-
 const fromPairs = <K extends string, V>(pairs: readonly (readonly [K, V])[]): Record<K, V> =>
   Object.fromEntries(pairs) as Record<K, V>;
 

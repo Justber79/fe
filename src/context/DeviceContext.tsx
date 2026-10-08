@@ -9,7 +9,6 @@ const getClientScreenType = (): ScreenTypes => {
   return ScreenTypes.DESKTOP;
 };
 
-// --- Context to provide the initial (SSR) and client-side screen type ---
 interface DeviceContextType {
   screenType: ScreenTypes;
 }
@@ -25,7 +24,6 @@ export function DeviceProvider({ children, initialScreenType }: DeviceProviderPr
   const [screenType, setScreenType] = useState<ScreenTypes>(initialScreenType);
 
   useEffect(() => {
-    // Only run on the client-side
     const handleResize = () => {
       setScreenType(getClientScreenType());
     };

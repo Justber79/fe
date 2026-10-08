@@ -9,12 +9,6 @@ import { Lang } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-// Static one-off event page migrated from the website repo's
-// www.need4deed.org/event-page (fe#1022) — this event isn't part of the
-// backend-driven events system that the sibling `EventPage` component reads
-// from, so its content stays hardcoded here rather than fetched, matching
-// how it worked on the website. Named distinctly from `EventPage` to avoid
-// confusion with that unrelated, API-driven page.
 const REGISTRATION_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfsr2Nppw6YGSkyFL54LRk44jv1jGtS2Q5uIPLCBTINJ1g2EA/viewform?usp=dialog";
 

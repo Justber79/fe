@@ -27,11 +27,9 @@ export function Landing({ lang }: { lang: Lang }) {
       />
       <Hero />
       <VolunteeringCategoriesSection />
-      {/* Transferred Components */}
       <EventsSection />
       <TestimonialsSection lang={lang} />
       <ProcessStepsSection />
-      {/* Render the existing component like the previous */}
       <FooterPartnersSection />
     </AppContainer>
   );

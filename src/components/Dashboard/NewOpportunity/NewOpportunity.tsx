@@ -63,8 +63,6 @@ export function NewOpportunity() {
 
   const isAccompanying = selectedType === VolunteerStateTypeType.ACCOMPANYING;
   const isEvent = selectedType === VolunteerStateTypeType.EVENTS;
-  // ?agentId= (from an NGO profile's "Post opportunity") preselects that NGO,
-  // but only if it's one of the user's own; otherwise fall back to the first.
   const requestedIsOwn = currentAgents.some((agent) => agent.agentId === requestedAgentId);
   const firstNGOId = requestedIsOwn ? requestedAgentId : currentAgents[0]?.agentId || (userData?.agentId ?? 0);
 

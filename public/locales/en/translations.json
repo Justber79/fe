@@ -1564,7 +1564,6 @@
         },
         "emptyState": "No volunteers in this category yet",
         "statusUpdateSuccess": "Volunteer status updated successfully",
-        "engagementSyncError": "The match was saved, but the volunteer's engagement status couldn't be updated. Please set it by hand.",
         "removeSuccess": "Volunteer removed successfully"
       },
       "opportunityDetails": {
@@ -1878,6 +1877,8 @@
   },
   "message": {
     "successful": "Successful",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "accountReady": "Your email is confirmed and your account is ready. Please log in.",
     "errorGeneric": "Something went wrong!",
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",

@@ -40,33 +40,25 @@ export interface VolunteerDTO {
 }
 
 export function parseFormStateDTOVolunteer(form: VolunteerData): VolunteerDTO {
-  // Locations: collect selected ids
   const preferred_berlin_locations = form.locations.filter((l) => l.selected).map((l) => l.id);
 
-  // Schedule: flatten availability into [weekday, timeSlotId] pairs
-  // weekday 0 is the "occasional" row (weekdays/weekends)
   const schedule = form.availability.flatMap(({ weekday, timeSlots }) =>
     timeSlots
       .filter((ts) => ts.selected)
       .map((ts) => {
-        // Capitalize occasional slot ids to match API ("weekdays" → "Weekdays")
         const slotId = weekday === 0 ? ts.id.charAt(0).toUpperCase() + ts.id.slice(1) : ts.id;
         return [weekday, slotId];
       }),
   ) as [number, OptionId][];
 
-  // Languages: group by level
   const native_languages = form.languages.filter((l) => l.level === "native").map((l) => l.language);
   const fluent_languages = form.languages.filter((l) => l.level === "fluent").map((l) => l.language);
   const intermediate_languages = form.languages.filter((l) => l.level === "intermediate").map((l) => l.language);
 
-  // Activities: selected ids
   const activities = form.activities.filter((a) => a.selected).map((a) => a.id);
 
-  // Skills: selected ids
   const skills = form.skills.filter((s) => s.selected).map((s) => s.id);
 
-  // Lead from: comma-separated string of selected ids
   const lead_from = form.leadFrom
     .filter((l) => l.selected)
     .map((l) => l.id)
@@ -129,10 +121,8 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
 
   const isAccompanying = form.opportunityType === "accompanying";
 
-  // Locations
   const berlin_locations = form.locations.filter((l) => l.selected).map((l) => l.id);
 
-  // Schedule: flatten into [weekday, slotId] pairs
   const timeslots = (form.schedule ?? []).flatMap(({ weekday, timeSlots }) =>
     timeSlots
       .filter((ts) => ts.selected)
@@ -142,21 +132,17 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
       }),
   );
 
-  // Languages: flat list of selected ids
   const languages = form.languages.filter((l) => l.selected).map((l) => l.id);
 
-  // Activities: merge regular + accompanying lists, collect selected ids
   const activities = [...(form.activities ?? []), ...(form.activitiesAccompanying ?? [])]
     .filter((a) => a.selected)
     .map((a) => a.id);
 
-  // Skills
   const skills = form.skills.filter((s) => s.selected).map((s) => s.id);
 
-  // Accompanying-specific fields
   const accomp_address = isAccompanying ? form.aaAddress || null : null;
   const accomp_postcode = isAccompanying ? form.aaPostcode || null : null;
-  const accomp_datetime = isAccompanying ? (form.dateTime || null) : null;
+  const accomp_datetime = isAccompanying ? form.dateTime || null : null;
   const accomp_name = isAccompanying ? form.refugeeName || null : null;
   const accomp_phone = isAccompanying ? form.refugeeNumber || null : null;
   const accomp_information = isAccompanying ? form.aaInformation || null : null;
@@ -171,7 +157,6 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
     opportunity_type: form.opportunityType,
     vo_information: form.voInformation || null,
 
-    // Accompanying fields (null for regular opportunities)
     accomp_address,
     accomp_postcode,
     accomp_datetime,
@@ -180,7 +165,6 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
     accomp_information,
     accomp_translation,
 
-    // RAC (Refugee Accommodation Center) contact
     rac_email: form.email || null,
     rac_full_name: form.fullName || null,
     rac_phone: form.racPhone || null,

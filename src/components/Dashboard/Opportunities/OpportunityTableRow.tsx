@@ -17,7 +17,6 @@ import { MatchedBadge } from "./styles";
 import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
 import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
 
-// These fields are not yet in ApiVolunteerOpportunityGetList SDK type
 type ExtendedOpportunity = ApiVolunteerOpportunityGetList & {
   statusMatch?: string;
   accompanyingDetails?: ApiOpportunityAccompanyingDetails & {

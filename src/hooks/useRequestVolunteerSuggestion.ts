@@ -11,7 +11,6 @@ import { ApiUserGet, SortOrder, UserRole } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
-// personId is not yet in ApiUserGet SDK type — cast until SDK is updated
 type ApiUserGetWithPersonId = ApiUserGet & { personId?: number };
 
 type CreateCommentData = {
@@ -21,7 +20,6 @@ type CreateCommentData = {
   taggedPersonIds: number[];
 };
 
-// Same query keys/params as useCommentTag, so the staff lists share a cache.
 const useStaffUsers = (role: UserRole, enabled: boolean) =>
   useGetQuery<ApiUserGetWithPersonId[]>({
     queryKey: ["users", role],
@@ -31,11 +29,6 @@ const useStaffUsers = (role: UserRole, enabled: boolean) =>
     enabled,
   });
 
-// NGO "request to suggest" (fe#1092): a comment on the volunteer that tags the
-// contact@need4deed.org account, so it lands in their home-screen tag feed.
-// The volunteer's name is deliberately not in the text: the BE masks it for an
-// NGO that isn't linked to the volunteer yet; the home feed shows the comment's
-// entity title (the volunteer, unmasked for staff) instead.
 export const useRequestVolunteerSuggestion = (volunteerId: number, enabled: boolean) => {
   const { t } = useTranslation();
   const { data: coordinators, isLoading: isCoordinatorsLoading } = useStaffUsers(UserRole.COORDINATOR, enabled);
@@ -59,7 +52,6 @@ export const useRequestVolunteerSuggestion = (volunteerId: number, enabled: bool
       return;
     }
     mutate({
-      // `<@N>` holds the user id (see useCommentTag); taggedPersonIds holds person ids.
       text: `<@${contact.id}> ${REQUEST_SUGGEST_COMMENT_MARKER} ${t(
         "dashboard.volunteerProfile.requestSuggest.commentText",
         { opportunity: opportunityTitle },

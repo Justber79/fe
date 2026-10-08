@@ -21,8 +21,6 @@ interface Props {
   groupedItems?: GroupedFilterItem[];
 }
 
-// Checkbox renders an <svg width/height>, which can't take var(); resolve the
-// token. Only called client-side: the filter panel opens on user action.
 const cssVar = (name: string, fallback: string) =>
   (typeof document !== "undefined" && getComputedStyle(document.documentElement).getPropertyValue(name).trim()) ||
   fallback;
@@ -79,8 +77,6 @@ export default function AccordionFilter({ header, items, groupedItems }: Props) 
     </FilterContainer>
   );
 }
-
-/* Styles */
 
 const FilterContainer = styled.div`
   display: flex;

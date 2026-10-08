@@ -52,7 +52,7 @@ export function getDateLocalTooUTC(dateStr: string | undefined) {
 }
 
 export function haveCommonElements(...arrays: Array<Array<unknown>>) {
-  const combined = new Set(arrays.flat()); // Flatten and put all in a Set
+  const combined = new Set(arrays.flat());
   const totalLength = arrays.reduce((sum, arr) => sum + arr.length, 0);
   return combined.size < totalLength;
 }
@@ -137,14 +137,6 @@ export function formatDateTime(input: string | Date | undefined): string | undef
   return date.toLocaleString("en-US", options);
 }
 
-/**
- * Wraps an asynchronous Promise and converts its outcome into a Result<T, E> type.
- * A successful Promise resolves to [value, null].
- * A rejected Promise is caught and resolves to [null, error].
- *
- * @param promise The Promise to execute.
- * @returns A Promise that resolves to a Result tuple.
- */
 type Success<T> = readonly [T, null];
 type Failure<E = Error> = readonly [null, E];
 type Result<T, E = Error> = Success<T> | Failure<E>;

@@ -12,6 +12,56 @@ const ERROR_CLASS_KEYS: Record<string, string> = {
   InvalidOrganizationEmailError: "agentRegistration.errors.invalidOrganizationEmail",
 };
 
+const SESSION_EXPIRED = Symbol("sessionExpired");
+const SESSION_EXPIRED_STORAGE_KEY = "sessionExpired";
+// beforeunload also fires for navigations that never unload the page (e.g. a
+// mailto: link or a file download), so the flag only lives this long.
+const LEAVING_PAGE_RESET_MS = 5000;
+
+let isLeavingPage = false;
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
+    isLeavingPage = true;
+    setTimeout(() => {
+      isLeavingPage = false;
+    }, LEAVING_PAGE_RESET_MS);
+  });
+}
+
+// The session-expired redirect already tells the user why these failed.
+export function markSessionExpired<T extends object>(error: T): T {
+  (error as Record<symbol, boolean>)[SESSION_EXPIRED] = true;
+  return error;
+}
+
+// A toast shown right before the redirect is wiped by the page load, so the
+// login page shows it instead.
+export function rememberSessionExpired() {
+  try {
+    sessionStorage.setItem(SESSION_EXPIRED_STORAGE_KEY, "1");
+  } catch {
+    // Storage blocked: the login page just shows no toast.
+  }
+}
+
+export function consumeSessionExpired(): boolean {
+  try {
+    const wasExpired = sessionStorage.getItem(SESSION_EXPIRED_STORAGE_KEY) !== null;
+    sessionStorage.removeItem(SESSION_EXPIRED_STORAGE_KEY);
+    return wasExpired;
+  } catch {
+    return false;
+  }
+}
+
+// No toast for these: the session-expired toast covers them, or the request was
+// cut off because the page is navigating away (logout, login redirect).
+export function isSilentError(error: unknown): boolean {
+  if (axios.isCancel(error)) return true;
+  if (typeof error === "object" && error !== null && SESSION_EXPIRED in error) return true;
+  return isLeavingPage && axios.isAxiosError(error) && !error.response;
+}
+
 const COMMUNICATION_DELETE_DENIED = /^You do not have permission to delete communication with id:(\d+)\.$/;
 
 export function getLocalizedErrorMessage(error: unknown, t: TFunction): string {
