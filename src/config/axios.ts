@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
-import { markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
-import { clearAuthHint } from "@/utils/helpers";
+import { toast } from "react-toastify";
+import { getLocalizedErrorMessage, markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
+import { clearAuthHint, setAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
   apiPathLogin,
@@ -13,19 +14,49 @@ import {
 
 const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPasswordReset, apiPathPasswordReset];
 
-let isRefreshing = false;
-let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void }[] = [];
+const SESSION_REJECTED_STATUSES = [400, 401, 403, 404];
+const REFRESH_COOLDOWN_MS = 10_000;
 
-const processQueue = (error: unknown | null, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
+type TrackedRequest = InternalAxiosRequestConfig & { sentAt?: number; _retry?: boolean };
+
+let refreshPromise: Promise<string | undefined> | null = null;
+let lastRefresh: { at: number; access?: string } = { at: 0 };
+let lastHiccup: { at: number; error?: unknown } = { at: 0 };
+
+const refreshSession = (): Promise<string | undefined> => {
+  if (Date.now() - lastHiccup.at < REFRESH_COOLDOWN_MS) return Promise.reject(lastHiccup.error);
+  if (!refreshPromise) {
+    refreshPromise = axios
+      .post(apiPathAuthRefresh)
+      .then((response) => {
+        const access = typeof response.data?.access === "string" ? response.data.access : undefined;
+        setAuthHint();
+        lastRefresh = { at: Date.now(), access };
+        return access;
+      })
+      .catch((refreshError: unknown) => {
+        if (!isSessionRejected(refreshError)) lastHiccup = { at: Date.now(), error: refreshError };
+        throw refreshError;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+  return refreshPromise;
 };
+
+let isLoggingOut = false;
+
+export const startLogout = async (): Promise<void> => {
+  isLoggingOut = true;
+  await refreshPromise?.catch(() => undefined);
+};
+export const cancelLogout = (): void => {
+  isLoggingOut = false;
+};
+
+const isSessionRejected = (refreshError: unknown) =>
+  axios.isAxiosError(refreshError) && SESSION_REJECTED_STATUSES.includes(refreshError.response?.status ?? 0);
 
 const getActiveLanguage = (): Lang => {
   if (typeof window !== "undefined") {
@@ -38,6 +69,8 @@ const getActiveLanguage = (): Lang => {
 };
 
 axios.interceptors.request.use((config) => {
+  (config as TrackedRequest).sentAt = Date.now();
+
   if (!config.url?.startsWith("/api/")) return config;
 
   const language = getActiveLanguage();
@@ -55,62 +88,56 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    const originalRequest = error.config as TrackedRequest;
 
     if (
       error.response?.status !== 401 ||
       !originalRequest.url ||
-      noRefreshPaths.some((path) => originalRequest.url.includes(path)) ||
+      noRefreshPaths.some((path) => originalRequest.url?.includes(path)) ||
       originalRequest._retry
     ) {
       return Promise.reject(error);
     }
 
     originalRequest._retry = true;
-
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return axios(originalRequest);
-        })
-        .catch((err) => Promise.reject(err));
+    if (isLoggingOut) {
+      return Promise.reject(markSessionExpired(error));
     }
 
-    isRefreshing = true;
+    let access: string | undefined;
+    if ((originalRequest.sentAt ?? 0) < lastRefresh.at) {
+      access = lastRefresh.access;
+    } else {
+      try {
+        access = await refreshSession();
+      } catch (refreshError: unknown) {
+        if (isLoggingOut) return Promise.reject(markSessionExpired(error));
 
-    try {
-      const response = await axios.post(apiPathAuthRefresh);
-      const { access } = response.data;
+        if (!isSessionRejected(refreshError)) {
+          toast.error(getLocalizedErrorMessage(refreshError, i18next.t), { toastId: "session-refresh-failed" });
+          return Promise.reject(markSessionExpired(error));
+        }
 
-      originalRequest.headers.Authorization = `Bearer ${access}`;
+        clearAuthHint();
 
-      processQueue(null, access);
+        const isRedirecting = !(
+          window.location.pathname.includes("login") ||
+          window.location.pathname.includes("forms") ||
+          window.location.pathname.includes("register") ||
+          window.location.pathname.includes("event-page")
+        );
+        if (isRedirecting) {
+          rememberSessionExpired();
+          markSessionExpired(error);
+          window.location.href = "/login";
+        }
 
-      return axios(originalRequest);
-    } catch (refreshError: unknown) {
-      clearAuthHint();
-
-      const isRedirecting = !(
-        window.location.pathname.includes("login") ||
-        window.location.pathname.includes("forms") ||
-        window.location.pathname.includes("register") ||
-        window.location.pathname.includes("event-page")
-      );
-      if (isRedirecting) {
-        rememberSessionExpired();
-        markSessionExpired(error);
-        if (typeof refreshError === "object" && refreshError) markSessionExpired(refreshError);
-        window.location.href = "/login";
+        return Promise.reject(error);
       }
-      processQueue(refreshError, null);
-
-      return Promise.reject(error);
-    } finally {
-      isRefreshing = false;
     }
+
+    if (access) originalRequest.headers.Authorization = `Bearer ${access}`;
+    return axios(originalRequest);
   },
 );
 

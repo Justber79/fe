@@ -68,13 +68,13 @@ export const VolunteerContactDetails = forwardRef<EditableSectionRef, Props>(fun
     updateContact(
       {
         person: {
-          ...volunteer.person,
-          phone: values.phone,
+          id: volunteer.person.id,
+          firstName: volunteer.person.firstName,
           email: values.email,
+          phone: values.phone,
           address: {
-            id: volunteer.person.address ? volunteer.person.address?.id : 0,
-            city: "",
-            street: values.street,
+            ...(volunteer.person.address?.id ? { id: volunteer.person.address.id } : {}),
+            street: values.street.trim(),
             postcode: { code: values.postcode },
           },
         },

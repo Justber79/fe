@@ -52,5 +52,21 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   const setItemStatus = (id: number, status: StatusOverride) =>
     setStatusOverrides((prev) => ({ ...prev, [id]: status }));
 
-  return { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus };
+  const clearItemStatus = (id: number, expected: StatusOverride) =>
+    setStatusOverrides((prev) => {
+      if (prev[id] !== expected) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+
+  return {
+    selectedTabIndex,
+    setSelectedTabIndex,
+    currentTabStatus,
+    tabCounts,
+    visibleItems,
+    setItemStatus,
+    clearItemStatus,
+  };
 }
