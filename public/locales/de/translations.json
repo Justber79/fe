@@ -2223,6 +2223,7 @@
   "message": {
     "successful": "Erfolgreich",
     "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "accountReady": "Ihre E-Mail-Adresse ist bestätigt und Ihr Konto ist bereit. Bitte melden Sie sich an.",
     "errorGeneric": "Etwas ist schief gelaufen!",
     "validationFailed": "Validierung fehlgeschlagen",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
