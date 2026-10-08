@@ -3,6 +3,7 @@ import { useMutation, useQueryClient, type QueryKey } from "@tanstack/react-quer
 import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { getLocalizedErrorMessage, isSilentError } from "@/utils/apiErrors";
 
 // Define the options for the hook
 type DataMutationOptions<TResponse, TData> = {
@@ -83,33 +84,9 @@ export const useMutationQuery = <TData, TResponse, TError = AxiosError<{ message
     },
 
     onError: (error) => {
-      if (onErrorCallback?.(error)) return;
+      if (isSilentError(error) || onErrorCallback?.(error)) return;
 
-      let errorMessage = t("message.errorGeneric");
-
-      if (axios.isAxiosError(error)) {
-        // Attempt to get a specific error message from the API response
-        const errorData = error.response?.data as { message?: string };
-        if (typeof errorData === "string") {
-          errorMessage = errorData;
-        } else if (errorData?.message) {
-          errorMessage = errorData.message;
-        }
-
-        // Translate known API error messages
-        if (errorMessage === "Validation failed") {
-          errorMessage = t("message.validationFailed");
-        }
-
-        const commDeleteMatch = errorMessage.match(
-          /^You do not have permission to delete communication with id:(\d+)\.$/,
-        );
-        if (commDeleteMatch) {
-          errorMessage = t("dashboard.communicationSection.deletePermissionError", { id: commDeleteMatch[1] });
-        }
-      }
-
-      toast.error(errorMessage);
+      toast.error(getLocalizedErrorMessage(error, t));
     },
   });
 };

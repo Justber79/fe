@@ -8,11 +8,12 @@ import {
   QueryParamsKeys,
   AgentType,
   Service,
-  EntityTableName,
 } from "need4deed-sdk";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AgentCardsFilter } from "./Filters/types";
+import { deserializeSelectionFilters, serializeSelectionFilters } from "../common/CardsFilter/selectionFilters";
+import { agentFilterConfigs } from "./Filters/config";
 
 type AgentListItem = ApiAgentGetList & Partial<ApiAgentGet>;
 
@@ -53,50 +54,7 @@ export function serializeAgentFilters(
   if (filter.search) params.set(QueryParamsKeys.SEARCH, filter.search);
   else params.delete(QueryParamsKeys.SEARCH);
 
-  params.delete(QueryParamsKeys.DISTRICT);
-  Object.entries(filter.district).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs && options.apiFilterOptions?.district?.find((d) => d.title === key)?.id) || key;
-      params.append(QueryParamsKeys.DISTRICT, String(paramValue));
-    }
-  });
-
-  params.delete("type");
-  Object.entries(filter.type).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs &&
-          options.apiFilterOptions?.[EntityTableName.AGENT_TYPE]?.find((d) => d.title === key)?.id) ||
-        key;
-      params.append("type", String(paramValue));
-    }
-  });
-
-  params.delete("volunteerSearch");
-  Object.entries(filter.volunteerSearch).forEach(([key, value]) => {
-    if (value === true) {
-      params.append("volunteerSearch", key);
-    }
-  });
-
-  params.delete("engagementStatus");
-  Object.entries(filter.engagementStatus).forEach(([key, value]) => {
-    if (value === true) {
-      params.append("engagementStatus", key);
-    }
-  });
-
-  params.delete("services");
-  Object.entries(filter.services).forEach(([key, value]) => {
-    if (value === true) {
-      const paramValue =
-        (options?.serializeToIDs &&
-          options.apiFilterOptions?.[EntityTableName.SERVICE]?.find((d) => d.title === key)?.id) ||
-        key;
-      params.append("services", String(paramValue));
-    }
-  });
+  serializeSelectionFilters(agentFilterConfigs, filter, params, options);
 
   return asString ? params.toString() : params;
 }
@@ -110,30 +68,7 @@ export function deserializeAgentFilters(
   const search = searchParams.get(QueryParamsKeys.SEARCH);
   if (search !== null) newFilter.search = search;
 
-  const queryDistricts = searchParams.getAll(QueryParamsKeys.DISTRICT);
-  queryDistricts.forEach((d) => {
-    if (newFilter.district[d] !== undefined) newFilter.district[d] = true;
-  });
-
-  const queryType = searchParams.getAll("type");
-  queryType.forEach((s) => {
-    if (newFilter.type[s] !== undefined) newFilter.type[s] = true;
-  });
-
-  const queryVolunteerSearch = searchParams.getAll("volunteerSearch");
-  queryVolunteerSearch.forEach((s) => {
-    if (newFilter.volunteerSearch[s] !== undefined) newFilter.volunteerSearch[s] = true;
-  });
-
-  const queryEngagementStatus = searchParams.getAll("engagementStatus");
-  queryEngagementStatus.forEach((s) => {
-    if (newFilter.engagementStatus[s] !== undefined) newFilter.engagementStatus[s] = true;
-  });
-
-  const queryServices = searchParams.getAll("services");
-  queryServices.forEach((s) => {
-    if (newFilter.services[s] !== undefined) newFilter.services[s] = true;
-  });
+  deserializeSelectionFilters(agentFilterConfigs, newFilter, searchParams);
 
   return newFilter;
 }

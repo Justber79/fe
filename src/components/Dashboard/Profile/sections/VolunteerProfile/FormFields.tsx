@@ -3,7 +3,7 @@ import { EditableField } from "@/components/EditableField/EditableField";
 import { AvailabilityGrid } from "@/components/forms/AvailabilityGrid/AvailabilityGrid";
 import { LanguageFields } from "@/components/forms/LanguageFields";
 import { TFunction } from "i18next";
-import { Lang, VolunteerStateTypeType } from "need4deed-sdk";
+import { Lang } from "need4deed-sdk";
 import { Control, Controller, ControllerRenderProps, FieldErrors, UseFormTrigger } from "react-hook-form";
 import styled from "styled-components";
 import { VolunteerProfileFormData } from "./volunteerProfileSchema";
@@ -146,24 +146,6 @@ export function FormFields({
             }}
             options={districts.map((d) => d.title)}
             errorMessage={errors.districts?.message}
-          />
-        )}
-      />
-
-      <Controller
-        name="volunteerType"
-        control={control}
-        render={({ field }: { field: ControllerRenderProps<VolunteerProfileFormData, "volunteerType"> }) => (
-          <EditableField
-            mode="edit"
-            type="radio-list"
-            label={t("dashboard.volunteerProfile.profileSection.volunteerType")}
-            value={field.value}
-            setValue={field.onChange}
-            options={Object.values(VolunteerStateTypeType)
-              .filter((type): type is VolunteerStateTypeType => type !== undefined)
-              .map((type) => t(`dashboard.volunteerProfile.volunteerHeader.volunteerType_options.${type}`))}
-            errorMessage={errors.volunteerType?.message}
           />
         )}
       />
