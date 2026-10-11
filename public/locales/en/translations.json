@@ -146,6 +146,7 @@
     "error": {
       "required": "This field is required",
       "postcode": "Must be a valid postcode of Berlin",
+      "postcodeGermany": "Must be a valid German postcode (5 digits)",
       "email": "Must be a valid email",
       "badEmail": "Bad email",
       "location": "Please pick at least one location",
@@ -202,7 +203,7 @@
           "label": "Phone Number or Telegram Handle"
         },
         "postcode": {
-          "label": "PLZ (Berlin) of your place of residence"
+          "label": "PLZ of your place of residence"
         },
         "locations": {
           "header": "Preferred districts* (Berlin)",
@@ -2094,7 +2095,7 @@
         "header": "I hereby agree to the:",
         "and": "and"
       },
-      "postcode": "PLZ (Berlin) of your place of residence*",
+      "postcode": "PLZ of your place of residence*",
       "locations": {
         "header": "Preferred districts* (Berlin)",
         "para": "*keep in mind that most accommodation centers are outside the ring!",
