@@ -23,18 +23,11 @@ type Props = {
 
 const emptyValues: CreateAgentFormData = { title: "", addressStreet: "", addressPostcode: "" };
 
-// Coordinator/admin-only "+" flow from the Agents table header (fe#911): a
-// bare Agent with no linked Person/User, for an NGO the coordinator already
-// has details for before it has self-registered. Deliberately minimal — just
-// enough to create the placeholder record; richer fields (type, services,
-// languages, about) are filled in later via the agent's own profile page,
-// same as any other agent.
 export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
   const { t, i18n } = useTranslation();
   const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
   const { mutate: createAgent, isPending } = useCreateAgent(setConflict);
 
-  // Coordinators can read any agent, so name the existing NGO (fe#1076).
   const { data: conflictAgent } = useGetQuery<ApiAgentGet>({
     queryKey: ["agent", String(conflict?.agentId)],
     apiPath: `${apiPathAgent}/${conflict?.agentId}`,
@@ -124,7 +117,6 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
       {conflict && (
         <ConflictBox role="alert">
           <span>{t(`dashboard.agents.createAgent.conflict.${conflict.conflict}`)}</span>
-          {/* Name on its own line, only once loaded (never a dangling blank). */}
           {conflictAgent?.title && <strong>{conflictAgent.title}</strong>}
           <Link href={`/${i18n.language}/dashboard/agents/${conflict.agentId}`} onClick={handleClose}>
             {t("dashboard.agents.createAgent.conflict.open")}

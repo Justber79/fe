@@ -1,5 +1,5 @@
 import AxiosInitializer from "@/components/hepler/AxiosInitializer";
-import "@/config/axios"; // Initialize axios interceptors
+import "@/config/axios";
 import { ScreenTypes } from "@/config/constants";
 import { DeviceProvider } from "@/context/DeviceContext";
 import StyledComponentsRegistry from "@/lib/styled-components-registry";

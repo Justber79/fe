@@ -35,17 +35,16 @@ export function Volunteers() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const tabs =
-    !user || isAgent
-      ? []
-      : [
-          t("dashboard.volunteers.tabs.tab1"),
-          t("dashboard.volunteers.tabs.tab2"),
-          t("dashboard.opportunities.tabs.tab3"),
-        ];
+  const tabs = !user
+    ? []
+    : [
+        t("dashboard.volunteers.tabs.tab1"),
+        t("dashboard.volunteers.tabs.tab2"),
+        t("dashboard.opportunities.tabs.tab3"),
+      ];
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
-  const isMobileUser = screenType === ScreenTypes.MOBILE && user && !isAgent;
+  const isMobileUser = screenType === ScreenTypes.MOBILE && Boolean(user);
   const defaultTabIndex = isMobileUser ? 1 : 0;
   const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
   const selectedTabIndex = foundIndex === -1 ? defaultTabIndex : foundIndex;
@@ -103,10 +102,21 @@ export function Volunteers() {
 
     setCardsFilter((prev) => {
       const baseFilters = withOptionFilters(volunteerFilterConfigs, prev, apiFilterOptions);
+      const deserializedFilters = deserializeVolunteerFilters(baseFilters, searchParams);
 
-      return deserializeVolunteerFilters(baseFilters, searchParams);
+      if (isAgent) deserializedFilters.search = "";
+
+      return deserializedFilters;
     });
-  }, [apiFilterOptions, searchParams]);
+  }, [apiFilterOptions, isAgent, searchParams]);
+
+  useEffect(() => {
+    if (!isAgent || !searchParams.has(QueryParamsKeys.SEARCH)) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete(QueryParamsKeys.SEARCH);
+    router.replace(pathname + questionMark + params.toString());
+  }, [isAgent, pathname, router, searchParams]);
 
   const activeFilters = createSelectedFilterItemsAsFlatArray(cardsFilter, setCardsFilter, t);
 
@@ -123,6 +133,7 @@ export function Volunteers() {
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
+          showSearch={!isAgent}
           sortOrder={sortOrder}
           onSortOrderChange={handleSortChange}
           activeFilters={activeFilters}
@@ -155,8 +166,6 @@ export function Volunteers() {
 }
 
 export default Volunteers;
-
-/** Styles */
 
 const VolunteersContainer = styled.div`
   display: flex;

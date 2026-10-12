@@ -155,9 +155,7 @@ export function CommentDisplay({ comment, onPatch, onDelete }: CommentDisplayPro
         <DeleteDialog>
           <DeleteDialogContent>
             <DeleteDialogTitle>Delete comment?</DeleteDialogTitle>
-            <DeleteDialogText>
-              {comment.authorName}&apos;s comment will be permanently deleted.
-            </DeleteDialogText>
+            <DeleteDialogText>{comment.authorName}&apos;s comment will be permanently deleted.</DeleteDialogText>
             <DeleteDialogActions>
               <Button
                 text="Cancel"
@@ -181,8 +179,6 @@ export function CommentDisplay({ comment, onPatch, onDelete }: CommentDisplayPro
 }
 
 export default CommentDisplay;
-
-/* Styled Components */
 
 const CommentContainer = styled.div`
   display: flex;
@@ -337,4 +333,3 @@ const DeleteDialogActions = styled.div`
   gap: 12px;
   justify-content: flex-end;
 `;
-

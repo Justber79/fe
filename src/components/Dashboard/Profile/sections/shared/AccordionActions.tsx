@@ -6,6 +6,7 @@ import { Button } from "@/components/core/button";
 import { Actions } from "./accordionStyles";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 type AccordionActionsProps = {
   onNotAMatch: () => void;
@@ -83,8 +84,9 @@ export const StatusAccordionActions = ({
   onMarkAsActive,
   onMarkAsPast,
 }: StatusAccordionActionsProps) => {
+  const { isAuthorized } = useAuth();
   if (currentStatus === OpportunityVolunteerStatusType.PENDING) {
-    return <AccordionActions onNotAMatch={onNotAMatch} onMatch={onMatch} />;
+    return <AccordionActions onNotAMatch={onNotAMatch} onMatch={isAuthorized ? onMatch : undefined} />;
   }
   if (currentStatus === OpportunityVolunteerStatusType.MATCHED) {
     return <AccordionActions onNotAMatch={onNotAMatch} onMarkAsActive={onMarkAsActive} />;

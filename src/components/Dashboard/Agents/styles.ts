@@ -8,9 +8,6 @@ export const AgentsContainer = styled.div`
   gap: var(--dashboard-volunteers-container-gap);
 `;
 
-// Coordinator/admin-only "create agent" button next to the Agents table
-// header (fe#911) — same circular icon-button treatment as the agent
-// profile's "add contact" button.
 export const CreateAgentButton = styled.button`
   ${circleIconButtonStyles}
 `;

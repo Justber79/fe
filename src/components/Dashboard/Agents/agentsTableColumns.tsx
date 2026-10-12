@@ -43,7 +43,7 @@ export const createAgentTableColumns = (
     key: "district",
     label: t("dashboard.agents.table.district"),
     width: AGENT_COL_WIDTHS.district,
-    headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={AGENT_COL_WIDTHS.district} />,
+    headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} />,
   },
   {
     key: "activeVolunteers",

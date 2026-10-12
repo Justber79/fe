@@ -36,7 +36,6 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
   ref,
 ) {
   const { t } = useTranslation();
-  // true = only fetch when the user is logged in (has auth cookie)
   const currentUser = useCurrentUser(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<ApiCommunicationGet | undefined>(undefined);

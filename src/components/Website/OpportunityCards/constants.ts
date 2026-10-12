@@ -41,8 +41,6 @@ export enum CategoryTitle {
   DE_LNG_SUPPORT = 1,
 }
 
-// Stable activity-type keys (used in the filter state and URL), derived from
-// category_id; labels are translated only for display.
 export const OTHER_CATEGORY = "other";
 
 export const categoryKeyById: Record<CategoryTitle, string> = {
@@ -54,7 +52,6 @@ export const categoryKeyById: Record<CategoryTitle, string> = {
   [CategoryTitle.ACCOMPANYING]: "accompanyARefugee",
 };
 
-// `time_slot` values the legacy endpoint returns in `timeslots`.
 export enum LegacyTimeSlot {
   MORNING = "08-11",
   NOON = "11-14",

@@ -20,22 +20,25 @@ import { getImageUrl } from "@/utils";
 import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
 import { formatAvailabilityItem } from "../Profile/sections/VolunteerProfile/formatters";
 import CardDetail from "./CardDetail";
-import { getFirstName, getTopLanguages, getNormalizedVolunteer, truncateList } from "./helpers";
+import { getFirstName, getTopLanguages, getNormalizedVolunteer, putSelectedFirst, truncateList } from "./helpers";
 import { IconName } from "./icon";
 
 interface Props {
   volunteer: ApiVolunteerGetList;
   opportunityId?: string;
+  selectedDistrictIds?: number[];
 }
 
-export function VolunteerCard({ volunteer, opportunityId }: Props) {
+export function VolunteerCard({ volunteer, opportunityId, selectedDistrictIds = [] }: Props) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
   const { id, name, languages, activities, skills, locations, availability, avatarUrl, statusEngagement, statusType } =
-    getNormalizedVolunteer(volunteer);
+    getNormalizedVolunteer({
+      ...volunteer,
+      locations: putSelectedFirst(volunteer.locations, (loc) => selectedDistrictIds.includes(loc.id)),
+    });
 
-  // Cast until SDK PR #99 adds statusCommunication and statusMatch to ApiVolunteerGetList
   const { statusCommunication, statusMatch } = volunteer as ApiVolunteerGetList & {
     statusCommunication?: VolunteerStateCommunicationType;
     statusMatch?: VolunteerStateMatchType;
@@ -152,8 +155,6 @@ export function VolunteerCard({ volunteer, opportunityId }: Props) {
 
 export default VolunteerCard;
 
-/* Helper maps */
-
 const stateMatchColorMap: Record<VolunteerStateMatchType, string> = {
   [VolunteerStateMatchType.NO_MATCHES]: "var(--color-grey-700)",
   [VolunteerStateMatchType.PENDING_MATCH]: "var(--color-blue-700)",
@@ -192,7 +193,6 @@ const stateEngagementIconMap: Record<VolunteerStateEngagementType, JSX.Element> 
   ),
 };
 
-/*  Helper components */
 interface CardParagraphProps {
   text: string;
   isBold?: boolean;
@@ -207,8 +207,6 @@ export const CardParagraph = ({ text, isBold }: CardParagraphProps) => (
     {text}
   </Paragraph>
 );
-
-/*  Styles */
 
 const Card = styled(BaseCard)`
   background-color: var(--color-orchid-subtle);

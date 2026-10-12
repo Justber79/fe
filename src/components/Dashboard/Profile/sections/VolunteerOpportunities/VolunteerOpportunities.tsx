@@ -29,35 +29,46 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
 
   const opportunities = useMemo(() => data ?? [], [data]);
 
-  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey);
-  const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey);
+  const {
+    selectedTabIndex,
+    setSelectedTabIndex,
+    currentTabStatus,
+    tabCounts,
+    visibleItems,
+    setItemStatus,
+    clearItemStatus,
+  } = useTabTransitions(opportunities);
 
-  const { selectedTabIndex, setSelectedTabIndex, currentTabStatus, tabCounts, visibleItems, setItemStatus } =
-    useTabTransitions(opportunities);
+  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey, ({ m2mId, status }) =>
+    clearItemStatus(m2mId, status),
+  );
+  const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
+    clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
+  );
 
   const tabs = TAB_STATUS_ORDER.map((key, index) => ({
     label: t(`dashboard.volunteerProfile.opportunitiesSec.tabs.${key}`),
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number, volunteerId: number) => {
+  const handleMatch = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.MATCHED });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
   };
 
-  const handleNotAMatch = (m2mId: number, volunteerId: number) => {
+  const handleNotAMatch = (m2mId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
-    deleteLink({ m2mId, volunteerId });
+    deleteLink({ m2mId });
   };
 
-  const handleMarkAsActive = (m2mId: number, volunteerId: number) => {
+  const handleMarkAsActive = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.ACTIVE);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.ACTIVE });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.ACTIVE });
   };
 
-  const handleMarkAsPast = (m2mId: number, volunteerId: number) => {
+  const handleMarkAsPast = (m2mId: number) => {
     setItemStatus(m2mId, OpportunityVolunteerStatusType.PAST);
-    updateStatus({ m2mId, volunteerId, status: OpportunityVolunteerStatusType.PAST });
+    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
   };
 
   if (isLoading) {
@@ -76,10 +87,10 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
               key={opportunity.id}
               opportunity={opportunity}
               currentStatus={currentTabStatus}
-              onMatch={() => handleMatch(opportunity.id, opportunity.volunteerId)}
-              onNotAMatch={() => handleNotAMatch(opportunity.id, opportunity.volunteerId)}
-              onMarkAsActive={() => handleMarkAsActive(opportunity.id, opportunity.volunteerId)}
-              onMarkAsPast={() => handleMarkAsPast(opportunity.id, opportunity.volunteerId)}
+              onMatch={() => handleMatch(opportunity.id)}
+              onNotAMatch={() => handleNotAMatch(opportunity.id)}
+              onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
+              onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
             />
           ) : (
             <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />

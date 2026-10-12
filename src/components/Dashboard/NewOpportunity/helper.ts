@@ -69,10 +69,6 @@ export function buildCreatePayload(
   const skillIds = toOptionItems(detailsData.skills, apiSkills).map((i) => i.id);
   const timeslots = isEvent ? undefined : availabilityToTimeslots(detailsData.availability);
 
-  // eventDate/appointmentDate are local-midnight Date objects from the date
-  // picker (react-day-picker) — extract the *local* calendar date here, not
-  // its UTC date, or a positive UTC offset (Europe/Berlin is always +1/+2)
-  // reads back the previous day (fe#920).
   const onetime_date_time =
     isEvent && detailsData.eventDate
       ? `${format(detailsData.eventDate, "yyyy-MM-dd")}T${detailsData.eventTime || "00:00"}:00`
@@ -83,11 +79,6 @@ export function buildCreatePayload(
       ? `${format(accompData.appointmentDate, "yyyy-MM-dd")}T${accompData.appointmentTime || "00:00"}:00`
       : undefined;
 
-  // The backend's POST /opportunity schema allows these optional properties
-  // to be omitted, but rejects them when present as `null` (fe#1036) — so
-  // every field below that doesn't apply to the selected type, or has no
-  // value, is left `undefined` rather than `null` so it's dropped from the
-  // JSON body instead of being sent as an explicit null.
   return {
     title: headerData.title,
     opportunity_type: isAccompanying ? OpportunityLegacyType.ACCOMPANYING : OpportunityLegacyType.VOLUNTEERING,

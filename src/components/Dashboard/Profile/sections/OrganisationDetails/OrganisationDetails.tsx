@@ -30,7 +30,7 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 ) {
   const { t, i18n } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
-  const { mutate: updateOrganization /*, isPending */ } = useUpdateOrganization(String(agent?.id));
+  const { mutate: updateOrganization } = useUpdateOrganization(String(agent?.id));
 
   useEditingChangeNotifier(isEditing, onEditingChange);
   const { data: apiLanguages } = useApiLanguages();
@@ -48,10 +48,6 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
     organizations?.map((org) => org.title),
   );
 
-  // organizationType/services come back from GET /agent as { id, title: {en,de} }
-  // (both languages at once); resolve by id to the title already translated to
-  // the current UI language by the fetched AgentType/Service option lists, so
-  // the picker's options and the pre-selected value use the same strings.
   const initialFormValues = useMemo(
     () => ({
       ...details,
@@ -83,10 +79,6 @@ export const OrganisationDetails = forwardRef<EditableSectionRef, Props>(functio
 
   useImperativeHandle(ref, () => ({ handleEditClick }));
 
-  // apiAgentTypes/apiServices resolve asynchronously after the form's initial
-  // mount, so the id->title lookups above are still empty when useForm first
-  // captures defaultValues (RHF freezes them at mount). Re-sync once the real
-  // data arrives, matching the pattern in RefugeeAccommodationCentre.tsx.
   useEffect(() => {
     if (isEditing) return;
     reset(initialFormValues);

@@ -2,7 +2,6 @@ import { TFunction } from "i18next";
 import { ApiDocumentGet, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { ACTION_COLUMN_WIDTH } from "./styles";
 
-// These fields are not yet in ApiVolunteerGet SDK type
 type ExtendedVolunteerGet = ApiVolunteerGet & {
   statusVaccinationDate?: string | Date | null;
   statusCGCDate?: string | Date | null;

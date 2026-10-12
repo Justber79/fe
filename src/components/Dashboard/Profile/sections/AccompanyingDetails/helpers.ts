@@ -7,7 +7,6 @@ import {
 import { ApiOpportunityAccompanyingDetails, VolunteerStateTypeType } from "need4deed-sdk";
 import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
-// These fields are not yet in the SDK ApiOpportunityAccompanyingDetails type
 type ExtendedAccompanyingDetails = ApiOpportunityAccompanyingDetails & {
   appointmentPostcode?: string;
   refugeeLanguage?: { id: number | string }[];
@@ -21,8 +20,6 @@ export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undef
   );
 };
 
-// Matches the legacy form's rule: an accompanying appointment must be at
-// least 8 calendar days out (day+1 through day+7 are disallowed).
 export const getMinAppointmentDate = (): Date => {
   const date = new Date();
   date.setDate(date.getDate() + 8);
@@ -30,7 +27,6 @@ export const getMinAppointmentDate = (): Date => {
   return date;
 };
 
-// Form state stores local time (already converted from UTC on init), so display as-is.
 export const formatTimeForDisplay = (time: string | undefined): string => time ?? "";
 
 export const getInitialFormValues = (

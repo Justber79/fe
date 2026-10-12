@@ -32,9 +32,6 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   const { isAuthorized, isOwnProfile } = useAuth(opportunity.agent?.id);
   const currentUser = useCurrentUser();
   const { currentAgents } = useGetCurrentAgent();
-  // Coordinator/admin may edit any opportunity; an agent may only change the
-  // status of an opportunity belonging to their own agent (mirrors the be
-  // ownership check on PATCH /opportunity/:id).
   const canChangeStatus =
     isAuthorized || (currentUser?.role === UserRole.AGENT && currentUser?.agentId === opportunity.agent?.id);
   const { t, i18n } = useTranslation();
@@ -75,8 +72,6 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
         status={dialogStatus.selected}
         label={statusLabelMap[dialogStatus.selected]}
         extra={
-          // NGOs can only pick New/Inactive (fe#1048): explain why "searching"
-          // isn't offered to them.
           canChangeStatus &&
           !isAuthorized && (
             <StatusHelp onMouseEnter={() => setIsStatusHelpOpen(true)} onMouseLeave={() => setIsStatusHelpOpen(false)}>
@@ -150,8 +145,6 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
   );
 };
 
-// Hover, tap and keyboard all open it, and the text wraps so it fits on phones
-// (the dashboard hover Tooltip is mouse-only and nowrap).
 const StatusHelp = styled.span`
   position: relative;
   display: inline-flex;

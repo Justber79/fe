@@ -107,7 +107,6 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
     );
   }
 
-  // refugeeLanguage is not in the SDK type yet — cast until SDK is updated
   type ExtendedAccompanyingDetails = ApiOpportunityAccompanyingDetails & {
     refugeeLanguage?: { id: number | string }[];
     appointmentPostcode?: string;
@@ -119,7 +118,6 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
     .map((lang: { id: number | string }) => keyToLabel[String(lang.id)] || String(lang.id))
     .join(", ");
 
-  // appointmentDistrict is server-calculated from postcode — read from API response, never from form state
   const rawDetails = opportunity.accompanyingDetails as ApiOpportunityAccompanyingDetails & {
     appointmentPostcode?: string;
     appointmentDistrict?: Option;

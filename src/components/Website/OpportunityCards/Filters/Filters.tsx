@@ -13,7 +13,6 @@ import AccordionFilter from "./AccordionFilter";
 const weekDays = Object.keys(defaultFilter.days) as DaysKeys[];
 const daySlots = Object.keys(defaultFilter.days.monday) as DayKeys[];
 
-// Keys of the `weekdays` translation block (0 = Sunday).
 const daysTranslationMap: Record<DaysKeys, string> = {
   monday: "1",
   tuesday: "2",
@@ -42,7 +41,6 @@ export default function Filters({ isFiltersOpen, setIsFiltersOpen, filter, setFi
   const toItems = (group: "activityType" | "district", getLabel: (key: string) => string = (key) => key) =>
     Object.keys(filter[group])
       .map((key) => ({ key, label: getLabel(key), checked: filter[group][key], onChange: toggleIn(group, key) }))
-      // Alphabetical by what the user reads; "Other" stays last.
       .sort(
         (a, b) => Number(a.key === OTHER_CATEGORY) - Number(b.key === OTHER_CATEGORY) || a.label.localeCompare(b.label),
       );
@@ -64,7 +62,6 @@ export default function Filters({ isFiltersOpen, setIsFiltersOpen, filter, setFi
     Object.fromEntries(Object.keys(options).map((key) => [key, false]));
 
   const clearAll = () =>
-    // The search bar isn't a filter; keep its input.
     setFilter((prev) => ({
       ...structuredClone(defaultFilter),
       searchInput: prev.searchInput,
@@ -127,8 +124,6 @@ export default function Filters({ isFiltersOpen, setIsFiltersOpen, filter, setFi
     </FiltersContainer>
   );
 }
-
-/* Styles */
 
 const FiltersContainer = styled.div`
   position: absolute;

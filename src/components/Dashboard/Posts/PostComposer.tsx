@@ -128,9 +128,6 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
     [opportunities, query],
   );
   const submit = () => {
-    // Reply mode may be cleared by the parent when its thread is collapsed.
-    // Do not allow that reply draft to become a top-level post before the
-    // cleanup effect has cleared the composer state.
     if (!replyTarget && previousReplyTargetKeyRef.current) return;
 
     if (replyTarget) {

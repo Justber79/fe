@@ -29,7 +29,7 @@ export const apiPathOrganization = `/${apiPrefix}/organization/`;
 export const apiPathRequestPasswordReset = `/${apiPrefix}/auth/request-reset`;
 export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL ?? "https://cdn.need4deed.org/data";
-export const cacheTTL = 1000 * 60 * 5; // 5 minutes
+export const cacheTTL = 1000 * 60 * 5;
 
 export const gdiBerlinRacApi =
   "https://gdi.berlin.de/services/wfs/gefluechtetenunterkuenfte?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=gefluechtetenunterkuenfte&OUTPUTFORMAT=application/json";
@@ -92,7 +92,7 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 
 export const PHONE_NUMBER_REGEX = /^[+\d\s\-()/]+$/;
 
-export const REFRESH_TOKEN_MAX_AGE_S = 60 * 60 * 24 * 7; // seconds — matches BE refresh token TTL (cookie max-age expects seconds)
+export const REFRESH_TOKEN_MAX_AGE_S = 60 * 60 * 24 * 7;
 export const AUTH_HINT_COOKIE_NAME = "is_logged_in";
 export const AUTH_HINT_COOKIE_ATTRS = `path=/; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`;
 export const AUTH_HINT_MAX_AGE = REFRESH_TOKEN_MAX_AGE_S;
@@ -103,9 +103,7 @@ export const TABLE_LIMIT = 20;
 export const CARD_LIMIT = 12;
 export const MAP_LIMIT = 50;
 
-export const MAX_PAGE_LIMIT = 120; // BE hard cap per page
+export const MAX_PAGE_LIMIT = 120;
 
-// NGO "request to suggest" (fe#1092): the account tagged on every request and
-// the marker that lets the home feed tell a request apart from a plain tag.
 export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
 export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";

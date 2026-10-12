@@ -45,32 +45,26 @@ export const createVolunteerTableColumns = (
       key: "type",
       label: t("dashboard.volunteers.table.type"),
       width: VOLUNTEER_COL_WIDTHS.type,
-      headerAction: <DropdownAccordionFilter items={dropdownFilters.typeFilters} width={VOLUNTEER_COL_WIDTHS.type} />,
+      headerAction: <DropdownAccordionFilter items={dropdownFilters.typeFilters} />,
     },
     {
       key: "engagement",
       label: t("dashboard.volunteers.table.engagementStatus"),
       width: VOLUNTEER_COL_WIDTHS.engagement,
-      headerAction: (
-        <DropdownAccordionFilter items={dropdownFilters.engagementFilters} width={VOLUNTEER_COL_WIDTHS.engagement} />
-      ),
+      headerAction: <DropdownAccordionFilter items={dropdownFilters.engagementFilters} />,
     },
     { key: "matching", label: t("dashboard.volunteers.table.matchingStatus"), width: VOLUNTEER_COL_WIDTHS.matching },
     {
       key: "language",
       label: t("dashboard.volunteers.table.language"),
       width: VOLUNTEER_COL_WIDTHS.language,
-      headerAction: (
-        <DropdownAccordionFilter items={dropdownFilters.languageFilters} width={VOLUNTEER_COL_WIDTHS.language} />
-      ),
+      headerAction: <DropdownAccordionFilter items={dropdownFilters.languageFilters} />,
     },
     {
       key: "district",
       label: t("dashboard.volunteers.table.district"),
       width: VOLUNTEER_COL_WIDTHS.district,
-      headerAction: (
-        <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={VOLUNTEER_COL_WIDTHS.district} />
-      ),
+      headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} />,
     },
   ];
 

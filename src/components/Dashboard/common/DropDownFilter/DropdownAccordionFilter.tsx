@@ -5,15 +5,14 @@ import { FilterItem } from "../CardsFilter/types";
 
 type Props = {
   items: FilterItem[];
-  width: string;
 };
 
-export default function DropdownAccordionFilter({ items, width }: Props) {
+export default function DropdownAccordionFilter({ items }: Props) {
   return (
     <OuterContainer>
-      <ItemCount $width={width}>({items.filter((item) => item.checked).length})</ItemCount>
+      <ItemCount>({items.filter((item) => item.checked).length})</ItemCount>
       <RelativeContainer>
-        <FilterWrapper $width={width}>
+        <FilterWrapper>
           <AccordionFilter header={""} items={items} isDropdownFilter={true} />
         </FilterWrapper>
       </RelativeContainer>

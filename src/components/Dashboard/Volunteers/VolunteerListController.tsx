@@ -5,7 +5,7 @@ import { apiPathVolunteer, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
-import { serializeFilters } from "./helpers";
+import { getCheckedOptionIds, serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
 import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
@@ -59,6 +59,8 @@ export function VolunteerListController({
     engagementFilters: getSectionItems(filterSections, QueryParamsKeys.ENGAGEMENT),
   };
 
+  const selectedDistrictIds = getCheckedOptionIds(dropdownFilters.districtFilters, apiFilterOptions?.district);
+
   if (opportunityId) {
     serializedFilter.set("opportunity", opportunityId);
   }
@@ -75,8 +77,6 @@ export function VolunteerListController({
     limit,
     page: currentPage,
     sortOrder,
-    // Table renders only languages + locations; card renders all collections.
-    // Tell the backend so it loads (and returns) only the needed relations.
     listType: isListView ? "table" : "card",
     filter: serializedFilter,
   };
@@ -124,6 +124,7 @@ export function VolunteerListController({
         onCopyEmails={handleCopyEmails}
         isCopying={isCopying}
         canSeeContactColumns={canSeeContactColumns}
+        selectedDistrictIds={selectedDistrictIds}
         dropdownFilters={dropdownFilters}
       />
     );
@@ -150,6 +151,7 @@ export function VolunteerListController({
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       opportunityId={opportunityId}
+      selectedDistrictIds={selectedDistrictIds}
     />
   );
 }
