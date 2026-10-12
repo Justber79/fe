@@ -161,7 +161,7 @@ export const createAgentMarkers = (agents: ApiAgentGetList[], t: TFunction, lang
       agent,
     };
 
-    if (!agentMap.has(`${agent.lat}${agent.lon}`)) {
+    if (!agentMap.has(`${agent.lat},${agent.lon}`)) {
       agentMap.set(`${agent.lat},${agent.lon}`, {
         lat: agent.lat,
         lon: agent.lon,
@@ -171,7 +171,7 @@ export const createAgentMarkers = (agents: ApiAgentGetList[], t: TFunction, lang
         onClick: () => null,
       });
     } else {
-      agentMap.get(`${agent.lat}${agent.lon}`)?.children.push(childItem);
+      agentMap.get(`${agent.lat},${agent.lon}`)?.children.push(childItem);
     }
   });
   return Array.from(agentMap.values());
