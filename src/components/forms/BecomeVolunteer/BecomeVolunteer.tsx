@@ -24,7 +24,7 @@ import { LanguageFields } from "../LanguageFields";
 import MultipleCheckBoxInputsWithMore from "../MultipleCheckBoxInputsWithMore";
 import MultipleRadioInputsWithMore from "../MultipleRadioInputsWithMore";
 import SimpleInputField from "../SimpleInputField";
-import { ListsOfOptions, OpportunityInfo } from "../types";
+import { ListsOfOptions, OpportunityInfo, TypePLZ } from "../types";
 import {
   getAllSelectedFalse,
   getScheduleState,
@@ -164,8 +164,8 @@ export default function BecomeVolunteer() {
             if (!value) {
               return t("form.error.required");
             }
-            if (!isValidPLZ(value as string)) {
-              return t("form.error.postcode");
+            if (!isValidPLZ(value as string, TypePLZ.GERMANY)) {
+              return t("form.error.postcodeGermany");
             }
             return undefined;
           }}

@@ -1,3 +1,4 @@
+import { TypePLZ } from "@/components/forms/types";
 import { isValidPLZ } from "@/components/forms/utils";
 import { PHONE_NUMBER_REGEX } from "@/config/constants";
 import { VolunteerCommunicationType } from "need4deed-sdk";
@@ -17,7 +18,7 @@ export const createVolunteerContactDetailsSchema = (t: (key: string) => string) 
     postcode: z
       .string()
       .min(1, t("dashboard.volunteerProfile.contactDetails.validation.postcodeRequired"))
-      .refine(isValidPLZ, t("form.error.postcode")),
+      .refine((code) => isValidPLZ(code, TypePLZ.GERMANY), t("form.error.postcodeGermany")),
     preferredCommunicationType: z
       .array(z.enum(Object.values(VolunteerCommunicationType)))
       .min(1, t("dashboard.volunteerProfile.contactDetails.validation.preferredCommunicationTypeRequired")),
