@@ -185,9 +185,10 @@ export function parseFormStateDTOOpportunity(form: OpportunityData): Opportunity
 }
 
 export function isValidPLZ(code: string, scope: TypePLZ = TypePLZ.BERLIN) {
-  const codeNum = Number(code);
+  const trimmed = code.trim();
+  if (!/^\d{5}$/.test(trimmed)) return false;
 
-  if (Number.isNaN(codeNum)) return false;
+  const codeNum = Number(trimmed);
 
   if (scope === TypePLZ.GERMANY) {
     return codeNum >= minPLZGermany && codeNum <= maxPLZGermany;
