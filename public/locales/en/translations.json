@@ -2046,6 +2046,8 @@
       "requestToJoin": "Request to join",
       "joinTitle": "Join an existing organisation",
       "joiningOrg": "You're requesting to join {{name}}.",
+      "joiningUnnamedOrg": "You're requesting to join the organisation registered at this address.",
+      "unnamedMatch": "An organisation registered at this address",
       "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
       "createInstead": "Not your organisation? Create a new one"
     },
