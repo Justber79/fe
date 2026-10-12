@@ -101,6 +101,7 @@ export const USER_QUERY_KEY = ["user"];
 
 export const TABLE_LIMIT = 20;
 export const CARD_LIMIT = 12;
+export const MAP_LIMIT = 50;
 
 export const MAX_PAGE_LIMIT = 120;
 

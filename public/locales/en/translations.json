@@ -580,14 +580,18 @@
     },
     "map": {
       "address": "Address",
+      "volunteers": "Volunteers",
+      "opportunities": "Opportunities",
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
         "rac": "Refugee Accommodation Center",
-        "volunteer": "Volunteer"
+        "volunteer": "Volunteer",
+        "numberOfEntities": "Number of opportunities or volunteers"
       },
-      "scrollZoom": "Enable Scroll Zoom",
-      "error": "Error occurred when fetching Berlin RACs"
+      "scrollZoom": "Toggle Scroll Zoom",
+      "otherRacs": "Toggle other Refugee Accommodation Centers",
+      "errorRac": "Error occurred when fetching Berlin RACs"
     },
     "posts": {
       "searchPosts": "Search posts, replies, people, and opportunities",

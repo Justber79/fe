@@ -586,14 +586,18 @@
     },
     "map": {
       "address": "Anschrift",
+      "volunteers": "Ehrenamtliche",
+      "opportunities": "Ehrenamtsbedarfe",
       "legend": {
         "title": "Legende",
-        "opportunity": "Möglichkeit",
+        "opportunity": "Ehrenamtsbedarfe",
         "rac": "Unterkunft für Geflüchtete",
-        "volunteer": "Ehrenamtliche"
+        "volunteer": "Ehrenamtliche",
+        "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
-      "scrollZoom": "Scroll-Zoom aktivieren",
-      "error": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
+      "scrollZoom": "Scroll-Zoom umschalten",
+      "otherRacs": "Weitere Berliner Unterkünfte für Geflüchtete umschalten",
+      "errorRac": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
     },
     "posts": {
       "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",
