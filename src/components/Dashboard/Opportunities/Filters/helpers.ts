@@ -14,9 +14,6 @@ export const createOpportunityFilterSections = (
   t: TFunction,
 ) => createSelectionFilterSections(opportunityFilterConfigs, filter, setFilter, t);
 
-/**
- * Builds availability-based filter sections (days, times, occasional).
- */
 export const createAvailabilityFilterItems = (
   availability: ScheduleFilter,
   setFilter: SetFilter<OpportunityCardsFilter>,

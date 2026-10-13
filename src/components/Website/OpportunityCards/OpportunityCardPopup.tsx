@@ -67,8 +67,6 @@ export default function OpportunityCardPopup({ opportunity, close }: Props) {
   );
 }
 
-/* Styles */
-
 const DimmedBackground = styled.div`
   position: fixed;
   inset: 0;

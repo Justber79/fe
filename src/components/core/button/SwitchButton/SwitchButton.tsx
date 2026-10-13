@@ -1,10 +1,9 @@
 import { CSSProperties } from "react";
 import styled from "styled-components";
 
-// Base dimensions for the switch
-const BASE_WIDTH = 50; // px
-const BASE_HEIGHT = 24; // px
-const BASE_CIRCLE_SIZE = 20; // px
+const BASE_WIDTH = 50;
+const BASE_HEIGHT = 24;
+const BASE_CIRCLE_SIZE = 20;
 
 type ScaleValue = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -39,14 +38,11 @@ export function SwitchButton({ isChecked, onToggle, scale = 5 }: Props) {
 
 export default SwitchButton;
 
-/* Styles */
 const SwitchContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0.5rem 0;
 `;
-
-/* Sub-components */
 
 interface SwitchButtonProps extends CSSProperties {
   width: number;

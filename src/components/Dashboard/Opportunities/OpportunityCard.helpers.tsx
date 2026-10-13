@@ -12,7 +12,6 @@ import {
 import { ApiVolunteerOpportunityGetList, OpportunityStatusType, ProfileVolunteeringType } from "need4deed-sdk";
 import { JSX } from "react";
 
-// OpportunityMatchStatusType was removed from need4deed-sdk — defined locally.
 export enum OpportunityMatchStatusType {
   NO_MATCHES = "opp-vol-no-matches",
   PENDING_MATCH = "opp-vol-pending-match",

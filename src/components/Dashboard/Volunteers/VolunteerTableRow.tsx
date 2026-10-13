@@ -13,7 +13,7 @@ import { ApiVolunteerGetList } from "need4deed-sdk";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { getVolunteerColWidths } from "./volunteerTableColumns";
-import { getFirstName, getTopLanguages, truncateList } from "./helpers";
+import { getFirstName, getTopLanguages, putSelectedFirst, truncateList } from "./helpers";
 import { CopyEmail } from "../common/CopyEmail";
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import { isBriefedAccompanying } from "../Profile/sections/ProfileHeader/common";
@@ -26,6 +26,7 @@ interface TableRowProps {
   matchLabels: ReturnType<typeof createMatchStatusLabelMap>;
   opportunityId?: string;
   canSeeContactColumns: boolean;
+  selectedDistrictIds: number[];
 }
 
 export function VolunteerTableRow({
@@ -36,12 +37,12 @@ export function VolunteerTableRow({
   matchLabels,
   opportunityId,
   canSeeContactColumns,
+  selectedDistrictIds,
 }: TableRowProps) {
   const { i18n } = useTranslation();
   const VOLUNTEER_COL_WIDTHS = getVolunteerColWidths(canSeeContactColumns);
 
   const { id, name, avatarUrl, statusEngagement, statusType, languages, locations } = volunteer;
-  // These fields are not yet in ApiVolunteerGetList SDK type
   const ext = volunteer as ApiVolunteerGetList & {
     statusMatch?: import("need4deed-sdk").VolunteerStateMatchType;
     email?: string;
@@ -53,7 +54,7 @@ export function VolunteerTableRow({
   const languageText =
     truncateList(topLangs.length ? topLangs : languages.map((l) => l.title).filter(Boolean), 2) || "—";
 
-  const districtTitles = locations
+  const districtTitles = putSelectedFirst(locations, (loc) => selectedDistrictIds.includes(loc?.id))
     .map((loc) => (typeof loc === "string" ? loc : loc?.title))
     .filter(Boolean) as string[];
   const abbreviatedDistricts = districtTitles.map((title) => {

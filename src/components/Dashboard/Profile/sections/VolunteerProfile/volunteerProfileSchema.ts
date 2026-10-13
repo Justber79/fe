@@ -16,7 +16,6 @@ export const createVolunteerProfileSchema = (t: (key: string) => string) => {
       )
       .min(1, t("dashboard.volunteerProfile.profileSection.validation.languageRequired"))
       .superRefine((languages, ctx) => {
-        // Check if any row has a missing language (when level is filled)
         const hasMissingLanguage = languages.some((lang) => lang.language === "" && lang.level !== "");
         if (hasMissingLanguage) {
           ctx.addIssue({
@@ -26,7 +25,6 @@ export const createVolunteerProfileSchema = (t: (key: string) => string) => {
           return;
         }
 
-        // Check if any row has a missing level (when language is filled)
         const hasMissingLevel = languages.some((lang) => lang.language !== "" && lang.level === "");
         if (hasMissingLevel) {
           ctx.addIssue({
@@ -36,7 +34,6 @@ export const createVolunteerProfileSchema = (t: (key: string) => string) => {
           return;
         }
 
-        // Check if at least one complete row exists
         const hasCompleteRow = languages.some((lang) => lang.language !== "" && lang.level !== "");
         if (!hasCompleteRow) {
           ctx.addIssue({

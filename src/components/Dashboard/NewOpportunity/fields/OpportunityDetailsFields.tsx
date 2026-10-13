@@ -31,8 +31,6 @@ export function OpportunityDetailsFields({
     title: { [lang as Lang]: l.title } as Record<Lang, string>,
   });
   const languagesForForm = apiLanguages.map(toFormOption);
-  // Main communication is German and/or English only (fe#1039), matching the
-  // schema's validation and the edit form; residents may speak any language.
   const mainCommunicationLanguagesForForm = getMainCommunicationLanguageOptions(apiLanguages).map(toFormOption);
 
   return (

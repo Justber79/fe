@@ -24,9 +24,6 @@ interface I18nProviderProps {
 }
 
 export function I18nProvider({ children, initialLang }: I18nProviderProps) {
-  // Set language synchronously during render to prevent race conditions
-  // with API calls that depend on the language. Using useMemo ensures this
-  // runs before children render but only when initialLang changes.
   useMemo(() => {
     if (i18next.language !== initialLang) {
       i18next.changeLanguage(initialLang);

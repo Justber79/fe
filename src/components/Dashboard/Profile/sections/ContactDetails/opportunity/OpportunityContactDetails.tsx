@@ -41,8 +41,6 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
     "dashboard.opportunityProfile.contactDetails.waysToContact",
   );
 
-  // Piped comments (<|> delimiter) are used as fallback for opportunities
-  // that predate the contact API (opportunity.contact).
   const pipedComments = useMemo(
     () =>
       [...opportunity.comments]
@@ -57,9 +55,6 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
   const originalAddress = originalParts[2] ?? "";
   const originalPlz = originalParts[3] ?? "";
 
-  // opportunity.contact is provided by the BE for all opportunities since the
-  // contact API was introduced. Use it as the primary source; fall back to the
-  // piped comment for older opportunities that have no contact Person linked.
   const contactFromApi = opportunity.contact;
   const hasApiContact = !!(contactFromApi?.name || contactFromApi?.phone || contactFromApi?.email);
 
@@ -108,8 +103,6 @@ export const OpportunityContactDetails = forwardRef<EditableSectionRef, Props>(f
   const onSubmit = (values: OpportunityContactDetailsFormData) => {
     const onSuccess = () => setIsEditing(false);
 
-    // Use the contact API when a Person is linked (contactFromApi.id exists).
-    // Fall back to piped comment for legacy opportunities without a linked Person.
     if (contactFromApi?.id) {
       updateContact({ contact: { id: nameIdMap.titleToId[values.name] } }, { onSuccess });
       return;

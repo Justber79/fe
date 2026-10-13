@@ -23,7 +23,6 @@ export default function CardDetail({ header, children, iconName }: Props) {
   );
 }
 
-/** Styles */
 const CardDetailContainer = styled.div`
   display: flex;
   flex-direction: column;

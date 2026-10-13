@@ -3,6 +3,8 @@
 import { createMapping } from "@/components/Dashboard/Profile/sections/VolunteerProfile/mappingUtils";
 import { ApiLanguageOption } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
 import { LanguageFields } from "@/components/forms/LanguageFields";
+import { TypePLZ } from "@/components/forms/types";
+import { isValidPLZ } from "@/components/forms/utils";
 import { EditableField } from "@/components/EditableField/EditableField";
 import { ErrorMessage, FormInput } from "@/components/core/common";
 import { ApiOptionLists, Lang } from "need4deed-sdk";
@@ -35,7 +37,11 @@ export function AddressStep({ form, optionLists }: Props) {
       <form.Field
         name="addressPostcode"
         validators={{
-          onChange: ({ value }) => (!value ? t("form.error.required") : undefined),
+          onChange: ({ value }) => {
+            if (!value) return t("form.error.required");
+            if (!isValidPLZ(value, TypePLZ.GERMANY)) return t("form.error.postcodeGermany");
+            return undefined;
+          },
         }}
       >
         {(field) => (

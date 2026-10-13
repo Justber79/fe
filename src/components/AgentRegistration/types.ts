@@ -2,10 +2,6 @@ import { ApiAgentRegisterNew } from "need4deed-sdk";
 
 export type { ApiAgentRegisterNew };
 
-// AgentMembershipStatus/ApiAgentRegisterResponse/ApiAgentMembership* are not
-// yet in need4deed-sdk (or differ slightly in optionality) — defined locally
-// until the SDK is updated. ApiAgentRegisterNew above IS in the SDK now
-// (typeId/serviceIds, not the old type/services enum fields).
 export enum AgentMembershipStatus {
   PENDING = "pending",
   ACTIVE = "active",
@@ -37,8 +33,6 @@ export const defaultAgentRegistrationData: AgentRegistrationData = {
   consent: false,
 };
 
-// The account step (name/email/password/phone/consent) is identical for the
-// agent and volunteer registration flows, only the translation copy differs.
 export type AccountRegistrationData = AgentRegistrationData;
 export const defaultAccountRegistrationData = defaultAgentRegistrationData;
 
@@ -49,9 +43,6 @@ export interface ProfileCompletionData {
   addressStreet: string;
   addressPostcode: string;
   organizationName: string;
-  // AgentType option id, picked from GET /option's agent_type list — like
-  // clientLanguageIds below, ids rather than a translated title, since this
-  // step already has the full {id,title} option objects to pick from.
   organizationType: number | "";
   about: string;
   website: string;

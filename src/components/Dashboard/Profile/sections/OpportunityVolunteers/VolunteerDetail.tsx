@@ -88,7 +88,6 @@ export default function VolunteerDetail({
 
   return (
     <DetailContainer>
-      {/* 1. Languages & Activities */}
       <SplitContainer>
         <InfoSection icon={TranslateIcon} title={t("dashboard.volunteers.languages")}>
           <LanguagesText languages={languages} />
@@ -99,7 +98,6 @@ export default function VolunteerDetail({
         </InfoSection>
       </SplitContainer>
 
-      {/* 2. Skills & Preferred availability */}
       <SplitContainer>
         <InfoSection icon={WrenchIcon} title={t("dashboard.volunteers.skillsExperience")}>
           <TagsWithOverflow tags={skillTags} />
@@ -110,7 +108,6 @@ export default function VolunteerDetail({
         </InfoSection>
       </SplitContainer>
 
-      {/* 3. Preferred districts */}
       <InfoSection icon={MapPinIcon} title={t("dashboard.volunteers.preferredDistricts")}>
         <DetailParagraph>{districtsText}</DetailParagraph>
       </InfoSection>
@@ -123,7 +120,6 @@ export default function VolunteerDetail({
         />
       )}
 
-      {/* 4. Action Buttons */}
       <StatusAccordionActions
         currentStatus={currentStatus}
         onMatch={onMatch}

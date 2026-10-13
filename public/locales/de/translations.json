@@ -144,6 +144,7 @@
     "error": {
       "required": "Dieses Feld ist erforderlich",
       "postcode": "Bitte nur die PLZ eintragen (keine Buchstaben, nur Zahlen)",
+      "postcodeGermany": "Bitte eine gültige deutsche PLZ eintragen (5 Ziffern)",
       "email": "Muss eine gültige E-Mail-Adresse sein",
       "badEmail": "Keine gültige Betreiber E-Mail",
       "location": "Bitte wähle mindestens einen Standort aus",
@@ -202,7 +203,7 @@
           "error": "Muss eine Telefonnummer sein"
         },
         "postcode": {
-          "label": "PLZ (Berlin) Deines Wohnorts",
+          "label": "PLZ Deines Wohnorts",
           "error": ""
         },
         "locations": {
@@ -586,14 +587,18 @@
     },
     "map": {
       "address": "Anschrift",
+      "volunteers": "Ehrenamtliche",
+      "opportunities": "Ehrenamtsbedarfe",
       "legend": {
         "title": "Legende",
-        "opportunity": "Möglichkeit",
+        "opportunity": "Ehrenamtsbedarfe",
         "rac": "Unterkunft für Geflüchtete",
-        "volunteer": "Ehrenamtliche"
+        "volunteer": "Ehrenamtliche",
+        "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
-      "scrollZoom": "Scroll-Zoom aktivieren",
-      "error": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
+      "scrollZoom": "Scroll-Zoom umschalten",
+      "otherRacs": "Weitere Berliner Unterkünfte für Geflüchtete umschalten",
+      "errorRac": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
     },
     "posts": {
       "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",
@@ -1035,7 +1040,8 @@
         "conflict": {
           "title": "Eine NGO mit diesem Namen existiert bereits.",
           "address": "An dieser Adresse gibt es bereits eine NGO.",
-          "open": "Bestehende NGO öffnen"
+          "open": "Bestehende NGO öffnen",
+          "createAnyway": "Andere NGO? Trotzdem erstellen"
         },
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
@@ -2405,11 +2411,14 @@
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
       "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",
       "joinTitle": "Einer bestehenden Organisation beitreten",
       "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
+      "joiningUnnamedOrg": "Du beantragst den Beitritt zu der Organisation, die an dieser Adresse registriert ist.",
+      "unnamedMatch": "Eine an dieser Adresse registrierte Organisation",
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
       "createInstead": "Nicht deine Organisation? Neue erstellen"
     },
@@ -2463,7 +2472,7 @@
         "header": "Hiermit stimme ich zu:",
         "and": "und"
       },
-      "postcode": "PLZ (Berlin) Deines Wohnorts*",
+      "postcode": "PLZ Deines Wohnorts*",
       "locations": {
         "header": "Bevorzugte Bezirke* (Berlin)",
         "para": "*Denke daran, dass die meisten Unterkünfte außerhalb des Rings liegen!",

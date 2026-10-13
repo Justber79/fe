@@ -81,8 +81,6 @@ export default function OpportunityCardsHeader({
   );
 }
 
-/* Styles */
-
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -15,7 +15,6 @@ export function LogoEU() {
   const [logoHeight, setLogoHeight] = useState(logoSizeMap[screenType].height);
 
   useEffect(() => {
-    // This code will only run on the client-side
     const computedHeight = getComputedStyle(document.documentElement).getPropertyValue(
       "--homepage-footer-partners-section-logo-eu-height",
     );

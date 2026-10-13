@@ -11,7 +11,6 @@ import OpportunityCard from "./OpportunityCard";
 import OpportunityCardPopup from "./OpportunityCardPopup";
 import { Opportunity } from "./types";
 
-// Cards per page, as on the website (columns × rows).
 const itemsPerPageByScreen: Record<ScreenTypes, number> = {
   [ScreenTypes.MOBILE]: 10,
   [ScreenTypes.TABLET]: 12,
@@ -28,13 +27,11 @@ export default function Cards({ opportunities, loading }: Props) {
   const [modalOpportunity, setModalOpportunity] = useState<Opportunity>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  // A filter change shrinks the list; don't leave the user on an empty page.
   useEffect(() => setCurrentPage(1), [opportunities.length]);
 
   if (!opportunities.length) return <Announcement copies={loading ? "spinner" : "emptyList"} />;
 
   const itemsPerPage = itemsPerPageByScreen[screenType];
-  // Page size changes with the screen type (e.g. rotating a phone); stay on a page that exists.
   const page = Math.min(currentPage, Math.ceil(opportunities.length / itemsPerPage));
   const start = (page - 1) * itemsPerPage;
 

@@ -48,6 +48,7 @@ type Props = {
   onClearAllFilters?: () => void;
   onClearFilter: (filter: string, parentKey?: string) => void;
   entityFilter?: EntityFilter;
+  showSearch?: boolean;
   headerAction?: ReactNode;
 };
 
@@ -69,6 +70,7 @@ export default function CardsHeader({
   onClearAllFilters,
   onClearFilter,
   entityFilter,
+  showSearch = true,
   headerAction,
 }: Props) {
   const { t } = useTranslation();
@@ -100,13 +102,15 @@ export default function CardsHeader({
         </TabsSectionContainer>
 
         <SearchBarSectionContainer>
-          <Search
-            placeHolder={searchPlaceholder ?? `${t("dashboard.searchPlaceHolder")}...`}
-            onInputChange={onSearchInputChange}
-            width="var(--filters-search-bar-width)"
-            backgroundColor="var(--color-magnolia-light)"
-            value={searchValue}
-          />
+          {showSearch && (
+            <Search
+              placeHolder={searchPlaceholder ?? `${t("dashboard.searchPlaceHolder")}...`}
+              onInputChange={onSearchInputChange}
+              width="var(--filters-search-bar-width)"
+              backgroundColor="var(--color-magnolia-light)"
+              value={searchValue}
+            />
+          )}
           <FiltersButton setIsFiltersOpen={setIsFiltersOpen} />
         </SearchBarSectionContainer>
 

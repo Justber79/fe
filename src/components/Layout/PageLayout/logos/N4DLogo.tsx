@@ -17,7 +17,6 @@ export function N4DLogo() {
   const router = useRouter();
 
   useEffect(() => {
-    // This code will only run on the client-side
     const computedWidth = getComputedStyle(document.documentElement).getPropertyValue(
       "--layout-static-page-n4d-logo-width",
     );

@@ -74,6 +74,7 @@ export function Opportunities() {
     const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST;
 
     const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
     params.set("view", targetViewMode);
 
     router.push(pathname + questionMark + params.toString());
@@ -159,6 +160,7 @@ export function Opportunities() {
             apiFilterOptions={apiFilterOptions}
             volunteerId={volunteerId}
             viewMode={viewMode}
+            volunteerFilter={volunteerFilter}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}

@@ -13,8 +13,6 @@ import {
 } from "./constants";
 import { CardsFilter, Day, DayKeys, Days, DaysKeys, LegacyTimeslot, Opportunity, OpportunityApi } from "./types";
 
-/* Mapping API → view model */
-
 const mapOpportunity = (opp: OpportunityApi, t: TFunction): Opportunity => {
   const accompanyingTranslationMap = {
     [TranslatedIntoType.ENGLISH_OK]: t("homepage.volunteeringOpportunities.accompanyingTranslation.en"),
@@ -22,9 +20,6 @@ const mapOpportunity = (opp: OpportunityApi, t: TFunction): Opportunity => {
     [TranslatedIntoType.NO_TRANSLATION]: t("homepage.volunteeringOpportunities.accompanyingTranslation.no"),
   };
 
-  // be sends `category: null`, so derive it: accompaniments (which mostly
-  // have no category_id) by type; others by category_id, except a volunteering
-  // post filed under "accompanying", which counts as other.
   const accompanyingKey = categoryKeyById[CategoryTitle.ACCOMPANYING];
   const byId = categoryKeyById[opp.category_id as CategoryTitle];
   const category =
@@ -51,7 +46,6 @@ const mapOpportunity = (opp: OpportunityApi, t: TFunction): Opportunity => {
     updatedAt: new Date(opp.updated_at),
     voInformation: opp.vo_information,
     categoryId: opp.category_id,
-    // be sends null since the Notion sync is gone; fall back so sorting still means something.
     lastEditedTimeNotion: new Date(opp.last_edited_time_notion ?? opp.updated_at),
     defaultMainCommunication: t("homepage.volunteeringOpportunities.defaultMainCommunication"),
     category,
@@ -90,8 +84,6 @@ export const formatAccompanyingDate = (date: Date, lang: Lang): string => {
 export const getRegisterCtaUrl = (lang: Lang, { id, title }: Pick<Opportunity, "id" | "title">) =>
   `/${lang}/forms/volunteer?id=${id}&title=${encodeURIComponent(title)}`;
 
-/* Filtering */
-
 const dayEnumMap: Record<number, DaysKeys> = {
   1: "monday",
   2: "tuesday",
@@ -102,7 +94,6 @@ const dayEnumMap: Record<number, DaysKeys> = {
   7: "sunday",
 };
 
-// be reports morning as "9-12"; the website only knew the older 08-11/11-14 slots.
 const slotsByDaySlot: Record<DayKeys, string[]> = {
   morning: [LegacyTimeSlot.MORNING, LegacyTimeSlot.NOON, "9-12"],
   afternoon: [LegacyTimeSlot.AFTERNOON],
@@ -216,12 +207,10 @@ export const extractCardsFilter = (opportunities: Opportunity[]): Partial<CardsF
   const districtSet = new Set<string>();
 
   for (const opp of opportunities) {
-    // "Accompanying" is its own switch, not an activity type.
     if (opp.category !== categoryKeyById[CategoryTitle.ACCOMPANYING]) categoriesSet.add(opp.category);
     opp.locations.forEach((l) => districtSet.add(l));
   }
 
-  // Keep "Other" last.
   if (categoriesSet.delete(OTHER_CATEGORY)) categoriesSet.add(OTHER_CATEGORY);
 
   return { activityType: createDefaultFilterFromSet(categoriesSet), district: createDefaultFilterFromSet(districtSet) };
@@ -231,8 +220,6 @@ export const isObjectEmpty = (obj: object) => Object.keys(obj).length === 0;
 
 const hasKey = <T extends object>(obj: T | null | undefined, key: PropertyKey): key is keyof T =>
   !!obj && Object.prototype.hasOwnProperty.call(obj, key);
-
-/* Filter ⇄ URL query */
 
 export function serializeFilters(filters: CardsFilter) {
   const params = new URLSearchParams();

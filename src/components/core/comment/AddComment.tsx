@@ -54,8 +54,6 @@ export function AddComment({ onSubmit, placeholder = "Comment" }: AddCommentProp
 
 export default AddComment;
 
-/* Styled Components */
-
 const AddCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,4 +96,3 @@ const SubmitButton = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-

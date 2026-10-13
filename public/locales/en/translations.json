@@ -146,6 +146,7 @@
     "error": {
       "required": "This field is required",
       "postcode": "Must be a valid postcode of Berlin",
+      "postcodeGermany": "Must be a valid German postcode (5 digits)",
       "email": "Must be a valid email",
       "badEmail": "Bad email",
       "location": "Please pick at least one location",
@@ -202,7 +203,7 @@
           "label": "Phone Number or Telegram Handle"
         },
         "postcode": {
-          "label": "PLZ (Berlin) of your place of residence"
+          "label": "PLZ of your place of residence"
         },
         "locations": {
           "header": "Preferred districts* (Berlin)",
@@ -580,14 +581,18 @@
     },
     "map": {
       "address": "Address",
+      "volunteers": "Volunteers",
+      "opportunities": "Opportunities",
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
         "rac": "Refugee Accommodation Center",
-        "volunteer": "Volunteer"
+        "volunteer": "Volunteer",
+        "numberOfEntities": "Number of opportunities or volunteers"
       },
-      "scrollZoom": "Enable Scroll Zoom",
-      "error": "Error occurred when fetching Berlin RACs"
+      "scrollZoom": "Toggle Scroll Zoom",
+      "otherRacs": "Toggle other Refugee Accommodation Centers",
+      "errorRac": "Error occurred when fetching Berlin RACs"
     },
     "posts": {
       "searchPosts": "Search posts, replies, people, and opportunities",
@@ -1070,7 +1075,8 @@
         "conflict": {
           "title": "An NGO with this name already exists.",
           "address": "An NGO at this address already exists.",
-          "open": "Open existing NGO"
+          "open": "Open existing NGO",
+          "createAnyway": "Different NGO? Create it anyway"
         },
         "validation": {
           "titleRequired": "Organization name is required"
@@ -2061,11 +2067,14 @@
       "skip": "No, enter manually",
       "titleTaken": "An organisation with this name already exists.",
       "addressTaken": "An organisation is already registered at this address.",
+      "createAtSharedAddress": "Different organisation? Create it anyway",
       "editDetails": "Edit details",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",
       "joinTitle": "Join an existing organisation",
       "joiningOrg": "You're requesting to join {{name}}.",
+      "joiningUnnamedOrg": "You're requesting to join the organisation registered at this address.",
+      "unnamedMatch": "An organisation registered at this address",
       "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
       "createInstead": "Not your organisation? Create a new one"
     },
@@ -2119,7 +2128,7 @@
         "header": "I hereby agree to the:",
         "and": "and"
       },
-      "postcode": "PLZ (Berlin) of your place of residence*",
+      "postcode": "PLZ of your place of residence*",
       "locations": {
         "header": "Preferred districts* (Berlin)",
         "para": "*keep in mind that most accommodation centers are outside the ring!",

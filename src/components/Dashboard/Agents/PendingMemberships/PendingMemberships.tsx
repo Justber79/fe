@@ -11,14 +11,9 @@ import { Actions, Meta, Panel, Row, Title } from "./styled";
 
 const PENDING_KEY = ["agent-memberships", "pending"];
 
-// Admin-fallback surface: joins that didn't pass email-domain match land here as
-// PENDING for an ADMIN/COORDINATOR to approve or reject. Renders nothing when the
-// queue is empty, so it's a no-op on the Agents page in the common case.
 export function PendingMemberships() {
   const { t } = useTranslation();
 
-  // Moderation is COORDINATOR/ADMIN-only on the backend — gate the fetch by role
-  // so non-privileged viewers of the Agents page don't trigger a 401 + toast.
   const user = useCurrentUser(true);
   const canModerate = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 

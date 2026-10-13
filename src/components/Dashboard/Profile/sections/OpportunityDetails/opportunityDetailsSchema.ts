@@ -14,11 +14,6 @@ const languageObjectSchema = z.object({
 
 type MainCommunicationLanguageOption = { id: number; title: string; isoCode?: string };
 
-// `title` is translated into whatever language the option list was fetched
-// in (German by default), so it's never the literal English word "german"/
-// "english" — isoCode is the reliable, locale-independent signal. The title
-// fallback (checking both English and German spellings) only matters for
-// callers/tests that don't supply isoCode.
 function toLangCode(option: MainCommunicationLanguageOption): "de" | "en" | null {
   if (option.isoCode === "de") return "de";
   if (option.isoCode === "en") return "en";
@@ -28,8 +23,6 @@ function toLangCode(option: MainCommunicationLanguageOption): "de" | "en" | null
   return null;
 }
 
-// The org's main communication language is German, with English as the only
-// secondary option — unlike "Residents speak", which allows any language.
 export function getMainCommunicationLanguageOptions<T extends MainCommunicationLanguageOption>(apiLanguages: T[]): T[] {
   return apiLanguages.filter((l) => toLangCode(l) !== null);
 }
@@ -44,15 +37,11 @@ export const createOpportunityDetailsSchema = (
     numberOfVolunteers: z.string(),
     mainCommunication: z.array(languageObjectSchema).superRefine((langs, ctx) => {
       const selected = langs.filter(({ language }) => !!language);
-      if (selected.length === 0) return; // nothing picked — always valid
+      if (selected.length === 0) return;
 
       const resolved = selected.map(({ language }) =>
         resolveFormLanguageToOption(language, mainCommunicationLanguageOptions, t),
       );
-      // A row that fails to resolve is a legacy/out-of-set language (saved
-      // before this restriction existed, or no longer offered) — that must
-      // be flagged, not silently dropped below, or it would incorrectly
-      // read as "none selected" and pass validation.
       const hasUnresolved = resolved.some((option) => !option);
       const codes = new Set(
         resolved.filter((option): option is MainCommunicationLanguageOption => !!option).map(toLangCode),

@@ -12,14 +12,11 @@ type Props = {
   onSelect: (opportunityTitle: string) => void;
 };
 
-// Anchors the dropdown under the header button on the right.
 const MenuAnchor = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
-// NGO "request to suggest" dropdown (fe#1092): lists the current NGO's own
-// opportunities; opened from the Ehrenamtliche Tätigkeiten header button.
 export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
   const { t } = useTranslation();
   const { agentIds } = useGetCurrentAgent();

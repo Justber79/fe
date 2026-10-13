@@ -1,27 +1,23 @@
 import styled from "styled-components";
 
-interface WidthProps {
-  $width: string;
-}
-
 export const OuterContainer = styled.div`
-  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  position: relative;
 `;
 
-export const ItemCount = styled.span<WidthProps>`
-  position: absolute;
-  right: calc(-${({ $width }) => $width} + 20px);
-  top: -25px;
-  color: grey;
-  font-size: 1.15rem;
+export const ItemCount = styled.span`
+  color: var(--color-grey-500);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-20);
 `;
 
 export const RelativeContainer = styled.div`
   position: relative;
 `;
 
-export const FilterWrapper = styled.div<WidthProps>`
-  position: absolute;
-  right: calc(-${({ $width }) => $width} + 20px);
-  top: -10px;
+export const FilterWrapper = styled.div`
+  position: relative;
 `;

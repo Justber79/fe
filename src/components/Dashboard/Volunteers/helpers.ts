@@ -10,6 +10,7 @@ export { createSelectedFilterItemsAsFlatArray } from "./Filters/helpers";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
 import { VolunteerCardsFilter } from "./Filters/types";
+import { FilterItem } from "../common/CardsFilter/types";
 import { deserializeSelectionFilters, serializeSelectionFilters } from "../common/CardsFilter/selectionFilters";
 import { volunteerFilterConfigs } from "./Filters/config";
 
@@ -26,11 +27,6 @@ interface GroupedLanguage {
   list: string[];
 }
 
-/**
- * Groups a list of languages by their proficiency level.
- * @param languages The input array of ApiLanguage objects.
- * @returns An array of GroupedLanguage objects.
- */
 export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLanguage[] => {
   const groupedLanguagesMap = new Map<LangProficiency, string[]>();
 
@@ -44,13 +40,11 @@ export const groupLanguagesByProficiency = (languages: ApiLanguage[]): GroupedLa
     groupedLanguagesMap.get(proficiency || LangProficiency.BEGINNER)!.push(title);
   }
 
-  // Convert the Map to the desired array format
   const groupedLanguages: GroupedLanguage[] = [];
   groupedLanguagesMap.forEach((list, proficiency) => {
     groupedLanguages.push({ proficiency, list });
   });
 
-  // 👇️ Sorting Languages
   groupedLanguages.sort((a, b) => {
     return proficiencyOrder.indexOf(a.proficiency) - proficiencyOrder.indexOf(b.proficiency);
   });
@@ -77,7 +71,6 @@ export function serializeFilters(
 
   serializeSelectionFilters(volunteerFilterConfigs, filter, params, options);
 
-  // 2. Clear all existing 'availability' params
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
     const availabilityKey = key as AvailabilityKeys;
@@ -130,6 +123,15 @@ export function getFirstName(fullName: string): string {
 export function truncateList(items: string[], max: number): string {
   if (items.length <= max) return items.join(", ");
   return `${items.slice(0, max).join(", ")} +${items.length - max}`;
+}
+
+export function putSelectedFirst<T>(items: T[], isSelected: (item: T) => boolean): T[] {
+  return [...items.filter(isSelected), ...items.filter((item) => !isSelected(item))];
+}
+
+export function getCheckedOptionIds(items: FilterItem[], options?: OptionItem[] | null): number[] {
+  const checked = items.filter((item) => item.checked).map((item) => item.keyValue);
+  return (options ?? []).filter((option) => checked.includes(option.title)).map((option) => option.id);
 }
 
 export function getTopLanguages(languages: ApiLanguage[], max = 2): string[] {

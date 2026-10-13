@@ -40,17 +40,13 @@ export const createOpportunityTableColumns = (
     key: "languages",
     label: t("dashboard.opportunities.table.languages"),
     width: OPPORTUNITY_COL_WIDTHS.languages,
-    headerAction: (
-      <DropdownAccordionFilter items={dropdownFilters.languageFilters} width={OPPORTUNITY_COL_WIDTHS.languages} />
-    ),
+    headerAction: <DropdownAccordionFilter items={dropdownFilters.languageFilters} />,
   },
   {
     key: "district",
     label: t("dashboard.opportunities.table.district"),
     width: OPPORTUNITY_COL_WIDTHS.district,
-    headerAction: (
-      <DropdownAccordionFilter items={dropdownFilters.districtFilters} width={OPPORTUNITY_COL_WIDTHS.district} />
-    ),
+    headerAction: <DropdownAccordionFilter items={dropdownFilters.districtFilters} />,
   },
   {
     key: "numberOfVolunteers",

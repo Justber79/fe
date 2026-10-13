@@ -20,7 +20,6 @@ import {
 } from "./helpers";
 import OpportunityCardsHeader from "./OpportunityCardsHeader";
 
-/** Public opportunity browser, ported from the old website's /opportunity-cards. */
 export function OpportunityCards() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -35,8 +34,6 @@ export function OpportunityCards() {
 
   const mappedOpportunities = useMemo(() => getMappedOpportunities(opportunities ?? [], t), [opportunities, t]);
 
-  // Activity-type and district options come from the data, so build them once
-  // it arrives, then apply whatever the URL says is selected.
   useEffect(() => {
     if (!mappedOpportunities.length) return;
 
@@ -47,13 +44,9 @@ export function OpportunityCards() {
     });
     if (openFilters(searchParams)) setIsFiltersOpen(true);
     setIsFilterReady(true);
-    // searchParams is read only here, on purpose: the effect below writes it
-    // from cardsFilter, so reacting to it would loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mappedOpportunities]);
 
-  // Mirror the filter into the URL so filtered views can be shared. Not before
-  // the URL has been read above, or the default filter would wipe it.
   useEffect(() => {
     if (!isFilterReady) return;
 
@@ -102,8 +95,6 @@ export function OpportunityCards() {
 }
 
 export default OpportunityCards;
-
-/* Styles */
 
 const OpportunitiesContainer = styled.div`
   display: flex;

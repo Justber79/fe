@@ -92,9 +92,6 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
       const legacyUser = users?.find(({ id }) => id === mentionId);
       const legacyPerson = post.taggedPersons.find(({ id }) => id === legacyUser?.personId);
 
-      // Bare tokens were historically written with either a Person id (post
-      // editing) or a User id (the old composer). Never silently attribute an
-      // ambiguous collision to the wrong tagged person.
       if (directPerson && legacyPerson && directPerson.id !== legacyPerson.id) return undefined;
       return directPerson ?? legacyPerson;
     },

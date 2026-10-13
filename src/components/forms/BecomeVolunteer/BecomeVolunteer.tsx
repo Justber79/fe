@@ -24,7 +24,7 @@ import { LanguageFields } from "../LanguageFields";
 import MultipleCheckBoxInputsWithMore from "../MultipleCheckBoxInputsWithMore";
 import MultipleRadioInputsWithMore from "../MultipleRadioInputsWithMore";
 import SimpleInputField from "../SimpleInputField";
-import { ListsOfOptions, OpportunityInfo } from "../types";
+import { ListsOfOptions, OpportunityInfo, TypePLZ } from "../types";
 import {
   getAllSelectedFalse,
   getScheduleState,
@@ -164,8 +164,8 @@ export default function BecomeVolunteer() {
             if (!value) {
               return t("form.error.required");
             }
-            if (!isValidPLZ(value as string)) {
-              return t("form.error.postcode");
+            if (!isValidPLZ(value as string, TypePLZ.GERMANY)) {
+              return t("form.error.postcodeGermany");
             }
             return undefined;
           }}
@@ -208,10 +208,6 @@ export default function BecomeVolunteer() {
         <formVolunteer.Field
           name="languages"
           validators={{
-            // onChange, not onBlur: the "blur" below is fired on focus, before a
-            // language is picked, so an onBlur-only check left a stale "select a
-            // language" error after a valid pick (be#1010). onChange validators
-            // also run on submit.
             onChange: ({ value }) => {
               const hasEmptyLanguage = value.some((lang) => !lang.language);
               return hasEmptyLanguage ? t("form.error.language") : undefined;
@@ -238,7 +234,6 @@ export default function BecomeVolunteer() {
         <formVolunteer.Field
           name="availability"
           validators={{
-            // Same stale-error issue as languages above (be#1010).
             onChange: ({ value }) => {
               return isTimeSlotSelected(value) ? undefined : t("form.error.availability");
             },

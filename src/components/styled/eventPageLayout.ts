@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Paragraph } from "./text";
 
-// Shared between EventPage and EventPageOne (two independent public event
-// pages, see fe#1022) so their common card/hero/body layout stays in sync.
 export const PageContent = styled.main`
   width: min(100% - 32px, 960px);
   min-width: 0;

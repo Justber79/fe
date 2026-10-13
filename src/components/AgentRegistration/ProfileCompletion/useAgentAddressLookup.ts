@@ -3,12 +3,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useGetQuery } from "@/hooks";
 import { useState } from "react";
 
-type AgentSearchMatch = { id: number; title: string };
+// `title` is omitted when the registrant's email domain doesn't match the org
+// (be#1041), so the picker can offer to join without naming it.
+type AgentSearchMatch = { id: number; title?: string };
 
-// Powers the self-registration picker: as the user types their street, look up
-// existing agents at a matching address so they can JOIN their org instead of
-// creating a duplicate. Backed by the token-gated GET /agent/register/search
-// (the COORDINATOR-only GET /agent is not available to a registrant).
 export function useAgentAddressLookup(
   addressStreet: string,
   token: string | null,
@@ -29,8 +27,6 @@ export function useAgentAddressLookup(
     enabled,
   });
 
-  // The API returns every matching candidate, not a single "the" match —
-  // more than one org can share a partial street.
   const matches = enabled ? (data ?? []) : [];
 
   const isDismissed = dismissedAddress === debouncedAddress;

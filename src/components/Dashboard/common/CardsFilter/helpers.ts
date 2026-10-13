@@ -43,9 +43,6 @@ export const getClearSingleFilter = <T extends object>(filter: T, targetKey: str
   return newFilter as T;
 };
 
-/**
- * Generic helper to create a list of checkbox-like filter items from a record of booleans.
- */
 export const generateNestedFilterControlItems = <TFilter>(
   obj: SelectionMap,
   setFilter: SetFilter<TFilter>,
@@ -65,9 +62,6 @@ export const generateNestedFilterControlItems = <TFilter>(
       },
     }));
 
-/**
- * Generic helper to create a list of checkbox-like filter items from a record of boolean.
- */
 export const createFilterFromOption = (option: ApiOptionLists, field: keyof ApiOptionLists) =>
   option[field] ? option[field].reduce((acc, curr) => ({ ...acc, [curr.title]: false }), {}) : {};
 

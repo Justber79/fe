@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle } from "../styled";
 import { ProfileCompletionData } from "../types";
 
-// No district picker (fe#1089): the backend derives the district from the
-// postcode (be#1059) and drops any districtId the client sends.
 type AddressData = Pick<ProfileCompletionData, "addressStreet" | "addressPostcode">;
 
 type Props = {

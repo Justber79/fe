@@ -12,7 +12,6 @@ export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // The token is single-use: a second POST (StrictMode, a re-render) would 409.
   const requested = useRef(false);
 
   useEffect(() => {

@@ -39,8 +39,6 @@ import { setAuthHint } from "@/utils/helpers";
 function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
   return {
     title: formData.organizationName,
-    // `info`/`languages: number[]` follow the registration contract — these
-    // deliberately differ from the agent PATCH shape (`about`/`OptionById[]`).
     typeId: formData.organizationType || undefined,
     info: formData.about || undefined,
     website: formData.website || undefined,
@@ -62,8 +60,6 @@ export function ProfileCompletion() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pending, setPending] = useState(false);
-  // When a CREATE collides with an existing NGO (same name or same address),
-  // the API says which and returns its id, so we can offer to JOIN it instead.
   const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
   const errorBannerRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +71,7 @@ export function ProfileCompletion() {
   const { matches, selectedAgent, showBanner, selectMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
-    (m) => update({ addressStreet: m.title }),
+    (m) => m.title && update({ addressStreet: m.title }),
   );
 
   const showSubmitError = useCallback((message: string) => {
@@ -135,14 +131,11 @@ export function ProfileCompletion() {
     }
   };
 
-  // JOIN an existing agent (picked from the street lookup, or accepted from a
-  // title conflict). Membership lands ACTIVE on email-domain match, else PENDING.
   const submitJoin = (agentId: number) => submit({ agentId });
 
+  const submitAtSharedAddress = () => submit({ agent: { ...buildNewAgent(formData), confirmSharedAddress: true } });
+
   const handleSubmit = () => {
-    // Joining an existing agent submits only { agentId } — the create-form
-    // (street/postcode/org) validation must not run, or the missing postcode
-    // blocks the join.
     if (selectedAgent) {
       submitJoin(selectedAgent.id);
       return;
@@ -183,8 +176,6 @@ export function ProfileCompletion() {
     );
   }
 
-  // A picked agent (or accepted title conflict) is a JOIN: submit the membership
-  // request directly without the create-only org/services steps.
   const isJoining = !!selectedAgent;
   const isLastStep = step === TOTAL_COMPLETION_STEPS;
   const tokenMissing = !token;
@@ -195,10 +186,6 @@ export function ProfileCompletion() {
         <PageTitle>{t("agentRegistration.completion.title")}</PageTitle>
         <PageSubtitle>{t("agentRegistration.completion.subtitle")}</PageSubtitle>
 
-        {/* The verify-email link lands here (fe#1097), after /verify-email has
-            already activated the account: confirm that, so the form doesn't
-            read as a fresh registration. Hidden once a submit fails (e.g. an
-            expired token) so it never sits next to an error. */}
         {!tokenMissing && !submitError && (
           <MatchBanner $matched role="status">
             <CheckMark>✓</CheckMark>
@@ -212,8 +199,6 @@ export function ProfileCompletion() {
 
         {conflict && (
           <MatchBanner $matched={false} role="alert">
-            {/* fe#1098: say whether the name or the address matched, and what
-                joining means, so it doesn't read as "registration rejected". */}
             <span>
               {t(
                 conflict.conflict === "address"
@@ -226,6 +211,11 @@ export function ProfileCompletion() {
               <SmallButton $primary onClick={() => submitJoin(conflict.agentId)}>
                 {t("agentRegistration.completion.joinInstead")}
               </SmallButton>
+              {conflict.conflict === "address" && (
+                <SmallButton onClick={submitAtSharedAddress} disabled={isSubmitting}>
+                  {t("agentRegistration.completion.createAtSharedAddress")}
+                </SmallButton>
+              )}
               <SmallButton onClick={() => setConflict(null)}>
                 {t("agentRegistration.completion.editDetails")}
               </SmallButton>
@@ -235,13 +225,15 @@ export function ProfileCompletion() {
 
         {step === 1 &&
           (isJoining ? (
-            // Picked an existing org: this is a membership request, not an edit.
-            // Show a clear read-only confirmation + an undo back to creating.
             <div>
               <StepTitle>{t("agentRegistration.completion.joinTitle")}</StepTitle>
               <MatchBanner $matched>
                 <CheckMark>✓</CheckMark>
-                <span>{t("agentRegistration.completion.joiningOrg", { name: selectedAgent?.title })}</span>
+                <span>
+                  {selectedAgent?.title
+                    ? t("agentRegistration.completion.joiningOrg", { name: selectedAgent.title })
+                    : t("agentRegistration.completion.joiningUnnamedOrg")}
+                </span>
               </MatchBanner>
               <StepDescription>{t("agentRegistration.completion.joinDescription")}</StepDescription>
               <MatchActions>
@@ -267,7 +259,7 @@ export function ProfileCompletion() {
                     </MatchListCopy>
                     {matches.map((agent) => (
                       <MatchRow key={agent.id} type="button" onClick={() => selectMatch(agent)}>
-                        {agent.title}
+                        {agent.title ?? t("agentRegistration.completion.unnamedMatch")}
                       </MatchRow>
                     ))}
                     <MatchActions>
