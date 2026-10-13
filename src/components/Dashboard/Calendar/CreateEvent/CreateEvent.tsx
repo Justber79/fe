@@ -17,6 +17,7 @@ export interface EventFormData {
   type: EventN4DType;
   title: string;
   description: string;
+  hostName: string;
   street: string;
   houseNumber: string;
   postcode: string;
@@ -70,6 +71,7 @@ export function CreateEvent({ eventId }: Props) {
     type: EventN4DType.WORKSHOP,
     title: "",
     description: "",
+    hostName: "",
     street: "",
     houseNumber: "",
     postcode: "",
@@ -91,6 +93,7 @@ export function CreateEvent({ eventId }: Props) {
       type: editingEvent.type,
       title: editingEvent.title,
       description: editingEvent.description,
+      hostName: editingEvent.hostName ?? "",
       ...parseAddress(editingEvent.address),
       registrationLink: editingEvent.linkRSVP,
       startDate: start.date,
@@ -143,8 +146,10 @@ export function CreateEvent({ eventId }: Props) {
     linkRSVP: formData.registrationLink,
     address,
   });
+  const hostName = formData.hostName.trim();
   const toCreatePayload = (): ApiEventN4DCreate => ({
     ...toBasePayload(),
+    ...(hostName ? { hostName } : {}),
     active: false,
     translations: [translation],
   });
@@ -154,6 +159,7 @@ export function CreateEvent({ eventId }: Props) {
 
     return {
       ...toBasePayload(),
+      hostName: hostName || null,
       ...(translationChanged ? { translations: [translation] } : {}),
     };
   };
@@ -222,6 +228,7 @@ export function CreateEvent({ eventId }: Props) {
               type={formData.type}
               title={formData.title}
               description={formData.description}
+              hostName={formData.hostName}
               onChange={update}
               onNext={handleNext}
               onCancel={handleCancel}
