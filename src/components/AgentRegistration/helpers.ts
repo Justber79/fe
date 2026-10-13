@@ -30,6 +30,7 @@ export function validateCompletionStep(
   step: number,
   data: ProfileCompletionData,
   t: (k: string) => string,
+  operatorTitles: string[] = [],
 ): Partial<Record<keyof ProfileCompletionData, string>> {
   const errors: Partial<Record<keyof ProfileCompletionData, string>> = {};
   const required = t("form.error.required");
@@ -42,6 +43,9 @@ export function validateCompletionStep(
   if (step === 2) {
     if (!data.organizationName.trim()) errors.organizationName = required;
     if (!data.organizationType) errors.organizationType = required;
+    if (data.operator.trim() && !operatorTitles.includes(data.operator.trim())) {
+      errors.operator = t("dashboard.agentProfile.organisationDetails.validation.operatorInvalid");
+    }
   }
 
   return errors;

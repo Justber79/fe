@@ -34,11 +34,13 @@ import {
 import { defaultProfileCompletionData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
 import { CheckMark, MatchBanner, MatchActions, MatchListCopy, MatchRow, SmallButton } from "./styled";
 import { useAgentAddressLookup } from "./useAgentAddressLookup";
+import { useGetRegistrationOrganizations } from "@/hooks/useGetRegistrationOrganizations";
 import { setAuthHint } from "@/utils/helpers";
 
-function buildNewAgent(formData: ProfileCompletionData): ApiAgentRegisterNew {
+function buildNewAgent(formData: ProfileCompletionData, organizationId?: number): ApiAgentRegisterNew {
   return {
     title: formData.organizationName,
+    organizationId,
     typeId: formData.organizationType || undefined,
     info: formData.about || undefined,
     website: formData.website || undefined,
@@ -67,6 +69,9 @@ export function ProfileCompletion() {
     queryKey: ["options"],
     apiPath: apiPathOption,
   });
+  const organizations = useGetRegistrationOrganizations(token);
+  const operatorTitles = organizations.map((organization) => organization.title);
+  const operatorId = organizations.find((organization) => organization.title === formData.operator.trim())?.id;
 
   const { matches, selectedAgent, showBanner, selectMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
@@ -133,23 +138,24 @@ export function ProfileCompletion() {
 
   const submitJoin = (agentId: number) => submit({ agentId });
 
-  const submitAtSharedAddress = () => submit({ agent: { ...buildNewAgent(formData), confirmSharedAddress: true } });
+  const submitAtSharedAddress = () =>
+    submit({ agent: { ...buildNewAgent(formData, operatorId), confirmSharedAddress: true } });
 
   const handleSubmit = () => {
     if (selectedAgent) {
       submitJoin(selectedAgent.id);
       return;
     }
-    const stepErrors = validateCompletionStep(step, formData, t);
+    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
     }
-    submit({ agent: buildNewAgent(formData) });
+    submit({ agent: buildNewAgent(formData, operatorId) });
   };
 
   const handleNext = () => {
-    const stepErrors = validateCompletionStep(step, formData, t);
+    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -275,7 +281,13 @@ export function ProfileCompletion() {
           ))}
 
         {!isJoining && step === 2 && (
-          <OrgInfoStep data={formData} onChange={update} errors={errors} optionLists={optionLists} />
+          <OrgInfoStep
+            data={formData}
+            onChange={update}
+            errors={errors}
+            optionLists={optionLists}
+            operatorTitles={operatorTitles}
+          />
         )}
         {!isJoining && step === 3 && <ServicesStep data={formData} onChange={update} optionLists={optionLists} />}
 
