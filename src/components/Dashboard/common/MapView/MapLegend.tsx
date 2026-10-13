@@ -60,11 +60,18 @@ export function MapLegendControl() {
         <IconSlot>
           <img
             src={getImageUrl(defaultAvatarURL)}
-            className="custom-icon"
+            className="custom-avatar-icon"
             alt={`${t("dashboard.map.legend.volunteer")} Pin`}
           />
         </IconSlot>
         <span>{t("dashboard.map.legend.volunteer")}</span>
+      </LegendRow>
+
+      <LegendRow>
+        <IconSlot>
+          <div className="custom-icon">5</div>
+        </IconSlot>
+        <span>{t("dashboard.map.legend.numberOfEntities")}</span>
       </LegendRow>
     </LegendCard>,
     container,

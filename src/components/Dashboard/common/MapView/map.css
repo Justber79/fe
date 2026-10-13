@@ -5,8 +5,22 @@
 }
 
 .custom-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
   width: var(--dashboard-map-custom-icon-width) !important;
-  aspect-ratio: 1/1;
+  height: var(--dashboard-map-custom-icon-width) !important;
+  background: var(--color-white);
   border: var(--dashboard-map-custom-icon-border);
   border-radius: var(--dashboard-map-custom-icon-border-radius);
+}
+
+.custom-avatar-icon {
+  width: var(--dashboard-map-custom-icon-width) !important;
+  aspect-ratio: 1/1 !important;
+  background: var(--color-white);
+  border: var(--dashboard-map-custom-icon-border);
+  border-radius: var(--dashboard-map-custom-icon-border-radius);
+  object-fit: contain;
 }

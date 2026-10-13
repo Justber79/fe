@@ -586,14 +586,18 @@
     },
     "map": {
       "address": "Anschrift",
+      "volunteers": "Ehrenamtliche",
+      "opportunities": "Ehrenamtsbedarfe",
       "legend": {
         "title": "Legende",
-        "opportunity": "Möglichkeit",
+        "opportunity": "Ehrenamtsbedarfe",
         "rac": "Unterkunft für Geflüchtete",
-        "volunteer": "Ehrenamtliche"
+        "volunteer": "Ehrenamtliche",
+        "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
-      "scrollZoom": "Scroll-Zoom aktivieren",
-      "error": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
+      "scrollZoom": "Scroll-Zoom umschalten",
+      "otherRacs": "Weitere Berliner Unterkünfte für Geflüchtete umschalten",
+      "errorRac": "Fehler beim Abrufen der Berliner Unterkünfte für Geflüchtete"
     },
     "posts": {
       "searchPosts": "Beiträge, Antworten, Personen und Ehrenamtsbedarfe suchen",
@@ -2388,6 +2392,8 @@
       "requestToJoin": "Beitritt anfragen",
       "joinTitle": "Einer bestehenden Organisation beitreten",
       "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
+      "joiningUnnamedOrg": "Du beantragst den Beitritt zu der Organisation, die an dieser Adresse registriert ist.",
+      "unnamedMatch": "Eine an dieser Adresse registrierte Organisation",
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
       "createInstead": "Nicht deine Organisation? Neue erstellen"
     },

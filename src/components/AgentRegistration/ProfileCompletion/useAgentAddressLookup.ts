@@ -3,7 +3,9 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useGetQuery } from "@/hooks";
 import { useState } from "react";
 
-type AgentSearchMatch = { id: number; title: string };
+// `title` is omitted when the registrant's email domain doesn't match the org
+// (be#1041), so the picker can offer to join without naming it.
+type AgentSearchMatch = { id: number; title?: string };
 
 export function useAgentAddressLookup(
   addressStreet: string,

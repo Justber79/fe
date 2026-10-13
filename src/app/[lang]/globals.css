@@ -554,6 +554,7 @@ html {
   --dashboard-map-marker-label-margin-bottom: 1rem;
   --dashboard-map-opp-list-gap: 1rem;
   --dashboard-map-opp-item-gap: 1rem;
+  --dashboard-map-popup-height: 400px;
   --dashboard-map-popup-wrapper-padding: 8px 4px;
   --dashboard-map-popup-wrapper-gap: 2rem;
   --dashboard-map-popup-font-size: 1rem;
