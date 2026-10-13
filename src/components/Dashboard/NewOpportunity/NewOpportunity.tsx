@@ -14,7 +14,7 @@ import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
 import Button from "@/components/core/button/Button/Button";
-import { apiPathAgent, apiPathOpportunity, cacheTTL, DashboardRoutes } from "@/config/constants";
+import { apiPathAgent, apiPathOpportunity, DashboardRoutes } from "@/config/constants";
 import { useGetQuery, useMutationQuery } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2 } from "@/components/styled/text";
@@ -124,7 +124,6 @@ export function NewOpportunity() {
     apiPath: `${apiPathAgent}/${selectedAgentId}`,
     queryKey: ["agent", String(selectedAgentId)],
     enabled: Boolean(selectedAgentId),
-    staleTime: cacheTTL,
   });
   const isAgentAddressMissing = Boolean(selectedAgent) && !selectedAgent?.agentDetails?.addressPostcode;
 
