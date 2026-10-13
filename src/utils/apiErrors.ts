@@ -3,9 +3,6 @@ import { TFunction } from "i18next";
 
 type ApiErrorBody = { error?: string; message?: string };
 
-// Only classes whose meaning is the same wherever they're thrown. Generic ones
-// (BadRequestError, NotFoundError, UnauthorizedError, ...) carry route-specific
-// messages, so those still show the backend `message` until they get their own class.
 const ERROR_CLASS_KEYS: Record<string, string> = {
   AlreadyUsedTokenError: "message.apiErrors.alreadyUsedToken",
   PersonAlreadyRegisteredError: "message.apiErrors.personAlreadyRegistered",
@@ -76,9 +73,12 @@ export function getLocalizedErrorMessage(error: unknown, t: TFunction): string {
   if (key) return t(key);
   if (status === 429) return t("message.apiErrors.tooManyRequests");
   if (!status || status >= 500) return t("message.errorGeneric");
+
+  if (status === 404 && message === "Resource not found") return t("message.apiErrors.notFound");
+  if (status === 409 && message === "Conflict: Resource already exists") return t("message.apiErrors.alreadyExists");
+  if (status === 413 && message === "request file too large") return t("message.apiErrors.fileTooLarge");
   if (message?.startsWith("Validation failed")) return t("message.validationFailed");
 
-  // That 403 has no error class yet, so it's still matched by its text.
   const communicationDenied = message?.match(COMMUNICATION_DELETE_DENIED);
   if (communicationDenied) {
     return t("dashboard.communicationSection.deletePermissionError", { id: communicationDenied[1] });

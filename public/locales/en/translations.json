@@ -1918,6 +1918,9 @@
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",
     "apiErrors": {
+      "notFound": "The requested item could not be found.",
+      "alreadyExists": "This item already exists.",
+      "fileTooLarge": "The file is too large. Please choose a smaller file.",
       "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
       "alreadyUsedToken": "This link has already been used.",
       "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
