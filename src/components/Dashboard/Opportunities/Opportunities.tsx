@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
+import { apiPathOption, DashboardRoutes, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
 import { ApiOptionLists, UserRole } from "need4deed-sdk";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import styled from "styled-components";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
@@ -31,7 +33,7 @@ import { useScreenType } from "@/context/DeviceContext";
 export function Opportunities() {
   const user = useCurrentUser(true);
   const screenType = useScreenType();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
   const [cardsFilter, setCardsFilter] = useState(defaultOpportunityCardsFilter);
@@ -149,6 +151,13 @@ export function Opportunities() {
           onClearAllFilters={handleClearAllFilters}
           onClearFilter={handleClearFilter}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
+          headerAction={
+            user?.role === UserRole.AGENT && (
+              <OtherOpportunitiesLink href={`/${i18n.language}${DashboardRoutes.Opportunities}/other`}>
+                {t("dashboard.opportunities.other.link")}
+              </OtherOpportunitiesLink>
+            )
+          }
         />
 
         <ContentRow>
@@ -172,3 +181,17 @@ export function Opportunities() {
     </DashboardLayout>
   );
 }
+
+const OtherOpportunitiesLink = styled(Link)`
+  padding: var(--spacing-8) var(--spacing-16);
+  border: var(--border-width-medium) solid var(--color-aubergine);
+  border-radius: var(--button-border-radius);
+  color: var(--color-aubergine);
+  font-weight: var(--font-weight-semi-bold);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--color-orchid-subtle);
+  }
+`;

@@ -1152,7 +1152,18 @@
       "schedule": "Zeitplan",
       "district": "Bezirk",
       "dateOfAppointment": "Datum des Termins",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "other": {
+        "title": "Andere Tätigkeiten",
+        "description": "Offene Tätigkeiten anderer Organisationen. Angezeigt werden nur Titel und Bezirk.",
+        "empty": "Keine anderen Tätigkeiten gefunden.",
+        "link": "Andere Tätigkeiten",
+        "columns": {
+          "title": "Titel",
+          "district": "Bezirk",
+          "createdAt": "Erstellt am"
+        }
+      }
     },
     "documentSection": {
       "title": "Dokumente",
