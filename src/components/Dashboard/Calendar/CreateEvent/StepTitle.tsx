@@ -23,7 +23,8 @@ import {
 
 const TITLE_MAX = 128;
 const HOST_MAX = 128;
-export const DESCRIPTION_MAX = 512;
+export const DESCRIPTION_MAX = 812;
+export const SHORT_DESCRIPTION_MAX = 512;
 
 interface Props {
   type: EventN4DType;

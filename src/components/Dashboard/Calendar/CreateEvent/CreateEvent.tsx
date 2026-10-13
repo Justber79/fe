@@ -11,7 +11,7 @@ import { useCreateEvent, useEvent, useUpdateEvent } from "@/hooks";
 
 import { StepDateTime } from "./StepDateTime";
 import { StepLocation } from "./StepLocation";
-import { DESCRIPTION_MAX, StepTitle } from "./StepTitle";
+import { DESCRIPTION_MAX, SHORT_DESCRIPTION_MAX, StepTitle } from "./StepTitle";
 
 export interface EventFormData {
   type: EventN4DType;
@@ -132,7 +132,7 @@ export function CreateEvent({ eventId }: Props) {
     menuTitle: formData.title,
     locationComment: editingEvent?.locationComment,
     description: formData.description,
-    shortDescription: formData.description,
+    shortDescription: formData.description.slice(0, SHORT_DESCRIPTION_MAX).trimEnd(),
     additionalTitle: editingEvent?.additionalTitle,
     additionalInfo: editingEvent?.additionalInfo,
   };
