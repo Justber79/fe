@@ -585,31 +585,24 @@ export const EditableField = forwardRef(function EditableField<T extends string 
                     type === "checkbox-list"
                       ? Array.isArray(localValue) && localValue.includes(String(option))
                       : localValue === option;
+                  const selectOption = () => {
+                    if (type === "checkbox-list") {
+                      handleCheckboxChange(String(option));
+                    } else {
+                      const v = option as T;
+                      setLocalValue(v);
+                      setValue(v);
+                      setOpen(false);
+                    }
+                  };
                   return (
-                    <OptionRow
-                      key={option}
-                      $isSelected={isSelected}
-                      onClick={() => {
-                        if (type === "checkbox-list") {
-                          handleCheckboxChange(String(option));
-                        } else {
-                          const v = option as T;
-                          setLocalValue(v);
-                          setValue(v);
-                          setOpen(false);
-                        }
-                      }}
-                    >
+                    <OptionRow key={option} $isSelected={isSelected} onClick={selectOption}>
                       <input
                         type={type === "checkbox-list" ? "checkbox" : "radio"}
                         name={label}
                         value={option}
                         checked={isSelected}
-                        onChange={() => {
-                          if (type === "checkbox-list") {
-                            handleCheckboxChange(String(option));
-                          }
-                        }}
+                        onChange={selectOption}
                         onClick={(e) => e.stopPropagation()}
                       />
                       <Text>{labels && labels.length ? labels[idx] : option}</Text>

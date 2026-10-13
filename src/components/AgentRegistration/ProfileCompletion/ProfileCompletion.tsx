@@ -69,7 +69,12 @@ export function ProfileCompletion() {
     queryKey: ["options"],
     apiPath: apiPathOption,
   });
-  const organizations = useGetRegistrationOrganizations(token);
+  const {
+    organizations,
+    isLoading: isOperatorListLoading,
+    isError: isOperatorListError,
+  } = useGetRegistrationOrganizations(token);
+  const operatorListState = isOperatorListError ? "error" : isOperatorListLoading ? "loading" : "ready";
   const operatorTitles = organizations.map((organization) => organization.title);
   const operatorId = organizations.find((organization) => organization.title === formData.operator.trim())?.id;
 
@@ -146,7 +151,7 @@ export function ProfileCompletion() {
       submitJoin(selectedAgent.id);
       return;
     }
-    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles);
+    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles, operatorListState);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -155,7 +160,7 @@ export function ProfileCompletion() {
   };
 
   const handleNext = () => {
-    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles);
+    const stepErrors = validateCompletionStep(step, formData, t, operatorTitles, operatorListState);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
