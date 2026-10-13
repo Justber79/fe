@@ -7,6 +7,7 @@ import { ApiAgentTagCandidate, ApiOpportunityGetList } from "need4deed-sdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EmojiPicker from "./EmojiPicker";
+import { formatMentions } from "./formatMentions";
 import {
   Composer,
   ComposerActions,
@@ -161,36 +162,19 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
       return;
     }
 
-    let formatted = text.trim();
-    const taggedPersonIds: number[] = [];
-    [...mention.tags]
-      .sort((first, second) => second.name.length - first.name.length)
-      .forEach((tag) => {
-        const escapedName = tag.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
-        formatted = formatted.replace(mentionPattern, () => {
-          taggedPersonIds.push(tag.personId);
-          return `<@person:${tag.personId}>`;
-        });
-      });
-    const taggedAgentIds: number[] = [];
-    [...taggedAgents]
-      .sort((first, second) => second.title.length - first.title.length)
-      .forEach((agent) => {
-        const escapedTitle = agent.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        formatted = formatted.replace(new RegExp(`@${escapedTitle}(?![\\p{L}\\p{N}_])`, "gu"), () => {
-          taggedAgentIds.push(agent.id);
-          return `<@agent:${agent.id}>`;
-        });
-      });
-    if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted))
+    const formatted = formatMentions(text.trim(), [
+      ...mention.tags.map((tag) => ({ name: tag.name, kind: "person" as const, id: tag.personId })),
+      ...taggedAgents.map((agent) => ({ name: agent.title, kind: "agent" as const, id: agent.id })),
+    ]);
+    const taggedPersonIds = [...formatted.taggedPersonIds];
+    if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted.text))
       mention.users?.forEach((user) => {
         if (user.personId) taggedPersonIds.push(user.personId);
       });
     createPost.mutate({
-      text: formatted,
+      text: formatted.text,
       taggedPersonIds: [...new Set(taggedPersonIds)],
-      taggedAgentIds: [...new Set(taggedAgentIds)],
+      taggedAgentIds: formatted.taggedAgentIds,
       linkedOpportunityIds: selected.map(({ id }) => Number(id)),
     });
   };

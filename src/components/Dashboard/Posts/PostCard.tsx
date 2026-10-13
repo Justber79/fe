@@ -34,6 +34,7 @@ import {
   PostReplyActions,
 } from "./styles";
 import RepliesThread from "./RepliesThread";
+import { formatMentions } from "./formatMentions";
 import type { ReplyTarget } from "./types";
 
 type Props = {
@@ -143,32 +144,14 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
   };
 
   const saveEdit = () => {
-    let formattedText = editText.trim();
-    const taggedPersonIds: number[] = [];
-    [...post.taggedPersons]
-      .sort((first, second) => second.fullName.length - first.fullName.length)
-      .forEach((person) => {
-        const escapedName = person.fullName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
-        formattedText = formattedText.replace(mentionPattern, () => {
-          taggedPersonIds.push(person.id);
-          return `<@person:${person.id}>`;
-        });
-      });
-    const taggedAgentIds: number[] = [];
-    [...(post.taggedAgents ?? [])]
-      .sort((first, second) => second.title.length - first.title.length)
-      .forEach((agent) => {
-        const escapedTitle = agent.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        formattedText = formattedText.replace(new RegExp(`@${escapedTitle}(?![\\p{L}\\p{N}_])`, "gu"), () => {
-          taggedAgentIds.push(agent.id);
-          return `<@agent:${agent.id}>`;
-        });
-      });
+    const formatted = formatMentions(editText.trim(), [
+      ...post.taggedPersons.map((person) => ({ name: person.fullName, kind: "person" as const, id: person.id })),
+      ...(post.taggedAgents ?? []).map((agent) => ({ name: agent.title, kind: "agent" as const, id: agent.id })),
+    ]);
     updatePost.mutate({
-      text: formattedText,
-      taggedPersonIds: [...new Set(taggedPersonIds)],
-      taggedAgentIds: [...new Set(taggedAgentIds)],
+      text: formatted.text,
+      taggedPersonIds: formatted.taggedPersonIds,
+      taggedAgentIds: formatted.taggedAgentIds,
       linkedOpportunityIds: post.linkedOpportunities.map(({ id }) => id),
     });
   };
