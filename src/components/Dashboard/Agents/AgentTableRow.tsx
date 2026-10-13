@@ -8,6 +8,7 @@ import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { WrapAnywhereCell } from "../common/EntityTableList/styles";
 import { CopyEmail } from "../common/CopyEmail";
 import { UnclaimedBadge } from "../common/UnclaimedBadge";
+import { formatLocation } from "@/utils/helpers";
 import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 
 interface TableRowProps {
@@ -21,7 +22,8 @@ interface TableRowProps {
 export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSelect }: TableRowProps) {
   const { i18n } = useTranslation();
 
-  const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email, unclaimed } = agent;
+  const { id, title, type, volunteerSearch, district, activeVolunteers, numOpportunities, email, unclaimed, postcode } =
+    agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
   const lang = i18n.language as Lang;
 
@@ -54,7 +56,7 @@ export function AgentTableRow({ agent, isLast, searchLabels, districtsList, onSe
         {searchLabels[volunteerSearch] || volunteerSearch}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.district} data-testid={`agent-district-${id}`}>
-        {districtTitle || "—"}
+        {formatLocation(postcode, districtTitle) || "—"}
       </TableCell>
       <TableCell $width={AGENT_COL_WIDTHS.activeVolunteers} data-testid={`agent-active-volunteers-${id}`}>
         {activeVolunteers}
