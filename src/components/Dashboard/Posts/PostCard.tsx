@@ -43,8 +43,8 @@ type Props = {
   onToggleReplies: () => void;
 };
 
-const POST_MENTION_TOKEN = /(<@(?:person:)?\d+>)/g;
-const EXACT_POST_MENTION_TOKEN = /^<@(person:)?(\d+)>$/;
+const POST_MENTION_TOKEN = /(<@(?:person:|agent:)?\d+>)/g;
+const EXACT_POST_MENTION_TOKEN = /^<@(person:|agent:)?(\d+)>$/;
 
 export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: Props) {
   const { t, i18n } = useTranslation();
@@ -98,37 +98,44 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
     [post.taggedPersons, users],
   );
 
+  const resolveMentionName = useCallback(
+    (match: RegExpMatchArray): string | undefined => {
+      const mentionId = Number(match[2]);
+      if (match[1] === "agent:") return post.taggedAgents?.find(({ id }) => id === mentionId)?.title;
+      return resolveTaggedPerson(mentionId, match[1] === "person:")?.fullName;
+    },
+    [post.taggedAgents, resolveTaggedPerson],
+  );
+
   const displayText = useMemo(() => {
     const parts = post.text.split(POST_MENTION_TOKEN);
     return parts.map((part, index) => {
       const match = part.match(EXACT_POST_MENTION_TOKEN);
       if (!match) return <Fragment key={`${post.id}-text-${index}`}>{part}</Fragment>;
-      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
       return (
         <strong className="tag" key={`${post.id}-tag-${index}`}>
-          @{person?.fullName ?? t("dashboard.posts.unknownUser")}
+          @{resolveMentionName(match) ?? t("dashboard.posts.unknownUser")}
         </strong>
       );
     });
-  }, [post.id, post.text, resolveTaggedPerson, t]);
+  }, [post.id, post.text, resolveMentionName, t]);
 
   const replyContextText = useMemo(
     () =>
       post.text.replace(POST_MENTION_TOKEN, (token) => {
         const match = token.match(EXACT_POST_MENTION_TOKEN);
         if (!match) return token;
-        const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
-        return `@${person?.fullName ?? t("dashboard.posts.unknownUser")}`;
+        return `@${resolveMentionName(match) ?? t("dashboard.posts.unknownUser")}`;
       }),
-    [post.text, resolveTaggedPerson, t],
+    [post.text, resolveMentionName, t],
   );
 
   const startEdit = () => {
     const editableText = post.text.replace(POST_MENTION_TOKEN, (token) => {
       const match = token.match(EXACT_POST_MENTION_TOKEN);
       if (!match) return token;
-      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
-      return person ? `@${person.fullName}` : token;
+      const name = resolveMentionName(match);
+      return name ? `@${name}` : token;
     });
     setEditText(editableText);
     setIsEditing(true);
@@ -148,9 +155,20 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
           return `<@person:${person.id}>`;
         });
       });
+    const taggedAgentIds: number[] = [];
+    [...(post.taggedAgents ?? [])]
+      .sort((first, second) => second.title.length - first.title.length)
+      .forEach((agent) => {
+        const escapedTitle = agent.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        formattedText = formattedText.replace(new RegExp(`@${escapedTitle}(?![\\p{L}\\p{N}_])`, "gu"), () => {
+          taggedAgentIds.push(agent.id);
+          return `<@agent:${agent.id}>`;
+        });
+      });
     updatePost.mutate({
       text: formattedText,
       taggedPersonIds: [...new Set(taggedPersonIds)],
+      taggedAgentIds: [...new Set(taggedAgentIds)],
       linkedOpportunityIds: post.linkedOpportunities.map(({ id }) => id),
     });
   };
