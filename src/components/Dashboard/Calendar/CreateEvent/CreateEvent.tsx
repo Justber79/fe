@@ -51,6 +51,19 @@ function parseAddress(address = "") {
     : { street: address, houseNumber: "", postcode: "", unstructuredAddress: Boolean(address) };
 }
 
+function truncateText(text: string, maxCodePoints: number) {
+  const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+  let result = "";
+  let length = 0;
+  for (const { segment } of segmenter.segment(text)) {
+    const segmentLength = Array.from(segment).length;
+    if (length + segmentLength > maxCodePoints) break;
+    result += segment;
+    length += segmentLength;
+  }
+  return result.trimEnd();
+}
+
 function isHttpUrl(value: string) {
   try {
     const url = new URL(value);
@@ -132,7 +145,7 @@ export function CreateEvent({ eventId }: Props) {
     menuTitle: formData.title,
     locationComment: editingEvent?.locationComment,
     description: formData.description,
-    shortDescription: formData.description.slice(0, SHORT_DESCRIPTION_MAX).trimEnd(),
+    shortDescription: truncateText(formData.description.trim(), SHORT_DESCRIPTION_MAX),
     additionalTitle: editingEvent?.additionalTitle,
     additionalInfo: editingEvent?.additionalInfo,
   };
@@ -159,7 +172,7 @@ export function CreateEvent({ eventId }: Props) {
 
     return {
       ...toBasePayload(),
-      hostName: hostName || null,
+      ...(hostName !== (editingEvent?.hostName ?? "").trim() ? { hostName: hostName || null } : {}),
       ...(translationChanged ? { translations: [translation] } : {}),
     };
   };
