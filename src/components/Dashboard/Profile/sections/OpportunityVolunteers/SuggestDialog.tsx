@@ -1,6 +1,6 @@
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { useTranslation } from "react-i18next";
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 
 type Props = {
   opportunityName: string;

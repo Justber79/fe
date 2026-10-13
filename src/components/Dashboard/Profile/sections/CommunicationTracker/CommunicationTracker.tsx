@@ -6,7 +6,7 @@ import { EntityType } from "@/components/Dashboard/Profile/types";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommunicationDialog } from "./CommunicationDialog";
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionWrapper, SectionEmptyState } from "../shared/styles";
 import {
   Table,

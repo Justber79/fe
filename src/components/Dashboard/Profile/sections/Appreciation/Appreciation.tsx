@@ -12,7 +12,7 @@ import {
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppreciationDialog } from "./AppreciationDialog";
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionWrapper, SectionEmptyState } from "../shared/styles";
 import { AppreciationTableContainer, StatusBadge } from "./styles";
 import {

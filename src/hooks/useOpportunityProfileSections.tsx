@@ -7,7 +7,7 @@ import { OpportunityVolunteers } from "@/components/Dashboard/Profile/sections/O
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers/SuggestDialog";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
 import { RefugeeAccommodationCentre } from "@/components/Dashboard/Profile/sections/RefugeeAccommodationCentre";
-import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
 import { IconName } from "@/components/Dashboard/Profile/types";

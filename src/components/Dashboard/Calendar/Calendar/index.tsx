@@ -1,5 +1,5 @@
 import { Heading3, Paragraph } from "@/components/styled/text";
-import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 

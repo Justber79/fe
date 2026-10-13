@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/core/button";
 
 import { Actions } from "./accordionStyles";
-import { ConfirmationDialog } from "./ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 

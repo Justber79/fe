@@ -7,7 +7,7 @@ import {
 } from "@/components/Dashboard/Profile/sections/CommunicationTracker";
 import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactDetails";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
-import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { DangerZoneButtonRow } from "@/components/Dashboard/Profile/sections/shared/DangerZoneButtonRow";
 import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shared/types";
 import { RequestSuggestMenu } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/RequestSuggestMenu";

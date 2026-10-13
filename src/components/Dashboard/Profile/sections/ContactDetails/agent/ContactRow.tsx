@@ -12,7 +12,7 @@ import { useEnumTranslation } from "../shared";
 import { ContactFormData, createContactFormSchema } from "./contactFormSchema";
 import { ContactFormFields } from "./ContactFormFields";
 import { EditIconButton } from "./styles";
-import { ConfirmationDialog } from "../../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useDeleteAgentContactMembership } from "@/hooks/useDeleteAgentContactMembership";
 import { useAuth } from "@/hooks/useAuth";
 
