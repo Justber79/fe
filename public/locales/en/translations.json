@@ -2067,6 +2067,8 @@
       "skip": "No, enter manually",
       "titleTaken": "An organisation with this name already exists.",
       "addressTaken": "An organisation is already registered at this address.",
+      "titleTakenNamed": "“{{name}}” already exists.",
+      "addressTakenNamed": "“{{name}}” is already registered at this address.",
       "createAtSharedAddress": "Different organisation? Create it anyway",
       "editDetails": "Edit details",
       "joinInstead": "Join it instead",
