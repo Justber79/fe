@@ -14,15 +14,22 @@ import { AccompanyingDetailsEdit } from "@/components/Dashboard/Profile/sections
 import { BackButton, PageContainer } from "@/components/Dashboard/Profile/styles";
 import { IconName } from "@/components/Dashboard/Profile/types";
 import Button from "@/components/core/button/Button/Button";
-import { apiPathOpportunity, DashboardRoutes } from "@/config/constants";
-import { useMutationQuery } from "@/hooks";
+import { apiPathAgent, apiPathOpportunity, cacheTTL, DashboardRoutes } from "@/config/constants";
+import { useGetQuery, useMutationQuery } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Heading2 } from "@/components/styled/text";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
-import { TranslatedIntoType, VolunteerStateTypeType, OpportunityFormDataWithAgentSubmitter } from "need4deed-sdk";
+import {
+  ApiAgentGet,
+  TranslatedIntoType,
+  VolunteerStateTypeType,
+  OpportunityFormDataWithAgentSubmitter,
+} from "need4deed-sdk";
 import { useEffect, useMemo } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import styled from "styled-components";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -113,6 +120,14 @@ export function NewOpportunity() {
   });
   const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
 
+  const { data: selectedAgent } = useGetQuery<ApiAgentGet>({
+    apiPath: `${apiPathAgent}/${selectedAgentId}`,
+    queryKey: ["agent", String(selectedAgentId)],
+    enabled: Boolean(selectedAgentId),
+    staleTime: cacheTTL,
+  });
+  const isAgentAddressMissing = Boolean(selectedAgent) && !selectedAgent?.agentDetails?.addressPostcode;
+
   const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,
     method: "post",
@@ -129,7 +144,7 @@ export function NewOpportunity() {
     const headerValid = await headerMethods.trigger();
     const detailsValid = await detailsMethods.trigger();
     const accompValid = !isAccompanying || (await accompanyingMethods.trigger());
-    if (!headerValid || !detailsValid || !accompValid || !selectedAgentId) return;
+    if (!headerValid || !detailsValid || !accompValid || !selectedAgentId || isAgentAddressMissing) return;
 
     const payload = buildCreatePayload(
       headerMethods.getValues(),
@@ -205,15 +220,36 @@ export function NewOpportunity() {
           }
         />
       )}
+      {isAgentAddressMissing && (
+        <AddressWarning role="alert">
+          {t("dashboard.newOpportunity.addressMissing")}{" "}
+          <Link href={`/${lang}${DashboardRoutes.Agents}/${selectedAgentId}`} target="_blank" rel="noopener noreferrer">
+            {t("dashboard.newOpportunity.addressMissingLink")}
+          </Link>
+        </AddressWarning>
+      )}
       <SaveRow>
         <Button
           text={t("dashboard.newOpportunity.submit")}
           backgroundcolor="var(--color-aubergine)"
           textColor="var(--color-white)"
           onClick={handleCreate}
-          disabled={isPending || !selectedAgentId}
+          disabled={isPending || !selectedAgentId || isAgentAddressMissing}
         />
       </SaveRow>
     </PageContainer>
   );
 }
+
+const AddressWarning = styled.p`
+  margin: 0;
+  padding: var(--spacing-16);
+  border-radius: var(--border-radius-small);
+  background: var(--color-orchid-subtle);
+  color: var(--color-midnight);
+
+  a {
+    color: var(--color-aubergine);
+    font-weight: var(--font-weight-semi-bold);
+  }
+`;

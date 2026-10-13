@@ -1772,7 +1772,9 @@
       },
       "contactSection": "Contact details",
       "agentSection": "Your organisation",
-      "submit": "Create opportunity"
+      "submit": "Create opportunity",
+      "addressMissing": "Your organisation profile has no postcode yet, so this opportunity can't be created. Your entries here stay.",
+      "addressMissingLink": "Add the address in the organisation profile (opens in a new tab)"
     },
     "admin": {
       "title": "Admin",
