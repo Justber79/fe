@@ -1039,7 +1039,8 @@
         "conflict": {
           "title": "Eine NGO mit diesem Namen existiert bereits.",
           "address": "An dieser Adresse gibt es bereits eine NGO.",
-          "open": "Bestehende NGO öffnen"
+          "open": "Bestehende NGO öffnen",
+          "createAnyway": "Andere NGO? Trotzdem erstellen"
         },
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
@@ -2385,6 +2386,7 @@
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
       "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",

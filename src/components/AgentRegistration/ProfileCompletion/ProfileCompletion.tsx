@@ -133,6 +133,8 @@ export function ProfileCompletion() {
 
   const submitJoin = (agentId: number) => submit({ agentId });
 
+  const submitAtSharedAddress = () => submit({ agent: { ...buildNewAgent(formData), confirmSharedAddress: true } });
+
   const handleSubmit = () => {
     if (selectedAgent) {
       submitJoin(selectedAgent.id);
@@ -209,6 +211,11 @@ export function ProfileCompletion() {
               <SmallButton $primary onClick={() => submitJoin(conflict.agentId)}>
                 {t("agentRegistration.completion.joinInstead")}
               </SmallButton>
+              {conflict.conflict === "address" && (
+                <SmallButton onClick={submitAtSharedAddress} disabled={isSubmitting}>
+                  {t("agentRegistration.completion.createAtSharedAddress")}
+                </SmallButton>
+              )}
               <SmallButton onClick={() => setConflict(null)}>
                 {t("agentRegistration.completion.editDetails")}
               </SmallButton>

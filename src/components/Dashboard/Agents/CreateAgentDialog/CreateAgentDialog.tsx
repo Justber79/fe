@@ -14,7 +14,7 @@ import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ButtonRow, FormDetails } from "../../Profile/sections/shared/styles";
 import { CreateAgentFormData, createAgentFormSchema } from "./createAgentFormSchema";
-import { ConflictBox, DialogTitle } from "./styles";
+import { ConflictAction, ConflictBox, DialogTitle } from "./styles";
 
 type Props = {
   isOpen: boolean;
@@ -53,17 +53,21 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
     onClose();
   };
 
-  const onSubmit = (values: CreateAgentFormData) => {
+  const submitAgent = (values: CreateAgentFormData, confirmSharedAddress?: boolean) => {
     setConflict(null);
     createAgent(
       {
         title: values.title,
         addressStreet: values.addressStreet || undefined,
         addressPostcode: values.addressPostcode || undefined,
+        confirmSharedAddress,
       },
       { onSuccess: handleClose },
     );
   };
+
+  const onSubmit = (values: CreateAgentFormData) => submitAgent(values);
+  const onSubmitAtSharedAddress = (values: CreateAgentFormData) => submitAgent(values, true);
 
   if (!isOpen) return null;
 
@@ -121,6 +125,11 @@ export const CreateAgentDialog = ({ isOpen, onClose }: Props) => {
           <Link href={`/${i18n.language}/dashboard/agents/${conflict.agentId}`} onClick={handleClose}>
             {t("dashboard.agents.createAgent.conflict.open")}
           </Link>
+          {conflict.conflict === "address" && (
+            <ConflictAction type="button" onClick={handleSubmit(onSubmitAtSharedAddress)} disabled={isPending}>
+              {t("dashboard.agents.createAgent.conflict.createAnyway")}
+            </ConflictAction>
+          )}
         </ConflictBox>
       )}
       <ButtonRow>

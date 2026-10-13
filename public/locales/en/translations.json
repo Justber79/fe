@@ -1074,7 +1074,8 @@
         "conflict": {
           "title": "An NGO with this name already exists.",
           "address": "An NGO at this address already exists.",
-          "open": "Open existing NGO"
+          "open": "Open existing NGO",
+          "createAnyway": "Different NGO? Create it anyway"
         },
         "validation": {
           "titleRequired": "Organization name is required"
@@ -2041,6 +2042,7 @@
       "skip": "No, enter manually",
       "titleTaken": "An organisation with this name already exists.",
       "addressTaken": "An organisation is already registered at this address.",
+      "createAtSharedAddress": "Different organisation? Create it anyway",
       "editDetails": "Edit details",
       "joinInstead": "Join it instead",
       "requestToJoin": "Request to join",
