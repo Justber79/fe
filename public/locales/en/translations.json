@@ -2052,7 +2052,9 @@
       "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
       "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email.",
-      "invalidOrganizationEmail": "Invalid organization email."
+      "invalidOrganizationEmail": "Invalid organization email.",
+      "operatorListLoading": "The operator list is still loading. Please try again in a moment.",
+      "operatorListUnavailable": "The operator list couldn't be loaded. Try again later or leave the field empty."
     },
     "success": {
       "title": "Registration successful!",
