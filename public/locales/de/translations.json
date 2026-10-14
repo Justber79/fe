@@ -2415,6 +2415,8 @@
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "titleTakenNamed": "„{{name}}“ existiert bereits.",
+      "addressTakenNamed": "An dieser Adresse ist bereits „{{name}}“ registriert.",
       "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
       "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
