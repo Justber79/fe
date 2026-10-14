@@ -1,4 +1,4 @@
-import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useDeleteReply, useUpdateReply } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getImageUrl } from "@/utils";

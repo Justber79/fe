@@ -71,7 +71,7 @@ export function ProfileCompletion() {
   const { matches, selectedAgent, showBanner, selectMatch, dismissMatch } = useAgentAddressLookup(
     formData.addressStreet,
     token,
-    (m) => update({ addressStreet: m.title }),
+    (m) => m.title && update({ addressStreet: m.title }),
   );
 
   const showSubmitError = useCallback((message: string) => {
@@ -132,6 +132,8 @@ export function ProfileCompletion() {
   };
 
   const submitJoin = (agentId: number) => submit({ agentId });
+
+  const submitAtSharedAddress = () => submit({ agent: { ...buildNewAgent(formData), confirmSharedAddress: true } });
 
   const handleSubmit = () => {
     if (selectedAgent) {
@@ -209,6 +211,11 @@ export function ProfileCompletion() {
               <SmallButton $primary onClick={() => submitJoin(conflict.agentId)}>
                 {t("agentRegistration.completion.joinInstead")}
               </SmallButton>
+              {conflict.conflict === "address" && (
+                <SmallButton onClick={submitAtSharedAddress} disabled={isSubmitting}>
+                  {t("agentRegistration.completion.createAtSharedAddress")}
+                </SmallButton>
+              )}
               <SmallButton onClick={() => setConflict(null)}>
                 {t("agentRegistration.completion.editDetails")}
               </SmallButton>
@@ -222,7 +229,11 @@ export function ProfileCompletion() {
               <StepTitle>{t("agentRegistration.completion.joinTitle")}</StepTitle>
               <MatchBanner $matched>
                 <CheckMark>✓</CheckMark>
-                <span>{t("agentRegistration.completion.joiningOrg", { name: selectedAgent?.title })}</span>
+                <span>
+                  {selectedAgent?.title
+                    ? t("agentRegistration.completion.joiningOrg", { name: selectedAgent.title })
+                    : t("agentRegistration.completion.joiningUnnamedOrg")}
+                </span>
               </MatchBanner>
               <StepDescription>{t("agentRegistration.completion.joinDescription")}</StepDescription>
               <MatchActions>
@@ -248,7 +259,7 @@ export function ProfileCompletion() {
                     </MatchListCopy>
                     {matches.map((agent) => (
                       <MatchRow key={agent.id} type="button" onClick={() => selectMatch(agent)}>
-                        {agent.title}
+                        {agent.title ?? t("agentRegistration.completion.unnamedMatch")}
                       </MatchRow>
                     ))}
                     <MatchActions>

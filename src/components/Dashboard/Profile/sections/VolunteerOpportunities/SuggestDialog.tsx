@@ -1,4 +1,4 @@
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useTranslation } from "react-i18next";
 
 type Props = {

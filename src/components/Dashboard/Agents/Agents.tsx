@@ -26,7 +26,7 @@ import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useTransferOpportunityToAgent } from "@/hooks/useTransferOpportunityToAgent";
-import { ConfirmationDialog } from "../Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useScreenType } from "@/context/DeviceContext";
 
 export const Agents = () => {

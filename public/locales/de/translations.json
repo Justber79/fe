@@ -580,7 +580,8 @@
         "posts": "Beiträge",
         "calendar": "Kalender",
         "profile": "Profil",
-        "more": "Mehr"
+        "more": "Mehr",
+        "admin": "Admin"
       },
       "createOpportunity": "Neue Möglichkeit erstellen"
     },
@@ -1040,7 +1041,8 @@
         "conflict": {
           "title": "Eine NGO mit diesem Namen existiert bereits.",
           "address": "An dieser Adresse gibt es bereits eine NGO.",
-          "open": "Bestehende NGO öffnen"
+          "open": "Bestehende NGO öffnen",
+          "createAnyway": "Andere NGO? Trotzdem erstellen"
         },
         "validation": {
           "titleRequired": "Name der Organisation ist erforderlich"
@@ -1784,6 +1786,30 @@
       "contactSection": "Kontaktdaten",
       "agentSection": "Ihre Organisation",
       "submit": "Möglichkeit erstellen"
+    },
+    "admin": {
+      "title": "Admin",
+      "domains": {
+        "helper": "Personen mit einer E-Mail-Adresse dieser Domains können sich als NGO registrieren.",
+        "placeholder": "example.org",
+        "add": "Hinzufügen",
+        "duplicate": "Diese Domain ist bereits vertrauenswürdig.",
+        "empty": "Noch keine vertrauenswürdigen Domains.",
+        "loadError": "Die vertrauenswürdigen Domains konnten nicht geladen werden. Bitte laden Sie die Seite neu.",
+        "added": "Domain hinzugefügt",
+        "removed": "Domain entfernt",
+        "remove": "Entfernen",
+        "removeAria": "{{domain}} entfernen",
+        "removeTitle": "Domain entfernen?",
+        "removeMessage": "Personen mit einer E-Mail-Adresse auf {{domain}} können sich dann nicht mehr als NGO registrieren, außer die NGO hat bereits eine Kontaktperson mit dieser Domain."
+      },
+      "stats": {
+        "comingSoon": "Kommt bald"
+      },
+      "nav": {
+        "domains": "Domains",
+        "stats": "Statistiken"
+      }
     }
   },
   "aboutus": {
@@ -2386,11 +2412,14 @@
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
       "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
       "requestToJoin": "Beitritt anfragen",
       "joinTitle": "Einer bestehenden Organisation beitreten",
       "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
+      "joiningUnnamedOrg": "Du beantragst den Beitritt zu der Organisation, die an dieser Adresse registriert ist.",
+      "unnamedMatch": "Eine an dieser Adresse registrierte Organisation",
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
       "createInstead": "Nicht deine Organisation? Neue erstellen"
     },

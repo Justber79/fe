@@ -5,7 +5,7 @@ import { ArrowsLeftRight } from "@phosphor-icons/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionWrapper } from "../shared/styles";
 import { DocumentPreviewDialog } from "./DocumentPreviewDialog";
 import { DocumentTableRow } from "./DocumentTableRow";

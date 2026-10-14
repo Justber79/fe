@@ -1,4 +1,4 @@
-import { ConfirmationDialog } from "@/components/Dashboard/Profile/sections/shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { apiPathUser, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useDeletePost, useGetQuery, useTogglePostBookmark, useUpdatePost } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";

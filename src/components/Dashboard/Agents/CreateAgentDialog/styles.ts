@@ -15,9 +15,24 @@ export const ConflictBox = styled.div`
   background: var(--color-orchid-subtle);
   color: var(--color-midnight);
 
-  a {
+  a,
+  button {
     color: var(--color-aubergine);
     font-weight: var(--font-weight-semibold);
     text-decoration: underline;
+  }
+`;
+
+export const ConflictAction = styled.button`
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
   }
 `;

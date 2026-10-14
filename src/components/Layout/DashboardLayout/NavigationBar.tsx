@@ -9,6 +9,7 @@ import {
   DotsThreeCircleIcon,
   HouseIcon,
   NotepadIcon,
+  ShieldCheckIcon,
   ShootingStarIcon,
   UserCheckIcon,
 } from "@phosphor-icons/react";
@@ -194,6 +195,7 @@ export default function NavigationBar() {
   const isAgent = user?.role === UserRole.AGENT;
   const isVolunteer = user?.role === UserRole.VOLUNTEER;
   const canSeeStaffNav = !isAgent && !isVolunteer;
+  const isStaff = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
   const navigationRef = useRef<HTMLDivElement>(null);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
 
@@ -247,6 +249,15 @@ export default function NavigationBar() {
             label: t("dashboard.home.sidebar.calendar"),
             Icon: CalendarDotsIcon,
             route: DashboardRoutes.Calendar,
+          },
+        ]
+      : []),
+    ...(isStaff
+      ? [
+          {
+            label: t("dashboard.home.sidebar.admin"),
+            Icon: ShieldCheckIcon,
+            route: DashboardRoutes.Admin,
           },
         ]
       : []),

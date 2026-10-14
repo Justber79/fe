@@ -14,7 +14,7 @@ import { PencilSimple, Plus, Trash } from "@phosphor-icons/react";
 import { ApiActivityLogEntry, ApiActivityLogPost } from "need4deed-sdk";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ConfirmationDialog } from "../shared/ConfirmationDialog";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionEmptyState, SectionWrapper } from "../shared/styles";
 import { formatDate } from "../shared/utils/formatDate";
 import { ActivityLogDialog } from "./ActivityLogDialog";
