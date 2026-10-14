@@ -19,7 +19,7 @@ export const agentFilterConfigs: SelectionFilterConfigs<AgentCardsFilter> = {
   [QueryParamsKeys.DISTRICT]: {
     header: "dashboard.agents.filters.district.header",
     option: EntityTableName.DISTRICT,
-    isVisible: ({ viewMode }) => viewMode === ViewMode.CARDS,
+    isVisible: ({ viewMode }) => viewMode === ViewMode.CARDS || viewMode === ViewMode.MAP,
   },
   engagementStatus: {
     header: "dashboard.agents.filters.engagementStatus.header",

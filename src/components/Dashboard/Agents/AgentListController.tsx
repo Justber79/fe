@@ -1,9 +1,9 @@
 import { type ApiAgentGetList, type ApiOptionLists, QueryParamsKeys, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { apiPathAgent, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
+import { apiPathAgent, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { serializeAgentFilters } from "./helpers";
 import { AgentCardsFilter } from "./Filters/types";
 import { ViewMode } from "../common/types";
@@ -13,6 +13,9 @@ import { createAgentFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingAgentTableList } from "./LoadingAgentTableList";
+import { createAgentMarkers } from "../common/MapView/helpers";
+import { LoadingMapView } from "../common/MapView/LoadingMapView";
+import { AgentMapView } from "./AgentMapView";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
@@ -35,9 +38,10 @@ export const AgentListController = ({
   onSelect,
 }: Props) => {
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
-  const limit = isListView ? TABLE_LIMIT : CARD_LIMIT;
+  const isMapView = viewMode === ViewMode.MAP;
+  const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
 
   const serializedFilter = new URLSearchParams(
     serializeAgentFilters(filter, undefined, false, {
@@ -67,11 +71,14 @@ export const AgentListController = ({
     volunteerSearchFilters: getSectionItems(filterSections, "volunteerSearch"),
   };
 
+  const markers = useMemo(() => createAgentMarkers(agents, t, i18n.language), [agents, t, i18n.language]);
+
   useEffect(() => {
     setNumOfAgents(count);
   }, [count, setNumOfAgents]);
 
   if (isLoading && isListView) return <LoadingAgentTableList dropdownFilters={dropdownFilters} />;
+  if (isLoading && isMapView) return <LoadingMapView />;
 
   if (isLoading) return <DashboardListLoading />;
 
@@ -88,6 +95,19 @@ export const AgentListController = ({
         isCopying={isCopying}
         onSelect={onSelect}
         dropdownFilters={dropdownFilters}
+      />
+    );
+  }
+
+  if (isMapView) {
+    return (
+      <AgentMapView
+        markers={markers}
+        count={count}
+        itemsPerPage={limit}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        onSelect={onSelect}
       />
     );
   }
