@@ -589,6 +589,7 @@
       "address": "Anschrift",
       "volunteers": "Ehrenamtliche",
       "opportunities": "Ehrenamtsbedarfe",
+      "agents": "Einrichtungen",
       "legend": {
         "title": "Legende",
         "opportunity": "Ehrenamtsbedarfe",
@@ -2262,6 +2263,9 @@
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "apiErrors": {
+      "notFound": "Der angeforderte Eintrag wurde nicht gefunden.",
+      "alreadyExists": "Dieser Eintrag ist bereits vorhanden.",
+      "fileTooLarge": "Die Datei ist zu groß. Bitte wählen Sie eine kleinere Datei.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
       "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
@@ -2392,7 +2396,9 @@
       "phoneTooShort": "Die Telefonnummer muss mindestens 7 Zeichen lang sein",
       "emailDomainNotAllowed": "Ihre E-Mail-Domain ist nicht auf unserer genehmigten NGO-Liste. Bitte verwenden Sie die E-Mail-Adresse Ihrer Organisation.",
       "missingToken": "Dein Registrierungslink ist ungültig oder abgelaufen. Bitte verwende den Link aus deiner Bestätigungs-E-Mail.",
-      "invalidOrganizationEmail": "Es wurde eine ungültige Organisations-E-Mail-Adresse angegeben."
+      "invalidOrganizationEmail": "Es wurde eine ungültige Organisations-E-Mail-Adresse angegeben.",
+      "operatorListLoading": "Die Liste der Träger wird noch geladen. Bitte gleich noch einmal versuchen.",
+      "operatorListUnavailable": "Die Liste der Träger konnte nicht geladen werden. Bitte später erneut versuchen oder das Feld leer lassen."
     },
     "success": {
       "title": "Registrierung erfolgreich!",
@@ -2411,6 +2417,8 @@
       "skip": "Nein, manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
+      "titleTakenNamed": "„{{name}}“ existiert bereits.",
+      "addressTakenNamed": "An dieser Adresse ist bereits „{{name}}“ registriert.",
       "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
       "editDetails": "Angaben ändern",
       "joinInstead": "Stattdessen beitreten",
@@ -2421,6 +2429,13 @@
       "unnamedMatch": "Eine an dieser Adresse registrierte Organisation",
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
       "createInstead": "Nicht deine Organisation? Neue erstellen"
+    },
+    "completed": {
+      "title": "Ihre Registrierung ist bereits abgeschlossen",
+      "description": "Sie müssen Ihre Organisation nicht erneut registrieren.",
+      "namedDescription": "Ihre Registrierung für {{name}} ist bereits abgeschlossen.",
+      "continue": "Weiter zu Ihrem Konto",
+      "checking": "Ihre Registrierung wird geprüft…"
     },
     "pending": {
       "title": "Beitrittsanfrage gesendet",
