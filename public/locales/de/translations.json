@@ -2263,6 +2263,9 @@
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "apiErrors": {
+      "notFound": "Der angeforderte Eintrag wurde nicht gefunden.",
+      "alreadyExists": "Dieser Eintrag ist bereits vorhanden.",
+      "fileTooLarge": "Die Datei ist zu groß. Bitte wählen Sie eine kleinere Datei.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
       "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
