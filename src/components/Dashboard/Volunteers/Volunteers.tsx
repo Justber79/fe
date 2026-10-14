@@ -19,7 +19,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
-import { applyMatchingPrefill, hasFilterParams, withPrefilledMarker } from "../common/CardsFilter/matchingPrefill";
+import {
+  applyMatchingPrefill,
+  hasFilterParams,
+  PREFILLED_PARAM,
+  withPrefilledMarker,
+} from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { volunteerFilterConfigs } from "./Filters/config";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
@@ -90,8 +95,12 @@ export function Volunteers() {
   };
 
   const handleRemoveOpportunityFilter = () => {
-    const params = new URLSearchParams(searchParams);
+    const wasPrefilled = searchParams.has(PREFILLED_PARAM);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
+    if (wasPrefilled) setCardsFilter(cleared);
+    const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
+    params.delete(PREFILLED_PARAM);
     router.push(pathname + questionMark + params.toString());
   };
 
@@ -111,11 +120,13 @@ export function Volunteers() {
     if (!opportunityId || !opportunityFilter || !apiFilterOptions) return;
     if (prefilledForRef.current === opportunityId) return;
     prefilledForRef.current = opportunityId;
-    if (hasFilterParams(searchParams)) return;
+    if (hasFilterParams(searchParams, Object.keys(volunteerFilterConfigs))) return;
 
     const isAccompanying = opportunityFilter.volunteerType === ProfileVolunteeringType.ACCOMPANYING;
-    const languages = opportunityFilter.languages.filter(({ purpose }) =>
-      isAccompanying
+    const needsRefugeeLanguage =
+      isAccompanying || opportunityFilter.volunteerType === ProfileVolunteeringType.REGULAR_ACCOMPANYING;
+    const languages = opportunityFilter.languages.filter(({ purpose = LangPurpose.GENERAL }) =>
+      needsRefugeeLanguage
         ? purpose === LangPurpose.RECIPIENT || purpose === LangPurpose.TRANSLATION
         : purpose === LangPurpose.GENERAL,
     );
@@ -126,6 +137,7 @@ export function Volunteers() {
         languages,
         availability: isAccompanying ? [] : opportunityFilter.availability,
         appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
+        appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );

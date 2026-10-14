@@ -27,6 +27,7 @@ export const useGetOpportunity = (opportunityId: string | undefined) => {
   );
   const volunteerType = data.volunteerType;
   const appointmentDate = data.appointmentDate;
+  const appointmentTime = data.appointmentTime;
 
   return {
     id,
@@ -39,5 +40,6 @@ export const useGetOpportunity = (opportunityId: string | undefined) => {
     districtIds,
     volunteerType,
     appointmentDate,
+    appointmentTime,
   };
 };

@@ -1,11 +1,12 @@
-import { ApiAvailability, ByDay, OccasionalType, OptionItem, TimeSlot } from "need4deed-sdk";
+import { ApiAvailability, ApiLanguage, ByDay, OccasionalType, OptionItem, TimeSlot } from "need4deed-sdk";
 import { ScheduleFilter, SelectionMap } from "./types";
 
 type MatchingSource = {
   districtIds: number[];
-  languages: { id?: number; title: string }[];
+  languages: Pick<ApiLanguage, "id" | "title">[];
   availability: ApiAvailability[];
   appointmentDate?: string | null;
+  appointmentTime?: string | null;
 };
 
 type PrefillableFilter = {
@@ -14,7 +15,7 @@ type PrefillableFilter = {
   availability: ScheduleFilter;
 };
 
-const WEEKDAYS: ByDay[] = [ByDay.SU, ByDay.MO, ByDay.TU, ByDay.WE, ByDay.TH, ByDay.FR, ByDay.SA];
+const berlinWeekday = new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "Europe/Berlin" });
 
 const titleOf = (options: OptionItem[] | undefined, id: number | undefined, fallback?: string) =>
   options?.find((option) => option.id === id)?.title ?? fallback;
@@ -44,8 +45,9 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
   });
 
   if (source.appointmentDate) {
-    const weekday = WEEKDAYS[new Date(source.appointmentDate).getUTCDay()];
-    if (weekday) next.availability.days[weekday] = true;
+    const appointment = new Date(`${source.appointmentDate}T${source.appointmentTime ?? "12:00"}:00Z`);
+    const weekday = Number.isNaN(appointment.getTime()) ? undefined : (berlinWeekday.format(appointment) as ByDay);
+    if (weekday && weekday in next.availability.days) next.availability.days[weekday] = true;
   }
 
   return next;
@@ -53,22 +55,10 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
 
 export const PREFILLED_PARAM = "prefilled";
 
-const FILTER_PARAM_KEYS = [
-  PREFILLED_PARAM,
-  "search",
-  "engagement",
-  "match",
-  "district",
-  "language",
-  "availability",
-  "type",
-  "activity",
-  "skill",
-  "status",
-];
+const ALWAYS_FILTER_PARAMS = [PREFILLED_PARAM, "search", "availability"];
 
-export const hasFilterParams = (searchParams: URLSearchParams | { has: (key: string) => boolean }) =>
-  FILTER_PARAM_KEYS.some((key) => searchParams.has(key));
+export const hasFilterParams = (searchParams: { has: (key: string) => boolean }, configKeys: string[]) =>
+  [...ALWAYS_FILTER_PARAMS, ...configKeys].some((key) => searchParams.has(key));
 
 export const withPrefilledMarker = (query: string | URLSearchParams) => {
   const params = new URLSearchParams(query.toString());
