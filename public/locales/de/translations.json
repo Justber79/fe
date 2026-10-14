@@ -2430,6 +2430,13 @@
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
       "createInstead": "Nicht deine Organisation? Neue erstellen"
     },
+    "completed": {
+      "title": "Ihre Registrierung ist bereits abgeschlossen",
+      "description": "Sie müssen Ihre Organisation nicht erneut registrieren.",
+      "namedDescription": "Ihre Registrierung für {{name}} ist bereits abgeschlossen.",
+      "continue": "Weiter zu Ihrem Konto",
+      "checking": "Ihre Registrierung wird geprüft…"
+    },
     "pending": {
       "title": "Beitrittsanfrage gesendet",
       "description": "Ein Administrator prüft deine Anfrage, dieser Organisation beizutreten. Nach der Freigabe erhältst du Zugriff."
