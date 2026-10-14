@@ -6,7 +6,13 @@ import { useGetQuery } from "@/hooks";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import i18next from "i18next";
-import { ApiAgentRegisterConflict, ApiAgentRegisterStatus, ApiOptionLists } from "need4deed-sdk";
+import {
+  ApiAgentAddressConflict,
+  ApiAgentRegisterConflict,
+  ApiAgentRegisterStatus,
+  ApiAgentTitleConflict,
+  ApiOptionLists,
+} from "need4deed-sdk";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { AgentMembershipStatus, ApiAgentRegister, ApiAgentRegisterNew, ApiAgentRegisterResponse } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -71,7 +77,7 @@ export function ProfileCompletion() {
     toastOnError: false,
   });
   const registration = submittedRegistration ?? registrationQuery.data;
-  const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
+  const [conflict, setConflict] = useState<ApiAgentTitleConflict | ApiAgentAddressConflict | null>(null);
   const errorBannerRef = useRef<HTMLDivElement>(null);
 
   const { data: optionLists } = useGetQuery<ApiOptionLists>({
@@ -140,7 +146,11 @@ export function ProfileCompletion() {
           return;
         }
         if (data?.agentId) {
-          setConflict({ conflict: data.conflict === "address" ? "address" : "title", agentId: data.agentId });
+          setConflict({
+            conflict: data.conflict === "address" ? "address" : "title",
+            agentId: data.agentId,
+            agentTitle: "agentTitle" in data ? data.agentTitle : undefined,
+          });
           return;
         }
       }
@@ -262,9 +272,10 @@ export function ProfileCompletion() {
           <MatchBanner $matched={false} role="alert">
             <span>
               {t(
-                conflict.conflict === "address"
-                  ? "agentRegistration.completion.addressTaken"
-                  : "agentRegistration.completion.titleTaken",
+                `agentRegistration.completion.${conflict.conflict === "address" ? "addressTaken" : "titleTaken"}${
+                  conflict.agentTitle ? "Named" : ""
+                }`,
+                { name: conflict.agentTitle },
               )}{" "}
               {t("agentRegistration.completion.joinDescription")}
             </span>
