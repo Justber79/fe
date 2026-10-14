@@ -38,10 +38,12 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     accompanyingDetails,
     statusMatch,
     district,
+    agentTitle,
   } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
     district?: { id: number };
+    agentTitle?: string;
   };
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
@@ -137,6 +139,12 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>
         {districtTitle && <CardParagraph text={districtTitle} />}
       </CardDetail>
+
+      {agentTitle && (
+        <CardDetail header={t("dashboard.opportunities.table.agentName")} iconName={IconName.Buildings}>
+          <CardParagraph text={agentTitle} />
+        </CardDetail>
+      )}
     </Card>
   );
 }
