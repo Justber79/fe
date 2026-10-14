@@ -9,7 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
-import { applyMatchingPrefill, hasFilterParams } from "../common/CardsFilter/matchingPrefill";
+import { applyMatchingPrefill, hasFilterParams, withPrefilledMarker } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
 import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
@@ -74,7 +74,7 @@ export function Opportunities() {
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
-    router.replace(pathname + questionMark + serializeOpportunityFilters(prefilled, searchParams));
+    router.replace(pathname + questionMark + withPrefilledMarker(serializeOpportunityFilters(prefilled, searchParams)));
   }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
   const handleSearchInputChange = (searchInput: string) => {

@@ -51,7 +51,10 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
   return next;
 }
 
+export const PREFILLED_PARAM = "prefilled";
+
 const FILTER_PARAM_KEYS = [
+  PREFILLED_PARAM,
   "search",
   "engagement",
   "match",
@@ -66,3 +69,9 @@ const FILTER_PARAM_KEYS = [
 
 export const hasFilterParams = (searchParams: URLSearchParams | { has: (key: string) => boolean }) =>
   FILTER_PARAM_KEYS.some((key) => searchParams.has(key));
+
+export const withPrefilledMarker = (query: string | URLSearchParams) => {
+  const params = new URLSearchParams(query.toString());
+  params.set(PREFILLED_PARAM, "1");
+  return params.toString();
+};

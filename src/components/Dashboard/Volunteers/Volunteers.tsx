@@ -19,7 +19,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
-import { applyMatchingPrefill, hasFilterParams } from "../common/CardsFilter/matchingPrefill";
+import { applyMatchingPrefill, hasFilterParams, withPrefilledMarker } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { volunteerFilterConfigs } from "./Filters/config";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
@@ -130,7 +130,7 @@ export function Volunteers() {
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
     prefilled[QueryParamsKeys.ENGAGEMENT][VolunteerStateEngagementType.AVAILABLE] = true;
-    router.replace(pathname + questionMark + serializeFilters(prefilled, searchParams));
+    router.replace(pathname + questionMark + withPrefilledMarker(serializeFilters(prefilled, searchParams)));
   }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams]);
 
   useEffect(() => {
