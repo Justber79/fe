@@ -20,6 +20,7 @@ export const useGetVolunteer = (volunteerId: string | undefined) => {
   const longitude = data.person.address?.postcode?.longitude ?? null;
   const languages = data.languages;
   const availability = data.availability;
+  const districtIds = data.locations.map(({ id }) => Number(id));
 
-  return { id, name, avatarUrl, latitude, longitude, languages, availability };
+  return { id, name, avatarUrl, latitude, longitude, languages, availability, districtIds };
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
@@ -9,6 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import { applyMatchingPrefill, hasFilterParams } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
 import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
@@ -56,6 +57,25 @@ export function Opportunities() {
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
+  const prefilledForRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!volunteerId || !volunteerFilter || !apiFilterOptions) return;
+    if (prefilledForRef.current === volunteerId) return;
+    prefilledForRef.current = volunteerId;
+    if (hasFilterParams(searchParams)) return;
+
+    const prefilled = applyMatchingPrefill(
+      withOptionFilters(opportunityFilterConfigs, defaultOpportunityCardsFilter, apiFilterOptions),
+      {
+        districtIds: volunteerFilter.districtIds,
+        languages: volunteerFilter.languages,
+        availability: volunteerFilter.availability,
+      },
+      { district: apiFilterOptions.district, language: apiFilterOptions.language },
+    );
+    router.replace(pathname + questionMark + serializeOpportunityFilters(prefilled, searchParams));
+  }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
