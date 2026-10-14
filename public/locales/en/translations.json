@@ -2078,6 +2078,13 @@
       "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
       "createInstead": "Not your organisation? Create a new one"
     },
+    "completed": {
+      "title": "Your registration is already complete",
+      "description": "You do not need to register your organisation again.",
+      "namedDescription": "Your registration for {{name}} is already complete.",
+      "continue": "Continue to your account",
+      "checking": "Checking your registration…"
+    },
     "pending": {
       "title": "Join request submitted",
       "description": "An administrator will review your request to join this organisation. You'll get access once it's approved."

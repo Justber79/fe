@@ -6,7 +6,8 @@ import { useGetQuery } from "@/hooks";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import i18next from "i18next";
-import { ApiAgentRegisterConflict, ApiOptionLists } from "need4deed-sdk";
+import { ApiAgentRegisterConflict, ApiAgentRegisterStatus, ApiOptionLists } from "need4deed-sdk";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { AgentMembershipStatus, ApiAgentRegister, ApiAgentRegisterNew, ApiAgentRegisterResponse } from "../types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -60,6 +61,16 @@ export function ProfileCompletion() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pending, setPending] = useState(false);
+  const [submittedRegistration, setSubmittedRegistration] = useState<ApiAgentRegisterStatus | null>(null);
+  const currentUser = useCurrentUser(true);
+  const registrationQuery = useGetQuery<ApiAgentRegisterStatus>({
+    queryKey: ["agent-register-status", token ?? ""],
+    apiPath: `${apiPathAgentRegister}/status?token=${encodeURIComponent(token ?? "")}`,
+    enabled: Boolean(token),
+    staleTime: 0,
+    toastOnError: false,
+  });
+  const registration = submittedRegistration ?? registrationQuery.data;
   const [conflict, setConflict] = useState<ApiAgentRegisterConflict | null>(null);
   const errorBannerRef = useRef<HTMLDivElement>(null);
 
@@ -120,6 +131,14 @@ export function ProfileCompletion() {
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
         const data = err.response.data as Partial<ApiAgentRegisterConflict> | undefined;
+        if (data?.conflict === "registered" && data.agentId && data.membershipStatus) {
+          setSubmittedRegistration({
+            registered: true,
+            agentId: data.agentId,
+            membershipStatus: data.membershipStatus,
+          });
+          return;
+        }
         if (data?.agentId) {
           setConflict({ conflict: data.conflict === "address" ? "address" : "title", agentId: data.agentId });
           return;
@@ -163,7 +182,7 @@ export function ProfileCompletion() {
     setStep((s) => s - 1);
   };
 
-  if (pending) {
+  if (pending || (registration?.registered && registration.membershipStatus === AgentMembershipStatus.PENDING)) {
     return (
       <Wrapper>
         <Card>
@@ -171,6 +190,48 @@ export function ProfileCompletion() {
             <SuccessTitle>{t("agentRegistration.pending.title")}</SuccessTitle>
             <SuccessText>{t("agentRegistration.pending.description")}</SuccessText>
           </SuccessWrapper>
+        </Card>
+      </Wrapper>
+    );
+  }
+
+  if (registration?.registered) {
+    return (
+      <Wrapper>
+        <Card>
+          <SuccessWrapper>
+            <SuccessTitle>{t("agentRegistration.completed.title")}</SuccessTitle>
+            <SuccessText>
+              {registration.agentTitle
+                ? t("agentRegistration.completed.namedDescription", { name: registration.agentTitle })
+                : t("agentRegistration.completed.description")}
+            </SuccessText>
+            <Button
+              text={t("agentRegistration.completed.continue")}
+              onClick={() => router.replace(`/${i18next.language}/${currentUser ? "dashboard" : "login"}`)}
+            />
+          </SuccessWrapper>
+        </Card>
+      </Wrapper>
+    );
+  }
+
+  if (!token || registrationQuery.isLoading || registrationQuery.isError || !registration) {
+    const error = !token
+      ? t("agentRegistration.errors.missingToken")
+      : registrationQuery.isError
+        ? axios.isAxiosError(registrationQuery.error) && registrationQuery.error.response?.status === 401
+          ? t("agentRegistration.errors.missingToken")
+          : getLocalizedErrorMessage(registrationQuery.error, t)
+        : null;
+    return (
+      <Wrapper>
+        <Card>
+          {error ? (
+            <ErrorBanner role="alert">{error}</ErrorBanner>
+          ) : (
+            <SuccessText role="status">{t("agentRegistration.completed.checking")}</SuccessText>
+          )}
         </Card>
       </Wrapper>
     );
