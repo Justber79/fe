@@ -43,6 +43,7 @@ export interface ProfileCompletionData {
   addressStreet: string;
   addressPostcode: string;
   organizationName: string;
+  operator: string;
   organizationType: number | "";
   about: string;
   website: string;
@@ -54,6 +55,7 @@ export const defaultProfileCompletionData: ProfileCompletionData = {
   addressStreet: "",
   addressPostcode: "",
   organizationName: "",
+  operator: "",
   organizationType: "",
   about: "",
   website: "",
