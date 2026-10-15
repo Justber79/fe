@@ -1,8 +1,9 @@
-import { ApiVolunteerGetList } from "need4deed-sdk";
+import { ApiAgentGetList, ApiVolunteerGetList } from "need4deed-sdk";
 
 export const EntityType = {
   VOLUNTEER: "volunteer",
   OPPORTUNITY: "opportunity",
+  AGENT: "agent",
 } as const;
 
 export type EntityType = (typeof EntityType)[keyof typeof EntityType];
@@ -21,7 +22,15 @@ export type EntityMarker = {
   lat: number;
   lon: number;
   label: string;
-  children?: Array<{ title: string; link: string; language: string; availability: string }>;
+  children?: Array<{
+    title: string;
+    link: string;
+    language?: string;
+    availability?: string;
+    type?: string;
+    district?: string;
+    agent?: ApiAgentGetList;
+  }>;
   onClick: () => null;
   entity: EntityType;
   avatarUrl?: string;

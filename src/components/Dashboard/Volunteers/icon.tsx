@@ -1,4 +1,5 @@
 import {
+  BuildingsIcon,
   CalendarDotsIcon,
   MapPinIcon,
   PersonSimpleWalkIcon,
@@ -15,6 +16,7 @@ export enum IconName {
   CalendarDots = "calendarDots",
   MapPin = "mapPin",
   PersonSimpleWalk = "personSimpleWalk",
+  Buildings = "buildings",
 }
 
 type IconMap = {
@@ -28,4 +30,5 @@ export const iconNameMap: IconMap = {
   [IconName.CalendarDots]: <CalendarDotsIcon />,
   [IconName.MapPin]: <MapPinIcon />,
   [IconName.PersonSimpleWalk]: <PersonSimpleWalkIcon />,
+  [IconName.Buildings]: <BuildingsIcon />,
 };

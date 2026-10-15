@@ -35,7 +35,6 @@ export const Agents = () => {
   const screenType = useScreenType();
   const canCreateAgent = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
   const { t, i18n } = useTranslation();
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isCreateAgentOpen, setIsCreateAgentOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
@@ -49,10 +48,6 @@ export const Agents = () => {
   const transferOpportunityId = searchParams.get("transferOpportunity") ?? undefined;
   const transferOpportunity = useGetOpportunity(transferOpportunityId);
   const [agentToTransferTo, setAgentToTransferTo] = useState<ApiAgentGetList | undefined>(undefined);
-
-  useEffect(() => {
-    if (screenType === ScreenTypes.MOBILE && user && !isAgent) setSelectedTabIndex(1);
-  }, [isAgent, screenType, user]);
 
   const { mutate: transferMutate } = useTransferOpportunityToAgent(Number(transferOpportunityId), () => {
     setAgentToTransferTo(undefined);
@@ -70,8 +65,22 @@ export const Agents = () => {
       ? [t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")]
       : [t("dashboard.agents.tabs.tab1"), t("dashboard.agents.tabs.tab2"), t("dashboard.agents.tabs.tab3")];
 
+  const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = isAgent ? [ViewMode.CARDS, ViewMode.MAP] : [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const defaultTabIndex = screenType === ScreenTypes.MOBILE && user && !isAgent ? 1 : 0;
+  const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
+  const selectedTabIndex = foundIndex === -1 ? defaultTabIndex : foundIndex;
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex] ?? ViewMode.CARDS;
+
+  const handleTabChange = (index: number) => {
+    const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.CARDS;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.set("view", targetViewMode);
+
+    router.push(pathname + questionMark + params.toString());
+  };
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
@@ -128,7 +137,7 @@ export const Agents = () => {
           resultText={t("dashboard.home.sidebar.racs")}
           tabs={tabs}
           selectedTabIndex={selectedTabIndex}
-          setSelectedTabIndex={setSelectedTabIndex}
+          setSelectedTabIndex={handleTabChange}
           setIsFiltersOpen={setIsFiltersOpen}
           onSearchInputChange={handleSearchInputChange}
           searchValue={cardsFilter.search}
