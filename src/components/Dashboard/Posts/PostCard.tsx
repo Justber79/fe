@@ -34,6 +34,7 @@ import {
   PostReplyActions,
 } from "./styles";
 import RepliesThread from "./RepliesThread";
+import { formatMentions } from "./formatMentions";
 import type { ReplyTarget } from "./types";
 
 type Props = {
@@ -43,8 +44,8 @@ type Props = {
   onToggleReplies: () => void;
 };
 
-const POST_MENTION_TOKEN = /(<@(?:person:)?\d+>)/g;
-const EXACT_POST_MENTION_TOKEN = /^<@(person:)?(\d+)>$/;
+const POST_MENTION_TOKEN = /(<@(?:person:|agent:)?\d+>)/g;
+const EXACT_POST_MENTION_TOKEN = /^<@(person:|agent:)?(\d+)>$/;
 
 export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: Props) {
   const { t, i18n } = useTranslation();
@@ -98,37 +99,44 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
     [post.taggedPersons, users],
   );
 
+  const resolveMentionName = useCallback(
+    (match: RegExpMatchArray): string | undefined => {
+      const mentionId = Number(match[2]);
+      if (match[1] === "agent:") return post.taggedAgents?.find(({ id }) => id === mentionId)?.title;
+      return resolveTaggedPerson(mentionId, match[1] === "person:")?.fullName;
+    },
+    [post.taggedAgents, resolveTaggedPerson],
+  );
+
   const displayText = useMemo(() => {
     const parts = post.text.split(POST_MENTION_TOKEN);
     return parts.map((part, index) => {
       const match = part.match(EXACT_POST_MENTION_TOKEN);
       if (!match) return <Fragment key={`${post.id}-text-${index}`}>{part}</Fragment>;
-      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
       return (
         <strong className="tag" key={`${post.id}-tag-${index}`}>
-          @{person?.fullName ?? t("dashboard.posts.unknownUser")}
+          @{resolveMentionName(match) ?? t("dashboard.posts.unknownUser")}
         </strong>
       );
     });
-  }, [post.id, post.text, resolveTaggedPerson, t]);
+  }, [post.id, post.text, resolveMentionName, t]);
 
   const replyContextText = useMemo(
     () =>
       post.text.replace(POST_MENTION_TOKEN, (token) => {
         const match = token.match(EXACT_POST_MENTION_TOKEN);
         if (!match) return token;
-        const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
-        return `@${person?.fullName ?? t("dashboard.posts.unknownUser")}`;
+        return `@${resolveMentionName(match) ?? t("dashboard.posts.unknownUser")}`;
       }),
-    [post.text, resolveTaggedPerson, t],
+    [post.text, resolveMentionName, t],
   );
 
   const startEdit = () => {
     const editableText = post.text.replace(POST_MENTION_TOKEN, (token) => {
       const match = token.match(EXACT_POST_MENTION_TOKEN);
       if (!match) return token;
-      const person = resolveTaggedPerson(Number(match[2]), Boolean(match[1]));
-      return person ? `@${person.fullName}` : token;
+      const name = resolveMentionName(match);
+      return name ? `@${name}` : token;
     });
     setEditText(editableText);
     setIsEditing(true);
@@ -136,21 +144,14 @@ export function PostCard({ post, isRepliesExpanded, onReply, onToggleReplies }: 
   };
 
   const saveEdit = () => {
-    let formattedText = editText.trim();
-    const taggedPersonIds: number[] = [];
-    [...post.taggedPersons]
-      .sort((first, second) => second.fullName.length - first.fullName.length)
-      .forEach((person) => {
-        const escapedName = person.fullName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
-        formattedText = formattedText.replace(mentionPattern, () => {
-          taggedPersonIds.push(person.id);
-          return `<@person:${person.id}>`;
-        });
-      });
+    const formatted = formatMentions(editText.trim(), [
+      ...post.taggedPersons.map((person) => ({ name: person.fullName, kind: "person" as const, id: person.id })),
+      ...(post.taggedAgents ?? []).map((agent) => ({ name: agent.title, kind: "agent" as const, id: agent.id })),
+    ]);
     updatePost.mutate({
-      text: formattedText,
-      taggedPersonIds: [...new Set(taggedPersonIds)],
+      text: formatted.text,
+      taggedPersonIds: formatted.taggedPersonIds,
+      taggedAgentIds: formatted.taggedAgentIds,
       linkedOpportunityIds: post.linkedOpportunities.map(({ id }) => id),
     });
   };
