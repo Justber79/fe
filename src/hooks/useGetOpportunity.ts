@@ -22,6 +22,24 @@ export const useGetOpportunity = (opportunityId: string | undefined) => {
   const longitude = data.lon ?? null;
   const languages = data.languages;
   const availability = data.availability;
+  const districtIds = [data.district?.id, ...(data.location ?? []).map(({ id }) => id)].filter(
+    (districtId): districtId is number => typeof districtId === "number",
+  );
+  const volunteerType = data.volunteerType;
+  const appointmentDate = data.appointmentDate;
+  const appointmentTime = data.appointmentTime;
 
-  return { id, name, avatarUrl, latitude, longitude, languages, availability };
+  return {
+    id,
+    name,
+    avatarUrl,
+    latitude,
+    longitude,
+    languages,
+    availability,
+    districtIds,
+    volunteerType,
+    appointmentDate,
+    appointmentTime,
+  };
 };

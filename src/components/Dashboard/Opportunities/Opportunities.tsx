@@ -1,16 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, DashboardRoutes, questionMark, ScreenTypes } from "@/config/constants";
+import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, UserRole } from "need4deed-sdk";
-import Link from "next/link";
+import { ApiOptionLists, LangProficiency, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import styled from "styled-components";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import {
+  applyMatchingPrefill,
+  hasFilterParams,
+  PREFILLED_PARAM,
+  withPrefilledMarker,
+} from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
 import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
@@ -33,7 +37,7 @@ import { useScreenType } from "@/context/DeviceContext";
 export function Opportunities() {
   const user = useCurrentUser(true);
   const screenType = useScreenType();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfOpps, setNumOfOpps] = useState(0);
   const [cardsFilter, setCardsFilter] = useState(defaultOpportunityCardsFilter);
@@ -58,6 +62,25 @@ export function Opportunities() {
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
+  const prefilledForRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!volunteerId || !volunteerFilter || !apiFilterOptions) return;
+    if (prefilledForRef.current === volunteerId) return;
+    prefilledForRef.current = volunteerId;
+    if (hasFilterParams(searchParams, Object.keys(opportunityFilterConfigs))) return;
+
+    const prefilled = applyMatchingPrefill(
+      withOptionFilters(opportunityFilterConfigs, defaultOpportunityCardsFilter, apiFilterOptions),
+      {
+        districtIds: volunteerFilter.districtIds,
+        languages: volunteerFilter.languages.filter(({ proficiency }) => proficiency !== LangProficiency.BEGINNER),
+        availability: volunteerFilter.availability,
+      },
+      { district: apiFilterOptions.district, language: apiFilterOptions.language },
+    );
+    router.replace(pathname + questionMark + withPrefilledMarker(serializeOpportunityFilters(prefilled, searchParams)));
+  }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
@@ -96,8 +119,12 @@ export function Opportunities() {
   };
 
   const handleRemoveVolunteerFilter = () => {
-    const params = new URLSearchParams(searchParams);
+    const wasPrefilled = searchParams.has(PREFILLED_PARAM);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
+    if (wasPrefilled) setCardsFilter(cleared);
+    const params = new URLSearchParams(serializeOpportunityFilters(cleared, searchParams));
     params.delete("volunteer");
+    params.delete(PREFILLED_PARAM);
     router.push(pathname + questionMark + params.toString());
   };
 
@@ -151,13 +178,6 @@ export function Opportunities() {
           onClearAllFilters={handleClearAllFilters}
           onClearFilter={handleClearFilter}
           entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
-          headerAction={
-            user?.role === UserRole.AGENT && (
-              <OtherOpportunitiesLink href={`/${i18n.language}${DashboardRoutes.Opportunities}/other`}>
-                {t("dashboard.opportunities.other.link")}
-              </OtherOpportunitiesLink>
-            )
-          }
         />
 
         <ContentRow>
@@ -181,17 +201,3 @@ export function Opportunities() {
     </DashboardLayout>
   );
 }
-
-const OtherOpportunitiesLink = styled(Link)`
-  padding: var(--spacing-8) var(--spacing-16);
-  border: var(--border-width-medium) solid var(--color-aubergine);
-  border-radius: var(--button-border-radius);
-  color: var(--color-aubergine);
-  font-weight: var(--font-weight-semi-bold);
-  text-decoration: none;
-  white-space: nowrap;
-
-  &:hover {
-    background: var(--color-orchid-subtle);
-  }
-`;
