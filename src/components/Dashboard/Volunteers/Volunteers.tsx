@@ -1,16 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
-import { ApiOptionLists, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
+import {
+  ApiOptionLists,
+  LangPurpose,
+  ProfileVolunteeringType,
+  QueryParamsKeys,
+  SortOrder,
+  UserRole,
+  VolunteerStateEngagementType,
+} from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import {
+  applyMatchingPrefill,
+  hasFilterParams,
+  PREFILLED_PARAM,
+  withPrefilledMarker,
+} from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { volunteerFilterConfigs } from "./Filters/config";
 import { defaultVolunteerCardsFilter } from "./Filters/constants";
@@ -51,6 +65,7 @@ export function Volunteers() {
   const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunityFilter = useGetOpportunity(opportunityId);
+  const prefilledForRef = useRef<string | null>(null);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, [QueryParamsKeys.SEARCH]: searchInput }));
@@ -80,8 +95,12 @@ export function Volunteers() {
   };
 
   const handleRemoveOpportunityFilter = () => {
-    const params = new URLSearchParams(searchParams);
+    const wasPrefilled = searchParams.has(PREFILLED_PARAM);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
+    if (wasPrefilled) setCardsFilter(cleared);
+    const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
+    params.delete(PREFILLED_PARAM);
     router.push(pathname + questionMark + params.toString());
   };
 
@@ -96,6 +115,35 @@ export function Volunteers() {
     setCardsFilter(cleared);
     router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
   };
+
+  useEffect(() => {
+    if (!opportunityId || !opportunityFilter || !apiFilterOptions) return;
+    if (prefilledForRef.current === opportunityId) return;
+    prefilledForRef.current = opportunityId;
+    if (hasFilterParams(searchParams, Object.keys(volunteerFilterConfigs))) return;
+
+    const isAccompanying = opportunityFilter.volunteerType === ProfileVolunteeringType.ACCOMPANYING;
+    const needsRefugeeLanguage =
+      isAccompanying || opportunityFilter.volunteerType === ProfileVolunteeringType.REGULAR_ACCOMPANYING;
+    const languages = opportunityFilter.languages.filter(({ purpose = LangPurpose.GENERAL }) =>
+      needsRefugeeLanguage
+        ? purpose === LangPurpose.RECIPIENT || purpose === LangPurpose.TRANSLATION
+        : purpose === LangPurpose.GENERAL,
+    );
+    const prefilled = applyMatchingPrefill(
+      withOptionFilters(volunteerFilterConfigs, defaultVolunteerCardsFilter, apiFilterOptions),
+      {
+        districtIds: opportunityFilter.districtIds,
+        languages,
+        availability: isAccompanying ? [] : opportunityFilter.availability,
+        appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
+        appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
+      },
+      { district: apiFilterOptions.district, language: apiFilterOptions.language },
+    );
+    prefilled[QueryParamsKeys.ENGAGEMENT][VolunteerStateEngagementType.AVAILABLE] = true;
+    router.replace(pathname + questionMark + withPrefilledMarker(serializeFilters(prefilled, searchParams)));
+  }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams]);
 
   useEffect(() => {
     if (!apiFilterOptions) return;

@@ -1,20 +1,24 @@
 "use client";
 import { FormInput } from "@/components/core/common";
+import { EditableField } from "@/components/EditableField/EditableField";
 import { ApiOptionLists, EntityTableName } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledSelect, StyledTextarea } from "../styled";
 import { ProfileCompletionData } from "../types";
 
-type OrgData = Pick<ProfileCompletionData, "organizationName" | "organizationType" | "about" | "website">;
+type OrgData = Pick<ProfileCompletionData, "organizationName" | "operator" | "organizationType" | "about" | "website">;
 
 type Props = {
   data: OrgData;
   onChange: (fields: Partial<OrgData>) => void;
   errors: Partial<Record<string, string>>;
   optionLists?: ApiOptionLists;
+  operatorTitles: string[];
 };
 
-export function OrgInfoStep({ data, onChange, errors, optionLists }: Props) {
+const OPERATOR_MIN_CHARS = 3;
+
+export function OrgInfoStep({ data, onChange, errors, optionLists, operatorTitles }: Props) {
   const { t } = useTranslation();
   const agentTypes = optionLists?.[EntityTableName.AGENT_TYPE] ?? [];
 
@@ -30,6 +34,25 @@ export function OrgInfoStep({ data, onChange, errors, optionLists }: Props) {
           onInputChange={(v) => onChange({ organizationName: v })}
           placeHolder={t("agentRegistration.fields.organizationName")}
           errors={errors.organizationName ? [errors.organizationName] : []}
+        />
+      </FieldWrapper>
+
+      <FieldWrapper>
+        <EditableField
+          mode="edit"
+          type="radio-list"
+          label={`${t("dashboard.agentProfile.organisationDetails.operator")} (${t("agentRegistration.optional")})`}
+          value={data.operator}
+          setValue={(operator) => onChange({ operator: String(operator) })}
+          options={
+            data.operator.length >= OPERATOR_MIN_CHARS
+              ? operatorTitles.filter((title) => title.toLowerCase().includes(data.operator.toLowerCase()))
+              : []
+          }
+          placeholder={t("dashboard.agentProfile.organisationDetails.placeholders.operatorPlaceholder")}
+          hint={t("dashboard.agentProfile.organisationDetails.validation.operatorHint")}
+          errorMessage={errors.operator}
+          isAutocomplete
         />
       </FieldWrapper>
 

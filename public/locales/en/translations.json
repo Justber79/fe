@@ -2055,7 +2055,9 @@
       "phoneTooShort": "Phone number must be at least 7 characters",
       "emailDomainNotAllowed": "Your email domain is not on our approved NGO list. Please use your organisation email address.",
       "missingToken": "Your registration link is invalid or has expired. Please use the link from your verification email.",
-      "invalidOrganizationEmail": "Invalid organization email."
+      "invalidOrganizationEmail": "Invalid organization email.",
+      "operatorListLoading": "The operator list is still loading. Please try again in a moment.",
+      "operatorListUnavailable": "The operator list couldn't be loaded. Try again later or leave the field empty."
     },
     "success": {
       "title": "Registration successful!",
@@ -2086,6 +2088,13 @@
       "unnamedMatch": "An organisation registered at this address",
       "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
       "createInstead": "Not your organisation? Create a new one"
+    },
+    "completed": {
+      "title": "Your registration is already complete",
+      "description": "You do not need to register your organisation again.",
+      "namedDescription": "Your registration for {{name}} is already complete.",
+      "continue": "Continue to your account",
+      "checking": "Checking your registration…"
     },
     "pending": {
       "title": "Join request submitted",
