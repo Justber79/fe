@@ -49,6 +49,7 @@ type Props = {
   onClearFilter: (filter: string, parentKey?: string) => void;
   entityFilter?: EntityFilter;
   showSearch?: boolean;
+  showListControls?: boolean;
   headerAction?: ReactNode;
 };
 
@@ -71,6 +72,7 @@ export default function CardsHeader({
   onClearFilter,
   entityFilter,
   showSearch = true,
+  showListControls = true,
   headerAction,
 }: Props) {
   const { t } = useTranslation();
@@ -98,7 +100,9 @@ export default function CardsHeader({
               </TabHeading>
             ))}
           </Tabs>
-          <SortBy sortOrder={sortOrder} onChange={onSortOrderChange} extraOptions={extraSortOptions} />
+          {showListControls && (
+            <SortBy sortOrder={sortOrder} onChange={onSortOrderChange} extraOptions={extraSortOptions} />
+          )}
         </TabsSectionContainer>
 
         <SearchBarSectionContainer>
@@ -111,7 +115,7 @@ export default function CardsHeader({
               value={searchValue}
             />
           )}
-          <FiltersButton setIsFiltersOpen={setIsFiltersOpen} />
+          {showListControls && <FiltersButton setIsFiltersOpen={setIsFiltersOpen} />}
         </SearchBarSectionContainer>
 
         <Results counter={resultCounter} text={resultText} />

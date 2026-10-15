@@ -1192,7 +1192,6 @@
         "title": "Other opportunities",
         "description": "Open opportunities of other organisations. Only the title and district are shown.",
         "empty": "No other opportunities found.",
-        "link": "Other opportunities",
         "columns": {
           "title": "Title",
           "district": "District",
