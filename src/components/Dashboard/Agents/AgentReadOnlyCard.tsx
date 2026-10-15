@@ -4,6 +4,7 @@ import { Heading4, Paragraph } from "@/components/styled/text";
 import { Card, CardDetailsInfo, CardHeader, CardHeaderInfo, DistrictContainer, DistrictDiv } from "./styles";
 import { useTranslation } from "react-i18next";
 import { ApiAgentGetList, Lang, OptionItem } from "need4deed-sdk";
+import { formatLocation } from "@/utils/helpers";
 import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 
 export const AgentReadOnlyCard = ({ agent, districtsList }: Props) => {
   const { t, i18n } = useTranslation();
-  const { title, district, type } = agent;
+  const { title, district, type, postcode } = agent;
   const districtTitle = district?.id ? (districtsList?.find((d) => d.id === district.id)?.title ?? null) : null;
   const lang = i18n.language as Lang;
   return (
@@ -32,7 +33,7 @@ export const AgentReadOnlyCard = ({ agent, districtsList }: Props) => {
           <IconDiv size="var(--dashboard-agents-card-detail-icon-size)">
             <MapPinIcon weight="fill" />
           </IconDiv>
-          <Paragraph>{districtTitle}</Paragraph>
+          <Paragraph>{formatLocation(postcode, districtTitle)}</Paragraph>
         </DistrictDiv>
       </DistrictContainer>
     </Card>
