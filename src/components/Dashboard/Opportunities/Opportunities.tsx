@@ -1,14 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, LangProficiency, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
+import {
+  applyMatchingPrefill,
+  hasFilterParams,
+  PREFILLED_PARAM,
+  withPrefilledMarker,
+} from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
 import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
@@ -56,6 +62,25 @@ export function Opportunities() {
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
+  const prefilledForRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!volunteerId || !volunteerFilter || !apiFilterOptions) return;
+    if (prefilledForRef.current === volunteerId) return;
+    prefilledForRef.current = volunteerId;
+    if (hasFilterParams(searchParams, Object.keys(opportunityFilterConfigs))) return;
+
+    const prefilled = applyMatchingPrefill(
+      withOptionFilters(opportunityFilterConfigs, defaultOpportunityCardsFilter, apiFilterOptions),
+      {
+        districtIds: volunteerFilter.districtIds,
+        languages: volunteerFilter.languages.filter(({ proficiency }) => proficiency !== LangProficiency.BEGINNER),
+        availability: volunteerFilter.availability,
+      },
+      { district: apiFilterOptions.district, language: apiFilterOptions.language },
+    );
+    router.replace(pathname + questionMark + withPrefilledMarker(serializeOpportunityFilters(prefilled, searchParams)));
+  }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
   const handleSearchInputChange = (searchInput: string) => {
     handleFilterUpdate((prev) => ({ ...prev, search: searchInput }));
@@ -94,8 +119,12 @@ export function Opportunities() {
   };
 
   const handleRemoveVolunteerFilter = () => {
-    const params = new URLSearchParams(searchParams);
+    const wasPrefilled = searchParams.has(PREFILLED_PARAM);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
+    if (wasPrefilled) setCardsFilter(cleared);
+    const params = new URLSearchParams(serializeOpportunityFilters(cleared, searchParams));
     params.delete("volunteer");
+    params.delete(PREFILLED_PARAM);
     router.push(pathname + questionMark + params.toString());
   };
 

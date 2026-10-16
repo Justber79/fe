@@ -22,19 +22,22 @@ import {
 } from "./styles";
 
 const TITLE_MAX = 128;
-export const DESCRIPTION_MAX = 512;
+const HOST_MAX = 128;
+export const DESCRIPTION_MAX = 812;
+export const SHORT_DESCRIPTION_MAX = 512;
 
 interface Props {
   type: EventN4DType;
   title: string;
   description: string;
+  hostName: string;
   onChange: (fields: Partial<EventFormData>) => void;
   onNext: () => void;
   onCancel: () => void;
   isNextEnabled: boolean;
 }
 
-export function StepTitle({ type, title, description, onChange, onNext, onCancel, isNextEnabled }: Props) {
+export function StepTitle({ type, title, description, hostName, onChange, onNext, onCancel, isNextEnabled }: Props) {
   const { t } = useTranslation();
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [activeTypeIndex, setActiveTypeIndex] = useState(0);
@@ -141,6 +144,17 @@ export function StepTitle({ type, title, description, onChange, onNext, onCancel
         <CharCount>
           {title.length}/{TITLE_MAX}
         </CharCount>
+      </FieldGroup>
+
+      <FieldGroup>
+        <FieldLabel htmlFor="event-host">{t("dashboard.calendar.createForm.hostLabel")}</FieldLabel>
+        <StyledInput
+          id="event-host"
+          value={hostName}
+          maxLength={HOST_MAX}
+          placeholder={t("dashboard.calendar.createForm.hostPlaceholder")}
+          onChange={(e) => onChange({ hostName: e.target.value })}
+        />
       </FieldGroup>
 
       <FieldGroup>

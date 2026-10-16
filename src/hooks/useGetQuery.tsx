@@ -47,9 +47,17 @@ interface UseGetQuery {
   params?: Params;
   staleTime?: number;
   enabled?: boolean;
+  toastOnError?: boolean;
 }
 
-export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, enabled }: UseGetQuery) => {
+export const useGetQuery = <T,>({
+  queryKey,
+  apiPath,
+  params = {},
+  staleTime,
+  enabled,
+  toastOnError = true,
+}: UseGetQuery) => {
   const { lang } = useParams<{ lang: Lang }>();
   const normalizedParams = { ...params, filter: getReducedFilter(params.filter) };
 
@@ -58,7 +66,7 @@ export const useGetQuery = <T,>({ queryKey, apiPath, params = {}, staleTime, ena
     queryFn: () => fetchData<T>(apiPath, normalizedParams),
     staleTime,
     enabled,
-    meta: { toastOnError: true },
+    meta: { toastOnError },
   });
 
   return {

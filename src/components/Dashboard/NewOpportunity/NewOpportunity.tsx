@@ -26,7 +26,7 @@ import {
   VolunteerStateTypeType,
   OpportunityFormDataWithAgentSubmitter,
 } from "need4deed-sdk";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
@@ -41,9 +41,9 @@ import { OpportunityDetailsFields } from "./fields/OpportunityDetailsFields";
 import { buildCreatePayload } from "./helper";
 import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
-import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
 import DescriptionField from "./fields/DescriptionField";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useMinAppointmentDate } from "@/hooks/useMinAppointmentDate";
 
 export function NewOpportunity() {
   const { t, i18n } = useTranslation();
@@ -54,6 +54,8 @@ export function NewOpportunity() {
 
   const userData = useCurrentUser();
   const currentAgents = userData?.agentMemberships ?? [];
+
+  const minAppointmentDate = useMinAppointmentDate();
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
@@ -90,7 +92,7 @@ export function NewOpportunity() {
   });
 
   const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
+    resolver: zodResolver(createAccompanyingDetailsSchema(t, true, minAppointmentDate)),
     mode: "onChange",
     defaultValues: {
       appointmentAddress: "",
@@ -118,7 +120,6 @@ export function NewOpportunity() {
     appointmentLanguageKeyToLabel[key] = label;
     appointmentLanguageLabelToKey[label] = key;
   });
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
 
   const { data: selectedAgent } = useGetQuery<ApiAgentGet>({
     apiPath: `${apiPathAgent}/${selectedAgentId}`,

@@ -15,6 +15,7 @@ import {
   statusIconMap,
   volunteerTypeIconMap,
 } from "./OpportunityCard.helpers";
+import { formatLocation } from "@/utils/helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
 
 type Props = {
@@ -38,23 +39,29 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     accompanyingDetails,
     statusMatch,
     district,
+    agentTitle,
   } = opportunity as ApiVolunteerOpportunityGetList & {
     accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
     statusMatch?: string;
     district?: { id: number };
+    agentTitle?: string;
   };
 
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
   const districtTitle = getDistrictTitle(district, districtsList);
+  const location = formatLocation(opportunity.postcode, districtTitle);
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : availability?.length > 0
-      ? formatAvailability(availability)
-      : null;
+    : eventDate
+      ? eventDate
+      : availability?.length > 0
+        ? formatAvailability(availability)
+        : null;
 
   const params = volunteerId ? `?volunteer=${volunteerId}` : "";
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
@@ -135,8 +142,14 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
       </CardDetail>
 
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>
-        {districtTitle && <CardParagraph text={districtTitle} />}
+        {location && <CardParagraph text={location} />}
       </CardDetail>
+
+      {agentTitle && (
+        <CardDetail header={t("dashboard.opportunities.table.agentName")} iconName={IconName.Buildings}>
+          <CardParagraph text={agentTitle} />
+        </CardDetail>
+      )}
     </Card>
   );
 }

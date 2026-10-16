@@ -3,8 +3,10 @@ import { getImageUrl } from "@/utils";
 import { TFunction } from "i18next";
 import { LatLngBoundsExpression, LatLngExpression } from "leaflet";
 import {
+  ApiAgentGetList,
   ApiOpportunityGetList,
   ApiVolunteerGetList,
+  Lang,
   OpportunityStatusType,
   VolunteerStateEngagementType,
 } from "need4deed-sdk";
@@ -128,6 +130,51 @@ export const createVolunteerMarkers = (
     }
   });
   return Array.from(volMap.values());
+};
+
+export const createAgentMarkers = (agents: ApiAgentGetList[], t: TFunction, lang: string): EntityMarker[] => {
+  const agentMap = new Map<
+    string,
+    {
+      lat: number;
+      lon: number;
+      label: string;
+      children: Array<{ title: string; link: string; district: string; type: string }>;
+      entity: EntityType;
+      onClick: () => null;
+    }
+  >();
+
+  agents?.forEach((agent) => {
+    if (!agent.lat || !agent.lon) return;
+
+    const districtTitleMap = agent.district?.title ?? {};
+    const typeTitleMap = agent.type?.title ?? {};
+    const districtTitle = districtTitleMap[Lang.DE] ?? "";
+    const typeTitle = typeTitleMap[lang as keyof typeof typeTitleMap] ?? typeTitleMap[Lang.DE] ?? "";
+
+    const childItem = {
+      title: agent.title,
+      link: `/${lang}/dashboard/agents/${agent.id}`,
+      district: districtTitle,
+      type: typeTitle,
+      agent,
+    };
+
+    if (!agentMap.has(`${agent.lat},${agent.lon}`)) {
+      agentMap.set(`${agent.lat},${agent.lon}`, {
+        lat: agent.lat,
+        lon: agent.lon,
+        label: t("dashboard.map.agents"),
+        children: [childItem],
+        entity: EntityType.AGENT,
+        onClick: () => null,
+      });
+    } else {
+      agentMap.get(`${agent.lat},${agent.lon}`)?.children.push(childItem);
+    }
+  });
+  return Array.from(agentMap.values());
 };
 
 export const createSingleOpportunityMarker = (

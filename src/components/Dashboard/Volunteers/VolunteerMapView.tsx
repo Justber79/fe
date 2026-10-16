@@ -49,10 +49,10 @@ export function VolunteerMapView({
         <PopupLink href={child.link} key={child.link}>
           <PopupCardHeader>{child.title}</PopupCardHeader>
           <CardDetail header={t("dashboard.volunteers.preferredAvailability")} iconName={IconName.CalendarDots}>
-            <CardParagraph text={child.availability} />
+            <CardParagraph text={child.availability ?? ""} />
           </CardDetail>
           <CardDetail header={t("dashboard.volunteers.languages")} iconName={IconName.Translate}>
-            <CardParagraph text={child.language} />
+            <CardParagraph text={child.language ?? ""} />
           </CardDetail>
         </PopupLink>
       ));

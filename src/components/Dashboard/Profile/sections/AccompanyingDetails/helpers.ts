@@ -20,13 +20,6 @@ export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undef
   );
 };
 
-export const getMinAppointmentDate = (): Date => {
-  const date = new Date();
-  date.setDate(date.getDate() + 8);
-  date.setHours(0, 0, 0, 0);
-  return date;
-};
-
 export const formatTimeForDisplay = (time: string | undefined): string => time ?? "";
 
 export const getInitialFormValues = (
