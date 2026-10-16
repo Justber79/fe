@@ -1,11 +1,31 @@
 import { isValidPLZ } from "@/components/forms/utils";
-import { TranslatedIntoType } from "need4deed-sdk";
+import { format, isSameDay } from "date-fns";
+import { MIN_APPOINTMENT_WORKING_DAYS, TranslatedIntoType } from "need4deed-sdk";
 import { z } from "zod";
 
 const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 const i18nPrefix = "dashboard.opportunityProfile.accompanyingDetails.validation";
 
-export const createAccompanyingDetailsSchema = (t: (key: string) => string, required: boolean) => {
+type Translate = (key: string, options?: Record<string, unknown>) => string;
+
+const isAppointmentTooSoon = (date: Date | null | undefined, minDate?: Date, currentDate?: Date | null) =>
+  !!date && !!minDate && !(currentDate && isSameDay(date, currentDate)) && date < minDate;
+
+export const createAccompanyingDetailsSchema = (
+  t: Translate,
+  required: boolean,
+  minAppointmentDate?: Date,
+  currentAppointmentDate?: Date | null,
+) => {
+  const dateTooSoonMessage =
+    minAppointmentDate &&
+    t(`${i18nPrefix}.dateTooSoon`, {
+      days: MIN_APPOINTMENT_WORKING_DAYS,
+      date: format(minAppointmentDate, "dd.MM.yyyy"),
+    });
+  const notTooSoon = (date: Date | null | undefined) =>
+    !isAppointmentTooSoon(date, minAppointmentDate, currentAppointmentDate);
+
   return z.object({
     appointmentAddress: required ? z.string().min(1, t(`${i18nPrefix}.addressRequired`)) : z.string().optional(),
     appointmentPostcode: required
@@ -14,7 +34,9 @@ export const createAccompanyingDetailsSchema = (t: (key: string) => string, requ
           .min(1, t(`${i18nPrefix}.postcodeRequired`))
           .refine(isValidPLZ, t("form.error.postcode"))
       : z.string().optional(),
-    appointmentDate: required ? z.date({ message: t(`${i18nPrefix}.dateRequired`) }) : z.date().nullable().optional(),
+    appointmentDate: required
+      ? z.date({ message: t(`${i18nPrefix}.dateRequired`) }).refine(notTooSoon, dateTooSoonMessage)
+      : z.date().nullable().optional().refine(notTooSoon, dateTooSoonMessage),
     appointmentTime: required
       ? z
           .string()

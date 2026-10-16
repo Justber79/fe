@@ -1560,6 +1560,7 @@
           "addressRequired": "Terminadresse ist erforderlich",
           "postcodeRequired": "Terminpostleitzahl ist erforderlich",
           "dateRequired": "Termindatum ist erforderlich",
+          "dateTooSoon": "Der Termin muss mindestens {{days}} Werktage in der Zukunft liegen, also am {{date}} oder später.",
           "timeRequired": "Terminzeit ist erforderlich",
           "nameRequired": "Name des Geflüchteten ist erforderlich",
           "appointmentLanguageRequired": "Terminsprache ist erforderlich"
