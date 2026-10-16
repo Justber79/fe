@@ -1,8 +1,8 @@
 "use client";
 import {
+  getMatchStatusDisplay,
   matchStatusColorMap,
   matchStatusIconMap,
-  OpportunityMatchStatusType,
 } from "@/components/Dashboard/Opportunities/OpportunityCard.helpers";
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
@@ -44,7 +44,7 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
     status: statusLabelMap[OpportunityManualStatusType.SEARCHING],
   });
   const volunteerTypeLabelMap = createVolunteerTypeLabelMap(t);
-  const { statusMatch } = opportunity as ApiOpportunityGet & { statusMatch?: string };
+  const matchStatus = getMatchStatusDisplay(opportunity.statusMatch, opportunity.noMatchFound);
 
   const postedDate = opportunity.createdAt ? formatDateTime(opportunity.createdAt) : EMPTY_PLACEHOLDER_VALUE;
   const subtitle = `${t("dashboard.opportunityProfile.postedOn")} ${postedDate}`;
@@ -99,12 +99,10 @@ export const OpportunityHeader = ({ opportunity }: Props) => {
       <StatusRowField
         title={t("dashboard.opportunityProfile.matchingStatus")}
         extra={
-          statusMatch ? (
-            <MatchStatusBadge
-              $color={matchStatusColorMap[statusMatch as OpportunityMatchStatusType] ?? "var(--color-blue-700)"}
-            >
-              {matchStatusIconMap[statusMatch as OpportunityMatchStatusType]}
-              <span>{t(`dashboard.opportunities.matchStatus.${statusMatch}`)}</span>
+          matchStatus ? (
+            <MatchStatusBadge $color={matchStatusColorMap[matchStatus] ?? "var(--color-blue-700)"}>
+              {matchStatusIconMap[matchStatus]}
+              <span>{t(`dashboard.opportunities.matchStatus.${matchStatus}`)}</span>
             </MatchStatusBadge>
           ) : (
             <EmptyPlaceholder />

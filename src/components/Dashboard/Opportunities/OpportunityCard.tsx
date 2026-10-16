@@ -9,6 +9,7 @@ import { IconName } from "../Volunteers/icon";
 import { formatAccompanyingDate, getActivityTitles, getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import {
   formatAvailability,
+  getMatchStatusDisplay,
   matchStatusColorMap,
   matchStatusIconMap,
   statusColorMap,
@@ -37,6 +38,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     availability,
     accompanyingDetails,
     statusMatch,
+    noMatchFound,
     district,
     agentTitle,
   } = opportunity as ApiVolunteerOpportunityGetList & {
@@ -46,6 +48,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
     agentTitle?: string;
   };
 
+  const matchStatus = getMatchStatusDisplay(statusMatch, noMatchFound);
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
@@ -77,16 +80,16 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
             </Paragraph>
           </StatusDiv>
         )}
-        {statusMatch && (
+        {matchStatus && (
           <StatusDiv>
-            {matchStatusIconMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
+            {matchStatusIconMap[matchStatus]}
             <Paragraph
               fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
               fontSize="var(--dashboard-volunteers-card-status-fontSize)"
               lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={matchStatusColorMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
+              color={matchStatusColorMap[matchStatus]}
             >
-              {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
+              {t(`dashboard.opportunities.matchStatus.${matchStatus}`)}
             </Paragraph>
           </StatusDiv>
         )}
