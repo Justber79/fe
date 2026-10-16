@@ -44,11 +44,11 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
   const districtTitle = getDistrictTitle(district, districtsList);
   const districtText = abbreviateDistrict(districtTitle) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
-  const isEvent = volunteerType === ProfileVolunteeringType.EVENTS;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : isEvent
-      ? formatAccompanyingDate(opportunity)
+    : eventDate
+      ? eventDate
       : availability?.length
         ? formatSchedule(availability, t)
         : null;

@@ -52,11 +52,11 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const districtTitle = getDistrictTitle(district, districtsList);
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
-  const isEvent = volunteerType === ProfileVolunteeringType.EVENTS;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : isEvent
-      ? formatAccompanyingDate(opportunity)
+    : eventDate
+      ? eventDate
       : availability?.length > 0
         ? formatAvailability(availability)
         : null;
