@@ -1,4 +1,4 @@
-import { format, isValid, parse } from "date-fns";
+import { format, isSameDay, isValid, parse, startOfDay } from "date-fns";
 import { type Locale } from "date-fns/locale";
 import { useEffect, useRef, useState } from "react";
 import { DayPicker } from "react-day-picker";
@@ -21,6 +21,7 @@ type Props = {
   locale?: Locale;
   allowFuture?: boolean;
   minDate?: Date;
+  selectableDate?: Date | null;
   label?: string;
   showTodayIndicator?: boolean;
   todayText?: string;
@@ -33,6 +34,7 @@ export function DatePickerWithLabel({
   locale,
   allowFuture = false,
   minDate,
+  selectableDate,
   label,
   showTodayIndicator = false,
   todayText = "today",
@@ -100,8 +102,7 @@ export function DatePickerWithLabel({
 
     const parsedDate = parse(value, "dd.MM.yyyy", new Date());
 
-    const isAfterMinDate = !minDate || parsedDate >= minDate;
-    if (isValid(parsedDate) && parsedDate.getFullYear() >= MIN_YEAR && isAfterMinDate) {
+    if (isValid(parsedDate) && parsedDate.getFullYear() >= MIN_YEAR) {
       onSelect(parsedDate);
     }
   };
@@ -118,6 +119,9 @@ export function DatePickerWithLabel({
       }
     }
   };
+
+  const earliest = startOfDay(minDate ?? new Date());
+  const isBeforeEarliest = (day: Date) => day < earliest && !(selectableDate && isSameDay(day, selectableDate));
 
   const handleIconClick = () => {
     setIsOpen(!isOpen);
@@ -152,7 +156,7 @@ export function DatePickerWithLabel({
           captionLayout="dropdown"
           startMonth={new Date(MIN_YEAR, 0)}
           endMonth={new Date(new Date().getFullYear() + 10, 11)}
-          disabled={allowFuture ? { before: minDate ?? new Date() } : { after: new Date() }}
+          disabled={allowFuture ? isBeforeEarliest : { after: new Date() }}
         />
       </DatePickerPopover>
     </DatePickerWrapper>

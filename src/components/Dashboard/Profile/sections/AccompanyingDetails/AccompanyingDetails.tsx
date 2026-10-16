@@ -1,17 +1,18 @@
 "use client";
 import { useApiLanguages } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { useMinAppointmentDate } from "@/hooks/useMinAppointmentDate";
 import { useUpdateOpportunityAccompanyingDetails } from "@/hooks/useUpdateOpportunityAccompanyingDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { de, enUS } from "date-fns/locale";
 import { ApiOpportunityAccompanyingDetails, ApiOpportunityGet, Lang, Option, TranslatedIntoType } from "need4deed-sdk";
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { EditableSectionProps, EditableSectionRef } from "../shared/types";
 import { useEditingChangeNotifier } from "../shared/useEditingChangeNotifier";
 import { AccompanyingDetailsDisplay } from "./AccompanyingDetailsDisplay";
 import { AccompanyingDetailsEdit } from "./AccompanyingDetailsEdit";
-import { getInitialFormValues, getMinAppointmentDate, isAccompanyingType, buildAccompanyingPayload } from "./helpers";
+import { getInitialFormValues, isAccompanyingType, buildAccompanyingPayload } from "./helpers";
 import { Container, NotAccompanyingMessage } from "./styles";
 import { createAccompanyingDetailsSchema, AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
@@ -31,7 +32,7 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   useEditingChangeNotifier(isEditing, onEditingChange);
   const { data: apiLanguages } = useApiLanguages();
   const showFullDetails = isAccompanyingType(opportunity.volunteerType);
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
+  const minAppointmentDate = useMinAppointmentDate();
 
   const languageOptions = apiLanguages.map((lang) => lang.title);
 
@@ -55,7 +56,9 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   const initialFormValues = getInitialFormValues(opportunity.accompanyingDetails);
 
   const methods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(createAccompanyingDetailsSchema(t, false)),
+    resolver: zodResolver(
+      createAccompanyingDetailsSchema(t, false, minAppointmentDate, initialFormValues.appointmentDate),
+    ),
     mode: "onChange",
     defaultValues: initialFormValues,
   });

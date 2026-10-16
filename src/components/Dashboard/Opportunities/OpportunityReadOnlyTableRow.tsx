@@ -7,6 +7,7 @@ import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { abbreviateDistrict, getDistrictTitle, getOpportunityDisplayLanguages } from "./helpers";
 import { getMatchStatusDisplay } from "./OpportunityCard.helpers";
 import Link from "next/link";
+import { formatLocation } from "@/utils/helpers";
 
 interface TableRowProps {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -21,7 +22,8 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
   const matchStatus = getMatchStatusDisplay(opportunity.statusMatch, opportunity.noMatchFound);
   const displayLanguages = getOpportunityDisplayLanguages(languages);
   const districtTitle = getDistrictTitle(district, districtsList);
-  const districtText = abbreviateDistrict(districtTitle) || "—";
+  const districtText =
+    formatLocation(opportunity.postcode, districtTitle ? abbreviateDistrict(districtTitle) : null) || "—";
 
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
   return (

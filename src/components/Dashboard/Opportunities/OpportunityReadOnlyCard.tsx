@@ -13,6 +13,7 @@ import {
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
 import { getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import Link from "next/link";
+import { formatLocation } from "@/utils/helpers";
 
 type Props = {
   opportunity: ApiVolunteerOpportunityGetList;
@@ -36,6 +37,7 @@ export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
 
   const districtTitle = getDistrictTitle(district, districtsList);
+  const location = formatLocation(opportunity.postcode, districtTitle);
 
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}` : "";
 
@@ -87,7 +89,7 @@ export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
       </CardDetail>
 
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>
-        {districtTitle && <CardParagraph text={districtTitle} />}
+        {location && <CardParagraph text={location} />}
       </CardDetail>
     </Card>
   );

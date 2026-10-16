@@ -1549,6 +1549,7 @@
           "addressRequired": "Appointment address is required",
           "postcodeRequired": "Appointment postcode is required",
           "dateRequired": "Appointment date is required",
+          "dateTooSoon": "The appointment must be at least {{days}} working days from today, on {{date}} or later.",
           "timeRequired": "Appointment time is required",
           "nameRequired": "Refugee name is required",
           "appointmentLanguageRequired": "Appointment language is required"

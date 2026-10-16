@@ -15,6 +15,7 @@ import {
 } from "./helpers";
 import { MatchedBadge } from "./styles";
 import { getMatchStatusDisplay, OpportunityMatchStatusType } from "./OpportunityCard.helpers";
+import { formatLocation } from "@/utils/helpers";
 import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
 
 type ExtendedOpportunity = ApiVolunteerOpportunityGetList & {
@@ -42,13 +43,17 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
   const { statusMatch, noMatchFound, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
   const districtTitle = getDistrictTitle(district, districtsList);
-  const districtText = abbreviateDistrict(districtTitle) || "—";
+  const districtText =
+    formatLocation(opportunity.postcode, districtTitle ? abbreviateDistrict(districtTitle) : null) || "—";
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : availability?.length
-      ? formatSchedule(availability, t)
-      : null;
+    : eventDate
+      ? eventDate
+      : availability?.length
+        ? formatSchedule(availability, t)
+        : null;
 
   const displayLanguages = getOpportunityDisplayLanguages(languages);
   const matchStatus = getMatchStatusDisplay(statusMatch, noMatchFound);

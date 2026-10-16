@@ -16,6 +16,7 @@ import {
   statusIconMap,
   volunteerTypeIconMap,
 } from "./OpportunityCard.helpers";
+import { formatLocation } from "@/utils/helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
 
 type Props = {
@@ -53,13 +54,17 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
   const activityTitles = getActivityTitles(activities, activitiesList);
   const districtTitle = getDistrictTitle(district, districtsList);
+  const location = formatLocation(opportunity.postcode, districtTitle);
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : availability?.length > 0
-      ? formatAvailability(availability)
-      : null;
+    : eventDate
+      ? eventDate
+      : availability?.length > 0
+        ? formatAvailability(availability)
+        : null;
 
   const params = volunteerId ? `?volunteer=${volunteerId}` : "";
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
@@ -140,7 +145,7 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
       </CardDetail>
 
       <CardDetail header={t("dashboard.opportunities.district")} iconName={IconName.MapPin}>
-        {districtTitle && <CardParagraph text={districtTitle} />}
+        {location && <CardParagraph text={location} />}
       </CardDetail>
 
       {agentTitle && (
