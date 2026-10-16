@@ -1,5 +1,6 @@
 "use client";
 import { useApiLanguages } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { useAuth } from "@/hooks/useAuth";
 import { useUpdateOpportunityAccompanyingDetails } from "@/hooks/useUpdateOpportunityAccompanyingDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { de, enUS } from "date-fns/locale";
@@ -31,7 +32,8 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   useEditingChangeNotifier(isEditing, onEditingChange);
   const { data: apiLanguages } = useApiLanguages();
   const showFullDetails = isAccompanyingType(opportunity.volunteerType);
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
+  const { isAuthorized } = useAuth();
+  const minAppointmentDate = useMemo(() => getMinAppointmentDate(isAuthorized), [isAuthorized]);
 
   const languageOptions = apiLanguages.map((lang) => lang.title);
 
@@ -55,7 +57,9 @@ export const AccompanyingDetails = forwardRef<EditableSectionRef, Props>(functio
   const initialFormValues = getInitialFormValues(opportunity.accompanyingDetails);
 
   const methods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(createAccompanyingDetailsSchema(t, false)),
+    resolver: zodResolver(
+      createAccompanyingDetailsSchema(t, false, minAppointmentDate, initialFormValues.appointmentDate),
+    ),
     mode: "onChange",
     defaultValues: initialFormValues,
   });

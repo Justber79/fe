@@ -20,7 +20,7 @@ type Props = {
   onCancel: () => void;
   onSubmit: () => void;
   isPending: boolean;
-  minAppointmentDate: Date;
+  minAppointmentDate?: Date;
   hideButtons?: boolean;
 };
 

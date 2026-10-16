@@ -36,6 +36,7 @@ import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
 import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
 import DescriptionField from "./fields/DescriptionField";
+import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function NewOpportunity() {
@@ -47,6 +48,9 @@ export function NewOpportunity() {
 
   const userData = useCurrentUser();
   const currentAgents = userData?.agentMemberships ?? [];
+
+  const { isAuthorized } = useAuth();
+  const minAppointmentDate = useMemo(() => getMinAppointmentDate(isAuthorized), [isAuthorized]);
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
@@ -83,7 +87,7 @@ export function NewOpportunity() {
   });
 
   const accompanyingMethods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
+    resolver: zodResolver(createAccompanyingDetailsSchema(t, true, minAppointmentDate)),
     mode: "onChange",
     defaultValues: {
       appointmentAddress: "",
@@ -111,7 +115,6 @@ export function NewOpportunity() {
     appointmentLanguageKeyToLabel[key] = label;
     appointmentLanguageLabelToKey[label] = key;
   });
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
 
   const { mutate: createOpportunity, isPending } = useMutationQuery<OpportunityFormDataWithAgentSubmitter, unknown>({
     apiPath: `${apiPathOpportunity}/`,

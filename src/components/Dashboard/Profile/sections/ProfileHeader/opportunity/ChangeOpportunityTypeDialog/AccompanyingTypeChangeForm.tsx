@@ -17,6 +17,7 @@ import {
   getMinAppointmentDate,
 } from "../../../AccompanyingDetails/helpers";
 import { useApiLanguages } from "../../../VolunteerProfile/hooks";
+import { useAuth } from "@/hooks/useAuth";
 import { useUpdateOpportunityType } from "@/hooks/useUpdateOpportunityType";
 import { TypeChangeButtons } from "./TypeChangeButtons";
 
@@ -31,7 +32,8 @@ export const AccompanyingTypeChangeForm = ({ opportunityId, locale, onCancel }: 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { mutateAsync: updateType, isPending } = useUpdateOpportunityType(opportunityId);
 
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(), []);
+  const { isAuthorized } = useAuth();
+  const minAppointmentDate = useMemo(() => getMinAppointmentDate(isAuthorized), [isAuthorized]);
 
   const languageOptions = apiLanguages.map((lang) => lang.title);
   const keyToLabel: Record<string, string> = {};
@@ -52,7 +54,7 @@ export const AccompanyingTypeChangeForm = ({ opportunityId, locale, onCancel }: 
   const appointmentLanguageOptions = appointmentLanguageKeys.map((key) => appointmentLanguageKeyToLabel[key]);
 
   const methods = useForm<AccompanyingDetailsFormData>({
-    resolver: zodResolver(createAccompanyingDetailsSchema(t, true)),
+    resolver: zodResolver(createAccompanyingDetailsSchema(t, true, minAppointmentDate)),
     mode: "onChange",
     defaultValues: getInitialFormValues(undefined),
   });
