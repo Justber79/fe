@@ -4,7 +4,7 @@ import {
   formatToLocalTime,
   formatToUtcTime,
 } from "@/utils";
-import { ApiOpportunityAccompanyingDetails, minAppointmentDay, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiOpportunityAccompanyingDetails, VolunteerStateTypeType } from "need4deed-sdk";
 import { AccompanyingDetailsFormData } from "./createAccompanyingDetailsSchema";
 
 type ExtendedAccompanyingDetails = ApiOpportunityAccompanyingDetails & {
@@ -19,9 +19,6 @@ export const isAccompanyingType = (volunteerType: VolunteerStateTypeType | undef
     volunteerType === VolunteerStateTypeType.REGULAR_ACCOMPANYING
   );
 };
-
-export const getMinAppointmentDate = (isStaff: boolean): Date | undefined =>
-  isStaff ? undefined : minAppointmentDay();
 
 export const formatTimeForDisplay = (time: string | undefined): string => time ?? "";
 

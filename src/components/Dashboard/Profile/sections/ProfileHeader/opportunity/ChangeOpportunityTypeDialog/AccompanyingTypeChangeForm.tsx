@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
@@ -11,13 +11,9 @@ import {
   createAccompanyingDetailsSchema,
   AccompanyingDetailsFormData,
 } from "../../../AccompanyingDetails/createAccompanyingDetailsSchema";
-import {
-  buildAccompanyingPayload,
-  getInitialFormValues,
-  getMinAppointmentDate,
-} from "../../../AccompanyingDetails/helpers";
+import { buildAccompanyingPayload, getInitialFormValues } from "../../../AccompanyingDetails/helpers";
 import { useApiLanguages } from "../../../VolunteerProfile/hooks";
-import { useAuth } from "@/hooks/useAuth";
+import { useMinAppointmentDate } from "@/hooks/useMinAppointmentDate";
 import { useUpdateOpportunityType } from "@/hooks/useUpdateOpportunityType";
 import { TypeChangeButtons } from "./TypeChangeButtons";
 
@@ -32,8 +28,7 @@ export const AccompanyingTypeChangeForm = ({ opportunityId, locale, onCancel }: 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { mutateAsync: updateType, isPending } = useUpdateOpportunityType(opportunityId);
 
-  const { isAuthorized } = useAuth();
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(isAuthorized), [isAuthorized]);
+  const minAppointmentDate = useMinAppointmentDate();
 
   const languageOptions = apiLanguages.map((lang) => lang.title);
   const keyToLabel: Record<string, string> = {};

@@ -21,7 +21,7 @@ import { Heading2 } from "@/components/styled/text";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
 import { TranslatedIntoType, VolunteerStateTypeType, OpportunityFormDataWithAgentSubmitter } from "need4deed-sdk";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -34,10 +34,9 @@ import { OpportunityDetailsFields } from "./fields/OpportunityDetailsFields";
 import { buildCreatePayload } from "./helper";
 import { createHeaderSchema, HeaderFormData } from "./headerSchema";
 import OpportunityHeaderCard from "./OpportunityHeaderCard";
-import { getMinAppointmentDate } from "../Profile/sections/AccompanyingDetails/helpers";
 import DescriptionField from "./fields/DescriptionField";
-import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useMinAppointmentDate } from "@/hooks/useMinAppointmentDate";
 
 export function NewOpportunity() {
   const { t, i18n } = useTranslation();
@@ -49,8 +48,7 @@ export function NewOpportunity() {
   const userData = useCurrentUser();
   const currentAgents = userData?.agentMemberships ?? [];
 
-  const { isAuthorized } = useAuth();
-  const minAppointmentDate = useMemo(() => getMinAppointmentDate(isAuthorized), [isAuthorized]);
+  const minAppointmentDate = useMinAppointmentDate();
 
   const { data: apiLanguages = [] } = useApiLanguages();
   const { data: apiActivities = [] } = useApiActivities();
