@@ -54,11 +54,14 @@ export function OpportunityCard({ opportunity, volunteerId, activitiesList, dist
   const location = formatLocation(opportunity.postcode, districtTitle);
 
   const isAccompanying = volunteerType === ProfileVolunteeringType.ACCOMPANYING;
+  const eventDate = volunteerType === ProfileVolunteeringType.EVENTS ? formatAccompanyingDate(opportunity) : null;
   const scheduleText = isAccompanying
     ? formatAccompanyingDate(accompanyingDetails)
-    : availability?.length > 0
-      ? formatAvailability(availability)
-      : null;
+    : eventDate
+      ? eventDate
+      : availability?.length > 0
+        ? formatAvailability(availability)
+        : null;
 
   const params = volunteerId ? `?volunteer=${volunteerId}` : "";
   const profileUrl = id ? `/${i18n.language}/dashboard/opportunities/${id}${params}` : "";
