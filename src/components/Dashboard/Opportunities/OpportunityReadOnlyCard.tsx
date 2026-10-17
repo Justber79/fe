@@ -4,7 +4,12 @@ import { Paragraph } from "@/components/styled/text";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { IconName } from "../Volunteers/icon";
-import { matchStatusColorMap, matchStatusIconMap, volunteerTypeIconMap } from "./OpportunityCard.helpers";
+import {
+  getMatchStatusDisplay,
+  matchStatusColorMap,
+  matchStatusIconMap,
+  volunteerTypeIconMap,
+} from "./OpportunityCard.helpers";
 import { Card, LanguageRow, StatusDiv, StatusTagsDiv, TagDiv, TitleParagraph } from "./styles";
 import { getDistrictTitle, getLanguagesByPurpose } from "./helpers";
 import Link from "next/link";
@@ -20,13 +25,14 @@ type Props = {
 export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   const { t, i18n } = useTranslation();
 
-  const { id, title, volunteerType, district, languages, statusMatch } =
+  const { id, title, volunteerType, district, languages, statusMatch, noMatchFound } =
     opportunity as ApiVolunteerOpportunityGetList & {
       accompanyingDetails?: { appointmentDate?: string; appointmentTime?: string };
       statusMatch?: string;
       district?: { id: number };
     };
 
+  const matchStatus = getMatchStatusDisplay(statusMatch, noMatchFound);
   const mainCommunication = getLanguagesByPurpose(languages, LangPurpose.GENERAL);
   const recipientLanguage = getLanguagesByPurpose(languages, LangPurpose.RECIPIENT);
 
@@ -38,16 +44,16 @@ export function OpportunityReadOnlyCard({ opportunity, districtsList }: Props) {
   return (
     <Card as={Link} data-testid="opportunity-card" href={profileUrl}>
       <StatusTagsDiv>
-        {statusMatch && (
+        {matchStatus && (
           <StatusDiv>
-            {matchStatusIconMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
+            {matchStatusIconMap[matchStatus]}
             <Paragraph
               fontWeight="var(--dashboard-volunteers-card-status-fontWeight)"
               fontSize="var(--dashboard-volunteers-card-status-fontSize)"
               lineheight="var(--dashboard-volunteers-card-status-lineHeight)"
-              color={matchStatusColorMap[statusMatch as import("./OpportunityCard.helpers").OpportunityMatchStatusType]}
+              color={matchStatusColorMap[matchStatus]}
             >
-              {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
+              {t(`dashboard.opportunities.matchStatus.${matchStatus}`)}
             </Paragraph>
           </StatusDiv>
         )}

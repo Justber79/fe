@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ClickableRow, TableCell } from "@/components/core/common/Table";
 import { OPPORTUNITY_READ_ONLY_COL_WIDTHS } from "./opportunitiesTableColumns";
 import { abbreviateDistrict, getDistrictTitle, getOpportunityDisplayLanguages } from "./helpers";
+import { getMatchStatusDisplay } from "./OpportunityCard.helpers";
 import Link from "next/link";
 import { formatLocation } from "@/utils/helpers";
 
@@ -18,7 +19,7 @@ interface TableRowProps {
 export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList }: TableRowProps) {
   const { t, i18n } = useTranslation();
   const { id, title, volunteerType, district, languages } = opportunity;
-  const statusMatch = opportunity.statusMatch;
+  const matchStatus = getMatchStatusDisplay(opportunity.statusMatch, opportunity.noMatchFound);
   const displayLanguages = getOpportunityDisplayLanguages(languages);
   const districtTitle = getDistrictTitle(district, districtsList);
   const districtText =
@@ -37,7 +38,7 @@ export function OpportunityReadOnlyTableRow({ opportunity, isLast, districtsList
         {t(`dashboard.opportunities.type.${volunteerType}`)}
       </TableCell>
       <TableCell data-testid={`opportunity-status-match-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.statusMatch}>
-        {t(`dashboard.opportunities.matchStatus.${statusMatch}`)}
+        {t(`dashboard.opportunities.matchStatus.${matchStatus}`)}
       </TableCell>
       <TableCell data-testid={`opportunity-languages-${id}`} $width={OPPORTUNITY_READ_ONLY_COL_WIDTHS.languages}>
         {displayLanguages || "—"}
