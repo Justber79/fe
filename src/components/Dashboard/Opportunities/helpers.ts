@@ -13,7 +13,7 @@ import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/cons
 import { opportunityFilterConfigs } from "./Filters/config";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { format } from "date-fns";
-import { utcHhmmToLocal } from "@/utils";
+import { dateFromDateTimeUTCStrings } from "@/utils";
 import { TFunction } from "i18next";
 import { ApiVolunteerOpportunityGetList } from "need4deed-sdk";
 
@@ -160,11 +160,11 @@ export function formatAccompanyingDate(details?: {
 }): string | null {
   if (!details?.appointmentDate) return null;
 
-  const date = new Date(details.appointmentDate);
-  const formattedDate = isNaN(date.getTime()) ? details.appointmentDate : format(date, "dd.MM.yyyy");
-  const formattedTime = details.appointmentTime ? utcHhmmToLocal(details.appointmentTime) : null;
+  const dateTime = dateFromDateTimeUTCStrings(details.appointmentDate, details.appointmentTime ?? undefined);
+  if (dateTime) return format(dateTime, "dd.MM.yyyy HH:mm");
 
-  return [formattedDate, formattedTime].filter(Boolean).join(" ");
+  const date = new Date(details.appointmentDate);
+  return isNaN(date.getTime()) ? details.appointmentDate : format(date, "dd.MM.yyyy");
 }
 
 export function formatSchedule(availability: Availability, t: TFunction): string {
