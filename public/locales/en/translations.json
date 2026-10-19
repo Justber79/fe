@@ -1656,7 +1656,8 @@
         "firstInquiry": "First inquiry sent",
         "opportunityList": "Opportunity list sent",
         "statusUpdate": "Status update",
-        "postMatchFollowUp": "Post-match follow-up"
+        "postMatchFollowUp": "Post-match follow-up",
+        "cgcApplicationEmail": "Email with application (EFZ)"
       },
       "platformOptions": {
         "phoneNumber": "Phone number",

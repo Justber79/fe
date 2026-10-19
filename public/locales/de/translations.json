@@ -1668,7 +1668,8 @@
         "firstInquiry": "Erste Anfrage gesendet",
         "opportunityList": "Liste der Ehrenamtsbedarfe gesendet",
         "statusUpdate": "Statusaktualisierung",
-        "postMatchFollowUp": "Folgegespräch nach Zuweisung"
+        "postMatchFollowUp": "Folgegespräch nach Zuweisung",
+        "cgcApplicationEmail": "E-Mail mit Antrag (EFZ)"
       },
       "platformOptions": {
         "phoneNumber": "Telefonnummer",

@@ -28,22 +28,25 @@ export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethod
   });
 }
 
+const communicationTypeKeys: Partial<Record<CommunicationType, string>> = {
+  [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
+  [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
+  [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
+  [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
+  [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
+  [CommunicationType.CGC_APPLICATION_EMAIL]: "dashboard.communicationSection.communicationTypes.cgcApplicationEmail",
+};
+
 export function getCommunicationTypeLabel(t: TFunction, communicationType: CommunicationType): string {
-  const map: Record<string, string> = {
-    [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
-    [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
-    [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
-    [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
-    [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
-  };
   return t(
-    map[communicationType] || `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`,
+    communicationTypeKeys[communicationType] ||
+      `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`,
     { defaultValue: communicationType },
   );
 }
 
 export function getDisplayLabel(t: TFunction, contactType: ContactType, communicationType?: CommunicationType): string {
-  if (contactType === ContactType.OTHER && communicationType) {
+  if (communicationType && (contactType === ContactType.OTHER || communicationTypeKeys[communicationType])) {
     return getCommunicationTypeLabel(t, communicationType);
   }
   return getContactTypeLabel(t, contactType);

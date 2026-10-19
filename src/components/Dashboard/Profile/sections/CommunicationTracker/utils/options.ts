@@ -8,10 +8,12 @@ type Option = {
 };
 
 export function getCommunicationTypeOptions(t: TFunction): Option[] {
-  return Object.values(CommunicationType).map((type) => ({
-    value: type,
-    label: getCommunicationTypeLabel(t, type),
-  }));
+  return Object.values(CommunicationType)
+    .filter((type) => type !== CommunicationType.CGC_APPLICATION_EMAIL)
+    .map((type) => ({
+      value: type,
+      label: getCommunicationTypeLabel(t, type),
+    }));
 }
 
 export function getContactMethodOptions(t: TFunction, contactType: ContactType): Option[] {
