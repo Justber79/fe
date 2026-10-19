@@ -50,11 +50,10 @@ export function useCommentTag(
   const isTagDataPending = needsTagData && isUsersLoading;
 
   const users = useMemo(() => {
-    if (!enabled) return undefined;
     if (!isStaffMode) return primaryUsers;
     if (isUsersLoading) return undefined;
     return [...(primaryUsers ?? []), ...(admins ?? [])];
-  }, [enabled, primaryUsers, admins, isStaffMode, isUsersLoading]);
+  }, [primaryUsers, admins, isStaffMode, isUsersLoading]);
 
   useEffect(() => {
     setActiveRowIndex(0);
