@@ -1188,6 +1188,19 @@
         "downloadUnavailable": "Download nicht verfügbar",
         "deleteUnavailable": "Löschen nicht verfügbar"
       },
+      "applicationEmail": {
+        "name": "E-Mail mit Antrag",
+        "sent": "Gesendet",
+        "notSent": "Nicht gesendet",
+        "send": "E-Mail mit Antrag senden",
+        "dialog": {
+          "title": "E-Mail mit Antrag senden?",
+          "message": "Das Antragsformular für das erweiterte Führungszeugnis (EFZ) und die Anleitung werden per E-Mail an {{name}} ({{email}}) gesendet, community@need4deed.org in Kopie.",
+          "alreadySent": "Sie wurde bereits am {{date}} gesendet.",
+          "send": "Senden",
+          "cancel": "Abbrechen"
+        }
+      },
       "deleteDialog": {
         "title": "Dokument löschen?",
         "message": "\"{{documentName}}\" wird gelöscht.",

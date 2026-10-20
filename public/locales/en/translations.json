@@ -941,6 +941,19 @@
         "downloadUnavailable": "Download unavailable",
         "deleteUnavailable": "Delete unavailable"
       },
+      "applicationEmail": {
+        "name": "Email with application",
+        "sent": "Sent",
+        "notSent": "Not sent",
+        "send": "Send email with application",
+        "dialog": {
+          "title": "Send email with application?",
+          "message": "The certificate of good conduct application form (EFZ) and instructions will be emailed to {{name}} ({{email}}), with community@need4deed.org in copy.",
+          "alreadySent": "It was already sent on {{date}}.",
+          "send": "Send",
+          "cancel": "Cancel"
+        }
+      },
       "deleteDialog": {
         "title": "Delete document?",
         "message": "\"{{documentName}}\" document will be deleted.",
