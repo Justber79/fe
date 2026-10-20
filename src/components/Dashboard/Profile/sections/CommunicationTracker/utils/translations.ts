@@ -48,8 +48,12 @@ export function getCommunicationTypeLabel(t: TFunction, communicationType: Commu
   return key ? t(key) : communicationType;
 }
 
+const callContactTypes: ContactType[] = [ContactType.CALL, ContactType.TRIED_CALL];
+
 export function getDisplayLabel(t: TFunction, contactType: ContactType, communicationType?: CommunicationType): string {
-  return communicationType ? getCommunicationTypeLabel(t, communicationType) : getContactTypeLabel(t, contactType);
+  return communicationType && !callContactTypes.includes(contactType)
+    ? getCommunicationTypeLabel(t, communicationType)
+    : getContactTypeLabel(t, contactType);
 }
 
 export { formatDate } from "../../shared/utils/formatDate";
