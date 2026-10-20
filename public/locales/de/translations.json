@@ -2282,6 +2282,7 @@
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
     "applicationEmailSent": "E-Mail mit Antrag gesendet!",
+    "applicationEmailJustSent": "Die E-Mail mit Antrag wurde gerade gesendet. Bitte versuchen Sie es in einer Minute erneut.",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",

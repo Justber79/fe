@@ -1938,6 +1938,7 @@
     "uploadSuccess": "Document uploaded successfully!",
     "deleteSuccess": "Document deleted successfully!",
     "applicationEmailSent": "Email with application sent!",
+    "applicationEmailJustSent": "The email with application was just sent. Please try again in a minute.",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",

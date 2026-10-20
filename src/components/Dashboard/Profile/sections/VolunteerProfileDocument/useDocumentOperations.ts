@@ -12,6 +12,7 @@ import {
 } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 type UploadMetaResponse = {
   url: string;
@@ -100,11 +101,18 @@ export const useUpdateVolunteerDocStatus = (volunteerId: number) => {
 const communicationsQueryKey = (volunteerId: number) => ["volunteer", String(volunteerId), "communications"];
 
 export const useSendApplicationEmail = (volunteerId: number) => {
+  const { t } = useTranslation();
+
   return useMutationQuery<void, { message: string; data: ApiVolunteerApplicationEmailPost }>({
     apiPath: `${apiPathVolunteer}/${volunteerId}/doc/application-email`,
     method: "post",
     successMessage: "message.applicationEmailSent",
     queryKeyToInvalidate: communicationsQueryKey(volunteerId),
+    onErrorCallback: (error) => {
+      if (!axios.isAxiosError(error) || error.response?.status !== 409) return false;
+      toast.error(t("message.applicationEmailJustSent"));
+      return true;
+    },
   });
 };
 
