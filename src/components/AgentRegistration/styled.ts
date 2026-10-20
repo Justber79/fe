@@ -117,12 +117,14 @@ type SelectProps = {
 
 export const StyledSelect = styled.select<SelectProps>`
   color: var(--color-midnight);
-  font-size: var(--form-input-fontSize, 1rem);
-  height: var(--form-input-container-height, 48px);
+  font-size: var(--form-input-fontSize);
+  line-height: var(--line-height-24);
+  height: var(--form-input-container-height);
+  box-sizing: border-box;
   width: -webkit-fill-available;
   background-color: var(--color-white);
-  border-radius: var(--form-input-container-border-radius, 8px);
-  padding: var(--form-input-container-padding, 0 12px);
+  border-radius: var(--form-input-container-border-radius);
+  padding: 0 var(--form-input-container-padding);
   border: ${({ $hasError }) =>
     $hasError ? "var(--form-input-container-border-error)" : "var(--form-input-container-border)"};
   cursor: pointer;
@@ -135,10 +137,12 @@ export const StyledSelect = styled.select<SelectProps>`
 
 export const StyledTextarea = styled.textarea`
   color: var(--color-midnight);
-  font-size: var(--form-input-fontSize, 1rem);
+  font-size: var(--form-input-fontSize);
+  line-height: var(--line-height-24);
+  box-sizing: border-box;
   width: -webkit-fill-available;
   background-color: var(--color-white);
-  border-radius: var(--form-input-container-border-radius, 8px);
+  border-radius: var(--form-input-container-border-radius);
   padding: 12px;
   border: var(--form-input-container-border);
   resize: vertical;

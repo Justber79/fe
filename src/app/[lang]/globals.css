@@ -498,7 +498,7 @@ html {
   --image-circle-pic-size: 60px;
 
   /* form input */
-  --form-input-height: 3rem;
+  --form-input-height: var(--form-input-container-height);
   --form-input-error-message-color: var(--color-red-600);
   --form-input-container-height: 56px;
   --form-input-container-border-radius: 8px;
