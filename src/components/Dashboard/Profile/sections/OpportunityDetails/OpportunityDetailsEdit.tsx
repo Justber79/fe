@@ -124,7 +124,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = methods;
 
   const handleCancel = () => {
@@ -141,8 +141,8 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
 
     updateOpportunityDetails(
       {
-        title: values.title,
-        description: values.description,
+        ...(dirtyFields.title ? { title: values.title } : {}),
+        ...(dirtyFields.description ? { description: values.description } : {}),
         numberVolunteers: Number(values.numberOfVolunteers),
         languagesMain: toLangOptionItems(values.mainCommunication, apiLanguages, t),
         languagesResidents: toLangOptionItems(values.residentsSpeak, apiLanguages, t),
