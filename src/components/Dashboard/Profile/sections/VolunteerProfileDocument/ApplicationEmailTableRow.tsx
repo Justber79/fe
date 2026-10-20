@@ -7,11 +7,12 @@ import { formatDocumentDate } from "./utils";
 
 type Props = {
   sentAt: Date | null;
+  hasEmail: boolean;
   isSending: boolean;
   onSend: () => void;
 };
 
-export function ApplicationEmailTableRow({ sentAt, isSending, onSend }: Props) {
+export function ApplicationEmailTableRow({ sentAt, hasEmail, isSending, onSend }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -30,8 +31,12 @@ export function ApplicationEmailTableRow({ sentAt, isSending, onSend }: Props) {
       </Cell>
       <ActionCell>
         <ActionButtonWithTooltip
-          tooltipText={t("dashboard.documentSection.applicationEmail.send")}
-          disabled={isSending}
+          tooltipText={
+            hasEmail
+              ? t("dashboard.documentSection.applicationEmail.send")
+              : t("dashboard.documentSection.applicationEmail.noEmail")
+          }
+          disabled={!hasEmail || isSending}
           onClick={onSend}
           ariaLabel={t("dashboard.documentSection.applicationEmail.send")}
         >

@@ -210,6 +210,7 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
                   {isAuthorized && row.type === DocumentType.CGC_APPLICATION && (
                     <ApplicationEmailTableRow
                       sentAt={applicationEmailSentAt}
+                      hasEmail={Boolean(volunteer.person.email?.trim())}
                       isSending={applicationEmailMutation.isPending}
                       onSend={() => setIsApplicationEmailOpen(true)}
                     />

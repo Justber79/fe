@@ -1,6 +1,7 @@
 import { apiPathVolunteer } from "@/config/constants";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
   ApiCommunicationGet,
@@ -102,6 +103,7 @@ const communicationsQueryKey = (volunteerId: number) => ["volunteer", String(vol
 
 export const useSendApplicationEmail = (volunteerId: number) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   return useMutationQuery<void, { message: string; data: ApiVolunteerApplicationEmailPost }>({
     apiPath: `${apiPathVolunteer}/${volunteerId}/doc/application-email`,
@@ -109,9 +111,18 @@ export const useSendApplicationEmail = (volunteerId: number) => {
     successMessage: "message.applicationEmailSent",
     queryKeyToInvalidate: communicationsQueryKey(volunteerId),
     onErrorCallback: (error) => {
-      if (!axios.isAxiosError(error) || error.response?.status !== 409) return false;
-      toast.error(t("message.applicationEmailJustSent"));
-      return true;
+      if (!axios.isAxiosError(error)) return false;
+      switch (error.response?.status) {
+        case 409:
+          queryClient.invalidateQueries({ queryKey: communicationsQueryKey(volunteerId) });
+          toast.error(t("message.applicationEmailJustSent"));
+          return true;
+        case 502:
+          toast.error(t("message.applicationEmailNotSent"));
+          return true;
+        default:
+          return false;
+      }
     },
   });
 };

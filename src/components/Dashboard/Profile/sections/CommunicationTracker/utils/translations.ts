@@ -28,28 +28,28 @@ export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethod
   });
 }
 
-const communicationTypeKeys: Partial<Record<CommunicationType, string>> = {
+const communicationTypeKeys: Record<CommunicationType, string> = {
   [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
   [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
   [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
   [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
   [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
+  [CommunicationType.ACCOMPANYING_MATCHED]: "dashboard.communicationSection.communicationTypes.accompanyingMatched",
+  [CommunicationType.MATCHED]: "dashboard.communicationSection.communicationTypes.matched",
+  [CommunicationType.OPPORTUNITY_CONFIRMATION]:
+    "dashboard.communicationSection.communicationTypes.opportunityConfirmation",
+  [CommunicationType.ACCOMPANYING_NOT_FOUND]: "dashboard.communicationSection.communicationTypes.accompanyingNotFound",
+  [CommunicationType.OPPORTUNITY_UPDATED]: "dashboard.communicationSection.communicationTypes.opportunityUpdated",
   [CommunicationType.CGC_APPLICATION_EMAIL]: "dashboard.communicationSection.communicationTypes.cgcApplicationEmail",
 };
 
 export function getCommunicationTypeLabel(t: TFunction, communicationType: CommunicationType): string {
-  return t(
-    communicationTypeKeys[communicationType] ||
-      `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`,
-    { defaultValue: communicationType },
-  );
+  const key = communicationTypeKeys[communicationType];
+  return key ? t(key) : communicationType;
 }
 
 export function getDisplayLabel(t: TFunction, contactType: ContactType, communicationType?: CommunicationType): string {
-  if (communicationType && (contactType === ContactType.OTHER || communicationTypeKeys[communicationType])) {
-    return getCommunicationTypeLabel(t, communicationType);
-  }
-  return getContactTypeLabel(t, contactType);
+  return communicationType ? getCommunicationTypeLabel(t, communicationType) : getContactTypeLabel(t, contactType);
 }
 
 export { formatDate } from "../../shared/utils/formatDate";
