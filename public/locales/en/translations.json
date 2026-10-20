@@ -1108,7 +1108,8 @@
         "opp-vol-matched": "Matched",
         "opp-vol-needs-rematch": "Needs rematch",
         "opp-vol-unmatched": "Unmatched",
-        "opp-vol-past": "Past"
+        "opp-vol-past": "Past",
+        "no-match-found": "No match found"
       },
       "type": {
         "accompanying": "Accompanying",
@@ -1190,7 +1191,17 @@
       "schedule": "Schedule",
       "district": "District",
       "dateOfAppointment": "Date Of Appointment",
-      "description": "Description"
+      "description": "Description",
+      "other": {
+        "title": "Other opportunities",
+        "description": "Open opportunities of other organisations. Only the title and district are shown.",
+        "empty": "No other opportunities found.",
+        "columns": {
+          "title": "Title",
+          "district": "District",
+          "createdAt": "Created on"
+        }
+      }
     },
     "commentsSection": {
       "placeholder": "Comment",

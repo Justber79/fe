@@ -14,7 +14,7 @@ import {
   getOpportunityDisplayLanguages,
 } from "./helpers";
 import { MatchedBadge } from "./styles";
-import { OpportunityMatchStatusType } from "./OpportunityCard.helpers";
+import { getMatchStatusDisplay, OpportunityMatchStatusType } from "./OpportunityCard.helpers";
 import { formatLocation } from "@/utils/helpers";
 import type { ApiOpportunityAccompanyingDetails } from "need4deed-sdk";
 
@@ -40,7 +40,7 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
 
   const ext = opportunity as ExtendedOpportunity;
   const { id, title, volunteerType, languages, availability, district, volunteerNames } = opportunity;
-  const { statusMatch, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
+  const { statusMatch, noMatchFound, accompanyingDetails, agentTitle, numberOfVolunteers } = ext;
 
   const districtTitle = getDistrictTitle(district, districtsList);
   const districtText =
@@ -56,8 +56,9 @@ export function OpportunityTableRow({ opportunity, isLast, districtsList, volunt
         : null;
 
   const displayLanguages = getOpportunityDisplayLanguages(languages);
-  const isMatched = statusMatch === OpportunityMatchStatusType.MATCHED;
-  const statusLabel = statusMatch ? t(`dashboard.opportunities.matchStatus.${statusMatch}`) : "—";
+  const matchStatus = getMatchStatusDisplay(statusMatch, noMatchFound);
+  const isMatched = matchStatus === OpportunityMatchStatusType.MATCHED;
+  const statusLabel = matchStatus ? t(`dashboard.opportunities.matchStatus.${matchStatus}`) : "—";
   const firstNames = (volunteerNames ?? []).map((name) => name.split(" ")[0]).filter(Boolean);
   const firstName = firstNames[0] ?? "";
   const otherVolunteersCount = numberOfVolunteers && numberOfVolunteers > 1 ? numberOfVolunteers - 1 : 0;
