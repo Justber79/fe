@@ -1,5 +1,5 @@
 import Button from "@/components/core/button/Button/Button";
-import { CalendarBlankIcon, LinkIcon, MapPinIcon } from "@phosphor-icons/react";
+import { CalendarBlankIcon, LinkIcon, MapPinIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import type { ApiEventN4DGetList } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -63,6 +63,12 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <CalendarBlankIcon size={18} />
         {eventDateRange(event, i18n.language)}
       </Meta>
+      {event.hostName && (
+        <Meta>
+          <UsersThreeIcon size={18} />
+          {t("dashboard.calendar.hostedBy", { name: event.hostName })}
+        </Meta>
+      )}
       <Meta>
         <MapPinIcon size={18} />
         {event.address}

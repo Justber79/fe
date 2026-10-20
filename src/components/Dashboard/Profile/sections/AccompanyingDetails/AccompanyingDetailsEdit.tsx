@@ -20,7 +20,7 @@ type Props = {
   onCancel: () => void;
   onSubmit: () => void;
   isPending: boolean;
-  minAppointmentDate: Date;
+  minAppointmentDate?: Date;
   hideButtons?: boolean;
 };
 
@@ -41,7 +41,7 @@ export const AccompanyingDetailsEdit = ({
   const { t } = useTranslation();
   const {
     control,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, defaultValues },
   } = useFormContext<AccompanyingDetailsFormData>();
 
   return (
@@ -97,6 +97,7 @@ export const AccompanyingDetailsEdit = ({
                   locale={locale}
                   allowFuture
                   minDate={minAppointmentDate}
+                  selectableDate={defaultValues?.appointmentDate}
                 />
                 {fieldState.error?.message && <ErrorMessage message={fieldState.error.message} />}
               </DatePickerContainer>

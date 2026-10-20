@@ -59,3 +59,9 @@ Default to **no comments**. Name things so the code explains itself.
   explanations of what the code does, multi-line rationale. That belongs in the commit message or
   PR description.
 - Don't copy the comment style of surrounding code; remove such comments when you touch it.
+
+## Cases for names
+
+- all TypeScript names are in camelCase
+- all SQL names are in snake_case
+- all enum values, file names, etc. are in kebab-case

@@ -11,12 +11,13 @@ import { useCreateEvent, useEvent, useUpdateEvent } from "@/hooks";
 
 import { StepDateTime } from "./StepDateTime";
 import { StepLocation } from "./StepLocation";
-import { DESCRIPTION_MAX, StepTitle } from "./StepTitle";
+import { DESCRIPTION_MAX, SHORT_DESCRIPTION_MAX, StepTitle } from "./StepTitle";
 
 export interface EventFormData {
   type: EventN4DType;
   title: string;
   description: string;
+  hostName: string;
   street: string;
   houseNumber: string;
   postcode: string;
@@ -50,6 +51,19 @@ function parseAddress(address = "") {
     : { street: address, houseNumber: "", postcode: "", unstructuredAddress: Boolean(address) };
 }
 
+function truncateText(text: string, maxCodePoints: number) {
+  const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+  let result = "";
+  let length = 0;
+  for (const { segment } of segmenter.segment(text)) {
+    const segmentLength = Array.from(segment).length;
+    if (length + segmentLength > maxCodePoints) break;
+    result += segment;
+    length += segmentLength;
+  }
+  return result.trimEnd();
+}
+
 function isHttpUrl(value: string) {
   try {
     const url = new URL(value);
@@ -70,6 +84,7 @@ export function CreateEvent({ eventId }: Props) {
     type: EventN4DType.WORKSHOP,
     title: "",
     description: "",
+    hostName: "",
     street: "",
     houseNumber: "",
     postcode: "",
@@ -91,6 +106,7 @@ export function CreateEvent({ eventId }: Props) {
       type: editingEvent.type,
       title: editingEvent.title,
       description: editingEvent.description,
+      hostName: editingEvent.hostName ?? "",
       ...parseAddress(editingEvent.address),
       registrationLink: editingEvent.linkRSVP,
       startDate: start.date,
@@ -129,7 +145,7 @@ export function CreateEvent({ eventId }: Props) {
     menuTitle: formData.title,
     locationComment: editingEvent?.locationComment,
     description: formData.description,
-    shortDescription: formData.description,
+    shortDescription: truncateText(formData.description.trim(), SHORT_DESCRIPTION_MAX),
     additionalTitle: editingEvent?.additionalTitle,
     additionalInfo: editingEvent?.additionalInfo,
   };
@@ -143,8 +159,10 @@ export function CreateEvent({ eventId }: Props) {
     linkRSVP: formData.registrationLink,
     address,
   });
+  const hostName = formData.hostName.trim();
   const toCreatePayload = (): ApiEventN4DCreate => ({
     ...toBasePayload(),
+    ...(hostName ? { hostName } : {}),
     active: false,
     translations: [translation],
   });
@@ -154,6 +172,7 @@ export function CreateEvent({ eventId }: Props) {
 
     return {
       ...toBasePayload(),
+      ...(hostName !== (editingEvent?.hostName ?? "").trim() ? { hostName: hostName || null } : {}),
       ...(translationChanged ? { translations: [translation] } : {}),
     };
   };
@@ -222,6 +241,7 @@ export function CreateEvent({ eventId }: Props) {
               type={formData.type}
               title={formData.title}
               description={formData.description}
+              hostName={formData.hostName}
               onChange={update}
               onNext={handleNext}
               onCancel={handleCancel}

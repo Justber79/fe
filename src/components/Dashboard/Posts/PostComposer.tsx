@@ -2,10 +2,12 @@ import Autocomplete from "@/components/Dashboard/Profile/sections/Comments/commo
 import { useCommentTag } from "@/components/Dashboard/Profile/sections/Comments/common/hooks/useCommentTag";
 import { apiPathOpportunity, cacheTTL, MAX_PAGE_LIMIT } from "@/config/constants";
 import { useClickOutside, useCreatePost, useCreateReply, useGetQuery } from "@/hooks";
-import { ApiOpportunityGetList } from "need4deed-sdk";
+import { useAgentTagCandidates } from "@/hooks/useAgentTagCandidates";
+import { ApiAgentTagCandidate, ApiOpportunityGetList } from "need4deed-sdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EmojiPicker from "./EmojiPicker";
+import { formatMentions } from "./formatMentions";
 import {
   Composer,
   ComposerActions,
@@ -35,6 +37,10 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   const [opportunityOpen, setOpportunityOpen] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [agentPickerOpen, setAgentPickerOpen] = useState(false);
+  const [agentQuery, setAgentQuery] = useState("");
+  const [taggedAgents, setTaggedAgents] = useState<ApiAgentTagCandidate[]>([]);
+  const agentCandidates = useAgentTagCandidates(agentQuery, agentPickerOpen);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const replyTargetRef = useRef(replyTarget);
@@ -52,6 +58,7 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
   const reset = () => {
     setText("");
     setSelected([]);
+    setTaggedAgents([]);
     resetTags();
   };
   const cancelReplyMode = useCallback(
@@ -70,11 +77,17 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
     setQuery("");
   }, []);
 
+  const closeAgentPicker = useCallback(() => {
+    setAgentPickerOpen(false);
+    setAgentQuery("");
+  }, []);
+
   const closePickers = useCallback(() => {
     closeOpportunityPicker();
+    closeAgentPicker();
     setEmojiOpen(false);
     setShowAutocomplete(false);
-  }, [closeOpportunityPicker, setShowAutocomplete]);
+  }, [closeAgentPicker, closeOpportunityPicker, setShowAutocomplete]);
 
   useClickOutside(composerRef, closePickers);
 
@@ -149,25 +162,19 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
       return;
     }
 
-    let formatted = text.trim();
-    const taggedPersonIds: number[] = [];
-    [...mention.tags]
-      .sort((first, second) => second.name.length - first.name.length)
-      .forEach((tag) => {
-        const escapedName = tag.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const mentionPattern = new RegExp(`@${escapedName}(?![\\p{L}\\p{N}_])`, "gu");
-        formatted = formatted.replace(mentionPattern, () => {
-          taggedPersonIds.push(tag.personId);
-          return `<@person:${tag.personId}>`;
-        });
-      });
-    if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted))
+    const formatted = formatMentions(text.trim(), [
+      ...mention.tags.map((tag) => ({ name: tag.name, kind: "person" as const, id: tag.personId })),
+      ...taggedAgents.map((agent) => ({ name: agent.title, kind: "agent" as const, id: agent.id })),
+    ]);
+    const taggedPersonIds = [...formatted.taggedPersonIds];
+    if (/(^|\s)@all(?![\p{L}\p{N}_])/u.test(formatted.text))
       mention.users?.forEach((user) => {
         if (user.personId) taggedPersonIds.push(user.personId);
       });
     createPost.mutate({
-      text: formatted,
+      text: formatted.text,
       taggedPersonIds: [...new Set(taggedPersonIds)],
+      taggedAgentIds: formatted.taggedAgentIds,
       linkedOpportunityIds: selected.map(({ id }) => Number(id)),
     });
   };
@@ -240,6 +247,20 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
             {t("dashboard.posts.linkOpportunity")}
           </ComposerButton>
         )}
+        {!replyTarget && (
+          <ComposerButton
+            type="button"
+            aria-expanded={agentPickerOpen}
+            onClick={() => {
+              setAgentPickerOpen((open) => !open);
+              closeOpportunityPicker();
+              setEmojiOpen(false);
+              setShowAutocomplete(false);
+            }}
+          >
+            {t("dashboard.posts.tagNgo")}
+          </ComposerButton>
+        )}
         <ComposerButton
           type="button"
           aria-label={t("dashboard.posts.addEmoji")}
@@ -289,6 +310,32 @@ export default function PostComposer({ replyTarget, onCancelReply }: Props) {
           <ComposerButton type="button" $primary onClick={closeOpportunityPicker}>
             {t("dashboard.posts.done")}
           </ComposerButton>
+        </OpportunityPickerPanel>
+      )}
+      {agentPickerOpen && (
+        <OpportunityPickerPanel>
+          <PickerSearch
+            value={agentQuery}
+            onChange={(e) => setAgentQuery(e.target.value)}
+            placeholder={t("dashboard.posts.searchNgos")}
+          />
+          <PickerResults>
+            {agentCandidates.map((agent) => (
+              <PickerItem
+                key={agent.id}
+                type="button"
+                onClick={() => {
+                  setTaggedAgents((all) => (all.some(({ id }) => id === agent.id) ? all : [...all, agent]));
+                  insertAtCursor(`@${agent.title} `);
+                  closeAgentPicker();
+                }}
+              >
+                {agent.title}
+                {agent.district?.title?.de ? ` · ${agent.district.title.de}` : ""}
+              </PickerItem>
+            ))}
+            {agentCandidates.length === 0 && <PickerEmpty>{t("dashboard.posts.noNgos")}</PickerEmpty>}
+          </PickerResults>
         </OpportunityPickerPanel>
       )}
       {emojiOpen && (

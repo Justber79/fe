@@ -633,6 +633,9 @@
       "replyUpdated": "Reply updated successfully",
       "replyDeleted": "Reply deleted successfully",
       "linkOpportunity": "Link opportunity",
+      "tagNgo": "Tag NGO",
+      "searchNgos": "Search NGOs (nearby first)",
+      "noNgos": "No NGOs found",
       "searchOpportunities": "Search opportunities",
       "done": "Done",
       "addEmoji": "Add emoji",
@@ -1105,7 +1108,8 @@
         "opp-vol-matched": "Matched",
         "opp-vol-needs-rematch": "Needs rematch",
         "opp-vol-unmatched": "Unmatched",
-        "opp-vol-past": "Past"
+        "opp-vol-past": "Past",
+        "no-match-found": "No match found"
       },
       "type": {
         "accompanying": "Accompanying",
@@ -1555,6 +1559,7 @@
           "addressRequired": "Appointment address is required",
           "postcodeRequired": "Appointment postcode is required",
           "dateRequired": "Appointment date is required",
+          "dateTooSoon": "The appointment must be at least {{days}} working days from today, on {{date}} or later.",
           "timeRequired": "Appointment time is required",
           "nameRequired": "Refugee name is required",
           "appointmentLanguageRequired": "Appointment language is required"
@@ -1720,6 +1725,7 @@
       "editEvent": "Edit event",
       "deleteEvent": "Delete event",
       "openRegistration": "Open registration link",
+      "hostedBy": "Hosted by {{name}}",
       "registrationUnavailable": "Registration link unavailable",
       "editLoading": "Loading event…",
       "editLoadError": "This event could not be loaded. It may have been deleted.",
@@ -1747,6 +1753,8 @@
         "titleLabel": "Title of the voluntary offer",
         "titlePlaceholder": "Title",
         "titleHelper": "e.g. \"Escort to the eye clinic\", \"Arts & Crafts\"",
+        "hostLabel": "Hosted by (optional)",
+        "hostPlaceholder": "e.g. Need4Deed or the organisation's name",
         "descriptionLabel": "Description",
         "descriptionPlaceholder": "A short description of the event",
         "descriptionHelper": "Maximum {{max}} characters",
