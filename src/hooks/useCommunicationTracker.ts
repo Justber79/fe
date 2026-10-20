@@ -10,20 +10,21 @@ const entityApiPathMap: Record<string, string> = {
   agent: `${apiPathAgent}/`,
 };
 
-export const useCommunicationTracker = (entityId: number, entityType: EntityType) => {
-  const basePath = entityApiPathMap[entityType];
-  const queryKey = [entityType, String(entityId), "communications"];
+export const communicationsQuery = (entityType: EntityType, entityId: number) => ({
+  queryKey: [entityType, String(entityId), "communications"],
+  apiPath: `${entityApiPathMap[entityType]}${entityId}/communication`,
+});
 
-  const { data: communications = [], isLoading } = useGetQuery<ApiCommunicationGet[]>({
-    queryKey,
-    apiPath: `${basePath}${entityId}/communication`,
-  });
+export const useCommunicationTracker = (entityId: number, entityType: EntityType) => {
+  const { queryKey, apiPath } = communicationsQuery(entityType, entityId);
+
+  const { data: communications = [], isLoading } = useGetQuery<ApiCommunicationGet[]>({ queryKey, apiPath });
 
   const { mutate: createCommunication, isPending: isCreating } = useMutationQuery<
     ApiVolunteerCommunicationPost,
     unknown
   >({
-    apiPath: `${basePath}${entityId}/communication`,
+    apiPath,
     method: "post",
     successMessage: "dashboard.communicationSection.communicationAdded",
     queryKeyToInvalidate: queryKey,

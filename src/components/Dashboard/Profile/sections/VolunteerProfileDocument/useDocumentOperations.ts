@@ -1,4 +1,5 @@
 import { apiPathVolunteer } from "@/config/constants";
+import { communicationsQuery } from "@/hooks/useCommunicationTracker";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import { useQueryClient } from "@tanstack/react-query";
@@ -99,8 +100,6 @@ export const useUpdateVolunteerDocStatus = (volunteerId: number) => {
   });
 };
 
-const communicationsQueryKey = (volunteerId: number) => ["volunteer", String(volunteerId), "communications"];
-
 export const useSendApplicationEmail = (volunteerId: number) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -109,12 +108,12 @@ export const useSendApplicationEmail = (volunteerId: number) => {
     apiPath: `${apiPathVolunteer}/${volunteerId}/doc/application-email`,
     method: "post",
     successMessage: "message.applicationEmailSent",
-    queryKeyToInvalidate: communicationsQueryKey(volunteerId),
+    queryKeyToInvalidate: communicationsQuery("volunteer", volunteerId).queryKey,
     onErrorCallback: (error) => {
       if (!axios.isAxiosError(error)) return false;
       switch (error.response?.status) {
         case 409:
-          queryClient.invalidateQueries({ queryKey: communicationsQueryKey(volunteerId) });
+          queryClient.invalidateQueries({ queryKey: communicationsQuery("volunteer", volunteerId).queryKey });
           toast.error(t("message.applicationEmailJustSent"));
           return true;
         case 502:
@@ -129,8 +128,7 @@ export const useSendApplicationEmail = (volunteerId: number) => {
 
 export const useApplicationEmailSentAt = (volunteerId: number, enabled: boolean): Date | null => {
   const { data: communications } = useGetQuery<ApiCommunicationGet[]>({
-    queryKey: communicationsQueryKey(volunteerId),
-    apiPath: `${apiPathVolunteer}/${volunteerId}/communication`,
+    ...communicationsQuery("volunteer", volunteerId),
     enabled,
   });
 

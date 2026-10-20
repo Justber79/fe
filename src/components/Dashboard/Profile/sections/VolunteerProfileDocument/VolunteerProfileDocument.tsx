@@ -195,28 +195,33 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
                 ))}
               </TableHeader>
 
-              {documentRows.map((row, index) => (
-                <Fragment key={row.type}>
-                  <DocumentTableRow
-                    documentRow={row}
-                    isLast={index === documentRows.length - 1}
-                    onUpload={() => openDialog("upload", row)}
-                    onPreview={() => handlePreview(row)}
-                    onDownload={() => handleDownload(row)}
-                    onDelete={() => openDialog("delete", row)}
-                    onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
-                    isAuthorized={isAuthorized}
-                  />
-                  {isAuthorized && row.type === DocumentType.CGC_APPLICATION && (
-                    <ApplicationEmailTableRow
-                      sentAt={applicationEmailSentAt}
-                      hasEmail={Boolean(volunteer.person.email?.trim())}
-                      isSending={applicationEmailMutation.isPending}
-                      onSend={() => setIsApplicationEmailOpen(true)}
+              {documentRows.map((row, index) => {
+                const isLastRow = index === documentRows.length - 1;
+                const hasApplicationEmailRow = isAuthorized && row.type === DocumentType.CGC_APPLICATION;
+                return (
+                  <Fragment key={row.type}>
+                    <DocumentTableRow
+                      documentRow={row}
+                      isLast={isLastRow && !hasApplicationEmailRow}
+                      onUpload={() => openDialog("upload", row)}
+                      onPreview={() => handlePreview(row)}
+                      onDownload={() => handleDownload(row)}
+                      onDelete={() => openDialog("delete", row)}
+                      onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
+                      isAuthorized={isAuthorized}
                     />
-                  )}
-                </Fragment>
-              ))}
+                    {hasApplicationEmailRow && (
+                      <ApplicationEmailTableRow
+                        isLast={isLastRow}
+                        sentAt={applicationEmailSentAt}
+                        hasEmail={Boolean(volunteer.person.email?.trim())}
+                        isSending={applicationEmailMutation.isPending}
+                        onSend={() => setIsApplicationEmailOpen(true)}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
             </Table>
           </DocumentTableContainer>
         </TableViewport>
@@ -241,7 +246,7 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
           message={
             <>
               {t("dashboard.documentSection.applicationEmail.dialog.message", {
-                name: `${volunteer.person.firstName} ${volunteer.person.lastName}`.trim(),
+                name: [volunteer.person.firstName, volunteer.person.lastName].filter(Boolean).join(" "),
                 email: volunteer.person.email,
               })}
               {applicationEmailSentAt &&

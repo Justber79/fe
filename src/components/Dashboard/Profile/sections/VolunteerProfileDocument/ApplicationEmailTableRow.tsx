@@ -6,17 +6,18 @@ import { ActionCell, Cell, ReceivedCell, StatusBadge, TableRow } from "./styles"
 import { formatDocumentDate } from "./utils";
 
 type Props = {
+  isLast: boolean;
   sentAt: Date | null;
   hasEmail: boolean;
   isSending: boolean;
   onSend: () => void;
 };
 
-export function ApplicationEmailTableRow({ sentAt, hasEmail, isSending, onSend }: Props) {
+export function ApplicationEmailTableRow({ isLast, sentAt, hasEmail, isSending, onSend }: Props) {
   const { t } = useTranslation();
 
   return (
-    <TableRow>
+    <TableRow $isLast={isLast}>
       <Cell>{t("dashboard.documentSection.applicationEmail.name")}</Cell>
       <ReceivedCell />
       <Cell $width="140px" $align="center">
