@@ -1,7 +1,7 @@
 import { apiPathVolunteer } from "@/config/constants";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import axios from "axios";
-import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
+import { ApiVolunteerApplicationEmailPost, ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 
 type UploadMetaResponse = {
@@ -85,5 +85,14 @@ export const useUpdateVolunteerDocStatus = (volunteerId: number) => {
     apiPath: `${apiPathVolunteer}/${volunteerId}`,
     method: "patch",
     queryKeyToInvalidate: ["volunteer", String(volunteerId)],
+  });
+};
+
+export const useSendApplicationEmail = (volunteerId: number) => {
+  return useMutationQuery<void, { message: string; data: ApiVolunteerApplicationEmailPost }>({
+    apiPath: `${apiPathVolunteer}/${volunteerId}/doc/application-email`,
+    method: "post",
+    successMessage: "message.applicationEmailSent",
+    queryKeyToInvalidate: ["volunteer", String(volunteerId), "communications"],
   });
 };

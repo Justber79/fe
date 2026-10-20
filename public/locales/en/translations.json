@@ -1924,6 +1924,7 @@
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",
     "deleteSuccess": "Document deleted successfully!",
+    "applicationEmailSent": "Email with application sent!",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",
