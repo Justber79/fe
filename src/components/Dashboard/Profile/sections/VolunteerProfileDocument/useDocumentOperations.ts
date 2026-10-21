@@ -1,8 +1,20 @@
 import { apiPathVolunteer } from "@/config/constants";
+import { communicationsQuery } from "@/hooks/useCommunicationTracker";
+import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
+import {
+  ApiCommunicationGet,
+  ApiVolunteerApplicationEmailPost,
+  ApiVolunteerGet,
+  CommunicationType,
+  DocumentStatusType,
+  DocumentType,
+} from "need4deed-sdk";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 type UploadMetaResponse = {
   url: string;
@@ -86,4 +98,44 @@ export const useUpdateVolunteerDocStatus = (volunteerId: number) => {
     method: "patch",
     queryKeyToInvalidate: ["volunteer", String(volunteerId)],
   });
+};
+
+export const useSendApplicationEmail = (volunteerId: number) => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  return useMutationQuery<void, { message: string; data: ApiVolunteerApplicationEmailPost }>({
+    apiPath: `${apiPathVolunteer}/${volunteerId}/doc/application-email`,
+    method: "post",
+    successMessage: "message.applicationEmailSent",
+    queryKeyToInvalidate: communicationsQuery("volunteer", volunteerId).queryKey,
+    onErrorCallback: (error) => {
+      if (!axios.isAxiosError(error)) return false;
+      switch (error.response?.status) {
+        case 409:
+          queryClient.invalidateQueries({ queryKey: communicationsQuery("volunteer", volunteerId).queryKey });
+          toast.error(t("message.applicationEmailJustSent"));
+          return true;
+        case 502:
+          toast.error(t("message.applicationEmailNotSent"));
+          return true;
+        default:
+          return false;
+      }
+    },
+  });
+};
+
+export const useApplicationEmailSentAt = (volunteerId: number, enabled: boolean): Date | null => {
+  const { data: communications } = useGetQuery<ApiCommunicationGet[]>({
+    ...communicationsQuery("volunteer", volunteerId),
+    enabled,
+  });
+
+  return useMemo(() => {
+    const sentTimes = (communications ?? [])
+      .filter(({ communicationType }) => communicationType === CommunicationType.CGC_APPLICATION_EMAIL)
+      .map(({ date }) => new Date(date).getTime());
+    return sentTimes.length ? new Date(Math.max(...sentTimes)) : null;
+  }, [communications]);
 };

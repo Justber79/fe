@@ -2,18 +2,25 @@
 import { useVolunteerDocuments } from "@/hooks/useVolunteerDocuments";
 import { ApiVolunteerGet, DocumentStatusType, DocumentType } from "need4deed-sdk";
 import { ArrowsLeftRight } from "@phosphor-icons/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionWrapper } from "../shared/styles";
+import { ApplicationEmailTableRow } from "./ApplicationEmailTableRow";
 import { DocumentPreviewDialog } from "./DocumentPreviewDialog";
 import { DocumentTableRow } from "./DocumentTableRow";
 import { DocumentTableContainer, HeaderCell, ScrollHint, Table, TableHeader, TableViewport } from "./styles";
 import { UploadDocumentDialog } from "./UploadDocumentDialog";
 import { useDialogState } from "./useDialogState";
-import { useDeleteDocument, useUpdateVolunteerDocStatus, useUploadDocument } from "./useDocumentOperations";
-import { DocumentRow, enrichDocuments, extractDocumentUrl, getColumns } from "./utils";
+import {
+  useApplicationEmailSentAt,
+  useDeleteDocument,
+  useSendApplicationEmail,
+  useUpdateVolunteerDocStatus,
+  useUploadDocument,
+} from "./useDocumentOperations";
+import { DocumentRow, enrichDocuments, extractDocumentUrl, formatDocumentDate, getColumns } from "./utils";
 
 type Props = {
   volunteer: ApiVolunteerGet;
@@ -36,6 +43,7 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
   const [passportReceived, setPassportReceived] = useState(false);
   const [passportReceivedAt, setPassportReceivedAt] = useState<Date | null>(null);
+  const [isApplicationEmailOpen, setIsApplicationEmailOpen] = useState(false);
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const [scrollAffordance, setScrollAffordance] = useState({ hasOverflow: false, showLeft: false, showRight: false });
 
@@ -73,6 +81,8 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
     closeDialog("preview");
   });
   const docStatusMutation = useUpdateVolunteerDocStatus(volunteer.id);
+  const applicationEmailMutation = useSendApplicationEmail(volunteer.id);
+  const applicationEmailSentAt = useApplicationEmailSentAt(volunteer.id, isAuthorized);
 
   const handleToggleReceived = (type: DocumentType, currentIsReceived: boolean) => {
     if (!isAuthorized) return;
@@ -110,6 +120,11 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
         documentType: deleteDialogDocument.type,
       });
     }
+  };
+
+  const handleConfirmApplicationEmail = () => {
+    setIsApplicationEmailOpen(false);
+    applicationEmailMutation.mutate();
   };
 
   const handleConfirmUpload = (file: File) => {
@@ -180,19 +195,33 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
                 ))}
               </TableHeader>
 
-              {documentRows.map((row, index) => (
-                <DocumentTableRow
-                  key={row.type}
-                  documentRow={row}
-                  isLast={index === documentRows.length - 1}
-                  onUpload={() => openDialog("upload", row)}
-                  onPreview={() => handlePreview(row)}
-                  onDownload={() => handleDownload(row)}
-                  onDelete={() => openDialog("delete", row)}
-                  onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
-                  isAuthorized={isAuthorized}
-                />
-              ))}
+              {documentRows.map((row, index) => {
+                const isLastRow = index === documentRows.length - 1;
+                const hasApplicationEmailRow = isAuthorized && row.type === DocumentType.CGC_APPLICATION;
+                return (
+                  <Fragment key={row.type}>
+                    <DocumentTableRow
+                      documentRow={row}
+                      isLast={isLastRow && !hasApplicationEmailRow}
+                      onUpload={() => openDialog("upload", row)}
+                      onPreview={() => handlePreview(row)}
+                      onDownload={() => handleDownload(row)}
+                      onDelete={() => openDialog("delete", row)}
+                      onToggleReceived={() => handleToggleReceived(row.type, row.isReceived)}
+                      isAuthorized={isAuthorized}
+                    />
+                    {hasApplicationEmailRow && (
+                      <ApplicationEmailTableRow
+                        isLast={isLastRow}
+                        sentAt={applicationEmailSentAt}
+                        hasEmail={Boolean(volunteer.person.email?.trim())}
+                        isSending={applicationEmailMutation.isPending}
+                        onSend={() => setIsApplicationEmailOpen(true)}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
             </Table>
           </DocumentTableContainer>
         </TableViewport>
@@ -208,6 +237,28 @@ export function VolunteerProfileDocument({ volunteer, isAuthorized }: Props) {
           cancelText={t("dashboard.documentSection.deleteDialog.cancel")}
           onCancel={() => closeDialog("delete")}
           onConfirm={handleConfirmDelete}
+        />
+      )}
+
+      {isApplicationEmailOpen && (
+        <ConfirmationDialog
+          title={t("dashboard.documentSection.applicationEmail.dialog.title")}
+          message={
+            <>
+              {t("dashboard.documentSection.applicationEmail.dialog.message", {
+                name: [volunteer.person.firstName, volunteer.person.lastName].filter(Boolean).join(" "),
+                email: volunteer.person.email,
+              })}
+              {applicationEmailSentAt &&
+                ` ${t("dashboard.documentSection.applicationEmail.dialog.alreadySent", {
+                  date: formatDocumentDate(applicationEmailSentAt),
+                })}`}
+            </>
+          }
+          confirmText={t("dashboard.documentSection.applicationEmail.dialog.send")}
+          cancelText={t("dashboard.documentSection.applicationEmail.dialog.cancel")}
+          onCancel={() => setIsApplicationEmailOpen(false)}
+          onConfirm={handleConfirmApplicationEmail}
         />
       )}
 
