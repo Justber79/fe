@@ -1,3 +1,4 @@
+import { EmailNoteControl, MatchHandler } from "../shared/types";
 import { TagsContainer } from "@/components/core/common/Tags";
 import { Tag } from "@/components/styled/tags";
 import { ActivitySpan } from "@/components/styled/text";
@@ -15,7 +16,8 @@ type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
   hasEditingRights: boolean;
-  onMatch: () => void;
+  onMatch: MatchHandler;
+  emailNote: EmailNoteControl;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
@@ -74,6 +76,7 @@ export default function VolunteerDetail({
   currentStatus,
   hasEditingRights,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -123,6 +126,7 @@ export default function VolunteerDetail({
       <StatusAccordionActions
         currentStatus={currentStatus}
         onMatch={onMatch}
+        emailNote={emailNote}
         onNotAMatch={onNotAMatch}
         onMarkAsActive={onMarkAsActive}
         onMarkAsPast={onMarkAsPast}

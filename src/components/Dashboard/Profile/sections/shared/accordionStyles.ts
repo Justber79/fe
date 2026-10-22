@@ -73,3 +73,9 @@ export const Actions = styled.div`
   gap: var(--volunteer-profile-opportunities-accordion-actions-container-gap);
   justify-content: center;
 `;
+
+export const MatchActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+`;
