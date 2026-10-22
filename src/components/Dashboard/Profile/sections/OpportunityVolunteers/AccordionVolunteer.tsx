@@ -1,4 +1,4 @@
-import { MatchHandler } from "../shared/types";
+import { EmailNoteControl, MatchHandler } from "../shared/types";
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Heading4 } from "@/components/styled/text";
 import { defaultAvatarVolunteerProfile } from "@/config/constants";
@@ -18,6 +18,7 @@ type Props = {
   currentStatus: OpportunityVolunteerStatusType;
   hasEditingRights: boolean;
   onMatch: MatchHandler;
+  emailNote: EmailNoteControl;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
@@ -28,6 +29,7 @@ export const AccordionVolunteer = ({
   currentStatus,
   hasEditingRights,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -68,6 +70,7 @@ export const AccordionVolunteer = ({
         currentStatus={currentStatus}
         hasEditingRights={hasEditingRights}
         onMatch={onMatch}
+        emailNote={emailNote}
         onNotAMatch={onNotAMatch}
         onMarkAsActive={onMarkAsActive}
         onMarkAsPast={onMarkAsPast}

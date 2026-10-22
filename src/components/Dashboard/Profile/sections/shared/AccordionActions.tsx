@@ -5,7 +5,7 @@ import { Button } from "@/components/core/button";
 
 import { Actions, MatchActions } from "./accordionStyles";
 import { EmailNoteField } from "./EmailNoteField";
-import { MatchHandler } from "./types";
+import { EmailNoteControl, MatchHandler } from "./types";
 import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -82,25 +82,27 @@ export const AccordionActions = ({
 type StatusAccordionActionsProps = {
   currentStatus: OpportunityVolunteerStatusType;
   onMatch: MatchHandler;
+  emailNote: EmailNoteControl;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
 };
 
-const MatchWithEmailNote = ({ onMatch, onNotAMatch }: { onMatch: MatchHandler; onNotAMatch: () => void }) => {
-  const [emailNote, setEmailNote] = useState("");
+type MatchWithEmailNoteProps = { onMatch: MatchHandler; emailNote: EmailNoteControl; onNotAMatch: () => void };
+
+const MatchWithEmailNote = ({ onMatch, emailNote, onNotAMatch }: MatchWithEmailNoteProps) => {
   const [isMatching, setIsMatching] = useState(false);
 
   const handleMatch = () => {
     setIsMatching(true);
-    Promise.resolve(onMatch(emailNote))
+    Promise.resolve(onMatch())
       .catch(() => undefined)
       .finally(() => setIsMatching(false));
   };
 
   return (
     <MatchActions>
-      <EmailNoteField value={emailNote} onChange={setEmailNote} disabled={isMatching} />
+      <EmailNoteField value={emailNote.value} onChange={emailNote.onChange} disabled={isMatching} />
       <AccordionActions onNotAMatch={onNotAMatch} onMatch={handleMatch} matchDisabled={isMatching} />
     </MatchActions>
   );
@@ -109,6 +111,7 @@ const MatchWithEmailNote = ({ onMatch, onNotAMatch }: { onMatch: MatchHandler; o
 export const StatusAccordionActions = ({
   currentStatus,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -116,7 +119,7 @@ export const StatusAccordionActions = ({
   const { isAuthorized } = useAuth();
   if (currentStatus === OpportunityVolunteerStatusType.PENDING) {
     return isAuthorized ? (
-      <MatchWithEmailNote onMatch={onMatch} onNotAMatch={onNotAMatch} />
+      <MatchWithEmailNote onMatch={onMatch} emailNote={emailNote} onNotAMatch={onNotAMatch} />
     ) : (
       <AccordionActions onNotAMatch={onNotAMatch} />
     );

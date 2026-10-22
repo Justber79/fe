@@ -1,4 +1,4 @@
-import { MatchHandler } from "../shared/types";
+import { EmailNoteControl, MatchHandler } from "../shared/types";
 import { CirclePic } from "@/components/styled/img";
 import { Heading4 } from "@/components/styled/text";
 import { defaultAvatarURL } from "@/config/constants";
@@ -16,6 +16,7 @@ type Props = {
   volunteer: MappedVolunteerAgent;
   currentStatus: OpportunityVolunteerStatusType;
   onMatch: MatchHandler;
+  emailNote: EmailNoteControl;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
@@ -25,6 +26,7 @@ export const AccordionVolunteer = ({
   volunteer,
   currentStatus,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -61,6 +63,7 @@ export const AccordionVolunteer = ({
         volunteer={volunteer}
         currentStatus={currentStatus}
         onMatch={onMatch}
+        emailNote={emailNote}
         onNotAMatch={onNotAMatch}
         onMarkAsActive={onMarkAsActive}
         onMarkAsPast={onMarkAsPast}
