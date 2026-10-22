@@ -941,6 +941,20 @@
         "downloadUnavailable": "Download unavailable",
         "deleteUnavailable": "Delete unavailable"
       },
+      "applicationEmail": {
+        "name": "Email with application",
+        "sent": "Sent",
+        "notSent": "Not sent",
+        "send": "Send email with application",
+        "noEmail": "No email address",
+        "dialog": {
+          "title": "Send email with application?",
+          "message": "The certificate of good conduct application form (EFZ) and instructions will be emailed to {{name}} ({{email}}), with community@need4deed.org in copy.",
+          "alreadySent": "It was already sent on {{date}}.",
+          "send": "Send",
+          "cancel": "Cancel"
+        }
+      },
       "deleteDialog": {
         "title": "Delete document?",
         "message": "\"{{documentName}}\" document will be deleted.",
@@ -1666,7 +1680,13 @@
         "firstInquiry": "First inquiry sent",
         "opportunityList": "Opportunity list sent",
         "statusUpdate": "Status update",
-        "postMatchFollowUp": "Post-match follow-up"
+        "postMatchFollowUp": "Post-match follow-up",
+        "cgcApplicationEmail": "Email with application (EFZ)",
+        "accompanyingMatched": "Accompanying match email sent",
+        "matched": "Match email sent",
+        "opportunityConfirmation": "Opportunity confirmation sent",
+        "accompanyingNotFound": "No accompanying volunteer found",
+        "opportunityUpdated": "Opportunity update sent"
       },
       "platformOptions": {
         "phoneNumber": "Phone number",
@@ -1935,6 +1955,9 @@
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",
     "deleteSuccess": "Document deleted successfully!",
+    "applicationEmailSent": "Email with application sent!",
+    "applicationEmailJustSent": "The email with application was just sent. Please try again in a minute.",
+    "applicationEmailNotSent": "The email with application could not be sent. Please try again later.",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",
