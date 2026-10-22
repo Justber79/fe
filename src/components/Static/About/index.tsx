@@ -1,6 +1,7 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import { PageLayout } from "@/components/Layout";
+import FunderLogoEU from "@/components/svg/FunderLogoEU";
 import {
   AnswerRow,
   Badge,
@@ -88,6 +89,13 @@ function AboutUs() {
             <NoteText>{t("aboutus.history.paragraph1")}</NoteText>
             <NoteText>{t("aboutus.history.paragraph2")}</NoteText>
             <NoteText>{t("aboutus.history.paragraph3")}</NoteText>
+          </SectionBlock>
+
+          <SectionBlock>
+            <SectionHeader>{t("aboutus.funding.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.funding.bevos")}</NoteText>
+            <NoteText>{t("aboutus.funding.need4deed")}</NoteText>
+            <FunderLogoEU width="195" height="180" textColor="var(--color-midnight)" />
           </SectionBlock>
         </ContentSection>
       </Container>

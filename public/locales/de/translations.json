@@ -1854,8 +1854,8 @@
   },
   "aboutus": {
     "aboutusHeading": "Über uns",
-    "aboutusSubheading": "Noch nie waren so viele Menschen auf der Flucht vor Konflikten, Verfolgung und Menschenrechtsverletzungen wie heute. need4deed setzt sich für die Inklusion und Integration geflüchteter Menschen in Berlin durch zivilgesellschaftliches Engagement ein: indem wir Ehrenamt zugänglicher machen und einen nachhaltigen, skalierbaren Weg schaffen, Freiwillige mit den Menschen in Berliner Unterkünften zusammenzubringen, passend zu ihrem konkreten Bedarf.",
-    "aboutusPlatform": "need4deed ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen. Daneben bringen wir eigene Freiwillige mit und übernehmen die sorgfältige Arbeit, für jeden Bedarf die richtige Person zu finden.",
+    "aboutusSubheading": "Noch nie waren so viele Menschen auf der Flucht vor Konflikten, Verfolgung und Menschenrechtsverletzungen wie heute. Need4Deed setzt sich für die Inklusion und Integration geflüchteter Menschen in Berlin durch zivilgesellschaftliches Engagement ein: indem wir Ehrenamt zugänglicher machen und einen nachhaltigen, skalierbaren Weg schaffen, Freiwillige mit den Menschen in Berliner Unterkünften zusammenzubringen, passend zu ihrem konkreten Bedarf.",
+    "aboutusPlatform": "Need4Deed ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen. Daneben bringen wir eigene Freiwillige mit und übernehmen die sorgfältige Arbeit, für jeden Bedarf die richtige Person zu finden.",
     "whatWeDo": {
       "heading": "Was wir tun",
       "paragraph1": "Die Unterkünfte und die Organisationen, die Geflüchtete unterstützen, sagen uns, was ihre Bewohner*innen brauchen. Wir suchen passende Freiwillige aus unserem Pool und stellen den Kontakt her. Die Unterstützung hat zwei Hauptformen.",
@@ -1864,7 +1864,7 @@
     },
     "different": {
       "heading": "Was uns unterscheidet",
-      "intro": "Es gibt viele Tools, mit denen Organisationen ihre vorhandenen Freiwilligen verwalten. need4deed kann das auch und hilft zusätzlich bei der schwierigeren Aufgabe: überhaupt erst die richtige Person zu finden, für eine bestimmte und anspruchsvolle Art von Engagement.",
+      "intro": "Es gibt viele Tools, mit denen Organisationen ihre vorhandenen Freiwilligen verwalten. Need4Deed kann das auch und hilft zusätzlich bei der schwierigeren Aufgabe: überhaupt erst die richtige Person zu finden, für eine bestimmte und anspruchsvolle Art von Engagement.",
       "point1": "Ein Pool von Freiwilligen, die schon da und bereit sind, neben den eigenen Freiwilligen einer Organisation.",
       "point2": "Teilen von Freiwilligen zwischen Organisationen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen.",
       "point3": "Matching nach Sprache, Dialekt, Wohnort, Verfügbarkeit und Tätigkeit: den Details, die entscheiden, ob Unterstützung wirklich ankommt.",
@@ -1888,13 +1888,18 @@
     "whoFor": {
       "heading": "Für wen",
       "paragraph1": "Wir arbeiten mit Unterkünften, NGOs und Sozialteams, die Geflüchtete in ganz Berlin unterstützen, und mit Freiwilligen, viele davon mehrsprachig, viele mit eigener Migrationserfahrung, die ihre Zeit schenken. Wenn Du eine Unterkunft oder Organisation leitest und Deine Bewohner*innen Unterstützung brauchen, oder wenn Du Dich engagieren möchtest, bist Du hier richtig.",
-      "paragraph2": "Hinter allem steht eine einfache Überzeugung: In einem neuen Land anzukommen ist schwer genug, und niemand sollte einen Arzttermin, ein Formular oder den ersten Winter allein bewältigen müssen. need4deed gibt es, damit das niemand muss."
+      "paragraph2": "Hinter allem steht eine einfache Überzeugung: In einem neuen Land anzukommen ist schwer genug, und niemand sollte einen Arzttermin, ein Formular oder den ersten Winter allein bewältigen müssen. Need4Deed gibt es, damit das niemand muss."
     },
     "history": {
       "heading": "Unsere Geschichte",
       "paragraph1": "Unsere Geschichte beginnt mit Berlin Arrival Support, einem ehrenamtlichen Kollektiv, das seit dem 27. Februar 2022 Geflüchtete, vor allem aus der Ukraine, bei ihrer Ankunft in Berlin unterstützt. Am Hauptbahnhof, am Zentralen Omnibusbahnhof (ZOB) und am Südkreuz haben Freiwillige Ankommenden geholfen: beim Gepäck, bei Tickets und der Weiterreise, mit Übersetzung und erster Orientierung, bei Formularen wie für das Jobcenter, bei der Kontoeröffnung und bei der Suche nach einer Unterkunft.",
-      "paragraph2": "2023 entstand BEVOS (Berlin Volunteer Support), um die Freiwilligen selbst zu unterstützen: mit Schulungen zu Themen wie Asylrecht und mentaler Gesundheit, mit Vernetzung zwischen den Berliner Willkommensinitiativen, mit Beratung gegen Überlastung und mit der Vermittlung geschulter Freiwilliger in Sprachcafés, Übersetzung und Begleitungen zu Terminen. Aus BEVOS ist need4deed entstanden, die Plattform, die heute Freiwillige mit Unterkünften und Organisationen in ganz Berlin zusammenbringt.",
-      "paragraph3": "Viele Menschen haben need4deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona und viele weitere Freiwillige."
+      "paragraph2": "2023 entstand BEVOS (Berlin Volunteer Support), um die Freiwilligen selbst zu unterstützen: mit Schulungen zu Themen wie Asylrecht und mentaler Gesundheit, mit Vernetzung zwischen den Berliner Willkommensinitiativen, mit Beratung gegen Überlastung und mit der Vermittlung geschulter Freiwilliger in Sprachcafés, Übersetzung und Begleitungen zu Terminen. Aus BEVOS ist Need4Deed entstanden, die Plattform, die heute Freiwillige mit Unterkünften und Organisationen in ganz Berlin zusammenbringt.",
+      "paragraph3": "Viele Menschen haben Need4Deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona und viele weitere Freiwillige."
+    },
+    "funding": {
+      "heading": "Förderung",
+      "bevos": "BEVOS wurde aus dem Europäischen Sozialfonds (ESF) gefördert.",
+      "need4deed": "Need4Deed wird aus dem Asyl-, Migrations- und Integrationsfonds (AMIF) der Europäischen Union gefördert."
     }
   },
   "faqs": {

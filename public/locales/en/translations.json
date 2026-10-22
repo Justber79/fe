@@ -1842,8 +1842,8 @@
   },
   "aboutus": {
     "aboutusHeading": "About",
-    "aboutusSubheading": "The number of people fleeing conflict, persecution and human-rights violations is higher today than it has ever been. need4deed works to promote the inclusion and integration of refugees in Berlin through the actions of civil society: by making volunteering more accessible, and by building a sustainable, scalable way to connect volunteers with the people living in Berlin's accommodation centres, based on their specific needs.",
-    "aboutusPlatform": "need4deed is more than a database an organisation fills in itself. Organisations can manage their own volunteers on the platform, separately, and still see volunteers from our pool. If they want, they can share their volunteers with other organisations too, passing on contact details one by one and only with the volunteer's consent. Alongside that, we bring volunteers of our own and do the careful work of matching the right person to each need.",
+    "aboutusSubheading": "The number of people fleeing conflict, persecution and human-rights violations is higher today than it has ever been. Need4Deed works to promote the inclusion and integration of refugees in Berlin through the actions of civil society: by making volunteering more accessible, and by building a sustainable, scalable way to connect volunteers with the people living in Berlin's accommodation centres, based on their specific needs.",
+    "aboutusPlatform": "Need4Deed is more than a database an organisation fills in itself. Organisations can manage their own volunteers on the platform, separately, and still see volunteers from our pool. If they want, they can share their volunteers with other organisations too, passing on contact details one by one and only with the volunteer's consent. Alongside that, we bring volunteers of our own and do the careful work of matching the right person to each need.",
     "whatWeDo": {
       "heading": "What we do",
       "paragraph1": "The accommodation centres and the organisations that support refugees tell us what their residents need. We find volunteers from our pool who fit, and we introduce them. That support takes two main shapes.",
@@ -1852,7 +1852,7 @@
     },
     "different": {
       "heading": "What makes us different",
-      "intro": "Plenty of tools help an organisation manage the volunteers it already has. need4deed does that too, and also helps with the harder problem: finding the right volunteer in the first place, for one specific and demanding kind of work.",
+      "intro": "Plenty of tools help an organisation manage the volunteers it already has. Need4Deed does that too, and also helps with the harder problem: finding the right volunteer in the first place, for one specific and demanding kind of work.",
       "point1": "A pool of volunteers who are already here and ready, next to an organisation's own volunteers.",
       "point2": "Volunteer sharing between organisations, one contact at a time and only with the volunteer's consent.",
       "point3": "Matching by language, dialect, location, availability and activity: the details that decide whether support actually happens.",
@@ -1876,13 +1876,18 @@
     "whoFor": {
       "heading": "Who it's for",
       "paragraph1": "We work with the accommodation centres, NGOs and social teams supporting refugees across Berlin, and with the volunteers, many of them multilingual, many with their own experience of migration, who give their time to help. If you run a centre or an organisation and your residents need support, or if you want to volunteer, you belong here.",
-      "paragraph2": "Behind all of it is a simple belief: arriving somewhere new is hard enough, and no one should have to face a doctor's appointment, a form, or a first winter alone. need4deed exists to make sure they don't have to."
+      "paragraph2": "Behind all of it is a simple belief: arriving somewhere new is hard enough, and no one should have to face a doctor's appointment, a form, or a first winter alone. Need4Deed exists to make sure they don't have to."
     },
     "history": {
       "heading": "Our history",
       "paragraph1": "Our story starts with Berlin Arrival Support, a volunteer collective that has welcomed refugees, mostly from Ukraine, since 27 February 2022. At Berlin Hauptbahnhof, the central bus station (ZOB) and Südkreuz, volunteers helped people arriving in the city: with luggage, tickets and onward travel, translation and first orientation, forms such as for the Jobcenter, opening bank accounts, and finding a place to stay.",
-      "paragraph2": "In 2023 BEVOS (Berlin Volunteer Support) started, to support the volunteers themselves: training on topics such as asylum law and mental health, networking between Berlin's welcome initiatives, advice to prevent burnout, and placing trained volunteers in language cafés, translation and accompaniment to appointments. need4deed grew out of BEVOS, as the platform that connects volunteers with accommodation centres and organisations across Berlin today.",
-      "paragraph3": "Many people have shaped need4deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona and many more volunteers."
+      "paragraph2": "In 2023 BEVOS (Berlin Volunteer Support) started, to support the volunteers themselves: training on topics such as asylum law and mental health, networking between Berlin's welcome initiatives, advice to prevent burnout, and placing trained volunteers in language cafés, translation and accompaniment to appointments. Need4Deed grew out of BEVOS, as the platform that connects volunteers with accommodation centres and organisations across Berlin today.",
+      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona and many more volunteers."
+    },
+    "funding": {
+      "heading": "Funding",
+      "bevos": "BEVOS was funded by the European Social Fund (ESF).",
+      "need4deed": "Need4Deed is funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
     }
   },
   "faqs": {
