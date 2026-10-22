@@ -427,6 +427,10 @@
     }
   },
   "dashboard": {
+    "emailNote": {
+      "label": "Text zur E-Mail hinzufügen (optional)",
+      "placeholder": "Ihr Text erscheint in der E-Mail über der Grußformel."
+    },
     "common": {
       "loading": "Wird geladen...",
       "selectOption": "Option auswählen...",

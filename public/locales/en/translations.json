@@ -421,6 +421,10 @@
     }
   },
   "dashboard": {
+    "emailNote": {
+      "label": "Add a note to the email (optional)",
+      "placeholder": "Your text appears in the email above the sign-off."
+    },
     "common": {
       "loading": "Loading...",
       "selectOption": "Select option...",

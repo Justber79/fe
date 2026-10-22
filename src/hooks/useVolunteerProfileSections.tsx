@@ -52,7 +52,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const opportunityId = searchParams.get("opportunity") ?? undefined;
   const opportunity = useGetOpportunity(opportunityId);
 
-  const { mutate: suggestMutate } = useSuggestVolunteerOpportunity(() => {
+  const { mutate: suggestMutate, isPending: isSuggesting } = useSuggestVolunteerOpportunity(() => {
     setIsSuggestDialogOpen(false);
     router.push(`/${i18n.language}/dashboard/opportunities/${opportunityId}`);
   }, ["opportunity-volunteers", String(opportunityId)]);
@@ -72,12 +72,13 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
 
   const volunteerFullName = `${volunteer.person.firstName} ${volunteer.person.lastName}`;
 
-  const handleSuggestConfirm = () => {
+  const handleSuggestConfirm = (emailNote: string) => {
     if (!opportunityId) return;
     suggestMutate({
       opportunityId: Number(opportunityId),
       volunteerId: volunteer.id,
       status: OpportunityVolunteerStatusType.PENDING,
+      emailNote,
     });
   };
 
@@ -130,6 +131,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
               opportunityName={opportunity?.name}
               onCancel={() => setIsSuggestDialogOpen(false)}
               onConfirm={handleSuggestConfirm}
+              isPending={isSuggesting}
             />
           )}
         </>
