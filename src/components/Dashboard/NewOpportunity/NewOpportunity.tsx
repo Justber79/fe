@@ -29,14 +29,13 @@ import {
 import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import styled from "styled-components";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   createAccompanyingDetailsSchema,
   AccompanyingDetailsFormData,
 } from "../Profile/sections/AccompanyingDetails/createAccompanyingDetailsSchema";
-import { SaveRow } from "./styled";
+import { AddressWarning, SaveRow } from "./styled";
 import { OpportunityDetailsFields } from "./fields/OpportunityDetailsFields";
 import { buildCreatePayload } from "./helper";
 import { createHeaderSchema, HeaderFormData } from "./headerSchema";
@@ -240,16 +239,3 @@ export function NewOpportunity() {
     </PageContainer>
   );
 }
-
-const AddressWarning = styled.p`
-  margin: 0;
-  padding: var(--spacing-16);
-  border-radius: var(--border-radius-small);
-  background: var(--color-orchid-subtle);
-  color: var(--color-midnight);
-
-  a {
-    color: var(--color-aubergine);
-    font-weight: var(--font-weight-semi-bold);
-  }
-`;

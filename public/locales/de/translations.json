@@ -1802,9 +1802,9 @@
         "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
-      "agentSection": "Ihre Organisation",
+      "agentSection": "Eure Organisation",
       "submit": "Möglichkeit erstellen",
-      "addressMissing": "Im Profil eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
+      "addressMissing": "Im Profil Eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
       "addressMissingLink": "Adresse im Organisationsprofil ergänzen (öffnet in neuem Tab)"
     },
     "admin": {
