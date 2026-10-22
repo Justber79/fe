@@ -1,7 +1,7 @@
 import { Paragraph } from "@/components/styled/text";
 import { EyeIcon, EyeSlashIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import { ValidationError } from "@tanstack/react-form";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
@@ -65,6 +65,7 @@ const ToggleButton = styled.button`
 `;
 
 interface Props {
+  id?: string;
   type?: string;
   placeHolder?: string;
   onInputChange: (input: string) => void;
@@ -75,6 +76,7 @@ interface Props {
 }
 
 export function FormInput({
+  id,
   placeHolder = "Input",
   value = "",
   type = "input",
@@ -84,6 +86,8 @@ export function FormInput({
   errors,
 }: Props) {
   const { t } = useTranslation();
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +102,9 @@ export function FormInput({
     <FormInputContainer>
       <InputRow>
         <StyledInput
+          id={inputId}
+          aria-invalid={errorsExist || undefined}
+          aria-describedby={errorsExist ? errors.map((_, index) => `${inputId}-error-${index}`).join(" ") : undefined}
           placeholder={placeHolder}
           value={value}
           onChange={handleInputChange}
@@ -119,9 +126,9 @@ export function FormInput({
       </InputRow>
 
       {errorsExist &&
-        errors.map((error) => (
-          <ErrorMessageContainer key={`${error}`}>
-            <WarningCircleIcon size={20} color="var(--form-input-error-message-color)" />
+        errors.map((error, index) => (
+          <ErrorMessageContainer id={`${inputId}-error-${index}`} key={`${inputId}-error-${index}`}>
+            <WarningCircleIcon aria-hidden="true" size={20} color="var(--form-input-error-message-color)" />
             <Paragraph
               color="var(--form-input-error-message-color)"
               fontSize="var(--form-input-error-message-fontSize)"

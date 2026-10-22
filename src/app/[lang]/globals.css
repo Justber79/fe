@@ -498,8 +498,20 @@ html {
   --image-circle-pic-size: 60px;
 
   /* form input */
-  --form-input-height: 3rem;
+  --form-input-height: var(--form-input-container-height);
   --form-input-error-message-color: var(--color-red-600);
+  --form-input-container-height: 56px;
+  --form-input-container-border-radius: 8px;
+  --form-input-container-padding: 16px;
+  --form-input-container-border: 1px solid var(--color-grey-200);
+  --form-input-container-border-focus: 2px solid var(--color-green-200);
+  --form-input-container-border-error: 2px solid var(--color-red-600);
+  --form-input-fontSize: 20px;
+  --form-input-error-message-container-gap: 8px;
+  --form-input-error-message-container-padding: 8px;
+  --form-input-error-message-fontSize: 16px;
+  --form-input-error-message-lineHeight: 20px;
+  --form-input-error-message-fontWeight: 400;
 
   /* checkButton */
   --check-button-label-font-size: 18px;
@@ -1497,19 +1509,6 @@ html {
 
     --app-header-language-switcher-gap: 8px;
     --app-header-menu-item-fontWeight-secondary: 400;
-
-    --form-input-container-height: 56px;
-    --form-input-container-border-radius: 8px;
-    --form-input-container-padding: 16px;
-    --form-input-container-border: 1px solid var(--color-grey-200);
-    --form-input-container-border-focus: 2px solid var(--color-green-200);
-    --form-input-container-border-error: 2px solid var(--color-red-600);
-    --form-input-fontSize: 20px;
-    --form-input-error-message-container-gap: 8px;
-    --form-input-error-message-container-padding: 8px;
-    --form-input-error-message-fontSize: 16px;
-    --form-input-error-message-lineHeight: 20px;
-    --form-input-error-message-fontWeight: 400;
 
     --volunteer-profile-section-card-header-button-padding: 16px 24px;
   }
