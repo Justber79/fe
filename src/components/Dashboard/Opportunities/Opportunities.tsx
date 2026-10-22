@@ -29,6 +29,7 @@ import {
   DEFAULT_SORT_ORDER,
 } from "./helpers";
 import { OpportunityListController } from "./OpportunityListController";
+import { OtherOpportunities } from "./OtherOpportunities";
 import { ContentRow, OpportunitiesContainer } from "./styles";
 import { ViewMode } from "../common/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -46,19 +47,23 @@ export function Opportunities() {
   const pathname = usePathname();
   const router = useRouter();
   const sortOrder = parseSortParam(searchParams.get(SORT_PARAM));
+  const isAgent = user?.role === UserRole.AGENT;
   const tabs = !user
     ? []
     : [
         t("dashboard.opportunities.tabs.tab1"),
         t("dashboard.opportunities.tabs.tab2"),
         t("dashboard.opportunities.tabs.tab3"),
+        ...(isAgent ? [t("dashboard.opportunities.other.title")] : []),
       ];
 
   const urlViewParam = searchParams.get("view");
   const VIEW_MODE_BY_TAB = [ViewMode.LIST, ViewMode.CARDS, ViewMode.MAP];
+  const isOtherTab = isAgent && urlViewParam === OTHER_OPPORTUNITIES_VIEW;
   const foundIndex = VIEW_MODE_BY_TAB.findIndex((mode) => mode === urlViewParam);
-  const selectedTabIndex = foundIndex === -1 ? (screenType === ScreenTypes.MOBILE ? 1 : 0) : foundIndex;
-  const viewMode = VIEW_MODE_BY_TAB[selectedTabIndex];
+  const defaultTabIndex = screenType === ScreenTypes.MOBILE ? 1 : 0;
+  const selectedTabIndex = isOtherTab ? VIEW_MODE_BY_TAB.length : foundIndex === -1 ? defaultTabIndex : foundIndex;
+  const viewMode = VIEW_MODE_BY_TAB[isOtherTab ? defaultTabIndex : selectedTabIndex];
 
   const volunteerId = searchParams.get("volunteer") ?? undefined;
   const volunteerFilter = useGetVolunteer(volunteerId);
@@ -96,7 +101,8 @@ export function Opportunities() {
   };
 
   const handleTabChange = (index: number) => {
-    const targetViewMode = VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST;
+    const targetViewMode =
+      index === VIEW_MODE_BY_TAB.length ? OTHER_OPPORTUNITIES_VIEW : (VIEW_MODE_BY_TAB[index] ?? ViewMode.LIST);
 
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
@@ -174,30 +180,41 @@ export function Opportunities() {
           sortOrder={sortOrder}
           onSortOrderChange={handleSortChange}
           extraSortOptions={extraSortOptions}
-          activeFilters={activeFilters}
+          activeFilters={isOtherTab ? [] : activeFilters}
           onClearAllFilters={handleClearAllFilters}
           onClearFilter={handleClearFilter}
-          entityFilter={volunteerFilter ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined}
+          entityFilter={
+            volunteerFilter && !isOtherTab ? { ...volunteerFilter, onRemove: handleRemoveVolunteerFilter } : undefined
+          }
+          showListControls={!isOtherTab}
         />
 
-        <ContentRow>
-          <OpportunityListController
-            setNumOfOpps={setNumOfOpps}
-            sortOrder={sortOrder}
-            filter={cardsFilter}
-            setFilter={handleFilterUpdate}
-            apiFilterOptions={apiFilterOptions}
-            volunteerId={volunteerId}
-            viewMode={viewMode}
-            volunteerFilter={volunteerFilter}
-          />
-          <Filters
-            isFiltersOpen={isFiltersOpen}
-            setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
-          />
-        </ContentRow>
+        {isOtherTab ? (
+          <OtherOpportunities search={cardsFilter.search} setCount={setNumOfOpps} />
+        ) : (
+          <ContentRow>
+            <OpportunityListController
+              setNumOfOpps={setNumOfOpps}
+              sortOrder={sortOrder}
+              filter={cardsFilter}
+              setFilter={handleFilterUpdate}
+              apiFilterOptions={apiFilterOptions}
+              volunteerId={volunteerId}
+              viewMode={viewMode}
+              volunteerFilter={volunteerFilter}
+            />
+            <Filters
+              isFiltersOpen={isFiltersOpen}
+              setIsFiltersOpen={setIsFiltersOpen}
+              filtersContent={
+                <FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />
+              }
+            />
+          </ContentRow>
+        )}
       </OpportunitiesContainer>
     </DashboardLayout>
   );
 }
+
+const OTHER_OPPORTUNITIES_VIEW = "other";

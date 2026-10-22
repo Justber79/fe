@@ -212,3 +212,16 @@ export const TimeInput = styled.input<{ $hasError?: boolean }>`
   font-size: var(--font-size-lg);
   color: var(--color-midnight);
 `;
+
+export const AddressWarning = styled.p`
+  margin: 0;
+  padding: var(--spacing-16);
+  border-radius: var(--border-radius-small);
+  background: var(--color-orchid-subtle);
+  color: var(--color-midnight);
+
+  a {
+    color: var(--color-aubergine);
+    font-weight: var(--font-weight-semi-bold);
+  }
+`;

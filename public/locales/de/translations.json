@@ -1157,7 +1157,17 @@
       "schedule": "Zeitplan",
       "district": "Bezirk",
       "dateOfAppointment": "Datum des Termins",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "other": {
+        "title": "Andere Tätigkeiten",
+        "description": "Offene Tätigkeiten anderer Organisationen. Angezeigt werden nur Titel und Bezirk.",
+        "empty": "Keine anderen Tätigkeiten gefunden.",
+        "columns": {
+          "title": "Titel",
+          "district": "Bezirk",
+          "createdAt": "Erstellt am"
+        }
+      }
     },
     "documentSection": {
       "title": "Dokumente",
@@ -1187,6 +1197,20 @@
         "previewUnavailable": "Vorschau nicht verfügbar",
         "downloadUnavailable": "Download nicht verfügbar",
         "deleteUnavailable": "Löschen nicht verfügbar"
+      },
+      "applicationEmail": {
+        "name": "E-Mail mit Antrag",
+        "sent": "Gesendet",
+        "notSent": "Nicht gesendet",
+        "send": "E-Mail mit Antrag senden",
+        "noEmail": "Keine E-Mail-Adresse",
+        "dialog": {
+          "title": "E-Mail mit Antrag senden?",
+          "message": "Das Antragsformular für das erweiterte Führungszeugnis (EFZ) und die Anleitung werden per E-Mail an {{name}} ({{email}}) gesendet, community@need4deed.org in Kopie.",
+          "alreadySent": "Sie wurde bereits am {{date}} gesendet.",
+          "send": "Senden",
+          "cancel": "Abbrechen"
+        }
       },
       "deleteDialog": {
         "title": "Dokument löschen?",
@@ -1668,7 +1692,13 @@
         "firstInquiry": "Erste Anfrage gesendet",
         "opportunityList": "Liste der Ehrenamtsbedarfe gesendet",
         "statusUpdate": "Statusaktualisierung",
-        "postMatchFollowUp": "Folgegespräch nach Zuweisung"
+        "postMatchFollowUp": "Folgegespräch nach Zuweisung",
+        "cgcApplicationEmail": "E-Mail mit Antrag (EFZ)",
+        "accompanyingMatched": "Vermittlungs-E-Mail (Begleitung) gesendet",
+        "matched": "Vermittlungs-E-Mail gesendet",
+        "opportunityConfirmation": "Bestätigung des Ehrenamtsbedarfs gesendet",
+        "accompanyingNotFound": "Keine Begleitung gefunden",
+        "opportunityUpdated": "Aktualisierung des Ehrenamtsbedarfs gesendet"
       },
       "platformOptions": {
         "phoneNumber": "Telefonnummer",
@@ -1792,8 +1822,10 @@
         "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
-      "agentSection": "Ihre Organisation",
-      "submit": "Möglichkeit erstellen"
+      "agentSection": "Eure Organisation",
+      "submit": "Möglichkeit erstellen",
+      "addressMissing": "Im Profil Eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
+      "addressMissingLink": "Adresse im Organisationsprofil ergänzen (öffnet in neuem Tab)"
     },
     "admin": {
       "title": "Admin",
@@ -2267,6 +2299,9 @@
     "validationFailed": "Validierung fehlgeschlagen",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
+    "applicationEmailSent": "E-Mail mit Antrag gesendet!",
+    "applicationEmailJustSent": "Die E-Mail mit Antrag wurde gerade gesendet. Bitte versuchen Sie es in einer Minute erneut.",
+    "applicationEmailNotSent": "Die E-Mail mit Antrag konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",

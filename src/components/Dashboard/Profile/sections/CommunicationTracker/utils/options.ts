@@ -7,8 +7,16 @@ type Option = {
   label: string;
 };
 
+export const manualCommunicationTypes: CommunicationType[] = [
+  CommunicationType.BRIEF,
+  CommunicationType.FIRST_INQUIRY,
+  CommunicationType.OPPORTUNITY_LIST,
+  CommunicationType.STATUS_UPDATE,
+  CommunicationType.POST_FOLLOWUP,
+];
+
 export function getCommunicationTypeOptions(t: TFunction): Option[] {
-  return Object.values(CommunicationType).map((type) => ({
+  return manualCommunicationTypes.map((type) => ({
     value: type,
     label: getCommunicationTypeLabel(t, type),
   }));
