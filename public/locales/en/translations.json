@@ -1967,7 +1967,10 @@
       "fileTooLarge": "The file is too large. Please choose a smaller file.",
       "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
       "alreadyUsedToken": "This link has already been used.",
-      "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
+      "personAlreadyRegistered": "An account with this email already exists. Please log in instead.",
+      "emailNoteNotSent": "The status was saved, but the email with your note was not sent.",
+      "emailAlreadySent": "That email was already sent for this match, so your note was not delivered.",
+      "emailNotePlaceholder": "The note can't contain {{ … }}. Please remove it and try again."
     }
   },
   "racGuidelines": {
