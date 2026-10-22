@@ -1822,8 +1822,10 @@
         "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
-      "agentSection": "Ihre Organisation",
-      "submit": "Möglichkeit erstellen"
+      "agentSection": "Eure Organisation",
+      "submit": "Möglichkeit erstellen",
+      "addressMissing": "Im Profil Eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
+      "addressMissingLink": "Adresse im Organisationsprofil ergänzen (öffnet in neuem Tab)"
     },
     "admin": {
       "title": "Admin",
