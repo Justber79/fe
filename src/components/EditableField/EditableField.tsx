@@ -11,7 +11,7 @@ const EditModeWrapper = styled.div`
   width: 100%;
 `;
 
-const FieldWrapper = styled.div<HasError & HasHint>`
+const FieldWrapper = styled.div<HasError & HasHint & { $stacked?: boolean }>`
   display: var(--editableField-fieldWrapper-display);
   border-bottom: var(--editableField-fieldWrapper-borderBottom);
   padding: ${(props) =>
@@ -45,7 +45,7 @@ const FieldWrapper = styled.div<HasError & HasHint>`
     min-width: 0;
   }
 
-  @media (max-width: 767px) {
+  @media ${({ $stacked }) => ($stacked ? "all" : "(max-width: 767px)")} {
     align-items: flex-start;
     flex-direction: column;
     gap: var(--spacing-8);
@@ -222,12 +222,17 @@ const OptionRow = styled.div<{ $isSelected?: boolean }>`
   }
 `;
 
-const HintWrapper = styled.div`
+const HintWrapper = styled.div<{ $stacked?: boolean }>`
   display: flex;
   align-items: center;
   padding: var(--spacing-8) var(--spacing-16) var(--spacing-8) 0;
   gap: var(--spacing-8);
-  padding-left: calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap));
+  padding-left: ${({ $stacked }) =>
+    $stacked ? "0" : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"};
+
+  @media (max-width: 767px) {
+    padding-left: 0;
+  }
 `;
 
 const HintText = styled.span`
@@ -305,6 +310,7 @@ interface EditableFieldProps<T = string | number | string[]> {
   displayValue?: string;
   isAutocomplete?: boolean;
   dropdownDirection?: "up" | "down";
+  stacked?: boolean;
 }
 
 export const EditableField = forwardRef(function EditableField<T extends string | number | string[]>(
@@ -325,6 +331,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     displayValue,
     isAutocomplete = false,
     dropdownDirection = "down",
+    stacked = false,
   }: EditableFieldProps<T>,
   ref: React.Ref<EditableFieldRef<T>>,
 ) {
@@ -404,7 +411,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
   return (
     <EditModeWrapper>
-      <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint}>
+      <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint} $stacked={stacked}>
         {label && <label>{label}</label>}
 
         {type === "text" && (
@@ -615,18 +622,27 @@ export const EditableField = forwardRef(function EditableField<T extends string 
         )}
       </FieldWrapper>
       {error && (
-        <p style={{ color: "var(--editableField-error-color)", paddingLeft: "var(--editableField-error-paddingLeft)" }}>
+        <p
+          style={{
+            color: "var(--editableField-error-color)",
+            paddingLeft: stacked ? "0" : "var(--editableField-error-paddingLeft)",
+          }}
+        >
           {error}
         </p>
       )}
       {errorMessage && (
         <ErrorMessage
           message={errorMessage}
-          paddingLeft="calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"
+          paddingLeft={
+            stacked
+              ? "0"
+              : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"
+          }
         />
       )}
       {hint && (
-        <HintWrapper data-testid="editable-field-hint">
+        <HintWrapper $stacked={stacked} data-testid="editable-field-hint">
           <HintText>{hint}</HintText>
         </HintWrapper>
       )}
