@@ -57,7 +57,7 @@ export function ConfirmationDialog({
   const { t } = useTranslation();
 
   return (
-    <Modal isOpen onClose={cancelDisabled ? () => undefined : onCancel}>
+    <Modal isOpen onClose={cancelDisabled ? () => undefined : onCancel} closeOnOutsideClick={!children}>
       <div
         data-testid="confirmation-dialog"
         style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-24)" }}

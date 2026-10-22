@@ -34,7 +34,6 @@ export function SuggestDialog({ opportunityName, volunteerName, onCancel, onConf
       onCancel={onCancel}
       onConfirm={() => onConfirm(emailNote)}
       confirmDisabled={isPending}
-      cancelDisabled={isPending}
     >
       <EmailNoteField value={emailNote} onChange={setEmailNote} disabled={isPending} />
     </ConfirmationDialog>

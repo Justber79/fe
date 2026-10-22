@@ -429,7 +429,7 @@
   "dashboard": {
     "emailNote": {
       "label": "Text zur E-Mail hinzufügen (optional)",
-      "placeholder": "Ihr Text erscheint in der E-Mail über der Grußformel."
+      "placeholder": "Dieser Text wird der E-Mail hinzugefügt."
     },
     "common": {
       "loading": "Wird geladen...",
@@ -2317,7 +2317,7 @@
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
       "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an.",
       "emailNoteNotSent": "Der Status wurde gespeichert, aber die E-Mail mit Ihrem Text wurde nicht gesendet.",
-      "emailAlreadySent": "Diese E-Mail wurde für diesen Match bereits gesendet, daher wurde Ihr Text nicht zugestellt.",
+      "emailAlreadySent": "Diese E-Mail wurde für diesen Match bereits gesendet. Es wurde nichts gespeichert; entfernen Sie den Text, um fortzufahren.",
       "emailNotePlaceholder": "Der Text darf kein {{ … }} enthalten. Bitte entfernen Sie es und versuchen Sie es erneut."
     }
   },
