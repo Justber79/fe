@@ -20,7 +20,12 @@ import {
   RadioRow,
   Select,
 } from "./styles";
-import { getCommunicationTypeOptions, getContactMethodOptions, getDefaultContactMethod } from "./utils/options";
+import {
+  getCommunicationTypeOptions,
+  getContactMethodOptions,
+  getDefaultContactMethod,
+  manualCommunicationTypes,
+} from "./utils/options";
 import { getContactTypeLabel } from "./utils/translations";
 import { CommunicationFormData, createValidationSchema } from "./utils/validation";
 
@@ -63,14 +68,17 @@ export function CommunicationDialog({ isOpen, onClose, onSave, initialData }: Pr
         reset({
           contactType: initialData.contactType,
           contactMethod: initialData.contactMethod,
-          communicationType: initialData.communicationType || CommunicationType.BRIEF,
+          communicationType:
+            initialData.communicationType && manualCommunicationTypes.includes(initialData.communicationType)
+              ? initialData.communicationType
+              : manualCommunicationTypes[0],
           date: new Date(initialData.date),
         });
       } else {
         reset({
           contactType: undefined,
           contactMethod: ContactMethodType.PHONE,
-          communicationType: CommunicationType.BRIEF,
+          communicationType: manualCommunicationTypes[0],
           date: new Date(),
         });
       }
