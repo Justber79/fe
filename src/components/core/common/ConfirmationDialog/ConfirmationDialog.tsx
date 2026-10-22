@@ -14,6 +14,7 @@ type Props = {
   compact?: boolean;
   cancelDisabled?: boolean;
   confirmDisabled?: boolean;
+  children?: ReactNode;
 };
 
 const Title = styled.h3`
@@ -51,6 +52,7 @@ export function ConfirmationDialog({
   compact = false,
   cancelDisabled = false,
   confirmDisabled = false,
+  children,
 }: Props) {
   const { t } = useTranslation();
 
@@ -62,6 +64,7 @@ export function ConfirmationDialog({
       >
         <Title>{title}</Title>
         <Message>{message}</Message>
+        {children}
         <ButtonGroup>
           <Button
             text={cancelText || t("dashboard.communicationSection.cancel", "Cancel")}

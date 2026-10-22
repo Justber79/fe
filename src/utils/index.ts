@@ -3,22 +3,6 @@ export * from "./helpers";
 import { cloudfrontURL } from "@/config/constants";
 import { DocumentStatusType } from "need4deed-sdk";
 
-export function utcHhmmToLocal(hhmm: string): string {
-  const [h, m] = hhmm.split(":").map(Number);
-  if (isNaN(h) || isNaN(m)) return hhmm;
-  const d = new Date();
-  d.setUTCHours(h, m, 0, 0);
-  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-}
-
-export function localHhmmToUtc(hhmm: string): string {
-  const [h, m] = hhmm.split(":").map(Number);
-  if (isNaN(h) || isNaN(m)) return hhmm;
-  const d = new Date();
-  d.setHours(h, m, 0, 0);
-  return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
-}
-
 export function dateFromDateTimeUTCStrings(date: string | undefined, time: string | undefined): Date | null {
   if (!date || !time) return null;
   const dateTimeString = `${date}T${time}:00Z`;

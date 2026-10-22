@@ -7,6 +7,7 @@ const ERROR_CLASS_KEYS: Record<string, string> = {
   AlreadyUsedTokenError: "message.apiErrors.alreadyUsedToken",
   PersonAlreadyRegisteredError: "message.apiErrors.personAlreadyRegistered",
   InvalidOrganizationEmailError: "agentRegistration.errors.invalidOrganizationEmail",
+  EmailAlreadySentError: "message.apiErrors.emailAlreadySent",
 };
 
 const SESSION_EXPIRED = Symbol("sessionExpired");
@@ -59,6 +60,18 @@ export function isSilentError(error: unknown): boolean {
   return isLeavingPage && axios.isAxiosError(error) && !error.response;
 }
 
+export function isEmailNoteNotSent(error: unknown): boolean {
+  if (!axios.isAxiosError(error) || error.response?.status !== 502) return false;
+  const data = error.response.data as ApiErrorBody | undefined;
+  return data?.error === "EmailNotSentError";
+}
+
+export function withEmailNote<T extends { emailNote?: string }>(payload: T): T {
+  const { emailNote, ...rest } = payload;
+  return (emailNote?.trim() ? { ...rest, emailNote } : rest) as T;
+}
+
+const EMAIL_NOTE_PLACEHOLDER = /^emailNote can't contain \{\{/;
 const COMMUNICATION_DELETE_DENIED = /^You do not have permission to delete communication with id:(\d+)\.$/;
 
 export function getLocalizedErrorMessage(error: unknown, t: TFunction): string {
@@ -78,6 +91,7 @@ export function getLocalizedErrorMessage(error: unknown, t: TFunction): string {
   if (status === 409 && message === "Conflict: Resource already exists") return t("message.apiErrors.alreadyExists");
   if (status === 413 && message === "request file too large") return t("message.apiErrors.fileTooLarge");
   if (message?.startsWith("Validation failed")) return t("message.validationFailed");
+  if (message && EMAIL_NOTE_PLACEHOLDER.test(message)) return t("message.apiErrors.emailNotePlaceholder");
 
   const communicationDenied = message?.match(COMMUNICATION_DELETE_DENIED);
   if (communicationDenied) {

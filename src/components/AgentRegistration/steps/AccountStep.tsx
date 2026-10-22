@@ -5,6 +5,7 @@ import { AgentRegistrationData } from "../types";
 import { FieldConsent, FieldLabel, FieldWrapper, StepDescription, StepTitle, StyledErrorMessage } from "../styled";
 import { Subpage } from "@/types";
 import { WarningCircle } from "@phosphor-icons/react";
+import { useId } from "react";
 
 type Props = {
   data: AgentRegistrationData;
@@ -15,6 +16,7 @@ type Props = {
 
 export function AccountStep({ data, onChange, errors, namespace = "agentRegistration" }: Props) {
   const { t } = useTranslation();
+  const fieldId = useId();
 
   return (
     <div>
@@ -22,8 +24,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       <StepDescription>{t(`${namespace}.steps.account.description`)}</StepDescription>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.firstName`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-first-name`}>{t(`${namespace}.fields.firstName`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-first-name`}
           value={data.firstName}
           onInputChange={(v) => onChange({ firstName: v })}
           placeHolder={t(`${namespace}.fields.firstName`)}
@@ -32,8 +35,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.lastName`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-last-name`}>{t(`${namespace}.fields.lastName`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-last-name`}
           value={data.lastName}
           onInputChange={(v) => onChange({ lastName: v })}
           placeHolder={t(`${namespace}.fields.lastName`)}
@@ -42,8 +46,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.email`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-email`}>{t(`${namespace}.fields.email`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-email`}
           type="email"
           value={data.email}
           onInputChange={(v) => onChange({ email: v })}
@@ -53,8 +58,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.password`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-password`}>{t(`${namespace}.fields.password`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-password`}
           type="password"
           value={data.password}
           onInputChange={(v) => onChange({ password: v })}
@@ -64,8 +70,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.confirmPassword`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-confirm-password`}>{t(`${namespace}.fields.confirmPassword`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-confirm-password`}
           type="password"
           value={data.confirmPassword}
           onInputChange={(v) => onChange({ confirmPassword: v })}
@@ -75,8 +82,9 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldLabel>{t(`${namespace}.fields.phone`)}</FieldLabel>
+        <FieldLabel htmlFor={`${fieldId}-phone`}>{t(`${namespace}.fields.phone`)}</FieldLabel>
         <FormInput
+          id={`${fieldId}-phone`}
           type="tel"
           value={data.phone}
           onInputChange={(v) => onChange({ phone: v })}
@@ -86,10 +94,12 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
       </FieldWrapper>
 
       <FieldWrapper>
-        <FieldConsent>
+        <FieldConsent htmlFor={`${fieldId}-consent`}>
           <input
-            id="consent"
+            id={`${fieldId}-consent`}
             type="checkbox"
+            aria-invalid={!!errors.consent || undefined}
+            aria-describedby={errors.consent ? `${fieldId}-consent-error` : undefined}
             checked={data.consent}
             onChange={(e) => onChange({ consent: e.target.checked })}
           />
@@ -102,8 +112,8 @@ export function AccountStep({ data, onChange, errors, namespace = "agentRegistra
           </span>
         </FieldConsent>
         {errors.consent && (
-          <StyledErrorMessage>
-            <WarningCircle size={20} weight="regular" />
+          <StyledErrorMessage id={`${fieldId}-consent-error`}>
+            <WarningCircle aria-hidden="true" size={20} weight="regular" />
             {errors.consent}
           </StyledErrorMessage>
         )}

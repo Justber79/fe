@@ -1157,7 +1157,17 @@
       "schedule": "Zeitplan",
       "district": "Bezirk",
       "dateOfAppointment": "Datum des Termins",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "other": {
+        "title": "Andere Tätigkeiten",
+        "description": "Offene Tätigkeiten anderer Organisationen. Angezeigt werden nur Titel und Bezirk.",
+        "empty": "Keine anderen Tätigkeiten gefunden.",
+        "columns": {
+          "title": "Titel",
+          "district": "Bezirk",
+          "createdAt": "Erstellt am"
+        }
+      }
     },
     "documentSection": {
       "title": "Dokumente",
@@ -1187,6 +1197,20 @@
         "previewUnavailable": "Vorschau nicht verfügbar",
         "downloadUnavailable": "Download nicht verfügbar",
         "deleteUnavailable": "Löschen nicht verfügbar"
+      },
+      "applicationEmail": {
+        "name": "E-Mail mit Antrag",
+        "sent": "Gesendet",
+        "notSent": "Nicht gesendet",
+        "send": "E-Mail mit Antrag senden",
+        "noEmail": "Keine E-Mail-Adresse",
+        "dialog": {
+          "title": "E-Mail mit Antrag senden?",
+          "message": "Das Antragsformular für das erweiterte Führungszeugnis (EFZ) und die Anleitung werden per E-Mail an {{name}} ({{email}}) gesendet, community@need4deed.org in Kopie.",
+          "alreadySent": "Sie wurde bereits am {{date}} gesendet.",
+          "send": "Senden",
+          "cancel": "Abbrechen"
+        }
       },
       "deleteDialog": {
         "title": "Dokument löschen?",
@@ -1668,7 +1692,13 @@
         "firstInquiry": "Erste Anfrage gesendet",
         "opportunityList": "Liste der Ehrenamtsbedarfe gesendet",
         "statusUpdate": "Statusaktualisierung",
-        "postMatchFollowUp": "Folgegespräch nach Zuweisung"
+        "postMatchFollowUp": "Folgegespräch nach Zuweisung",
+        "cgcApplicationEmail": "E-Mail mit Antrag (EFZ)",
+        "accompanyingMatched": "Vermittlungs-E-Mail (Begleitung) gesendet",
+        "matched": "Vermittlungs-E-Mail gesendet",
+        "opportunityConfirmation": "Bestätigung des Ehrenamtsbedarfs gesendet",
+        "accompanyingNotFound": "Keine Begleitung gefunden",
+        "opportunityUpdated": "Aktualisierung des Ehrenamtsbedarfs gesendet"
       },
       "platformOptions": {
         "phoneNumber": "Telefonnummer",
@@ -1792,8 +1822,10 @@
         "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
-      "agentSection": "Ihre Organisation",
-      "submit": "Möglichkeit erstellen"
+      "agentSection": "Eure Organisation",
+      "submit": "Möglichkeit erstellen",
+      "addressMissing": "Im Profil Eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
+      "addressMissingLink": "Adresse im Organisationsprofil ergänzen (öffnet in neuem Tab)"
     },
     "admin": {
       "title": "Admin",
@@ -1821,20 +1853,55 @@
     }
   },
   "aboutus": {
-    "aboutusHeading": "Über das Projekt",
-    "aboutusSubheading": "Die Zahl der Menschen, die weltweit vor Konflikten, Verfolgung und Menschenrechtsverletzungen fliehen, war noch nie so hoch wie heute. Need4Deed will die Inklusion und Integration von Geflüchteten in Berlin durch zivilgesellschaftliches Engagement fördern, indem es den Zugang zu ehrenamtlichem Engagement erleichtert. Unser Ziel ist es, einen nachhaltigen und skalierbaren Mechanismus für diesen Zweck aufzubauen, indem wir Ehrenamtliche mit Geflüchteten, die in Berliner Gemeinschaftsunterkünften leben, auf der Grundlage ihrer spezifischen Bedürfnisse zusammenbringen.",
+    "aboutusHeading": "Über uns",
+    "aboutusSubheading": "Noch nie waren so viele Menschen auf der Flucht vor Konflikten, Verfolgung und Menschenrechtsverletzungen wie heute. Need4Deed setzt sich für die Inklusion und Integration geflüchteter Menschen in Berlin durch zivilgesellschaftliches Engagement ein: indem wir Ehrenamt zugänglicher machen und einen nachhaltigen, skalierbaren Weg schaffen, Freiwillige mit den Menschen in Berliner Unterkünften zusammenzubringen, passend zu ihrem konkreten Bedarf.",
+    "aboutusPlatform": "Need4Deed ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen. Daneben bringen wir eigene Freiwillige mit und übernehmen die sorgfältige Arbeit, für jeden Bedarf die richtige Person zu finden.",
+    "whatWeDo": {
+      "heading": "Was wir tun",
+      "paragraph1": "Die Unterkünfte und die Organisationen, die Geflüchtete unterstützen, sagen uns, was ihre Bewohner*innen brauchen. Wir suchen passende Freiwillige aus unserem Pool und stellen den Kontakt her. Die Unterstützung hat zwei Hauptformen.",
+      "paragraph2": "Regelmäßiges Engagement umfasst alles, was einen Ort zu einer Gemeinschaft macht: Kinderbetreuung, Sprachcafés, Nachhilfe, Sport, Hilfe bei Formularen, Übersetzung in der Unterkunft und vieles mehr. Begleitung zu Terminen heißt, jemanden zur Ärztin, zum Amt, zur Schule oder zur Wohnungsbesichtigung zu begleiten, damit ein Termin nie an der Sprache scheitert.",
+      "paragraph3": "Hinter jeder Vermittlung steht ein bewusster Match. Die Person spricht die richtige Sprache, bis hin zu Farsi oder Dari oder dem passenden arabischen Dialekt, wohnt nah genug, um wirklich zu kommen, hat Zeit, wenn sie gebraucht wird, und möchte genau diese Art von Engagement. Unsere Koordinator*innen stellen den Match her, und die Plattform hält alles auf Deutsch und Englisch fest, damit alle Beteiligten den Überblick behalten."
+    },
+    "different": {
+      "heading": "Was uns unterscheidet",
+      "intro": "Es gibt viele Tools, mit denen Organisationen ihre vorhandenen Freiwilligen verwalten. Need4Deed kann das auch und hilft zusätzlich bei der schwierigeren Aufgabe: überhaupt erst die richtige Person zu finden, für eine bestimmte und anspruchsvolle Art von Engagement.",
+      "point1": "Ein Pool von Freiwilligen, die schon da und bereit sind, neben den eigenen Freiwilligen einer Organisation.",
+      "point2": "Teilen von Freiwilligen zwischen Organisationen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen.",
+      "point3": "Matching nach Sprache, Dialekt, Wohnort, Verfügbarkeit und Tätigkeit: den Details, die entscheiden, ob Unterstützung wirklich ankommt.",
+      "point4": "Echtes Wissen darüber, wie Unterkünfte für Geflüchtete funktionieren, von den verschiedenen Unterkunftsarten bis zu den Regeln bei Begleitungen.",
+      "point5": "Eine zweisprachige Plattform, damit Geflüchtete, Freiwillige und Mitarbeitende sie in einer Sprache nutzen können, die sie verstehen.",
+      "outro": "Und für die Organisationen, mit denen wir arbeiten, ist es kostenlos."
+    },
     "values": {
       "valuesHeading": "Unsere Werte",
       "equalOpportunityHeading": "Chancengleichheit",
-      "equalOpportunitySubheading": "Menschen, die unter bedürftigen Lebensbedingungen leben, sollten gleiche Chancen erhalten. Dazu gehören auch unterversorgte Personen und Gruppen, die von Zwangsmigration betroffen sind.",
+      "equalOpportunitySubheading": "Menschen in prekären Lebenslagen sollen gleiche Chancen bekommen, auch benachteiligte Einzelne und Gruppen, die von Flucht und Vertreibung betroffen sind.",
       "responsibilityHeading": "Verantwortung",
-      "responsibilitySubheading": "Sowohl die Länder (der Staat) als auch die Zivilgesellschaft tragen Verantwortung für ihre unterversorgten Gemeinschaften, einschließlich der von erzwungener Migration Betroffenen.",
-      "migranToMigranSupportHeading": "Migrant*innen unterstützen Migrant*innen",
-      "migranToMigranSupportSubheading": "Insbesondere Gruppen und Einzelpersonen, die eine erzwungene Migration durchlebt haben, könnten im Laufe ihres Integrationsprozesses am besten von anderen Menschen mit Migrationshintergrund verstanden und unterstützt werden, damit sie gleiche Chancen erhalten und schließlich selbst einen Beitrag zur Gesellschaft leisten können.",
-      "activeParticipationHeading": "Aktive Beteiligung",
-      "activeParticipationSubheading": "Eine Unterstützungsstruktur von Migrant*innen für Migrant*innen kann neben der Unterstützung von Nicht-Migrant*innen eine wichtige soziale Rolle in Gesellschaften spielen, indem sie einen schnelleren Integrationsprozess und eine aktive Beteiligung der unterstützten Gemeinschaften ermöglicht.",
+      "responsibilitySubheading": "Staat und Zivilgesellschaft tragen gemeinsam Verantwortung für benachteiligte Gemeinschaften, auch für Menschen mit Fluchterfahrung.",
+      "migranToMigranSupportHeading": "Unterstützung von Migrant*innen für Migrant*innen",
+      "migranToMigranSupportSubheading": "Menschen mit Fluchterfahrung werden oft am besten von anderen mit Migrationsgeschichte verstanden und unterstützt. Sie begleiten sie durch die Integration, damit sie gleiche Chancen erhalten und mit der Zeit selbst etwas an die Gesellschaft zurückgeben.",
+      "activeParticipationHeading": "Aktive Teilhabe",
+      "activeParticipationSubheading": "Unterstützung von Migrant*innen für Migrant*innen spielt, neben der Unterstützung durch Menschen ohne Migrationsgeschichte, eine wichtige gesellschaftliche Rolle: Sie beschleunigt die Integration und bringt die unterstützten Gemeinschaften in aktive Teilhabe.",
       "technologyHeading": "Technologie",
-      "technologySubheading": "Der Einsatz von Technologie zur Unterstützung unterversorgter Gemeinschaften ist ein entscheidender Wert, um das Geben und Nehmen von Unterstützung integrativer, zugänglicher und skalierbarer zu machen."
+      "technologySubheading": "Technologie zur Unterstützung benachteiligter Gemeinschaften macht Geben und Empfangen von Hilfe inklusiver, zugänglicher und skalierbarer."
+    },
+    "whoFor": {
+      "heading": "Für wen",
+      "paragraph1": "Wir arbeiten mit Unterkünften, NGOs und Sozialteams, die Geflüchtete in ganz Berlin unterstützen, und mit Freiwilligen, viele davon mehrsprachig, viele mit eigener Migrationserfahrung, die ihre Zeit schenken. Wenn Du eine Unterkunft oder Organisation leitest und Deine Bewohner*innen Unterstützung brauchen, oder wenn Du Dich engagieren möchtest, bist Du hier richtig.",
+      "paragraph2": "Hinter allem steht eine einfache Überzeugung: In einem neuen Land anzukommen ist schwer genug, und niemand sollte einen Arzttermin, ein Formular oder den ersten Winter allein bewältigen müssen. Need4Deed gibt es, damit das niemand muss."
+    },
+    "history": {
+      "heading": "Unsere Geschichte",
+      "paragraph1": "Alles begann mit Berlin Arrival Support, einem Zusammenschluss von Freiwilligen aus der Zivilgesellschaft, organisiert über eine Telegram-Gruppe. Als im Februar 2022 Geflüchtete aus der Ukraine in Berlin ankamen, wuchs er schnell auf Hunderte Freiwillige, die Tausende Menschen an mehreren Berliner Bahnhöfen empfingen, vor allem am Hauptbahnhof, am Zentralen Omnibusbahnhof (ZOB) und am Südkreuz, und ihnen mit Unterkunft, oft bei privaten Gastgeber*innen, mit Essen, Übersetzung, Tickets, der Weiterreise und erster Orientierung halfen.",
+      "paragraph2": "2023 entstand BEVOS (Berlin Volunteer Support), um die Freiwilligen selbst zu unterstützen: mit Schulungen zu Themen wie Asylrecht und mentaler Gesundheit, mit Vernetzung zwischen den Berliner Willkommensinitiativen, mit Beratung gegen Überlastung und mit der Vermittlung geschulter Freiwilliger in Sprachcafés, Übersetzung und Begleitungen zu Terminen. Aus BEVOS ist Need4Deed entstanden, die Plattform, die heute Freiwillige mit Unterkünften und Organisationen in ganz Berlin zusammenbringt.",
+      "paragraph3": "Viele Menschen haben Need4Deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona und viele weitere Freiwillige.",
+      "arrivalImageAlt": "Ein Freiwilliger von Berlin Arrival Support mit Funkgerät vor einem Welcome-Center-Banner",
+      "footballImageAlt": "Ein Need4Deed-Fußballnachmittag mit Kindern auf einem Sportplatz"
+    },
+    "funding": {
+      "heading": "Förderung",
+      "bevos": "BEVOS wurde aus dem Europäischen Sozialfonds (ESF) gefördert.",
+      "need4deed": "Need4Deed wurde aus dem Asyl-, Migrations- und Integrationsfonds (AMIF) der Europäischen Union gefördert."
     }
   },
   "faqs": {
@@ -2267,6 +2334,9 @@
     "validationFailed": "Validierung fehlgeschlagen",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
+    "applicationEmailSent": "E-Mail mit Antrag gesendet!",
+    "applicationEmailJustSent": "Die E-Mail mit Antrag wurde gerade gesendet. Bitte versuchen Sie es in einer Minute erneut.",
+    "applicationEmailNotSent": "Die E-Mail mit Antrag konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -2276,7 +2346,10 @@
       "fileTooLarge": "Die Datei ist zu groß. Bitte wählen Sie eine kleinere Datei.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
-      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
+      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an.",
+      "emailNoteNotSent": "Der Status wurde gespeichert, aber die E-Mail mit Ihrem Text wurde nicht gesendet.",
+      "emailAlreadySent": "Diese E-Mail wurde für diesen Match bereits gesendet, daher wurde Ihr Text nicht zugestellt.",
+      "emailNotePlaceholder": "Der Text darf kein {{ … }} enthalten. Bitte entfernen Sie es und versuchen Sie es erneut."
     }
   },
   "racGuidelines": {
