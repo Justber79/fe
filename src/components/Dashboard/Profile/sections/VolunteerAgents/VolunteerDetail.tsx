@@ -1,3 +1,4 @@
+import { MatchHandler } from "../shared/types";
 import { CalendarDotsIcon, MapPinIcon, ShootingStarIcon, TranslateIcon } from "@phosphor-icons/react";
 import { OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,7 @@ import { MappedVolunteerAgent } from "./types";
 type Props = {
   volunteer: MappedVolunteerAgent;
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch: () => void;
+  onMatch: MatchHandler;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

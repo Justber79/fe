@@ -1,3 +1,4 @@
+import { MatchHandler } from "../shared/types";
 import { CirclePic } from "@/components/styled/img";
 import { Heading4 } from "@/components/styled/text";
 import { defaultAvatarURL } from "@/config/constants";
@@ -14,7 +15,7 @@ import { VolunteerDetail } from "./VolunteerDetail";
 type Props = {
   volunteer: MappedVolunteerAgent;
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch: () => void;
+  onMatch: MatchHandler;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

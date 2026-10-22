@@ -1,5 +1,7 @@
+export type MatchHandler = (emailNote: string) => void | Promise<unknown>;
+
 export type AccordionActionProps =
-  | { onMatch: () => void; onNotAMatch: () => void; onMarkAsActive: () => void; onMarkAsPast: () => void }
+  | { onMatch: MatchHandler; onNotAMatch: () => void; onMarkAsActive: () => void; onMarkAsPast: () => void }
   | { onMatch?: never; onNotAMatch?: never; onMarkAsActive?: never; onMarkAsPast?: never };
 
 export type EditableSectionRef = {

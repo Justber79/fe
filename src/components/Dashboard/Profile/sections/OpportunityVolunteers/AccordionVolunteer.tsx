@@ -1,3 +1,4 @@
+import { MatchHandler } from "../shared/types";
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Heading4 } from "@/components/styled/text";
 import { defaultAvatarVolunteerProfile } from "@/config/constants";
@@ -16,7 +17,7 @@ type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
   hasEditingRights: boolean;
-  onMatch: () => void;
+  onMatch: MatchHandler;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

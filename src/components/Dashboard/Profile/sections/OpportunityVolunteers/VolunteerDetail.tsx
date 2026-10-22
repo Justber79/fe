@@ -1,3 +1,4 @@
+import { MatchHandler } from "../shared/types";
 import { TagsContainer } from "@/components/core/common/Tags";
 import { Tag } from "@/components/styled/tags";
 import { ActivitySpan } from "@/components/styled/text";
@@ -15,7 +16,7 @@ type Props = {
   volunteer: ApiVolunteerOpportunityGet;
   currentStatus: OpportunityVolunteerStatusType;
   hasEditingRights: boolean;
-  onMatch: () => void;
+  onMatch: MatchHandler;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;

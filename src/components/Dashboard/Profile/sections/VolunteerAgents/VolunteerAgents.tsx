@@ -40,8 +40,9 @@ export const VolunteerAgents = ({ agentId }: Props) => {
     clearItemStatus,
   } = useTabTransitions(volunteers);
 
-  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey, ({ m2mId, status }) =>
-    clearItemStatus(m2mId, status),
+  const { mutate: updateStatus, mutateAsync: updateStatusAsync } = useUpdateOpportunityVolunteerStatus(
+    queryKey,
+    ({ m2mId, status }) => clearItemStatus(m2mId, status),
   );
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
@@ -52,9 +53,9 @@ export const VolunteerAgents = ({ agentId }: Props) => {
     count: tabCounts[index],
   }));
 
-  const handleMatch = (m2mId: number) => {
-    setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
+  const handleMatch = (m2mId: number, emailNote: string) => {
+    if (!emailNote.trim()) setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
+    return updateStatusAsync({ m2mId, status: OpportunityVolunteerStatusType.MATCHED, emailNote });
   };
 
   const handleNotAMatch = (m2mId: number) => {
@@ -87,7 +88,7 @@ export const VolunteerAgents = ({ agentId }: Props) => {
             key={volunteer.id}
             volunteer={volunteer}
             currentStatus={currentTabStatus}
-            onMatch={() => handleMatch(volunteer.id)}
+            onMatch={(emailNote) => handleMatch(volunteer.id, emailNote)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
             onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
             onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
