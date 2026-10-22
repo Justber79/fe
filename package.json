@@ -22,7 +22,7 @@
     "email-validator": "^2.0.4",
     "i18next": "^25.3.2",
     "leaflet": "^1.9.4",
-    "need4deed-sdk": "0.0.183",
+    "need4deed-sdk": "0.0.187",
     "next": "15.3.8",
     "proj4": "^2.22.0",
     "react": "^19.0.0",

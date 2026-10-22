@@ -2311,7 +2311,10 @@
       "fileTooLarge": "Die Datei ist zu groß. Bitte wählen Sie eine kleinere Datei.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
-      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
+      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an.",
+      "emailNoteNotSent": "Der Status wurde gespeichert, aber die E-Mail mit Ihrem Text wurde nicht gesendet.",
+      "emailAlreadySent": "Diese E-Mail wurde für diesen Match bereits gesendet, daher wurde Ihr Text nicht zugestellt.",
+      "emailNotePlaceholder": "Der Text darf kein {{ … }} enthalten. Bitte entfernen Sie es und versuchen Sie es erneut."
     }
   },
   "racGuidelines": {
