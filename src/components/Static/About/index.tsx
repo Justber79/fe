@@ -60,6 +60,11 @@ function AboutUs() {
         <h2>{t("aboutus.whoFor.heading")}</h2>
         <p>{t("aboutus.whoFor.paragraph1")}</p>
         <p>{t("aboutus.whoFor.paragraph2")}</p>
+
+        <h2>{t("aboutus.history.heading")}</h2>
+        <p>{t("aboutus.history.paragraph1")}</p>
+        <p>{t("aboutus.history.paragraph2")}</p>
+        <p>{t("aboutus.history.paragraph3")}</p>
       </AboutUsContainer>
     </PageLayout>
   );
