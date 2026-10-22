@@ -1,7 +1,6 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import { PageLayout } from "@/components/Layout";
-import FunderLogoEU from "@/components/svg/FunderLogoEU";
 import {
   AnswerRow,
   Badge,
@@ -15,6 +14,7 @@ import {
   ItemsList,
   ItemTitle,
   NoteText,
+  Photo,
   QuestionRow,
   SectionBlock,
   SectionHeader,
@@ -87,7 +87,19 @@ function AboutUs() {
           <SectionBlock>
             <SectionHeader>{t("aboutus.history.heading")}</SectionHeader>
             <NoteText>{t("aboutus.history.paragraph1")}</NoteText>
+            <Photo
+              src="/images/about/berlin-arrival-support.webp"
+              alt={t("aboutus.history.arrivalImageAlt")}
+              width={852}
+              height={850}
+            />
             <NoteText>{t("aboutus.history.paragraph2")}</NoteText>
+            <Photo
+              src="/images/about/need4deed-football.webp"
+              alt={t("aboutus.history.footballImageAlt")}
+              width={828}
+              height={872}
+            />
             <NoteText>{t("aboutus.history.paragraph3")}</NoteText>
           </SectionBlock>
 
@@ -95,7 +107,6 @@ function AboutUs() {
             <SectionHeader>{t("aboutus.funding.heading")}</SectionHeader>
             <NoteText>{t("aboutus.funding.bevos")}</NoteText>
             <NoteText>{t("aboutus.funding.need4deed")}</NoteText>
-            <FunderLogoEU width="195" height="180" textColor="var(--color-midnight)" />
           </SectionBlock>
         </ContentSection>
       </Container>

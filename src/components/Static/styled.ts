@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -151,4 +152,11 @@ export const BulletList = styled.ul`
 export const NoteText = styled.p`
   letter-spacing: 0.1px;
   margin: 0;
+`;
+
+export const Photo = styled(Image)`
+  border-radius: 16px;
+  height: auto;
+  max-width: 480px;
+  width: 100%;
 `;

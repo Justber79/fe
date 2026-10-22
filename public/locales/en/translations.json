@@ -1882,12 +1882,14 @@
       "heading": "Our history",
       "paragraph1": "Our story starts with Berlin Arrival Support, a volunteer collective that has welcomed refugees, mostly from Ukraine, since 27 February 2022. At Berlin Hauptbahnhof, the central bus station (ZOB) and Südkreuz, volunteers helped people arriving in the city: with luggage, tickets and onward travel, translation and first orientation, forms such as for the Jobcenter, opening bank accounts, and finding a place to stay.",
       "paragraph2": "In 2023 BEVOS (Berlin Volunteer Support) started, to support the volunteers themselves: training on topics such as asylum law and mental health, networking between Berlin's welcome initiatives, advice to prevent burnout, and placing trained volunteers in language cafés, translation and accompaniment to appointments. Need4Deed grew out of BEVOS, as the platform that connects volunteers with accommodation centres and organisations across Berlin today.",
-      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona and many more volunteers."
+      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona and many more volunteers.",
+      "arrivalImageAlt": "A Berlin Arrival Support volunteer with a radio in front of a Welcome Center banner",
+      "footballImageAlt": "A Need4Deed football afternoon with children on an outdoor pitch"
     },
     "funding": {
       "heading": "Funding",
       "bevos": "BEVOS was funded by the European Social Fund (ESF).",
-      "need4deed": "Need4Deed is funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
+      "need4deed": "Need4Deed was funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
     }
   },
   "faqs": {
