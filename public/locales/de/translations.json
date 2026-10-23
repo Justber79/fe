@@ -1920,26 +1920,93 @@
   "faqs": {
     "faqs": "FAQs",
     "title": "Häufig gestellte Fragen",
-    "first_steps_question": "Was sind die ersten Schritte, um Ehrenamtlicher zu werden?",
-    "first_steps_answer": "Beginnen Sie mit dem Ausfüllen des Ehrenamtlichenantragsformulars auf der Need4Deed-Website.",
-    "after_form_question": "Was passiert, nachdem ich das Formular ausgefüllt habe?",
-    "after_form_answer": "Nachdem wir Ihre Präferenzen und Standorte haben, suchen wir nach einem passenden Ehrenamt für Sie und kontaktieren Sie in den nächsten Tagen.",
-    "find_opportunities_question": "Wie finde ich aktuelle Ehrenamtsbedarfe?",
-    "find_opportunities_answer": "Sehen Sie auf der Seite „Ehrenamtsbedarfe“ auf der Need4Deed-Website nach aktuellen Möglichkeiten, sich ehrenamtlich zu engagieren.",
-    "volunteer_roles_question": "Welche Arten von ehrenamtlichen Tätigkeit werden angeboten?",
-    "volunteer_roles_answer": "Die Aufgaben umfassen Kinderbetreuung, Sprachcafés, Übersetzungsdienste und Unterstützung bei offiziellen Terminen und sportlichen Aktivitäten.",
-    "special_skills_question": "Brauche ich spezielle Fähigkeiten, um mich ehrenamtlich zu engagieren?",
-    "special_skills_answer": "Viele Aufgaben stehen allen Ehrenamtlichen offen, obwohl für bestimmte Bedarfe spezielle Fähigkeiten erforderlich sein können.",
-    "volunteering_time_question": "Wie viel Zeit nimmt ehrenamtliches Engagement in Anspruch?",
-    "volunteering_time_answer": "Regelmäßiges ehrenamtliches Engagement erfordert normalerweise einen Zeitaufwand von etwa zwei Stunden pro Woche oder, bei selteneren Einsätzen, zwei Termine im Monat. Unregelmäßiges ehrenamtliches Engagement kann stattfinden, wann immer Sie Zeit haben, insbesondere bei Veranstaltungen oder Aufgaben wie Übersetzungen bei Arztterminen.",
-    "age_requirements_question": "Gibt es Altersanforderungen für Ehrenamtliche?",
-    "age_requirements_answer": "Die Altersanforderungen können variieren, aber die meisten Einrichtungen verlangen, dass die Person über 18 Jahre alt ist. Bitte überprüfen Sie die spezifischen Anforderungen in den Ehrenamtsbedarfen.",
-    "voluntea_gatherings_question": "Was kann ich bei den VolunTea-Treffen erwarten?",
-    "voluntea_gatherings_answer": "Die VolunTea-Treffen umfasst die Mission von Need4Deed, Freiwilligenrollen und Unterstützung bei der Suche nach geeigneten Unterkünften für Geflüchtete.",
-    "training_question": "Werden spezielle Schulungen angeboten?",
-    "training_answer": "Alle paar Monate werden Schulungen angeboten, insbesondere für diejenigen, die Übersetzungsunterstützung leisten.",
-    "group_volunteering_question": "Kann ich mich bei einer Gruppe oder Organisation ehrenamtlich engagieren?",
-    "group_volunteering_answer": "Ja, ehrenamtliches Engagement für Gruppen wird gefördert, insbesondere für diejenigen, die Unterkünfte für Geflüchtete unterstützen."
+    "volunteers": {
+      "heading": "Für Freiwillige",
+      "register": {
+        "question": "Wie werde ich Freiwillige*r?",
+        "answer": "Registriere Dich auf unserer Website: Du legst ein Konto an und füllst Dein Profil aus, mit Deinen Sprachen, den Bezirken, die Du erreichen kannst, Deiner Verfügbarkeit, den Tätigkeiten, die Dir liegen, und der Art von Engagement, die Du suchst (regelmäßig, Begleitungen, Events).",
+        "link": "Als Freiwillige*r registrieren"
+      },
+      "afterRegistration": {
+        "question": "Was passiert nach der Registrierung?",
+        "answer": "Wir rufen Dich in den nächsten Tagen an, um Dich kennenzulernen: Deine Sprachen, Deine Erfahrungen und was Du gern machen möchtest. Dann suchen wir passende Angebote für Dich."
+      },
+      "documents": {
+        "question": "Welche Unterlagen brauche ich?",
+        "answer": "Für die meisten Einsätze in Unterkünften brauchst Du ein erweitertes Führungszeugnis (EFZ). Wir schicken Dir das Antragsformular per E-Mail und beantragen es mit Dir: Fülle es aus, unterschreibe es und schick es uns mit einer Kopie Deines Reisepasses oder Personalausweises zurück (ein Aufenthaltstitel gilt nicht als Ausweis). Das Führungszeugnis kommt innerhalb von 2 bis 4 Wochen per Post. Für regelmäßiges Engagement brauchst Du außerdem einen Nachweis über Deine Masernimpfung, zum Beispiel Deinen Impfpass."
+      },
+      "accompaniment": {
+        "question": "Was ist eine Begleitung?",
+        "answer": "Du begleitest jemanden zu einem Termin, zum Beispiel zur Ärztin, zum Amt, zur Schule oder zur Wohnungsbesichtigung, und hilfst mit der Sprache. Vor Deiner ersten Begleitung nimmst Du an einer kurzen Online-Einführung teil. Freiwillige sind keine professionellen Dolmetscher*innen: Du hilfst nach bestem Wissen."
+      },
+      "suggestions": {
+        "question": "Wie funktionieren Vorschläge und Vermittlungen?",
+        "answer": "Wenn ein Angebot zu Dir passt, schlagen wir es Dir vor. Kommt die Vermittlung zustande, bekommt Ihr beide, Du und die Organisation, eine Vorstellungs-E-Mail mit den Kontaktdaten, und die Organisation lädt Dich zu einem ersten Treffen ein."
+      },
+      "time": {
+        "question": "Wie viel Zeit brauche ich?",
+        "answer": "Regelmäßiges Engagement heißt meist etwa 2 Stunden pro Woche oder zweimal im Monat. Begleitungen und Events sind einmalig: Du hilfst, wenn Du Zeit hast."
+      },
+      "skills": {
+        "question": "Brauche ich besondere Fähigkeiten?",
+        "answer": "Die meisten Aufgaben stehen allen offen. Jede Sprache, die Du sprichst, hilft sehr, genauso wie Deine eigene Erfahrung, in einem neuen Land anzukommen."
+      },
+      "age": {
+        "question": "Gibt es ein Mindestalter?",
+        "answer": "Die meisten Einrichtungen suchen Freiwillige ab 18 Jahren."
+      },
+      "changes": {
+        "question": "Meine Verfügbarkeit hat sich geändert oder ich brauche eine Pause. Was tun?",
+        "answer": "Melde Dich an und passe Deine Verfügbarkeit in Deinem Profil an. Wenn Du eine Pause brauchst, sag Deiner Koordinatorin oder Deinem Koordinator Bescheid."
+      },
+      "login": {
+        "question": "Ich kann mich nicht anmelden.",
+        "answer": "Nutze „Passwort vergessen“, um ein neues Passwort zu setzen. Klappt es dann immer noch nicht, schreib uns.",
+        "link": "Passwort zurücksetzen"
+      },
+      "events": {
+        "question": "Gibt es Events und Workshops?",
+        "answer": "Ja, wir organisieren Community-Events und Workshops für Freiwillige. Die nächsten Termine findest Du auf unserer Event-Seite.",
+        "link": "Zu den Events"
+      },
+      "groups": {
+        "question": "Kann ich mich als Gruppe engagieren?",
+        "answer": "Ja, Gruppen sind willkommen, zum Beispiel für Events oder Aktivitäten in Unterkünften. Schreib uns an"
+      }
+    },
+    "organisations": {
+      "heading": "Für Organisationen",
+      "register": {
+        "question": "Wie registriert sich unsere Organisation?",
+        "answer": "Registriere Deine Organisation und trage ihre Adresse mit Postleitzahl ein: Du brauchst sie, um Anfragen zu erstellen.",
+        "link": "Organisation registrieren"
+      },
+      "request": {
+        "question": "Wie fragen wir Freiwillige an?",
+        "answer": "Erstelle im Dashboard eine Anfrage: regelmäßiges Engagement, eine Begleitung oder ein Event. Begleitungen müssen mindestens 7 Werktage vor dem Termin angefragt werden."
+      },
+      "afterRequest": {
+        "question": "Was passiert nach einer Anfrage?",
+        "answer": "Wir suchen eine passende freiwillige Person. Finden wir jemanden, bekommt Ihr beide eine Vorstellungs-E-Mail mit den Kontaktdaten. Bitte lade die Person innerhalb von 5 bis 7 Werktagen zu einem ersten Treffen ein und setze uns in CC. Passt es nicht, sag uns Bescheid, dann suchen wir weiter."
+      },
+      "noMatch": {
+        "question": "Was, wenn niemand gefunden wird?",
+        "answer": "Bei Begleitungen geben wir Dir spätestens 4 Werktage vor dem Termin Bescheid, damit Du planen kannst."
+      },
+      "ownVolunteers": {
+        "question": "Können wir unsere eigenen Freiwilligen verwalten?",
+        "answer": "Ja. Du verwaltest Deine eigenen Freiwilligen auf der Plattform und siehst trotzdem Freiwillige aus unserem Pool. Wenn Du möchtest, kannst Du Deine Freiwilligen auch mit anderen Organisationen teilen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+      },
+      "costs": {
+        "question": "Was kostet das?",
+        "answer": "Need4Deed ist für die Organisationen, mit denen wir arbeiten, kostenlos."
+      },
+      "more": {
+        "question": "Wo erfahren wir mehr?",
+        "answer": "Wie wir mit Organisationen zusammenarbeiten, Schritt für Schritt, und unsere Leitlinien findest Du auf der Seite für Organisationen.",
+        "link": "Für Organisationen"
+      }
+    }
   },
   "legal": {
     "legalHeading": "Legal",
