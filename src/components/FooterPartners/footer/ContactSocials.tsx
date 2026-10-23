@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { Paragraph } from "../../styled/text";
 import { ATag } from "@/components/styled/tags";
+import { CONTACT_EMAIL } from "@/config/constants";
 
 const ContactSocialsContainer = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ function Contact() {
         fontSize="var(--homepage-footer-partners-section-p-fontSize)"
         lineheight="var(--homepage-footer-partners-section-p-fontSize)"
       >
-        info@need4deed.org
+        {CONTACT_EMAIL}
       </Paragraph>
     </ContactContainer>
   );

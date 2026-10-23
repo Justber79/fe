@@ -169,3 +169,9 @@ export const Photo = styled(Image)`
   max-width: 480px;
   width: 100%;
 `;
+
+export const TextLink = styled.a`
+  color: var(--color-aubergine);
+  font-weight: 600;
+  text-decoration: underline;
+`;
