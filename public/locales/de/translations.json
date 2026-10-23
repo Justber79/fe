@@ -1858,8 +1858,7 @@
   },
   "aboutus": {
     "aboutusHeading": "Über uns",
-    "aboutusSubheading": "Noch nie waren so viele Menschen auf der Flucht vor Konflikten, Verfolgung und Menschenrechtsverletzungen wie heute. Need4Deed setzt sich für die Inklusion und Integration geflüchteter Menschen in Berlin durch zivilgesellschaftliches Engagement ein: indem wir Ehrenamt zugänglicher machen und einen nachhaltigen, skalierbaren Weg schaffen, Freiwillige mit den Menschen in Berliner Unterkünften zusammenzubringen, passend zu ihrem konkreten Bedarf.",
-    "aboutusPlatform": "Need4Deed ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen. Daneben bringen wir eigene Freiwillige mit und übernehmen die sorgfältige Arbeit, für jeden Bedarf die richtige Person zu finden.",
+    "aboutusPlatform": "Das Dashboard ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen.",
     "whatWeDo": {
       "heading": "Was wir tun",
       "paragraph1": "Die Unterkünfte und die Organisationen, die Geflüchtete unterstützen, sagen uns, was ihre Bewohner*innen brauchen. Wir suchen passende Freiwillige aus unserem Pool und stellen den Kontakt her. Die Unterstützung hat zwei Hauptformen.",
@@ -1898,7 +1897,7 @@
       "heading": "Unsere Geschichte",
       "paragraph1": "Alles begann mit Berlin Arrival Support, einem Zusammenschluss von Freiwilligen aus der Zivilgesellschaft, organisiert über eine Telegram-Gruppe. Als im Februar 2022 Geflüchtete aus der Ukraine in Berlin ankamen, wuchs er schnell auf Hunderte Freiwillige, die Tausende Menschen an mehreren Berliner Bahnhöfen empfingen, vor allem am Hauptbahnhof, am Zentralen Omnibusbahnhof (ZOB) und am Südkreuz, und ihnen mit Unterkunft, oft bei privaten Gastgeber*innen, mit Essen, Übersetzung, Tickets, der Weiterreise und erster Orientierung halfen.",
       "paragraph2": "2023 entstand BEVOS (Berlin Volunteer Support), um die Freiwilligen selbst zu unterstützen: mit Schulungen zu Themen wie Asylrecht und mentaler Gesundheit, mit Vernetzung zwischen den Berliner Willkommensinitiativen, mit Beratung gegen Überlastung und mit der Vermittlung geschulter Freiwilliger in Sprachcafés, Übersetzung und Begleitungen zu Terminen. Aus BEVOS ist Need4Deed entstanden, die Plattform, die heute Freiwillige mit Unterkünften und Organisationen in ganz Berlin zusammenbringt.",
-      "paragraph3": "Viele Menschen haben Need4Deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona und viele weitere Freiwillige.",
+      "paragraph3": "Viele Menschen haben Need4Deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona, Manar, Darrell, Onur, Darya und viele weitere Freiwillige.",
       "arrivalImageAlt": "Ein Freiwilliger von Berlin Arrival Support mit Funkgerät vor einem Welcome-Center-Banner",
       "footballImageAlt": "Ein Need4Deed-Fußballnachmittag mit Kindern auf einem Sportplatz"
     },
@@ -1906,6 +1905,16 @@
       "heading": "Förderung",
       "bevos": "BEVOS wurde aus dem Europäischen Sozialfonds (ESF) gefördert.",
       "need4deed": "Need4Deed wurde aus dem Asyl-, Migrations- und Integrationsfonds (AMIF) der Europäischen Union gefördert."
+    },
+    "forOrganisations": "Für Organisationen",
+    "intro": "Need4Deed ist ein strukturelles Projekt: Mit eigenen, einzigartigen Werkzeugen vernetzen und stärken wir kleine Ehrenamtsprojekte, die Geflüchtete unterstützen.",
+    "offline": {
+      "heading": "Vermittlung, Vernetzung, Workshops und Events",
+      "paragraph": "Über die Vermittlung hinaus bringen wir Menschen zusammen: Wir vernetzen Organisationen und Willkommensinitiativen untereinander, bieten Workshops für Freiwillige und Koordinator*innen an und organisieren Community-Events."
+    },
+    "dashboard": {
+      "heading": "Das Need4Deed-Dashboard",
+      "openSource": "Das Dashboard ist Open Source. Es läuft zu 100 % in Europa, gehostet in der Schweiz, und ist DSGVO-konform."
     }
   },
   "faqs": {

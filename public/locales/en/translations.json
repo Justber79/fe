@@ -1846,8 +1846,7 @@
   },
   "aboutus": {
     "aboutusHeading": "About",
-    "aboutusSubheading": "The number of people fleeing conflict, persecution and human-rights violations is higher today than it has ever been. Need4Deed works to promote the inclusion and integration of refugees in Berlin through the actions of civil society: by making volunteering more accessible, and by building a sustainable, scalable way to connect volunteers with the people living in Berlin's accommodation centres, based on their specific needs.",
-    "aboutusPlatform": "Need4Deed is more than a database an organisation fills in itself. Organisations can manage their own volunteers on the platform, separately, and still see volunteers from our pool. If they want, they can share their volunteers with other organisations too, passing on contact details one by one and only with the volunteer's consent. Alongside that, we bring volunteers of our own and do the careful work of matching the right person to each need.",
+    "aboutusPlatform": "The dashboard is more than a database an organisation fills in itself. Organisations can manage their own volunteers on the platform, separately, and still see volunteers from our pool. If they want, they can share their volunteers with other organisations too, passing on contact details one by one and only with the volunteer's consent.",
     "whatWeDo": {
       "heading": "What we do",
       "paragraph1": "The accommodation centres and the organisations that support refugees tell us what their residents need. We find volunteers from our pool who fit, and we introduce them. That support takes two main shapes.",
@@ -1886,7 +1885,7 @@
       "heading": "Our history",
       "paragraph1": "It all started with Berlin Arrival Support, a grassroots assembly of volunteers organised through a Telegram group. When refugees from Ukraine began arriving in Berlin in February 2022, it quickly grew to hundreds of volunteers who welcomed thousands of people at several Berlin stations, mainly Hauptbahnhof, the central bus station (ZOB) and Südkreuz, helping with accommodation, often with private hosts, food, translation, tickets, onward travel and first orientation.",
       "paragraph2": "In 2023 BEVOS (Berlin Volunteer Support) started, to support the volunteers themselves: training on topics such as asylum law and mental health, networking between Berlin's welcome initiatives, advice to prevent burnout, and placing trained volunteers in language cafés, translation and accompaniment to appointments. Need4Deed grew out of BEVOS, as the platform that connects volunteers with accommodation centres and organisations across Berlin today.",
-      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona and many more volunteers.",
+      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona, Manar, Darrell, Onur, Darya and many more volunteers.",
       "arrivalImageAlt": "A Berlin Arrival Support volunteer with a radio in front of a Welcome Center banner",
       "footballImageAlt": "A Need4Deed football afternoon with children on an outdoor pitch"
     },
@@ -1894,6 +1893,16 @@
       "heading": "Funding",
       "bevos": "BEVOS was funded by the European Social Fund (ESF).",
       "need4deed": "Need4Deed was funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
+    },
+    "forOrganisations": "For organisations",
+    "intro": "Need4Deed is a structural project: with unique tools of our own, we connect and empower small volunteer projects that support refugees.",
+    "offline": {
+      "heading": "Matching, networking, workshops and events",
+      "paragraph": "Beyond matching, we bring people together: we connect organisations and welcome initiatives with each other, run workshops for volunteers and coordinators, and organise community events."
+    },
+    "dashboard": {
+      "heading": "The Need4Deed dashboard",
+      "openSource": "The dashboard is open source. It runs 100% in Europe, hosted in Switzerland, and is GDPR compliant."
     }
   },
   "faqs": {
