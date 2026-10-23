@@ -23,6 +23,7 @@ import {
 } from "../styled";
 
 const STEPS = ["request", "prepare", "match", "introduction", "noMatch", "afterMatch"];
+const DASHBOARD_FEATURES = ["volunteers", "hours", "posts", "openSource"];
 
 function ForOrganisations() {
   const { t, i18n } = useTranslation();
@@ -50,6 +51,27 @@ function ForOrganisations() {
                       <Dash />
                     </DashContainer>
                     <ItemBody>{t(`forOrganisationsPage.steps.${step}.body`)}</ItemBody>
+                  </AnswerRow>
+                </Item>
+              ))}
+            </ItemsList>
+          </SectionBlock>
+
+          <SectionBlock>
+            <SectionHeader>{t("forOrganisationsPage.dashboard.heading")}</SectionHeader>
+            <NoteText>{t("forOrganisationsPage.dashboard.intro")}</NoteText>
+            <ItemsList>
+              {DASHBOARD_FEATURES.map((feature, index) => (
+                <Item key={feature}>
+                  <QuestionRow>
+                    <Badge>{index + 1}</Badge>
+                    <ItemTitle>{t(`forOrganisationsPage.dashboard.features.${feature}.title`)}</ItemTitle>
+                  </QuestionRow>
+                  <AnswerRow>
+                    <DashContainer>
+                      <Dash />
+                    </DashContainer>
+                    <ItemBody>{t(`forOrganisationsPage.dashboard.features.${feature}.body`)}</ItemBody>
                   </AnswerRow>
                 </Item>
               ))}

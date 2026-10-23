@@ -2736,7 +2736,7 @@
   "forOrganisationsPage": {
     "heading": "Für Organisationen",
     "intro": "Für Einrichtungen und Projekte, die Geflüchtete in Berlin unterstützen: So arbeiten wir mit Dir zusammen, von der ersten Anfrage bis zur freiwilligen Person vor Ort.",
-    "stepsHeading": "So funktioniert es",
+    "stepsHeading": "So vermitteln wir Freiwillige",
     "steps": {
       "request": {
         "title": "Du sendest eine Anfrage",
@@ -2760,7 +2760,7 @@
       },
       "afterMatch": {
         "title": "Die freiwillige Person startet, und wir bleiben in Kontakt",
-        "body": "Etwa einmal im Monat fragen wir nach, ob Deine Angebote noch aktuell sind und wie es mit den Freiwilligen läuft. Hört jemand auf, suchen wir eine neue Vermittlung. Du kannst Deine eigenen Freiwilligen auch mit anderen Organisationen teilen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+        "body": "Etwa einmal im Monat fragen wir nach, ob Deine Angebote noch aktuell sind und wie es mit den Freiwilligen läuft. Hört jemand auf, suchen wir eine neue Vermittlung."
       }
     },
     "goodToKnow": {
@@ -2771,6 +2771,28 @@
       "guidelines": "Die Regeln für die Zusammenarbeit findest Du in unseren",
       "guidelinesLink": "Leitlinien für Organisationen",
       "contact": "Fragen? Schreib uns an"
+    },
+    "dashboard": {
+      "heading": "Das Need4Deed-Dashboard",
+      "intro": "Über die Vermittlung hinaus ist das Dashboard ein Werkzeug für den Alltag Deines Teams, auch mit Freiwilligen, die Ihr selbst gefunden habt.",
+      "features": {
+        "volunteers": {
+          "title": "Deine Freiwilligen an einem Ort",
+          "body": "Verwalte Deine eigenen Freiwilligen und Anfragen und sieh Freiwillige aus unserem Pool. Wenn Du möchtest, teile Deine Freiwilligen mit anderen Organisationen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+        },
+        "hours": {
+          "title": "Stunden und Anerkennung",
+          "body": "Trage für jede Vermittlung die Stunden ein, die eine freiwillige Person geleistet hat, und behalte Anerkennungen wie Zertifikate im Blick."
+        },
+        "posts": {
+          "title": "Posts und Markierungen",
+          "body": "Stelle allgemeine Fragen oder Gesuche in die Posts, antwortet Euch gegenseitig und markiert Euch. Wer markiert wird, bekommt eine E-Mail."
+        },
+        "openSource": {
+          "title": "Open Source, gehostet in der Schweiz",
+          "body": "Das Dashboard ist Open Source, läuft zu 100 % in Europa, gehostet in der Schweiz, und ist DSGVO-konform."
+        }
+      }
     }
   }
 }

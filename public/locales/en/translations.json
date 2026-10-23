@@ -2381,7 +2381,7 @@
   "forOrganisationsPage": {
     "heading": "For organisations",
     "intro": "For centres and projects that support refugees in Berlin: how we work with you, from your first request to a volunteer on site.",
-    "stepsHeading": "How it works",
+    "stepsHeading": "How we match volunteers",
     "steps": {
       "request": {
         "title": "You send a request",
@@ -2405,7 +2405,7 @@
       },
       "afterMatch": {
         "title": "The volunteer starts, and we stay in touch",
-        "body": "About once a month we ask whether your offers are still up to date and how it's going with the volunteers. If someone stops, we look for a new match. You can also share your own volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+        "body": "About once a month we ask whether your offers are still up to date and how it's going with the volunteers. If someone stops, we look for a new match."
       }
     },
     "goodToKnow": {
@@ -2416,6 +2416,28 @@
       "guidelines": "The rules for working together are in our",
       "guidelinesLink": "guidelines for organisations",
       "contact": "Questions? Write to us at"
+    },
+    "dashboard": {
+      "heading": "The Need4Deed dashboard",
+      "intro": "Beyond the matching, the dashboard is a tool your team can use every day, also with volunteers you found yourselves.",
+      "features": {
+        "volunteers": {
+          "title": "Your volunteers in one place",
+          "body": "Manage your own volunteers and requests, and see volunteers from our pool. If you want, share your volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+        },
+        "hours": {
+          "title": "Hours and appreciation",
+          "body": "Log the hours a volunteer has volunteered for each match, and keep track of appreciation such as certificates."
+        },
+        "posts": {
+          "title": "Posts and tagging",
+          "body": "Write general questions or searches in the posts, reply to each other and tag each other. Whoever is tagged gets an email."
+        },
+        "openSource": {
+          "title": "Open source, hosted in Switzerland",
+          "body": "The dashboard is open source, runs 100% in Europe, hosted in Switzerland, and is GDPR compliant."
+        }
+      }
     }
   }
 }
