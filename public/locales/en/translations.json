@@ -1906,28 +1906,98 @@
     }
   },
   "faqs": {
-    "faqs": "FAQs",
     "title": "Frequently Asked Questions",
-    "first_steps_question": "What are the first steps to become a volunteer?",
-    "first_steps_answer": "Begin by completing the volunteer application form on the Need4Deed website.",
-    "after_form_question": "What happens after I fill out the form?",
-    "after_form_answer": "After we have your preferences and locations we start searching for a suitable opportunity for you and contact you in the next days.",
-    "find_opportunities_question": "How do I find available volunteer opportunities?",
-    "find_opportunities_answer": "Check the 'Opportunities' page on the Need4Deed website for current volunteer roles.",
-    "volunteer_roles_question": "What types of volunteer roles are offered?",
-    "volunteer_roles_answer": "Roles include child care, language cafés, translation services, and support with official appointments and sports activities.",
-    "special_skills_question": "Do I need any special skills to volunteer?",
-    "special_skills_answer": "Many roles are open to all volunteers, although specific skills may be required for certain positions.",
-    "volunteering_time_question": "How long does volunteering take?",
-    "volunteering_time_answer": "Regular volunteering usually requires a commitment of about 2 hours a week or twice a month. Irregular volunteering can happen whenever you have time, especially for events or tasks like translations at doctors' appointments.",
-    "age_requirements_question": "Are there age requirements for volunteers?",
-    "age_requirements_answer": "Age requirements may vary but most places require the person to be over 18; please check the opportunity listings for specifics.",
-    "voluntea_gatherings_question": "What can I expect during the VolunTea gatherings?",
-    "voluntea_gatherings_answer": "VolunTea orientation covers Need4Deed's mission, volunteer roles, and assisting in finding the suitable refugee accommodation centers.",
-    "training_question": "Is there a special training?",
-    "training_answer": "Every few months training are offered, especially for those supporting with translations.",
-    "group_volunteering_question": "Can I volunteer with a group or organisation?",
-    "group_volunteering_answer": "Yes, group volunteering is encouraged, especially for those supporting refugee accommodation centers."
+    "volunteers": {
+      "heading": "For volunteers",
+      "register": {
+        "question": "How do I become a volunteer?",
+        "answer": "Register on our website: you create an account and fill in your profile with your languages, the districts you can reach, your availability, the activities you like and the kind of volunteering you want (regular, accompaniments, events).",
+        "link": "Register as a volunteer"
+      },
+      "afterRegistration": {
+        "question": "What happens after I register?",
+        "answer": "We call you within the next days to get to know you: your languages, your experience and what you would like to do. Then we look for opportunities that fit you."
+      },
+      "documents": {
+        "question": "Which documents do I need?",
+        "answer": "For most volunteering in accommodation centres you need an extended certificate of good conduct (erweitertes Führungszeugnis, EFZ). We email you the application form and apply for it with you: fill it in, sign it and send it back with a copy of your passport or German ID card (a residence permit is not accepted as ID). The certificate arrives by post within 2 to 4 weeks. For regular volunteering you also need proof of measles vaccination, for example your vaccination card."
+      },
+      "accompaniment": {
+        "question": "What is an accompaniment?",
+        "answer": "You go with someone to an appointment, for example to the doctor, a government office, a school or a flat viewing, and help with the language. Before your first accompaniment you join a short online briefing. Volunteers are not professional interpreters: you help as well as you can."
+      },
+      "suggestions": {
+        "question": "How do suggestions and matches work?",
+        "answer": "When an opportunity fits you, we suggest it to you. Once it's a match, you and the organisation get an introduction email with each other's contact details, and the organisation invites you to a first meeting."
+      },
+      "time": {
+        "question": "How much time do I need?",
+        "answer": "Regular volunteering usually means about 2 hours a week or twice a month. Accompaniments and events are one-off: you help when you have time."
+      },
+      "skills": {
+        "question": "Do I need special skills?",
+        "answer": "Most roles are open to everyone. Every language you speak helps a lot, and so does your own experience of arriving in a new country."
+      },
+      "age": {
+        "question": "Is there a minimum age?",
+        "answer": "Most places ask for volunteers aged 18 or older."
+      },
+      "changes": {
+        "question": "My availability changed or I need a break. What do I do?",
+        "answer": "Log in and update your availability in your profile. If you need a break, let your coordinator know."
+      },
+      "login": {
+        "question": "I can't log in.",
+        "answer": "Use \"Forgot password\" to set a new password. If it still doesn't work, write to us.",
+        "link": "Reset your password"
+      },
+      "events": {
+        "question": "Are there events and workshops?",
+        "answer": "Yes, we organise community events and workshops for volunteers. You find the next dates on our event page.",
+        "link": "See upcoming events"
+      },
+      "groups": {
+        "question": "Can I volunteer with a group?",
+        "answer": "Yes, groups are welcome, for example for events or activities in accommodation centres. Write to us at"
+      }
+    },
+    "organisations": {
+      "heading": "For organisations",
+      "register": {
+        "question": "How does our organisation register?",
+        "answer": "Register your organisation and add its address with the postcode: you need it to create requests.",
+        "link": "Register your organisation"
+      },
+      "request": {
+        "question": "How do we ask for volunteers?",
+        "answer": "Create a request in the dashboard: regular volunteering, an accompaniment or an event. Accompaniments need to be requested at least 7 working days before the appointment."
+      },
+      "afterRequest": {
+        "question": "What happens after we send a request?",
+        "answer": "We look for a fitting volunteer. When we find one, you and the volunteer get an introduction email with the contact details. Please invite the volunteer to a first meeting within 5 to 7 working days and put us in CC. If it doesn't fit, tell us and we keep looking."
+      },
+      "noMatch": {
+        "question": "What if no one is found?",
+        "answer": "For accompaniments we let you know at the latest 4 working days before the appointment, so you can plan."
+      },
+      "ownVolunteers": {
+        "question": "Can we manage our own volunteers?",
+        "answer": "Yes. You manage your own volunteers on the platform and still see volunteers from our pool. If you want, you can share your volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+      },
+      "dashboard": {
+        "question": "What else can we do in the dashboard?",
+        "answer": "The dashboard is more than our matching: log the hours a volunteer has volunteered for each match, keep track of appreciation such as certificates, and write general questions or searches in the posts. You can tag each other there, and whoever is tagged gets an email."
+      },
+      "costs": {
+        "question": "What does it cost?",
+        "answer": "Need4Deed is free for the organisations we work with."
+      },
+      "more": {
+        "question": "Where can we read more?",
+        "answer": "How we work with organisations, step by step, and our guidelines are on the page for organisations.",
+        "link": "For organisations"
+      }
+    }
   },
   "legal": {
     "legalHeading": "Legal",
