@@ -37,6 +37,21 @@ export const FieldGroup = styled(FieldRow)`
     flex: 1;
     min-width: 0;
   }
+
+  @media (max-width: 1023px) {
+    flex-direction: column;
+    gap: var(--spacing-8);
+
+    > label {
+      width: 100%;
+      padding-top: 0;
+    }
+
+    > div {
+      flex: auto;
+      width: 100%;
+    }
+  }
 `;
 
 export const DateFieldRow = styled.div`
