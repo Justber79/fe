@@ -30,7 +30,8 @@
         "guidelines": "Need4Deed Guidelines",
         "legalNotice": "Legal notice",
         "cookies": "Cookies"
-      }
+      },
+      "forOrganisations": "FOR ORGANISATIONS"
     },
     "iframeTitles": {
       "howToVolunteer": "How you can support refugees in your community"
@@ -2377,5 +2378,45 @@
   "emptyList": {
     "header": "Opportunities are being updated...",
     "para": "We are currently updating the volunteering opportunities. This may take a while. We recommend refreshing the page later on today.  If you have any specific question please contact us at volunteer@need4deed.org"
+  },
+  "forOrganisationsPage": {
+    "heading": "For organisations",
+    "intro": "For centres and projects that support refugees in Berlin: how we work with you, from your first request to a volunteer on site.",
+    "stepsHeading": "How it works",
+    "steps": {
+      "request": {
+        "title": "You send a request",
+        "body": "Register your organisation and create a request in the dashboard: regular volunteering, an accompaniment to an appointment or an event. Tell us what is needed, when, where and in which languages. Accompaniments need to be requested at least 7 working days before the appointment."
+      },
+      "prepare": {
+        "title": "We prepare the volunteers",
+        "body": "We call every new volunteer after they register, to get to know their languages, experience and what they want to do. Volunteers for accompaniments also join an online briefing. We help volunteers apply for the extended certificate of good conduct (EFZ) and check the proof of measles vaccination where needed."
+      },
+      "match": {
+        "title": "We match",
+        "body": "Our coordinators look for the right person by language and dialect, district, availability and activity, from our pool and from your own volunteers on the platform."
+      },
+      "introduction": {
+        "title": "You get a suggestion, then an introduction",
+        "body": "When a volunteer fits, we send you and the volunteer an introduction email with everyone's contact details. Please invite the volunteer to a first meeting within 5 to 7 working days and put us in CC. If it doesn't fit, tell us and we keep looking."
+      },
+      "noMatch": {
+        "title": "If we can't find anyone",
+        "body": "For accompaniments we let you know at the latest 4 working days before the appointment, so you can plan."
+      },
+      "afterMatch": {
+        "title": "The volunteer starts, and we stay in touch",
+        "body": "About once a month we ask whether your offers are still up to date and how it's going with the volunteers. If someone stops, we look for a new match. You can also share your own volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+      }
+    },
+    "goodToKnow": {
+      "heading": "Good to know",
+      "free": "Need4Deed is free for the organisations we work with.",
+      "register": "Not registered yet?",
+      "registerLink": "Register your organisation",
+      "guidelines": "The rules for working together are in our",
+      "guidelinesLink": "guidelines for organisations",
+      "contact": "Questions? Write to us at"
+    }
   }
 }

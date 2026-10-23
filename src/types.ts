@@ -27,6 +27,7 @@ export enum Subpage {
   DATA_PROTECTION = "data-protection",
   GUIDELINES = "guidelines",
   RAC_GUIDELINES = "rac-guidelines",
+  FOR_ORGANISATIONS = "for-organisations",
 }
 
 export enum Env {

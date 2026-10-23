@@ -28,7 +28,8 @@
         "dataPrivacy": "Datenschutz",
         "agreement": "Ehrenamtliche Vereinbarung",
         "cookies": "Cookies"
-      }
+      },
+      "forOrganisations": "FÜR ORGANISATIONEN"
     },
     "iframeTitles": {
       "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
@@ -2732,5 +2733,45 @@
   "emptyList": {
     "header": "Angebote werden aktualisiert...",
     "para": "Wir aktualisieren gerade die Engagementangebote. Dies kann einige Zeit dauern. Wir empfehlen, die Seite später am Tag erneut zu aktualisieren. Wenn Du Fragen hast, wende Dich bitte an volunteer@need4deed.org"
+  },
+  "forOrganisationsPage": {
+    "heading": "Für Organisationen",
+    "intro": "Für Einrichtungen und Projekte, die Geflüchtete in Berlin unterstützen: So arbeiten wir mit Dir zusammen, von der ersten Anfrage bis zur freiwilligen Person vor Ort.",
+    "stepsHeading": "So funktioniert es",
+    "steps": {
+      "request": {
+        "title": "Du sendest eine Anfrage",
+        "body": "Registriere Deine Organisation und erstelle im Dashboard eine Anfrage: regelmäßiges Engagement, eine Begleitung zu einem Termin oder ein Event. Sag uns, was gebraucht wird, wann, wo und in welchen Sprachen. Begleitungen müssen mindestens 7 Werktage vor dem Termin angefragt werden."
+      },
+      "prepare": {
+        "title": "Wir bereiten die Freiwilligen vor",
+        "body": "Mit allen neuen Freiwilligen telefonieren wir nach der Registrierung, um ihre Sprachen, Erfahrungen und Wünsche kennenzulernen. Freiwillige für Begleitungen nehmen zusätzlich an einer Online-Einführung teil. Wir helfen beim Beantragen des erweiterten Führungszeugnisses (EFZ) und prüfen, wo nötig, den Nachweis der Masernimpfung."
+      },
+      "match": {
+        "title": "Wir vermitteln",
+        "body": "Unsere Koordinator*innen suchen die passende Person nach Sprache und Dialekt, Bezirk, Verfügbarkeit und Tätigkeit, aus unserem Pool und aus Deinen eigenen Freiwilligen auf der Plattform."
+      },
+      "introduction": {
+        "title": "Du bekommst einen Vorschlag und dann die Vorstellung",
+        "body": "Passt eine freiwillige Person, schicken wir Dir und ihr eine Vorstellungs-E-Mail mit allen Kontaktdaten. Bitte lade die Person innerhalb von 5 bis 7 Werktagen zu einem ersten Treffen ein und setze uns in CC. Passt es nicht, sag uns Bescheid, dann suchen wir weiter."
+      },
+      "noMatch": {
+        "title": "Wenn wir niemanden finden",
+        "body": "Bei Begleitungen geben wir Dir spätestens 4 Werktage vor dem Termin Bescheid, damit Du planen kannst."
+      },
+      "afterMatch": {
+        "title": "Die freiwillige Person startet, und wir bleiben in Kontakt",
+        "body": "Etwa einmal im Monat fragen wir nach, ob Deine Angebote noch aktuell sind und wie es mit den Freiwilligen läuft. Hört jemand auf, suchen wir eine neue Vermittlung. Du kannst Deine eigenen Freiwilligen auch mit anderen Organisationen teilen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+      }
+    },
+    "goodToKnow": {
+      "heading": "Gut zu wissen",
+      "free": "Need4Deed ist für die Organisationen, mit denen wir arbeiten, kostenlos.",
+      "register": "Noch nicht registriert?",
+      "registerLink": "Registriere Deine Organisation",
+      "guidelines": "Die Regeln für die Zusammenarbeit findest Du in unseren",
+      "guidelinesLink": "Leitlinien für Organisationen",
+      "contact": "Fragen? Schreib uns an"
+    }
   }
 }
