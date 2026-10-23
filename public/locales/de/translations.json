@@ -1996,6 +1996,10 @@
         "question": "Können wir unsere eigenen Freiwilligen verwalten?",
         "answer": "Ja. Du verwaltest Deine eigenen Freiwilligen auf der Plattform und siehst trotzdem Freiwillige aus unserem Pool. Wenn Du möchtest, kannst Du Deine Freiwilligen auch mit anderen Organisationen teilen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
       },
+      "dashboard": {
+        "question": "Was können wir sonst im Dashboard machen?",
+        "answer": "Das Dashboard ist mehr als unsere Vermittlung: Trage für jede Vermittlung die geleisteten Stunden einer freiwilligen Person ein, behalte Anerkennungen wie Zertifikate im Blick und stelle allgemeine Fragen oder Gesuche in die Posts. Dort könnt Ihr Euch markieren, und wer markiert wird, bekommt eine E-Mail."
+      },
       "costs": {
         "question": "Was kostet das?",
         "answer": "Need4Deed ist für die Organisationen, mit denen wir arbeiten, kostenlos."

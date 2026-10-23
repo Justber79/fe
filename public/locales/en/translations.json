@@ -1984,6 +1984,10 @@
         "question": "Can we manage our own volunteers?",
         "answer": "Yes. You manage your own volunteers on the platform and still see volunteers from our pool. If you want, you can share your volunteers with other organisations, one contact at a time and only with the volunteer's consent."
       },
+      "dashboard": {
+        "question": "What else can we do in the dashboard?",
+        "answer": "The dashboard is more than our matching: log the hours a volunteer has volunteered for each match, keep track of appreciation such as certificates, and write general questions or searches in the posts. You can tag each other there, and whoever is tagged gets an email."
+      },
       "costs": {
         "question": "What does it cost?",
         "answer": "Need4Deed is free for the organisations we work with."

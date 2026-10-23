@@ -51,6 +51,7 @@ const SECTIONS: { key: string; items: FaqItem[] }[] = [
       { key: "afterRequest" },
       { key: "noMatch" },
       { key: "ownVolunteers" },
+      { key: "dashboard" },
       { key: "costs" },
       { key: "more", link: Subpage.FOR_ORGANISATIONS },
     ],
