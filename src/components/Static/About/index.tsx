@@ -18,6 +18,7 @@ import {
   QuestionRow,
   SectionBlock,
   SectionHeader,
+  SubHeading,
 } from "../styled";
 
 const DIFFERENT_POINTS = ["point1", "point2", "point3", "point4", "point5"];
@@ -33,29 +34,28 @@ function AboutUs() {
 
         <ContentSection>
           <SectionBlock>
-            <NoteText>{t("aboutus.aboutusSubheading")}</NoteText>
-            <NoteText>{t("aboutus.aboutusPlatform")}</NoteText>
+            <SectionHeader>{t("aboutus.history.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.history.paragraph1")}</NoteText>
+            <Photo
+              src="/images/about/berlin-arrival-support.webp"
+              alt={t("aboutus.history.arrivalImageAlt")}
+              width={852}
+              height={850}
+            />
+            <NoteText>{t("aboutus.history.paragraph2")}</NoteText>
+            <Photo
+              src="/images/about/need4deed-football.webp"
+              alt={t("aboutus.history.footballImageAlt")}
+              width={828}
+              height={872}
+            />
+            <NoteText>{t("aboutus.history.paragraph3")}</NoteText>
           </SectionBlock>
 
           <SectionBlock>
             <SectionHeader>{t("aboutus.whatWeDo.heading")}</SectionHeader>
             <NoteText>{t("aboutus.whatWeDo.paragraph1")}</NoteText>
             <NoteText>{t("aboutus.whatWeDo.paragraph2")}</NoteText>
-            <NoteText>{t("aboutus.whatWeDo.paragraph3")}</NoteText>
-          </SectionBlock>
-
-          <SectionBlock>
-            <SectionHeader>{t("aboutus.different.heading")}</SectionHeader>
-            <NoteText>{t("aboutus.different.intro")}</NoteText>
-            <ItemsList>
-              {DIFFERENT_POINTS.map((point, index) => (
-                <QuestionRow key={point}>
-                  <Badge>{index + 1}</Badge>
-                  <ItemTitle>{t(`aboutus.different.${point}`)}</ItemTitle>
-                </QuestionRow>
-              ))}
-            </ItemsList>
-            <NoteText>{t("aboutus.different.outro")}</NoteText>
           </SectionBlock>
 
           <SectionBlock>
@@ -78,29 +78,32 @@ function AboutUs() {
             </ItemsList>
           </SectionBlock>
 
+          <SubHeading>{t("aboutus.forOrganisations")}</SubHeading>
+
+          <SectionBlock>
+            <NoteText>{t("aboutus.aboutusSubheading")}</NoteText>
+            <NoteText>{t("aboutus.aboutusPlatform")}</NoteText>
+            <NoteText>{t("aboutus.whatWeDo.paragraph3")}</NoteText>
+          </SectionBlock>
+
+          <SectionBlock>
+            <SectionHeader>{t("aboutus.different.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.different.intro")}</NoteText>
+            <ItemsList>
+              {DIFFERENT_POINTS.map((point, index) => (
+                <QuestionRow key={point}>
+                  <Badge>{index + 1}</Badge>
+                  <ItemTitle>{t(`aboutus.different.${point}`)}</ItemTitle>
+                </QuestionRow>
+              ))}
+            </ItemsList>
+            <NoteText>{t("aboutus.different.outro")}</NoteText>
+          </SectionBlock>
+
           <SectionBlock>
             <SectionHeader>{t("aboutus.whoFor.heading")}</SectionHeader>
             <NoteText>{t("aboutus.whoFor.paragraph1")}</NoteText>
             <NoteText>{t("aboutus.whoFor.paragraph2")}</NoteText>
-          </SectionBlock>
-
-          <SectionBlock>
-            <SectionHeader>{t("aboutus.history.heading")}</SectionHeader>
-            <NoteText>{t("aboutus.history.paragraph1")}</NoteText>
-            <Photo
-              src="/images/about/berlin-arrival-support.webp"
-              alt={t("aboutus.history.arrivalImageAlt")}
-              width={852}
-              height={850}
-            />
-            <NoteText>{t("aboutus.history.paragraph2")}</NoteText>
-            <Photo
-              src="/images/about/need4deed-football.webp"
-              alt={t("aboutus.history.footballImageAlt")}
-              width={828}
-              height={872}
-            />
-            <NoteText>{t("aboutus.history.paragraph3")}</NoteText>
           </SectionBlock>
 
           <SectionBlock>

@@ -60,6 +60,15 @@ export const SectionBlock = styled.div`
   }
 `;
 
+export const SubHeading = styled.h3`
+  color: var(--color-midnight);
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: normal;
+  margin: 24px 0 0;
+`;
+
 export const SectionHeader = styled.p`
   font-weight: 700;
   letter-spacing: 0.1px;
