@@ -80,6 +80,18 @@ function AboutUs() {
             </ItemsList>
           </SectionBlock>
 
+          <SectionBlock>
+            <SectionHeader>{t("aboutus.whoFor.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.whoFor.paragraph1")}</NoteText>
+            <NoteText>{t("aboutus.whoFor.paragraph2")}</NoteText>
+          </SectionBlock>
+
+          <SectionBlock>
+            <SectionHeader>{t("aboutus.funding.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.funding.bevos")}</NoteText>
+            <NoteText>{t("aboutus.funding.need4deed")}</NoteText>
+          </SectionBlock>
+
           <SubHeading>{t("aboutus.forOrganisations")}</SubHeading>
 
           <SectionBlock>
@@ -106,18 +118,6 @@ function AboutUs() {
               ))}
             </ItemsList>
             <NoteText>{t("aboutus.different.outro")}</NoteText>
-          </SectionBlock>
-
-          <SectionBlock>
-            <SectionHeader>{t("aboutus.whoFor.heading")}</SectionHeader>
-            <NoteText>{t("aboutus.whoFor.paragraph1")}</NoteText>
-            <NoteText>{t("aboutus.whoFor.paragraph2")}</NoteText>
-          </SectionBlock>
-
-          <SectionBlock>
-            <SectionHeader>{t("aboutus.funding.heading")}</SectionHeader>
-            <NoteText>{t("aboutus.funding.bevos")}</NoteText>
-            <NoteText>{t("aboutus.funding.need4deed")}</NoteText>
           </SectionBlock>
         </ContentSection>
       </Container>
