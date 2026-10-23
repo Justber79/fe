@@ -81,7 +81,6 @@ function AboutUs() {
           <SubHeading>{t("aboutus.forOrganisations")}</SubHeading>
 
           <SectionBlock>
-            <NoteText>{t("aboutus.aboutusSubheading")}</NoteText>
             <NoteText>{t("aboutus.aboutusPlatform")}</NoteText>
             <NoteText>{t("aboutus.whatWeDo.paragraph3")}</NoteText>
           </SectionBlock>
