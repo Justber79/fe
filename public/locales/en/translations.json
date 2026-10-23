@@ -1894,7 +1894,16 @@
       "bevos": "BEVOS was funded by the European Social Fund (ESF).",
       "need4deed": "Need4Deed was funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
     },
-    "forOrganisations": "For organisations"
+    "forOrganisations": "For organisations",
+    "intro": "Need4Deed is a structural project: with unique tools of our own, we connect and empower small volunteer projects that support refugees.",
+    "offline": {
+      "heading": "Matching, networking, workshops and events",
+      "paragraph": "Beyond matching, we bring people together: we connect organisations and welcome initiatives with each other, run workshops for volunteers and coordinators, and organise community events."
+    },
+    "dashboard": {
+      "heading": "The Need4Deed dashboard",
+      "openSource": "The dashboard is open source. It runs 100% in Europe, hosted in Switzerland, and is GDPR compliant."
+    }
   },
   "faqs": {
     "faqs": "FAQs",

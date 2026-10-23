@@ -33,6 +33,8 @@ function AboutUs() {
         <Heading>{t("aboutus.aboutusHeading")}</Heading>
 
         <ContentSection>
+          <NoteText>{t("aboutus.intro")}</NoteText>
+
           <SectionBlock>
             <SectionHeader>{t("aboutus.history.heading")}</SectionHeader>
             <NoteText>{t("aboutus.history.paragraph1")}</NoteText>
@@ -81,8 +83,15 @@ function AboutUs() {
           <SubHeading>{t("aboutus.forOrganisations")}</SubHeading>
 
           <SectionBlock>
-            <NoteText>{t("aboutus.aboutusPlatform")}</NoteText>
+            <SectionHeader>{t("aboutus.offline.heading")}</SectionHeader>
             <NoteText>{t("aboutus.whatWeDo.paragraph3")}</NoteText>
+            <NoteText>{t("aboutus.offline.paragraph")}</NoteText>
+          </SectionBlock>
+
+          <SectionBlock>
+            <SectionHeader>{t("aboutus.dashboard.heading")}</SectionHeader>
+            <NoteText>{t("aboutus.aboutusPlatform")}</NoteText>
+            <NoteText>{t("aboutus.dashboard.openSource")}</NoteText>
           </SectionBlock>
 
           <SectionBlock>
