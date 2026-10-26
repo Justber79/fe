@@ -1,5 +1,6 @@
 import { ErrorMessage } from "@/components/core/common";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
+import { fieldStackingMedia, stackedFieldStyles } from "@/components/styled/mixins";
 import { HasError, HasHint } from "@/types";
 import { MinusIcon, PlusIcon, XCircleIcon } from "@phosphor-icons/react";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
@@ -45,18 +46,8 @@ const FieldWrapper = styled.div<HasError & HasHint & { $stacked?: boolean }>`
     min-width: 0;
   }
 
-  @media ${({ $stacked }) => ($stacked ? "all" : "(max-width: 767px)")} {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--spacing-8);
-
-    label {
-      width: 100%;
-    }
-
-    > span {
-      width: 100%;
-    }
+  @media ${({ $stacked }) => ($stacked ? "all" : fieldStackingMedia)} {
+    ${stackedFieldStyles}
   }
 `;
 
@@ -230,7 +221,7 @@ const HintWrapper = styled.div<{ $stacked?: boolean }>`
   padding-left: ${({ $stacked }) =>
     $stacked ? "0" : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"};
 
-  @media (max-width: 767px) {
+  @media ${fieldStackingMedia} {
     padding-left: 0;
   }
 `;
@@ -241,6 +232,14 @@ const HintText = styled.span`
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-grey-500);
   flex: 1;
+`;
+
+const FieldError = styled.div<{ $stacked?: boolean }>`
+  padding-left: calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap));
+
+  @media ${({ $stacked }) => ($stacked ? "all" : fieldStackingMedia)} {
+    padding-left: 0;
+  }
 `;
 
 const Text = styled.span`
@@ -254,6 +253,11 @@ const Text = styled.span`
 `;
 
 const StepperContainer = styled.div`
+  && {
+    width: fit-content;
+    max-width: 100%;
+  }
+
   display: flex;
   align-items: center;
   border-radius: var(--editableField-fieldWrapper-input-borderRadius);
@@ -632,14 +636,9 @@ export const EditableField = forwardRef(function EditableField<T extends string 
         </p>
       )}
       {errorMessage && (
-        <ErrorMessage
-          message={errorMessage}
-          paddingLeft={
-            stacked
-              ? "0"
-              : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"
-          }
-        />
+        <FieldError $stacked={stacked}>
+          <ErrorMessage message={errorMessage} />
+        </FieldError>
       )}
       {hint && (
         <HintWrapper $stacked={stacked} data-testid="editable-field-hint">

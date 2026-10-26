@@ -1,5 +1,30 @@
 import { css } from "styled-components";
 
+export const fieldStackingMedia = "(max-width: 1023px)";
+
+export const stackedFieldStyles = css`
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--spacing-8);
+
+  > label {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  > span,
+  > div {
+    width: 100%;
+    min-width: 0;
+  }
+`;
+
+export const responsiveFieldStyles = css`
+  @media ${fieldStackingMedia} {
+    ${stackedFieldStyles}
+  }
+`;
+
 export const circleIconButtonStyles = css`
   display: flex;
   align-items: center;

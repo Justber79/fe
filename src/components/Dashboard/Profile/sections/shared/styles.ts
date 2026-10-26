@@ -1,4 +1,5 @@
 import { FlexColumn } from "@/components/styled/FlexColumn";
+import { responsiveFieldStyles } from "@/components/styled/mixins";
 import styled from "styled-components";
 import { HasError, IsEditing } from "@/types";
 
@@ -117,17 +118,5 @@ export const FieldWrapper = styled.div<HasError>`
     min-width: 0;
   }
 
-  @media (max-width: 767px) {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--spacing-8);
-
-    label {
-      width: 100%;
-    }
-
-    > span {
-      width: 100%;
-    }
-  }
+  ${responsiveFieldStyles}
 `;
