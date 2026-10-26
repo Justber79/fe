@@ -1,3 +1,4 @@
+import { EmailNoteControl, MatchHandler } from "../shared/types";
 import { CalendarDotsIcon, MapPinIcon, ShootingStarIcon, TranslateIcon } from "@phosphor-icons/react";
 import { OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,8 @@ import { MappedVolunteerAgent } from "./types";
 type Props = {
   volunteer: MappedVolunteerAgent;
   currentStatus: OpportunityVolunteerStatusType;
-  onMatch: () => void;
+  onMatch: MatchHandler;
+  emailNote: EmailNoteControl;
   onNotAMatch: () => void;
   onMarkAsActive: () => void;
   onMarkAsPast: () => void;
@@ -24,6 +26,7 @@ export const VolunteerDetail = ({
   volunteer,
   currentStatus,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -84,6 +87,7 @@ export const VolunteerDetail = ({
       <StatusAccordionActions
         currentStatus={currentStatus}
         onMatch={onMatch}
+        emailNote={emailNote}
         onNotAMatch={onNotAMatch}
         onMarkAsActive={onMarkAsActive}
         onMarkAsPast={onMarkAsPast}

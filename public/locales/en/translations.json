@@ -76,7 +76,6 @@
     },
     "footer": {
       "about": "ABOUT",
-      "resources": "RESOURCES",
       "faq": "FAQ",
       "legalNotice": "Legal notice",
       "vpa": "Volunteer Participation Agreement",
@@ -90,7 +89,8 @@
         "guidelines": "Need4Deed Guidelines",
         "legalNotice": "Legal notice",
         "cookies": "Cookies"
-      }
+      },
+      "forOrganisations": "FOR ORGANISATIONS"
     },
     "iframeTitles": {
       "howToVolunteer": "How you can support refugees in your community"
@@ -481,6 +481,10 @@
     }
   },
   "dashboard": {
+    "emailNote": {
+      "label": "Add a note to the email (optional)",
+      "placeholder": "This text is added to the email."
+    },
     "common": {
       "loading": "Loading...",
       "selectOption": "Select option...",
@@ -1000,6 +1004,20 @@
         "previewUnavailable": "Preview unavailable",
         "downloadUnavailable": "Download unavailable",
         "deleteUnavailable": "Delete unavailable"
+      },
+      "applicationEmail": {
+        "name": "Email with application",
+        "sent": "Sent",
+        "notSent": "Not sent",
+        "send": "Send email with application",
+        "noEmail": "No email address",
+        "dialog": {
+          "title": "Send email with application?",
+          "message": "The certificate of good conduct application form (EFZ) and instructions will be emailed to {{name}} ({{email}}), with community@need4deed.org in copy.",
+          "alreadySent": "It was already sent on {{date}}.",
+          "send": "Send",
+          "cancel": "Cancel"
+        }
       },
       "deleteDialog": {
         "title": "Delete document?",
@@ -1726,7 +1744,13 @@
         "firstInquiry": "First inquiry sent",
         "opportunityList": "Opportunity list sent",
         "statusUpdate": "Status update",
-        "postMatchFollowUp": "Post-match follow-up"
+        "postMatchFollowUp": "Post-match follow-up",
+        "cgcApplicationEmail": "Email with application (EFZ)",
+        "accompanyingMatched": "Accompanying match email sent",
+        "matched": "Match email sent",
+        "opportunityConfirmation": "Opportunity confirmation sent",
+        "accompanyingNotFound": "No accompanying volunteer found",
+        "opportunityUpdated": "Opportunity update sent"
       },
       "platformOptions": {
         "phoneNumber": "Phone number",
@@ -1851,7 +1875,9 @@
       },
       "contactSection": "Contact details",
       "agentSection": "Your organisation",
-      "submit": "Create opportunity"
+      "submit": "Create opportunity",
+      "addressMissing": "Your organisation profile has no postcode yet, so this opportunity can't be created. Your entries here stay.",
+      "addressMissingLink": "Add the address in the organisation profile (opens in a new tab)"
     },
     "admin": {
       "title": "Admin",
@@ -1879,45 +1905,159 @@
     }
   },
   "aboutus": {
-    "aboutusHeading": "About the project",
-    "aboutusSubheading": "The number of people fleeing conflict zones, persecution and human rights violations worldwide has never been as high as it is today. Need4Deed is set to promote the inclusion and integration of refugees in Berlin through the actions of civil society by making volunteering more accessible. We aim to build a sustainable and scalable mechanism for this purpose by connecting volunteers with refugees that are living in accommodation centers in Berlin based on their specific needs.",
+    "aboutusHeading": "About",
+    "aboutusPlatform": "The dashboard is more than a database an organisation fills in itself. Organisations can manage their own volunteers on the platform, separately, and still see volunteers from our pool. If they want, they can share their volunteers with other organisations too, passing on contact details one by one and only with the volunteer's consent.",
+    "whatWeDo": {
+      "heading": "What we do",
+      "paragraph1": "The accommodation centres and the organisations that support refugees tell us what their residents need. We find volunteers from our pool who fit, and we introduce them. That support takes two main shapes.",
+      "paragraph2": "Regular volunteering covers the activities that make a place feel like a community: childcare, language cafés, tutoring, sports, help with forms, translation inside the centre, and much more. Accompaniment to appointments means going with someone to the doctor, a government office, a school or an apartment viewing, so that language is never the reason an appointment goes wrong.",
+      "paragraph3": "Behind every introduction is a match made on purpose. The volunteer speaks the right language, down to Farsi or Dari, or the right Arabic dialect, lives close enough to actually come, is free when they are needed, and wants to do that kind of work. Our coordinators make that match, and the platform keeps track of it in both German and English so everyone involved can follow along."
+    },
+    "different": {
+      "heading": "What makes us different",
+      "intro": "Plenty of tools help an organisation manage the volunteers it already has. Need4Deed does that too, and also helps with the harder problem: finding the right volunteer in the first place, for one specific and demanding kind of work.",
+      "point1": "A pool of volunteers who are already here and ready, next to an organisation's own volunteers.",
+      "point2": "Volunteer sharing between organisations, one contact at a time and only with the volunteer's consent.",
+      "point3": "Matching by language, dialect, location, availability and activity: the details that decide whether support actually happens.",
+      "point4": "Real knowledge of how refugee accommodation works, from the different types of centres to the rules around accompaniment.",
+      "point5": "A bilingual platform, so refugees, volunteers and staff can all use it in a language they understand.",
+      "outro": "And it is free for the organisations we work with."
+    },
     "values": {
       "valuesHeading": "Our values",
       "equalOpportunityHeading": "Equal opportunities",
-      "equalOpportunitySubheading": "People living under destitute life conditions should be given equal opportunities. The latter includes underserved individuals and groups affected by forced migration.",
+      "equalOpportunitySubheading": "People living in destitute conditions should be given equal opportunities, including the underserved individuals and groups affected by forced migration.",
       "responsibilityHeading": "Responsibility",
-      "responsibilitySubheading": "Both countries (the state) and civil society, have responsibility towards its underserved communities including those affected by forced migration.",
+      "responsibilitySubheading": "Both the state and civil society hold responsibility towards their underserved communities, including those affected by forced migration.",
       "migranToMigranSupportHeading": "Migrant-to-migrant support",
-      "migranToMigranSupportSubheading": "In particular, groups and individuals who have undergone forced migration could be best understood and supported by others with migration background in the course of their integration process, so that they receive equal opportunities and eventually benefit society themselves.",
+      "migranToMigranSupportSubheading": "People who have undergone forced migration are often best understood and supported by others with a migration background, who help them through integration so they receive equal opportunities and, in time, give back to society.",
       "activeParticipationHeading": "Active participation",
-      "activeParticipationSubheading": "A migrant-to-migrant support alongside non-migrant support, can both play a key social role by facilitating a more rapid integration process and active participation of the supported communities.",
+      "activeParticipationSubheading": "Migrant-to-migrant support, alongside non-migrant support, plays a key social role: speeding integration and drawing supported communities into active participation.",
       "technologyHeading": "Technology",
-      "technologySubheading": "Applying technology in the effort to support underserved communities is a key value to make support giving and receiving more inclusive, accessible and scalable."
+      "technologySubheading": "Using technology to support underserved communities makes giving and receiving help more inclusive, accessible and scalable."
+    },
+    "whoFor": {
+      "heading": "Who it's for",
+      "paragraph1": "We work with the accommodation centres, NGOs and social teams supporting refugees across Berlin, and with the volunteers, many of them multilingual, many with their own experience of migration, who give their time to help. If you run a centre or an organisation and your residents need support, or if you want to volunteer, you belong here.",
+      "paragraph2": "Behind all of it is a simple belief: arriving somewhere new is hard enough, and no one should have to face a doctor's appointment, a form, or a first winter alone. Need4Deed exists to make sure they don't have to."
+    },
+    "history": {
+      "heading": "Our history",
+      "paragraph1": "It all started with Berlin Arrival Support, a grassroots assembly of volunteers organised through a Telegram group. When refugees from Ukraine began arriving in Berlin in February 2022, it quickly grew to hundreds of volunteers who welcomed thousands of people at several Berlin stations, mainly Hauptbahnhof, the central bus station (ZOB) and Südkreuz, helping with accommodation, often with private hosts, food, translation, tickets, onward travel and first orientation.",
+      "paragraph2": "In 2023 BEVOS (Berlin Volunteer Support) started, to support the volunteers themselves: training on topics such as asylum law and mental health, networking between Berlin's welcome initiatives, advice to prevent burnout, and placing trained volunteers in language cafés, translation and accompaniment to appointments. Need4Deed grew out of BEVOS, as the platform that connects volunteers with accommodation centres and organisations across Berlin today.",
+      "paragraph3": "Many people have shaped Need4Deed along the way, among them Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona, Manar, Darrell, Onur, Darya and many more volunteers.",
+      "arrivalImageAlt": "A Berlin Arrival Support volunteer with a radio in front of a Welcome Center banner",
+      "footballImageAlt": "A Need4Deed football afternoon with children on an outdoor pitch"
+    },
+    "funding": {
+      "heading": "Funding",
+      "bevos": "BEVOS was funded by the European Social Fund (ESF).",
+      "need4deed": "Need4Deed was funded by the Asylum, Migration and Integration Fund (AMIF) of the European Union."
+    },
+    "forOrganisations": "For organisations",
+    "intro": "Need4Deed is a structural project: with unique tools of our own, we connect and empower small volunteer projects that support refugees.",
+    "offline": {
+      "heading": "Matching, networking, workshops and events",
+      "paragraph": "Beyond matching, we bring people together: we connect organisations and welcome initiatives with each other, run workshops for volunteers and coordinators, and organise community events."
+    },
+    "dashboard": {
+      "heading": "The Need4Deed dashboard",
+      "openSource": "The dashboard is open source. It runs 100% in Europe, hosted in Switzerland, and is GDPR compliant."
     }
   },
   "faqs": {
-    "faqs": "FAQs",
     "title": "Frequently Asked Questions",
-    "first_steps_question": "What are the first steps to become a volunteer?",
-    "first_steps_answer": "Begin by completing the volunteer application form on the Need4Deed website.",
-    "after_form_question": "What happens after I fill out the form?",
-    "after_form_answer": "After we have your preferences and locations we start searching for a suitable opportunity for you and contact you in the next days.",
-    "find_opportunities_question": "How do I find available volunteer opportunities?",
-    "find_opportunities_answer": "Check the 'Opportunities' page on the Need4Deed website for current volunteer roles.",
-    "volunteer_roles_question": "What types of volunteer roles are offered?",
-    "volunteer_roles_answer": "Roles include child care, language cafés, translation services, and support with official appointments and sports activities.",
-    "special_skills_question": "Do I need any special skills to volunteer?",
-    "special_skills_answer": "Many roles are open to all volunteers, although specific skills may be required for certain positions.",
-    "volunteering_time_question": "How long does volunteering take?",
-    "volunteering_time_answer": "Regular volunteering usually requires a commitment of about 2 hours a week or twice a month. Irregular volunteering can happen whenever you have time, especially for events or tasks like translations at doctors' appointments.",
-    "age_requirements_question": "Are there age requirements for volunteers?",
-    "age_requirements_answer": "Age requirements may vary but most places require the person to be over 18; please check the opportunity listings for specifics.",
-    "voluntea_gatherings_question": "What can I expect during the VolunTea gatherings?",
-    "voluntea_gatherings_answer": "VolunTea orientation covers Need4Deed's mission, volunteer roles, and assisting in finding the suitable refugee accommodation centers.",
-    "training_question": "Is there a special training?",
-    "training_answer": "Every few months training are offered, especially for those supporting with translations.",
-    "group_volunteering_question": "Can I volunteer with a group or organisation?",
-    "group_volunteering_answer": "Yes, group volunteering is encouraged, especially for those supporting refugee accommodation centers."
+    "volunteers": {
+      "heading": "For volunteers",
+      "register": {
+        "question": "How do I become a volunteer?",
+        "answer": "Register on our website: you create an account and fill in your profile with your languages, the districts you can reach, your availability, the activities you like and the kind of volunteering you want (regular, accompaniments, events).",
+        "link": "Register as a volunteer"
+      },
+      "afterRegistration": {
+        "question": "What happens after I register?",
+        "answer": "We call you within the next days to get to know you: your languages, your experience and what you would like to do. Then we look for opportunities that fit you."
+      },
+      "documents": {
+        "question": "Which documents do I need?",
+        "answer": "For most volunteering in accommodation centres you need an extended certificate of good conduct (erweitertes Führungszeugnis, EFZ). We email you the application form and apply for it with you: fill it in, sign it and send it back with a copy of your passport or German ID card (a residence permit is not accepted as ID). The certificate arrives by post within 2 to 4 weeks. For regular volunteering you also need proof of measles vaccination, for example your vaccination card."
+      },
+      "accompaniment": {
+        "question": "What is an accompaniment?",
+        "answer": "You go with someone to an appointment, for example to the doctor, a government office, a school or a flat viewing, and help with the language. Before your first accompaniment you join a short online briefing. Volunteers are not professional interpreters: you help as well as you can."
+      },
+      "suggestions": {
+        "question": "How do suggestions and matches work?",
+        "answer": "When an opportunity fits you, we suggest it to you. Once it's a match, you and the organisation get an introduction email with each other's contact details, and the organisation invites you to a first meeting."
+      },
+      "time": {
+        "question": "How much time do I need?",
+        "answer": "Regular volunteering usually means about 2 hours a week or twice a month. Accompaniments and events are one-off: you help when you have time."
+      },
+      "skills": {
+        "question": "Do I need special skills?",
+        "answer": "Most roles are open to everyone. Every language you speak helps a lot, and so does your own experience of arriving in a new country."
+      },
+      "age": {
+        "question": "Is there a minimum age?",
+        "answer": "Most places ask for volunteers aged 18 or older."
+      },
+      "changes": {
+        "question": "My availability changed or I need a break. What do I do?",
+        "answer": "Log in and update your availability in your profile. If you need a break, let your coordinator know."
+      },
+      "login": {
+        "question": "I can't log in.",
+        "answer": "Use \"Forgot password\" to set a new password. If it still doesn't work, write to us.",
+        "link": "Reset your password"
+      },
+      "events": {
+        "question": "Are there events and workshops?",
+        "answer": "Yes, we organise community events and workshops for volunteers. You find the next dates on our event page.",
+        "link": "See upcoming events"
+      },
+      "groups": {
+        "question": "Can I volunteer with a group?",
+        "answer": "Yes, groups are welcome, for example for events or activities in accommodation centres. Write to us at"
+      }
+    },
+    "organisations": {
+      "heading": "For organisations",
+      "register": {
+        "question": "How does our organisation register?",
+        "answer": "Register your organisation and add its address with the postcode: you need it to create requests.",
+        "link": "Register your organisation"
+      },
+      "request": {
+        "question": "How do we ask for volunteers?",
+        "answer": "Create a request in the dashboard: regular volunteering, an accompaniment or an event. Accompaniments need to be requested at least 7 working days before the appointment."
+      },
+      "afterRequest": {
+        "question": "What happens after we send a request?",
+        "answer": "We look for a fitting volunteer. When we find one, you and the volunteer get an introduction email with the contact details. Please invite the volunteer to a first meeting within 5 to 7 working days and put us in CC. If it doesn't fit, tell us and we keep looking."
+      },
+      "noMatch": {
+        "question": "What if no one is found?",
+        "answer": "For accompaniments we let you know at the latest 4 working days before the appointment, so you can plan."
+      },
+      "ownVolunteers": {
+        "question": "Can we manage our own volunteers?",
+        "answer": "Yes. You manage your own volunteers on the platform and still see volunteers from our pool. If you want, you can share your volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+      },
+      "dashboard": {
+        "question": "What else can we do in the dashboard?",
+        "answer": "The dashboard is more than our matching: log the hours a volunteer has volunteered for each match, keep track of appreciation such as certificates, and write general questions or searches in the posts. You can tag each other there, and whoever is tagged gets an email."
+      },
+      "costs": {
+        "question": "What does it cost?",
+        "answer": "Need4Deed is free for the organisations we work with."
+      },
+      "more": {
+        "question": "Where can we read more?",
+        "answer": "How we work with organisations, step by step, and our guidelines are on the page for organisations.",
+        "link": "For organisations"
+      }
+    }
   },
   "legal": {
     "legalHeading": "Legal",
@@ -1993,6 +2133,9 @@
     "validationFailed": "Validation failed",
     "uploadSuccess": "Document uploaded successfully!",
     "deleteSuccess": "Document deleted successfully!",
+    "applicationEmailSent": "Email with application sent!",
+    "applicationEmailJustSent": "The email with application was just sent. Please try again in a minute.",
+    "applicationEmailNotSent": "The email with application could not be sent. Please try again later.",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",
@@ -2002,7 +2145,10 @@
       "fileTooLarge": "The file is too large. Please choose a smaller file.",
       "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
       "alreadyUsedToken": "This link has already been used.",
-      "personAlreadyRegistered": "An account with this email already exists. Please log in instead."
+      "personAlreadyRegistered": "An account with this email already exists. Please log in instead.",
+      "emailNoteNotSent": "The status was saved, but the email with your note was not sent.",
+      "emailAlreadySent": "That email was already sent for this match. Nothing was saved; remove the note to continue.",
+      "emailNotePlaceholder": "The note can't contain {{ … }}. Please remove it and try again."
     }
   },
   "racGuidelines": {
@@ -2361,5 +2507,67 @@
   "emptyList": {
     "header": "Opportunities are being updated...",
     "para": "We are currently updating the volunteering opportunities. This may take a while. We recommend refreshing the page later on today.  If you have any specific question please contact us at volunteer@need4deed.org"
+  },
+  "forOrganisationsPage": {
+    "heading": "For organisations",
+    "intro": "For centres and projects that support refugees in Berlin: how we work with you, from your first request to a volunteer on site.",
+    "stepsHeading": "How we match volunteers",
+    "steps": {
+      "request": {
+        "title": "You send a request",
+        "body": "Register your organisation and create a request in the dashboard: regular volunteering, an accompaniment to an appointment or an event. Tell us what is needed, when, where and in which languages. Accompaniments need to be requested at least 7 working days before the appointment."
+      },
+      "prepare": {
+        "title": "We prepare the volunteers",
+        "body": "We call every new volunteer after they register, to get to know their languages, experience and what they want to do. Volunteers for accompaniments also join an online briefing. We help volunteers apply for the extended certificate of good conduct (EFZ) and check the proof of measles vaccination where needed."
+      },
+      "match": {
+        "title": "We match",
+        "body": "Our coordinators look for the right person by language and dialect, district, availability and activity, from our pool and from your own volunteers on the platform."
+      },
+      "introduction": {
+        "title": "You get a suggestion, then an introduction",
+        "body": "When a volunteer fits, we send you and the volunteer an introduction email with everyone's contact details. Please invite the volunteer to a first meeting within 5 to 7 working days and put us in CC. If it doesn't fit, tell us and we keep looking."
+      },
+      "noMatch": {
+        "title": "If we can't find anyone",
+        "body": "For accompaniments we let you know at the latest 4 working days before the appointment, so you can plan."
+      },
+      "afterMatch": {
+        "title": "The volunteer starts, and we stay in touch",
+        "body": "About once a month we ask whether your offers are still up to date and how it's going with the volunteers. If someone stops, we look for a new match."
+      }
+    },
+    "goodToKnow": {
+      "heading": "Good to know",
+      "free": "Need4Deed is free for the organisations we work with.",
+      "register": "Not registered yet?",
+      "registerLink": "Register your organisation",
+      "guidelines": "The rules for working together are in our",
+      "guidelinesLink": "guidelines for organisations",
+      "contact": "Questions? Write to us at"
+    },
+    "dashboard": {
+      "heading": "The Need4Deed dashboard",
+      "intro": "Beyond the matching, the dashboard is a tool your team can use every day, also with volunteers you found yourselves.",
+      "features": {
+        "volunteers": {
+          "title": "Your volunteers in one place",
+          "body": "Manage your own volunteers and requests, and see volunteers from our pool. If you want, share your volunteers with other organisations, one contact at a time and only with the volunteer's consent."
+        },
+        "hours": {
+          "title": "Hours and appreciation",
+          "body": "Log the hours a volunteer has volunteered for each match, and keep track of appreciation such as certificates."
+        },
+        "posts": {
+          "title": "Posts and tagging",
+          "body": "Write general questions or searches in the posts, reply to each other and tag each other. Whoever is tagged gets an email."
+        },
+        "openSource": {
+          "title": "Open source, hosted in Switzerland",
+          "body": "The dashboard is open source, runs 100% in Europe, hosted in Switzerland, and is GDPR compliant."
+        }
+      }
+    }
   }
 }

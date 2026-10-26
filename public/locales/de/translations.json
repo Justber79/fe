@@ -76,7 +76,6 @@
     },
     "footer": {
       "about": "ÜBER",
-      "resources": "RESSOURCEN",
       "faq": "FAQ",
       "legalNotice": "Rechtlicher Hinweis",
       "privacy": "Datenschutz",
@@ -88,7 +87,8 @@
         "dataPrivacy": "Datenschutz",
         "agreement": "Ehrenamtliche Vereinbarung",
         "cookies": "Cookies"
-      }
+      },
+      "forOrganisations": "FÜR ORGANISATIONEN"
     },
     "iframeTitles": {
       "howToVolunteer": "Wie Du Geflüchtete in Deiner Nachbarschaft unterstützen können"
@@ -487,6 +487,10 @@
     }
   },
   "dashboard": {
+    "emailNote": {
+      "label": "Text zur E-Mail hinzufügen (optional)",
+      "placeholder": "Dieser Text wird der E-Mail hinzugefügt."
+    },
     "common": {
       "loading": "Wird geladen...",
       "selectOption": "Option auswählen...",
@@ -1258,6 +1262,20 @@
         "downloadUnavailable": "Download nicht verfügbar",
         "deleteUnavailable": "Löschen nicht verfügbar"
       },
+      "applicationEmail": {
+        "name": "E-Mail mit Antrag",
+        "sent": "Gesendet",
+        "notSent": "Nicht gesendet",
+        "send": "E-Mail mit Antrag senden",
+        "noEmail": "Keine E-Mail-Adresse",
+        "dialog": {
+          "title": "E-Mail mit Antrag senden?",
+          "message": "Das Antragsformular für das erweiterte Führungszeugnis (EFZ) und die Anleitung werden per E-Mail an {{name}} ({{email}}) gesendet, community@need4deed.org in Kopie.",
+          "alreadySent": "Sie wurde bereits am {{date}} gesendet.",
+          "send": "Senden",
+          "cancel": "Abbrechen"
+        }
+      },
       "deleteDialog": {
         "title": "Dokument löschen?",
         "message": "\"{{documentName}}\" wird gelöscht.",
@@ -1738,7 +1756,13 @@
         "firstInquiry": "Erste Anfrage gesendet",
         "opportunityList": "Liste der Ehrenamtsbedarfe gesendet",
         "statusUpdate": "Statusaktualisierung",
-        "postMatchFollowUp": "Folgegespräch nach Zuweisung"
+        "postMatchFollowUp": "Folgegespräch nach Zuweisung",
+        "cgcApplicationEmail": "E-Mail mit Antrag (EFZ)",
+        "accompanyingMatched": "Vermittlungs-E-Mail (Begleitung) gesendet",
+        "matched": "Vermittlungs-E-Mail gesendet",
+        "opportunityConfirmation": "Bestätigung des Ehrenamtsbedarfs gesendet",
+        "accompanyingNotFound": "Keine Begleitung gefunden",
+        "opportunityUpdated": "Aktualisierung des Ehrenamtsbedarfs gesendet"
       },
       "platformOptions": {
         "phoneNumber": "Telefonnummer",
@@ -1862,8 +1886,10 @@
         "ngo": "Einrichtung"
       },
       "contactSection": "Kontaktdaten",
-      "agentSection": "Ihre Organisation",
-      "submit": "Möglichkeit erstellen"
+      "agentSection": "Eure Organisation",
+      "submit": "Möglichkeit erstellen",
+      "addressMissing": "Im Profil Eurer Organisation fehlt noch die Postleitzahl, daher kann diese Tätigkeit nicht erstellt werden. Eure Eingaben hier bleiben erhalten.",
+      "addressMissingLink": "Adresse im Organisationsprofil ergänzen (öffnet in neuem Tab)"
     },
     "admin": {
       "title": "Admin",
@@ -1891,45 +1917,159 @@
     }
   },
   "aboutus": {
-    "aboutusHeading": "Über das Projekt",
-    "aboutusSubheading": "Die Zahl der Menschen, die weltweit vor Konflikten, Verfolgung und Menschenrechtsverletzungen fliehen, war noch nie so hoch wie heute. Need4Deed will die Inklusion und Integration von Geflüchteten in Berlin durch zivilgesellschaftliches Engagement fördern, indem es den Zugang zu ehrenamtlichem Engagement erleichtert. Unser Ziel ist es, einen nachhaltigen und skalierbaren Mechanismus für diesen Zweck aufzubauen, indem wir Ehrenamtliche mit Geflüchteten, die in Berliner Gemeinschaftsunterkünften leben, auf der Grundlage ihrer spezifischen Bedürfnisse zusammenbringen.",
+    "aboutusHeading": "Über uns",
+    "aboutusPlatform": "Das Dashboard ist mehr als eine Datenbank, die eine Organisation selbst befüllt. Organisationen können ihre eigenen Freiwilligen getrennt auf der Plattform verwalten und trotzdem Freiwillige aus unserem Pool sehen. Wenn sie möchten, können sie ihre Freiwilligen auch mit anderen Organisationen teilen und Kontaktdaten einzeln weitergeben, nur mit Einverständnis der Freiwilligen.",
+    "whatWeDo": {
+      "heading": "Was wir tun",
+      "paragraph1": "Die Unterkünfte und die Organisationen, die Geflüchtete unterstützen, sagen uns, was ihre Bewohner*innen brauchen. Wir suchen passende Freiwillige aus unserem Pool und stellen den Kontakt her. Die Unterstützung hat zwei Hauptformen.",
+      "paragraph2": "Regelmäßiges Engagement umfasst alles, was einen Ort zu einer Gemeinschaft macht: Kinderbetreuung, Sprachcafés, Nachhilfe, Sport, Hilfe bei Formularen, Übersetzung in der Unterkunft und vieles mehr. Begleitung zu Terminen heißt, jemanden zur Ärztin, zum Amt, zur Schule oder zur Wohnungsbesichtigung zu begleiten, damit ein Termin nie an der Sprache scheitert.",
+      "paragraph3": "Hinter jeder Vermittlung steht ein bewusster Match. Die Person spricht die richtige Sprache, bis hin zu Farsi oder Dari oder dem passenden arabischen Dialekt, wohnt nah genug, um wirklich zu kommen, hat Zeit, wenn sie gebraucht wird, und möchte genau diese Art von Engagement. Unsere Koordinator*innen stellen den Match her, und die Plattform hält alles auf Deutsch und Englisch fest, damit alle Beteiligten den Überblick behalten."
+    },
+    "different": {
+      "heading": "Was uns unterscheidet",
+      "intro": "Es gibt viele Tools, mit denen Organisationen ihre vorhandenen Freiwilligen verwalten. Need4Deed kann das auch und hilft zusätzlich bei der schwierigeren Aufgabe: überhaupt erst die richtige Person zu finden, für eine bestimmte und anspruchsvolle Art von Engagement.",
+      "point1": "Ein Pool von Freiwilligen, die schon da und bereit sind, neben den eigenen Freiwilligen einer Organisation.",
+      "point2": "Teilen von Freiwilligen zwischen Organisationen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen.",
+      "point3": "Matching nach Sprache, Dialekt, Wohnort, Verfügbarkeit und Tätigkeit: den Details, die entscheiden, ob Unterstützung wirklich ankommt.",
+      "point4": "Echtes Wissen darüber, wie Unterkünfte für Geflüchtete funktionieren, von den verschiedenen Unterkunftsarten bis zu den Regeln bei Begleitungen.",
+      "point5": "Eine zweisprachige Plattform, damit Geflüchtete, Freiwillige und Mitarbeitende sie in einer Sprache nutzen können, die sie verstehen.",
+      "outro": "Und für die Organisationen, mit denen wir arbeiten, ist es kostenlos."
+    },
     "values": {
       "valuesHeading": "Unsere Werte",
       "equalOpportunityHeading": "Chancengleichheit",
-      "equalOpportunitySubheading": "Menschen, die unter bedürftigen Lebensbedingungen leben, sollten gleiche Chancen erhalten. Dazu gehören auch unterversorgte Personen und Gruppen, die von Zwangsmigration betroffen sind.",
+      "equalOpportunitySubheading": "Menschen in prekären Lebenslagen sollen gleiche Chancen bekommen, auch benachteiligte Einzelne und Gruppen, die von Flucht und Vertreibung betroffen sind.",
       "responsibilityHeading": "Verantwortung",
-      "responsibilitySubheading": "Sowohl die Länder (der Staat) als auch die Zivilgesellschaft tragen Verantwortung für ihre unterversorgten Gemeinschaften, einschließlich der von erzwungener Migration Betroffenen.",
-      "migranToMigranSupportHeading": "Migrant*innen unterstützen Migrant*innen",
-      "migranToMigranSupportSubheading": "Insbesondere Gruppen und Einzelpersonen, die eine erzwungene Migration durchlebt haben, könnten im Laufe ihres Integrationsprozesses am besten von anderen Menschen mit Migrationshintergrund verstanden und unterstützt werden, damit sie gleiche Chancen erhalten und schließlich selbst einen Beitrag zur Gesellschaft leisten können.",
-      "activeParticipationHeading": "Aktive Beteiligung",
-      "activeParticipationSubheading": "Eine Unterstützungsstruktur von Migrant*innen für Migrant*innen kann neben der Unterstützung von Nicht-Migrant*innen eine wichtige soziale Rolle in Gesellschaften spielen, indem sie einen schnelleren Integrationsprozess und eine aktive Beteiligung der unterstützten Gemeinschaften ermöglicht.",
+      "responsibilitySubheading": "Staat und Zivilgesellschaft tragen gemeinsam Verantwortung für benachteiligte Gemeinschaften, auch für Menschen mit Fluchterfahrung.",
+      "migranToMigranSupportHeading": "Unterstützung von Migrant*innen für Migrant*innen",
+      "migranToMigranSupportSubheading": "Menschen mit Fluchterfahrung werden oft am besten von anderen mit Migrationsgeschichte verstanden und unterstützt. Sie begleiten sie durch die Integration, damit sie gleiche Chancen erhalten und mit der Zeit selbst etwas an die Gesellschaft zurückgeben.",
+      "activeParticipationHeading": "Aktive Teilhabe",
+      "activeParticipationSubheading": "Unterstützung von Migrant*innen für Migrant*innen spielt, neben der Unterstützung durch Menschen ohne Migrationsgeschichte, eine wichtige gesellschaftliche Rolle: Sie beschleunigt die Integration und bringt die unterstützten Gemeinschaften in aktive Teilhabe.",
       "technologyHeading": "Technologie",
-      "technologySubheading": "Der Einsatz von Technologie zur Unterstützung unterversorgter Gemeinschaften ist ein entscheidender Wert, um das Geben und Nehmen von Unterstützung integrativer, zugänglicher und skalierbarer zu machen."
+      "technologySubheading": "Technologie zur Unterstützung benachteiligter Gemeinschaften macht Geben und Empfangen von Hilfe inklusiver, zugänglicher und skalierbarer."
+    },
+    "whoFor": {
+      "heading": "Für wen",
+      "paragraph1": "Wir arbeiten mit Unterkünften, NGOs und Sozialteams, die Geflüchtete in ganz Berlin unterstützen, und mit Freiwilligen, viele davon mehrsprachig, viele mit eigener Migrationserfahrung, die ihre Zeit schenken. Wenn Du eine Unterkunft oder Organisation leitest und Deine Bewohner*innen Unterstützung brauchen, oder wenn Du Dich engagieren möchtest, bist Du hier richtig.",
+      "paragraph2": "Hinter allem steht eine einfache Überzeugung: In einem neuen Land anzukommen ist schwer genug, und niemand sollte einen Arzttermin, ein Formular oder den ersten Winter allein bewältigen müssen. Need4Deed gibt es, damit das niemand muss."
+    },
+    "history": {
+      "heading": "Unsere Geschichte",
+      "paragraph1": "Alles begann mit Berlin Arrival Support, einem Zusammenschluss von Freiwilligen aus der Zivilgesellschaft, organisiert über eine Telegram-Gruppe. Als im Februar 2022 Geflüchtete aus der Ukraine in Berlin ankamen, wuchs er schnell auf Hunderte Freiwillige, die Tausende Menschen an mehreren Berliner Bahnhöfen empfingen, vor allem am Hauptbahnhof, am Zentralen Omnibusbahnhof (ZOB) und am Südkreuz, und ihnen mit Unterkunft, oft bei privaten Gastgeber*innen, mit Essen, Übersetzung, Tickets, der Weiterreise und erster Orientierung halfen.",
+      "paragraph2": "2023 entstand BEVOS (Berlin Volunteer Support), um die Freiwilligen selbst zu unterstützen: mit Schulungen zu Themen wie Asylrecht und mentaler Gesundheit, mit Vernetzung zwischen den Berliner Willkommensinitiativen, mit Beratung gegen Überlastung und mit der Vermittlung geschulter Freiwilliger in Sprachcafés, Übersetzung und Begleitungen zu Terminen. Aus BEVOS ist Need4Deed entstanden, die Plattform, die heute Freiwillige mit Unterkünften und Organisationen in ganz Berlin zusammenbringt.",
+      "paragraph3": "Viele Menschen haben Need4Deed auf diesem Weg geprägt, darunter Arsenii, Nadav, Szymon, Arturas, Kenza, Mohammad, Elena, Sedona, Manar, Darrell, Onur, Darya und viele weitere Freiwillige.",
+      "arrivalImageAlt": "Ein Freiwilliger von Berlin Arrival Support mit Funkgerät vor einem Welcome-Center-Banner",
+      "footballImageAlt": "Ein Need4Deed-Fußballnachmittag mit Kindern auf einem Sportplatz"
+    },
+    "funding": {
+      "heading": "Förderung",
+      "bevos": "BEVOS wurde aus dem Europäischen Sozialfonds (ESF) gefördert.",
+      "need4deed": "Need4Deed wurde aus dem Asyl-, Migrations- und Integrationsfonds (AMIF) der Europäischen Union gefördert."
+    },
+    "forOrganisations": "Für Organisationen",
+    "intro": "Need4Deed ist ein strukturelles Projekt: Mit eigenen, einzigartigen Werkzeugen vernetzen und stärken wir kleine Ehrenamtsprojekte, die Geflüchtete unterstützen.",
+    "offline": {
+      "heading": "Vermittlung, Vernetzung, Workshops und Events",
+      "paragraph": "Über die Vermittlung hinaus bringen wir Menschen zusammen: Wir vernetzen Organisationen und Willkommensinitiativen untereinander, bieten Workshops für Freiwillige und Koordinator*innen an und organisieren Community-Events."
+    },
+    "dashboard": {
+      "heading": "Das Need4Deed-Dashboard",
+      "openSource": "Das Dashboard ist Open Source. Es läuft zu 100 % in Europa, gehostet in der Schweiz, und ist DSGVO-konform."
     }
   },
   "faqs": {
-    "faqs": "FAQs",
     "title": "Häufig gestellte Fragen",
-    "first_steps_question": "Was sind die ersten Schritte, um Ehrenamtlicher zu werden?",
-    "first_steps_answer": "Beginnen Sie mit dem Ausfüllen des Ehrenamtlichenantragsformulars auf der Need4Deed-Website.",
-    "after_form_question": "Was passiert, nachdem ich das Formular ausgefüllt habe?",
-    "after_form_answer": "Nachdem wir Ihre Präferenzen und Standorte haben, suchen wir nach einem passenden Ehrenamt für Sie und kontaktieren Sie in den nächsten Tagen.",
-    "find_opportunities_question": "Wie finde ich aktuelle Ehrenamtsbedarfe?",
-    "find_opportunities_answer": "Sehen Sie auf der Seite „Ehrenamtsbedarfe“ auf der Need4Deed-Website nach aktuellen Möglichkeiten, sich ehrenamtlich zu engagieren.",
-    "volunteer_roles_question": "Welche Arten von ehrenamtlichen Tätigkeit werden angeboten?",
-    "volunteer_roles_answer": "Die Aufgaben umfassen Kinderbetreuung, Sprachcafés, Übersetzungsdienste und Unterstützung bei offiziellen Terminen und sportlichen Aktivitäten.",
-    "special_skills_question": "Brauche ich spezielle Fähigkeiten, um mich ehrenamtlich zu engagieren?",
-    "special_skills_answer": "Viele Aufgaben stehen allen Ehrenamtlichen offen, obwohl für bestimmte Bedarfe spezielle Fähigkeiten erforderlich sein können.",
-    "volunteering_time_question": "Wie viel Zeit nimmt ehrenamtliches Engagement in Anspruch?",
-    "volunteering_time_answer": "Regelmäßiges ehrenamtliches Engagement erfordert normalerweise einen Zeitaufwand von etwa zwei Stunden pro Woche oder, bei selteneren Einsätzen, zwei Termine im Monat. Unregelmäßiges ehrenamtliches Engagement kann stattfinden, wann immer Sie Zeit haben, insbesondere bei Veranstaltungen oder Aufgaben wie Übersetzungen bei Arztterminen.",
-    "age_requirements_question": "Gibt es Altersanforderungen für Ehrenamtliche?",
-    "age_requirements_answer": "Die Altersanforderungen können variieren, aber die meisten Einrichtungen verlangen, dass die Person über 18 Jahre alt ist. Bitte überprüfen Sie die spezifischen Anforderungen in den Ehrenamtsbedarfen.",
-    "voluntea_gatherings_question": "Was kann ich bei den VolunTea-Treffen erwarten?",
-    "voluntea_gatherings_answer": "Die VolunTea-Treffen umfasst die Mission von Need4Deed, Freiwilligenrollen und Unterstützung bei der Suche nach geeigneten Unterkünften für Geflüchtete.",
-    "training_question": "Werden spezielle Schulungen angeboten?",
-    "training_answer": "Alle paar Monate werden Schulungen angeboten, insbesondere für diejenigen, die Übersetzungsunterstützung leisten.",
-    "group_volunteering_question": "Kann ich mich bei einer Gruppe oder Organisation ehrenamtlich engagieren?",
-    "group_volunteering_answer": "Ja, ehrenamtliches Engagement für Gruppen wird gefördert, insbesondere für diejenigen, die Unterkünfte für Geflüchtete unterstützen."
+    "volunteers": {
+      "heading": "Für Freiwillige",
+      "register": {
+        "question": "Wie werde ich Freiwillige*r?",
+        "answer": "Registriere Dich auf unserer Website: Du legst ein Konto an und füllst Dein Profil aus, mit Deinen Sprachen, den Bezirken, die Du erreichen kannst, Deiner Verfügbarkeit, den Tätigkeiten, die Dir liegen, und der Art von Engagement, die Du suchst (regelmäßig, Begleitungen, Events).",
+        "link": "Als Freiwillige*r registrieren"
+      },
+      "afterRegistration": {
+        "question": "Was passiert nach der Registrierung?",
+        "answer": "Wir rufen Dich in den nächsten Tagen an, um Dich kennenzulernen: Deine Sprachen, Deine Erfahrungen und was Du gern machen möchtest. Dann suchen wir passende Angebote für Dich."
+      },
+      "documents": {
+        "question": "Welche Unterlagen brauche ich?",
+        "answer": "Für die meisten Einsätze in Unterkünften brauchst Du ein erweitertes Führungszeugnis (EFZ). Wir schicken Dir das Antragsformular per E-Mail und beantragen es mit Dir: Fülle es aus, unterschreibe es und schick es uns mit einer Kopie Deines Reisepasses oder Personalausweises zurück (ein Aufenthaltstitel gilt nicht als Ausweis). Das Führungszeugnis kommt innerhalb von 2 bis 4 Wochen per Post. Für regelmäßiges Engagement brauchst Du außerdem einen Nachweis über Deine Masernimpfung, zum Beispiel Deinen Impfpass."
+      },
+      "accompaniment": {
+        "question": "Was ist eine Begleitung?",
+        "answer": "Du begleitest jemanden zu einem Termin, zum Beispiel zur Ärztin, zum Amt, zur Schule oder zur Wohnungsbesichtigung, und hilfst mit der Sprache. Vor Deiner ersten Begleitung nimmst Du an einer kurzen Online-Einführung teil. Freiwillige sind keine professionellen Dolmetscher*innen: Du hilfst nach bestem Wissen."
+      },
+      "suggestions": {
+        "question": "Wie funktionieren Vorschläge und Vermittlungen?",
+        "answer": "Wenn ein Angebot zu Dir passt, schlagen wir es Dir vor. Kommt die Vermittlung zustande, bekommt Ihr beide, Du und die Organisation, eine Vorstellungs-E-Mail mit den Kontaktdaten, und die Organisation lädt Dich zu einem ersten Treffen ein."
+      },
+      "time": {
+        "question": "Wie viel Zeit brauche ich?",
+        "answer": "Regelmäßiges Engagement heißt meist etwa 2 Stunden pro Woche oder zweimal im Monat. Begleitungen und Events sind einmalig: Du hilfst, wenn Du Zeit hast."
+      },
+      "skills": {
+        "question": "Brauche ich besondere Fähigkeiten?",
+        "answer": "Die meisten Aufgaben stehen allen offen. Jede Sprache, die Du sprichst, hilft sehr, genauso wie Deine eigene Erfahrung, in einem neuen Land anzukommen."
+      },
+      "age": {
+        "question": "Gibt es ein Mindestalter?",
+        "answer": "Die meisten Einrichtungen suchen Freiwillige ab 18 Jahren."
+      },
+      "changes": {
+        "question": "Meine Verfügbarkeit hat sich geändert oder ich brauche eine Pause. Was tun?",
+        "answer": "Melde Dich an und passe Deine Verfügbarkeit in Deinem Profil an. Wenn Du eine Pause brauchst, sag Deiner Koordinatorin oder Deinem Koordinator Bescheid."
+      },
+      "login": {
+        "question": "Ich kann mich nicht anmelden.",
+        "answer": "Nutze „Passwort vergessen“, um ein neues Passwort zu setzen. Klappt es dann immer noch nicht, schreib uns.",
+        "link": "Passwort zurücksetzen"
+      },
+      "events": {
+        "question": "Gibt es Events und Workshops?",
+        "answer": "Ja, wir organisieren Community-Events und Workshops für Freiwillige. Die nächsten Termine findest Du auf unserer Event-Seite.",
+        "link": "Zu den Events"
+      },
+      "groups": {
+        "question": "Kann ich mich als Gruppe engagieren?",
+        "answer": "Ja, Gruppen sind willkommen, zum Beispiel für Events oder Aktivitäten in Unterkünften. Schreib uns an"
+      }
+    },
+    "organisations": {
+      "heading": "Für Organisationen",
+      "register": {
+        "question": "Wie registriert sich unsere Organisation?",
+        "answer": "Registriere Deine Organisation und trage ihre Adresse mit Postleitzahl ein: Du brauchst sie, um Anfragen zu erstellen.",
+        "link": "Organisation registrieren"
+      },
+      "request": {
+        "question": "Wie fragen wir Freiwillige an?",
+        "answer": "Erstelle im Dashboard eine Anfrage: regelmäßiges Engagement, eine Begleitung oder ein Event. Begleitungen müssen mindestens 7 Werktage vor dem Termin angefragt werden."
+      },
+      "afterRequest": {
+        "question": "Was passiert nach einer Anfrage?",
+        "answer": "Wir suchen eine passende freiwillige Person. Finden wir jemanden, bekommt Ihr beide eine Vorstellungs-E-Mail mit den Kontaktdaten. Bitte lade die Person innerhalb von 5 bis 7 Werktagen zu einem ersten Treffen ein und setze uns in CC. Passt es nicht, sag uns Bescheid, dann suchen wir weiter."
+      },
+      "noMatch": {
+        "question": "Was, wenn niemand gefunden wird?",
+        "answer": "Bei Begleitungen geben wir Dir spätestens 4 Werktage vor dem Termin Bescheid, damit Du planen kannst."
+      },
+      "ownVolunteers": {
+        "question": "Können wir unsere eigenen Freiwilligen verwalten?",
+        "answer": "Ja. Du verwaltest Deine eigenen Freiwilligen auf der Plattform und siehst trotzdem Freiwillige aus unserem Pool. Wenn Du möchtest, kannst Du Deine Freiwilligen auch mit anderen Organisationen teilen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+      },
+      "dashboard": {
+        "question": "Was können wir sonst im Dashboard machen?",
+        "answer": "Das Dashboard ist mehr als unsere Vermittlung: Trage für jede Vermittlung die geleisteten Stunden einer freiwilligen Person ein, behalte Anerkennungen wie Zertifikate im Blick und stelle allgemeine Fragen oder Gesuche in die Posts. Dort könnt Ihr Euch markieren, und wer markiert wird, bekommt eine E-Mail."
+      },
+      "costs": {
+        "question": "Was kostet das?",
+        "answer": "Need4Deed ist für die Organisationen, mit denen wir arbeiten, kostenlos."
+      },
+      "more": {
+        "question": "Wo erfahren wir mehr?",
+        "answer": "Wie wir mit Organisationen zusammenarbeiten, Schritt für Schritt, und unsere Leitlinien findest Du auf der Seite für Organisationen.",
+        "link": "Für Organisationen"
+      }
+    }
   },
   "legal": {
     "legalHeading": "Legal",
@@ -2337,6 +2477,9 @@
     "validationFailed": "Validierung fehlgeschlagen",
     "uploadSuccess": "Dokument erfolgreich hochgeladen!",
     "deleteSuccess": "Dokument erfolgreich gelöscht!",
+    "applicationEmailSent": "E-Mail mit Antrag gesendet!",
+    "applicationEmailJustSent": "Die E-Mail mit Antrag wurde gerade gesendet. Bitte versuchen Sie es in einer Minute erneut.",
+    "applicationEmailNotSent": "Die E-Mail mit Antrag konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -2346,7 +2489,10 @@
       "fileTooLarge": "Die Datei ist zu groß. Bitte wählen Sie eine kleinere Datei.",
       "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
       "alreadyUsedToken": "Dieser Link wurde bereits verwendet.",
-      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an."
+      "personAlreadyRegistered": "Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich stattdessen an.",
+      "emailNoteNotSent": "Der Status wurde gespeichert, aber die E-Mail mit Deinem Text wurde nicht gesendet.",
+      "emailAlreadySent": "Diese E-Mail wurde für diesen Match bereits gesendet. Es wurde nichts gespeichert; entferne den Text, um fortzufahren.",
+      "emailNotePlaceholder": "Der Text darf kein {{ … }} enthalten. Bitte entferne es und versuche es erneut."
     }
   },
   "racGuidelines": {
@@ -2716,5 +2862,67 @@
   "emptyList": {
     "header": "Angebote werden aktualisiert...",
     "para": "Wir aktualisieren gerade die Engagementangebote. Dies kann einige Zeit dauern. Wir empfehlen, die Seite später am Tag erneut zu aktualisieren. Wenn Du Fragen hast, wende Dich bitte an volunteer@need4deed.org"
+  },
+  "forOrganisationsPage": {
+    "heading": "Für Organisationen",
+    "intro": "Für Einrichtungen und Projekte, die Geflüchtete in Berlin unterstützen: So arbeiten wir mit Dir zusammen, von der ersten Anfrage bis zur freiwilligen Person vor Ort.",
+    "stepsHeading": "So vermitteln wir Freiwillige",
+    "steps": {
+      "request": {
+        "title": "Du sendest eine Anfrage",
+        "body": "Registriere Deine Organisation und erstelle im Dashboard eine Anfrage: regelmäßiges Engagement, eine Begleitung zu einem Termin oder ein Event. Sag uns, was gebraucht wird, wann, wo und in welchen Sprachen. Begleitungen müssen mindestens 7 Werktage vor dem Termin angefragt werden."
+      },
+      "prepare": {
+        "title": "Wir bereiten die Freiwilligen vor",
+        "body": "Mit allen neuen Freiwilligen telefonieren wir nach der Registrierung, um ihre Sprachen, Erfahrungen und Wünsche kennenzulernen. Freiwillige für Begleitungen nehmen zusätzlich an einer Online-Einführung teil. Wir helfen beim Beantragen des erweiterten Führungszeugnisses (EFZ) und prüfen, wo nötig, den Nachweis der Masernimpfung."
+      },
+      "match": {
+        "title": "Wir vermitteln",
+        "body": "Unsere Koordinator*innen suchen die passende Person nach Sprache und Dialekt, Bezirk, Verfügbarkeit und Tätigkeit, aus unserem Pool und aus Deinen eigenen Freiwilligen auf der Plattform."
+      },
+      "introduction": {
+        "title": "Du bekommst einen Vorschlag und dann die Vorstellung",
+        "body": "Passt eine freiwillige Person, schicken wir Dir und ihr eine Vorstellungs-E-Mail mit allen Kontaktdaten. Bitte lade die Person innerhalb von 5 bis 7 Werktagen zu einem ersten Treffen ein und setze uns in CC. Passt es nicht, sag uns Bescheid, dann suchen wir weiter."
+      },
+      "noMatch": {
+        "title": "Wenn wir niemanden finden",
+        "body": "Bei Begleitungen geben wir Dir spätestens 4 Werktage vor dem Termin Bescheid, damit Du planen kannst."
+      },
+      "afterMatch": {
+        "title": "Die freiwillige Person startet, und wir bleiben in Kontakt",
+        "body": "Etwa einmal im Monat fragen wir nach, ob Deine Angebote noch aktuell sind und wie es mit den Freiwilligen läuft. Hört jemand auf, suchen wir eine neue Vermittlung."
+      }
+    },
+    "goodToKnow": {
+      "heading": "Gut zu wissen",
+      "free": "Need4Deed ist für die Organisationen, mit denen wir arbeiten, kostenlos.",
+      "register": "Noch nicht registriert?",
+      "registerLink": "Registriere Deine Organisation",
+      "guidelines": "Die Regeln für die Zusammenarbeit findest Du in unseren",
+      "guidelinesLink": "Leitlinien für Organisationen",
+      "contact": "Fragen? Schreib uns an"
+    },
+    "dashboard": {
+      "heading": "Das Need4Deed-Dashboard",
+      "intro": "Über die Vermittlung hinaus ist das Dashboard ein Werkzeug für den Alltag Deines Teams, auch mit Freiwilligen, die Ihr selbst gefunden habt.",
+      "features": {
+        "volunteers": {
+          "title": "Deine Freiwilligen an einem Ort",
+          "body": "Verwalte Deine eigenen Freiwilligen und Anfragen und sieh Freiwillige aus unserem Pool. Wenn Du möchtest, teile Deine Freiwilligen mit anderen Organisationen, Kontakt für Kontakt und nur mit Einverständnis der Freiwilligen."
+        },
+        "hours": {
+          "title": "Stunden und Anerkennung",
+          "body": "Trage für jede Vermittlung die Stunden ein, die eine freiwillige Person geleistet hat, und behalte Anerkennungen wie Zertifikate im Blick."
+        },
+        "posts": {
+          "title": "Posts und Markierungen",
+          "body": "Stelle allgemeine Fragen oder Gesuche in die Posts, antwortet Euch gegenseitig und markiert Euch. Wer markiert wird, bekommt eine E-Mail."
+        },
+        "openSource": {
+          "title": "Open Source, gehostet in der Schweiz",
+          "body": "Das Dashboard ist Open Source, läuft zu 100 % in Europa, gehostet in der Schweiz, und ist DSGVO-konform."
+        }
+      }
+    }
   }
 }

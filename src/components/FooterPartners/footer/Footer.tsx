@@ -43,7 +43,7 @@ const FooterLinksContainer = styled.div<FooterLinksContainerProps>`
 
 const links1: FooterLink[] = [
   ["homepage.footer.about", Subpage.ABOUT],
-  ["homepage.footer.resources", "#"],
+  ["homepage.footer.forOrganisations", Subpage.FOR_ORGANISATIONS],
   ["homepage.footer.faq", Subpage.FAQ],
 ];
 

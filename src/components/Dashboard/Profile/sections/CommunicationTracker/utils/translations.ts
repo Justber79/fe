@@ -28,25 +28,32 @@ export function getContactMethodLabel(t: TFunction, contactMethod: ContactMethod
   });
 }
 
+const communicationTypeKeys: Record<CommunicationType, string> = {
+  [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
+  [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
+  [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
+  [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
+  [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
+  [CommunicationType.ACCOMPANYING_MATCHED]: "dashboard.communicationSection.communicationTypes.accompanyingMatched",
+  [CommunicationType.MATCHED]: "dashboard.communicationSection.communicationTypes.matched",
+  [CommunicationType.OPPORTUNITY_CONFIRMATION]:
+    "dashboard.communicationSection.communicationTypes.opportunityConfirmation",
+  [CommunicationType.ACCOMPANYING_NOT_FOUND]: "dashboard.communicationSection.communicationTypes.accompanyingNotFound",
+  [CommunicationType.OPPORTUNITY_UPDATED]: "dashboard.communicationSection.communicationTypes.opportunityUpdated",
+  [CommunicationType.CGC_APPLICATION_EMAIL]: "dashboard.communicationSection.communicationTypes.cgcApplicationEmail",
+};
+
 export function getCommunicationTypeLabel(t: TFunction, communicationType: CommunicationType): string {
-  const map: Record<string, string> = {
-    [CommunicationType.BRIEF]: "dashboard.communicationSection.communicationTypes.briefedVolunteer",
-    [CommunicationType.FIRST_INQUIRY]: "dashboard.communicationSection.communicationTypes.firstInquiry",
-    [CommunicationType.OPPORTUNITY_LIST]: "dashboard.communicationSection.communicationTypes.opportunityList",
-    [CommunicationType.STATUS_UPDATE]: "dashboard.communicationSection.communicationTypes.statusUpdate",
-    [CommunicationType.POST_FOLLOWUP]: "dashboard.communicationSection.communicationTypes.postMatchFollowUp",
-  };
-  return t(
-    map[communicationType] || `dashboard.communicationSection.communicationTypes.${communicationType.toLowerCase()}`,
-    { defaultValue: communicationType },
-  );
+  const key = communicationTypeKeys[communicationType];
+  return key ? t(key) : communicationType;
 }
 
+const callContactTypes: ContactType[] = [ContactType.CALL, ContactType.TRIED_CALL];
+
 export function getDisplayLabel(t: TFunction, contactType: ContactType, communicationType?: CommunicationType): string {
-  if (contactType === ContactType.OTHER && communicationType) {
-    return getCommunicationTypeLabel(t, communicationType);
-  }
-  return getContactTypeLabel(t, contactType);
+  return communicationType && !callContactTypes.includes(contactType)
+    ? getCommunicationTypeLabel(t, communicationType)
+    : getContactTypeLabel(t, contactType);
 }
 
 export { formatDate } from "../../shared/utils/formatDate";

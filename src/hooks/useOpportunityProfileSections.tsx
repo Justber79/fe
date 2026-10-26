@@ -46,7 +46,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const volunteer = useGetVolunteer(volunteerId);
   const { isAlreadyMatched } = useGetVolunteerOpportunityLinked(opportunity?.id ?? 0, volunteerId);
 
-  const { mutate: suggestMutate } = useSuggestVolunteerOpportunity(() => {
+  const { mutate: suggestMutate, isPending: isSuggesting } = useSuggestVolunteerOpportunity(() => {
     setIsSuggestDialogOpen(false);
     router.push(`/${i18n.language}/dashboard/volunteers/${volunteerId}`);
   }, ["volunteer-opportunities", String(volunteerId)]);
@@ -63,12 +63,13 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     opportunity.volunteerType === VolunteerStateTypeType.ACCOMPANYING ||
     opportunity.volunteerType === VolunteerStateTypeType.REGULAR_ACCOMPANYING;
 
-  const handleSuggestConfirm = () => {
+  const handleSuggestConfirm = (emailNote: string) => {
     if (!volunteerId) return;
     suggestMutate({
       opportunityId: Number(opportunity.id),
       volunteerId: Number(volunteerId),
       status: OpportunityVolunteerStatusType.PENDING,
+      emailNote,
     });
   };
 
@@ -151,6 +152,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
                 volunteerName={volunteer?.name}
                 onCancel={() => setIsSuggestDialogOpen(false)}
                 onConfirm={handleSuggestConfirm}
+                isPending={isSuggesting}
               />
             )}
           </>

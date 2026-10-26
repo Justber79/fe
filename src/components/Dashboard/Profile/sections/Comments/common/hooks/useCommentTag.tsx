@@ -17,7 +17,7 @@ export function useCommentTag(
   const [filteredListLength, setFilteredListLength] = useState(0);
   const [onSelectTrigger, setOnSelectTrigger] = useState<(() => void) | null>(null);
 
-  const enabled = !!setNewCommentText;
+  const enabled = !!setNewCommentText || /<@\d+>/.test(value);
   const isStaffMode = userRole === undefined;
   const primaryRole = isStaffMode ? UserRole.COORDINATOR : userRole;
   const needsTagData = showAutocomplete || value.includes("@");

@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
 import { Tabs } from "../shared/Tabs";
+import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
 import { OpportunityVolunteersContainer } from "./styles";
@@ -37,9 +38,11 @@ export const OpportunityVolunteers = ({
     clearItemStatus,
   } = useTabTransitions(volunteers);
 
-  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey, ({ m2mId, status }) =>
-    clearItemStatus(m2mId, status),
+  const { mutate: updateStatus, mutateAsync: updateStatusAsync } = useUpdateOpportunityVolunteerStatus(
+    queryKey,
+    ({ m2mId, status }) => clearItemStatus(m2mId, status),
   );
+  const { match, emailNoteFor } = useMatchWithEmailNote(setItemStatus, updateStatusAsync);
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
   );
@@ -48,11 +51,6 @@ export const OpportunityVolunteers = ({
     label: t(`dashboard.opportunityProfile.volunteersSec.tabs.${key}`),
     count: tabCounts[index],
   }));
-
-  const handleMatch = (m2mId: number) => {
-    setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
-  };
 
   const handleNotAMatch = (m2mId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
@@ -87,7 +85,8 @@ export const OpportunityVolunteers = ({
             volunteer={volunteer}
             currentStatus={currentTabStatus}
             hasEditingRights={hasEditingRights}
-            onMatch={() => handleMatch(volunteer.id)}
+            onMatch={() => match(volunteer.id)}
+            emailNote={emailNoteFor(volunteer.id)}
             onNotAMatch={() => handleNotAMatch(volunteer.id)}
             onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
             onMarkAsPast={() => handleMarkAsPast(volunteer.id)}

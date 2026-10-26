@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { SectionEmptyState } from "../shared/styles";
 import { Tabs } from "../shared/Tabs";
+import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import AccordionOpportunity from "./AccordionOpportunity";
 
@@ -39,9 +40,11 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
     clearItemStatus,
   } = useTabTransitions(opportunities);
 
-  const { mutate: updateStatus } = useUpdateOpportunityVolunteerStatus(queryKey, ({ m2mId, status }) =>
-    clearItemStatus(m2mId, status),
+  const { mutate: updateStatus, mutateAsync: updateStatusAsync } = useUpdateOpportunityVolunteerStatus(
+    queryKey,
+    ({ m2mId, status }) => clearItemStatus(m2mId, status),
   );
+  const { match, emailNoteFor } = useMatchWithEmailNote(setItemStatus, updateStatusAsync);
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
   );
@@ -50,11 +53,6 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
     label: t(`dashboard.volunteerProfile.opportunitiesSec.tabs.${key}`),
     count: tabCounts[index],
   }));
-
-  const handleMatch = (m2mId: number) => {
-    setItemStatus(m2mId, OpportunityVolunteerStatusType.MATCHED);
-    updateStatus({ m2mId, status: OpportunityVolunteerStatusType.MATCHED });
-  };
 
   const handleNotAMatch = (m2mId: number) => {
     setItemStatus(m2mId, ITEM_STATUS_REMOVED);
@@ -87,7 +85,8 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
               key={opportunity.id}
               opportunity={opportunity}
               currentStatus={currentTabStatus}
-              onMatch={() => handleMatch(opportunity.id)}
+              onMatch={() => match(opportunity.id)}
+              emailNote={emailNoteFor(opportunity.id)}
               onNotAMatch={() => handleNotAMatch(opportunity.id)}
               onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
               onMarkAsPast={() => handleMarkAsPast(opportunity.id)}

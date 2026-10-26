@@ -14,6 +14,7 @@ export default function OpportunityDetail({
   opportunity,
   currentStatus,
   onMatch,
+  emailNote,
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
@@ -29,6 +30,7 @@ export default function OpportunityDetail({
         <StatusAccordionActions
           currentStatus={currentStatus}
           onMatch={onMatch}
+          emailNote={emailNote}
           onNotAMatch={onNotAMatch}
           onMarkAsActive={onMarkAsActive}
           onMarkAsPast={onMarkAsPast}

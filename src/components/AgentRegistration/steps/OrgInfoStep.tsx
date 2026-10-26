@@ -53,6 +53,7 @@ export function OrgInfoStep({ data, onChange, errors, optionLists, operatorTitle
           hint={t("dashboard.agentProfile.organisationDetails.validation.operatorHint")}
           errorMessage={errors.operator}
           isAutocomplete
+          stacked
         />
       </FieldWrapper>
 

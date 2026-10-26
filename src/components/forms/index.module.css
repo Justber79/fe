@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+.form-languages-wrapper .form-form-field select {
+  box-sizing: border-box;
+  height: var(--form-input-container-height);
+  padding-block: 0;
+}
+
 .form-languages-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 120px;

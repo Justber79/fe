@@ -10,6 +10,7 @@ const publicPages = [
   "forms/volunteer",
   "event-page",
   Subpage.RAC_GUIDELINES,
+  Subpage.FOR_ORGANISATIONS,
   Subpage.AGREEMENT,
   Subpage.LEGAL_NOTICE,
   Subpage.DATA_PRIVACY,

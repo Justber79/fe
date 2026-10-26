@@ -14,6 +14,7 @@ type Props = {
   compact?: boolean;
   cancelDisabled?: boolean;
   confirmDisabled?: boolean;
+  children?: ReactNode;
 };
 
 const Title = styled.h3`
@@ -51,17 +52,19 @@ export function ConfirmationDialog({
   compact = false,
   cancelDisabled = false,
   confirmDisabled = false,
+  children,
 }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Modal isOpen onClose={cancelDisabled ? () => undefined : onCancel}>
+    <Modal isOpen onClose={cancelDisabled ? () => undefined : onCancel} closeOnOutsideClick={!children}>
       <div
         data-testid="confirmation-dialog"
         style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-24)" }}
       >
         <Title>{title}</Title>
         <Message>{message}</Message>
+        {children}
         <ButtonGroup>
           <Button
             text={cancelText || t("dashboard.communicationSection.cancel", "Cancel")}
