@@ -84,6 +84,19 @@ export const Comparison = styled.div`
 `;
 export const Field = styled.div`
   margin-top: var(--spacing-24);
+  textarea {
+    padding: var(--editableField-fieldWrapper-input-padding);
+    border: var(--editableField-fieldWrapper-input-border);
+    font: inherit;
+
+    &:focus {
+      border: var(--editableField-border-focus);
+    }
+
+    &[aria-invalid="true"] {
+      border: var(--editableField-border-error);
+    }
+  }
   p {
     white-space: pre-wrap;
     margin: var(--spacing-8) 0;

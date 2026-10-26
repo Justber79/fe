@@ -2,7 +2,7 @@
 
 import Button from "@/components/core/button/Button/Button";
 import { Select } from "@/components/core/common/select";
-import { TextArea } from "@/components/core/common/textarea";
+import { TextArea } from "@/components/core/common/TextArea";
 import { ErrorMessage } from "@/components/core/common/ErrorMessage";
 import { Modal } from "@/components/core/modal";
 import { Heading3 } from "@/components/styled/text";
@@ -22,7 +22,7 @@ import {
   TranslationStatus,
 } from "need4deed-sdk";
 import { useEffect, useId, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
 import {
@@ -70,7 +70,7 @@ function TranslationReview({
   const [originalLanguage, setOriginalLanguage] = useState<Lang>(fields[0]?.originalLanguage ?? Lang.DE);
   const { save, confirm, changeLanguage, refresh } = useOpportunityTranslationActions(opportunityId, language);
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, dirtyFields },
@@ -218,14 +218,10 @@ function TranslationReview({
                       {canEdit ? (
                         <>
                           <label htmlFor={`${id}-${draftKey}`}>{label}</label>
-                          <TextArea
-                            id={`${id}-${draftKey}`}
-                            lang={language}
-                            rows={draftKey === "title" ? 2 : 6}
-                            disabled={busy}
-                            aria-invalid={Boolean(errors[draftKey])}
-                            aria-describedby={errors[draftKey] ? `${id}-${draftKey}-error` : undefined}
-                            {...register(draftKey, {
+                          <Controller
+                            name={draftKey}
+                            control={control}
+                            rules={{
                               validate: (text) => {
                                 if (!dirtyFields[draftKey]) return true;
                                 if (!text.trim()) return t("opportunityTranslations.required");
@@ -234,7 +230,21 @@ function TranslationReview({
                                 }
                                 return true;
                               },
-                            })}
+                            }}
+                            render={({ field: { value, onChange, onBlur, name } }) => (
+                              <TextArea
+                                id={`${id}-${draftKey}`}
+                                name={name}
+                                value={value ?? ""}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                lang={language}
+                                rows={draftKey === "title" ? 2 : 6}
+                                disabled={busy}
+                                aria-invalid={Boolean(errors[draftKey])}
+                                aria-describedby={errors[draftKey] ? `${id}-${draftKey}-error` : undefined}
+                              />
+                            )}
                           />
                           {errors[draftKey] && (
                             <div id={`${id}-${draftKey}-error`} role="alert">
