@@ -1,4 +1,64 @@
 {
+  "opportunityTranslations": {
+    "target": "Übersetzung: {{language}}",
+    "summary": "Prüfen Sie den übersetzten Titel und die Beschreibung dieses Angebots.",
+    "review": "Übersetzung prüfen",
+    "close": "Prüfung schließen",
+    "targetLanguage": "Übersetzungssprache",
+    "originalNote": "Wenn Sie eine Übersetzung bearbeiten, bleibt der Originaltext unverändert.",
+    "edit": "Übersetzung bearbeiten",
+    "save": "Übersetzung speichern",
+    "confirm": "Übersetzung bestätigen",
+    "cancel": "Abbrechen",
+    "retry": "Erneut versuchen",
+    "changeOriginal": "Originalsprache ändern",
+    "originalLanguage": "Originalsprache",
+    "dialogTitle": "Originalsprache ändern?",
+    "dialogBody": "Wählen Sie die Sprache, in der der Originaltext verfasst wurde. Dies ändert die Ausgangssprache des Angebots, nicht die Oberflächensprache.",
+    "replaceWarning": "Alle Übersetzungen, auch von Menschen bearbeitete, werden neu erstellt. Prüfen Sie sie anschließend erneut.",
+    "required": "Bitte geben Sie eine Übersetzung ein.",
+    "tooLong": "Verwenden Sie höchstens {{count}} Zeichen.",
+    "changedDuringEdit": "Das Original oder die Übersetzung wurde während Ihrer Bearbeitung geändert. Brechen Sie ab und prüfen Sie den aktuellen Text vor dem Speichern.",
+    "staleError": "Die Übersetzungen konnten nicht aktualisiert werden. Der angezeigte Text ist möglicherweise veraltet. Ihre ungespeicherten Änderungen bleiben erhalten; versuchen Sie es vor dem Speichern oder Bestätigen erneut.",
+    "saved": "Übersetzung gespeichert",
+    "confirmed": "Fertige maschinelle Übersetzungen bestätigt",
+    "languageChanged": "Originalsprache aktualisiert; Übersetzungen werden neu erstellt",
+    "reviewStatus": {
+      "missing": "Übersetzung nicht verfügbar",
+      "ready": "Bereit zur Prüfung",
+      "pending": "Übersetzung wird erstellt",
+      "failed": "Übersetzung prüfen",
+      "reviewed": "Geprüfte Übersetzung"
+    },
+    "title": "Übersetzungen",
+    "loading": "Übersetzungen werden geladen…",
+    "error": "Die Übersetzungen konnten nicht geladen werden. Bitte laden Sie die Seite erneut.",
+    "empty": "Für dieses Angebot ist kein übersetzbarer Text vorhanden.",
+    "original": "Original",
+    "unknownLanguage": "Sprache nicht erfasst",
+    "sameAsOriginal": "Dies ist die Originalsprache; siehe Originaltext.",
+    "originalStillShown": "Es liegt keine fertige Übersetzung vor. Im Angebot wird stattdessen der Originaltext angezeigt.",
+    "missing": "Keine Übersetzung vorhanden. Im Angebot wird stattdessen der Originaltext angezeigt.",
+    "unknownError": "Die Übersetzung konnte nicht abgeschlossen werden.",
+    "fields": { "title": "Titel", "info": "Beschreibung" },
+    "languages": { "en": "Englisch", "de": "Deutsch" },
+    "status": { "pending": "Ausstehend", "done": "Abgeschlossen", "failed": "Fehlgeschlagen" },
+    "origin": {
+      "reference": "Referenzübersetzung",
+      "machine": "Automatische Übersetzung",
+      "human": "Geprüfte Übersetzung"
+    },
+    "reasons": {
+      "empty": "Die Übersetzung war leer.",
+      "length_ratio": "Die Länge der Übersetzung hat die Prüfung nicht bestanden.",
+      "token_missing": "Erforderliche Angaben wurden in der Übersetzung nicht beibehalten.",
+      "untranslated": "Der Text scheint nicht übersetzt zu sein.",
+      "source_is_target": "Der Originaltext ist möglicherweise bereits in der Zielsprache.",
+      "wrong_language": "Die Übersetzung ist nicht in der erwarteten Sprache.",
+      "bad_response": "Der Übersetzungsdienst hat eine ungültige Antwort geliefert.",
+      "provider_unavailable": "Der Übersetzungsdienst war nicht verfügbar."
+    }
+  },
   "homepage": {
     "heroSection": {
       "menuItems": {

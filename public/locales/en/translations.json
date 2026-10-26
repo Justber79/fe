@@ -1,4 +1,64 @@
 {
+  "opportunityTranslations": {
+    "target": "{{language}} translation",
+    "summary": "Review the translated title and description for this opportunity.",
+    "review": "Review translation",
+    "close": "Close review",
+    "targetLanguage": "Translation language",
+    "originalNote": "Editing a translation leaves the original text unchanged.",
+    "edit": "Edit translation",
+    "save": "Save translation",
+    "confirm": "Confirm translation",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "changeOriginal": "Change original language",
+    "originalLanguage": "Original language",
+    "dialogTitle": "Change the original language?",
+    "dialogBody": "Select the language the original text was written in. This changes the opportunity's source language, not the interface language.",
+    "replaceWarning": "All translations, including human-edited ones, will be regenerated. Review them again afterwards.",
+    "required": "Please enter a translation.",
+    "tooLong": "Use no more than {{count}} characters.",
+    "changedDuringEdit": "The source or translation changed while you were editing. Cancel and review the latest text before saving.",
+    "staleError": "Translations could not be refreshed. The text below may be out of date. Your unsaved edits are kept; try again before saving or confirming.",
+    "saved": "Translation saved",
+    "confirmed": "Completed machine translations confirmed",
+    "languageChanged": "Original language updated; translations will be regenerated",
+    "reviewStatus": {
+      "missing": "Translation not available",
+      "ready": "Ready to review",
+      "pending": "Translation in progress",
+      "failed": "Translation needs attention",
+      "reviewed": "Reviewed translation"
+    },
+    "title": "Translations",
+    "loading": "Loading translations…",
+    "error": "Translations could not be loaded. Please reload the page to try again.",
+    "empty": "No translatable text is available for this opportunity.",
+    "original": "Original",
+    "unknownLanguage": "Language not recorded",
+    "sameAsOriginal": "This is the original language; see the original text.",
+    "originalStillShown": "No completed translation is available. The opportunity displays the original text instead.",
+    "missing": "No translation is available. The opportunity displays the original text instead.",
+    "unknownError": "The translation could not be completed.",
+    "fields": { "title": "Title", "info": "Description" },
+    "languages": { "en": "English", "de": "German" },
+    "status": { "pending": "Pending", "done": "Completed", "failed": "Failed" },
+    "origin": {
+      "reference": "Reference translation",
+      "machine": "Automatic translation",
+      "human": "Reviewed translation"
+    },
+    "reasons": {
+      "empty": "The translation was empty.",
+      "length_ratio": "The translation length did not pass validation.",
+      "token_missing": "The translation did not preserve required details.",
+      "untranslated": "The text appears untranslated.",
+      "source_is_target": "The original text may already be in the target language.",
+      "wrong_language": "The translation is not in the expected language.",
+      "bad_response": "The translation service returned an invalid response.",
+      "provider_unavailable": "The translation service was unavailable."
+    }
+  },
   "homepage": {
     "heroSection": {
       "menuItems": {

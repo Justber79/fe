@@ -3,6 +3,7 @@ import { AccompanyingDetails } from "@/components/Dashboard/Profile/sections/Acc
 import { Comments } from "@/components/Dashboard/Profile/sections/Comments";
 import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactDetails";
 import { OpportunityDetails } from "@/components/Dashboard/Profile/sections/OpportunityDetails";
+import { OpportunityTranslations } from "@/components/Dashboard/Profile/sections/opportunity-translations/opportunity-translations";
 import { OpportunityVolunteers } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers/SuggestDialog";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
@@ -159,6 +160,11 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   }
 
   if (isAuthorized) {
+    sections.splice(1, 0, {
+      iconName: IconName.ClipboardText,
+      title: t("opportunityTranslations.title"),
+      subComponent: <OpportunityTranslations opportunityId={opportunity.id} />,
+    });
     sections.push({
       iconName: IconName.ChatCircleDots,
       title: `${t("dashboard.volunteerProfile.coordinatorComments")} • ${commentsCount}`,

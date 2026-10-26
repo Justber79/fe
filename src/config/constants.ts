@@ -15,6 +15,7 @@ export const apiPathAuthRefresh = `/${apiPrefix}/auth/refresh`;
 export const apiPathAuthLogout = `/${apiPrefix}/auth/logout`;
 export const apiPathAuthEmailDomain = `/${apiPrefix}/auth-email-domain/`;
 export const apiPathOpportunity = `/${apiPrefix}/opportunity`;
+export const apiPathTranslation = `/${apiPrefix}/translation`;
 export const apiPathAgent = `/${apiPrefix}/agent`;
 export const apiPathAgentMe = `/${apiPrefix}/agent/me`;
 export const apiPathAgentRegister = `/${apiPrefix}/agent/register`;

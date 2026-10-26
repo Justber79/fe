@@ -7,6 +7,9 @@ export const useUpdateOpportunityDetails = (opportunityId: ApiOpportunityGet["id
     apiPath: `${apiPathOpportunity}/${opportunityId}`,
     method: "patch",
     successMessage: "dashboard.opportunityProfile.opportunityDetails.saveSuccess",
-    queryKeyToInvalidate: ["opportunity", String(opportunityId)],
+    queryKeyToInvalidate: [
+      ["opportunity", String(opportunityId)],
+      ["opportunity-translations", String(opportunityId)],
+    ],
   });
 };
