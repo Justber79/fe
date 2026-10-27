@@ -50,7 +50,13 @@ export const MapScroll = ({ enableScroll, setEnabledScroll }: Props) => {
     <LegendCard>
       <ScrollZoomContainer>
         <span>{t("dashboard.map.scrollZoom")}</span>
-        <Checkbox onChange={() => setEnabledScroll(!enableScroll)} width={"25"} height={"25"} checked={enableScroll} />
+        <Checkbox
+          aria-label={t("dashboard.map.scrollZoom")}
+          onChange={setEnabledScroll}
+          width={"25"}
+          height={"25"}
+          checked={enableScroll}
+        />
       </ScrollZoomContainer>
     </LegendCard>,
     container,

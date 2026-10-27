@@ -2,12 +2,33 @@ import styled from "styled-components";
 import CheckboxSVG from "../../../svg/CheckboxSVG";
 import { Paragraph } from "../../../styled/text";
 
-const CheckboxContainer = styled.div`
+const CheckboxContainer = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-8);
   cursor: pointer;
+`;
+
+const CheckboxControl = styled.span`
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+
+  input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  input:focus-visible + svg {
+    outline: var(--border-width-medium) solid var(--color-midnight);
+    outline-offset: var(--spacing-4);
+  }
 `;
 
 export interface CheckboxProps {
@@ -18,6 +39,7 @@ export interface CheckboxProps {
   labelFontSize?: string;
   onChange: (checked: boolean) => void;
   checked: boolean;
+  "aria-label"?: string;
 }
 
 export function Checkbox({
@@ -28,18 +50,18 @@ export function Checkbox({
   labelFontSize,
   onChange,
   checked,
+  "aria-label": ariaLabel,
 }: CheckboxProps) {
   return (
-    <CheckboxContainer
-      onClick={(e) => {
-        e.stopPropagation();
-        onChange(!checked);
-      }}
-    >
-      <CheckboxSVG width={width} height={height} checked={checked} color={color} />
+    <CheckboxContainer onClick={(e) => e.stopPropagation()}>
+      <CheckboxControl>
+        <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} aria-label={ariaLabel} />
+        <CheckboxSVG width={width} height={height} checked={checked} color={color} aria-hidden="true" />
+      </CheckboxControl>
 
       {label && (
         <Paragraph
+          as="span"
           fontWeight={
             checked ? "var(--checkbox-label-font-weight-selected)" : "var(--checkbox-label-font-weight-not-selected)"
           }

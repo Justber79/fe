@@ -43,7 +43,8 @@ export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
       <ScrollZoomContainer>
         <span>{t("dashboard.map.otherRacs")}</span>
         <Checkbox
-          onChange={() => setShowOtherRacs(!showOtherRacs)}
+          aria-label={t("dashboard.map.otherRacs")}
+          onChange={setShowOtherRacs}
           width={"25"}
           height={"25"}
           checked={showOtherRacs}
