@@ -54,6 +54,13 @@ export default function AccordionFilter({
   const openContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLButtonElement>(null);
   const optionsContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownReady = isOpen && isDropdownFilter && dropdownPosition !== null;
+
+  useEffect(() => {
+    if (dropdownReady) {
+      optionsContainerRef.current?.querySelector<HTMLInputElement>('input[type="checkbox"]')?.focus();
+    }
+  }, [dropdownReady]);
 
   const checkboxHeight = cssVar("--opportunities-filters-content-accordion-options-checkbox-height", "18px");
 
@@ -114,6 +121,25 @@ export default function AccordionFilter({
         ref={optionsContainerRef}
         $isDropdownFilter={isDropdownFilter}
         $dropdownPosition={dropdownPosition}
+        onKeyDown={(event) => {
+          if (!isDropdownFilter) return;
+          const controls = optionsContainerRef.current?.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+          if (event.key === "Escape") {
+            event.preventDefault();
+            event.stopPropagation();
+            setIsOpen(false);
+            headerRef.current?.focus();
+          } else if (event.key === "Tab" && controls?.length) {
+            if (event.shiftKey && event.target === controls[0]) {
+              event.preventDefault();
+              setIsOpen(false);
+              headerRef.current?.focus();
+            } else if (!event.shiftKey && event.target === controls[controls.length - 1]) {
+              setIsOpen(false);
+              headerRef.current?.focus();
+            }
+          }
+        }}
       >
         {items.map((item) => (
           <Checkbox
@@ -211,6 +237,7 @@ const OptionsContainer = styled.div<{
   gap: "var(--opportunities-filters-content-accordion-options-gap)",
   maxHeight: "var(--opportunities-filters-content-accordion-options-max-height)",
   overflowY: "auto",
+  padding: "var(--spacing-4)",
 
   ...($isDropdownFilter && {
     position: "fixed",

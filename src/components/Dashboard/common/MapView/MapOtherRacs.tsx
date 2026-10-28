@@ -41,9 +41,8 @@ export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
   return createPortal(
     <LegendCard>
       <ScrollZoomContainer>
-        <span>{t("dashboard.map.otherRacs")}</span>
         <Checkbox
-          aria-label={t("dashboard.map.otherRacs")}
+          label={t("dashboard.map.otherRacs")}
           onChange={setShowOtherRacs}
           width={"25"}
           height={"25"}

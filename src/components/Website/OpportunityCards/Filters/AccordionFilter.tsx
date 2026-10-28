@@ -97,6 +97,7 @@ const OptionsContainer = styled.div`
   gap: var(--opportunities-filters-content-accordion-options-gap);
   max-height: var(--opportunities-filters-content-accordion-options-max-height);
   overflow-y: auto;
+  padding: var(--spacing-4);
 `;
 
 const GroupContainer = styled.div`

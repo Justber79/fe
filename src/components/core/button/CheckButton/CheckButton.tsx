@@ -1,12 +1,21 @@
 import Button from "../Button/Button";
 import { CheckboxProps } from "../Checkbox/Checkbox";
 
-export function CheckButton({ height, width, label, labelFontSize, onChange, checked }: CheckboxProps) {
+export function CheckButton({
+  height,
+  width,
+  label,
+  labelFontSize,
+  onChange,
+  checked,
+  "aria-label": ariaLabel,
+}: CheckboxProps) {
   return (
     <Button
       onClick={() => onChange(!checked)}
       textFontSize={labelFontSize || "var(--check-button-label-font-size)"}
       text={label}
+      aria-label={label ? undefined : ariaLabel}
       height={height}
       width={width}
       backgroundcolor={checked ? "var(--color-violet-500)" : "var(--color-white)"}

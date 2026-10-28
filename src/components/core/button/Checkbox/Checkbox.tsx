@@ -27,7 +27,7 @@ const CheckboxControl = styled.span`
 
   input:focus-visible + svg {
     outline: var(--border-width-medium) solid var(--color-midnight);
-    outline-offset: var(--spacing-4);
+    outline-offset: 0;
   }
 `;
 
@@ -55,7 +55,12 @@ export function Checkbox({
   return (
     <CheckboxContainer onClick={(e) => e.stopPropagation()}>
       <CheckboxControl>
-        <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} aria-label={ariaLabel} />
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          aria-label={label ? undefined : ariaLabel}
+        />
         <CheckboxSVG width={width} height={height} checked={checked} color={color} aria-hidden="true" />
       </CheckboxControl>
 
