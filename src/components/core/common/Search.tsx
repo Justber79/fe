@@ -23,8 +23,8 @@ const SearchContainer = styled.div<SearchContainerProps>`
   min-width: 0;
 
   &:focus-within {
-    outline: var(--border-width-medium) solid var(--color-midnight);
-    outline-offset: var(--spacing-4);
+    outline: var(--search-container-focus-outline);
+    outline-offset: var(--search-container-focus-outline-offset);
   }
 `;
 
