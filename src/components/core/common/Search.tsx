@@ -21,6 +21,11 @@ const SearchContainer = styled.div<SearchContainerProps>`
   cursor: text;
   box-sizing: border-box;
   min-width: 0;
+
+  &:focus-within {
+    outline: var(--border-width-medium) solid var(--color-midnight);
+    outline-offset: var(--spacing-4);
+  }
 `;
 
 const StyledInput = styled.input`
