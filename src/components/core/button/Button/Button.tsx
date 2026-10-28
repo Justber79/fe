@@ -33,7 +33,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${(props) => props.height || "var(--button-height)"};
+  height: ${(props) => props.height || "auto"};
+  min-height: ${(props) => (props.height ? "0" : "var(--button-height)")};
   width: ${(props) => props.width || "var(--button-width)"};
   border-radius: var(--button-border-radius);
   background-color: ${(props) => props.backgroundcolor || defaultBGColor};
