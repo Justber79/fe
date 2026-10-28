@@ -69,6 +69,7 @@ html {
 }
 
 :root {
+  --button-height: 56px;
   --n4d-gap: 0;
   --n4d-w: min(90vw, 1080px);
   --n4d-lang-direction: ltr;
@@ -904,7 +905,6 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: center;
 
-    --button-height: 64px;
     --button-width: auto;
     --button-padding: 12px 24px;
     --button-border-radius: 125px;
@@ -1161,7 +1161,6 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
     --button-padding: 16px 36px;
     --button-border-radius: 125px;
@@ -1414,7 +1413,6 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
     --button-padding: 16px 36px;
     --button-border-radius: 125px;

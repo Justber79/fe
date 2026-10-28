@@ -73,7 +73,6 @@ export function ConfirmationDialog({
             backgroundcolor="transparent"
             textColor="var(--color-aubergine)"
             border="var(--border-width-medium) solid var(--color-aubergine)"
-            height={compact ? "40px" : undefined}
             padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
             textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />
@@ -83,7 +82,6 @@ export function ConfirmationDialog({
             disabled={confirmDisabled}
             backgroundcolor="var(--color-aubergine)"
             textColor="var(--color-white)"
-            height={compact ? "40px" : undefined}
             padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
             textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />

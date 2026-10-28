@@ -87,7 +87,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={publicationActionLabel}
           onClick={() => onPublicationChange(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
@@ -97,7 +96,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={t("dashboard.calendar.editEvent")}
           onClick={() => onEdit(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
@@ -108,7 +106,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={t("dashboard.calendar.deleteEvent")}
           onClick={() => onDelete(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
