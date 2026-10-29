@@ -71,6 +71,8 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         {(field) => (
           <FormInput
             type="email"
+            name="email"
+            autoComplete="username"
             value={field.state.value}
             onInputChange={field.handleChange}
             placeHolder={t("dashboard.login.email")}
@@ -88,6 +90,8 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         {(field) => (
           <FormInput
             type="password"
+            name="password"
+            autoComplete="current-password"
             value={field.state.value}
             onInputChange={field.handleChange}
             placeHolder={t("dashboard.login.password")}
