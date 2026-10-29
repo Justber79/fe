@@ -3,7 +3,14 @@ import { Modal } from "@/components/core/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "@phosphor-icons/react";
 import { de, enUS } from "date-fns/locale";
-import { ApiCommunicationGet, CommunicationType, ContactMethodType, ContactType } from "need4deed-sdk";
+import {
+  ApiCommunicationGet,
+  ApiVolunteerCommunicationPatch,
+  ApiVolunteerCommunicationPost,
+  CommunicationType,
+  ContactMethodType,
+  ContactType,
+} from "need4deed-sdk";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -24,15 +31,21 @@ import {
   getCommunicationTypeOptions,
   getContactMethodOptions,
   getDefaultContactMethod,
+  getEditedCommunicationType,
+  getStoredOtherType,
   manualCommunicationTypes,
 } from "./utils/options";
 import { getContactTypeLabel } from "./utils/translations";
 import { CommunicationFormData, createValidationSchema } from "./utils/validation";
 
+export type CommunicationSaveData =
+  | { kind: "create"; data: ApiVolunteerCommunicationPost }
+  | { kind: "update"; id: number; data: ApiVolunteerCommunicationPatch };
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: Partial<ApiCommunicationGet>) => void;
+  onSave: (data: CommunicationSaveData) => void;
   initialData?: ApiCommunicationGet;
 };
 
@@ -68,10 +81,7 @@ export function CommunicationDialog({ isOpen, onClose, onSave, initialData }: Pr
         reset({
           contactType: initialData.contactType,
           contactMethod: initialData.contactMethod,
-          communicationType:
-            initialData.communicationType && manualCommunicationTypes.includes(initialData.communicationType)
-              ? initialData.communicationType
-              : manualCommunicationTypes[0],
+          communicationType: getStoredOtherType(initialData) ?? manualCommunicationTypes[0],
           date: new Date(initialData.date),
         });
       } else {
@@ -88,14 +98,30 @@ export function CommunicationDialog({ isOpen, onClose, onSave, initialData }: Pr
   const onSubmit = (data: CommunicationFormData) => {
     if (!data.contactType || !data.date) return;
 
-    const payload: Partial<ApiCommunicationGet> = {
-      id: initialData?.id,
-      contactType: data.contactType,
-      contactMethod: data.contactMethod,
-      communicationType: data.contactType === ContactType.OTHER ? data.communicationType : undefined,
-      date: data.date,
-    };
-    onSave(payload);
+    const fields = { contactType: data.contactType, contactMethod: data.contactMethod, date: data.date };
+
+    if (initialData) {
+      onSave({
+        kind: "update",
+        id: initialData.id,
+        data: {
+          ...fields,
+          communicationType: getEditedCommunicationType(
+            initialData.contactType,
+            data.contactType,
+            data.communicationType,
+          ),
+        },
+      });
+    } else {
+      onSave({
+        kind: "create",
+        data: {
+          ...fields,
+          communicationType: data.contactType === ContactType.OTHER ? data.communicationType : undefined,
+        },
+      });
+    }
   };
 
   return (
@@ -145,7 +171,7 @@ export function CommunicationDialog({ isOpen, onClose, onSave, initialData }: Pr
                       control={control}
                       render={({ field }) => (
                         <Select {...field} data-testid="communication-type-select">
-                          {getCommunicationTypeOptions(t).map((option) => (
+                          {getCommunicationTypeOptions(t, getStoredOtherType(initialData)).map((option) => (
                             <option key={option.value} value={option.value}>
                               {option.label}
                             </option>
