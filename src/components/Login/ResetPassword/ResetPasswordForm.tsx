@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { FieldApi, useForm } from "@tanstack/react-form";
-import { FormInput } from "../../core/common";
+import { FormInput, VisuallyHiddenInput } from "../../core/common";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { apiPathPasswordReset } from "@/config/constants";
 import { createResetPasswordSchema } from "./resetPasswordSchema";
 import { StyledForm } from "../styles";
+import { decodeJwtPayload } from "@/utils/helpers";
 
 interface ResetPasswordData {
   newPassword: string;
@@ -49,6 +50,7 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const urlTokenParam = searchParams.get("token");
+  const email: string = useMemo(() => (urlTokenParam && decodeJwtPayload(urlTokenParam)?.email) || "", [urlTokenParam]);
   const { mutate: resetPassword, isPending } = useResetPasswordMutation(onResetSuccess);
   const form = useForm({
     defaultValues: {
@@ -86,6 +88,17 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
         form.handleSubmit();
       }}
     >
+      {email && (
+        <VisuallyHiddenInput
+          type="email"
+          name="email"
+          autoComplete="username"
+          value={email}
+          readOnly
+          tabIndex={-1}
+          aria-hidden="true"
+        />
+      )}
       <form.Field
         name="newPassword"
         validators={{
@@ -95,6 +108,8 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
         {(field) => (
           <FormInput
             type="password"
+            name="newPassword"
+            autoComplete="new-password"
             value={field.state.value}
             onInputChange={field.handleChange}
             placeHolder={t("dashboard.login.newPassword")}
@@ -111,6 +126,8 @@ export function ResetPasswordForm({ onResetSuccess }: Props) {
         {(field) => (
           <FormInput
             type="password"
+            name="confirmPassword"
+            autoComplete="new-password"
             value={field.state.value}
             onInputChange={field.handleChange}
             placeHolder={t("dashboard.login.confirmPassword")}

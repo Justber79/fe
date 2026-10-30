@@ -81,6 +81,8 @@ html {
   --opportunities-filters-button-height: 48px;
   --opportunities-filters-clear-all-button-height: var(--button-height);
   --n4d-gap: 0;
+  --search-container-focus-outline: var(--border-width-medium) solid var(--color-midnight);
+  --search-container-focus-outline-offset: var(--spacing-4);
   --n4d-w: min(90vw, 1080px);
   --n4d-lang-direction: ltr;
   --bs-body-font-family: "Figtree", sans-serif;
