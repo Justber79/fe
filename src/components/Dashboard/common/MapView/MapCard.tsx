@@ -28,6 +28,23 @@ interface Props {
   renderSinglePopupContent?: (filter: SingleMarker) => React.ReactNode;
 }
 
+const defaultMapPinIcon = L.icon({
+  iconUrl: DEFAULT_LEAFLET_ICON_URL,
+  shadowUrl: "",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  className: "need4deed-icon",
+});
+
+const getVolunteerMarkerIcon = (url: string, size: number) => {
+  return L.icon({
+    iconUrl: url || getImageUrl(defaultAvatarURL),
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    className: "custom-avatar-icon",
+  });
+};
+
 const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupContent }: Props) => {
   const [enableScroll, setEnableScroll] = useState<boolean>(true);
   const [showOtherRacs, setShowOtherRacs] = useState<boolean>(false);
@@ -35,37 +52,6 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
   const pathname = usePathname();
   const router = useRouter();
   const screenSize = useScreenType();
-
-  const defaultMapPinIcon = L.icon({
-    iconUrl: DEFAULT_LEAFLET_ICON_URL,
-    shadowUrl: "",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    className: "need4deed-icon",
-  });
-
-  const getVolunteerMarkerIcon = (url: string) => {
-    if (typeof window === "undefined") {
-      return L.icon({
-        iconUrl: url || getImageUrl(defaultAvatarURL),
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-        className: "custom-avatar-icon",
-      });
-    }
-
-    const avatarSize = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue("--dashboard-map-custom-icon-width") || "30",
-    );
-    const size = Number.isFinite(avatarSize) && avatarSize > 0 ? avatarSize : 30;
-
-    return L.icon({
-      iconUrl: url || getImageUrl(defaultAvatarURL),
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size / 2],
-      className: "custom-avatar-icon",
-    });
-  };
 
   const selectedDistrictTitles = useMemo(() => searchParams.getAll(QueryParamsKeys.DISTRICT), [searchParams]);
   const selectedDistrictTitlesRef = useRef(selectedDistrictTitles);
@@ -77,6 +63,24 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
   const isMobile = screenSize === ScreenTypes.MOBILE;
   const isTablet = screenSize === ScreenTypes.TABLET;
   const mapZoom = isMobile ? 9 : isTablet ? 10 : 11;
+  const avatarSize = isMobile ? 30 : 50;
+
+  const filterMarkerIcon = useMemo(() => {
+    if (!filterMarker) return null;
+    return filterMarker.entity === EntityType.VOLUNTEER
+      ? getVolunteerMarkerIcon(filterMarker.avatarUrl ?? "", avatarSize)
+      : defaultMapPinIcon;
+  }, [filterMarker, avatarSize]);
+
+  const markerIcons = useMemo(
+    () =>
+      markers?.map((marker) =>
+        marker.entity === EntityType.VOLUNTEER
+          ? getVolunteerMarkerIcon(marker.avatarUrl ?? "", avatarSize)
+          : defaultMapPinIcon,
+      ),
+    [markers, avatarSize],
+  );
 
   const handleDistrictClick = (title: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -90,12 +94,6 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
     params.delete(QueryParamsKeys.DISTRICT);
     nextSelectedTitles.forEach((selectedTitle) => params.append(QueryParamsKeys.DISTRICT, selectedTitle));
     router.push(pathname + questionMark + params.toString(), { scroll: false });
-  };
-
-  const generateCustomIcon = (url: string, entity?: EntityType) => {
-    if (entity === EntityType.OPPORTUNITY) return defaultMapPinIcon;
-    if (entity === EntityType.VOLUNTEER) return getVolunteerMarkerIcon(url);
-    return defaultMapPinIcon;
   };
 
   return (
@@ -122,7 +120,7 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
         {filterMarker && (
           <Marker
             position={[filterMarker.lat, filterMarker.lon]}
-            icon={generateCustomIcon(filterMarker.avatarUrl ?? "", filterMarker.entity)}
+            icon={filterMarkerIcon ?? defaultMapPinIcon}
             zIndexOffset={200}
           >
             <Popup>{renderSinglePopupContent?.(filterMarker)}</Popup>
@@ -132,7 +130,7 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
           <Marker
             key={`${idx}-${marker?.lat}-${marker?.lon}`}
             position={[marker.lat, marker.lon]}
-            icon={generateCustomIcon(marker?.avatarUrl ?? "", marker.entity)}
+            icon={markerIcons?.[idx] ?? defaultMapPinIcon}
             zIndexOffset={100}
           >
             <Popup>
