@@ -17,6 +17,7 @@ import { DEFAULT_LEAFLET_ICON_URL, defaultAvatarURL, questionMark, ScreenTypes }
 import { QueryParamsKeys } from "need4deed-sdk";
 import { useScreenType } from "@/context/DeviceContext";
 import { MapPopupControlVisibility } from "./controls/MapPopupVisibilityControl";
+import { MapSizeInvalidator } from "./controls/MapSizeInvalidator";
 import { MapZoom } from "./controls/MapZoom";
 import { getImageUrl } from "@/utils";
 
@@ -34,6 +35,37 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
   const pathname = usePathname();
   const router = useRouter();
   const screenSize = useScreenType();
+
+  const defaultMapPinIcon = L.icon({
+    iconUrl: DEFAULT_LEAFLET_ICON_URL,
+    shadowUrl: "",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    className: "need4deed-icon",
+  });
+
+  const getVolunteerMarkerIcon = (url: string) => {
+    if (typeof window === "undefined") {
+      return L.icon({
+        iconUrl: url || getImageUrl(defaultAvatarURL),
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        className: "custom-avatar-icon",
+      });
+    }
+
+    const avatarSize = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--dashboard-map-custom-icon-width") || "30",
+    );
+    const size = Number.isFinite(avatarSize) && avatarSize > 0 ? avatarSize : 30;
+
+    return L.icon({
+      iconUrl: url || getImageUrl(defaultAvatarURL),
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+      className: "custom-avatar-icon",
+    });
+  };
 
   const selectedDistrictTitles = useMemo(() => searchParams.getAll(QueryParamsKeys.DISTRICT), [searchParams]);
   const selectedDistrictTitlesRef = useRef(selectedDistrictTitles);
@@ -61,20 +93,15 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
   };
 
   const generateCustomIcon = (url: string, entity?: EntityType) => {
-    if (entity === EntityType.OPPORTUNITY)
-      return new L.Icon({ iconUrl: DEFAULT_LEAFLET_ICON_URL, shadowUrl: "", className: "need4deed-icon" });
-    if (entity === EntityType.VOLUNTEER)
-      return L.icon({
-        iconUrl: url || getImageUrl(defaultAvatarURL),
-        iconAnchor: [15, 15],
-        className: "custom-avatar-icon",
-      });
-    return new L.Icon({ iconUrl: DEFAULT_LEAFLET_ICON_URL });
+    if (entity === EntityType.OPPORTUNITY) return defaultMapPinIcon;
+    if (entity === EntityType.VOLUNTEER) return getVolunteerMarkerIcon(url);
+    return defaultMapPinIcon;
   };
 
   return (
     <StyledMapContainer>
       <MapContainer center={DEFAULT_CENTER} minZoom={9} zoom={mapZoom} maxBounds={BERLIN_BOUNDS}>
+        <MapSizeInvalidator />
         <MapZoom zoom={mapZoom} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

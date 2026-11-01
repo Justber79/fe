@@ -33,7 +33,10 @@ export const DistrictPolygons = ({ districtGeometries, onDistrictClick, selected
   const selectedSet = useMemo(() => new Set(selectedDistrictTitles), [selectedDistrictTitles]);
   const selectedSetRef = useRef(selectedSet);
   selectedSetRef.current = selectedSet;
-  const geometryKey = useMemo(() => JSON.stringify(districtGeometries), [districtGeometries]);
+  const geometryKey = useMemo(
+    () => districtGeometries.features.map(({ properties }) => properties?.title ?? "untitled").join("|"),
+    [districtGeometries],
+  );
 
   const maskPositions = useMemo(() => {
     const holes = districtGeometries.features.flatMap(({ geometry }) => {
@@ -87,8 +90,9 @@ export const DistrictPolygons = ({ districtGeometries, onDistrictClick, selected
     layer.on({
       mouseover: () => setHoveredDistrictTitle(title),
       mouseout: () => setHoveredDistrictTitle((curr) => (curr === title ? null : curr)),
-      click: () => {
-        if (L.Browser.touch) setHoveredDistrictTitle(null);
+      click: (event: L.LeafletMouseEvent) => {
+        const pointerType = (event.originalEvent as PointerEvent | { pointerType?: string } | undefined)?.pointerType;
+        if (pointerType === "touch") setHoveredDistrictTitle(null);
         onDistrictClickRef.current(title);
       },
     });

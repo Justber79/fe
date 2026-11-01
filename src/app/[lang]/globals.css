@@ -592,7 +592,6 @@ html {
   --dashboard-map-popup-card-header-font-weight: 600;
   --dashboard-map-container-gap: 1rem;
   --dashboard-map-custom-icon-width: 30px;
-  --dashboard-map-custom-icon-font-size: 1.25rem;
   --dashboard-map-custom-icon-border: solid var(--color-aubergine) 2px;
   --dashboard-map-custom-icon-border-radius: 50%;
   --dashboard-map-berlin-rac-address-gap: 0.5rem;
@@ -1264,7 +1263,6 @@ html {
 
     --dashboard-map-popup-height: 400px;
     --dashboard-map-custom-icon-width: 50px;
-    --dashboard-map-custom-icon-font-size: 2rem;
   }
 }
 
