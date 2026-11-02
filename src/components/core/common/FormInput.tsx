@@ -66,7 +66,9 @@ const ToggleButton = styled.button`
 
 interface Props {
   id?: string;
+  name?: string;
   type?: string;
+  autoComplete?: string;
   placeHolder?: string;
   onInputChange: (input: string) => void;
   width?: string;
@@ -77,6 +79,8 @@ interface Props {
 
 export function FormInput({
   id,
+  name,
+  autoComplete,
   placeHolder = "Input",
   value = "",
   type = "input",
@@ -103,6 +107,8 @@ export function FormInput({
       <InputRow>
         <StyledInput
           id={inputId}
+          name={name}
+          autoComplete={autoComplete}
           aria-invalid={errorsExist || undefined}
           aria-describedby={errorsExist ? errors.map((_, index) => `${inputId}-error-${index}`).join(" ") : undefined}
           placeholder={placeHolder}
