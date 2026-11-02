@@ -69,7 +69,20 @@ html {
 }
 
 :root {
+  --button-height: 56px;
+  --button-width: auto;
+  --button-padding: 12px 24px;
+  --button-border-radius: 125px;
+  --button-text-font-weight: 500;
+  --button-text-font-size: 18px;
+  --button-text-line-height: 25px;
+  --button-text-letter-spacing: 0.13px;
+  --button-text-text-align: center;
+  --opportunities-filters-button-height: 48px;
+  --opportunities-filters-clear-all-button-height: var(--button-height);
   --n4d-gap: 0;
+  --search-container-focus-outline: var(--border-width-medium) solid var(--color-midnight);
+  --search-container-focus-outline-offset: var(--spacing-4);
   --n4d-w: min(90vw, 1080px);
   --n4d-lang-direction: ltr;
   --bs-body-font-family: "Figtree", sans-serif;
@@ -302,7 +315,7 @@ html {
   --communication-tracker-checkmark-height: 12px;
   --communication-tracker-checkmark-border-width: 0 2.5px 2.5px 0;
   --communication-tracker-checkmark-transform: translate(-50%, -60%) rotate(45deg);
-  --communication-tracker-button-height: 56px;
+  --communication-tracker-button-height: var(--button-height);
   --communication-tracker-dialog-box-shadow: 0px 10px 30px -12px rgba(143, 81, 138, 0.2);
   --communication-tracker-popover-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 
@@ -671,7 +684,7 @@ html {
   --volunteer-profile-section-card-icon-size: 40px;
   --volunteer-profile-section-card-header-height: 56px;
   --volunteer-profile-section-card-header-info-gap: 24px;
-  --volunteer-profile-section-card-header-button-height: 56px;
+  --volunteer-profile-section-card-header-button-height: var(--button-height);
   --volunteer-profile-section-card-header-button-textFontSize: 20px;
   --volunteer-profile-section-card-header-button-border: 2px solid var(--color-aubergine);
   --volunteer-profile-opportunities-container-gap: 8px;
@@ -702,7 +715,7 @@ html {
   --volunteer-profile-opportunities-accordion-opp-detail-mid-font: 550;
   --volunteer-profile-opportunities-accordion-opp-detail-light-font: 400;
   --volunteer-profile-opportunities-accordion-actions-container-gap: 16px;
-  --volunteer-profile-opportunities-accordion-actions-button-height: 56px;
+  --volunteer-profile-opportunities-accordion-actions-button-height: var(--button-height);
   --volunteer-profile-opportunities-accordion-actions-button-textFontSize: 24px;
   --volunteer-profile-opportunities-accordion-actions-button-border: 2px solid var(--color-aubergine);
   --volunteer-profile-opportunities-accordion-info-section-icon-size: 20px;
@@ -905,16 +918,6 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: center;
 
-    --button-height: 64px;
-    --button-width: auto;
-    --button-padding: 12px 24px;
-    --button-border-radius: 125px;
-    --button-text-font-weight: 500;
-    --button-text-font-size: 18px;
-    --button-text-line-height: 25px;
-    --button-text-letter-spacing: 0.13px;
-    --button-text-text-align: center;
-
     --numbering-div-width: 32px;
     --numbering-div-height: 32px;
     --numbering-div-border-radius: 16.57px;
@@ -964,7 +967,6 @@ html {
     --opportunities-filters-content-accordion-header-border-top: 1px;
     --opportunities-filters-content-accordion-header-padding-top: 16px;
     --opportunities-filters-clear-all-button-icon-size: 24px;
-    --opportunities-filters-clear-all-button-height: 64px;
     --opportunities-filters-clear-all-button-text-font-size: 20px;
     --opportunities-filters-description-font-size: 14px;
     --opportunities-filters-description-font-weight: 400;
@@ -1162,9 +1164,8 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
-    --button-padding: 16px 36px;
+    --button-padding: 12px 36px;
     --button-border-radius: 125px;
     --button-text-font-weight: 500;
     --button-text-font-size: 24px;
@@ -1205,7 +1206,7 @@ html {
     --opportunities-header-searchbar-flex-direction: row;
     --opportunities-map-view-container-height: 300px;
     --opportunities-cards-container-justify-content: center;
-    --opportunities-filters-button-height: 64px;
+    --opportunities-filters-button-height: var(--button-height);
     --opportunities-filters-button-icon-size: 32px;
     --opportunities-filters-close-filter-height: 64px;
     --opportunities-filters-close-filter-gap: 12px;
@@ -1415,9 +1416,8 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
-    --button-padding: 16px 36px;
+    --button-padding: 12px 36px;
     --button-border-radius: 125px;
     --button-text-font-weight: 500;
     --button-text-font-size: 24px;
@@ -1462,7 +1462,7 @@ html {
     --opportunities-header-searchbar-flex-direction: row;
     --opportunities-map-view-container-height: 300px;
     --opportunities-cards-container-justify-content: left;
-    --opportunities-filters-button-height: 64px;
+    --opportunities-filters-button-height: var(--button-height);
     --opportunities-filters-button-icon-size: 32px;
     --opportunities-filters-close-filter-height: 64px;
     --opportunities-filters-close-filter-gap: 12px;
