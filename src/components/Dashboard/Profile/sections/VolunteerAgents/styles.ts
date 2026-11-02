@@ -59,8 +59,14 @@ export const SplitContainer = styled.div`
 export const VolunteerOpportunitiesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: var(--volunteer-profile-opportunities-container-height);
-  overflow-y: scroll;
+  gap: var(--volunteer-profile-opportunities-container-gap);
+`;
+
+export const VolunteerOpportunitiesList = styled.div`
+  display: flex;
+  max-height: var(--profile-opportunities-container-height);
+  flex-direction: column;
+  overflow-y: auto;
   gap: var(--volunteer-profile-opportunities-container-gap);
 `;
 

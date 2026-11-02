@@ -76,26 +76,28 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
   return (
     <VolunteerOpportunitiesContainer>
       <Tabs tabs={tabs} selectedTabIndex={selectedTabIndex} setSelectedTabIndex={setSelectedTabIndex} />
-      {visibleItems.length === 0 ? (
-        <SectionEmptyState>{t("dashboard.volunteerProfile.opportunitiesSec.emptyState")}</SectionEmptyState>
-      ) : (
-        visibleItems.map((opportunity) =>
-          isAuthorized ? (
-            <AccordionOpportunity
-              key={opportunity.id}
-              opportunity={opportunity}
-              currentStatus={currentTabStatus}
-              onMatch={() => match(opportunity.id)}
-              emailNote={emailNoteFor(opportunity.id)}
-              onNotAMatch={() => handleNotAMatch(opportunity.id)}
-              onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
-              onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
-            />
-          ) : (
-            <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />
-          ),
-        )
-      )}
+      <VolunteerOpportunitiesList>
+        {visibleItems.length === 0 ? (
+          <SectionEmptyState>{t("dashboard.volunteerProfile.opportunitiesSec.emptyState")}</SectionEmptyState>
+        ) : (
+          visibleItems.map((opportunity) =>
+            isAuthorized ? (
+              <AccordionOpportunity
+                key={opportunity.id}
+                opportunity={opportunity}
+                currentStatus={currentTabStatus}
+                onMatch={() => match(opportunity.id)}
+                emailNote={emailNoteFor(opportunity.id)}
+                onNotAMatch={() => handleNotAMatch(opportunity.id)}
+                onMarkAsActive={() => handleMarkAsActive(opportunity.id)}
+                onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
+              />
+            ) : (
+              <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />
+            ),
+          )
+        )}
+      </VolunteerOpportunitiesList>
     </VolunteerOpportunitiesContainer>
   );
 }
@@ -103,7 +105,13 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
 const VolunteerOpportunitiesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: var(--volunteer-profile-opportunities-container-height);
-  overflow-y: scroll;
+  gap: var(--volunteer-profile-opportunities-container-gap);
+`;
+
+const VolunteerOpportunitiesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: var(--profile-opportunities-container-height);
+  overflow-y: auto;
   gap: var(--volunteer-profile-opportunities-container-gap);
 `;
