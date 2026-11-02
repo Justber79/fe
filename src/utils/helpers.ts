@@ -54,7 +54,8 @@ export const decodeJwtPayload = (token: string) => {
 
     const standardBase64 = rawPayload.replace(/-/g, "+").replace(/_/g, "/");
 
-    const decodedString = atob(standardBase64);
+    const bytes = Uint8Array.from(atob(standardBase64), (char) => char.charCodeAt(0));
+    const decodedString = new TextDecoder().decode(bytes);
 
     return JSON.parse(decodedString);
   } catch (error) {

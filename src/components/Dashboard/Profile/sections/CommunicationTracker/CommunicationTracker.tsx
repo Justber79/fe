@@ -1,11 +1,11 @@
 import { useCommunicationTracker } from "@/hooks/useCommunicationTracker";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { PencilSimple, Trash } from "@phosphor-icons/react";
-import { ApiCommunicationGet, ApiVolunteerCommunicationPost, ApiVolunteerCommunicationPatch } from "need4deed-sdk";
+import { ApiCommunicationGet, canModifyCommunication } from "need4deed-sdk";
 import { EntityType } from "@/components/Dashboard/Profile/types";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CommunicationDialog } from "./CommunicationDialog";
+import { CommunicationDialog, CommunicationSaveData } from "./CommunicationDialog";
 import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { SectionWrapper, SectionEmptyState } from "../shared/styles";
 import {
@@ -78,34 +78,13 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
     setDeleteConfirmEntry(null);
   };
 
-  const handleSave = (data: Partial<ApiCommunicationGet>) => {
-    if (!data.contactType || !data.contactMethod || !data.date) {
-      return;
-    }
+  const handleSave = (save: CommunicationSaveData) => {
+    const onSuccess = () => setIsDialogOpen(false);
 
-    if (data.id) {
-      const payload: ApiVolunteerCommunicationPatch = {
-        contactType: data.contactType,
-        contactMethod: data.contactMethod,
-        communicationType: data.communicationType!,
-        date: data.date,
-      };
-      updateCommunication(
-        { id: data.id, data: payload },
-        {
-          onSuccess: () => setIsDialogOpen(false),
-        },
-      );
+    if (save.kind === "update") {
+      updateCommunication({ id: save.id, data: save.data }, { onSuccess });
     } else {
-      const payload: ApiVolunteerCommunicationPost = {
-        contactType: data.contactType,
-        contactMethod: data.contactMethod,
-        communicationType: data.communicationType!,
-        date: data.date,
-      };
-      createCommunication(payload, {
-        onSuccess: () => setIsDialogOpen(false),
-      });
+      createCommunication(save.data, { onSuccess });
     }
   };
 
@@ -133,36 +112,43 @@ export const CommunicationTracker = forwardRef<CommunicationTrackerRef, Props>(f
               )}
             </TableHeader>
             <TableBody>
-              {communications.map((entry, index) => (
-                <TableRow
-                  key={entry.id}
-                  $isLast={index === communications.length - 1}
-                  data-testid={`communication-row-${entry.id}`}
-                >
-                  <TableCell>{getDisplayLabel(t, entry.contactType, entry.communicationType)}</TableCell>
-                  <TableCell $maxWidth="310px">{getContactMethodLabel(t, entry.contactMethod)}</TableCell>
-                  <TableCell $width="152px" $noWrap>
-                    {formatDate(entry.date)}
-                  </TableCell>
-                  <TableCell $width="140px" $noWrap>
-                    {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
-                  </TableCell>
-                  {canEdit && (
-                    <>
-                      <ActionCell>
-                        <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
-                          <PencilSimple size={20} weight="regular" />
-                        </ActionButton>
-                      </ActionCell>
-                      <ActionCell>
-                        <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
-                          <Trash size={20} weight="regular" />
-                        </ActionButton>
-                      </ActionCell>
-                    </>
-                  )}
-                </TableRow>
-              ))}
+              {communications.map((entry, index) => {
+                const isModifiable = canModifyCommunication(entry, currentUser);
+                return (
+                  <TableRow
+                    key={entry.id}
+                    $isLast={index === communications.length - 1}
+                    data-testid={`communication-row-${entry.id}`}
+                  >
+                    <TableCell>{getDisplayLabel(t, entry.contactType, entry.communicationType)}</TableCell>
+                    <TableCell $maxWidth="310px">{getContactMethodLabel(t, entry.contactMethod)}</TableCell>
+                    <TableCell $width="152px" $noWrap>
+                      {formatDate(entry.date)}
+                    </TableCell>
+                    <TableCell $width="140px" $noWrap>
+                      {entry.userId ? getLoggedByLabel(entry.userId, currentUser) : "-"}
+                    </TableCell>
+                    {canEdit && (
+                      <>
+                        <ActionCell>
+                          {isModifiable && (
+                            <ActionButton onClick={() => handleEdit(entry)} data-testid={`edit-button-${entry.id}`}>
+                              <PencilSimple size={20} weight="regular" />
+                            </ActionButton>
+                          )}
+                        </ActionCell>
+                        <ActionCell>
+                          {isModifiable && (
+                            <ActionButton onClick={() => handleDelete(entry)} data-testid={`delete-button-${entry.id}`}>
+                              <Trash size={20} weight="regular" />
+                            </ActionButton>
+                          )}
+                        </ActionCell>
+                      </>
+                    )}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CommunicationTableContainer>

@@ -62,6 +62,8 @@ export function ForgotPasswordForm({ onSuccess }: Props) {
         {(field) => (
           <FormInput
             type="email"
+            name="email"
+            autoComplete="username"
             value={field.state.value}
             onInputChange={field.handleChange}
             placeHolder={t("dashboard.login.email")}
