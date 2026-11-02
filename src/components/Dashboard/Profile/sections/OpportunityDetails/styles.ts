@@ -1,5 +1,5 @@
 import { HasError } from "@/types";
-import { responsiveFieldStyles } from "@/components/styled/mixins";
+import { opportunityFieldStackingMedia, opportunityResponsiveFieldStyles } from "@/components/styled/mixins";
 import styled from "styled-components";
 
 export const FieldRow = styled.div`
@@ -19,10 +19,14 @@ export const FieldRow = styled.div`
     flex-shrink: var(--editableField-fieldWrapper-label-flexShrink);
   }
 
-  ${responsiveFieldStyles}
+  ${opportunityResponsiveFieldStyles}
 `;
 
 export const TagsValue = styled.div`
+  min-width: 0;
+  @media ${opportunityFieldStackingMedia} {
+    width: 100%;
+  }
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -33,34 +37,33 @@ export const FieldGroup = styled(FieldRow)`
   align-items: flex-start;
 
   > label {
-    @media (min-width: 1024px) {
-      padding-top: var(--spacing-8);
+    padding-top: var(--spacing-8);
+    @media ${opportunityFieldStackingMedia} {
+      padding-top: 0;
     }
   }
 
   > div {
+    width: 100%;
     flex: 1;
     min-width: 0;
   }
-
-  [data-testid="availability-grid"] {
-    overflow-x: auto;
-
-    label {
-      white-space: normal;
-      overflow-wrap: anywhere;
-    }
-  }
 `;
 
-export const DateFieldRow = styled(FieldRow)``;
+export const DateFieldRow = FieldRow;
 
 export const DatePickerContainer = styled.div`
   flex: 1;
+  @media ${opportunityFieldStackingMedia} {
+    width: 100%;
+  }
 `;
 
 export const TimeInputWrapper = styled.div`
   flex: 1;
+  @media ${opportunityFieldStackingMedia} {
+    width: 100%;
+  }
 `;
 
 export const TimeInput = styled.input<HasError>`

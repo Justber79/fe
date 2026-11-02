@@ -1,6 +1,8 @@
 import { css } from "styled-components";
+import { opportunityFieldStackingThreshold, screenSizeThresholds } from "@/config/constants";
 
-export const fieldStackingMedia = "(max-width: 1023px)";
+export const fieldStackingMedia = `(max-width: ${screenSizeThresholds.tablet - 1}px)`;
+export const opportunityFieldStackingMedia = `(max-width: ${opportunityFieldStackingThreshold - 1}px)`;
 
 export const stackedFieldStyles = css`
   align-items: flex-start;
@@ -12,8 +14,7 @@ export const stackedFieldStyles = css`
     padding-top: 0;
   }
 
-  > span,
-  > div {
+  > span {
     width: 100%;
     min-width: 0;
   }
@@ -22,6 +23,21 @@ export const stackedFieldStyles = css`
 export const responsiveFieldStyles = css`
   @media ${fieldStackingMedia} {
     ${stackedFieldStyles}
+  }
+`;
+
+export const opportunityResponsiveFieldStyles = css`
+  @media ${opportunityFieldStackingMedia} {
+    ${stackedFieldStyles}
+  }
+`;
+
+export const fieldSupportingTextStyles = css<{ $stacked?: boolean; $stackAt?: number }>`
+  padding-left: ${({ $stacked }) =>
+    $stacked ? "0" : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"};
+
+  @media (max-width: ${({ $stackAt = screenSizeThresholds.tablet }) => $stackAt - 1}px) {
+    padding-left: 0;
   }
 `;
 

@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@/components/core/common";
-import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
-import { fieldStackingMedia, stackedFieldStyles } from "@/components/styled/mixins";
+import { EMPTY_PLACEHOLDER_VALUE, screenSizeThresholds } from "@/config/constants";
+import { fieldSupportingTextStyles, stackedFieldStyles } from "@/components/styled/mixins";
 import { HasError, HasHint } from "@/types";
 import { MinusIcon, PlusIcon, XCircleIcon } from "@phosphor-icons/react";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
@@ -12,7 +12,7 @@ const EditModeWrapper = styled.div`
   width: 100%;
 `;
 
-const FieldWrapper = styled.div<HasError & HasHint & { $stacked?: boolean }>`
+const FieldWrapper = styled.div<HasError & HasHint & { $stacked?: boolean; $stackAt: number }>`
   display: var(--editableField-fieldWrapper-display);
   border-bottom: var(--editableField-fieldWrapper-borderBottom);
   padding: ${(props) =>
@@ -46,7 +46,7 @@ const FieldWrapper = styled.div<HasError & HasHint & { $stacked?: boolean }>`
     min-width: 0;
   }
 
-  @media ${({ $stacked }) => ($stacked ? "all" : fieldStackingMedia)} {
+  @media ${({ $stacked, $stackAt }) => ($stacked ? "all" : `(max-width: ${$stackAt - 1}px)`)} {
     ${stackedFieldStyles}
   }
 `;
@@ -213,17 +213,12 @@ const OptionRow = styled.div<{ $isSelected?: boolean }>`
   }
 `;
 
-const HintWrapper = styled.div<{ $stacked?: boolean }>`
+const HintWrapper = styled.div<{ $stacked?: boolean; $stackAt: number }>`
   display: flex;
   align-items: center;
   padding: var(--spacing-8) var(--spacing-16) var(--spacing-8) 0;
   gap: var(--spacing-8);
-  padding-left: ${({ $stacked }) =>
-    $stacked ? "0" : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"};
-
-  @media ${fieldStackingMedia} {
-    padding-left: 0;
-  }
+  ${fieldSupportingTextStyles}
 `;
 
 const HintText = styled.span`
@@ -234,12 +229,8 @@ const HintText = styled.span`
   flex: 1;
 `;
 
-const FieldError = styled.div<{ $stacked?: boolean }>`
-  padding-left: calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap));
-
-  @media ${({ $stacked }) => ($stacked ? "all" : fieldStackingMedia)} {
-    padding-left: 0;
-  }
+const FieldError = styled.div<{ $stacked?: boolean; $stackAt: number }>`
+  ${fieldSupportingTextStyles}
 `;
 
 const Text = styled.span`
@@ -253,10 +244,8 @@ const Text = styled.span`
 `;
 
 const StepperContainer = styled.div`
-  && {
-    width: fit-content;
-    max-width: 100%;
-  }
+  width: fit-content;
+  max-width: 100%;
 
   display: flex;
   align-items: center;
@@ -315,6 +304,7 @@ interface EditableFieldProps<T = string | number | string[]> {
   isAutocomplete?: boolean;
   dropdownDirection?: "up" | "down";
   stacked?: boolean;
+  stackAt?: number;
 }
 
 export const EditableField = forwardRef(function EditableField<T extends string | number | string[]>(
@@ -336,6 +326,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     isAutocomplete = false,
     dropdownDirection = "down",
     stacked = false,
+    stackAt = screenSizeThresholds.tablet,
   }: EditableFieldProps<T>,
   ref: React.Ref<EditableFieldRef<T>>,
 ) {
@@ -398,7 +389,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     if (type === "checkbox-list" && Array.isArray(value)) {
       const displayValue = value.length > 0 ? value.join(", ") : EMPTY_PLACEHOLDER_VALUE;
       return (
-        <FieldWrapper>
+        <FieldWrapper $stackAt={stackAt} $stacked={stacked}>
           {label && <label>{label}</label>}
           <span>{displayValue}</span>
         </FieldWrapper>
@@ -406,7 +397,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
     }
     const displayValue = value && String(value).trim().length > 0 ? value : EMPTY_PLACEHOLDER_VALUE;
     return (
-      <FieldWrapper>
+      <FieldWrapper $stackAt={stackAt} $stacked={stacked}>
         {label && <label>{label}</label>}
         <span>{displayValue}</span>
       </FieldWrapper>
@@ -415,7 +406,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
 
   return (
     <EditModeWrapper>
-      <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint} $stacked={stacked}>
+      <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint} $stacked={stacked} $stackAt={stackAt}>
         {label && <label>{label}</label>}
 
         {type === "text" && (
@@ -626,22 +617,17 @@ export const EditableField = forwardRef(function EditableField<T extends string 
         )}
       </FieldWrapper>
       {error && (
-        <p
-          style={{
-            color: "var(--editableField-error-color)",
-            paddingLeft: stacked ? "0" : "var(--editableField-error-paddingLeft)",
-          }}
-        >
-          {error}
-        </p>
+        <FieldError $stacked={stacked} $stackAt={stackAt}>
+          <ErrorMessage message={error} />
+        </FieldError>
       )}
       {errorMessage && (
-        <FieldError $stacked={stacked}>
+        <FieldError $stacked={stacked} $stackAt={stackAt}>
           <ErrorMessage message={errorMessage} />
         </FieldError>
       )}
       {hint && (
-        <HintWrapper $stacked={stacked} data-testid="editable-field-hint">
+        <HintWrapper $stacked={stacked} $stackAt={stackAt} data-testid="editable-field-hint">
           <HintText>{hint}</HintText>
         </HintWrapper>
       )}
