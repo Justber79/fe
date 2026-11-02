@@ -1,12 +1,4 @@
-import {
-  ApiAvailability,
-  ApiLanguage,
-  ByDay,
-  OccasionalType,
-  OpportunityStatusType,
-  OptionItem,
-  TimeSlot,
-} from "need4deed-sdk";
+import { ApiAvailability, ApiLanguage, ByDay, OccasionalType, OptionItem, TimeSlot } from "need4deed-sdk";
 import { ScheduleFilter, SelectionMap } from "./types";
 
 type MatchingSource = {
@@ -15,14 +7,12 @@ type MatchingSource = {
   availability: ApiAvailability[];
   appointmentDate?: string | null;
   appointmentTime?: string | null;
-  status?: OpportunityStatusType[];
 };
 
 type PrefillableFilter = {
   district: SelectionMap;
   language: SelectionMap;
   availability: ScheduleFilter;
-  status?: SelectionMap;
 };
 
 const berlinWeekday = new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "Europe/Berlin" });
@@ -53,12 +43,6 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
     if (daytime && daytime in next.availability.occasional)
       next.availability.occasional[daytime as OccasionalType] = true;
   });
-
-  if (source.status) {
-    source.status.forEach((oppStatus) => {
-      if (next.status) next.status[oppStatus] = true;
-    });
-  }
 
   if (source.appointmentDate) {
     const appointment = new Date(`${source.appointmentDate}T${source.appointmentTime ?? "12:00"}:00Z`);

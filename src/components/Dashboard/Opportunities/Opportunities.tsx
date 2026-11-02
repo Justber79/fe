@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
 import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, LangProficiency, OpportunityStatusType, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, LangProficiency, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
@@ -17,7 +17,7 @@ import {
 } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
-import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
+import { defaultOpportunityCardsFilter, MATCHING_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
@@ -81,10 +81,12 @@ export function Opportunities() {
         districtIds: volunteerFilter.districtIds,
         languages: volunteerFilter.languages.filter(({ proficiency }) => proficiency !== LangProficiency.BEGINNER),
         availability: volunteerFilter.availability,
-        status: [OpportunityStatusType.ACTIVE, OpportunityStatusType.SEARCHING],
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
+    MATCHING_OPPORTUNITY_STATUSES.forEach((status) => {
+      prefilled.status[status] = true;
+    });
     router.replace(pathname + questionMark + withPrefilledMarker(serializeOpportunityFilters(prefilled, searchParams)));
   }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
