@@ -136,7 +136,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           textColor="var(--color-aubergine)"
           textHoverColor="var(--color-aubergine)"
           border="1px solid var(--color-aubergine)"
-          height="48px"
           padding="8px 20px"
         />
 
@@ -148,7 +147,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           textColor="var(--color-aubergine)"
           textHoverColor="var(--color-aubergine)"
           border="1px solid var(--color-aubergine)"
-          height="48px"
           padding="8px 20px"
         />
       </LoginButtonDiv>
