@@ -32,7 +32,7 @@
     },
     "title": "Übersetzungen",
     "loading": "Übersetzungen werden geladen…",
-    "error": "Die Übersetzungen konnten nicht geladen werden. Bitte laden Sie die Seite erneut.",
+    "error": "Die Übersetzungen konnten nicht geladen werden. Wählen Sie „Erneut versuchen“.",
     "empty": "Für dieses Angebot ist kein übersetzbarer Text vorhanden.",
     "original": "Original",
     "unknownLanguage": "Sprache nicht erfasst",

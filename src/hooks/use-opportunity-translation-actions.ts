@@ -1,19 +1,15 @@
 import { apiPathOpportunity, apiPathTranslation } from "@/config/constants";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import { getOpportunityTranslationsKey } from "@/hooks/use-opportunity-translations";
 import axios from "axios";
 import { ApiOpportunityPatch, ApiOriginalLanguagePut, EntityTableName, Id, Lang } from "need4deed-sdk";
-import { useCallback } from "react";
 
 export function useOpportunityTranslationActions(opportunityId: Id, language: Lang) {
   const client = useQueryClient();
   const opportunityKey = ["opportunity", String(opportunityId)];
-  const refreshTranslations = useCallback(() => {
-    const queryKey = ["opportunity-translations", String(opportunityId)];
-    if (!client.isFetching({ queryKey })) void client.invalidateQueries({ queryKey });
-  }, [client, opportunityId]);
   const refresh = () => {
-    void client.invalidateQueries({ queryKey: ["opportunity-translations", String(opportunityId)] });
+    void client.invalidateQueries({ queryKey: getOpportunityTranslationsKey(opportunityId) });
     void client.invalidateQueries({ queryKey: opportunityKey });
   };
   const save = useMutationQuery<ApiOpportunityPatch, unknown>({
@@ -37,5 +33,5 @@ export function useOpportunityTranslationActions(opportunityId: Id, language: La
     successMessage: "opportunityTranslations.languageChanged",
     onSuccessCallback: refresh,
   });
-  return { save, confirm, changeLanguage, refresh: refreshTranslations };
+  return { save, confirm, changeLanguage };
 }

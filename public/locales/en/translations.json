@@ -32,7 +32,7 @@
     },
     "title": "Translations",
     "loading": "Loading translations…",
-    "error": "Translations could not be loaded. Please reload the page to try again.",
+    "error": "Translations could not be loaded. Select Try again to retry.",
     "empty": "No translatable text is available for this opportunity.",
     "original": "Original",
     "unknownLanguage": "Language not recorded",

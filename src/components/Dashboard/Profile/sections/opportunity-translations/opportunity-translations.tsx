@@ -4,27 +4,26 @@ import Button from "@/components/core/button/Button/Button";
 import { Select } from "@/components/core/common/select";
 import { TextArea } from "@/components/core/common/TextArea";
 import { ErrorMessage } from "@/components/core/common/ErrorMessage";
-import { Modal } from "@/components/core/modal";
+import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { Heading3 } from "@/components/styled/text";
-import { apiPathTranslation, MAX_DESCRIPTION_LENGTH } from "@/config/constants";
+import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useAuth } from "@/hooks/useAuth";
-import { useGetQuery } from "@/hooks/useGetQuery";
+import { useOpportunityTranslations } from "@/hooks/use-opportunity-translations";
 import { useOpportunityTranslationActions } from "@/hooks/use-opportunity-translation-actions";
 import { CaretDownIcon } from "@phosphor-icons/react";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   ApiFieldTranslationGet,
   ApiOpportunityPatch,
-  EntityTableName,
   Id,
   Lang,
   TranslationOrigin,
   TranslationStatus,
 } from "need4deed-sdk";
-import { useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
+import { getTranslationReviewStatus, getTranslationSnapshot, hasEditedTranslationChanged } from "./helpers";
 import {
   Actions,
   Comparison,
@@ -51,10 +50,12 @@ function TranslationReview({
   fields,
   opportunityId,
   loadError,
+  refresh,
 }: {
   fields: ApiFieldTranslationGet[];
   opportunityId: Id;
   loadError: boolean;
+  refresh: () => void;
 }) {
   const { t } = useTranslation();
   const id = useId();
@@ -65,10 +66,10 @@ function TranslationReview({
   const language = languages.includes(requestedLanguage) ? requestedLanguage : languages[0];
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [editSnapshot, setEditSnapshot] = useState("");
+  const [editSnapshot, setEditSnapshot] = useState<Record<string, string>>({});
   const [dialog, setDialog] = useState(false);
   const [originalLanguage, setOriginalLanguage] = useState<Lang>(fields[0]?.originalLanguage ?? Lang.DE);
-  const { save, confirm, changeLanguage, refresh } = useOpportunityTranslationActions(opportunityId, language);
+  const { save, confirm, changeLanguage } = useOpportunityTranslationActions(opportunityId, language);
   const {
     control,
     handleSubmit,
@@ -88,17 +89,9 @@ function TranslationReview({
   });
   const hasFailed = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.FAILED);
   const hasPending = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.PENDING);
-  const allHuman =
-    targetFields.length > 0 &&
-    targetFields.every(
-      (field) =>
-        field.translations[language]?.origin === TranslationOrigin.HUMAN &&
-        field.translations[language]?.status === TranslationStatus.DONE,
-    );
-  const snapshot = JSON.stringify(targetFields);
-  const changedDuringEdit = editing && editSnapshot !== snapshot;
-  const missing = targetFields.every((field) => !field.translations[language]);
-  const summary = hasFailed ? "failed" : hasPending ? "pending" : missing ? "missing" : allHuman ? "reviewed" : "ready";
+  const snapshot = getTranslationSnapshot(targetFields, language);
+  const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, dirtyFields);
+  const summary = getTranslationReviewStatus(targetFields, language);
   useEffect(() => {
     if (!open || !hasPending || editing || busy || dialog || loadError) return;
     const interval = window.setInterval(() => {
@@ -125,9 +118,9 @@ function TranslationReview({
     }
     save.mutate(patch, { onSuccess: () => setEditing(false) });
   });
-  const closeDialog = () => {
+  const closeDialog = useCallback(() => {
     if (!changeLanguage.isPending) setDialog(false);
-  };
+  }, [changeLanguage.isPending]);
 
   return (
     <Review>
@@ -153,11 +146,8 @@ function TranslationReview({
           type="button"
           aria-expanded={open}
           aria-controls={`${id}-content`}
-          disabled={busy}
-          onClick={() => {
-            setEditing(false);
-            setOpen(!open);
-          }}
+          disabled={busy || editing}
+          onClick={() => setOpen(!open)}
         >
           {t(open ? "opportunityTranslations.close" : "opportunityTranslations.review")}
           <CaretDownIcon size={20} aria-hidden style={{ transform: open ? "rotate(180deg)" : undefined }} />
@@ -344,11 +334,31 @@ function TranslationReview({
         </Expanded>
       )}
       {dialog && (
-        <Modal isOpen onClose={closeDialog} closeOnOutsideClick={!changeLanguage.isPending}>
-          <Review role="dialog" aria-modal="true" aria-labelledby={`${id}-dialog-title`}>
-            <Heading3 id={`${id}-dialog-title`}>{t("opportunityTranslations.dialogTitle")}</Heading3>
-            <Metadata>{t("opportunityTranslations.dialogBody")}</Metadata>
-            <Metadata>{t("opportunityTranslations.replaceWarning")}</Metadata>
+        <ConfirmationDialog
+          title={t("opportunityTranslations.dialogTitle")}
+          message={`${t("opportunityTranslations.dialogBody")} ${t("opportunityTranslations.replaceWarning")}`}
+          cancelText={t("opportunityTranslations.cancel")}
+          confirmText={t("opportunityTranslations.changeOriginal")}
+          onCancel={closeDialog}
+          cancelDisabled={changeLanguage.isPending}
+          confirmDisabled={
+            changeLanguage.isPending ||
+            loadError ||
+            fields.every((field) => field.originalLanguage === originalLanguage)
+          }
+          onConfirm={() =>
+            changeLanguage.mutate(
+              { language: originalLanguage },
+              {
+                onSuccess: () => {
+                  setDialog(false);
+                  setEditing(false);
+                },
+              },
+            )
+          }
+        >
+          <div>
             <label htmlFor={`${id}-original-language`}>{t("opportunityTranslations.originalLanguage")}</label>{" "}
             <Select
               id={`${id}-original-language`}
@@ -362,33 +372,8 @@ function TranslationReview({
                 </option>
               ))}
             </Select>
-            <Actions>
-              <ReviewButton type="button" disabled={changeLanguage.isPending} onClick={closeDialog}>
-                {t("opportunityTranslations.cancel")}
-              </ReviewButton>
-              <Button
-                {...actionProps}
-                text={t("opportunityTranslations.changeOriginal")}
-                disabled={
-                  changeLanguage.isPending ||
-                  loadError ||
-                  fields.every((field) => field.originalLanguage === originalLanguage)
-                }
-                onClick={() =>
-                  changeLanguage.mutate(
-                    { language: originalLanguage },
-                    {
-                      onSuccess: () => {
-                        setDialog(false);
-                        setEditing(false);
-                      },
-                    },
-                  )
-                }
-              />
-            </Actions>
-          </Review>
-        </Modal>
+          </div>
+        </ConfirmationDialog>
       )}
     </Review>
   );
@@ -396,14 +381,8 @@ function TranslationReview({
 
 export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }) {
   const { t } = useTranslation();
-  const client = useQueryClient();
   const { isAuthorized } = useAuth();
-  const { data, isLoading, isError } = useGetQuery<ApiFieldTranslationGet[]>({
-    queryKey: ["opportunity-translations", String(opportunityId)],
-    apiPath: `${apiPathTranslation}/${EntityTableName.OPPORTUNITY}/${opportunityId}`,
-    enabled: isAuthorized,
-    toastOnError: false,
-  });
+  const { data, isLoading, isError, refresh } = useOpportunityTranslations(opportunityId, isAuthorized);
   if (!isAuthorized) return null;
   if (isLoading) return <SectionEmptyState role="status">{t("opportunityTranslations.loading")}</SectionEmptyState>;
   if (isError && !data?.length)
@@ -411,12 +390,7 @@ export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }
       <Review>
         <SectionEmptyState role="alert">
           <Metadata>{t("opportunityTranslations.error")}</Metadata>
-          <ReviewButton
-            type="button"
-            onClick={() =>
-              void client.invalidateQueries({ queryKey: ["opportunity-translations", String(opportunityId)] })
-            }
-          >
+          <ReviewButton type="button" onClick={refresh}>
             {t("opportunityTranslations.retry")}
           </ReviewButton>
         </SectionEmptyState>
@@ -424,6 +398,12 @@ export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }
     );
   if (!data?.length) return <SectionEmptyState>{t("opportunityTranslations.empty")}</SectionEmptyState>;
   return (
-    <TranslationReview key={String(opportunityId)} fields={data} opportunityId={opportunityId} loadError={isError} />
+    <TranslationReview
+      key={String(opportunityId)}
+      fields={data}
+      opportunityId={opportunityId}
+      loadError={isError}
+      refresh={refresh}
+    />
   );
 }
