@@ -33,12 +33,19 @@ const defaultMapPinIcon = L.icon({
   shadowUrl: "",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
+});
+
+const n4DMapPinIcon = L.icon({
+  iconUrl: DEFAULT_LEAFLET_ICON_URL,
+  shadowUrl: "",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
   className: "need4deed-icon",
 });
 
-const getVolunteerMarkerIcon = (url: string, size: number) => {
+const getVolunteerMarkerIcon = (size: number) => {
   return L.icon({
-    iconUrl: url || getImageUrl(defaultAvatarURL),
+    iconUrl: getImageUrl(defaultAvatarURL),
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
     className: "custom-avatar-icon",
@@ -67,17 +74,17 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
 
   const filterMarkerIcon = useMemo(() => {
     if (!filterMarker) return null;
-    return filterMarker.entity === EntityType.VOLUNTEER
-      ? getVolunteerMarkerIcon(filterMarker.avatarUrl ?? "", avatarSize)
-      : defaultMapPinIcon;
+    return filterMarker.entity === EntityType.VOLUNTEER ? getVolunteerMarkerIcon(avatarSize) : defaultMapPinIcon;
   }, [filterMarker, avatarSize]);
 
   const markerIcons = useMemo(
     () =>
       markers?.map((marker) =>
         marker.entity === EntityType.VOLUNTEER
-          ? getVolunteerMarkerIcon(marker.avatarUrl ?? "", avatarSize)
-          : defaultMapPinIcon,
+          ? getVolunteerMarkerIcon(avatarSize)
+          : marker.entity === EntityType.OPPORTUNITY
+            ? n4DMapPinIcon
+            : defaultMapPinIcon,
       ),
     [markers, avatarSize],
   );

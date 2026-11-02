@@ -594,6 +594,16 @@
       "volunteers": "Ehrenamtliche",
       "opportunities": "Ehrenamtsbedarfe",
       "agents": "Einrichtungen",
+      "markerHelper": {
+        "opportunities": "*Ein Marker kann einen oder mehrere Ehrenamtsbedarfe enthalten",
+        "agents": "*Ein Marker kann eine oder mehrere Einrichtungen enthalten",
+        "volunteers": "*Ein Marker kann eine oder mehrere Ehrenamtliche enthalten"
+      },
+      "addressNotice": {
+        "opportunities": "*Ehrenamtsbedarfe ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "agents": "*Einrichtungen ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "volunteers": "*Ehrenamtliche ohne geprüfte Adresse werden nicht auf der Karte angezeigt."
+      },
       "legend": {
         "title": "Legende",
         "opportunity": "Ehrenamtsbedarfe",

@@ -252,3 +252,12 @@ export const ScrollZoomContainer = styled.div`
   gap: var(--dashboard-map-container-gap);
   align-items: center;
 `;
+
+export const MapHelperWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const MapHelperText = styled.i`
+  font-weight: 600;
+`;
