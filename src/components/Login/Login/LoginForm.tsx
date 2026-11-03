@@ -1,13 +1,14 @@
 import { useForm } from "@tanstack/react-form";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormInput } from "../../core/common";
 import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin } from "@/config/constants";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { FormActions, LoginButtonDiv, StyledForm } from "../styles";
+import { FormActions } from "../styles";
+import { FieldGroup, FieldLabel, LoginFormLayout, SubmitRow } from "./login-styles";
 
 interface LoginData {
   email: string;
@@ -36,7 +37,8 @@ interface LoginFormProps {
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const { t } = useTranslation();
   const { mutate: login, isPending } = useLoginMutation(onLoginSuccess);
-  const router = useRouter();
+  const { lang } = useParams<{ lang: string }>();
+  const fieldId = useId();
   const [rememberMeChecked, setRememberMeChecked] = useState(false);
 
   const form = useForm({
@@ -50,7 +52,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   });
 
   return (
-    <StyledForm
+    <LoginFormLayout
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -60,6 +62,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
       <form.Field
         name="email"
         validators={{
+          onSubmit: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChange: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChangeAsyncDebounceMs: 500,
           onChangeAsync: async ({ value }) => {
@@ -69,34 +72,43 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         }}
       >
         {(field) => (
-          <FormInput
-            type="email"
-            name="email"
-            autoComplete="username"
-            value={field.state.value}
-            onInputChange={field.handleChange}
-            placeHolder={t("dashboard.login.email")}
-            errors={field.state.meta.errors}
-          />
+          <FieldGroup>
+            <FieldLabel htmlFor={`${fieldId}-email`}>{t("dashboard.login.email")}</FieldLabel>
+            <FormInput
+              id={`${fieldId}-email`}
+              type="email"
+              name="email"
+              autoComplete="username"
+              value={field.state.value}
+              onInputChange={field.handleChange}
+              placeHolder={t("dashboard.login.email")}
+              errors={field.state.meta.errors}
+            />
+          </FieldGroup>
         )}
       </form.Field>
 
       <form.Field
         name="password"
         validators={{
+          onSubmit: ({ value }) => (!value ? t("dashboard.login.passwordMissing") : undefined),
           onChange: ({ value }) => (!value ? t("dashboard.login.passwordMissing") : undefined),
         }}
       >
         {(field) => (
-          <FormInput
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            value={field.state.value}
-            onInputChange={field.handleChange}
-            placeHolder={t("dashboard.login.password")}
-            errors={field.state.meta.errors}
-          />
+          <FieldGroup>
+            <FieldLabel htmlFor={`${fieldId}-password`}>{t("dashboard.login.password")}</FieldLabel>
+            <FormInput
+              id={`${fieldId}-password`}
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              value={field.state.value}
+              onInputChange={field.handleChange}
+              placeHolder={t("dashboard.login.password")}
+              errors={field.state.meta.errors}
+            />
+          </FieldGroup>
         )}
       </form.Field>
 
@@ -109,12 +121,10 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           label={t("dashboard.login.rememberMe")}
           labelFontSize="var(--dashboard-login-checkbox-label-fontSize)"
         />
-        <Link href={"/forgotten-password"} onClick={() => router.push("forgotten-password")}>
-          {t("dashboard.login.forgotPassword")}?
-        </Link>
+        <Link href={`/${lang}/forgotten-password`}>{t("dashboard.login.forgotPassword")}?</Link>
       </FormActions>
 
-      <LoginButtonDiv>
+      <SubmitRow>
         <form.Subscribe selector={(state) => state}>
           {() => (
             <Button
@@ -127,29 +137,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             />
           )}
         </form.Subscribe>
-
-        <Button
-          type="button"
-          onClick={() => router.push("/register/agent")}
-          text={t("dashboard.login.createNgoAccount")}
-          backgroundcolor="transparent"
-          textColor="var(--color-aubergine)"
-          textHoverColor="var(--color-aubergine)"
-          border="1px solid var(--color-aubergine)"
-          padding="8px 20px"
-        />
-
-        <Button
-          type="button"
-          onClick={() => router.push("/register/volunteer")}
-          text={t("dashboard.login.createVolunteerAccount")}
-          backgroundcolor="transparent"
-          textColor="var(--color-aubergine)"
-          textHoverColor="var(--color-aubergine)"
-          border="1px solid var(--color-aubergine)"
-          padding="8px 20px"
-        />
-      </LoginButtonDiv>
-    </StyledForm>
+      </SubmitRow>
+    </LoginFormLayout>
   );
 };

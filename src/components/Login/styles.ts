@@ -29,16 +29,7 @@ export const FormActions = styled.div`
   align-items: center;
 
   @media (max-width: 480px) {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: var(--spacing-12);
   }
-`;
-
-export const LoginButtonDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-16);
 `;
