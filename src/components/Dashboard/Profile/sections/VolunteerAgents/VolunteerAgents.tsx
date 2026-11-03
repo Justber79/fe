@@ -12,7 +12,7 @@ import { Tabs } from "../shared/Tabs";
 import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
-import { VolunteerOpportunitiesContainer } from "./styles";
+import { VolunteerOpportunitiesContainer, VolunteerOpportunitiesList } from "./styles";
 import { MappedVolunteerAgent } from "./types";
 
 type Props = { agentId: Id };
@@ -77,22 +77,24 @@ export const VolunteerAgents = ({ agentId }: Props) => {
   return (
     <VolunteerOpportunitiesContainer data-testid="agent-volunteers">
       <Tabs tabs={tabs} selectedTabIndex={selectedTabIndex} setSelectedTabIndex={setSelectedTabIndex} />
-      {visibleItems.length === 0 ? (
-        <SectionEmptyState>{t("dashboard.volunteerProfile.opportunitiesSec.emptyState")}</SectionEmptyState>
-      ) : (
-        visibleItems.map((volunteer) => (
-          <AccordionVolunteer
-            key={volunteer.id}
-            volunteer={volunteer}
-            currentStatus={currentTabStatus}
-            onMatch={() => match(volunteer.id)}
-            emailNote={emailNoteFor(volunteer.id)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
-          />
-        ))
-      )}
+      <VolunteerOpportunitiesList>
+        {visibleItems.length === 0 ? (
+          <SectionEmptyState>{t("dashboard.volunteerProfile.opportunitiesSec.emptyState")}</SectionEmptyState>
+        ) : (
+          visibleItems.map((volunteer) => (
+            <AccordionVolunteer
+              key={volunteer.id}
+              volunteer={volunteer}
+              currentStatus={currentTabStatus}
+              onMatch={() => match(volunteer.id)}
+              emailNote={emailNoteFor(volunteer.id)}
+              onNotAMatch={() => handleNotAMatch(volunteer.id)}
+              onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
+              onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
+            />
+          ))
+        )}
+      </VolunteerOpportunitiesList>
     </VolunteerOpportunitiesContainer>
   );
 };
