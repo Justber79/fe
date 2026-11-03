@@ -17,7 +17,7 @@ import {
 } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { opportunityFilterConfigs } from "./Filters/config";
-import { defaultOpportunityCardsFilter, STATUS_PARAM } from "./Filters/constants";
+import { defaultOpportunityCardsFilter, MATCHING_OPPORTUNITY_STATUSES, STATUS_PARAM } from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { OpportunityCardsFilter } from "./Filters/types";
 import { createSelectedOpportunityFiltersAsFlatArray } from "./Filters/helpers";
@@ -84,6 +84,9 @@ export function Opportunities() {
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
+    MATCHING_OPPORTUNITY_STATUSES.forEach((status) => {
+      prefilled.status[status] = true;
+    });
     router.replace(pathname + questionMark + withPrefilledMarker(serializeOpportunityFilters(prefilled, searchParams)));
   }, [apiFilterOptions, volunteerFilter, volunteerId, pathname, router, searchParams]);
 
