@@ -706,6 +706,12 @@
       "password": "Password",
       "rememberMe": "Remember Me",
       "forgotPassword": "Forgot Password",
+      "errors": {
+        "missingFields": "Please enter your email and password.",
+        "wrongCredentials": "Wrong email or password.",
+        "inactive": "Your account isn't active yet. Please confirm your email first.",
+        "unknownEmail": "There's no account with this email."
+      },
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
       "newPassword": "New Password",

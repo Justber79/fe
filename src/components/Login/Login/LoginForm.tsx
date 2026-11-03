@@ -1,6 +1,8 @@
 import { useForm } from "@tanstack/react-form";
+import axios from "axios";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { FormInput } from "../../core/common";
 import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
@@ -19,12 +21,36 @@ interface LoginResponse {
   data: { token: string };
 }
 
+const LOGIN_ERROR_KEYS: Record<number, string> = {
+  400: "dashboard.login.errors.missingFields",
+  401: "dashboard.login.errors.wrongCredentials",
+  403: "dashboard.login.errors.inactive",
+  404: "dashboard.login.errors.unknownEmail",
+};
+
 const useLoginMutation = (onLoginSuccess: () => void) => {
+  const { t } = useTranslation();
   return useMutationQuery<LoginData, LoginResponse>({
     apiPath: apiPathLogin,
     successMessage: "dashboard.login.successMessage",
     onSuccessCallback: async () => {
       onLoginSuccess();
+    },
+    onErrorCallback: (error) => {
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+      const key = status ? LOGIN_ERROR_KEYS[status] : undefined;
+      if (!key) return false;
+      toast.error(
+        status === 401 ? (
+          <>
+            {t(key)} <Link href="/forgotten-password">{t("dashboard.login.forgotPassword")}?</Link>
+          </>
+        ) : (
+          t(key)
+        ),
+        { toastId: "login-error" },
+      );
+      return true;
     },
   });
 };
