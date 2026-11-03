@@ -141,7 +141,7 @@ export function Opportunities() {
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
     const cleared =
-      filterKey === QueryParamsKeys.COMMUTE_POSTCODE
+      filterKey === QueryParamsKeys.COMMUTE_VOLUNTEER_ID
         ? clearCommutePrefill(cardsFilter)
         : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);

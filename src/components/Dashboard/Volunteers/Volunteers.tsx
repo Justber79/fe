@@ -109,7 +109,7 @@ export function Volunteers() {
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
     const cleared =
-      filterKey === QueryParamsKeys.COMMUTE_POSTCODE
+      filterKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID
         ? clearCommutePrefill(cardsFilter)
         : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);

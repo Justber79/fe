@@ -50,6 +50,7 @@ export function VolunteerListController({
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
+    commuteSourceId: opportunityId,
   }) as URLSearchParams;
   const filterSections = createVolunteerFilterSections(filter, setFilter, t);
   const dropdownFilters = {

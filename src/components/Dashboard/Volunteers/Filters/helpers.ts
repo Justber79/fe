@@ -55,6 +55,6 @@ export const createSelectedFilterItemsAsFlatArray = (
   const availabilityItems = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t)
     .flatMap(({ items }) => items)
     .filter((item) => item.checked);
-  const commuteItem = createCommutePrefillItem(filter, setFilter, t);
+  const commuteItem = createCommutePrefillItem(filter, setFilter, t, QueryParamsKeys.COMMUTE_OPPORTUNITY_ID);
   return [...getSelectedSelectionFilterItems(sections), ...availabilityItems, ...(commuteItem ? [commuteItem] : [])];
 };

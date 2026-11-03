@@ -11,9 +11,11 @@ import {
 import { FilterItem, ScheduleFilter, SelectionMap, SetFilter } from "./types";
 
 export type CommutePrefillFilter = {
-  commutePostcode: string;
+  hasCommutePrefill: boolean;
   maxCommuteMinutes: number;
 };
+
+export type CommuteSourceKey = QueryParamsKeys.COMMUTE_OPPORTUNITY_ID | QueryParamsKeys.COMMUTE_VOLUNTEER_ID;
 
 export const MAX_COMMUTE_MINUTES_OPTIONS = [5, 10, 20, 30, 40, 50, 60];
 
@@ -68,7 +70,7 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
     if (weekday && weekday in next.availability.days) next.availability.days[weekday] = true;
   }
   if (source.commutePostcode && source.maxCommuteMinutes > 0) {
-    next.commutePostcode = source.commutePostcode;
+    next.hasCommutePrefill = true;
     next.maxCommuteMinutes = source.maxCommuteMinutes;
   }
 
@@ -81,35 +83,45 @@ const ALWAYS_FILTER_PARAMS = [
   PREFILLED_PARAM,
   "search",
   "availability",
-  QueryParamsKeys.COMMUTE_POSTCODE,
+  QueryParamsKeys.COMMUTE_OPPORTUNITY_ID,
+  QueryParamsKeys.COMMUTE_VOLUNTEER_ID,
   QueryParamsKeys.MAX_COMMUTE_MINUTES,
 ];
 
 export const hasFilterParams = (searchParams: { has: (key: string) => boolean }, configKeys: string[]) =>
   [...ALWAYS_FILTER_PARAMS, ...configKeys].some((key) => searchParams.has(key));
 
-export const serializeCommutePrefill = (filter: CommutePrefillFilter, params: URLSearchParams) => {
-  params.delete(QueryParamsKeys.COMMUTE_POSTCODE);
+export const serializeCommutePrefill = (
+  filter: CommutePrefillFilter,
+  params: URLSearchParams,
+  sourceKey: CommuteSourceKey,
+  sourceId?: string,
+) => {
+  params.delete(QueryParamsKeys.COMMUTE_OPPORTUNITY_ID);
+  params.delete(QueryParamsKeys.COMMUTE_VOLUNTEER_ID);
   params.delete(QueryParamsKeys.MAX_COMMUTE_MINUTES);
 
-  if (!filter.commutePostcode || filter.maxCommuteMinutes <= 0) return;
+  const sourceParam = sourceKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID ? "opportunity" : "volunteer";
+  const commuteSourceId = sourceId ?? params.get(sourceParam) ?? undefined;
+  if (!filter.hasCommutePrefill || !commuteSourceId || filter.maxCommuteMinutes <= 0) return;
 
-  params.set(QueryParamsKeys.COMMUTE_POSTCODE, filter.commutePostcode);
+  params.set(sourceKey, commuteSourceId);
   params.set(QueryParamsKeys.MAX_COMMUTE_MINUTES, String(filter.maxCommuteMinutes));
 };
 
 export const deserializeCommutePrefill = <TFilter extends CommutePrefillFilter>(
   filter: TFilter,
   searchParams: { get: (key: string) => string | null },
+  sourceKey: CommuteSourceKey,
 ): TFilter => {
-  filter.commutePostcode = "";
+  filter.hasCommutePrefill = false;
   filter.maxCommuteMinutes = 0;
 
-  const commutePostcode = searchParams.get(QueryParamsKeys.COMMUTE_POSTCODE);
+  const commuteSourceId = searchParams.get(sourceKey);
   const maxCommuteMinutes = Number(searchParams.get(QueryParamsKeys.MAX_COMMUTE_MINUTES));
 
-  if (commutePostcode && Number.isFinite(maxCommuteMinutes) && maxCommuteMinutes > 0) {
-    filter.commutePostcode = commutePostcode;
+  if (commuteSourceId && Number.isFinite(maxCommuteMinutes) && maxCommuteMinutes > 0) {
+    filter.hasCommutePrefill = true;
     filter.maxCommuteMinutes = maxCommuteMinutes;
   }
 
@@ -118,7 +130,7 @@ export const deserializeCommutePrefill = <TFilter extends CommutePrefillFilter>(
 
 export const clearCommutePrefill = <TFilter extends CommutePrefillFilter>(filter: TFilter): TFilter => ({
   ...filter,
-  commutePostcode: "",
+  hasCommutePrefill: false,
   maxCommuteMinutes: 0,
 });
 
@@ -126,8 +138,9 @@ export const createCommutePrefillItem = <TFilter extends CommutePrefillFilter>(
   filter: TFilter,
   setFilter: SetFilter<TFilter>,
   t: TFunction,
+  sourceKey: CommuteSourceKey,
 ): FilterItem | undefined => {
-  if (!filter.commutePostcode || filter.maxCommuteMinutes <= 0) return undefined;
+  if (!filter.hasCommutePrefill || filter.maxCommuteMinutes <= 0) return undefined;
 
   return {
     label: t("dashboard.filters.commute", {
@@ -137,7 +150,7 @@ export const createCommutePrefillItem = <TFilter extends CommutePrefillFilter>(
     onChange: (checked) => {
       if (!checked) setFilter((prev) => clearCommutePrefill(prev));
     },
-    keyValue: QueryParamsKeys.COMMUTE_POSTCODE,
+    keyValue: sourceKey,
   };
 };
 
