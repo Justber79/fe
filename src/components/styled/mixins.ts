@@ -1,4 +1,45 @@
 import { css } from "styled-components";
+import { opportunityFieldStackingThreshold, screenSizeThresholds } from "@/config/constants";
+
+export const fieldStackingMedia = `(max-width: ${screenSizeThresholds.tablet - 1}px)`;
+export const opportunityFieldStackingMedia = `(max-width: ${opportunityFieldStackingThreshold - 1}px)`;
+
+export const stackedFieldStyles = css`
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--spacing-8);
+
+  > label {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  > span {
+    width: 100%;
+    min-width: 0;
+  }
+`;
+
+export const responsiveFieldStyles = css`
+  @media ${fieldStackingMedia} {
+    ${stackedFieldStyles}
+  }
+`;
+
+export const opportunityResponsiveFieldStyles = css`
+  @media ${opportunityFieldStackingMedia} {
+    ${stackedFieldStyles}
+  }
+`;
+
+export const fieldSupportingTextStyles = css<{ $stacked?: boolean; $stackAt?: number }>`
+  padding-left: ${({ $stacked }) =>
+    $stacked ? "0" : "calc(var(--editableField-fieldWrapper-label-width) + var(--editableField-fieldWrapper-gap))"};
+
+  @media (max-width: ${({ $stackAt = screenSizeThresholds.tablet }) => $stackAt - 1}px) {
+    padding-left: 0;
+  }
+`;
 
 export const circleIconButtonStyles = css`
   display: flex;
