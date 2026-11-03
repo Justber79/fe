@@ -39,7 +39,7 @@ import {
   Wrapper,
 } from "../styled";
 import { defaultProfileCompletionData, ProfileCompletionData, TOTAL_COMPLETION_STEPS } from "../types";
-import { CheckMark, MatchBanner, MatchActions, MatchListCopy, MatchRow, SmallButton } from "./styled";
+import { CheckMark, MatchBanner, MatchActions, MatchListCopy, MatchRow } from "./styled";
 import { useAgentAddressLookup } from "./useAgentAddressLookup";
 import { useGetRegistrationOrganizations } from "@/hooks/useGetRegistrationOrganizations";
 import { setAuthHint } from "@/utils/helpers";
@@ -280,30 +280,42 @@ export function ProfileCompletion() {
         {submitError && <ErrorBanner ref={errorBannerRef}>{submitError}</ErrorBanner>}
 
         {conflict && (
-          <MatchBanner $matched={false} role="alert">
-            <span>
-              {t(
-                `agentRegistration.completion.${conflict.conflict === "address" ? "addressTaken" : "titleTaken"}${
-                  conflict.agentTitle ? "Named" : ""
-                }`,
-                { name: conflict.agentTitle },
-              )}{" "}
-              {t("agentRegistration.completion.joinDescription")}
-            </span>
+          <>
+            <MatchBanner $matched={false} role="alert">
+              <span>
+                {t(
+                  `agentRegistration.completion.${conflict.conflict === "address" ? "addressTaken" : "titleTaken"}${
+                    conflict.agentTitle ? "Named" : ""
+                  }`,
+                  { name: conflict.agentTitle },
+                )}{" "}
+                {t("agentRegistration.completion.joinDescription")}
+              </span>
+            </MatchBanner>
             <MatchActions>
-              <SmallButton $primary onClick={() => submitJoin(conflict.agentId)}>
-                {t("agentRegistration.completion.joinInstead")}
-              </SmallButton>
+              <Button
+                text={t("agentRegistration.completion.joinInstead")}
+                onClick={() => submitJoin(conflict.agentId)}
+              />
               {conflict.conflict === "address" && (
-                <SmallButton onClick={submitAtSharedAddress} disabled={isSubmitting}>
-                  {t("agentRegistration.completion.createAtSharedAddress")}
-                </SmallButton>
+                <Button
+                  text={t("agentRegistration.completion.createAtSharedAddress")}
+                  onClick={submitAtSharedAddress}
+                  disabled={isSubmitting}
+                  backgroundcolor="var(--color-white)"
+                  textColor="var(--color-aubergine)"
+                  border="var(--border-width-medium) solid var(--color-aubergine)"
+                />
               )}
-              <SmallButton onClick={() => setConflict(null)}>
-                {t("agentRegistration.completion.editDetails")}
-              </SmallButton>
+              <Button
+                text={t("agentRegistration.completion.editDetails")}
+                onClick={() => setConflict(null)}
+                backgroundcolor="var(--color-white)"
+                textColor="var(--color-aubergine)"
+                border="var(--border-width-medium) solid var(--color-aubergine)"
+              />
             </MatchActions>
-          </MatchBanner>
+          </>
         )}
 
         {step === 1 &&
@@ -320,7 +332,13 @@ export function ProfileCompletion() {
               </MatchBanner>
               <StepDescription>{t("agentRegistration.completion.joinDescription")}</StepDescription>
               <MatchActions>
-                <SmallButton onClick={dismissMatch}>{t("agentRegistration.completion.createInstead")}</SmallButton>
+                <Button
+                  text={t("agentRegistration.completion.createInstead")}
+                  onClick={dismissMatch}
+                  backgroundcolor="var(--color-white)"
+                  textColor="var(--color-aubergine)"
+                  border="var(--border-width-medium) solid var(--color-aubergine)"
+                />
               </MatchActions>
             </div>
           ) : (
@@ -346,9 +364,7 @@ export function ProfileCompletion() {
                       </MatchRow>
                     ))}
                     <MatchActions>
-                      <SmallButton $primary onClick={dismissMatch}>
-                        {t("agentRegistration.completion.skip")}
-                      </SmallButton>
+                      <Button text={t("agentRegistration.completion.skip")} onClick={dismissMatch} />
                     </MatchActions>
                   </>
                 )}
