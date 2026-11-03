@@ -87,7 +87,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={publicationActionLabel}
           onClick={() => onPublicationChange(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
@@ -97,7 +96,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={t("dashboard.calendar.editEvent")}
           onClick={() => onEdit(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
@@ -108,7 +106,6 @@ export function EventCard({ event, variant = "card", onEdit, onDelete, onPublica
         <Button
           text={t("dashboard.calendar.deleteEvent")}
           onClick={() => onDelete(event)}
-          height="40px"
           width="auto"
           textFontSize="var(--font-size-sm)"
           padding="var(--spacing-8) var(--spacing-16)"
@@ -181,12 +178,19 @@ const Registration = styled.a`
   }
 `;
 const Actions = styled.div`
+  --button-text-line-height: var(--line-height-20);
   display: flex;
   gap: var(--spacing-12);
   flex-wrap: wrap;
   margin-top: var(--spacing-16);
   padding-top: var(--spacing-12);
   border-top: var(--border-width-thin) solid var(--color-grey-200);
+
+  @media (max-width: 767px) {
+    > button {
+      width: 100%;
+    }
+  }
 `;
 const Bar = styled.article`
   display: flex;

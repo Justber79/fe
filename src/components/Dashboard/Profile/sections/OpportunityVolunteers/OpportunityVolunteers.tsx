@@ -10,7 +10,7 @@ import { Tabs } from "../shared/Tabs";
 import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
-import { OpportunityVolunteersContainer } from "./styles";
+import { OpportunityVolunteersContainer, OpportunityVolunteersList } from "./styles";
 import { useGetVolunteerOpportunityLinked } from "@/hooks/useGetVolunteerOpportunityLinked";
 
 export const OpportunityVolunteers = ({
@@ -74,25 +74,27 @@ export const OpportunityVolunteers = ({
   return (
     <OpportunityVolunteersContainer data-testid="opportunity-volunteers" id={"opportunity-volunteers-container"}>
       <Tabs tabs={tabs} selectedTabIndex={selectedTabIndex} setSelectedTabIndex={setSelectedTabIndex} />
-      {visibleItems.length === 0 ? (
-        <SectionEmptyState data-testid="volunteers-empty-state">
-          {t("dashboard.opportunityProfile.volunteersSec.emptyState")}
-        </SectionEmptyState>
-      ) : (
-        visibleItems.map((volunteer) => (
-          <AccordionVolunteer
-            key={volunteer.id}
-            volunteer={volunteer}
-            currentStatus={currentTabStatus}
-            hasEditingRights={hasEditingRights}
-            onMatch={() => match(volunteer.id)}
-            emailNote={emailNoteFor(volunteer.id)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
-          />
-        ))
-      )}
+      <OpportunityVolunteersList>
+        {visibleItems.length === 0 ? (
+          <SectionEmptyState data-testid="volunteers-empty-state">
+            {t("dashboard.opportunityProfile.volunteersSec.emptyState")}
+          </SectionEmptyState>
+        ) : (
+          visibleItems.map((volunteer) => (
+            <AccordionVolunteer
+              key={volunteer.id}
+              volunteer={volunteer}
+              currentStatus={currentTabStatus}
+              hasEditingRights={hasEditingRights}
+              onMatch={() => match(volunteer.id)}
+              emailNote={emailNoteFor(volunteer.id)}
+              onNotAMatch={() => handleNotAMatch(volunteer.id)}
+              onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
+              onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
+            />
+          ))
+        )}
+      </OpportunityVolunteersList>
     </OpportunityVolunteersContainer>
   );
 };
