@@ -62,6 +62,14 @@ export const VolunteerOpportunitiesContainer = styled.div`
   gap: var(--volunteer-profile-opportunities-container-gap);
 `;
 
+export const VolunteerOpportunitiesList = styled.div`
+  display: flex;
+  max-height: var(--profile-opportunities-container-height);
+  flex-direction: column;
+  overflow-y: auto;
+  gap: var(--volunteer-profile-opportunities-container-gap);
+`;
+
 export const DetailSection = styled.div`
   display: flex;
   flex-direction: column;
