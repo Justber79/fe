@@ -28,6 +28,8 @@ const LOGIN_ERROR_KEYS: Record<number, string> = {
   404: "dashboard.login.errors.unknownEmail",
 };
 
+const LOGIN_ERROR_TOAST_ID = "login-error";
+
 const useLoginMutation = (onLoginSuccess: () => void) => {
   const { t } = useTranslation();
   return useMutationQuery<LoginData, LoginResponse>({
@@ -40,16 +42,19 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined;
       const key = status ? LOGIN_ERROR_KEYS[status] : undefined;
       if (!key) return false;
-      toast.error(
+      const message =
         status === 401 ? (
           <>
             {t(key)} <Link href="/forgotten-password">{t("dashboard.login.forgotPassword")}?</Link>
           </>
         ) : (
           t(key)
-        ),
-        { toastId: "login-error" },
-      );
+        );
+      if (toast.isActive(LOGIN_ERROR_TOAST_ID)) {
+        toast.update(LOGIN_ERROR_TOAST_ID, { render: message, type: "error" });
+      } else {
+        toast.error(message, { toastId: LOGIN_ERROR_TOAST_ID });
+      }
       return true;
     },
   });
