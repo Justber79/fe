@@ -5,10 +5,12 @@ import { formatAvailability } from "@/components/Dashboard/Profile/sections/Volu
 import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { format } from "date-fns";
-import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiOpportunityGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../shared/styles";
-import { extractOptionTitles, formatLanguagesByPurpose } from "./formatters";
+import { formatLanguagesByPurpose } from "./formatters";
+import { useApiActivities, useApiSkills } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { toOptionItems } from "@/components/Dashboard/NewOpportunity/helper";
 import { DateFieldRow, FieldRow, TagsValue } from "./styles";
 import { OpportunityWithDetails } from "./types";
 import { dateFromDateTimeUTCStrings, formatToLocalTime } from "@/utils";
@@ -18,8 +20,7 @@ type Props = {
 };
 
 export function OpportunityDetailsDisplay({ opportunity }: Props) {
-  const { t, i18n } = useTranslation();
-  const lang = i18n.language as Lang;
+  const { t } = useTranslation();
   const opp = opportunity as OpportunityWithDetails;
   const prefix = "dashboard.opportunityProfile.opportunityDetails";
 
@@ -28,8 +29,16 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const mainCommunication = formatLanguagesByPurpose(opp.languages, LangPurpose.GENERAL, t);
   const residentsSpeak = formatLanguagesByPurpose(opp.languages, [LangPurpose.RECIPIENT, LangPurpose.TRANSLATION], t);
   const schedule = formatAvailability(opp.availability, t);
-  const activities = extractOptionTitles(opp.activities, lang);
-  const skills = extractOptionTitles(opp.skills, lang);
+  const { data: apiActivities = [] } = useApiActivities();
+  const { data: apiSkills = [] } = useApiSkills();
+  const activities = toOptionItems(
+    opp.activities.map(({ id }) => String(id)),
+    apiActivities,
+  ).map(({ title }) => title);
+  const skills = toOptionItems(
+    opp.skills.map(({ id }) => String(id)),
+    apiSkills,
+  ).map(({ title }) => title);
 
   let eventDate: Date | null = null;
 
