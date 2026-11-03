@@ -5,7 +5,6 @@ import { FormInput } from "../../core/common";
 import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin } from "@/config/constants";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import { FormActions } from "../styles";
 import { FieldGroup, FieldLabel, LoginFormLayout, SubmitRow } from "./login-styles";
@@ -31,13 +30,13 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
 };
 
 interface LoginFormProps {
+  lang: string;
   onLoginSuccess: () => void;
 }
 
-export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
+export const LoginForm = ({ onLoginSuccess, lang }: LoginFormProps) => {
   const { t } = useTranslation();
   const { mutate: login, isPending } = useLoginMutation(onLoginSuccess);
-  const { lang } = useParams<{ lang: string }>();
   const fieldId = useId();
   const [rememberMeChecked, setRememberMeChecked] = useState(false);
 
@@ -62,7 +61,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
       <form.Field
         name="email"
         validators={{
-          onSubmit: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChange: ({ value }) => (!value ? t("dashboard.login.emailMissing") : undefined),
           onChangeAsyncDebounceMs: 500,
           onChangeAsync: async ({ value }) => {
@@ -81,7 +79,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
               autoComplete="username"
               value={field.state.value}
               onInputChange={field.handleChange}
-              placeHolder={t("dashboard.login.email")}
+              placeHolder=""
               errors={field.state.meta.errors}
             />
           </FieldGroup>
@@ -91,7 +89,6 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
       <form.Field
         name="password"
         validators={{
-          onSubmit: ({ value }) => (!value ? t("dashboard.login.passwordMissing") : undefined),
           onChange: ({ value }) => (!value ? t("dashboard.login.passwordMissing") : undefined),
         }}
       >
@@ -105,7 +102,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
               autoComplete="current-password"
               value={field.state.value}
               onInputChange={field.handleChange}
-              placeHolder={t("dashboard.login.password")}
+              placeHolder=""
               errors={field.state.meta.errors}
             />
           </FieldGroup>
@@ -129,6 +126,7 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           {() => (
             <Button
               type="submit"
+              width="100%"
               text={t("dashboard.login.login")}
               backgroundcolor={form.state.canSubmit && !isPending ? "var(--color-aubergine)" : "var(--color-grey-50)"}
               textColor={form.state.canSubmit && !isPending ? "var(--color-white)" : "var(--color-grey-400)"}

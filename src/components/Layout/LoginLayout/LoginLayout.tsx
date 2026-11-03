@@ -1,89 +1,63 @@
 "use client";
-import styled from "styled-components";
-import { ScreenTypes } from "@/config/constants";
+import Image from "next/image";
+import { ArrowRight } from "@phosphor-icons/react";
 import { ReactNode } from "react";
-import { getImageUrl } from "@/utils";
-import { useScreenType } from "@/context/DeviceContext";
+import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { PageLayout } from "../PageLayout";
-import { CustomHeading } from "@/components/styled/text";
-import { ImageWithGradient } from "@/components/core/image";
-
-const gradientClassName = "image-filter-gradient-blue ";
-
-const imageNames: Record<ScreenTypes, string> = {
-  mobile: "login-hands.webp",
-  tablet: "login-hands.webp",
-  desktop: "login-hands.webp",
-};
-
-const LoginContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: var(--dashboard-login-container-height);
-
-  @media (max-width: 767px) {
-    height: auto;
-    min-height: calc(100dvh - 72px);
-  }
-`;
-
-const LoginSubContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-
-  @media (max-width: 767px) {
-    padding: var(--spacing-32) var(--spacing-16);
-
-    &:last-child {
-      display: none;
-    }
-  }
-`;
-
-const LoginContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: var(--dashboard-login-content-container-width);
-  gap: var(--dashboard-login-content-container-gap);
-
-  @media (max-width: 767px) {
-    width: 100%;
-    gap: var(--spacing-24);
-  }
-`;
+import {
+  Illustration,
+  LoginHeading,
+  LoginPage,
+  LoginSection,
+  RegistrationHeading,
+  RegistrationLink,
+  RegistrationLinks,
+  RegistrationSection,
+} from "./login-layout-styles";
 
 type Props = {
   children: ReactNode;
   heading: string;
+  showRegistration?: boolean;
 };
 
-export function LoginLayout({ children, heading }: Props) {
-  const screenType = useScreenType();
-  const imageUrl = getImageUrl(imageNames[screenType]);
+export function LoginLayout({ children, heading, showRegistration = false }: Props) {
+  const { lang } = useParams<{ lang: string }>();
+  const { t } = useTranslation();
   return (
     <PageLayout background="var(--color-white)">
-      <LoginContainer>
-        <LoginSubContainer>
-          <LoginContentContainer>
-            <CustomHeading
-              fontWeight="var(--dashboard-login-heading-fontWeight)"
-              fontSize="var(--dashboard-login-heading-fontSize)"
-              lineheight="var(--dashboard-login-heading-lineHeight)"
-              letterSpacing="var(--dashboard-login-heading-letterSpacing)"
-              color="var(--color-midnight)"
-            >
-              {heading}
-            </CustomHeading>
-            {children}
-          </LoginContentContainer>
-        </LoginSubContainer>
-
-        <LoginSubContainer>
-          <ImageWithGradient imageUrl={imageUrl} gradientClass={gradientClassName} />
-        </LoginSubContainer>
-      </LoginContainer>
+      <LoginPage>
+        <LoginSection aria-labelledby="login-heading">
+          <LoginHeading id="login-heading" $compact={!showRegistration}>
+            {heading}
+          </LoginHeading>
+          {children}
+        </LoginSection>
+        <RegistrationSection
+          $illustrationOnly={!showRegistration}
+          aria-labelledby={showRegistration ? "registration-heading" : undefined}
+        >
+          <Illustration>
+            <Image src="/images/login/community-illustration.webp" alt="" width={600} height={597} />
+          </Illustration>
+          {showRegistration && (
+            <>
+              <RegistrationHeading id="registration-heading">{t("dashboard.login.newToNeed4Deed")}</RegistrationHeading>
+              <RegistrationLinks>
+                <RegistrationLink href={`/${lang}/register/agent`}>
+                  {t("dashboard.login.createNgoAccount")}
+                  <ArrowRight size={28} aria-hidden="true" />
+                </RegistrationLink>
+                <RegistrationLink href={`/${lang}/register/volunteer`}>
+                  {t("dashboard.login.createVolunteerAccount")}
+                  <ArrowRight size={28} aria-hidden="true" />
+                </RegistrationLink>
+              </RegistrationLinks>
+            </>
+          )}
+        </RegistrationSection>
+      </LoginPage>
     </PageLayout>
   );
 }
