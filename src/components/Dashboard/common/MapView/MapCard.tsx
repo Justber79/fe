@@ -55,14 +55,16 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
 
   const filterMarkerIcon = useMemo(() => {
     if (!filterMarker) return null;
-    return filterMarker.entity === EntityType.VOLUNTEER ? getVolunteerMarkerIcon(avatarSize) : defaultMapPinIcon;
+    return filterMarker.entity === EntityType.VOLUNTEER
+      ? getVolunteerMarkerIcon(filterMarker?.avatarUrl, avatarSize)
+      : n4DMapPinIcon;
   }, [filterMarker, avatarSize]);
 
   const markerIcons = useMemo(
     () =>
       markers?.map((marker) => {
         if ((marker.children?.length ?? 0) > 1) return getGroupedMarkerIcon(marker, avatarSize);
-        if (marker.entity === EntityType.VOLUNTEER) return getVolunteerMarkerIcon(avatarSize);
+        if (marker.entity === EntityType.VOLUNTEER) return getVolunteerMarkerIcon(filterMarker?.avatarUrl, avatarSize);
         return marker.entity === EntityType.OPPORTUNITY ? n4DMapPinIcon : defaultMapPinIcon;
       }),
     [markers, avatarSize],

@@ -42,9 +42,9 @@ export const n4DMapPinIcon = L.icon({
   className: "need4deed-icon",
 });
 
-export const getVolunteerMarkerIcon = (size: number) => {
+export const getVolunteerMarkerIcon = (avatarUrl: string | undefined, size: number) => {
   return L.icon({
-    iconUrl: getImageUrl(defaultAvatarURL),
+    iconUrl: avatarUrl ?? getImageUrl(defaultAvatarURL),
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
     className: "custom-avatar-icon",
