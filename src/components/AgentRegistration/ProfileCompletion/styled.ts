@@ -51,25 +51,16 @@ export const MatchRow = styled.button`
 
 export const MatchActions = styled.div`
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
-`;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+  gap: var(--spacing-8);
+  margin-top: var(--spacing-8);
 
-interface SmallButtonProps {
-  $primary?: boolean;
-}
-
-export const SmallButton = styled.button<SmallButtonProps>`
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid ${({ $primary }) => ($primary ? "var(--color-aubergine)" : "var(--color-grey-300)")};
-  background: ${({ $primary }) => ($primary ? "var(--color-aubergine)" : "var(--color-white)")};
-  color: ${({ $primary }) => ($primary ? "var(--color-white)" : "var(--color-midnight)")};
-
-  &:hover {
-    opacity: 0.85;
+  > button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 `;

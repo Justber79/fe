@@ -1,21 +1,30 @@
 import styled from "styled-components";
+import { screenSizeThresholds } from "@/config/constants";
 
 export const Wrapper = styled.div`
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 48px 16px;
+  padding: var(--spacing-48) var(--spacing-16);
   background: var(--layout-static-page-background-default, #f8f6f8);
+
+  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+    padding-block: var(--spacing-24);
+  }
 `;
 
 export const Card = styled.div`
   background: var(--color-white);
   border-radius: 16px;
-  padding: 40px;
+  padding: var(--spacing-40);
   width: 100%;
   max-width: 560px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+
+  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+    padding: var(--spacing-24) var(--spacing-16);
+  }
 `;
 
 export const PageWrapper = styled(Wrapper)`
@@ -65,6 +74,7 @@ export const SuccessWrapper = styled.div`
 
 export const ExistingUserWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: var(--agent-form-existing-user-gap);
   margin-bottom: var(--agent-form-existing-user-margin-bottom);
 `;
