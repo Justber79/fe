@@ -63,6 +63,6 @@
   object-fit: contain;
 }
 
-.leaflet-pane > svg path.leaflet-interactive:focus {
+.leaflet-pane > svg path.leaflet-interactive:focus:not(:focus-visible) {
   outline: none;
 }

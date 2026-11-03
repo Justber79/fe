@@ -24,7 +24,6 @@ import { QueryParamsKeys } from "need4deed-sdk";
 import { useScreenType } from "@/context/DeviceContext";
 import { MapPopupControlVisibility } from "./controls/MapPopupVisibilityControl";
 import { MapSizeInvalidator } from "./controls/MapSizeInvalidator";
-import { MapZoom } from "./controls/MapZoom";
 
 interface Props {
   markers?: EntityMarker[];
@@ -88,7 +87,6 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
     <StyledMapContainer>
       <MapContainer center={DEFAULT_CENTER} minZoom={9} zoom={mapZoom} maxBounds={BERLIN_BOUNDS}>
         <MapSizeInvalidator />
-        <MapZoom zoom={mapZoom} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
