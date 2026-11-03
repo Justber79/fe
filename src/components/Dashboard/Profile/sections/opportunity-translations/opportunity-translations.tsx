@@ -259,7 +259,8 @@ function TranslationReview({
                             </Metadata>
                           )}
                           {!canEdit &&
-                            (value?.status === TranslationStatus.DONE && value.text ? (
+                            ((value?.status === TranslationStatus.DONE || value?.status === TranslationStatus.FAILED) &&
+                            value.text ? (
                               <p lang={language}>{value.text}</p>
                             ) : (
                               <Metadata>
