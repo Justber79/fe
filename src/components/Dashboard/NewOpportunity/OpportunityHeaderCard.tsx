@@ -1,3 +1,4 @@
+import { opportunityFieldStackingThreshold } from "@/config/constants";
 import { EditableField } from "@/components/EditableField/EditableField";
 import {
   Card,
@@ -49,6 +50,7 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
               control={control}
               render={({ field }) => (
                 <EditableField
+                  stackAt={opportunityFieldStackingThreshold}
                   mode="edit"
                   type="text"
                   label={t("dashboard.newOpportunity.fields.title")}
@@ -88,6 +90,7 @@ export default function OpportunityHeaderCard({ selectedType, agentTitles }: Pro
               render={({ field }) =>
                 agentTitles.length > 1 ? (
                   <EditableField
+                    stackAt={opportunityFieldStackingThreshold}
                     mode="edit"
                     type="radio-list"
                     label={t("dashboard.newOpportunity.fields.ngo")}

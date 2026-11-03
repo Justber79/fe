@@ -1,3 +1,4 @@
+import { opportunityFieldStackingThreshold } from "@/config/constants";
 import { EmptyPlaceholder } from "@/components/core/common/EmptyPlaceholder";
 import { Tags } from "@/components/core/common/Tags";
 import { formatAvailability } from "@/components/Dashboard/Profile/sections/VolunteerProfile/formatters";
@@ -39,6 +40,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   return (
     <FormDetails>
       <EditableField
+        stackAt={opportunityFieldStackingThreshold}
         mode="display"
         type="text"
         label={t(`${prefix}.opportunityName`)}
@@ -47,6 +49,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
       />
 
       <EditableField
+        stackAt={opportunityFieldStackingThreshold}
         mode="display"
         type="text"
         label={t(`${prefix}.description`)}
@@ -55,6 +58,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
       />
 
       <EditableField
+        stackAt={opportunityFieldStackingThreshold}
         mode="display"
         type="text"
         label={t(`${prefix}.mainCommunication`)}
@@ -63,6 +67,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
       />
 
       <EditableField
+        stackAt={opportunityFieldStackingThreshold}
         mode="display"
         type="text"
         label={t(`${prefix}.residentsSpeak`)}
@@ -84,6 +89,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
         </>
       ) : (
         <EditableField
+          stackAt={opportunityFieldStackingThreshold}
           mode="display"
           type="text"
           label={t(`${prefix}.schedule`)}
@@ -93,6 +99,7 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
       )}
 
       <EditableField
+        stackAt={opportunityFieldStackingThreshold}
         mode="display"
         type="text"
         label={t(`${prefix}.numberOfVolunteers`)}

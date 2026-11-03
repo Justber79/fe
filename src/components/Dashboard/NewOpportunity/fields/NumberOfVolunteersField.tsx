@@ -1,3 +1,4 @@
+import { opportunityFieldStackingThreshold } from "@/config/constants";
 import { useFormContext, Controller } from "react-hook-form";
 import { OpportunityDetailsFormData } from "../../Profile/sections/OpportunityDetails/opportunityDetailsSchema";
 import { EditableField } from "@/components/EditableField/EditableField";
@@ -16,6 +17,7 @@ export default function NumberOfVolunteersField({ prefix }: { prefix: string }) 
       control={control}
       render={({ field }) => (
         <EditableField
+          stackAt={opportunityFieldStackingThreshold}
           mode="edit"
           type="stepper"
           label={t(`${prefix}.numberOfVolunteers`)}
