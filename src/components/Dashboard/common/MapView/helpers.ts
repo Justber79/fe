@@ -1,7 +1,7 @@
-import { DEFAULT_LEAFLET_ICON_URL, defaultAvatarURL } from "@/config/constants";
+import { defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
 import { TFunction } from "i18next";
-import L, { LatLngBoundsExpression, LatLngExpression } from "leaflet";
+import { LatLngBoundsExpression, LatLngExpression } from "leaflet";
 import {
   ApiAgentGetList,
   ApiOpportunityGetList,
@@ -26,51 +26,6 @@ export const MAP_AREA_RING: L.LatLngExpression[] = [
   [-85, -180],
   [85, -180],
 ];
-
-export const defaultMapPinIcon = L.icon({
-  iconUrl: DEFAULT_LEAFLET_ICON_URL,
-  shadowUrl: "",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-export const n4DMapPinIcon = L.icon({
-  iconUrl: DEFAULT_LEAFLET_ICON_URL,
-  shadowUrl: "",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  className: "need4deed-icon",
-});
-
-export const getVolunteerMarkerIcon = (avatarUrl: string | undefined, size: number) => {
-  return L.icon({
-    iconUrl: avatarUrl ?? getImageUrl(defaultAvatarURL),
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    className: "custom-avatar-icon",
-  });
-};
-
-export const getGroupedMarkerIcon = (marker: EntityMarker, avatarSize: number) => {
-  const isVolunteer = marker.entity === EntityType.VOLUNTEER;
-  const isOpportunity = marker.entity === EntityType.OPPORTUNITY;
-  const markerCount = marker.children?.length ?? 0;
-  const iconSize: [number, number] = isVolunteer ? [avatarSize, avatarSize] : [25, 41];
-  const iconAnchor: [number, number] = isVolunteer ? [avatarSize / 2, avatarSize / 2] : [12, 41];
-  const imageClassName = isVolunteer
-    ? "grouped-marker-icon__image custom-avatar-icon"
-    : isOpportunity
-      ? "grouped-marker-icon__image grouped-marker-icon__image--opportunity"
-      : "grouped-marker-icon__image";
-  const iconClassName = isVolunteer ? "grouped-marker-icon grouped-marker-icon--avatar" : "grouped-marker-icon";
-
-  return L.divIcon({
-    className: iconClassName,
-    html: `<img class="${imageClassName}" src="${isVolunteer ? getImageUrl(defaultAvatarURL) : DEFAULT_LEAFLET_ICON_URL}" alt="" /><span class="grouped-marker-count">${markerCount}</span>`,
-    iconSize,
-    iconAnchor,
-  });
-};
 
 export const districtFillColors: Record<string, string> = {
   Mitte: "var(--map-district-fill-color-mitte-orange)",
