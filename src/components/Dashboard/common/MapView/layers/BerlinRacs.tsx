@@ -19,6 +19,9 @@ import { DEFAULT_LEAFLET_ICON_URL } from "@/config/constants";
 const defaultLeafletIcon = new L.Icon({
   iconUrl: DEFAULT_LEAFLET_ICON_URL,
   shadowUrl: "",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
   className: "berlin-rac-marker-icon",
 });
 

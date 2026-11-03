@@ -1,11 +1,17 @@
 import "leaflet/dist/leaflet.css";
 import "./map.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { BERLIN_BOUNDS, DEFAULT_CENTER } from "./helpers";
+import {
+  BERLIN_BOUNDS,
+  DEFAULT_CENTER,
+  defaultMapPinIcon,
+  getGroupedMarkerIcon,
+  getVolunteerMarkerIcon,
+  n4DMapPinIcon,
+} from "./helpers";
 import { PopupContentWrapper, PopupHeader, StyledMapContainer } from "./styles";
 import { useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import L from "leaflet";
 import { BerlinRacs } from "./layers/BerlinRacs";
 import { MapLegendControl } from "./controls/MapLegend";
 import { MapScroll } from "./controls/MapScroll";
@@ -13,13 +19,12 @@ import { EntityMarker, EntityType, SingleMarker } from "./types";
 import { MapOtherRacs } from "./controls/MapOtherRacs";
 import { useGetDistrictGeometry } from "@/hooks/useGetDistrictGeometry";
 import { DistrictPolygons } from "./layers/DistrictPolygons";
-import { DEFAULT_LEAFLET_ICON_URL, defaultAvatarURL, questionMark, ScreenTypes } from "@/config/constants";
+import { questionMark, ScreenTypes } from "@/config/constants";
 import { QueryParamsKeys } from "need4deed-sdk";
 import { useScreenType } from "@/context/DeviceContext";
 import { MapPopupControlVisibility } from "./controls/MapPopupVisibilityControl";
 import { MapSizeInvalidator } from "./controls/MapSizeInvalidator";
 import { MapZoom } from "./controls/MapZoom";
-import { getImageUrl } from "@/utils";
 
 interface Props {
   markers?: EntityMarker[];
@@ -27,30 +32,6 @@ interface Props {
   filterMarker?: SingleMarker | null;
   renderSinglePopupContent?: (filter: SingleMarker) => React.ReactNode;
 }
-
-const defaultMapPinIcon = L.icon({
-  iconUrl: DEFAULT_LEAFLET_ICON_URL,
-  shadowUrl: "",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-const n4DMapPinIcon = L.icon({
-  iconUrl: DEFAULT_LEAFLET_ICON_URL,
-  shadowUrl: "",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  className: "need4deed-icon",
-});
-
-const getVolunteerMarkerIcon = (size: number) => {
-  return L.icon({
-    iconUrl: getImageUrl(defaultAvatarURL),
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    className: "custom-avatar-icon",
-  });
-};
 
 const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupContent }: Props) => {
   const [enableScroll, setEnableScroll] = useState<boolean>(true);
@@ -79,13 +60,11 @@ const MapCard = ({ markers, renderPopupContent, filterMarker, renderSinglePopupC
 
   const markerIcons = useMemo(
     () =>
-      markers?.map((marker) =>
-        marker.entity === EntityType.VOLUNTEER
-          ? getVolunteerMarkerIcon(avatarSize)
-          : marker.entity === EntityType.OPPORTUNITY
-            ? n4DMapPinIcon
-            : defaultMapPinIcon,
-      ),
+      markers?.map((marker) => {
+        if ((marker.children?.length ?? 0) > 1) return getGroupedMarkerIcon(marker, avatarSize);
+        if (marker.entity === EntityType.VOLUNTEER) return getVolunteerMarkerIcon(avatarSize);
+        return marker.entity === EntityType.OPPORTUNITY ? n4DMapPinIcon : defaultMapPinIcon;
+      }),
     [markers, avatarSize],
   );
 
