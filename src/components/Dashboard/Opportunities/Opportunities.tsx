@@ -82,7 +82,7 @@ export function Opportunities() {
         districtIds: volunteerFilter.districtIds,
         languages: volunteerFilter.languages.filter(({ proficiency }) => proficiency !== LangProficiency.BEGINNER),
         availability: volunteerFilter.availability,
-        commutePostcode: volunteerFilter.commutePostcode,
+        hasCommuteSource: true,
         maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
@@ -136,7 +136,7 @@ export function Opportunities() {
     const params = new URLSearchParams(serializeOpportunityFilters(cleared, searchParams));
     params.delete("volunteer");
     params.delete(PREFILLED_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
@@ -145,7 +145,7 @@ export function Opportunities() {
         ? clearCommutePrefill(cardsFilter)
         : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
@@ -153,7 +153,7 @@ export function Opportunities() {
     setCardsFilter(cleared);
     const params = serializeOpportunityFilters(cleared, searchParams, false);
     params.delete(SORT_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   useEffect(() => {

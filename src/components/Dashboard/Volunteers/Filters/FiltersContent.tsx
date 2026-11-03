@@ -34,7 +34,7 @@ export default function FiltersContent({ setFilter, filter, viewMode, isMatchMod
       {sections.map(({ key, config, items }) => (
         <AccordionFilter key={key} header={t(config.header)} items={items} />
       ))}
-      {isMatchMode && filter.hasCommutePrefill && (
+      {isMatchMode && filter.hasCommuteSource && (
         <AccordionFilter
           header={t("dashboard.filters.commuteMinutesHeader")}
           items={createCommuteMinutesFilterItems(filter, setFilter, t)}

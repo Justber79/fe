@@ -57,7 +57,7 @@ export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
       [OccasionalType.WEEKENDS]: false,
     },
   },
-  hasCommutePrefill: false,
+  hasCommuteSource: false,
   maxCommuteMinutes: 0,
 };
 

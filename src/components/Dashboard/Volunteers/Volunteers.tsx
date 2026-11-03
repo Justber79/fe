@@ -83,7 +83,7 @@ export function Volunteers() {
     params.delete("page");
     params.set("view", targetViewMode);
 
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleFilterUpdate = (
@@ -104,7 +104,7 @@ export function Volunteers() {
     const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
     params.delete(PREFILLED_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
@@ -113,13 +113,13 @@ export function Volunteers() {
         ? clearCommutePrefill(cardsFilter)
         : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
   };
 
   useEffect(() => {
@@ -144,7 +144,7 @@ export function Volunteers() {
         availability: isAccompanying ? [] : opportunityFilter.availability,
         appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
         appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
-        commutePostcode: opportunityFilter.commutePostcode,
+        hasCommuteSource: true,
         maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },

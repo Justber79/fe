@@ -10,7 +10,7 @@ export interface OpportunityCardsFilter {
   [EntityTableName.ACTIVITY]: SelectionMap;
   [EntityTableName.SKILL]: SelectionMap;
   [QueryParamsKeys.AVAILABILITY]: ScheduleFilter;
-  hasCommutePrefill: boolean;
+  hasCommuteSource: boolean;
   maxCommuteMinutes: number;
 }
 
