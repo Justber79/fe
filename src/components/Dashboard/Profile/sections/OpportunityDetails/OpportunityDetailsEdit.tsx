@@ -1,3 +1,4 @@
+import { opportunityFieldStackingThreshold } from "@/config/constants";
 import Button from "@/components/core/button/Button/Button";
 import { ErrorMessage } from "@/components/core/common";
 import { EditableField } from "@/components/EditableField/EditableField";
@@ -170,6 +171,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
             control={control}
             render={({ field }) => (
               <EditableField
+                stackAt={opportunityFieldStackingThreshold}
                 mode="edit"
                 type="text"
                 label={t(`${prefix}.opportunityName`)}
@@ -185,6 +187,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
             control={control}
             render={({ field }) => (
               <EditableField
+                stackAt={opportunityFieldStackingThreshold}
                 mode="edit"
                 type="textarea"
                 label={t(`${prefix}.description`)}
@@ -264,6 +267,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
             control={control}
             render={({ field }) => (
               <EditableField
+                stackAt={opportunityFieldStackingThreshold}
                 mode="edit"
                 type="stepper"
                 label={t(`${prefix}.numberOfVolunteers`)}
@@ -279,6 +283,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
             control={control}
             render={({ field }) => (
               <EditableField
+                stackAt={opportunityFieldStackingThreshold}
                 mode="edit"
                 type="checkbox-list"
                 label={t(`${prefix}.activities`)}
@@ -298,6 +303,7 @@ export function OpportunityDetailsEdit({ opportunity, onCancel }: Props) {
             control={control}
             render={({ field }) => (
               <EditableField
+                stackAt={opportunityFieldStackingThreshold}
                 mode="edit"
                 type="checkbox-list"
                 label={t(`${prefix}.skills`)}

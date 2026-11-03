@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { opportunityFieldStackingMedia, opportunityResponsiveFieldStyles } from "@/components/styled/mixins";
 
 export const Wrapper = styled.div`
   min-height: 100vh;
@@ -193,13 +194,21 @@ export const DateFieldRow = styled.div`
     flex-shrink: 0;
     width: var(--editableField-fieldWrapper-label-width);
   }
+
+  ${opportunityResponsiveFieldStyles}
 `;
 
 export const DatePickerContainer = styled.div`
   flex: 1;
+  @media ${opportunityFieldStackingMedia} {
+    width: 100%;
+  }
 `;
 
 export const TimeInputWrapper = styled.div`
+  @media ${opportunityFieldStackingMedia} {
+    width: 100%;
+  }
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
