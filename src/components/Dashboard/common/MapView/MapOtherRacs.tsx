@@ -42,6 +42,10 @@ export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
     <LegendCard>
       <ScrollZoomContainer>
         <Checkbox
+          labelPosition="before"
+          labelGap="var(--spacing-16)"
+          labelLineHeight="inherit"
+          labelFontSize="inherit"
           label={t("dashboard.map.otherRacs")}
           onChange={setShowOtherRacs}
           width={"25"}

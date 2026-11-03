@@ -2,11 +2,11 @@ import styled from "styled-components";
 import CheckboxSVG from "../../../svg/CheckboxSVG";
 import { Paragraph } from "../../../styled/text";
 
-const CheckboxContainer = styled.label`
+const CheckboxContainer = styled.label<{ $labelPosition: "before" | "after"; $gap: string }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${({ $labelPosition }) => ($labelPosition === "before" ? "row-reverse" : "row")};
   align-items: center;
-  gap: var(--spacing-8);
+  gap: ${({ $gap }) => $gap};
   cursor: pointer;
 `;
 
@@ -27,7 +27,7 @@ const CheckboxControl = styled.span`
 
   input:focus-visible + svg {
     outline: var(--border-width-medium) solid var(--color-midnight);
-    outline-offset: 0;
+    outline-offset: calc(-1 * var(--border-width-medium));
   }
 `;
 
@@ -37,9 +37,11 @@ export interface CheckboxProps {
   color?: string;
   label?: string;
   labelFontSize?: string;
+  labelGap?: string;
+  labelLineHeight?: string;
   onChange: (checked: boolean) => void;
   checked: boolean;
-  "aria-label"?: string;
+  labelPosition?: "before" | "after";
 }
 
 export function Checkbox({
@@ -48,19 +50,16 @@ export function Checkbox({
   color = "var(--color-midnight)",
   label,
   labelFontSize,
+  labelGap = "var(--spacing-8)",
+  labelLineHeight = "var(--line-height-32)",
   onChange,
   checked,
-  "aria-label": ariaLabel,
+  labelPosition = "after",
 }: CheckboxProps) {
   return (
-    <CheckboxContainer onClick={(e) => e.stopPropagation()}>
+    <CheckboxContainer $labelPosition={labelPosition} $gap={labelGap} onClick={(e) => e.stopPropagation()}>
       <CheckboxControl>
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          aria-label={label ? undefined : ariaLabel}
-        />
+        <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
         <CheckboxSVG width={width} height={height} checked={checked} color={color} aria-hidden="true" />
       </CheckboxControl>
 
@@ -71,7 +70,7 @@ export function Checkbox({
             checked ? "var(--checkbox-label-font-weight-selected)" : "var(--checkbox-label-font-weight-not-selected)"
           }
           fontSize={labelFontSize || "var(--checkbox-label-font-size)"}
-          lineheight="var(--line-height-32)"
+          lineheight={labelLineHeight}
         >
           {label}
         </Paragraph>

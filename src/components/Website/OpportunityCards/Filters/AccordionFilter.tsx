@@ -34,7 +34,9 @@ export default function AccordionFilter({ header, items, groupedItems }: Props) 
     <FilterContainer>
       <FilterHeaderContainer>
         <Heading4 color="var(--color-midnight)">{header}</Heading4>
-        <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled onClick={() => setIsOpen(!isOpen)} />
+        <FilterToggle type="button" aria-label={header} aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)}>
+          <CircleArrow direction={isOpen ? "up" : "down"} color="orchid" isFilled />
+        </FilterToggle>
       </FilterHeaderContainer>
 
       {isOpen && items && (
@@ -97,7 +99,6 @@ const OptionsContainer = styled.div`
   gap: var(--opportunities-filters-content-accordion-options-gap);
   max-height: var(--opportunities-filters-content-accordion-options-max-height);
   overflow-y: auto;
-  padding: var(--spacing-4);
 `;
 
 const GroupContainer = styled.div`
@@ -109,4 +110,13 @@ const GroupContainer = styled.div`
 const GroupOptionsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const FilterToggle = styled.button`
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 `;

@@ -5,6 +5,7 @@ import { ButtonSpan, Paragraph } from "@/components/styled/text";
 import CircleArrow from "@/components/svg/CircleArrow";
 import { Checkbox, CheckButton } from "@/components/core/button";
 import { FilterItem } from "./types";
+import { useDropdownFocus } from "@/hooks/useDropdownFocus";
 
 interface Props {
   header: string;
@@ -56,11 +57,20 @@ export default function AccordionFilter({
   const optionsContainerRef = useRef<HTMLDivElement>(null);
   const dropdownReady = isOpen && isDropdownFilter && dropdownPosition !== null;
 
-  useEffect(() => {
-    if (dropdownReady) {
-      optionsContainerRef.current?.querySelector<HTMLInputElement>('input[type="checkbox"]')?.focus();
+  const closeDropdown = useCallback(() => {
+    if (optionsContainerRef.current?.contains(document.activeElement)) {
+      headerRef.current?.focus({ preventScroll: true });
     }
-  }, [dropdownReady]);
+    setIsOpen(false);
+    setDropdownPosition(null);
+  }, []);
+
+  const handleDropdownKeyDown = useDropdownFocus({
+    ready: dropdownReady,
+    containerRef: optionsContainerRef,
+    triggerRef: headerRef,
+    close: closeDropdown,
+  });
 
   const checkboxHeight = cssVar("--opportunities-filters-content-accordion-options-checkbox-height", "18px");
 
@@ -90,19 +100,18 @@ export default function AccordionFilter({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (!openContainerRef.current?.contains(target) && !optionsContainerRef.current?.contains(target)) {
-        setIsOpen(false);
+        closeDropdown();
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  }, [isOpen, closeDropdown]);
 
   useEffect(() => {
     if (!isOpen || !isDropdownFilter) return;
 
     updateDropdownPosition();
-    const closeDropdown = () => setIsOpen(false);
     const scrollContainer = findHorizontalScrollParent(headerRef.current);
 
     scrollContainer?.addEventListener("scroll", closeDropdown);
@@ -113,7 +122,7 @@ export default function AccordionFilter({
       window.removeEventListener("scroll", closeDropdown);
       window.removeEventListener("resize", closeDropdown);
     };
-  }, [isDropdownFilter, isOpen, updateDropdownPosition]);
+  }, [isDropdownFilter, isOpen, updateDropdownPosition, closeDropdown]);
 
   const itemOptions =
     isOpen && items ? (
@@ -121,25 +130,7 @@ export default function AccordionFilter({
         ref={optionsContainerRef}
         $isDropdownFilter={isDropdownFilter}
         $dropdownPosition={dropdownPosition}
-        onKeyDown={(event) => {
-          if (!isDropdownFilter) return;
-          const controls = optionsContainerRef.current?.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
-          if (event.key === "Escape") {
-            event.preventDefault();
-            event.stopPropagation();
-            setIsOpen(false);
-            headerRef.current?.focus();
-          } else if (event.key === "Tab" && controls?.length) {
-            if (event.shiftKey && event.target === controls[0]) {
-              event.preventDefault();
-              setIsOpen(false);
-              headerRef.current?.focus();
-            } else if (!event.shiftKey && event.target === controls[controls.length - 1]) {
-              setIsOpen(false);
-              headerRef.current?.focus();
-            }
-          }
-        }}
+        onKeyDown={handleDropdownKeyDown}
       >
         {items.map((item) => (
           <Checkbox
@@ -161,7 +152,7 @@ export default function AccordionFilter({
         type="button"
         aria-expanded={isOpen}
         disabled={isDropdownFilter && !items?.length}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => (isOpen ? closeDropdown() : setIsOpen(true))}
         $isDropdownFilter={isDropdownFilter}
       >
         <ButtonSpan color="var(--color-midnight)" fontSize="20px" fontWeight={600}>
@@ -237,7 +228,6 @@ const OptionsContainer = styled.div<{
   gap: "var(--opportunities-filters-content-accordion-options-gap)",
   maxHeight: "var(--opportunities-filters-content-accordion-options-max-height)",
   overflowY: "auto",
-  padding: "var(--spacing-4)",
 
   ...($isDropdownFilter && {
     position: "fixed",

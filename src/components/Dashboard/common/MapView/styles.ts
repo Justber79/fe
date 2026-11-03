@@ -236,13 +236,4 @@ export const ScrollZoomContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-
-  > label {
-    flex-direction: row-reverse;
-    gap: inherit;
-
-    > span:last-child {
-      font: inherit;
-    }
-  }
 `;

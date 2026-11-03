@@ -50,6 +50,10 @@ export const MapScroll = ({ enableScroll, setEnabledScroll }: Props) => {
     <LegendCard>
       <ScrollZoomContainer>
         <Checkbox
+          labelPosition="before"
+          labelGap="var(--spacing-16)"
+          labelLineHeight="inherit"
+          labelFontSize="inherit"
           label={t("dashboard.map.scrollZoom")}
           onChange={setEnabledScroll}
           width={"25"}
