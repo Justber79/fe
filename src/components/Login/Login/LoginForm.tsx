@@ -44,9 +44,9 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
       if (!key) return false;
       const message =
         status === 401 ? (
-          <>
+          <span>
             {t(key)} <Link href="/forgotten-password">{t("dashboard.login.forgotPassword")}?</Link>
-          </>
+          </span>
         ) : (
           t(key)
         );
