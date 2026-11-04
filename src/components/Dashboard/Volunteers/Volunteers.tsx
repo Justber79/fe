@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
+import { apiPathOption, DEFAULT_MAX_COMMUTE_MINUTES, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
 import {
   ApiOptionLists,
@@ -21,6 +21,7 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import {
   applyMatchingPrefill,
+  clearCommutePrefill,
   hasFilterParams,
   PREFILLED_PARAM,
   withPrefilledMarker,
@@ -82,7 +83,7 @@ export function Volunteers() {
     params.delete("page");
     params.set("view", targetViewMode);
 
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleFilterUpdate = (
@@ -91,29 +92,34 @@ export function Volunteers() {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
 
     setCardsFilter(updatedFilter);
-    router.push(pathname + questionMark + serializeFilters(updatedFilter, searchParams));
+    router.push(pathname + questionMark + serializeFilters(updatedFilter, searchParams), {
+      scroll: false,
+    });
   };
 
   const handleRemoveOpportunityFilter = () => {
     const wasPrefilled = searchParams.has(PREFILLED_PARAM);
-    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
-    if (wasPrefilled) setCardsFilter(cleared);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : clearCommutePrefill(cardsFilter);
+    setCardsFilter(cleared);
     const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
     params.delete(PREFILLED_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
-    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    const cleared =
+      filterKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID
+        ? clearCommutePrefill(cardsFilter)
+        : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
   };
 
   useEffect(() => {
@@ -138,6 +144,8 @@ export function Volunteers() {
         availability: isAccompanying ? [] : opportunityFilter.availability,
         appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
         appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
+        hasCommuteSource: true,
+        maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
@@ -205,7 +213,14 @@ export function Volunteers() {
           <Filters
             isFiltersOpen={isFiltersOpen}
             setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
+            filtersContent={
+              <FiltersContent
+                setFilter={handleFilterUpdate}
+                filter={cardsFilter}
+                viewMode={viewMode}
+                isMatchMode={!!opportunityId}
+              />
+            }
           />
         </ContentRow>
       </VolunteersContainer>

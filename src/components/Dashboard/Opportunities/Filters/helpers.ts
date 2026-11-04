@@ -7,6 +7,7 @@ import { ScheduleFilter, SelectionMap, SetFilter } from "../../common/CardsFilte
 import { QueryParamsKeys } from "need4deed-sdk";
 import { opportunityFilterConfigs } from "./config";
 import { OpportunityCardsFilter } from "./types";
+import { createCommutePrefillItem } from "../../common/CardsFilter/matchingPrefill";
 
 export const createOpportunityFilterSections = (
   filter: OpportunityCardsFilter,
@@ -54,5 +55,6 @@ export const createSelectedOpportunityFiltersAsFlatArray = (
   const availabilityItems = createAvailabilityFilterItems(filter[QueryParamsKeys.AVAILABILITY], setFilter, t)
     .flatMap(({ items }) => items)
     .filter((item) => item.checked);
-  return [...getSelectedSelectionFilterItems(sections), ...availabilityItems];
+  const commuteItem = createCommutePrefillItem(filter, setFilter, t, QueryParamsKeys.COMMUTE_VOLUNTEER_ID);
+  return [...getSelectedSelectionFilterItems(sections), ...availabilityItems, ...(commuteItem ? [commuteItem] : [])];
 };

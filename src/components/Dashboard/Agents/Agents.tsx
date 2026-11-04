@@ -93,7 +93,9 @@ export const Agents = () => {
   const handleFilterUpdate = (newFilter: AgentCardsFilter | ((prev: AgentCardsFilter) => AgentCardsFilter)) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
     setCardsFilter(updatedFilter);
-    router.push(pathname + questionMark + serializeAgentFilters(updatedFilter, searchParams));
+    router.push(pathname + questionMark + serializeAgentFilters(updatedFilter, searchParams), {
+      scroll: false,
+    });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
