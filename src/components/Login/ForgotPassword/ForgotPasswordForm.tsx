@@ -6,6 +6,7 @@ import { Button } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathRequestPasswordReset } from "@/config/constants";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { EmailButtonDiv, StyledForm } from "../styles";
 
 interface ForgotPasswordData {
@@ -32,6 +33,7 @@ const useRequestPasswordResetMutation = (onResetSuccess: () => void) => {
 
 export function ForgotPasswordForm({ onSuccess }: Props) {
   const { t } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   const { mutate: requestPasswordReset, isPending } = useRequestPasswordResetMutation(onSuccess);
   const form = useForm({
     defaultValues: {
@@ -84,7 +86,7 @@ export function ForgotPasswordForm({ onSuccess }: Props) {
             />
           )}
         </form.Subscribe>
-        <Link href="/login">{t("dashboard.login.backToLogin")}</Link>
+        <Link href={`/${lang}/login`}>{t("dashboard.login.backToLogin")}</Link>
       </EmailButtonDiv>
     </StyledForm>
   );
