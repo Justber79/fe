@@ -15,6 +15,7 @@ import { CopyButton } from "../common/CopyButton";
 import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
+  isLoading?: boolean;
   volunteers: ApiVolunteerGetList[];
   count: number;
   itemsPerPage: number;
@@ -34,6 +35,7 @@ interface TableListProps {
 }
 
 export function VolunteerTableList({
+  isLoading = false,
   volunteers,
   count,
   itemsPerPage,
@@ -64,6 +66,7 @@ export function VolunteerTableList({
 
   return (
     <EntityTableList
+      isLoading={isLoading}
       isFewResults={volunteers.length < 5}
       columns={columns}
       data={volunteers}

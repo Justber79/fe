@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useMap } from "react-leaflet";
-import { LegendCard, ScrollZoomContainer } from "./styles";
+import { LegendCard, ScrollZoomContainer } from "../styles";
 import { Checkbox } from "@/components/core/button";
 
 type Props = {
@@ -41,9 +41,13 @@ export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
   return createPortal(
     <LegendCard>
       <ScrollZoomContainer>
-        <span>{t("dashboard.map.otherRacs")}</span>
         <Checkbox
-          onChange={() => setShowOtherRacs(!showOtherRacs)}
+          labelPosition="before"
+          labelGap="var(--spacing-16)"
+          labelLineHeight="inherit"
+          labelFontSize="inherit"
+          label={t("dashboard.map.otherRacs")}
+          onChange={setShowOtherRacs}
           width={"25"}
           height={"25"}
           checked={showOtherRacs}

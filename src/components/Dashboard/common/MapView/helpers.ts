@@ -16,9 +16,32 @@ import { EntityMarker, EntityType, SingleFilter, SingleMarker } from "./types";
 
 export const DEFAULT_CENTER: LatLngExpression | undefined = [52.52, 13.405];
 export const BERLIN_BOUNDS: LatLngBoundsExpression = [
-  [51.359, 11.265],
-  [53.5585, 14.7655],
+  [52.15, 12.7],
+  [52.9, 14.2],
 ];
+export const MAP_AREA_RING: L.LatLngExpression[] = [
+  [85, -180],
+  [85, 180],
+  [-85, 180],
+  [-85, -180],
+  [85, -180],
+];
+
+export const districtFillColors: Record<string, string> = {
+  Mitte: "var(--map-district-fill-color-mitte-orange)",
+  "Friedrichshain-Kreuzberg": "var(--map-district-fill-color-friedrichshain-kreuzberg-teal)",
+  Pankow: "var(--map-district-fill-color-pankow-coral)",
+  "Charlottenburg-Wilmersdorf": "var(--map-district-fill-color-charlottenburg-wilmersdorf-sage)",
+  Spandau: "var(--map-district-fill-color-spandau-yellow)",
+  "Steglitz-Zehlendorf": "var(--map-district-fill-color-steglitz-zehlendorf-blue)",
+  "Tempelhof-Schöneberg": "var(--map-district-fill-color-tempelhof-schoeneberg-purple)",
+  Neukölln: "var(--map-district-fill-color-neukoelln-green)",
+  "Treptow-Köpenick": "var(--map-district-fill-color-treptow-koepenick-pink)",
+  "Marzahn-Hellersdorf": "var(--map-district-fill-color-marzahn-hellersdorf-teal)",
+  Lichtenberg: "var(--map-district-fill-color-lichtenberg-yellow)",
+  Reinickendorf: "var(--map-district-fill-color-reinickendorf-blue)",
+};
+
 export const createOpportunityMarkers = (
   opportunities: ApiOpportunityGetList[],
   t: TFunction,
@@ -226,4 +249,9 @@ export const createSingleVolunteerMarker = (
     entity: EntityType.VOLUNTEER,
     onClick: () => null,
   };
+};
+
+export const resolveCssColor = (color: string) => {
+  const variableName = color.match(/^var\((--[^)]+)\)$/)?.[1];
+  return variableName ? getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() : color;
 };

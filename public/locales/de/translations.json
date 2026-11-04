@@ -594,10 +594,21 @@
       "volunteers": "Ehrenamtliche",
       "opportunities": "Ehrenamtsbedarfe",
       "agents": "Einrichtungen",
+      "markerHelper": {
+        "opportunities": "*Ein Marker kann einen oder mehrere Ehrenamtsbedarfe enthalten",
+        "agents": "*Ein Marker kann eine oder mehrere Einrichtungen enthalten",
+        "volunteers": "*Ein Marker kann eine oder mehrere Ehrenamtliche enthalten"
+      },
+      "addressNotice": {
+        "opportunities": "*Ehrenamtsbedarfe ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "agents": "*Einrichtungen ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "volunteers": "*Ehrenamtliche ohne geprüfte Adresse werden nicht auf der Karte angezeigt."
+      },
       "legend": {
         "title": "Legende",
         "opportunity": "Ehrenamtsbedarfe",
         "rac": "Unterkunft für Geflüchtete",
+        "otherRac": "Weitere Berliner Unterkünfte für Geflüchtete",
         "volunteer": "Ehrenamtliche",
         "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
@@ -713,6 +724,12 @@
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
       "forgotPassword": "Passwort vergessen",
+      "errors": {
+        "missingFields": "Bitte E-Mail und Passwort eingeben.",
+        "wrongCredentials": "E-Mail oder Passwort ist falsch.",
+        "inactive": "Ihr Konto ist nicht aktiv. Wenn Sie sich gerade registriert haben, bestätigen Sie bitte zuerst Ihre E-Mail.",
+        "unknownEmail": "Zu dieser E-Mail gibt es kein Konto."
+      },
       "emailMissing": "E-Mail fehlt.",
       "emailMissingAtChar": "Die E-Mail-Adresse muss ein '@'-Zeichen enthalten.",
       "newPassword": "Neues Passwort",
@@ -2579,21 +2596,21 @@
       "emailConfirmed": "E-Mail bestätigt. Jetzt nur noch Ihre Organisation vervollständigen.",
       "matchesFound_one": "Wir haben {{count}} Organisation gefunden, die zu dieser Adresse passt. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
       "matchesFound_other": "Wir haben {{count}} Organisationen gefunden, die zu dieser Adresse passen. Wählen Sie Ihre aus oder erstellen Sie eine neue.",
-      "skip": "Nein, manuell eingeben",
+      "skip": "Manuell eingeben",
       "titleTaken": "Eine Organisation mit diesem Namen existiert bereits.",
       "addressTaken": "An dieser Adresse ist bereits eine Organisation registriert.",
       "titleTakenNamed": "„{{name}}“ existiert bereits.",
       "addressTakenNamed": "An dieser Adresse ist bereits „{{name}}“ registriert.",
-      "createAtSharedAddress": "Andere Organisation? Trotzdem erstellen",
+      "createAtSharedAddress": "Andere Organisation erstellen",
       "editDetails": "Angaben ändern",
-      "joinInstead": "Stattdessen beitreten",
+      "joinInstead": "Organisation beitreten",
       "requestToJoin": "Beitritt anfragen",
       "joinTitle": "Einer bestehenden Organisation beitreten",
       "joiningOrg": "Du beantragst den Beitritt zu {{name}}.",
       "joiningUnnamedOrg": "Du beantragst den Beitritt zu der Organisation, die an dieser Adresse registriert ist.",
       "unnamedMatch": "Eine an dieser Adresse registrierte Organisation",
       "joinDescription": "Wenn deine Arbeits-E-Mail zu dieser Organisation passt, erhältst du sofort Zugriff; andernfalls prüft ein Administrator deine Anfrage.",
-      "createInstead": "Nicht deine Organisation? Neue erstellen"
+      "createInstead": "Andere Organisation erstellen"
     },
     "completed": {
       "title": "Ihre Registrierung ist bereits abgeschlossen",

@@ -3,6 +3,7 @@
 import { TableBody, TableHeader, TableHeaderCell } from "@/components/core/common/Table";
 import { ScrollableTable, ScrollableTableContainer, Wrapper } from "./styles";
 import { EntityTableListProps } from "./types";
+import { DashboardListLoading } from "../DashboardListLoading";
 import PaginationNumbers from "@/components/core/paginatedGrid/PaginationNumbers";
 
 export function EntityTableList<T extends { id: string | number }>({
@@ -16,6 +17,7 @@ export function EntityTableList<T extends { id: string | number }>({
   testIdPrefix,
   noFixedWidth = false,
   isFewResults = false,
+  isLoading = false,
 }: EntityTableListProps<T>) {
   const totalPages = Math.ceil(count / itemsPerPage);
   const goToPage = (page: number) => {
@@ -23,7 +25,7 @@ export function EntityTableList<T extends { id: string | number }>({
   };
 
   return (
-    <Wrapper data-testid={`${testIdPrefix}-table`} $isFewResults={isFewResults}>
+    <Wrapper data-testid={`${testIdPrefix}-table`} $isFewResults={isFewResults} aria-busy={isLoading}>
       <ScrollableTableContainer>
         <ScrollableTable>
           <TableHeader>
@@ -34,10 +36,16 @@ export function EntityTableList<T extends { id: string | number }>({
               </TableHeaderCell>
             ))}
           </TableHeader>
-          <TableBody>{data.map((item, index) => renderRow(item, index === data.length - 1))}</TableBody>
+          <TableBody>
+            {isLoading ? (
+              <DashboardListLoading />
+            ) : (
+              data.map((item, index) => renderRow(item, index === data.length - 1))
+            )}
+          </TableBody>
         </ScrollableTable>
       </ScrollableTableContainer>
-      <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />
+      {!isLoading && <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />}
     </Wrapper>
   );
 }

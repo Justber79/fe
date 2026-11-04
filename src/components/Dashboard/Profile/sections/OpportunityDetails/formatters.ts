@@ -31,10 +31,6 @@ export function extractOptionTitle(item: OptionById | undefined, lang: Lang): st
   return item.title[lang] ?? item.title[Lang.EN] ?? "";
 }
 
-export function extractOptionTitles(items: OptionById[], lang: Lang): string[] {
-  return items.map((item) => extractOptionTitle(item, lang)).filter(Boolean);
-}
-
 export function resolveFormLanguageToOption<T extends { id: number; title: string }>(
   language: string,
   apiLanguages: T[],
