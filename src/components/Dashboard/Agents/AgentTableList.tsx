@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
+  isLoading?: boolean;
   agents: ApiAgentGetList[];
   count: number;
   itemsPerPage: number;
@@ -30,6 +31,7 @@ interface TableListProps {
 }
 
 export function AgentTableList({
+  isLoading = false,
   agents,
   count,
   itemsPerPage,
@@ -60,6 +62,7 @@ export function AgentTableList({
 
   return (
     <EntityTableList
+      isLoading={isLoading}
       isFewResults={agents.length < 5}
       columns={isAuthorized ? columns : readOnlyColumns}
       data={agents}

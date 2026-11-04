@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { FilterItem } from "../common/CardsFilter/types";
 
 interface TableListProps {
+  isLoading?: boolean;
   opportunities: ApiVolunteerOpportunityGetList[];
   count: number;
   itemsPerPage: number;
@@ -25,6 +26,7 @@ interface TableListProps {
 }
 
 export function OpportunityTableList({
+  isLoading = false,
   opportunities,
   count,
   itemsPerPage,
@@ -42,6 +44,7 @@ export function OpportunityTableList({
   const readOnlyColumns = useMemo(() => createReadOnlyAgentTableColumns(t), [t]);
   return (
     <EntityTableList
+      isLoading={isLoading}
       isFewResults={opportunities.length < 5}
       columns={canSeeFullView ? columns : readOnlyColumns}
       data={opportunities}

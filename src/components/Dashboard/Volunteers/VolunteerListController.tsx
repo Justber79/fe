@@ -15,7 +15,6 @@ import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 import { createVolunteerFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
-import { LoadingVolunteerTableList } from "./LoadingVolunteerTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { VolunteerMapView } from "./VolunteerMapView";
 import { createSingleOpportunityMarker, createVolunteerMarkers } from "../common/MapView/helpers";
@@ -107,14 +106,13 @@ function VolunteerListControllerContent({
     setNumOfVols(count);
   }, [setNumOfVols, count]);
 
-  if (isLoading && isListView)
-    return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
   if (isLoading && isMapView) return <LoadingMapView />;
-  if (isLoading) return <DashboardListLoading />;
+  if (isLoading && !isListView) return <DashboardListLoading />;
 
   if (isListView) {
     return (
       <VolunteerTableList
+        isLoading={isLoading}
         volunteers={volunteers}
         count={count}
         itemsPerPage={limit}
