@@ -2,7 +2,8 @@ import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
 } from "@/hooks/useUpdateOpportunityVolunteerStatus";
-import { Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { Id, OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
@@ -21,12 +22,22 @@ export const OpportunityVolunteers = ({
   hasEditingRights: boolean;
 }) => {
   const { t } = useTranslation();
+  const user = useCurrentUser(true);
+  const isAgent = user?.role === UserRole.AGENT;
 
   const queryKey = ["opportunity-volunteers", String(opportunityId)];
 
   const { data, isLoading } = useGetVolunteerOpportunityLinked(opportunityId);
 
   const volunteers = useMemo(() => data ?? [], [data]);
+
+  const statusOrder = useMemo(
+    () =>
+      isAgent
+        ? TAB_STATUS_ORDER.filter((status) => status !== OpportunityVolunteerStatusType.PENDING)
+        : TAB_STATUS_ORDER,
+    [isAgent],
+  );
 
   const {
     selectedTabIndex,
@@ -36,7 +47,7 @@ export const OpportunityVolunteers = ({
     visibleItems,
     setItemStatus,
     clearItemStatus,
-  } = useTabTransitions(volunteers);
+  } = useTabTransitions(volunteers, statusOrder);
 
   const { mutate: updateStatus, mutateAsync: updateStatusAsync } = useUpdateOpportunityVolunteerStatus(
     queryKey,
@@ -47,7 +58,7 @@ export const OpportunityVolunteers = ({
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
   );
 
-  const tabs = TAB_STATUS_ORDER.map((key, index) => ({
+  const tabs = statusOrder.map((key, index) => ({
     label: t(`dashboard.opportunityProfile.volunteersSec.tabs.${key}`),
     count: tabCounts[index],
   }));
