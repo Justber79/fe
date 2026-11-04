@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { screenSizeThresholds } from "@/config/constants";
+import { loginLayoutStackingMedia } from "@/components/styled/mixins";
 
 export const LoginPage = styled.main`
   display: grid;
@@ -9,11 +9,11 @@ export const LoginPage = styled.main`
   gap: var(--space-3xl);
   width: 100%;
   max-width: 1344px;
-  min-height: calc(100dvh - var(--layout-static-page-header-height));
+  flex: 1;
   margin-inline: auto;
   padding: var(--spacing-48) var(--spacing-24);
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-32);
     min-height: 0;
@@ -24,6 +24,9 @@ export const LoginPage = styled.main`
 
 export const LoginSection = styled.section`
   min-width: 0;
+  width: 100%;
+  max-width: var(--dashboard-login-content-container-width);
+  justify-self: center;
 `;
 
 export const LoginHeading = styled.h1<{ $compact?: boolean }>`
@@ -33,7 +36,7 @@ export const LoginHeading = styled.h1<{ $compact?: boolean }>`
   font-weight: var(--font-weight-bold);
   line-height: 1.15;
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     font-size: ${({ $compact }) => ($compact ? "var(--font-size-2xl)" : "var(--font-size-3xl)")};
     text-align: center;
     margin-bottom: var(--spacing-32);
@@ -43,7 +46,7 @@ export const LoginHeading = styled.h1<{ $compact?: boolean }>`
 export const RegistrationSection = styled.section<{ $illustrationOnly?: boolean }>`
   min-width: 0;
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     display: ${({ $illustrationOnly }) => ($illustrationOnly ? "none" : "block")};
   }
 `;
@@ -58,7 +61,7 @@ export const Illustration = styled.div`
     height: auto;
   }
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     display: none;
   }
 `;
@@ -70,7 +73,7 @@ export const RegistrationHeading = styled.h2`
   line-height: 1.2;
   margin: 0 0 var(--spacing-24);
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     display: flex;
     align-items: center;
     gap: var(--spacing-16);
@@ -93,7 +96,7 @@ export const RegistrationLinks = styled.div`
   flex-direction: column;
   gap: var(--spacing-8);
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     gap: var(--spacing-16);
   }
 `;
@@ -124,7 +127,7 @@ export const RegistrationLink = styled(Link)`
     outline-offset: var(--spacing-4);
   }
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     justify-content: center;
     border: var(--border-width-medium) solid var(--color-aubergine);
     border-radius: var(--button-border-radius);

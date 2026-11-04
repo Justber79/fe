@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { screenSizeThresholds } from "@/config/constants";
+import { loginLayoutStackingMedia } from "@/components/styled/mixins";
 import { StyledForm } from "../styles";
 
 export const LoginFormLayout = styled(StyledForm)`
@@ -18,7 +18,7 @@ export const FieldLabel = styled.label`
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-24);
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     font-size: var(--font-size-sm);
   }
 `;
@@ -29,11 +29,9 @@ export const SubmitRow = styled.div`
   min-width: 180px;
   max-width: 100%;
 
-  @media (min-width: ${screenSizeThresholds.tablet}px) {
-    margin-top: var(--spacing-8);
-  }
+  margin-top: var(--spacing-8);
 
-  @media (max-width: ${screenSizeThresholds.tablet - 1}px) {
+  @media ${loginLayoutStackingMedia} {
     width: 100%;
     min-width: 0;
   }

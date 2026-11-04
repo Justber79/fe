@@ -29,7 +29,8 @@ export const FormActions = styled.div`
   align-items: center;
 
   @media (max-width: 480px) {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--spacing-12);
   }
 `;

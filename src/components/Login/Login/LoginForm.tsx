@@ -8,6 +8,7 @@ import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
 import { apiPathLogin, LOGIN_ERROR_KEYS, LOGIN_ERROR_TOAST_ID } from "@/config/constants";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FormActions } from "../styles";
 import { FieldGroup, FieldLabel, LoginFormLayout, SubmitRow } from "./login-styles";
 
@@ -23,6 +24,7 @@ interface LoginResponse {
 
 const useLoginMutation = (onLoginSuccess: () => void) => {
   const { t } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   return useMutationQuery<LoginData, LoginResponse>({
     apiPath: apiPathLogin,
     successMessage: "dashboard.login.successMessage",
@@ -36,7 +38,7 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
       const message =
         status === 401 ? (
           <span>
-            {t(key)} <Link href="/forgotten-password">{t("dashboard.login.forgotPassword")}?</Link>
+            {t(key)} <Link href={`/${lang}/forgotten-password`}>{t("dashboard.login.forgotPassword")}?</Link>
           </span>
         ) : (
           t(key)
@@ -52,12 +54,12 @@ const useLoginMutation = (onLoginSuccess: () => void) => {
 };
 
 interface LoginFormProps {
-  lang: string;
   onLoginSuccess: () => void;
 }
 
-export const LoginForm = ({ onLoginSuccess, lang }: LoginFormProps) => {
+export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const { t } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   const { mutate: login, isPending } = useLoginMutation(onLoginSuccess);
   const fieldId = useId();
   const [rememberMeChecked, setRememberMeChecked] = useState(false);

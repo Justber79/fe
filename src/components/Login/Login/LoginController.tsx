@@ -29,7 +29,6 @@ export function LoginController() {
 
   return (
     <LoginForm
-      lang={language}
       onLoginSuccess={() => {
         setAuthHint();
         setIsLoggedIn(true);
