@@ -117,6 +117,8 @@ export const CONTACT_EMAIL = "info@need4deed.org";
 export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
 export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";
 
+export const DEFAULT_MAX_COMMUTE_MINUTES = 30;
+
 export const LOGIN_ERROR_KEYS: Record<number, string> = {
   400: "dashboard.login.errors.missingFields",
   401: "dashboard.login.errors.wrongCredentials",
