@@ -115,3 +115,12 @@ export const MAX_PAGE_LIMIT = 120;
 export const CONTACT_EMAIL = "info@need4deed.org";
 export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
 export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";
+
+export const LOGIN_ERROR_KEYS: Record<number, string> = {
+  400: "dashboard.login.errors.missingFields",
+  401: "dashboard.login.errors.wrongCredentials",
+  403: "dashboard.login.errors.inactive",
+  404: "dashboard.login.errors.unknownEmail",
+};
+
+export const LOGIN_ERROR_TOAST_ID = "login-error";
