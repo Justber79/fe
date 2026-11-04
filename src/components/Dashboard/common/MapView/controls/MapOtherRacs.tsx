@@ -3,26 +3,18 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useMap } from "react-leaflet";
-import { LegendCard, ScrollZoomContainer } from "./styles";
+import { LegendCard, ScrollZoomContainer } from "../styles";
 import { Checkbox } from "@/components/core/button";
 
 type Props = {
-  enableScroll: boolean;
-  setEnabledScroll: (prev: boolean) => void;
+  showOtherRacs: boolean;
+  setShowOtherRacs: (prev: boolean) => void;
 };
 
-export const MapScroll = ({ enableScroll, setEnabledScroll }: Props) => {
+export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);
   const { t } = useTranslation();
   const map = useMap();
-
-  useEffect(() => {
-    if (enableScroll) {
-      map.scrollWheelZoom.enable();
-    } else {
-      map.scrollWheelZoom.disable();
-    }
-  }, [enableScroll, map]);
 
   useEffect(() => {
     const legendControl = new L.Control({ position: "topleft" });
@@ -49,8 +41,13 @@ export const MapScroll = ({ enableScroll, setEnabledScroll }: Props) => {
   return createPortal(
     <LegendCard>
       <ScrollZoomContainer>
-        <span>{t("dashboard.map.scrollZoom")}</span>
-        <Checkbox onChange={() => setEnabledScroll(!enableScroll)} width={"25"} height={"25"} checked={enableScroll} />
+        <span>{t("dashboard.map.otherRacs")}</span>
+        <Checkbox
+          onChange={() => setShowOtherRacs(!showOtherRacs)}
+          width={"25"}
+          height={"25"}
+          checked={showOtherRacs}
+        />
       </ScrollZoomContainer>
     </LegendCard>,
     container,

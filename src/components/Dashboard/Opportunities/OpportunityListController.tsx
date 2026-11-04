@@ -59,7 +59,11 @@ type Props = {
   volunteerFilter: SingleFilter | undefined;
 };
 
-export function OpportunityListController({
+export function OpportunityListController(props: Props) {
+  return <OpportunityListControllerContent key={props.viewMode} {...props} />;
+}
+
+function OpportunityListControllerContent({
   setNumOfOpps,
   sortOrder,
   filter,
@@ -108,6 +112,7 @@ export function OpportunityListController({
     },
     staleTime: cacheTTL,
     enabled: isRoleKnown,
+    keepPreviousData: isMapView,
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
@@ -127,15 +132,9 @@ export function OpportunityListController({
 
   const volunteerMarker = createSingleVolunteerMarker(volunteerFilter, t, i18n.language);
 
-  const markerCount = useMemo(() => {
-    return markers?.flatMap((marker) => marker.children ?? []).length ?? 0;
-  }, [markers]);
-
-  const activeCount = isMapView ? markerCount : (count ?? 0);
-
   useEffect(() => {
-    setNumOfOpps(activeCount);
-  }, [activeCount, setNumOfOpps]);
+    setNumOfOpps(count);
+  }, [count, setNumOfOpps]);
 
   const isPending = isLoading || !isRoleKnown;
   if (isPending && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;

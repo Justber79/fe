@@ -48,6 +48,7 @@ interface UseGetQuery {
   staleTime?: number;
   enabled?: boolean;
   toastOnError?: boolean;
+  keepPreviousData?: boolean;
 }
 
 export const useGetQuery = <T,>({
@@ -57,6 +58,7 @@ export const useGetQuery = <T,>({
   staleTime,
   enabled,
   toastOnError = true,
+  keepPreviousData = false,
 }: UseGetQuery) => {
   const { lang } = useParams<{ lang: Lang }>();
   const normalizedParams = { ...params, filter: getReducedFilter(params.filter) };
@@ -66,6 +68,7 @@ export const useGetQuery = <T,>({
     queryFn: () => fetchData<T>(apiPath, normalizedParams),
     staleTime,
     enabled,
+    placeholderData: keepPreviousData ? (previousData) => previousData : undefined,
     meta: { toastOnError },
   });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { MapView } from "../common/MapView/MapView";
-import { MapContainer, PopupCardHeader, PopupLink } from "../common/MapView/styles";
+import { MapContainer, MapHelperText, MapHelperWrapper, PopupCardHeader, PopupLink } from "../common/MapView/styles";
 import CardDetail from "../Volunteers/CardDetail";
 import { CardParagraph } from "../Volunteers/VolunteerCard";
 import { useTranslation } from "react-i18next";
@@ -61,6 +61,12 @@ export function OpportunityMapView({
 
   return (
     <MapContainer>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.markerHelper.opportunities")}</MapHelperText>
+      </MapHelperWrapper>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.addressNotice.opportunities")}</MapHelperText>
+      </MapHelperWrapper>
       <MapView
         markers={markers}
         renderPopupContent={renderPopupContent}

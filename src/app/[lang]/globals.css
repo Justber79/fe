@@ -159,6 +159,20 @@ html {
   --color-pink-500: rgba(242, 177, 255, 1);
   --color-pink-600: rgba(220, 161, 232, 1);
 
+  /* map district colors */
+  --map-district-fill-color-mitte-orange: #f4a261;
+  --map-district-fill-color-friedrichshain-kreuzberg-teal: #2a9d8f;
+  --map-district-fill-color-pankow-coral: #e76f51;
+  --map-district-fill-color-charlottenburg-wilmersdorf-sage: #8ab17d;
+  --map-district-fill-color-spandau-yellow: #e9c46a;
+  --map-district-fill-color-steglitz-zehlendorf-blue: #577590;
+  --map-district-fill-color-tempelhof-schoeneberg-purple: #c77dff;
+  --map-district-fill-color-neukoelln-green: #90be6d;
+  --map-district-fill-color-treptow-koepenick-pink: #f28482;
+  --map-district-fill-color-marzahn-hellersdorf-teal: #43aa8b;
+  --map-district-fill-color-lichtenberg-yellow: #f9c74f;
+  --map-district-fill-color-reinickendorf-blue: #729ec2;
+
   /* text */
   --text-h2-font-weight: 600;
   --text-h2-font-size: 32px;
@@ -590,9 +604,19 @@ html {
   --dashboard-map-popup-card-header-font-size: 1rem;
   --dashboard-map-popup-card-header-font-weight: 600;
   --dashboard-map-container-gap: 1rem;
-  --dashboard-map-custom-icon-width: 50px;
+  --dashboard-map-custom-icon-width: 30px;
   --dashboard-map-custom-icon-border: solid var(--color-aubergine) 2px;
   --dashboard-map-custom-icon-border-radius: 50%;
+  --dashboard-map-berlin-rac-address-gap: 0.5rem;
+  --dashboard-map-berlin-rac-address-margin-top: 1rem;
+  --dashboard-map-legend-padding: 12px 14px;
+  --dashboard-map-legend-border-radius: 8px;
+  --dashboard-map-legend-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --dashboard-map-legend-font-size: 13px;
+  --dashboard-map-legend-title-margin-bottom: 8px;
+  --dashboard-map-legend-row-gap: 10px;
+  --dashboard-map-legend-row-margin-bottom: 8px;
+  --dashboard-map-legend-icon-slot-width: 50px;
   --agent-profile-section-card-header-height: 56px;
   --agent-profile-section-card-header-info-gap: 24px;
   --agent-profile-section-card-info-gap: 5px;
@@ -982,6 +1006,8 @@ html {
     --paginated-grid-pagination-number-border-radius: 6px;
 
     --volunteer-profile-section-card-header-button-padding: 8px 12px;
+
+    --dashboard-map-popup-height: 200px;
   }
 }
 
@@ -1236,6 +1262,9 @@ html {
     --paginated-grid-pagination-number-width: 36px;
     --paginated-grid-pagination-number-height: 44px;
     --paginated-grid-pagination-number-border-radius: 6px;
+
+    --dashboard-map-popup-height: 400px;
+    --dashboard-map-custom-icon-width: 50px;
   }
 }
 
