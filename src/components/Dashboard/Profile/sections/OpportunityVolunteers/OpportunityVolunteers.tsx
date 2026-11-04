@@ -2,28 +2,30 @@ import {
   useDeleteOpportunityVolunteer,
   useUpdateOpportunityVolunteerStatus,
 } from "@/hooks/useUpdateOpportunityVolunteerStatus";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { Id, OpportunityVolunteerStatusType, UserRole } from "need4deed-sdk";
+import { Id, OpportunityVolunteerStatusType } from "need4deed-sdk";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
 import { Tabs } from "../shared/Tabs";
 import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
-import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
+import { ITEM_STATUS_REMOVED, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
 import { OpportunityVolunteersContainer, OpportunityVolunteersList } from "./styles";
+import { getOpportunityVolunteerStatusOrder } from "./get-opportunity-volunteer-status-order";
 import { useGetVolunteerOpportunityLinked } from "@/hooks/useGetVolunteerOpportunityLinked";
 
 export const OpportunityVolunteers = ({
   opportunityId,
   hasEditingRights,
+  isStaff,
+  isUserLoaded,
 }: {
   opportunityId: Id;
   hasEditingRights: boolean;
+  isStaff: boolean;
+  isUserLoaded: boolean;
 }) => {
   const { t } = useTranslation();
-  const user = useCurrentUser(true);
-  const isAgent = user?.role === UserRole.AGENT;
 
   const queryKey = ["opportunity-volunteers", String(opportunityId)];
 
@@ -31,13 +33,7 @@ export const OpportunityVolunteers = ({
 
   const volunteers = useMemo(() => data ?? [], [data]);
 
-  const statusOrder = useMemo(
-    () =>
-      isAgent
-        ? TAB_STATUS_ORDER.filter((status) => status !== OpportunityVolunteerStatusType.PENDING)
-        : TAB_STATUS_ORDER,
-    [isAgent],
-  );
+  const statusOrder = useMemo(() => getOpportunityVolunteerStatusOrder(isStaff, isUserLoaded), [isStaff, isUserLoaded]);
 
   const {
     selectedTabIndex,
@@ -78,7 +74,7 @@ export const OpportunityVolunteers = ({
     updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
   };
 
-  if (isLoading) {
+  if (isLoading || !isUserLoaded) {
     return <OpportunityVolunteersContainer data-testid="opportunity-volunteers" />;
   }
 
