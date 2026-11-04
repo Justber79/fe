@@ -18,7 +18,6 @@ import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 import { createVolunteerFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
@@ -36,7 +35,7 @@ interface VolunteerListControllerProps {
   opportunityId?: string;
   viewMode: ViewMode;
   opportunityFilter: SingleFilter | undefined;
-  hasEngagementFilter: boolean;
+  defaultEngagements: VolunteerStateEngagementType[];
 }
 
 export function VolunteerListController(props: VolunteerListControllerProps) {
@@ -52,9 +51,9 @@ function VolunteerListControllerContent({
   opportunityId,
   viewMode,
   opportunityFilter,
-  hasEngagementFilter,
+  defaultEngagements,
 }: VolunteerListControllerProps) {
-  const user = useCurrentUser(true);
+  const user = useCurrentUser();
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
@@ -80,9 +79,7 @@ function VolunteerListControllerContent({
 
   const emailsFilter = new URLSearchParams(serializedFilter);
 
-  if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT) && !(user?.role === UserRole.AGENT && hasEngagementFilter)) {
-    const defaultEngagements =
-      user?.role === UserRole.AGENT ? [VolunteerStateEngagementType.AVAILABLE] : DEFAULT_VOLUNTEER_ENGAGEMENTS;
+  if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT)) {
     defaultEngagements.forEach((defaultEngagement) =>
       serializedFilter.append(QueryParamsKeys.ENGAGEMENT, defaultEngagement.replace(/^vol-/, "")),
     );
@@ -100,7 +97,6 @@ function VolunteerListControllerContent({
     apiPath: apiPathVolunteer,
     params,
     staleTime: cacheTTL,
-    enabled: Boolean(user),
     keepPreviousData: isMapView,
   });
   const volunteers = data || [];
