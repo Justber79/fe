@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { FormInput } from "../../core/common";
 import { Button, Checkbox } from "../../core/button";
 import { useMutationQuery } from "@/hooks";
-import { apiPathLogin } from "@/config/constants";
+import { apiPathLogin, LOGIN_ERROR_KEYS, LOGIN_ERROR_TOAST_ID } from "@/config/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FormActions, LoginButtonDiv, StyledForm } from "../styles";
@@ -20,15 +20,6 @@ interface LoginResponse {
   message: string;
   data: { token: string };
 }
-
-const LOGIN_ERROR_KEYS: Record<number, string> = {
-  400: "dashboard.login.errors.missingFields",
-  401: "dashboard.login.errors.wrongCredentials",
-  403: "dashboard.login.errors.inactive",
-  404: "dashboard.login.errors.unknownEmail",
-};
-
-const LOGIN_ERROR_TOAST_ID = "login-error";
 
 const useLoginMutation = (onLoginSuccess: () => void) => {
   const { t } = useTranslation();
