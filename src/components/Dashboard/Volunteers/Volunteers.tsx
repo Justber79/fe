@@ -85,20 +85,28 @@ export function Volunteers() {
     router.push(pathname + questionMark + params.toString());
   };
 
+  const serializeFilterUpdate = (filter: VolunteerCardsFilter) => {
+    const params = new URLSearchParams(serializeFilters(filter, searchParams));
+    if (isAgent && !Object.values(filter[QueryParamsKeys.ENGAGEMENT]).some(Boolean)) {
+      params.set(QueryParamsKeys.ENGAGEMENT, "");
+    }
+    return params;
+  };
+
   const handleFilterUpdate = (
     newFilter: VolunteerCardsFilter | ((prev: VolunteerCardsFilter) => VolunteerCardsFilter),
   ) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
 
     setCardsFilter(updatedFilter);
-    router.push(pathname + questionMark + serializeFilters(updatedFilter, searchParams));
+    router.push(pathname + questionMark + serializeFilterUpdate(updatedFilter));
   };
 
   const handleRemoveOpportunityFilter = () => {
     const wasPrefilled = searchParams.has(PREFILLED_PARAM);
     const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
     if (wasPrefilled) setCardsFilter(cleared);
-    const params = new URLSearchParams(serializeFilters(cleared, searchParams));
+    const params = serializeFilterUpdate(cleared);
     params.delete("opportunity");
     params.delete(PREFILLED_PARAM);
     router.push(pathname + questionMark + params.toString());
@@ -107,13 +115,13 @@ export function Volunteers() {
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
     const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared));
   };
 
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared));
   };
 
   useEffect(() => {
@@ -150,9 +158,17 @@ export function Volunteers() {
 
     setCardsFilter((prev) => {
       const baseFilters = withOptionFilters(volunteerFilterConfigs, prev, apiFilterOptions);
+      if (isAgent) {
+        baseFilters[QueryParamsKeys.ENGAGEMENT] = getClearFilter(baseFilters[QueryParamsKeys.ENGAGEMENT]);
+      }
       const deserializedFilters = deserializeVolunteerFilters(baseFilters, searchParams);
 
-      if (isAgent) deserializedFilters.search = "";
+      if (isAgent) {
+        deserializedFilters.search = "";
+        if (!searchParams.has(QueryParamsKeys.ENGAGEMENT)) {
+          deserializedFilters[QueryParamsKeys.ENGAGEMENT][VolunteerStateEngagementType.AVAILABLE] = true;
+        }
+      }
 
       return deserializedFilters;
     });
@@ -172,7 +188,7 @@ export function Volunteers() {
     <DashboardLayout>
       <VolunteersContainer>
         <CardsHeader
-          header={t("dashboard.volunteers.volunteers")}
+          header={t(isAgent ? "dashboard.volunteers.agentHeadline" : "dashboard.volunteers.volunteers")}
           resultCounter={numOfVols}
           resultText={t("dashboard.home.sidebar.volunteers")}
           tabs={tabs}
@@ -201,6 +217,7 @@ export function Volunteers() {
             opportunityId={opportunityId}
             viewMode={viewMode}
             opportunityFilter={opportunityFilter}
+            hasEngagementFilter={searchParams.has(QueryParamsKeys.ENGAGEMENT)}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}

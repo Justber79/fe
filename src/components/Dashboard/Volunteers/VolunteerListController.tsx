@@ -3,7 +3,14 @@ import { useEffect, useMemo } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { apiPathVolunteer, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { ApiOptionLists, ApiVolunteerGetList, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
+import {
+  ApiOptionLists,
+  ApiVolunteerGetList,
+  QueryParamsKeys,
+  SortOrder,
+  UserRole,
+  VolunteerStateEngagementType,
+} from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
 import { getCheckedOptionIds, serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
@@ -29,6 +36,7 @@ interface VolunteerListControllerProps {
   opportunityId?: string;
   viewMode: ViewMode;
   opportunityFilter: SingleFilter | undefined;
+  hasEngagementFilter: boolean;
 }
 
 export function VolunteerListController(props: VolunteerListControllerProps) {
@@ -44,7 +52,9 @@ function VolunteerListControllerContent({
   opportunityId,
   viewMode,
   opportunityFilter,
+  hasEngagementFilter,
 }: VolunteerListControllerProps) {
+  const user = useCurrentUser(true);
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
   const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
@@ -70,8 +80,10 @@ function VolunteerListControllerContent({
 
   const emailsFilter = new URLSearchParams(serializedFilter);
 
-  if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT)) {
-    DEFAULT_VOLUNTEER_ENGAGEMENTS.forEach((defaultEngagement) =>
+  if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT) && !(user?.role === UserRole.AGENT && hasEngagementFilter)) {
+    const defaultEngagements =
+      user?.role === UserRole.AGENT ? [VolunteerStateEngagementType.AVAILABLE] : DEFAULT_VOLUNTEER_ENGAGEMENTS;
+    defaultEngagements.forEach((defaultEngagement) =>
       serializedFilter.append(QueryParamsKeys.ENGAGEMENT, defaultEngagement.replace(/^vol-/, "")),
     );
   }
@@ -88,11 +100,11 @@ function VolunteerListControllerContent({
     apiPath: apiPathVolunteer,
     params,
     staleTime: cacheTTL,
+    enabled: Boolean(user),
     keepPreviousData: isMapView,
   });
   const volunteers = data || [];
   const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", emailsFilter);
-  const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
   const markers = useMemo(
