@@ -723,6 +723,12 @@
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
       "forgotPassword": "Passwort vergessen",
+      "errors": {
+        "missingFields": "Bitte E-Mail und Passwort eingeben.",
+        "wrongCredentials": "E-Mail oder Passwort ist falsch.",
+        "inactive": "Ihr Konto ist nicht aktiv. Wenn Sie sich gerade registriert haben, bestätigen Sie bitte zuerst Ihre E-Mail.",
+        "unknownEmail": "Zu dieser E-Mail gibt es kein Konto."
+      },
       "emailMissing": "E-Mail fehlt.",
       "emailMissingAtChar": "Die E-Mail-Adresse muss ein '@'-Zeichen enthalten.",
       "newPassword": "Neues Passwort",
