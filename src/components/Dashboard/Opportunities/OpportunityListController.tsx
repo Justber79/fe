@@ -21,7 +21,6 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM, VOLUNTEER_OPPORTUNITY_STATU
 import { createOpportunityFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
-import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { createOpportunityMarkers, createSingleVolunteerMarker } from "../common/MapView/helpers";
 import { SingleFilter } from "../common/MapView/types";
@@ -59,7 +58,11 @@ type Props = {
   volunteerFilter: SingleFilter | undefined;
 };
 
-export function OpportunityListController({
+export function OpportunityListController(props: Props) {
+  return <OpportunityListControllerContent key={props.viewMode} {...props} />;
+}
+
+function OpportunityListControllerContent({
   setNumOfOpps,
   sortOrder,
   filter,
@@ -108,6 +111,7 @@ export function OpportunityListController({
     },
     staleTime: cacheTTL,
     enabled: isRoleKnown,
+    keepPreviousData: isMapView,
   });
 
   const rawOpportunities: ApiVolunteerOpportunityGetList[] = data || [];
@@ -127,24 +131,18 @@ export function OpportunityListController({
 
   const volunteerMarker = createSingleVolunteerMarker(volunteerFilter, t, i18n.language);
 
-  const markerCount = useMemo(() => {
-    return markers?.flatMap((marker) => marker.children ?? []).length ?? 0;
-  }, [markers]);
-
-  const activeCount = isMapView ? markerCount : (count ?? 0);
-
   useEffect(() => {
-    setNumOfOpps(activeCount);
-  }, [activeCount, setNumOfOpps]);
+    setNumOfOpps(count);
+  }, [count, setNumOfOpps]);
 
   const isPending = isLoading || !isRoleKnown;
-  if (isPending && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isPending && isMapView) return <LoadingMapView />;
-  if (isPending) return <DashboardListLoading />;
+  if (isPending && !isListView) return <DashboardListLoading />;
 
   if (isListView) {
     return (
       <OpportunityTableList
+        isLoading={isPending}
         opportunities={opportunities}
         count={count}
         itemsPerPage={limit}

@@ -648,10 +648,21 @@
       "volunteers": "Volunteers",
       "opportunities": "Opportunities",
       "agents": "NGOs",
+      "markerHelper": {
+        "opportunities": "*Markers can contain one or more opportunities",
+        "agents": "*Markers can contain one or more NGOs",
+        "volunteers": "*Markers can contain one or more volunteers"
+      },
+      "addressNotice": {
+        "opportunities": "*Opportunities without a certified address are not shown on the map.",
+        "agents": "*NGOs without a certified address are not shown on the map.",
+        "volunteers": "*Volunteers without a certified address are not shown on the map."
+      },
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
         "rac": "Refugee Accommodation Center",
+        "otherRac": "Other Refugee Accommodation Centers",
         "volunteer": "Volunteer",
         "numberOfEntities": "Number of opportunities or volunteers"
       },
@@ -762,10 +773,17 @@
       "login": "Log in",
       "createNgoAccount": "Create an NGO account",
       "createVolunteerAccount": "Create a volunteer account",
+      "newToNeed4Deed": "New to Need4Deed?",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember Me",
       "forgotPassword": "Forgot Password",
+      "errors": {
+        "missingFields": "Please enter your email and password.",
+        "wrongCredentials": "Wrong email or password.",
+        "inactive": "Your account isn't active. If you just registered, please confirm your email first.",
+        "unknownEmail": "There's no account with this email."
+      },
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
       "newPassword": "New Password",

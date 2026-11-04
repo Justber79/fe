@@ -654,10 +654,21 @@
       "volunteers": "Ehrenamtliche",
       "opportunities": "Ehrenamtsbedarfe",
       "agents": "Einrichtungen",
+      "markerHelper": {
+        "opportunities": "*Ein Marker kann einen oder mehrere Ehrenamtsbedarfe enthalten",
+        "agents": "*Ein Marker kann eine oder mehrere Einrichtungen enthalten",
+        "volunteers": "*Ein Marker kann eine oder mehrere Ehrenamtliche enthalten"
+      },
+      "addressNotice": {
+        "opportunities": "*Ehrenamtsbedarfe ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "agents": "*Einrichtungen ohne geprüfte Adresse werden nicht auf der Karte angezeigt.",
+        "volunteers": "*Ehrenamtliche ohne geprüfte Adresse werden nicht auf der Karte angezeigt."
+      },
       "legend": {
         "title": "Legende",
         "opportunity": "Ehrenamtsbedarfe",
         "rac": "Unterkunft für Geflüchtete",
+        "otherRac": "Weitere Berliner Unterkünfte für Geflüchtete",
         "volunteer": "Ehrenamtliche",
         "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
@@ -768,10 +779,17 @@
       "login": "Anmelden",
       "createNgoAccount": "NGO-Konto erstellen",
       "createVolunteerAccount": "Freiwilligenkonto erstellen",
+      "newToNeed4Deed": "Neu bei Need4Deed?",
       "email": "Email",
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
       "forgotPassword": "Passwort vergessen",
+      "errors": {
+        "missingFields": "Bitte E-Mail und Passwort eingeben.",
+        "wrongCredentials": "E-Mail oder Passwort ist falsch.",
+        "inactive": "Ihr Konto ist nicht aktiv. Wenn Sie sich gerade registriert haben, bestätigen Sie bitte zuerst Ihre E-Mail.",
+        "unknownEmail": "Zu dieser E-Mail gibt es kein Konto."
+      },
       "emailMissing": "E-Mail fehlt.",
       "emailMissingAtChar": "Die E-Mail-Adresse muss ein '@'-Zeichen enthalten.",
       "newPassword": "Neues Passwort",

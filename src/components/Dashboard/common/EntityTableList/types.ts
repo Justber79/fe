@@ -18,4 +18,5 @@ export interface EntityTableListProps<T extends { id: string | number }> {
   testIdPrefix: string;
   noFixedWidth?: boolean;
   isFewResults?: boolean;
+  isLoading?: boolean;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { MapView } from "../common/MapView/MapView";
-import { MapContainer, PopupCardHeader, PopupLink } from "../common/MapView/styles";
+import { MapContainer, MapHelperText, MapHelperWrapper, PopupCardHeader, PopupLink } from "../common/MapView/styles";
 import CardDetail from "./CardDetail";
 import { CardParagraph } from "./VolunteerCard";
 import { IconName } from "./icon";
@@ -61,6 +61,12 @@ export function VolunteerMapView({
 
   return (
     <MapContainer>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.markerHelper.volunteers")}</MapHelperText>
+      </MapHelperWrapper>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.addressNotice.volunteers")}</MapHelperText>
+      </MapHelperWrapper>
       <MapView
         markers={markers}
         renderPopupContent={renderPopupContent}

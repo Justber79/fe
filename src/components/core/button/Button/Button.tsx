@@ -94,6 +94,7 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
   ["aria-describedby"]?: string;
   ["aria-label"]?: string;
+  ["aria-pressed"]?: boolean;
 }
 
 export function Button({
@@ -120,6 +121,7 @@ export function Button({
   type = "button",
   ["aria-describedby"]: ariaDescribedBy,
   ["aria-label"]: ariaLabel,
+  ["aria-pressed"]: ariaPressed,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -139,6 +141,7 @@ export function Button({
       $textHoverColor={textHoverColor}
       aria-describedby={ariaDescribedBy}
       aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
     >
       {iconName && (
         <IconDiv color={iconColor} size={iconSize}>

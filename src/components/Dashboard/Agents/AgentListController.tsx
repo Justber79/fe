@@ -12,7 +12,6 @@ import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { createAgentFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
-import { LoadingAgentTableList } from "./LoadingAgentTableList";
 import { createAgentMarkers } from "../common/MapView/helpers";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { AgentMapView } from "./AgentMapView";
@@ -28,7 +27,9 @@ type Props = {
   onSelect?: (agent: ApiAgentGetList) => void;
 };
 
-export const AgentListController = ({
+export const AgentListController = (props: Props) => <AgentListControllerContent key={props.viewMode} {...props} />;
+
+const AgentListControllerContent = ({
   setNumOfAgents,
   sortOrder,
   filter,
@@ -60,6 +61,7 @@ export const AgentListController = ({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
+    keepPreviousData: isMapView,
   });
 
   const agents: ApiAgentGetList[] = data || [];
@@ -77,14 +79,14 @@ export const AgentListController = ({
     setNumOfAgents(count);
   }, [count, setNumOfAgents]);
 
-  if (isLoading && isListView) return <LoadingAgentTableList dropdownFilters={dropdownFilters} />;
   if (isLoading && isMapView) return <LoadingMapView />;
 
-  if (isLoading) return <DashboardListLoading />;
+  if (isLoading && !isListView) return <DashboardListLoading />;
 
   if (isListView) {
     return (
       <AgentTableList
+        isLoading={isLoading}
         agents={agents}
         count={count}
         itemsPerPage={limit}
