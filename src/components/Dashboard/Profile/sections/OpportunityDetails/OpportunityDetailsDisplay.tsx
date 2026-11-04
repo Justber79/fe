@@ -5,10 +5,13 @@ import { formatAvailability } from "@/components/Dashboard/Profile/sections/Volu
 import { EditableField } from "@/components/EditableField/EditableField";
 import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { format } from "date-fns";
-import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiOpportunityGet, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
+import { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { FormDetails } from "../shared/styles";
-import { extractOptionTitles, formatLanguagesByPurpose } from "./formatters";
+import { formatLanguagesByPurpose } from "./formatters";
+import { useApiActivities, useApiSkills } from "@/components/Dashboard/Profile/sections/VolunteerProfile/hooks";
+import { toOptionItems } from "@/components/Dashboard/NewOpportunity/helper";
 import { DateFieldRow, FieldRow, TagsValue } from "./styles";
 import { OpportunityWithDetails } from "./types";
 import { dateFromDateTimeUTCStrings, formatToLocalTime } from "@/utils";
@@ -17,9 +20,23 @@ type Props = {
   opportunity: ApiOpportunityGet;
 };
 
+type OptionTagsProps = {
+  titles: string[];
+  savedCount: number;
+  options: { isLoading: boolean; isError: boolean };
+  backgroundColor: ComponentProps<typeof Tags>["backgroundColor"];
+};
+
+function OptionTags({ titles, savedCount, options, backgroundColor }: OptionTagsProps) {
+  const { t } = useTranslation();
+  if (titles.length > 0) return <Tags tags={titles} backgroundColor={backgroundColor} />;
+  if (savedCount > 0 && options.isLoading) return <span role="status">{t("dashboard.common.loading")}</span>;
+  if (savedCount > 0 && options.isError) return <span role="alert">{t("message.errorGeneric")}</span>;
+  return <EmptyPlaceholder />;
+}
+
 export function OpportunityDetailsDisplay({ opportunity }: Props) {
-  const { t, i18n } = useTranslation();
-  const lang = i18n.language as Lang;
+  const { t } = useTranslation();
   const opp = opportunity as OpportunityWithDetails;
   const prefix = "dashboard.opportunityProfile.opportunityDetails";
 
@@ -28,8 +45,16 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
   const mainCommunication = formatLanguagesByPurpose(opp.languages, LangPurpose.GENERAL, t);
   const residentsSpeak = formatLanguagesByPurpose(opp.languages, [LangPurpose.RECIPIENT, LangPurpose.TRANSLATION], t);
   const schedule = formatAvailability(opp.availability, t);
-  const activities = extractOptionTitles(opp.activities, lang);
-  const skills = extractOptionTitles(opp.skills, lang);
+  const activityOptions = useApiActivities();
+  const skillOptions = useApiSkills();
+  const activities = toOptionItems(
+    opp.activities.map(({ id }) => String(id)),
+    activityOptions.data,
+  ).map(({ title }) => title);
+  const skills = toOptionItems(
+    opp.skills.map(({ id }) => String(id)),
+    skillOptions.data,
+  ).map(({ title }) => title);
 
   let eventDate: Date | null = null;
 
@@ -110,18 +135,24 @@ export function OpportunityDetailsDisplay({ opportunity }: Props) {
       <FieldRow data-testid="opportunity-details-activities">
         <label>{t(`${prefix}.activities`)}</label>
         <TagsValue>
-          {activities.length > 0 ? (
-            <Tags tags={activities} backgroundColor="var(--color-salmon)" />
-          ) : (
-            <EmptyPlaceholder />
-          )}
+          <OptionTags
+            titles={activities}
+            savedCount={opp.activities.length}
+            options={activityOptions}
+            backgroundColor="var(--color-salmon)"
+          />
         </TagsValue>
       </FieldRow>
 
       <FieldRow data-testid="opportunity-details-skills">
         <label>{t(`${prefix}.skills`)}</label>
         <TagsValue>
-          {skills.length > 0 ? <Tags tags={skills} backgroundColor="var(--color-pink-50)" /> : <EmptyPlaceholder />}
+          <OptionTags
+            titles={skills}
+            savedCount={opp.skills.length}
+            options={skillOptions}
+            backgroundColor="var(--color-pink-50)"
+          />
         </TagsValue>
       </FieldRow>
     </FormDetails>
