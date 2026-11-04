@@ -65,7 +65,7 @@ export const PopupWrapper = styled.div`
   align-items: center;
   gap: var(--dashboard-map-popup-wrapper-gap);
   & > span:first-child {
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
   }
 `;
 
@@ -102,7 +102,7 @@ export const MarkerLabel = styled.span`
   margin-bottom: var(--dashboard-map-marker-label-margin-bottom);
   color: var(--color-grey-500);
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 `;
 
 export const MapOpportunityList = styled.ul`
@@ -136,7 +136,7 @@ export const PopupContentWrapper = styled.div`
 
 export const PopupHeader = styled.div`
   font-size: var(--dashboard-map-popup-font-size);
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 `;
 
 export const PopupLink = styled(Link)`
@@ -165,7 +165,6 @@ export const BerlinRacPopupContainer = styled.div`
   border-radius: var(--dashboard-map-popup-link-border-radius);
   display: flex;
   flex-direction: column;
-  // gap: var(--dashboard-map-popup-link-gap);
   &:hover {
     background-color: var(--color-orchid);
   }
@@ -179,32 +178,44 @@ export const BerlinRacCopyAddressWrapper = styled.div`
 export const BerlinRacAddressContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: var(--dashboard-map-berlin-rac-address-gap);
+  margin-top: var(--dashboard-map-berlin-rac-address-margin-top);
 `;
 
 export const LegendCard = styled.div`
-  background: white;
-  padding: 12px 14px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  font-family: sans-serif;
-  font-size: 13px;
-  color: #333;
+  background: var(--color-white);
+  padding: var(--dashboard-map-legend-padding);
+  border-radius: var(--dashboard-map-legend-border-radius);
+  box-shadow: var(--dashboard-map-legend-box-shadow);
+  font-family: var(--bs-body-font-family);
+  font-size: var(--dashboard-map-legend-font-size);
+  color: var(--color-black);
 `;
 
 export const LegendTitle = styled.strong`
   display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #111;
+  margin-bottom: var(--dashboard-map-legend-title-margin-bottom);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+`;
+
+export const LegendTitleNoContent = styled.strong`
+  display: block;
+  margin-bottom: var(--dashboard-map-legend-title-margin-bottom);
+  font-size: var(--font-size-xs);
+  color: var(--color-black);
+  background: var(--color-white);
+  padding: var(--dashboard-map-legend-padding);
+  border-radius: var(--dashboard-map-legend-border-radius);
+  box-shadow: var(--dashboard-map-legend-box-shadow);
+  cursor: pointer;
 `;
 
 export const LegendRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: var(--dashboard-map-legend-row-gap);
+  margin-bottom: var(--dashboard-map-legend-row-margin-bottom);
 
   &:last-child {
     margin-bottom: 0;
@@ -212,7 +223,7 @@ export const LegendRow = styled.div`
 `;
 
 export const IconSlot = styled.div`
-  width: 50px;
+  width: var(--dashboard-map-legend-icon-slot-width);
   aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
@@ -229,11 +240,24 @@ export const IconSlot = styled.div`
       border-radius: 50%;
       object-fit: contain;
     }
+
+    &.custom-other-rac-icon {
+      filter: grayscale(1);
+    }
   }
 `;
 
 export const ScrollZoomContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: var(--dashboard-map-container-gap);
   align-items: center;
+`;
+
+export const MapHelperWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const MapHelperText = styled.i`
+  font-weight: 600;
 `;

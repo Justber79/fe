@@ -68,7 +68,7 @@
 
 .form-error {
   width: 100%;
-  height: 1rem;
+  min-height: 1rem;
 }
 
 .simple-input-form-error {
@@ -208,7 +208,19 @@
 .form-chip-list {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.3rem;
+}
+
+.form-chip-list > div {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.form-chip-list > button {
+  font: inherit;
+  background: var(--color-white);
 }
 
 .form-schedule {
@@ -221,6 +233,13 @@
   display: flex;
   gap: 1.5rem;
   width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.form-table-wrapper label {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .form-table {
@@ -498,7 +517,7 @@
     min-width: 0;
   }
 
-  .form-pick {
+  .form-table .form-pick {
     display: flex;
     min-width: 0;
   }
@@ -507,10 +526,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     min-height: 2.5rem;
     min-width: 0;
+    max-width: 100%;
     overflow-wrap: anywhere;
+  }
+
+  .form-table .form-pick label {
+    width: 100%;
+  }
+
+  .form-chip-list > button {
+    min-height: 2.5rem;
   }
 }
 
@@ -523,7 +550,7 @@
     grid-row: 1 / 3;
   }
 
-  .form-pick label:not(:has(select)) {
+  .form-table .form-pick label {
     white-space: nowrap;
     overflow-wrap: normal;
   }

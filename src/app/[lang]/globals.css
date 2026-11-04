@@ -69,7 +69,20 @@ html {
 }
 
 :root {
+  --button-height: 56px;
+  --button-width: auto;
+  --button-padding: 12px 24px;
+  --button-border-radius: 125px;
+  --button-text-font-weight: 500;
+  --button-text-font-size: 18px;
+  --button-text-line-height: 25px;
+  --button-text-letter-spacing: 0.13px;
+  --button-text-text-align: center;
+  --opportunities-filters-button-height: 48px;
+  --opportunities-filters-clear-all-button-height: var(--button-height);
   --n4d-gap: 0;
+  --search-container-focus-outline: var(--border-width-medium) solid var(--color-midnight);
+  --search-container-focus-outline-offset: var(--spacing-4);
   --n4d-w: min(90vw, 1080px);
   --n4d-lang-direction: ltr;
   --bs-body-font-family: "Figtree", sans-serif;
@@ -145,6 +158,20 @@ html {
   --color-pink-400: rgba(245, 193, 255, 1);
   --color-pink-500: rgba(242, 177, 255, 1);
   --color-pink-600: rgba(220, 161, 232, 1);
+
+  /* map district colors */
+  --map-district-fill-color-mitte-orange: #f4a261;
+  --map-district-fill-color-friedrichshain-kreuzberg-teal: #2a9d8f;
+  --map-district-fill-color-pankow-coral: #e76f51;
+  --map-district-fill-color-charlottenburg-wilmersdorf-sage: #8ab17d;
+  --map-district-fill-color-spandau-yellow: #e9c46a;
+  --map-district-fill-color-steglitz-zehlendorf-blue: #577590;
+  --map-district-fill-color-tempelhof-schoeneberg-purple: #c77dff;
+  --map-district-fill-color-neukoelln-green: #90be6d;
+  --map-district-fill-color-treptow-koepenick-pink: #f28482;
+  --map-district-fill-color-marzahn-hellersdorf-teal: #43aa8b;
+  --map-district-fill-color-lichtenberg-yellow: #f9c74f;
+  --map-district-fill-color-reinickendorf-blue: #729ec2;
 
   /* text */
   --text-h2-font-weight: 600;
@@ -302,7 +329,7 @@ html {
   --communication-tracker-checkmark-height: 12px;
   --communication-tracker-checkmark-border-width: 0 2.5px 2.5px 0;
   --communication-tracker-checkmark-transform: translate(-50%, -60%) rotate(45deg);
-  --communication-tracker-button-height: 56px;
+  --communication-tracker-button-height: var(--button-height);
   --communication-tracker-dialog-box-shadow: 0px 10px 30px -12px rgba(143, 81, 138, 0.2);
   --communication-tracker-popover-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 
@@ -577,9 +604,19 @@ html {
   --dashboard-map-popup-card-header-font-size: 1rem;
   --dashboard-map-popup-card-header-font-weight: 600;
   --dashboard-map-container-gap: 1rem;
-  --dashboard-map-custom-icon-width: 50px;
+  --dashboard-map-custom-icon-width: 30px;
   --dashboard-map-custom-icon-border: solid var(--color-aubergine) 2px;
   --dashboard-map-custom-icon-border-radius: 50%;
+  --dashboard-map-berlin-rac-address-gap: 0.5rem;
+  --dashboard-map-berlin-rac-address-margin-top: 1rem;
+  --dashboard-map-legend-padding: 12px 14px;
+  --dashboard-map-legend-border-radius: 8px;
+  --dashboard-map-legend-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --dashboard-map-legend-font-size: 13px;
+  --dashboard-map-legend-title-margin-bottom: 8px;
+  --dashboard-map-legend-row-gap: 10px;
+  --dashboard-map-legend-row-margin-bottom: 8px;
+  --dashboard-map-legend-icon-slot-width: 50px;
   --agent-profile-section-card-header-height: 56px;
   --agent-profile-section-card-header-info-gap: 24px;
   --agent-profile-section-card-info-gap: 5px;
@@ -671,7 +708,7 @@ html {
   --volunteer-profile-section-card-icon-size: 40px;
   --volunteer-profile-section-card-header-height: 56px;
   --volunteer-profile-section-card-header-info-gap: 24px;
-  --volunteer-profile-section-card-header-button-height: 56px;
+  --volunteer-profile-section-card-header-button-height: var(--button-height);
   --volunteer-profile-section-card-header-button-textFontSize: 20px;
   --volunteer-profile-section-card-header-button-border: 2px solid var(--color-aubergine);
   --volunteer-profile-opportunities-container-gap: 8px;
@@ -702,7 +739,7 @@ html {
   --volunteer-profile-opportunities-accordion-opp-detail-mid-font: 550;
   --volunteer-profile-opportunities-accordion-opp-detail-light-font: 400;
   --volunteer-profile-opportunities-accordion-actions-container-gap: 16px;
-  --volunteer-profile-opportunities-accordion-actions-button-height: 56px;
+  --volunteer-profile-opportunities-accordion-actions-button-height: var(--button-height);
   --volunteer-profile-opportunities-accordion-actions-button-textFontSize: 24px;
   --volunteer-profile-opportunities-accordion-actions-button-border: 2px solid var(--color-aubergine);
   --volunteer-profile-opportunities-accordion-info-section-icon-size: 20px;
@@ -712,11 +749,45 @@ html {
   --volunteer-profile-opportunities-accordion-language-row-gap: 8px;
   --opportunity-volunteers-avatar-size: 40px;
   --opportunity-volunteers-avatar-border-radius: 50%;
+  --profile-opportunities-container-height: min(435px, 60dvh);
 
   /* agent registration form */
   --agent-form-existing-user-margin-bottom: 30px;
   --agent-form-existing-user-gap: 10px;
   --agent-form-existing-user-font-size: 0.9375rem;
+
+  --homepage-footer-partners-section-container-height: auto;
+  --homepage-footer-partners-section-container-padding: 32px 20px;
+  --homepage-footer-partners-section-container-gap: 64px;
+  --homepage-footer-partners-section-partners-container-height: 443px;
+  --homepage-footer-partners-section-partners-container-flex-direction: column;
+  --homepage-footer-partners-section-partners-container-justify-content: center;
+  --homepage-footer-partners-section-partners-container-gap: 48px;
+  --homepage-footer-partners-section-partners-frame-container-gap: 75px;
+  --homepage-footer-partners-section-partners-club-dialog-div-gap: 8px;
+  --homepage-footer-partners-section-logo-club-dialog-width: 200;
+  --homepage-footer-partners-section-logo-club-dialog-height: 36;
+  --homepage-footer-partners-section-logo-berlin-width: 112;
+  --homepage-footer-partners-section-logo-berlin-height: 120;
+  --homepage-footer-partners-section-logo-eu-width: 130px;
+  --homepage-footer-partners-section-logo-eu-height: 120px;
+  --homepage-footer-partners-section-logo-SchönebergHilft-width: 100px;
+  --homepage-footer-partners-section-logo-SchönebergHilft-height: 100px;
+  --homepage-footer-partners-section-logo-n4d-width: 68px;
+  --homepage-footer-partners-section-logo-n4d-height: 90px;
+  --homepage-footer-partners-section-footer-container-height: 364px;
+  --homepage-footer-partners-section-footer-container-flex-direction: column;
+  --homepage-footer-partners-section-footer-container-justify-content: space-between;
+  --homepage-footer-partners-section-contact-socials-container-flex-direction: column;
+  --homepage-footer-partners-section-contact-socials-container-justify-content: unset;
+  --homepage-footer-partners-section-contact-socials-container-gap: 32px;
+  --homepage-footer-partners-section-contact-container-gap: 10px;
+  --homepage-footer-partners-section-socials-container-gap: 20px;
+  --homepage-footer-partners-section-footer-links-container-width: 310px;
+  --homepage-footer-partners-section-footer-frame-container-gap: 16px;
+  --homepage-footer-partners-section-p-fontWeight-large: 500;
+  --homepage-footer-partners-section-p-fontWeight-small: 400;
+  --homepage-footer-partners-section-p-fontSize: 16px;
 }
 
 .with-linebreaks {
@@ -824,39 +895,6 @@ html {
     --homepage-hero-section-content-hero-button-container-gap: 16px;
     --homepage-hero-section-content-hero-button-container-flex-direction: column;
 
-    --homepage-footer-partners-section-container-height: auto;
-    --homepage-footer-partners-section-container-padding: 32px 20px;
-    --homepage-footer-partners-section-container-gap: 64px;
-    --homepage-footer-partners-section-partners-container-height: 443px;
-    --homepage-footer-partners-section-partners-container-flex-direction: column;
-    --homepage-footer-partners-section-partners-container-justify-content: center;
-    --homepage-footer-partners-section-partners-container-gap: 48px;
-    --homepage-footer-partners-section-partners-frame-container-gap: 75px;
-    --homepage-footer-partners-section-partners-club-dialog-div-gap: 8px;
-    --homepage-footer-partners-section-logo-club-dialog-width: 200;
-    --homepage-footer-partners-section-logo-club-dialog-height: 36;
-    --homepage-footer-partners-section-logo-berlin-width: 112;
-    --homepage-footer-partners-section-logo-berlin-height: 120;
-    --homepage-footer-partners-section-logo-eu-width: 130px;
-    --homepage-footer-partners-section-logo-eu-height: 120px;
-    --homepage-footer-partners-section-logo-SchönebergHilft-width: 100px;
-    --homepage-footer-partners-section-logo-SchönebergHilft-height: 100px;
-    --homepage-footer-partners-section-logo-n4d-width: 68px;
-    --homepage-footer-partners-section-logo-n4d-height: 90px;
-    --homepage-footer-partners-section-footer-container-height: 364px;
-    --homepage-footer-partners-section-footer-container-flex-direction: column;
-    --homepage-footer-partners-section-footer-container-justify-content: space-between;
-    --homepage-footer-partners-section-contact-socials-container-flex-direction: column;
-    --homepage-footer-partners-section-contact-socials-container-justify-content: unset;
-    --homepage-footer-partners-section-contact-socials-container-gap: 32px;
-    --homepage-footer-partners-section-contact-container-gap: 10px;
-    --homepage-footer-partners-section-socials-container-gap: 20px;
-    --homepage-footer-partners-section-footer-links-container-width: 310px;
-    --homepage-footer-partners-section-footer-frame-container-gap: 16px;
-    --homepage-footer-partners-section-p-fontWeight-large: 500;
-    --homepage-footer-partners-section-p-fontWeight-small: 400;
-    --homepage-footer-partners-section-p-fontSize: 16px;
-
     --homepage-rac-section-container-height: 720px;
     --homepage-rac-section-content-container-gap: 80px;
     --homepage-rac-section-content-headLine-container-gap: 16px;
@@ -903,16 +941,6 @@ html {
     --homepage-events-section-event-card-event-title-tag-padding: 8px 12px;
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: center;
-
-    --button-height: 64px;
-    --button-width: auto;
-    --button-padding: 12px 24px;
-    --button-border-radius: 125px;
-    --button-text-font-weight: 500;
-    --button-text-font-size: 18px;
-    --button-text-line-height: 25px;
-    --button-text-letter-spacing: 0.13px;
-    --button-text-text-align: center;
 
     --numbering-div-width: 32px;
     --numbering-div-height: 32px;
@@ -963,7 +991,6 @@ html {
     --opportunities-filters-content-accordion-header-border-top: 1px;
     --opportunities-filters-content-accordion-header-padding-top: 16px;
     --opportunities-filters-clear-all-button-icon-size: 24px;
-    --opportunities-filters-clear-all-button-height: 64px;
     --opportunities-filters-clear-all-button-text-font-size: 20px;
     --opportunities-filters-description-font-size: 14px;
     --opportunities-filters-description-font-weight: 400;
@@ -979,6 +1006,8 @@ html {
     --paginated-grid-pagination-number-border-radius: 6px;
 
     --volunteer-profile-section-card-header-button-padding: 8px 12px;
+
+    --dashboard-map-popup-height: 200px;
   }
 }
 
@@ -1161,9 +1190,8 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
-    --button-padding: 16px 36px;
+    --button-padding: 12px 36px;
     --button-border-radius: 125px;
     --button-text-font-weight: 500;
     --button-text-font-size: 24px;
@@ -1204,7 +1232,7 @@ html {
     --opportunities-header-searchbar-flex-direction: row;
     --opportunities-map-view-container-height: 300px;
     --opportunities-cards-container-justify-content: center;
-    --opportunities-filters-button-height: 64px;
+    --opportunities-filters-button-height: var(--button-height);
     --opportunities-filters-button-icon-size: 32px;
     --opportunities-filters-close-filter-height: 64px;
     --opportunities-filters-close-filter-gap: 12px;
@@ -1234,6 +1262,9 @@ html {
     --paginated-grid-pagination-number-width: 36px;
     --paginated-grid-pagination-number-height: 44px;
     --paginated-grid-pagination-number-border-radius: 6px;
+
+    --dashboard-map-popup-height: 400px;
+    --dashboard-map-custom-icon-width: 50px;
   }
 }
 
@@ -1414,9 +1445,8 @@ html {
     --homepage-events-section-event-card-event-title-tag-border-radius: 8px;
     --homepage-events-section-button-container-justify-content: end;
 
-    --button-height: 72px;
     --button-width: fit-content;
-    --button-padding: 16px 36px;
+    --button-padding: 12px 36px;
     --button-border-radius: 125px;
     --button-text-font-weight: 500;
     --button-text-font-size: 24px;
@@ -1461,7 +1491,7 @@ html {
     --opportunities-header-searchbar-flex-direction: row;
     --opportunities-map-view-container-height: 300px;
     --opportunities-cards-container-justify-content: left;
-    --opportunities-filters-button-height: 64px;
+    --opportunities-filters-button-height: var(--button-height);
     --opportunities-filters-button-icon-size: 32px;
     --opportunities-filters-close-filter-height: 64px;
     --opportunities-filters-close-filter-gap: 12px;

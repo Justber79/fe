@@ -588,10 +588,21 @@
       "volunteers": "Volunteers",
       "opportunities": "Opportunities",
       "agents": "NGOs",
+      "markerHelper": {
+        "opportunities": "*Markers can contain one or more opportunities",
+        "agents": "*Markers can contain one or more NGOs",
+        "volunteers": "*Markers can contain one or more volunteers"
+      },
+      "addressNotice": {
+        "opportunities": "*Opportunities without a certified address are not shown on the map.",
+        "agents": "*NGOs without a certified address are not shown on the map.",
+        "volunteers": "*Volunteers without a certified address are not shown on the map."
+      },
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
         "rac": "Refugee Accommodation Center",
+        "otherRac": "Other Refugee Accommodation Centers",
         "volunteer": "Volunteer",
         "numberOfEntities": "Number of opportunities or volunteers"
       },
@@ -706,6 +717,12 @@
       "password": "Password",
       "rememberMe": "Remember Me",
       "forgotPassword": "Forgot Password",
+      "errors": {
+        "missingFields": "Please enter your email and password.",
+        "wrongCredentials": "Wrong email or password.",
+        "inactive": "Your account isn't active. If you just registered, please confirm your email first.",
+        "unknownEmail": "There's no account with this email."
+      },
       "emailMissing": "Email's missing.",
       "emailMissingAtChar": "Email must contain an '@' character.",
       "newPassword": "New Password",
@@ -2237,21 +2254,21 @@
       "emailConfirmed": "Email confirmed. Now just complete your organisation's details.",
       "matchesFound_one": "We found {{count}} organisation matching this address. Select yours, or continue creating a new one.",
       "matchesFound_other": "We found {{count}} organisations matching this address. Select yours, or continue creating a new one.",
-      "skip": "No, enter manually",
+      "skip": "Enter manually",
       "titleTaken": "An organisation with this name already exists.",
       "addressTaken": "An organisation is already registered at this address.",
       "titleTakenNamed": "“{{name}}” already exists.",
       "addressTakenNamed": "“{{name}}” is already registered at this address.",
-      "createAtSharedAddress": "Different organisation? Create it anyway",
+      "createAtSharedAddress": "Create another organisation",
       "editDetails": "Edit details",
-      "joinInstead": "Join it instead",
+      "joinInstead": "Join organisation",
       "requestToJoin": "Request to join",
       "joinTitle": "Join an existing organisation",
       "joiningOrg": "You're requesting to join {{name}}.",
       "joiningUnnamedOrg": "You're requesting to join the organisation registered at this address.",
       "unnamedMatch": "An organisation registered at this address",
       "joinDescription": "If your work email matches this organisation you'll get access right away; otherwise an administrator will review your request.",
-      "createInstead": "Not your organisation? Create a new one"
+      "createInstead": "Create another organisation"
     },
     "completed": {
       "title": "Your registration is already complete",

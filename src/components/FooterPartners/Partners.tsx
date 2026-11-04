@@ -23,6 +23,10 @@ const FrameContainer = styled.div<FrameProps>`
   justify-content: center;
   height: ${(props) => props.height};
   gap: ${(props) => props.gap};
+
+  @media (max-width: 359px) {
+    gap: var(--spacing-16);
+  }
 `;
 
 const partnerLogos = {

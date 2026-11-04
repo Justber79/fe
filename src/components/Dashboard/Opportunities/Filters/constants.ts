@@ -16,6 +16,7 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
   status: {
     [OpportunityStatusType.NEW]: false,
     [OpportunityStatusType.SEARCHING]: false,
+    [OpportunityStatusType.ACTIVE]: false,
     [OpportunityStatusType.INACTIVE]: false,
     [OpportunityStatusType.PAST]: false,
   },
@@ -56,6 +57,8 @@ export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType)
 );
 
 export const VOLUNTEER_OPPORTUNITY_STATUSES = [OpportunityStatusType.SEARCHING];
+
+export const MATCHING_OPPORTUNITY_STATUSES = [OpportunityStatusType.ACTIVE, OpportunityStatusType.SEARCHING];
 
 export const STATUS_PARAM = "status";
 

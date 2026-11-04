@@ -35,11 +35,25 @@ const Message = styled.p`
   margin: 0;
 `;
 
-const ButtonGroup = styled.div`
+const ButtonGroup = styled.div<{ $compact: boolean }>`
+  ${(props) => props.$compact && "--button-text-line-height: var(--line-height-20);"}
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--spacing-16);
   margin-top: var(--spacing-24);
+
+  > button {
+    max-width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+
+    > button {
+      width: 100%;
+    }
+  }
 `;
 
 export function ConfirmationDialog({
@@ -65,7 +79,7 @@ export function ConfirmationDialog({
         <Title>{title}</Title>
         <Message>{message}</Message>
         {children}
-        <ButtonGroup>
+        <ButtonGroup $compact={compact}>
           <Button
             text={cancelText || t("dashboard.communicationSection.cancel", "Cancel")}
             onClick={onCancel}
@@ -73,7 +87,6 @@ export function ConfirmationDialog({
             backgroundcolor="transparent"
             textColor="var(--color-aubergine)"
             border="var(--border-width-medium) solid var(--color-aubergine)"
-            height={compact ? "40px" : undefined}
             padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
             textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />
@@ -83,7 +96,6 @@ export function ConfirmationDialog({
             disabled={confirmDisabled}
             backgroundcolor="var(--color-aubergine)"
             textColor="var(--color-white)"
-            height={compact ? "40px" : undefined}
             padding={compact ? "var(--spacing-8) var(--spacing-16)" : undefined}
             textFontSize={compact ? "var(--font-size-sm)" : undefined}
           />

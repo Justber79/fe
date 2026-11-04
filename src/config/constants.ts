@@ -29,6 +29,7 @@ export const apiPathOrganization = `/${apiPrefix}/organization/`;
 export const apiPathRequestPasswordReset = `/${apiPrefix}/auth/request-reset`;
 export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const apiPathTrustedDomain = `/${apiPrefix}/trusted-domain`;
+export const apiPathDistrictGeometry = `/${apiPrefix}/district-geometry`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL ?? "https://cdn.need4deed.org/data";
 export const cacheTTL = 1000 * 60 * 5;
 
@@ -45,6 +46,8 @@ export const screenSizeThresholds = {
   tablet: 768,
   desktop: 1440,
 };
+
+export const opportunityFieldStackingThreshold = 1024;
 
 export const videoGuideURL = "https://www.youtube.com/embed/tk5akHPd9oo?si=k01Klx7SxIWwKHO_&rel=0&autoplay=0";
 
@@ -114,3 +117,12 @@ export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
 export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";
 
 export const DEFAULT_MAX_COMMUTE_MINUTES = 30;
+
+export const LOGIN_ERROR_KEYS: Record<number, string> = {
+  400: "dashboard.login.errors.missingFields",
+  401: "dashboard.login.errors.wrongCredentials",
+  403: "dashboard.login.errors.inactive",
+  404: "dashboard.login.errors.unknownEmail",
+};
+
+export const LOGIN_ERROR_TOAST_ID = "login-error";
