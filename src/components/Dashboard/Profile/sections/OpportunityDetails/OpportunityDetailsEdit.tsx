@@ -9,7 +9,6 @@ import {
   formToApiAvailability,
 } from "@/components/Dashboard/Profile/sections/VolunteerProfile/availabilityUtils";
 import {
-  ApiLanguageOption,
   useApiActivities,
   useApiLanguages,
   useApiSkills,
@@ -19,12 +18,11 @@ import { useUpdateOpportunityDetails } from "@/hooks/useUpdateOpportunityDetails
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { de, enUS } from "date-fns/locale";
-import { TFunction } from "i18next";
-import { ApiOpportunityGet, Lang, LangPurpose, OptionItem, VolunteerStateTypeType } from "need4deed-sdk";
+import { ApiOpportunityGet, Lang, LangPurpose, VolunteerStateTypeType } from "need4deed-sdk";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormButtonRow, FormDetails } from "../shared/styles";
-import { languagesToFormValues, resolveFormLanguageToOption } from "./formatters";
+import { languagesToFormValues } from "./formatters";
 import {
   createOpportunityDetailsSchema,
   getMainCommunicationLanguageOptions,
@@ -33,32 +31,13 @@ import {
 import { FieldGroup } from "./styles";
 import { OpportunityEventDateTimeEdit } from "./OpportunityEventDateTimeEdit";
 import { OpportunityWithDetails } from "./types";
+import { toLangOptionItems, toOptionItems } from "@/components/Dashboard/NewOpportunity/helper";
 import {
   dateFromDateTimeUTCStrings,
   dateFromLocalDateAndTimeString,
   formatToLocalTime,
   formatToUtcTime,
 } from "@/utils";
-
-function toLangOptionItems(
-  formLangs: { language: string }[],
-  apiLanguages: ApiLanguageOption[],
-  t: TFunction,
-): OptionItem[] {
-  return formLangs.flatMap(({ language }) => {
-    const found = resolveFormLanguageToOption(language, apiLanguages, t);
-    return found ? [{ id: found.id, title: found.title }] : [];
-  });
-}
-
-function toOptionItems(ids: string[], apiItems: ApiLanguageOption[]): OptionItem[] {
-  const map = new Map(apiItems.map((i) => [i.id, i.title]));
-  return ids.flatMap((id) => {
-    const numId = Number(id);
-    const title = map.get(numId);
-    return title ? [{ id: numId, title }] : [];
-  });
-}
 
 type Props = {
   opportunity: ApiOpportunityGet;
