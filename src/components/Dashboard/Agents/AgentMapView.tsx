@@ -1,6 +1,6 @@
 import React from "react";
 import { MapView } from "../common/MapView/MapView";
-import { MapContainer, PopupCardHeader, PopupLink } from "../common/MapView/styles";
+import { MapContainer, MapHelperText, MapHelperWrapper, PopupCardHeader, PopupLink } from "../common/MapView/styles";
 import { IconName } from "../Volunteers/icon";
 import { useTranslation } from "react-i18next";
 import { EntityMarker } from "../common/MapView/types";
@@ -52,6 +52,12 @@ export function AgentMapView({ markers, count, itemsPerPage, currentPage, setCur
 
   return (
     <MapContainer>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.markerHelper.agents")}</MapHelperText>
+      </MapHelperWrapper>
+      <MapHelperWrapper>
+        <MapHelperText>{t("dashboard.map.addressNotice.agents")}</MapHelperText>
+      </MapHelperWrapper>
       <MapView markers={markers} renderPopupContent={renderPopupContent} />
       <PaginationNumbers currentPage={currentPage} goToPage={goToPage} totalPages={totalPages} />
     </MapContainer>

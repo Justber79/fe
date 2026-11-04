@@ -588,10 +588,21 @@
       "volunteers": "Volunteers",
       "opportunities": "Opportunities",
       "agents": "NGOs",
+      "markerHelper": {
+        "opportunities": "*Markers can contain one or more opportunities",
+        "agents": "*Markers can contain one or more NGOs",
+        "volunteers": "*Markers can contain one or more volunteers"
+      },
+      "addressNotice": {
+        "opportunities": "*Opportunities without a certified address are not shown on the map.",
+        "agents": "*NGOs without a certified address are not shown on the map.",
+        "volunteers": "*Volunteers without a certified address are not shown on the map."
+      },
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
         "rac": "Refugee Accommodation Center",
+        "otherRac": "Other Refugee Accommodation Centers",
         "volunteer": "Volunteer",
         "numberOfEntities": "Number of opportunities or volunteers"
       },

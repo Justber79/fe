@@ -1,19 +1,57 @@
-@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+@media (max-width: 767px) {
+  .leaflet-container.map-popup-open .leaflet-control-container {
+    visibility: hidden;
+  }
+}
 
-.leaflet-marker-icon.need4deed-icon {
+.leaflet-marker-icon.need4deed-icon,
+.grouped-marker-icon__image--opportunity {
   filter: hue-rotate(90deg) saturate(0.8);
 }
 
-.custom-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  width: var(--dashboard-map-custom-icon-width) !important;
-  height: var(--dashboard-map-custom-icon-width) !important;
-  background: var(--color-white);
-  border: var(--dashboard-map-custom-icon-border);
-  border-radius: var(--dashboard-map-custom-icon-border-radius);
+.leaflet-marker-icon.berlin-rac-marker-icon,
+.leaflet-marker-icon.grouped-marker-icon {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.leaflet-marker-icon.berlin-rac-marker-icon {
+  filter: grayScale(1);
+}
+
+.grouped-marker-icon__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.grouped-marker-count {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  z-index: 1;
+  display: grid;
+  min-width: 18px;
+  height: 18px;
+  place-items: center;
+  padding: 0 var(--spacing-4);
+  border: var(--border-width-thin) solid var(--color-white);
+  border-radius: 50%;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.grouped-marker-icon--avatar .grouped-marker-count {
+  top: -3px;
+  right: -3px;
 }
 
 .custom-avatar-icon {
@@ -23,4 +61,8 @@
   border: var(--dashboard-map-custom-icon-border);
   border-radius: var(--dashboard-map-custom-icon-border-radius);
   object-fit: contain;
+}
+
+.leaflet-pane > svg path.leaflet-interactive:focus:not(:focus-visible) {
+  outline: none;
 }
