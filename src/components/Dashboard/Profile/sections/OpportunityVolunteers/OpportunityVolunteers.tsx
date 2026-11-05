@@ -8,17 +8,22 @@ import { useTranslation } from "react-i18next";
 import { SectionEmptyState } from "../shared/styles";
 import { Tabs } from "../shared/Tabs";
 import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
-import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
+import { ITEM_STATUS_REMOVED, useTabTransitions } from "../shared/useTabTransitions";
 import { AccordionVolunteer } from "./AccordionVolunteer";
-import { OpportunityVolunteersContainer } from "./styles";
+import { OpportunityVolunteersContainer, OpportunityVolunteersList } from "./styles";
+import { getOpportunityVolunteerStatusOrder } from "./get-opportunity-volunteer-status-order";
 import { useGetVolunteerOpportunityLinked } from "@/hooks/useGetVolunteerOpportunityLinked";
 
 export const OpportunityVolunteers = ({
   opportunityId,
   hasEditingRights,
+  isStaff,
+  isUserLoaded,
 }: {
   opportunityId: Id;
   hasEditingRights: boolean;
+  isStaff: boolean;
+  isUserLoaded: boolean;
 }) => {
   const { t } = useTranslation();
 
@@ -28,6 +33,8 @@ export const OpportunityVolunteers = ({
 
   const volunteers = useMemo(() => data ?? [], [data]);
 
+  const statusOrder = useMemo(() => getOpportunityVolunteerStatusOrder(isStaff, isUserLoaded), [isStaff, isUserLoaded]);
+
   const {
     selectedTabIndex,
     setSelectedTabIndex,
@@ -36,7 +43,7 @@ export const OpportunityVolunteers = ({
     visibleItems,
     setItemStatus,
     clearItemStatus,
-  } = useTabTransitions(volunteers);
+  } = useTabTransitions(volunteers, statusOrder);
 
   const { mutate: updateStatus, mutateAsync: updateStatusAsync } = useUpdateOpportunityVolunteerStatus(
     queryKey,
@@ -47,7 +54,7 @@ export const OpportunityVolunteers = ({
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
   );
 
-  const tabs = TAB_STATUS_ORDER.map((key, index) => ({
+  const tabs = statusOrder.map((key, index) => ({
     label: t(`dashboard.opportunityProfile.volunteersSec.tabs.${key}`),
     count: tabCounts[index],
   }));
@@ -67,32 +74,34 @@ export const OpportunityVolunteers = ({
     updateStatus({ m2mId, status: OpportunityVolunteerStatusType.PAST });
   };
 
-  if (isLoading) {
+  if (isLoading || !isUserLoaded) {
     return <OpportunityVolunteersContainer data-testid="opportunity-volunteers" />;
   }
 
   return (
     <OpportunityVolunteersContainer data-testid="opportunity-volunteers" id={"opportunity-volunteers-container"}>
       <Tabs tabs={tabs} selectedTabIndex={selectedTabIndex} setSelectedTabIndex={setSelectedTabIndex} />
-      {visibleItems.length === 0 ? (
-        <SectionEmptyState data-testid="volunteers-empty-state">
-          {t("dashboard.opportunityProfile.volunteersSec.emptyState")}
-        </SectionEmptyState>
-      ) : (
-        visibleItems.map((volunteer) => (
-          <AccordionVolunteer
-            key={volunteer.id}
-            volunteer={volunteer}
-            currentStatus={currentTabStatus}
-            hasEditingRights={hasEditingRights}
-            onMatch={() => match(volunteer.id)}
-            emailNote={emailNoteFor(volunteer.id)}
-            onNotAMatch={() => handleNotAMatch(volunteer.id)}
-            onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
-            onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
-          />
-        ))
-      )}
+      <OpportunityVolunteersList>
+        {visibleItems.length === 0 ? (
+          <SectionEmptyState data-testid="volunteers-empty-state">
+            {t("dashboard.opportunityProfile.volunteersSec.emptyState")}
+          </SectionEmptyState>
+        ) : (
+          visibleItems.map((volunteer) => (
+            <AccordionVolunteer
+              key={volunteer.id}
+              volunteer={volunteer}
+              currentStatus={currentTabStatus}
+              hasEditingRights={hasEditingRights}
+              onMatch={() => match(volunteer.id)}
+              emailNote={emailNoteFor(volunteer.id)}
+              onNotAMatch={() => handleNotAMatch(volunteer.id)}
+              onMarkAsActive={() => handleMarkAsActive(volunteer.id)}
+              onMarkAsPast={() => handleMarkAsPast(volunteer.id)}
+            />
+          ))
+        )}
+      </OpportunityVolunteersList>
     </OpportunityVolunteersContainer>
   );
 };

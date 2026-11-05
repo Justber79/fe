@@ -33,7 +33,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${(props) => props.height || "var(--button-height)"};
+  height: ${(props) => props.height || "auto"};
+  min-height: ${(props) => (props.height ? "0" : "var(--button-height)")};
   width: ${(props) => props.width || "var(--button-width)"};
   border-radius: var(--button-border-radius);
   background-color: ${(props) => props.backgroundcolor || defaultBGColor};
@@ -89,6 +90,7 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
   ["aria-describedby"]?: string;
   ["aria-label"]?: string;
+  ["aria-pressed"]?: boolean;
 }
 
 export function Button({
@@ -111,6 +113,7 @@ export function Button({
   type = "button",
   ["aria-describedby"]: ariaDescribedBy,
   ["aria-label"]: ariaLabel,
+  ["aria-pressed"]: ariaPressed,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -127,6 +130,7 @@ export function Button({
       $textHoverColor={textHoverColor}
       aria-describedby={ariaDescribedBy}
       aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
     >
       {iconName && (
         <IconDiv color={iconColor} size={iconSize}>

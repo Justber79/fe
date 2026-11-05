@@ -16,7 +16,7 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
   items: T[],
   statusOrder: OpportunityVolunteerStatusType[] = TAB_STATUS_ORDER,
 ) {
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [selectedStatus, setSelectedStatus] = useState<OpportunityVolunteerStatusType>();
   const [statusOverrides, setStatusOverrides] = useState<Record<number, StatusOverride>>({});
 
   useEffect(() => {
@@ -43,7 +43,12 @@ export function useTabTransitions<T extends { id: number; status: OpportunityVol
 
   const getEffectiveStatus = (item: T): StatusOverride => statusOverrides[item.id] ?? item.status;
 
-  const currentTabStatus = statusOrder[selectedTabIndex];
+  const currentTabStatus = selectedStatus && statusOrder.includes(selectedStatus) ? selectedStatus : statusOrder[0];
+  const selectedTabIndex = Math.max(0, statusOrder.indexOf(currentTabStatus));
+  const setSelectedTabIndex = (index: number) => {
+    const status = statusOrder[index];
+    if (status) setSelectedStatus(status);
+  };
 
   const tabCounts = statusOrder.map((status) => items.filter((item) => getEffectiveStatus(item) === status).length);
 
