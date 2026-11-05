@@ -12,5 +12,5 @@ export const useAuth = (compareId?: Id) => {
   const isOwnProfile =
     (user?.role === UserRole.VOLUNTEER && personId === compareId) || (isAgent && agentId === compareId);
 
-  return { isAuthorized, isOwnProfile, isAgent, isVolunteer };
+  return { isAuthorized, isOwnProfile, isAgent, isVolunteer, isUserLoaded: Boolean(user) };
 };
