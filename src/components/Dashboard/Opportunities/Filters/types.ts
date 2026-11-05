@@ -10,6 +10,8 @@ export interface OpportunityCardsFilter {
   [EntityTableName.ACTIVITY]: SelectionMap;
   [EntityTableName.SKILL]: SelectionMap;
   [QueryParamsKeys.AVAILABILITY]: ScheduleFilter;
+  hasCommuteSource: boolean;
+  maxCommuteMinutes: number;
 }
 
 export type OpportunityCardFilterKeys = keyof OpportunityCardsFilter;

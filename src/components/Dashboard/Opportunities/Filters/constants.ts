@@ -48,6 +48,8 @@ export const defaultOpportunityCardsFilter: OpportunityCardsFilter = {
       [OccasionalType.WEEKENDS]: false,
     },
   },
+  hasCommuteSource: false,
+  maxCommuteMinutes: 0,
 };
 
 export const DEFAULT_OPPORTUNITY_STATUSES = Object.values(OpportunityStatusType).filter(

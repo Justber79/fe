@@ -1,5 +1,23 @@
-import { ApiAvailability, ApiLanguage, ByDay, OccasionalType, OptionItem, TimeSlot } from "need4deed-sdk";
-import { ScheduleFilter, SelectionMap } from "./types";
+import { TFunction } from "i18next";
+import {
+  ApiAvailability,
+  ApiLanguage,
+  ByDay,
+  OccasionalType,
+  OptionItem,
+  QueryParamsKeys,
+  TimeSlot,
+} from "need4deed-sdk";
+import { FilterItem, ScheduleFilter, SelectionMap, SetFilter } from "./types";
+
+export type CommutePrefillFilter = {
+  hasCommuteSource: boolean;
+  maxCommuteMinutes: number;
+};
+
+export type CommuteSourceKey = QueryParamsKeys.COMMUTE_OPPORTUNITY_ID | QueryParamsKeys.COMMUTE_VOLUNTEER_ID;
+
+export const MAX_COMMUTE_MINUTES_OPTIONS = [5, 10, 20, 30, 40, 50, 60];
 
 type MatchingSource = {
   districtIds: number[];
@@ -7,9 +25,11 @@ type MatchingSource = {
   availability: ApiAvailability[];
   appointmentDate?: string | null;
   appointmentTime?: string | null;
+  hasCommuteSource: boolean;
+  maxCommuteMinutes: number;
 };
 
-type PrefillableFilter = {
+type PrefillableFilter = CommutePrefillFilter & {
   district: SelectionMap;
   language: SelectionMap;
   availability: ScheduleFilter;
@@ -49,16 +69,106 @@ export function applyMatchingPrefill<T extends PrefillableFilter>(
     const weekday = Number.isNaN(appointment.getTime()) ? undefined : (berlinWeekday.format(appointment) as ByDay);
     if (weekday && weekday in next.availability.days) next.availability.days[weekday] = true;
   }
+  if (source.hasCommuteSource && source.maxCommuteMinutes > 0) {
+    next.hasCommuteSource = true;
+    next.maxCommuteMinutes = source.maxCommuteMinutes;
+  }
 
   return next;
 }
 
 export const PREFILLED_PARAM = "prefilled";
 
-const ALWAYS_FILTER_PARAMS = [PREFILLED_PARAM, "search", "availability"];
+const ALWAYS_FILTER_PARAMS = [
+  PREFILLED_PARAM,
+  "search",
+  "availability",
+  QueryParamsKeys.COMMUTE_OPPORTUNITY_ID,
+  QueryParamsKeys.COMMUTE_VOLUNTEER_ID,
+  QueryParamsKeys.MAX_COMMUTE_MINUTES,
+];
 
 export const hasFilterParams = (searchParams: { has: (key: string) => boolean }, configKeys: string[]) =>
   [...ALWAYS_FILTER_PARAMS, ...configKeys].some((key) => searchParams.has(key));
+
+export const serializeCommutePrefill = (
+  filter: CommutePrefillFilter,
+  params: URLSearchParams,
+  sourceKey: CommuteSourceKey,
+  sourceId?: string,
+) => {
+  params.delete(QueryParamsKeys.COMMUTE_POSTCODE);
+  params.delete(QueryParamsKeys.COMMUTE_OPPORTUNITY_ID);
+  params.delete(QueryParamsKeys.COMMUTE_VOLUNTEER_ID);
+  params.delete(QueryParamsKeys.MAX_COMMUTE_MINUTES);
+
+  const sourceParam = sourceKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID ? "opportunity" : "volunteer";
+  const commuteSourceId = sourceId ?? params.get(sourceParam) ?? undefined;
+  if (!filter.hasCommuteSource || !commuteSourceId || !MAX_COMMUTE_MINUTES_OPTIONS.includes(filter.maxCommuteMinutes))
+    return;
+
+  params.set(sourceKey, commuteSourceId);
+  params.set(QueryParamsKeys.MAX_COMMUTE_MINUTES, String(filter.maxCommuteMinutes));
+};
+
+export const deserializeCommutePrefill = <TFilter extends CommutePrefillFilter>(
+  filter: TFilter,
+  searchParams: { get: (key: string) => string | null },
+  sourceKey: CommuteSourceKey,
+): TFilter => {
+  const sourceParam = sourceKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID ? "opportunity" : "volunteer";
+  const sourceId = searchParams.get(sourceParam);
+  const commuteSourceId = searchParams.get(sourceKey);
+  filter.hasCommuteSource = sourceId !== null;
+  filter.maxCommuteMinutes = 0;
+
+  const maxCommuteMinutes = Number(searchParams.get(QueryParamsKeys.MAX_COMMUTE_MINUTES));
+
+  if (sourceId !== null && sourceId === commuteSourceId && MAX_COMMUTE_MINUTES_OPTIONS.includes(maxCommuteMinutes)) {
+    filter.maxCommuteMinutes = maxCommuteMinutes;
+  }
+
+  return filter;
+};
+
+export const clearCommutePrefill = <TFilter extends CommutePrefillFilter>(filter: TFilter): TFilter => ({
+  ...filter,
+  maxCommuteMinutes: 0,
+});
+
+export const createCommutePrefillItem = <TFilter extends CommutePrefillFilter>(
+  filter: TFilter,
+  setFilter: SetFilter<TFilter>,
+  t: TFunction,
+  sourceKey: CommuteSourceKey,
+): FilterItem | undefined => {
+  if (!filter.hasCommuteSource || filter.maxCommuteMinutes <= 0) return undefined;
+
+  return {
+    label: t("dashboard.filters.commute", {
+      minutes: filter.maxCommuteMinutes,
+    }),
+    checked: true,
+    onChange: (checked) => {
+      if (!checked) setFilter((prev) => clearCommutePrefill(prev));
+    },
+    keyValue: sourceKey,
+  };
+};
+
+export const createCommuteMinutesFilterItems = <TFilter extends CommutePrefillFilter>(
+  filter: TFilter,
+  setFilter: SetFilter<TFilter>,
+  t: TFunction,
+): FilterItem[] =>
+  MAX_COMMUTE_MINUTES_OPTIONS.map((minutes) => ({
+    label: t("dashboard.filters.commuteMinutesOption", { minutes }),
+    checked: filter.maxCommuteMinutes === minutes,
+    onChange: (checked) => {
+      setFilter((prev) => ({ ...prev, maxCommuteMinutes: checked ? minutes : 0 }));
+    },
+    keyValue: String(minutes),
+  }));
 
 export const withPrefilledMarker = (query: string | URLSearchParams) => {
   const params = new URLSearchParams(query.toString());

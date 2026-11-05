@@ -85,6 +85,7 @@ function OpportunityListControllerContent({
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
+    commuteSourceId: volunteerId,
   });
 
   if (volunteerId) {

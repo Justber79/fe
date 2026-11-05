@@ -57,6 +57,8 @@ export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
       [OccasionalType.WEEKENDS]: false,
     },
   },
+  hasCommuteSource: false,
+  maxCommuteMinutes: 0,
 };
 
 export const DEFAULT_NGO_VOLUNTEER_ENGAGEMENTS = [VolunteerStateEngagementType.AVAILABLE];

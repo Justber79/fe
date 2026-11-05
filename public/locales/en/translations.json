@@ -746,7 +746,10 @@
     "filters": {
       "button": "FILTERS",
       "closeFilters": "CLOSE FILTERS",
-      "clearAll": "Clear all"
+      "clearAll": "Clear all",
+      "commute": "Max Commute: {{minutes}} min",
+      "commuteMinutesHeader": "Maximum commute time",
+      "commuteMinutesOption": "{{minutes}} min"
     },
     "volunteerProfile": {
       "backToDashboard": "Back to Dashboard",

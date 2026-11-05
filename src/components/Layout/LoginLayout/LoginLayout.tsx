@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { getImageUrl } from "@/utils";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ReactNode, useId } from "react";
 import { useParams } from "next/navigation";
@@ -42,7 +43,7 @@ export function LoginLayout({ children, heading, showRegistration = false }: Pro
           aria-labelledby={showRegistration ? registrationHeadingId : undefined}
         >
           <Illustration>
-            <Image src="/images/login/community-illustration.webp" alt="" width={600} height={597} />
+            <Image src={getImageUrl("animals-on-transparent.webp")} alt="" width={671} height={669} />
           </Illustration>
           {showRegistration && (
             <>

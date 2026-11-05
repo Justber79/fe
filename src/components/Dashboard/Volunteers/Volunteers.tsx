@@ -4,7 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark, ScreenTypes, USER_QUERY_KEY } from "@/config/constants";
+import {
+  apiPathOption,
+  DEFAULT_MAX_COMMUTE_MINUTES,
+  questionMark,
+  ScreenTypes,
+  USER_QUERY_KEY,
+} from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
 import {
   ApiOptionLists,
@@ -21,6 +27,7 @@ import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import {
   applyMatchingPrefill,
+  clearCommutePrefill,
   hasFilterParams,
   PREFILLED_PARAM,
   withPrefilledMarker,
@@ -108,7 +115,7 @@ export function Volunteers() {
     params.delete("page");
     params.set("view", targetViewMode);
 
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const serializeFilterUpdate = (filter: VolunteerCardsFilter) => {
@@ -124,30 +131,33 @@ export function Volunteers() {
   ) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
 
-    router.push(pathname + questionMark + serializeFilterUpdate(updatedFilter));
+    router.push(pathname + questionMark + serializeFilterUpdate(updatedFilter), { scroll: false });
   };
 
   const handleRemoveOpportunityFilter = () => {
     const wasPrefilled = searchParams.has(PREFILLED_PARAM);
-    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : clearCommutePrefill(cardsFilter);
     const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
     params.delete(PREFILLED_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
-    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
-    router.push(pathname + questionMark + serializeFilterUpdate(cleared));
+    const cleared =
+      filterKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID
+        ? clearCommutePrefill(cardsFilter)
+        : getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
-    router.push(pathname + questionMark + serializeFilterUpdate(cleared));
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared), { scroll: false });
   };
 
   useEffect(() => {
-    if (!opportunityId || !opportunityFilter || !apiFilterOptions) return;
+    if (!user || !opportunityId || !opportunityFilter || !apiFilterOptions) return;
     if (prefilledForRef.current === opportunityId) return;
     prefilledForRef.current = opportunityId;
     if (hasFilterParams(searchParams, Object.keys(volunteerFilterConfigs))) return;
@@ -168,12 +178,14 @@ export function Volunteers() {
         availability: isAccompanying ? [] : opportunityFilter.availability,
         appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
         appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
+        hasCommuteSource: user.role === UserRole.COORDINATOR || user.role === UserRole.ADMIN,
+        maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
     prefilled[QueryParamsKeys.ENGAGEMENT][VolunteerStateEngagementType.AVAILABLE] = true;
     router.replace(pathname + questionMark + withPrefilledMarker(serializeFilters(prefilled, searchParams)));
-  }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams]);
+  }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams, user]);
 
   useEffect(() => {
     if (!isAgent || !searchParams.has(QueryParamsKeys.SEARCH)) return;
@@ -245,7 +257,14 @@ export function Volunteers() {
           <Filters
             isFiltersOpen={isFiltersOpen}
             setIsFiltersOpen={setIsFiltersOpen}
-            filtersContent={<FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />}
+            filtersContent={
+              <FiltersContent
+                setFilter={handleFilterUpdate}
+                filter={cardsFilter}
+                viewMode={viewMode}
+                isMatchMode={!!opportunityId}
+              />
+            }
           />
         </ContentRow>
       </VolunteersContainer>

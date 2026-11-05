@@ -8,14 +8,16 @@ import { FiltersContentContainer } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
 import { ViewMode } from "../../common/types";
 import { QueryParamsKeys } from "need4deed-sdk";
+import { createCommuteMinutesFilterItems } from "../../common/CardsFilter/matchingPrefill";
 
 type Props = {
   filter: OpportunityCardsFilter;
   setFilter: SetFilter<OpportunityCardsFilter>;
   viewMode: ViewMode;
+  isMatchMode: boolean;
 };
 
-export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
+export default function FiltersContent({ setFilter, filter, viewMode, isMatchMode }: Props) {
   const { t } = useTranslation();
   const { isAuthorized, isAgent, isVolunteer } = useAuth();
   const canSeeFullView = isAuthorized || isAgent;
@@ -33,6 +35,12 @@ export default function FiltersContent({ setFilter, filter, viewMode }: Props) {
       {sections.map(({ key, config, items }) => (
         <AccordionFilter key={key} header={t(config.header)} items={items} />
       ))}
+      {isMatchMode && filter.hasCommuteSource && (
+        <AccordionFilter
+          header={t("dashboard.filters.commuteMinutesHeader")}
+          items={createCommuteMinutesFilterItems(filter, setFilter, t)}
+        />
+      )}
       {canSeeFullView && (
         <AccordionFilter
           header={t("dashboard.opportunities.filters.schedule.header")}
