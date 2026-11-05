@@ -750,7 +750,10 @@
     "filters": {
       "button": "FILTER",
       "closeFilters": "FILTER SCHLIEẞEN",
-      "clearAll": "Filter löschen"
+      "clearAll": "Filter löschen",
+      "commute": "Max. Pendelzeit: {{minutes}} Minuten",
+      "commuteMinutesHeader": "Maximale Pendelzeit",
+      "commuteMinutesOption": "{{minutes}} Minuten"
     },
     "volunteerProfile": {
       "backToDashboard": "Zurück zum Dashboard",

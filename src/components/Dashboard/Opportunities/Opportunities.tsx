@@ -2,15 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, questionMark, ScreenTypes } from "@/config/constants";
+import { apiPathOption, DEFAULT_MAX_COMMUTE_MINUTES, questionMark, ScreenTypes } from "@/config/constants";
 import { useGetVolunteer, useGetQuery } from "@/hooks";
-import { ApiOptionLists, LangProficiency, UserRole } from "need4deed-sdk";
+import { ApiOptionLists, LangProficiency, QueryParamsKeys, UserRole } from "need4deed-sdk";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Filters from "../common/CardsFilter/Filters";
 import CardsHeader from "../common/CardsHeader/CardsHeader";
 import { getClearFilter, getClearSingleFilter } from "../common/CardsFilter/helpers";
 import {
   applyMatchingPrefill,
+  clearCommutePrefill,
   hasFilterParams,
   PREFILLED_PARAM,
   withPrefilledMarker,
@@ -81,6 +82,8 @@ export function Opportunities() {
         districtIds: volunteerFilter.districtIds,
         languages: volunteerFilter.languages.filter(({ proficiency }) => proficiency !== LangProficiency.BEGINNER),
         availability: volunteerFilter.availability,
+        hasCommuteSource: true,
+        maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
@@ -124,23 +127,28 @@ export function Opportunities() {
   ) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
     setCardsFilter(updatedFilter);
-    router.push(pathname + questionMark + serializeOpportunityFilters(updatedFilter, searchParams));
+    router.push(pathname + questionMark + serializeOpportunityFilters(updatedFilter, searchParams), {
+      scroll: false,
+    });
   };
 
   const handleRemoveVolunteerFilter = () => {
     const wasPrefilled = searchParams.has(PREFILLED_PARAM);
-    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : cardsFilter;
-    if (wasPrefilled) setCardsFilter(cleared);
+    const cleared = wasPrefilled ? getClearFilter(cardsFilter) : clearCommutePrefill(cardsFilter);
+    setCardsFilter(cleared);
     const params = new URLSearchParams(serializeOpportunityFilters(cleared, searchParams));
     params.delete("volunteer");
     params.delete(PREFILLED_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   const handleClearFilter = (filterKey: string, parentKey?: string) => {
-    const cleared = getClearSingleFilter(cardsFilter, filterKey, parentKey);
+    const cleared =
+      filterKey === QueryParamsKeys.COMMUTE_VOLUNTEER_ID
+        ? clearCommutePrefill(cardsFilter)
+        : getClearSingleFilter(cardsFilter, filterKey, parentKey);
     setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams));
+    router.push(pathname + questionMark + serializeOpportunityFilters(cleared, searchParams), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
@@ -148,7 +156,7 @@ export function Opportunities() {
     setCardsFilter(cleared);
     const params = serializeOpportunityFilters(cleared, searchParams, false);
     params.delete(SORT_PARAM);
-    router.push(pathname + questionMark + params.toString());
+    router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
   useEffect(() => {
@@ -191,7 +199,6 @@ export function Opportunities() {
           }
           showListControls={!isOtherTab}
         />
-
         {isOtherTab ? (
           <OtherOpportunities search={cardsFilter.search} setCount={setNumOfOpps} />
         ) : (
@@ -210,7 +217,12 @@ export function Opportunities() {
               isFiltersOpen={isFiltersOpen}
               setIsFiltersOpen={setIsFiltersOpen}
               filtersContent={
-                <FiltersContent setFilter={handleFilterUpdate} filter={cardsFilter} viewMode={viewMode} />
+                <FiltersContent
+                  setFilter={handleFilterUpdate}
+                  filter={cardsFilter}
+                  viewMode={viewMode}
+                  isMatchMode={!!volunteerId}
+                />
               }
             />
           </ContentRow>
