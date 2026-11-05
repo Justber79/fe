@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { DashboardLayout } from "@/components/Layout";
-import { apiPathOption, DEFAULT_MAX_COMMUTE_MINUTES, questionMark, ScreenTypes } from "@/config/constants";
+import {
+  apiPathOption,
+  DEFAULT_MAX_COMMUTE_MINUTES,
+  questionMark,
+  ScreenTypes,
+  USER_QUERY_KEY,
+} from "@/config/constants";
 import { useGetOpportunity, useGetQuery } from "@/hooks";
 import {
   ApiOptionLists,
@@ -28,26 +34,52 @@ import {
 } from "../common/CardsFilter/matchingPrefill";
 import { withOptionFilters } from "../common/CardsFilter/selectionFilters";
 import { volunteerFilterConfigs } from "./Filters/config";
-import { defaultVolunteerCardsFilter } from "./Filters/constants";
+import {
+  DEFAULT_NGO_VOLUNTEER_ENGAGEMENTS,
+  DEFAULT_VOLUNTEER_ENGAGEMENTS,
+  defaultVolunteerCardsFilter,
+} from "./Filters/constants";
 import FiltersContent from "./Filters/FiltersContent";
 import { VolunteerCardsFilter } from "./Filters/types";
 import { createSelectedFilterItemsAsFlatArray, deserializeVolunteerFilters, serializeFilters } from "./helpers";
 import { VolunteerListController } from "./VolunteerListController";
 import { ViewMode } from "../common/types";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUserQuery } from "@/hooks/useCurrentUser";
+import { useQueryClient } from "@tanstack/react-query";
+import { DashboardListLoading } from "../common/DashboardListLoading";
+import { ErrorMessage } from "@/components/core/common";
+import { Button } from "@/components/core/button";
 import { useScreenType } from "@/context/DeviceContext";
 
 export function Volunteers() {
-  const user = useCurrentUser(true);
+  const { data: user, isLoading: isUserLoading, isError: isUserError } = useCurrentUserQuery(true, false);
+  const queryClient = useQueryClient();
   const isAgent = user?.role === UserRole.AGENT;
   const screenType = useScreenType();
   const { t } = useTranslation();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [numOfVols, setNumOfVols] = useState(0);
   const [sortOrder, setSortOrder] = useState(SortOrder.NewToOld);
-  const [cardsFilter, setCardsFilter] = useState(defaultVolunteerCardsFilter);
   const { data: apiFilterOptions } = useGetQuery<ApiOptionLists>({ queryKey: ["options"], apiPath: apiPathOption });
   const searchParams = useSearchParams();
+  const isExplicitEngagementClear = searchParams.getAll(QueryParamsKeys.ENGAGEMENT).includes("");
+  const defaultEngagements =
+    isAgent && !isExplicitEngagementClear ? DEFAULT_NGO_VOLUNTEER_ENGAGEMENTS : DEFAULT_VOLUNTEER_ENGAGEMENTS;
+  const cardsFilter = useMemo(() => {
+    const baseFilters = apiFilterOptions
+      ? withOptionFilters(volunteerFilterConfigs, defaultVolunteerCardsFilter, apiFilterOptions)
+      : structuredClone(defaultVolunteerCardsFilter);
+    const filter = deserializeVolunteerFilters(baseFilters, searchParams);
+    if (isAgent) {
+      filter.search = "";
+      if (!isExplicitEngagementClear && !Object.values(filter[QueryParamsKeys.ENGAGEMENT]).some(Boolean)) {
+        defaultEngagements.forEach((engagement) => {
+          filter[QueryParamsKeys.ENGAGEMENT][engagement] = true;
+        });
+      }
+    }
+    return filter;
+  }, [apiFilterOptions, defaultEngagements, isAgent, isExplicitEngagementClear, searchParams]);
   const pathname = usePathname();
   const router = useRouter();
   const tabs = !user
@@ -86,21 +118,25 @@ export function Volunteers() {
     router.push(pathname + questionMark + params.toString(), { scroll: false });
   };
 
+  const serializeFilterUpdate = (filter: VolunteerCardsFilter) => {
+    const params = new URLSearchParams(serializeFilters(filter, searchParams));
+    if (isAgent && !Object.values(filter[QueryParamsKeys.ENGAGEMENT]).some(Boolean)) {
+      params.set(QueryParamsKeys.ENGAGEMENT, "");
+    }
+    return params;
+  };
+
   const handleFilterUpdate = (
     newFilter: VolunteerCardsFilter | ((prev: VolunteerCardsFilter) => VolunteerCardsFilter),
   ) => {
     const updatedFilter = typeof newFilter === "function" ? newFilter(cardsFilter) : newFilter;
 
-    setCardsFilter(updatedFilter);
-    router.push(pathname + questionMark + serializeFilters(updatedFilter, searchParams), {
-      scroll: false,
-    });
+    router.push(pathname + questionMark + serializeFilterUpdate(updatedFilter), { scroll: false });
   };
 
   const handleRemoveOpportunityFilter = () => {
     const wasPrefilled = searchParams.has(PREFILLED_PARAM);
     const cleared = wasPrefilled ? getClearFilter(cardsFilter) : clearCommutePrefill(cardsFilter);
-    setCardsFilter(cleared);
     const params = new URLSearchParams(serializeFilters(cleared, searchParams));
     params.delete("opportunity");
     params.delete(PREFILLED_PARAM);
@@ -112,18 +148,16 @@ export function Volunteers() {
       filterKey === QueryParamsKeys.COMMUTE_OPPORTUNITY_ID
         ? clearCommutePrefill(cardsFilter)
         : getClearSingleFilter(cardsFilter, filterKey, parentKey);
-    setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared), { scroll: false });
   };
 
   const handleClearAllFilters = () => {
     const cleared = getClearFilter(cardsFilter);
-    setCardsFilter(cleared);
-    router.push(pathname + questionMark + serializeFilters(cleared, searchParams), { scroll: false });
+    router.push(pathname + questionMark + serializeFilterUpdate(cleared), { scroll: false });
   };
 
   useEffect(() => {
-    if (!opportunityId || !opportunityFilter || !apiFilterOptions) return;
+    if (!user || !opportunityId || !opportunityFilter || !apiFilterOptions) return;
     if (prefilledForRef.current === opportunityId) return;
     prefilledForRef.current = opportunityId;
     if (hasFilterParams(searchParams, Object.keys(volunteerFilterConfigs))) return;
@@ -144,27 +178,14 @@ export function Volunteers() {
         availability: isAccompanying ? [] : opportunityFilter.availability,
         appointmentDate: isAccompanying ? opportunityFilter.appointmentDate : null,
         appointmentTime: isAccompanying ? opportunityFilter.appointmentTime : null,
-        hasCommuteSource: true,
+        hasCommuteSource: user.role === UserRole.COORDINATOR || user.role === UserRole.ADMIN,
         maxCommuteMinutes: DEFAULT_MAX_COMMUTE_MINUTES,
       },
       { district: apiFilterOptions.district, language: apiFilterOptions.language },
     );
     prefilled[QueryParamsKeys.ENGAGEMENT][VolunteerStateEngagementType.AVAILABLE] = true;
     router.replace(pathname + questionMark + withPrefilledMarker(serializeFilters(prefilled, searchParams)));
-  }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams]);
-
-  useEffect(() => {
-    if (!apiFilterOptions) return;
-
-    setCardsFilter((prev) => {
-      const baseFilters = withOptionFilters(volunteerFilterConfigs, prev, apiFilterOptions);
-      const deserializedFilters = deserializeVolunteerFilters(baseFilters, searchParams);
-
-      if (isAgent) deserializedFilters.search = "";
-
-      return deserializedFilters;
-    });
-  }, [apiFilterOptions, isAgent, searchParams]);
+  }, [apiFilterOptions, opportunityFilter, opportunityId, pathname, router, searchParams, user]);
 
   useEffect(() => {
     if (!isAgent || !searchParams.has(QueryParamsKeys.SEARCH)) return;
@@ -174,13 +195,35 @@ export function Volunteers() {
     router.replace(pathname + questionMark + params.toString());
   }, [isAgent, pathname, router, searchParams]);
 
-  const activeFilters = createSelectedFilterItemsAsFlatArray(cardsFilter, setCardsFilter, t);
+  const activeFilters = createSelectedFilterItemsAsFlatArray(cardsFilter, handleFilterUpdate, t);
+
+  if (isUserLoading) {
+    return (
+      <DashboardLayout>
+        <DashboardListLoading />
+      </DashboardLayout>
+    );
+  }
+
+  if (isUserError || !user) {
+    return (
+      <DashboardLayout>
+        <VolunteersContainer role="alert">
+          <ErrorMessage message={t("message.errorGeneric")} />
+          <Button
+            text={t("dashboard.volunteers.retry")}
+            onClick={() => queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY })}
+          />
+        </VolunteersContainer>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
       <VolunteersContainer>
         <CardsHeader
-          header={t("dashboard.volunteers.volunteers")}
+          header={t(isAgent ? "dashboard.volunteers.agentHeadline" : "dashboard.volunteers.volunteers")}
           resultCounter={numOfVols}
           resultText={t("dashboard.home.sidebar.volunteers")}
           tabs={tabs}
@@ -209,6 +252,7 @@ export function Volunteers() {
             opportunityId={opportunityId}
             viewMode={viewMode}
             opportunityFilter={opportunityFilter}
+            defaultEngagements={defaultEngagements}
           />
           <Filters
             isFiltersOpen={isFiltersOpen}
