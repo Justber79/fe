@@ -1,5 +1,14 @@
 import { extractOptionTitle } from "@/components/Dashboard/Profile/sections/OpportunityDetails/formatters";
-import { addDays, format } from "date-fns";
+import {
+  addDays,
+  endOfMonth,
+  endOfQuarter,
+  endOfYear,
+  format,
+  startOfMonth,
+  startOfQuarter,
+  startOfYear,
+} from "date-fns";
 import {
   ApiStatisticsGet,
   ApiStatisticsQuery,
@@ -9,10 +18,17 @@ import {
   StatisticsGroupBy,
 } from "need4deed-sdk";
 
-const SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6"];
-const UNKNOWN_COLOR = "#858d9d";
-const OTHER_COLOR = "#b9bdc7";
-const MAX_SERIES = SERIES_COLORS.length + 1;
+const SERIES_COLORS = [
+  "var(--color-blue-500)",
+  "var(--color-papaya)",
+  "var(--color-green-500)",
+  "var(--color-violet-500)",
+  "var(--color-pink-500)",
+  "var(--color-green-800)",
+  "var(--color-aubergine)",
+];
+const UNKNOWN_COLOR = "var(--color-grey-500)";
+const OTHER_COLOR = "var(--color-grey-400)";
 
 export const OTHER_SERIES_KEY = "other-groups";
 
@@ -47,17 +63,24 @@ export interface AllTimeTotalsRow {
 
 const toIsoDate = (date: Date) => format(date, "yyyy-MM-dd");
 
+const PERIOD_BOUNDS: Record<StatisticsGranularity, [(date: Date) => Date, (date: Date) => Date]> = {
+  [StatisticsGranularity.MONTH]: [startOfMonth, endOfMonth],
+  [StatisticsGranularity.QUARTER]: [startOfQuarter, endOfQuarter],
+  [StatisticsGranularity.YEAR]: [startOfYear, endOfYear],
+};
+
 export function toStatisticsQuery(
   granularity: StatisticsGranularity,
   groupBy: StatisticsGroupBy,
   from?: Date,
   to?: Date,
 ): ApiStatisticsQuery {
+  const [startOf, endOf] = PERIOD_BOUNDS[granularity];
   return {
     granularity,
     groupBy,
-    from: from && toIsoDate(from),
-    to: to && toIsoDate(addDays(to, 1)),
+    from: from && toIsoDate(startOf(from)),
+    to: to && toIsoDate(addDays(endOf(to), 1)),
   };
 }
 
@@ -84,7 +107,7 @@ export function buildChartData(statistics: ApiStatisticsGet, lang: Lang, otherLa
   const unknownGroup = activeGroups.find(({ key }) => key === STATISTICS_UNKNOWN_KEY);
   const namedGroups = activeGroups.filter(({ key }) => key !== STATISTICS_UNKNOWN_KEY);
 
-  const capacity = Math.min(MAX_SERIES - (unknownGroup ? 1 : 0), SERIES_COLORS.length);
+  const capacity = SERIES_COLORS.length;
   const shownKeys = new Set(
     (namedGroups.length <= capacity
       ? namedGroups

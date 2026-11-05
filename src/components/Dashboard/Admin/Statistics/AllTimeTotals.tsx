@@ -21,7 +21,6 @@ export function AllTimeTotals({ metric, groupBy }: Props) {
   });
 
   const rows = statistics ? buildAllTimeTotals(statistics, i18n.language as Lang) : [];
-  const sum = (pick: (row: (typeof rows)[number]) => number) => rows.reduce((total, row) => total + pick(row), 0);
 
   return (
     <Card aria-labelledby="statistics-all-time-title">
@@ -56,14 +55,6 @@ export function AllTimeTotals({ metric, groupBy }: Props) {
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr>
-                  <td>{t("dashboard.admin.stats.total")}</td>
-                  <td>{sum((row) => row.tracked)}</td>
-                  <td>{sum((row) => row.beforeTracking)}</td>
-                  <td>{sum((row) => row.total)}</td>
-                </tr>
-              </tfoot>
             </DataTable>
           </TableScroll>
           <Note>{t("dashboard.admin.stats.allTime.beforeTrackingNote")}</Note>

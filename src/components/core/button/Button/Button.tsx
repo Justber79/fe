@@ -91,6 +91,7 @@ export interface ButtonProps {
   ["aria-describedby"]?: string;
   ["aria-label"]?: string;
   ["aria-pressed"]?: boolean;
+  ["aria-expanded"]?: boolean;
 }
 
 export function Button({
@@ -114,6 +115,7 @@ export function Button({
   ["aria-describedby"]: ariaDescribedBy,
   ["aria-label"]: ariaLabel,
   ["aria-pressed"]: ariaPressed,
+  ["aria-expanded"]: ariaExpanded,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -131,6 +133,7 @@ export function Button({
       aria-describedby={ariaDescribedBy}
       aria-label={ariaLabel}
       aria-pressed={ariaPressed}
+      aria-expanded={ariaExpanded}
     >
       {iconName && (
         <IconDiv color={iconColor} size={iconSize}>

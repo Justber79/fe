@@ -13,6 +13,7 @@ export const useStatistics = (metric: StatisticsMetric, query: ApiStatisticsQuer
     staleTime: cacheTTL,
     enabled,
     keepPreviousData: true,
+    toastOnError: false,
   });
 
   return { statistics: data, isLoading, isError, isRefetching: isPlaceholderData };

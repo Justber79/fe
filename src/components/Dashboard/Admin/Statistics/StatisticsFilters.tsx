@@ -5,7 +5,8 @@ import { de, enUS } from "date-fns/locale";
 import { StatisticsGranularity, StatisticsGroupBy, StatisticsMetric } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { GRANULARITY_LABEL_KEYS, GROUP_BY_LABEL_KEYS, METRIC_OPTIONS } from "./metrics";
-import { DateRange, Field, FieldLabel, FiltersRow, Select, TextButton, ToggleButton, ToggleGroup } from "./styles";
+import { Button, CheckButton } from "@/components/core/button";
+import { DateRange, Field, FieldLabel, FiltersRow, Select, ToggleGroup } from "./styles";
 
 type Props = {
   metric: StatisticsMetric;
@@ -60,15 +61,14 @@ export function StatisticsFilters({
         </FieldLabel>
         <ToggleGroup>
           {Object.values(StatisticsGranularity).map((value) => (
-            <ToggleButton
+            <CheckButton
               key={value}
-              type="button"
-              aria-pressed={granularity === value}
-              $isActive={granularity === value}
-              onClick={() => onGranularityChange(value)}
-            >
-              {t(GRANULARITY_LABEL_KEYS[value])}
-            </ToggleButton>
+              label={t(GRANULARITY_LABEL_KEYS[value])}
+              checked={granularity === value}
+              onChange={() => onGranularityChange(value)}
+              height="40px"
+              width="auto"
+            />
           ))}
         </ToggleGroup>
       </Field>
@@ -86,15 +86,16 @@ export function StatisticsFilters({
           />
           <DatePickerWithLabel date={to} onSelect={onToChange} locale={locale} label={t("dashboard.admin.stats.to")} />
           {(from || to) && (
-            <TextButton
-              type="button"
+            <Button
+              text={t("dashboard.admin.stats.clearRange")}
               onClick={() => {
                 onFromChange(undefined);
                 onToChange(undefined);
               }}
-            >
-              {t("dashboard.admin.stats.clearRange")}
-            </TextButton>
+              backgroundcolor="transparent"
+              textColor="var(--color-aubergine)"
+              padding="0"
+            />
           )}
         </DateRange>
       </Field>

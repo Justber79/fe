@@ -82,27 +82,6 @@ export const ToggleGroup = styled.div`
   gap: var(--spacing-8);
 `;
 
-export const ToggleButton = styled.button<{ $isActive: boolean }>`
-  height: var(--button-height);
-  padding: 0 var(--spacing-16);
-  border-radius: var(--button-border-radius);
-  border: 1px solid var(--color-orchid);
-  background: ${({ $isActive }) => ($isActive ? "var(--color-orchid)" : "transparent")};
-  color: var(--color-midnight);
-  font-size: var(--text-p-font-size);
-  font-weight: var(--font-weight-semi-bold);
-  cursor: pointer;
-
-  &:hover {
-    background: ${({ $isActive }) => ($isActive ? "var(--color-orchid)" : "var(--color-orchid-subtle)")};
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-midnight);
-    outline-offset: 2px;
-  }
-`;
-
 export const DateRange = styled.div`
   display: flex;
   align-items: center;
@@ -119,22 +98,6 @@ export const DateRange = styled.div`
       flex: 1 1 140px;
       width: auto;
     }
-  }
-`;
-
-export const TextButton = styled.button`
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--color-midnight);
-  font-size: var(--text-p-font-size);
-  text-decoration: underline;
-  cursor: pointer;
-  align-self: flex-start;
-
-  &:focus-visible {
-    outline: 2px solid var(--color-midnight);
-    outline-offset: 2px;
   }
 `;
 
@@ -169,46 +132,6 @@ export const Swatch = styled.span<{ $color: string }>`
   border-radius: 3px;
   background: ${({ $color }) => $color};
   flex-shrink: 0;
-`;
-
-export const TooltipBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4, 4px);
-  min-width: 160px;
-  padding: var(--spacing-12);
-  border: var(--border-width-thin) solid var(--color-blue-50);
-  border-radius: var(--border-radius-small);
-  background: var(--color-white);
-  box-shadow: 0 4px 12px rgba(26, 38, 132, 0.12);
-  font-size: var(--font-size-14, 14px);
-  color: var(--color-grey-700);
-`;
-
-export const TooltipTitle = styled.div`
-  font-weight: var(--font-weight-semi-bold);
-  color: var(--color-midnight);
-`;
-
-export const TooltipRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-8);
-`;
-
-export const LineKey = styled.span<{ $color: string }>`
-  width: 12px;
-  height: 2px;
-  border-radius: 1px;
-  background: ${({ $color }) => $color};
-  flex-shrink: 0;
-`;
-
-export const TooltipValue = styled.strong`
-  min-width: 2ch;
-  font-weight: var(--font-weight-semi-bold);
-  color: var(--color-midnight);
-  font-variant-numeric: tabular-nums;
 `;
 
 export const TableScroll = styled.div`
@@ -257,4 +180,26 @@ export const Note = styled.p`
   margin: 0;
   font-size: var(--font-size-14, 14px);
   color: var(--color-grey-500);
+`;
+
+export const ChartSvg = styled.svg`
+  width: 100%;
+  height: auto;
+
+  .grid {
+    stroke: var(--color-grey-200);
+  }
+
+  .baseline {
+    stroke: var(--color-grey-400);
+  }
+
+  .axis {
+    fill: var(--color-grey-500);
+    font-size: 12px;
+  }
+
+  .bar:hover rect {
+    opacity: 0.85;
+  }
 `;

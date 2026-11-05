@@ -1,57 +1,20 @@
 "use client";
 
-import { useTranslation } from "react-i18next";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartRow, ChartSeries } from "./helpers";
-import { LineKey, TooltipBox, TooltipRow, TooltipTitle, TooltipValue } from "./styles";
+import { ChartSvg } from "./styles";
 
-const CHART_HEIGHT = 320;
-const SEGMENT_GAP = 2;
-const CORNER_RADIUS = 4;
-const AXIS_TICK = { fill: "#667085", fontSize: 12 };
+const WIDTH = 640;
+const HEIGHT = 320;
+const MARGIN = { top: 8, right: 8, bottom: 28, left: 40 };
+const MAX_BAR_WIDTH = 24;
+const TICK_COUNT = 4;
+const MAX_X_LABELS = 12;
 
-type SegmentProps = { x?: number; y?: number; width?: number; height?: number; fill?: string };
-
-function StackSegment({ x = 0, y = 0, width = 0, height = 0, fill, isTop }: SegmentProps & { isTop: boolean }) {
-  const gap = isTop || height <= SEGMENT_GAP + 1 ? 0 : SEGMENT_GAP;
-  const top = y + gap;
-  const h = height - gap;
-  if (h <= 0 || width <= 0) return null;
-  if (!isTop) return <rect x={x} y={top} width={width} height={h} fill={fill} />;
-
-  const r = Math.min(CORNER_RADIUS, width / 2, h);
-  const path = `M${x},${top + h} L${x},${top + r} Q${x},${top} ${x + r},${top} L${x + width - r},${top} Q${x + width},${top} ${x + width},${top + r} L${x + width},${top + h} Z`;
-  return <path d={path} fill={fill} />;
-}
-
-type ChartTooltipProps = {
-  active?: boolean;
-  payload?: ReadonlyArray<{ payload?: unknown }>;
-  series: ChartSeries[];
-};
-
-function ChartTooltip({ active, payload, series }: ChartTooltipProps) {
-  const { t } = useTranslation();
-  const row = payload?.[0]?.payload as ChartRow | undefined;
-  if (!active || !row) return null;
-
-  return (
-    <TooltipBox>
-      <TooltipTitle>{row.label}</TooltipTitle>
-      {series.length > 1 &&
-        [...series].reverse().map(({ key, label, color }) => (
-          <TooltipRow key={key}>
-            <LineKey $color={color} />
-            <TooltipValue>{row.values[key]}</TooltipValue>
-            <span>{label}</span>
-          </TooltipRow>
-        ))}
-      <TooltipRow>
-        <TooltipValue>{row.total}</TooltipValue>
-        <span>{t("dashboard.admin.stats.total")}</span>
-      </TooltipRow>
-    </TooltipBox>
-  );
+function niceStep(max: number): number {
+  const raw = Math.max(max, 1) / TICK_COUNT;
+  const magnitude = 10 ** Math.floor(Math.log10(raw));
+  const step = [1, 2, 5, 10].find((factor) => factor * magnitude >= raw) ?? 10;
+  return Math.max(1, step * magnitude);
 }
 
 type Props = {
@@ -61,35 +24,56 @@ type Props = {
 };
 
 export function StatisticsChart({ rows, series, ariaLabel }: Props) {
+  const plotWidth = WIDTH - MARGIN.left - MARGIN.right;
+  const plotHeight = HEIGHT - MARGIN.top - MARGIN.bottom;
+  const plotBottom = MARGIN.top + plotHeight;
+  const step = niceStep(Math.max(0, ...rows.map(({ total }) => total)));
+  const yMax = step * TICK_COUNT;
+  const scale = (value: number) => (value / yMax) * plotHeight;
+  const slot = plotWidth / Math.max(rows.length, 1);
+  const barWidth = Math.min(MAX_BAR_WIDTH, slot * 0.6);
+  const labelEvery = Math.ceil(rows.length / MAX_X_LABELS);
+
   return (
-    <div role="figure" aria-label={ariaLabel}>
-      <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-        <BarChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-          <CartesianGrid vertical={false} stroke="#eeeeee" />
-          <XAxis dataKey="label" tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: "#b9bdc7" }} minTickGap={8} />
-          <YAxis allowDecimals={false} tick={AXIS_TICK} tickLine={false} axisLine={false} />
-          <Tooltip
-            cursor={{ fill: "#f0f1f3" }}
-            content={(props) => <ChartTooltip {...props} series={series} />}
-            isAnimationActive={false}
-          />
-          {series.map(({ key, label, color }) => (
-            <Bar
-              key={key}
-              name={label}
-              dataKey={(row: ChartRow) => row.values[key]}
-              stackId="stack"
-              fill={color}
-              maxBarSize={24}
-              isAnimationActive={false}
-              shape={(props: SegmentProps & { payload?: ChartRow }) => (
-                <StackSegment {...props} isTop={props.payload?.topKey === key} />
-              )}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <ChartSvg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={ariaLabel}>
+      {Array.from({ length: TICK_COUNT + 1 }, (_, index) => {
+        const y = plotBottom - scale(index * step);
+        return (
+          <g key={index}>
+            <line className="grid" x1={MARGIN.left} x2={WIDTH - MARGIN.right} y1={y} y2={y} />
+            <text className="axis" x={MARGIN.left - 6} y={y} textAnchor="end" dominantBaseline="middle">
+              {index * step}
+            </text>
+          </g>
+        );
+      })}
+      {rows.map((row, index) => {
+        const x = MARGIN.left + index * slot + (slot - barWidth) / 2;
+        let stacked = 0;
+        return (
+          <g key={row.period} className="bar">
+            <title>{`${row.label}: ${row.total}`}</title>
+            {series.map(({ key, label, color }) => {
+              const value = row.values[key] ?? 0;
+              if (!value) return null;
+              const height = scale(value);
+              stacked += height;
+              return (
+                <rect key={key} x={x} y={plotBottom - stacked} width={barWidth} height={height} style={{ fill: color }}>
+                  <title>{`${row.label} · ${label}: ${value}`}</title>
+                </rect>
+              );
+            })}
+            {index % labelEvery === 0 && (
+              <text className="axis" x={x + barWidth / 2} y={plotBottom + 18} textAnchor="middle">
+                {row.label}
+              </text>
+            )}
+          </g>
+        );
+      })}
+      <line className="baseline" x1={MARGIN.left} x2={WIDTH - MARGIN.right} y1={plotBottom} y2={plotBottom} />
+    </ChartSvg>
   );
 }
 

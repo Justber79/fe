@@ -68,7 +68,6 @@ export const useGetQuery = <T,>({
     queryFn: () => fetchData<T>(apiPath, normalizedParams),
     staleTime,
     enabled,
-    placeholderData: keepPreviousData ? (previousData) => previousData : undefined,
     meta: { toastOnError },
     placeholderData: keepPreviousData ? holdPreviousData : undefined,
   });

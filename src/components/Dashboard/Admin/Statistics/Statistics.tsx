@@ -12,7 +12,8 @@ import { GROUP_BY_LABEL_KEYS, METRIC_OPTIONS } from "./metrics";
 import { StatisticsChart } from "./StatisticsChart";
 import { StatisticsFilters } from "./StatisticsFilters";
 import { StatisticsTable } from "./StatisticsTable";
-import { Card, CardHeader, Container, Legend, LegendItem, Note, Swatch, TextButton } from "./styles";
+import { Button } from "@/components/core/button";
+import { Card, CardHeader, Container, Legend, LegendItem, Note, Swatch } from "./styles";
 
 export function Statistics() {
   const { t, i18n } = useTranslation();
@@ -76,9 +77,14 @@ export function Statistics() {
             {title}
           </Heading4>
           {chart && !chart.isEmpty && (
-            <TextButton type="button" aria-expanded={showTable} onClick={() => setShowTable((value) => !value)}>
-              {t(showTable ? "dashboard.admin.stats.hideTable" : "dashboard.admin.stats.showTable")}
-            </TextButton>
+            <Button
+              text={t(showTable ? "dashboard.admin.stats.hideTable" : "dashboard.admin.stats.showTable")}
+              onClick={() => setShowTable((value) => !value)}
+              backgroundcolor="transparent"
+              textColor="var(--color-aubergine)"
+              padding="0"
+              aria-expanded={showTable}
+            />
           )}
         </CardHeader>
 
@@ -86,9 +92,9 @@ export function Statistics() {
           <Paragraph color="var(--color-red-600)" role="alert">
             {t("dashboard.admin.stats.invalidRange")}
           </Paragraph>
-        ) : isLoading ? (
+        ) : isLoading || (statistics && statistics.metric !== metric) ? (
           <DashboardListLoading />
-        ) : isError && !chart ? (
+        ) : isError ? (
           <Paragraph color="var(--color-grey-500)">{t("dashboard.admin.stats.loadError")}</Paragraph>
         ) : !chart || chart.isEmpty ? (
           <Paragraph color="var(--color-grey-500)">{t("dashboard.admin.stats.empty")}</Paragraph>
