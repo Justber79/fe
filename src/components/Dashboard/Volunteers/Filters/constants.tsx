@@ -61,6 +61,8 @@ export const defaultVolunteerCardsFilter: VolunteerCardsFilter = {
   maxCommuteMinutes: 0,
 };
 
+export const DEFAULT_NGO_VOLUNTEER_ENGAGEMENTS = [VolunteerStateEngagementType.AVAILABLE];
+
 export const DEFAULT_VOLUNTEER_ENGAGEMENTS = Object.values(VolunteerStateEngagementType).filter(
   (engagement) => engagement !== VolunteerStateEngagementType.INACTIVE,
 );
