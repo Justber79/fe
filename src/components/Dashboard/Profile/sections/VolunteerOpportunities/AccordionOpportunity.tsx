@@ -27,7 +27,7 @@ export default function AccordionOpportunity({ opportunity, currentStatus, ...ac
       <Heading4 margin={0} color="var(--color-midnight)">
         {opportunity.title}
       </Heading4>
-      <CommuteBadge min={1} max={5} />
+      <CommuteBadge min={25} max={35} />
     </HeaderLeftWrapper>
   );
 

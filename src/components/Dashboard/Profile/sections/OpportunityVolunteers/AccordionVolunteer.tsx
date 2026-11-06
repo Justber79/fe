@@ -55,7 +55,7 @@ export const AccordionVolunteer = ({
       </Heading4>
       <StatusBadge status={engagement} />
       <StatusBadge status={volunteeringType} />
-      <CommuteBadge min={1} max={5} />
+      <CommuteBadge min={25} max={35} />
       {showBriefedCheck && <CheckCircleIcon size={20} color="var(--color-green-700)" weight="fill" />}
     </>
   );

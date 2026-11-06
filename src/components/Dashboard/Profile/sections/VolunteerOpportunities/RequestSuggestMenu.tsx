@@ -37,7 +37,7 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
           {opportunities.map((opp) => (
             <Menu.Item key={opp.id} onSelect={() => onSelect(opp.title)}>
               <ItemText>{opp.title}</ItemText>
-              <CommuteBadge min={1} max={5} />
+              <CommuteBadge min={25} max={35} />
             </Menu.Item>
           ))}
         </Menu.Dropdown>
