@@ -4,10 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapContainer as LeafletMapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { ApiDistrictAggregate, QueryParamsKeys } from "need4deed-sdk";
+import { ApiDistrictAggregate, QueryParamsKeys, UserRole } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import { useScreenType } from "@/context/DeviceContext";
 import { questionMark, ScreenTypes } from "@/config/constants";
+import { useCurrentUserQuery } from "@/hooks/useCurrentUser";
 import { BerlinRacs } from "./layers/BerlinRacs";
 import { DistrictPolygons } from "./layers/DistrictPolygons";
 import { MapLegendControl } from "./controls/MapLegend";
@@ -64,6 +65,10 @@ const MapCard = ({
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const screenSize = useScreenType();
+  const { data: currentUser, isLoading: isUserLoading } = useCurrentUserQuery(entity === MapEntity.VOLUNTEER);
+  const canFetchVolunteerMarkers =
+    entity !== MapEntity.VOLUNTEER ||
+    (!isUserLoading && (currentUser?.role === UserRole.ADMIN || currentUser?.role === UserRole.COORDINATOR));
   const { data: districtGeometries, isError: isGeometryError, isLoading: isGeometryLoading } = useGetDistrictGeometry();
   const districtParamValues = searchParams.getAll(QueryParamsKeys.DISTRICT);
   const districtParamKey = districtParamValues.join("|");
@@ -135,6 +140,7 @@ const MapCard = ({
     serializedFilter,
     i18n.resolvedLanguage ?? i18n.language,
     selectedDistrictId,
+    canFetchVolunteerMarkers,
   );
 
   const districtCounts = useMemo(() => {

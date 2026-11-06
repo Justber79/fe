@@ -9,18 +9,25 @@ export const useGetMapMarkers = (
   filter: URLSearchParams,
   lan: string,
   selectedDistrictId: number | undefined,
+  canFetchMarkers: boolean,
 ) => {
   const apiPath = apiPathDistrictMarker(entity);
 
   const { data, isError, isLoading } = useGetQuery<ApiDistrictMarkerGet>({
-    queryKey: ["district-map-markers", entity, String(selectedDistrictId ?? ""), String(hasUnsupportedFilters)],
+    queryKey: [
+      "district-map-markers",
+      entity,
+      String(selectedDistrictId ?? ""),
+      String(hasUnsupportedFilters),
+      String(canFetchMarkers),
+    ],
     apiPath,
     params: {
       districtId: selectedDistrictId,
       language: lan.split("-")[0] === Lang.DE ? Lang.DE : Lang.EN,
       filter,
     },
-    enabled: Boolean(selectedDistrictId) && !hasUnsupportedFilters,
+    enabled: Boolean(selectedDistrictId) && !hasUnsupportedFilters && canFetchMarkers,
   });
 
   return { data, isError, isLoading };
