@@ -5,6 +5,7 @@ import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLink
 import { ApiOpportunityGetList } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { CommuteBadge } from "../../common/CommuteBadge";
 
 type Props = {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
           {opportunities.map((opp) => (
             <Menu.Item key={opp.id} onSelect={() => onSelect(opp.title)}>
               <ItemText>{opp.title}</ItemText>
+              <CommuteBadge min={1} max={5} />
             </Menu.Item>
           ))}
         </Menu.Dropdown>

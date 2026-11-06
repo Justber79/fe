@@ -12,6 +12,7 @@ import { Accordion } from "../shared/Accordion";
 import { getDatePrefixKey } from "../shared/getDatePrefixKey";
 import { AvatarImg } from "./styles";
 import VolunteerDetail from "./VolunteerDetail";
+import { CommuteBadge } from "../../common/CommuteBadge";
 
 type Props = {
   volunteer: ApiVolunteerOpportunityGet;
@@ -54,6 +55,7 @@ export const AccordionVolunteer = ({
       </Heading4>
       <StatusBadge status={engagement} />
       <StatusBadge status={volunteeringType} />
+      <CommuteBadge min={1} max={5} />
       {showBriefedCheck && <CheckCircleIcon size={20} color="var(--color-green-700)" weight="fill" />}
     </>
   );
