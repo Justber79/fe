@@ -2,6 +2,8 @@ import { Endpoint, EntityTableName, Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
 
+type DistrictMapEntity = EntityTableName.AGENT | EntityTableName.OPPORTUNITY | EntityTableName.VOLUNTEER;
+
 export const apiPrefix = "api";
 export const apiPathVolunteer = `/${apiPrefix}/volunteer`;
 export const apiPathComment = `/${apiPrefix}/comment`;
@@ -31,7 +33,6 @@ export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const apiPathTrustedDomain = `/${apiPrefix}/trusted-domain`;
 export const apiPathStatistics = `/${apiPrefix}${Endpoint.STATISTICS}`;
 export const apiPathDistrictGeometry = `/${apiPrefix}/district-geometry`;
-type DistrictMapEntity = EntityTableName.AGENT | EntityTableName.OPPORTUNITY | EntityTableName.VOLUNTEER;
 
 export const apiPathAggregateDistrict = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/districts`;
 export const apiPathDistrictMarker = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/map`;
