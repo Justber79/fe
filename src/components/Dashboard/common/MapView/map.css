@@ -17,7 +17,7 @@
 }
 
 .leaflet-marker-icon.berlin-rac-marker-icon {
-  filter: grayScale(1);
+  filter: hue-rotate(150deg);
 }
 
 .grouped-marker-icon__image {

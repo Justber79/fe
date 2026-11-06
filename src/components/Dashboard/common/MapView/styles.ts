@@ -293,7 +293,7 @@ export const IconSlot = styled.div`
     }
 
     &.custom-other-rac-icon {
-      filter: grayscale(1);
+      filter: hue-rotate(150deg);
     }
   }
 `;
