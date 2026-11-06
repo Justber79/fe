@@ -4,7 +4,7 @@ import { DatePickerWithLabel } from "@/components/core/common/DatePicker";
 import { de, enUS } from "date-fns/locale";
 import { StatisticsGranularity, StatisticsGroupBy, StatisticsMetric } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
-import { GRANULARITY_LABEL_KEYS, GROUP_BY_LABEL_KEYS, METRIC_OPTIONS } from "./metrics";
+import { GRANULARITY_LABEL_KEYS, GROUP_BY_LABEL_KEYS, METRIC_OPTIONS, STATISTICS_MIN_YEAR } from "./metrics";
 import { Button, CheckButton } from "@/components/core/button";
 import { DateRange, Field, FieldLabel, FiltersRow, Select, ToggleGroup } from "./styles";
 
@@ -83,8 +83,15 @@ export function StatisticsFilters({
             onSelect={onFromChange}
             locale={locale}
             label={t("dashboard.admin.stats.from")}
+            minYear={STATISTICS_MIN_YEAR}
           />
-          <DatePickerWithLabel date={to} onSelect={onToChange} locale={locale} label={t("dashboard.admin.stats.to")} />
+          <DatePickerWithLabel
+            date={to}
+            onSelect={onToChange}
+            locale={locale}
+            label={t("dashboard.admin.stats.to")}
+            minYear={STATISTICS_MIN_YEAR}
+          />
           {(from || to) && (
             <Button
               text={t("dashboard.admin.stats.clearRange")}

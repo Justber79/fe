@@ -29,3 +29,5 @@ export const GROUP_BY_LABEL_KEYS: Record<StatisticsGroupBy, string> = {
   [StatisticsGroupBy.VOLUNTEER_TYPE]: "dashboard.admin.stats.groupBy.volunteerType",
   [StatisticsGroupBy.LEAD_FROM]: "dashboard.admin.stats.groupBy.leadFrom",
 };
+
+export const STATISTICS_MIN_YEAR = 2020;

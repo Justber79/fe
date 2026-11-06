@@ -1,15 +1,18 @@
 import { format, isSameDay, isValid, parse, startOfDay } from "date-fns";
 import { type Locale } from "date-fns/locale";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import { useTranslation } from "react-i18next";
 
 const MIN_YEAR = 2025;
 
 import {
+  DateError,
   DateInput,
   DateInputContainer,
   DateInputIcon,
+  DateInputIconButton,
   DatePickerPopover,
   DatePickerWrapper,
   FloatingLabel,
@@ -26,6 +29,7 @@ type Props = {
   showTodayIndicator?: boolean;
   todayText?: string;
   hasError?: boolean;
+  minYear?: number;
 };
 
 export function DatePickerWithLabel({
@@ -39,7 +43,12 @@ export function DatePickerWithLabel({
   showTodayIndicator = false,
   todayText = "today",
   hasError,
+  minYear = MIN_YEAR,
 }: Props) {
+  const { t } = useTranslation();
+  const inputId = useId();
+  const errorId = useId();
+  const [inputError, setInputError] = useState<string>();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [month, setMonth] = useState<Date>(date || new Date());
@@ -97,17 +106,24 @@ export function DatePickerWithLabel({
     const dateRegex = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
 
     if (!dateRegex.test(value)) {
+      setInputError(undefined);
       return;
     }
 
     const parsedDate = parse(value, "dd.MM.yyyy", new Date());
 
-    if (isValid(parsedDate) && parsedDate.getFullYear() >= MIN_YEAR) {
+    if (!isValid(parsedDate)) {
+      setInputError(t("datePicker.invalidDate"));
+    } else if (parsedDate.getFullYear() < minYear) {
+      setInputError(t("datePicker.beforeMinYear", { year: minYear }));
+    } else {
+      setInputError(undefined);
       onSelect(parsedDate);
     }
   };
 
   const handleInputBlur = () => {
+    if (inputError) return;
     if (date) {
       const formatted = format(date, "dd.MM.yyyy");
       if (showTodayIndicator) {
@@ -130,10 +146,20 @@ export function DatePickerWithLabel({
   return (
     <DatePickerWrapper ref={containerRef} data-testid="date-picker-wrapper">
       <DateInputContainer $hasLabel={!!label}>
-        {label && <FloatingLabel>{label}</FloatingLabel>}
-        <DateInputIcon size={24} weight="regular" onClick={handleIconClick} />
+        {label && <FloatingLabel htmlFor={inputId}>{label}</FloatingLabel>}
+        <DateInputIconButton
+          type="button"
+          onClick={handleIconClick}
+          aria-label={label ? `${t("datePicker.openCalendar")}: ${label}` : t("datePicker.openCalendar")}
+          aria-expanded={isOpen}
+        >
+          <DateInputIcon size={24} weight="regular" aria-hidden />
+        </DateInputIconButton>
         <DateInput
-          $hasError={hasError}
+          id={inputId}
+          $hasError={hasError || !!inputError}
+          aria-invalid={hasError || !!inputError}
+          aria-describedby={inputError ? errorId : undefined}
           ref={inputRef}
           value={inputValue}
           onChange={handleInputChange}
@@ -142,11 +168,17 @@ export function DatePickerWithLabel({
           placeholder="dd.mm.yyyy"
         />
       </DateInputContainer>
+      {inputError && (
+        <DateError id={errorId} role="alert">
+          {inputError}
+        </DateError>
+      )}
       <DatePickerPopover $isOpen={isOpen}>
         <DayPicker
           mode="single"
           selected={date}
           onSelect={(d) => {
+            setInputError(undefined);
             onSelect(d);
             setIsOpen(false);
           }}
@@ -154,7 +186,7 @@ export function DatePickerWithLabel({
           onMonthChange={setMonth}
           locale={locale}
           captionLayout="dropdown"
-          startMonth={new Date(MIN_YEAR, 0)}
+          startMonth={new Date(minYear, 0)}
           endMonth={new Date(new Date().getFullYear() + 10, 11)}
           disabled={allowFuture ? isBeforeEarliest : { after: new Date() }}
         />

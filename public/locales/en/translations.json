@@ -2572,5 +2572,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Open calendar",
+    "invalidDate": "Enter a valid date (dd.mm.yyyy).",
+    "beforeMinYear": "Dates before {{year}} are not supported."
   }
 }

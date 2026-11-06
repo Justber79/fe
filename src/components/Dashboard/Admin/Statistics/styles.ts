@@ -182,8 +182,13 @@ export const Note = styled.p`
   color: var(--color-grey-500);
 `;
 
+export const ChartScroll = styled.div`
+  overflow-x: auto;
+`;
+
 export const ChartSvg = styled.svg`
   width: 100%;
+  min-width: 640px;
   height: auto;
 
   .grid {

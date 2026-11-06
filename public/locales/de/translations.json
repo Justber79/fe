@@ -2927,5 +2927,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Kalender öffnen",
+    "invalidDate": "Bitte ein gültiges Datum eingeben (TT.MM.JJJJ).",
+    "beforeMinYear": "Daten vor {{year}} werden nicht unterstützt."
   }
 }
