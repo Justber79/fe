@@ -4,6 +4,7 @@ import { Comments } from "@/components/Dashboard/Profile/sections/Comments";
 import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactDetails";
 import { OpportunityDetails } from "@/components/Dashboard/Profile/sections/OpportunityDetails";
 import { OpportunityVolunteers } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers";
+import { RecommendedVolunteers } from "@/components/Dashboard/Profile/sections/RecommendedMatches";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers/SuggestDialog";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
 import { RefugeeAccommodationCentre } from "@/components/Dashboard/Profile/sections/RefugeeAccommodationCentre";
@@ -150,6 +151,13 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
               isStaff={isAuthorized}
               isUserLoaded={isUserLoaded}
             />
+            {isUserLoaded && (
+              <RecommendedVolunteers
+                opportunityId={opportunity.id}
+                opportunityTitle={opportunity.title}
+                canSuggest={isAuthorized}
+              />
+            )}
             {isSuggestDialogOpen && (
               <SuggestDialog
                 opportunityName={opportunity.title}

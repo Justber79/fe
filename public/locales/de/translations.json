@@ -1877,6 +1877,10 @@
         "domains": "Domains",
         "stats": "Statistiken"
       }
+    },
+    "recommended": {
+      "volunteersTitle": "Empfohlene Ehrenamtliche",
+      "opportunitiesTitle": "Empfohlene Ehrenamtsbedarfe"
     }
   },
   "aboutus": {

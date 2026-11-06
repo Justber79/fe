@@ -13,6 +13,7 @@ import { EditableSectionRef } from "@/components/Dashboard/Profile/sections/shar
 import { RequestSuggestMenu } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/RequestSuggestMenu";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/SuggestDialog";
 import VolunteerOpportunities from "@/components/Dashboard/Profile/sections/VolunteerOpportunities/VolunteerOpportunities";
+import { RecommendedOpportunities } from "@/components/Dashboard/Profile/sections/RecommendedMatches";
 import { VolunteerProfile, VolunteerProfileRef } from "@/components/Dashboard/Profile/sections/VolunteerProfile";
 import { VolunteerProfileDocument } from "@/components/Dashboard/Profile/sections/VolunteerProfileDocument";
 import { IconName } from "@/components/Dashboard/Profile/types";
@@ -125,6 +126,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
             />
           )}
           <VolunteerOpportunities volunteerId={volunteer.id} />
+          {isAuthorized && <RecommendedOpportunities volunteerId={volunteer.id} volunteerName={volunteerFullName} />}
           {isSuggestDialogOpen && (
             <SuggestDialog
               volunteerName={volunteerFullName}
