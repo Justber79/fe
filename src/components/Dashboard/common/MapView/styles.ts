@@ -18,6 +18,115 @@ export const StyledMapContainer = styled.div`
   }
 `;
 
+export const DistrictMapPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--dashboard-map-container-gap);
+  width: 100%;
+`;
+
+export const DistrictMapLayout = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  gap: var(--dashboard-map-container-gap);
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+
+    & > section {
+      order: 0;
+    }
+
+    ${StyledMapContainer} {
+      order: 1;
+      aspect-ratio: 4 / 3;
+    }
+  }
+`;
+
+export const DistrictMapSectionTitle = styled.h3`
+  margin: 0 0 var(--spacing-8);
+  font-size: var(--font-size-md);
+`;
+
+export const DistrictMapList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  max-height: 480px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+`;
+
+export const DistrictMapListItem = styled.li`
+  min-width: 0;
+`;
+
+export const DistrictMapButton = styled.button<{ $isSelected: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: 1px solid var(--color-grey-300);
+  background: ${({ $isSelected }) => ($isSelected ? "var(--color-orchid-subtle)" : "var(--color-white)")};
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    background: var(--color-orchid-subtle);
+  }
+`;
+
+export const DistrictCount = styled.strong`
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+`;
+
+export const DistrictSelectedHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-12);
+`;
+
+export const DistrictSelectedTitle = styled.h2`
+  margin: 0;
+  font-size: var(--font-size-lg);
+`;
+
+export const DistrictMapStatus = styled.p`
+  margin: 0;
+  color: var(--color-grey-700);
+`;
+
+export const DistrictCountChips = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+`;
+
+export const MapBucketChip = styled.span`
+  display: inline-flex;
+  gap: var(--spacing-4);
+  align-items: center;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: 1px solid var(--color-grey-300);
+  border-radius: 999px;
+  background: var(--color-grey-50);
+`;
+
+export const MapResultLink = styled(Link)`
+  color: var(--color-black);
+  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
+`;
+
 const pulse = keyframes`
   0% {
     background-color: var(--color-grey-50);
@@ -59,70 +168,12 @@ export const LoadingSidebar = styled.div`
   animation: ${pulse} 3s ease-in-out infinite;
 `;
 
-export const PopupWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--dashboard-map-popup-wrapper-gap);
-  & > span:first-child {
-    font-weight: var(--font-weight-bold);
-  }
-`;
-
 export const MapContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   gap: var(--dashboard-map-container-gap);
-`;
-
-export const MapSidebar = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--dashboard-map-sidebar-gap);
-  padding: var(--dashboard-map-sidebar-padding);
-  max-height: var(--dashboard-map-height);
-  overflow-y: scroll;
-  width: var(--dashboard-map-sidebar-width);
-`;
-
-export const MarkerCard = styled.div<{ $isActive: boolean }>`
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props) => (props.$isActive ? "var(--color-orchid)" : "var(--color-orchid-subtle)")};
-  justify-content: center;
-  padding: var(--dashboard-map-marker-card-padding);
-  border-radius: var(--card-border-radius);
-  cursor: pointer;
-`;
-
-export const MarkerLabel = styled.span`
-  text-align: left;
-  margin-bottom: var(--dashboard-map-marker-label-margin-bottom);
-  color: var(--color-grey-500);
-  text-transform: uppercase;
-  font-weight: var(--font-weight-bold);
-`;
-
-export const MapOpportunityList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: var(--dashboard-map-opp-list-gap);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-export const MapOpportunityItem = styled.li`
-  display: flex;
-  gap: var(--dashboard-map-opp-item-gap);
-  background: var(--color-white);
-  padding: var(--dashboard-map-marker-card-padding);
-  border-radius: var(--card-border-radius);
-  font-weight: bold;
-  text-align: center;
-  align-items: center;
 `;
 
 export const PopupContentWrapper = styled.div`

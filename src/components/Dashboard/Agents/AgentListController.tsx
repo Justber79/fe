@@ -1,6 +1,6 @@
 import { type ApiAgentGetList, type ApiOptionLists, QueryParamsKeys, SortOrder } from "need4deed-sdk";
 import { AgentCardList } from "./AgentCardList";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { apiPathAgent, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "@/config/constants";
@@ -13,9 +13,9 @@ import { createAgentFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingAgentTableList } from "./LoadingAgentTableList";
-import { createAgentMarkers } from "../common/MapView/helpers";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { AgentMapView } from "./AgentMapView";
+import { hasUnsupportedDistrictMapFilter } from "../common/MapView/helpers";
 
 type Props = {
   setNumOfAgents: (num: number) => void;
@@ -40,10 +40,12 @@ const AgentListControllerContent = ({
   onSelect,
 }: Props) => {
   const { currentPage, setCurrentPage } = usePageParam();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
-  const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
+  const hasUnsupportedMapFilters =
+    isMapView && (Boolean(filter.search) || hasUnsupportedDistrictMapFilter(filter.district));
+  const limit = isListView ? TABLE_LIMIT : isMapView ? (onSelect ? MAP_LIMIT : 1) : CARD_LIMIT;
 
   const serializedFilter = new URLSearchParams(
     serializeAgentFilters(filter, undefined, false, {
@@ -62,6 +64,7 @@ const AgentListControllerContent = ({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
+    enabled: !isMapView || hasUnsupportedMapFilters || Boolean(onSelect),
     keepPreviousData: isMapView,
   });
 
@@ -74,11 +77,9 @@ const AgentListControllerContent = ({
     volunteerSearchFilters: getSectionItems(filterSections, "volunteerSearch"),
   };
 
-  const markers = useMemo(() => createAgentMarkers(agents, t, i18n.language), [agents, t, i18n.language]);
-
   useEffect(() => {
-    setNumOfAgents(count);
-  }, [count, setNumOfAgents]);
+    if (!isMapView || hasUnsupportedMapFilters) setNumOfAgents(count);
+  }, [count, hasUnsupportedMapFilters, isMapView, setNumOfAgents]);
 
   if (isLoading && isListView) return <LoadingAgentTableList dropdownFilters={dropdownFilters} />;
   if (isLoading && isMapView) return <LoadingMapView />;
@@ -105,11 +106,9 @@ const AgentListControllerContent = ({
   if (isMapView) {
     return (
       <AgentMapView
-        markers={markers}
-        count={count}
-        itemsPerPage={limit}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        filter={serializedFilter}
+        onCountChange={setNumOfAgents}
+        agents={onSelect ? agents : undefined}
         onSelect={onSelect}
       />
     );

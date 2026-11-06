@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathVolunteer, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { ApiOptionLists, ApiVolunteerGetList, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { LoadingVolunteerTableList } from "./LoadingVolunteerTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { VolunteerMapView } from "./VolunteerMapView";
-import { createSingleOpportunityMarker, createVolunteerMarkers } from "../common/MapView/helpers";
+import { createSingleOpportunityMarker, hasUnsupportedDistrictMapFilter } from "../common/MapView/helpers";
 import { SingleFilter } from "../common/MapView/types";
 
 interface VolunteerListControllerProps {
@@ -48,7 +48,9 @@ function VolunteerListControllerContent({
 }: VolunteerListControllerProps) {
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
-  const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
+  const hasUnsupportedMapFilters =
+    isMapView && (Boolean(filter.search) || hasUnsupportedDistrictMapFilter(filter.district));
+  const limit = isListView ? TABLE_LIMIT : isMapView ? 1 : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const { t, i18n } = useTranslation();
   const serializedFilter = serializeFilters(filter, undefined, false, {
@@ -89,6 +91,7 @@ function VolunteerListControllerContent({
     apiPath: apiPathVolunteer,
     params,
     staleTime: cacheTTL,
+    enabled: !isMapView || hasUnsupportedMapFilters,
     keepPreviousData: isMapView,
   });
   const volunteers = data || [];
@@ -96,15 +99,11 @@ function VolunteerListControllerContent({
   const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
-  const markers = useMemo(
-    () => createVolunteerMarkers(volunteers, t, i18n.language, opportunityId),
-    [volunteers, t, i18n.language, opportunityId],
-  );
   const opportunityMarker = createSingleOpportunityMarker(opportunityFilter, t, i18n.language);
 
   useEffect(() => {
-    setNumOfVols(count);
-  }, [setNumOfVols, count]);
+    if (!isMapView || hasUnsupportedMapFilters) setNumOfVols(count);
+  }, [count, hasUnsupportedMapFilters, isMapView, setNumOfVols]);
 
   if (isLoading && isListView)
     return <LoadingVolunteerTableList canSeeContactColumns={canSeeContactColumns} dropdownFilters={dropdownFilters} />;
@@ -131,14 +130,7 @@ function VolunteerListControllerContent({
 
   if (isMapView) {
     return (
-      <VolunteerMapView
-        markers={markers}
-        itemsPerPage={limit}
-        count={count}
-        opportunityMarker={opportunityMarker}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <VolunteerMapView filter={serializedFilter} onCountChange={setNumOfVols} opportunityMarker={opportunityMarker} />
     );
   }
 
