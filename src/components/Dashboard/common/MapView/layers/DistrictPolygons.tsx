@@ -26,8 +26,6 @@ export const DistrictPolygons = ({
   onDistrictClickRef.current = onDistrictClick;
   const districtCountsRef = useRef(districtCounts);
   districtCountsRef.current = districtCounts;
-  const selectedDistrictIdsRef = useRef(selectedDistrictIds);
-  selectedDistrictIdsRef.current = selectedDistrictIds;
   const showCountsRef = useRef(showCounts);
   showCountsRef.current = showCounts;
   const hasInitializedMapView = useRef(false);
@@ -96,18 +94,17 @@ export const DistrictPolygons = ({
 
       const label = L.DomUtil.create("span");
       const count = districtCounts.get(districtId) ?? 0;
-      const isSelected = selectedDistrictIds.has(districtId);
-      label.textContent = isSelected ? title : showCounts ? String(count) : title;
+      label.textContent = showCounts ? String(count) : title;
       label.setAttribute("aria-label", `${title}: ${label.textContent}`);
       layer.bindTooltip(label, {
-        permanent: showCounts || isSelected,
+        permanent: showCounts,
         direction: "center",
         className: "district-count-tooltip",
         interactive: false,
       });
-      if (showCounts || isSelected) layer.openTooltip();
+      if (showCounts) layer.openTooltip();
     });
-  }, [districtCounts, geometryKey, selectedDistrictIds, showCounts]);
+  }, [districtCounts, geometryKey, showCounts]);
 
   const handleEachFeature = useCallback((feature: Feature, layer: L.Layer) => {
     const title = feature.properties?.title;
@@ -135,13 +132,12 @@ export const DistrictPolygons = ({
       },
       mouseout: () => {
         setHoveredDistrictId((curr) => (curr === districtId ? null : curr));
-        if (selectedDistrictIdsRef.current.has(districtId)) showDistrictTitle();
-        else showDistrictCount();
+        showDistrictCount();
       },
       click: (event: L.LeafletMouseEvent) => {
         const pointerType = (event.originalEvent as PointerEvent | { pointerType?: string } | undefined)?.pointerType;
         if (pointerType === "touch") setHoveredDistrictId(null);
-        showDistrictTitle();
+        layer.closeTooltip();
         onDistrictClickRef.current(districtId);
       },
       add: () => {
@@ -155,6 +151,7 @@ export const DistrictPolygons = ({
           const keyEvent = event as KeyboardEvent;
           if (keyEvent.key !== "Enter" && keyEvent.key !== " ") return;
           keyEvent.preventDefault();
+          layer.closeTooltip();
           onDistrictClickRef.current(districtId);
         };
         const handleFocus = () => {
@@ -163,8 +160,7 @@ export const DistrictPolygons = ({
         };
         const handleBlur = () => {
           setHoveredDistrictId((current) => (current === districtId ? null : current));
-          if (selectedDistrictIdsRef.current.has(districtId)) showDistrictTitle();
-          else showDistrictCount();
+          showDistrictCount();
         };
         path.addEventListener("keydown", handleKeyDown);
         path.addEventListener("focus", handleFocus);

@@ -20,7 +20,7 @@ export const MapOtherRacs = ({ showOtherRacs, setShowOtherRacs }: Props) => {
     const legendControl = new L.Control({ position: "topleft" });
 
     legendControl.onAdd = () => {
-      const div = L.DomUtil.create("div", "leaflet-legend-control");
+      const div = L.DomUtil.create("div", "leaflet-legend-control map-other-racs-control");
 
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
