@@ -26,7 +26,7 @@ export function formatLanguagesByPurpose(
     .join(", ");
 }
 
-export function extractOptionTitle(item: OptionById | undefined, lang: Lang): string {
+export function extractOptionTitle(item: Pick<OptionById, "title"> | undefined, lang: Lang): string {
   if (!item?.title) return "";
   return item.title[lang] ?? item.title[Lang.EN] ?? "";
 }

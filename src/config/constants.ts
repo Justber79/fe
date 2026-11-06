@@ -1,5 +1,5 @@
 import { EntityType } from "@/components/Dashboard/Profile/types";
-import { Lang } from "need4deed-sdk";
+import { Endpoint, Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
 
@@ -30,6 +30,7 @@ export const apiPathOrganization = `/${apiPrefix}/organization/`;
 export const apiPathRequestPasswordReset = `/${apiPrefix}/auth/request-reset`;
 export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const apiPathTrustedDomain = `/${apiPrefix}/trusted-domain`;
+export const apiPathStatistics = `/${apiPrefix}${Endpoint.STATISTICS}`;
 export const apiPathDistrictGeometry = `/${apiPrefix}/district-geometry`;
 export const apiPathAggregateDistrict = (entity: EntityType) => `/${apiPrefix}/${entity}/districts`;
 export const apiPathDistrictMarker = (entity: EntityType) => `/${apiPrefix}/${entity}/map`;
@@ -51,6 +52,7 @@ export const screenSizeThresholds = {
 };
 
 export const opportunityFieldStackingThreshold = 1024;
+export const loginLayoutStackingThreshold = 1024;
 
 export const videoGuideURL = "https://www.youtube.com/embed/tk5akHPd9oo?si=k01Klx7SxIWwKHO_&rel=0&autoplay=0";
 
@@ -118,6 +120,8 @@ export const MAX_PAGE_LIMIT = 120;
 export const CONTACT_EMAIL = "info@need4deed.org";
 export const REQUEST_SUGGEST_CONTACT_EMAIL = "contact@need4deed.org";
 export const REQUEST_SUGGEST_COMMENT_MARKER = "📩";
+
+export const DEFAULT_MAX_COMMUTE_MINUTES = 30;
 
 export const LOGIN_ERROR_KEYS: Record<number, string> = {
   400: "dashboard.login.errors.missingFields",

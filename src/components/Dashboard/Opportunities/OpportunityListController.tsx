@@ -14,7 +14,6 @@ import { DEFAULT_OPPORTUNITY_STATUSES, STATUS_PARAM, VOLUNTEER_OPPORTUNITY_STATU
 import { createOpportunityFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
-import { LoadingOpportunityTableList } from "./LoadingOpportunityTableList";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { createSingleVolunteerMarker } from "../common/MapView/helpers";
 import { SingleFilter } from "../common/MapView/types";
@@ -82,6 +81,7 @@ function OpportunityListControllerContent({
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
+    commuteSourceId: volunteerId,
   });
 
   if (volunteerId) {
@@ -128,13 +128,13 @@ function OpportunityListControllerContent({
   }, [count, hasUnsupportedMapFilters, isMapView, setNumOfOpps]);
 
   const isPending = isLoading || !isRoleKnown;
-  if (isPending && isListView) return <LoadingOpportunityTableList dropdownFilters={dropdownFilters} />;
   if (isPending && isMapView) return <LoadingMapView />;
-  if (isPending) return <DashboardListLoading />;
+  if (isPending && !isListView) return <DashboardListLoading />;
 
   if (isListView) {
     return (
       <OpportunityTableList
+        isLoading={isPending}
         opportunities={opportunities}
         count={count}
         itemsPerPage={limit}

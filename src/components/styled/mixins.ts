@@ -1,5 +1,11 @@
 import { css } from "styled-components";
-import { opportunityFieldStackingThreshold, screenSizeThresholds } from "@/config/constants";
+import {
+  loginLayoutStackingThreshold,
+  opportunityFieldStackingThreshold,
+  screenSizeThresholds,
+} from "@/config/constants";
+
+export const loginLayoutStackingMedia = `(max-width: ${loginLayoutStackingThreshold - 1}px)`;
 
 export const fieldStackingMedia = `(max-width: ${screenSizeThresholds.tablet - 1}px)`;
 export const opportunityFieldStackingMedia = `(max-width: ${opportunityFieldStackingThreshold - 1}px)`;

@@ -539,6 +539,8 @@
           "regular-accompanying": "Regelmäßig + Begleitend"
         }
       },
+      "retry": "Erneut versuchen",
+      "agentHeadline": "Ehrenamtliche, die wir für Sie kontaktieren können",
       "volunteers": "Ehrenamtliche",
       "languages": "Sprachen",
       "activities": "Aktivitäten",
@@ -736,6 +738,7 @@
       "login": "Anmelden",
       "createNgoAccount": "NGO-Konto erstellen",
       "createVolunteerAccount": "Freiwilligenkonto erstellen",
+      "newToNeed4Deed": "Neu bei Need4Deed?",
       "email": "Email",
       "password": "Passwort",
       "rememberMe": "Angemeldet bleiben",
@@ -766,7 +769,10 @@
     "filters": {
       "button": "FILTER",
       "closeFilters": "FILTER SCHLIEẞEN",
-      "clearAll": "Filter löschen"
+      "clearAll": "Filter löschen",
+      "commute": "Max. Pendelzeit: {{minutes}} Minuten",
+      "commuteMinutesHeader": "Maximale Pendelzeit",
+      "commuteMinutesOption": "{{minutes}} Minuten"
     },
     "volunteerProfile": {
       "backToDashboard": "Zurück zum Dashboard",
@@ -1882,7 +1888,47 @@
         "removeMessage": "Personen mit einer E-Mail-Adresse auf {{domain}} können sich dann nicht mehr als NGO registrieren, außer die NGO hat bereits eine Kontaktperson mit dieser Domain."
       },
       "stats": {
-        "comingSoon": "Kommt bald"
+        "metricLabel": "Kennzahl",
+        "metric": {
+          "newVolunteers": "Neue Freiwillige",
+          "requests": "Anfragen",
+          "leadFrom": "Wie haben Sie von uns erfahren"
+        },
+        "granularityLabel": "Zeitraum",
+        "granularity": {
+          "month": "Monat",
+          "quarter": "Quartal",
+          "year": "Jahr"
+        },
+        "rangeLabel": "Datumsbereich",
+        "from": "Von",
+        "to": "Bis",
+        "clearRange": "Daten zurücksetzen",
+        "invalidRange": "Das Startdatum muss vor oder auf dem Enddatum liegen.",
+        "groupByLabel": "Aufteilen nach",
+        "groupBy": {
+          "none": "Keine Aufteilung",
+          "district": "Bezirk",
+          "opportunityType": "Art der Anfrage",
+          "volunteerType": "Art des Engagements",
+          "leadFrom": "Quelle"
+        },
+        "titleBy": "{{metric}} nach {{groupBy}}",
+        "total": "Gesamt",
+        "other": "Sonstige",
+        "period": "Zeitraum",
+        "legend": "Legende",
+        "showTable": "Als Tabelle anzeigen",
+        "hideTable": "Tabelle ausblenden",
+        "empty": "Keine Daten für diesen Zeitraum.",
+        "loadError": "Die Statistiken konnten nicht geladen werden. Bitte laden Sie die Seite neu.",
+        "overlapNote": "Manche Einträge zählen zu mehreren Gruppen, daher können die Segmente zusammen mehr als die Gesamtzahl ergeben.",
+        "allTime": {
+          "title": "Gesamtzahlen seit Beginn",
+          "tracked": "Seit Beginn der Erfassung",
+          "beforeTracking": "Vor Beginn der Erfassung",
+          "beforeTrackingNote": "„Vor Beginn der Erfassung“ umfasst Antworten, die gesammelt wurden, bevor wir festgehalten haben, wann sie gegeben wurden. Sie sind daher nicht im Diagramm oben enthalten."
+        }
       },
       "nav": {
         "domains": "Domains",
@@ -2898,5 +2944,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Kalender öffnen",
+    "invalidDate": "Bitte ein gültiges Datum eingeben (TT.MM.JJJJ).",
+    "beforeMinYear": "Daten vor {{year}} werden nicht unterstützt."
   }
 }

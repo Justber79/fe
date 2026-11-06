@@ -6,7 +6,7 @@ import { LoginController } from "./LoginController";
 export function Login() {
   const { t } = useTranslation();
   return (
-    <LoginLayout heading={t("dashboard.login.login")}>
+    <LoginLayout heading={t("dashboard.login.login")} showRegistration>
       <LoginController />
     </LoginLayout>
   );

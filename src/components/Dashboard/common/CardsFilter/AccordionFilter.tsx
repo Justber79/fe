@@ -5,6 +5,7 @@ import { ButtonSpan, Paragraph } from "@/components/styled/text";
 import CircleArrow from "@/components/svg/CircleArrow";
 import { Checkbox, CheckButton } from "@/components/core/button";
 import { FilterItem } from "./types";
+import { useDropdownFocus } from "@/hooks/useDropdownFocus";
 
 interface Props {
   header: string;
@@ -54,6 +55,22 @@ export default function AccordionFilter({
   const openContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLButtonElement>(null);
   const optionsContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownReady = isOpen && isDropdownFilter && dropdownPosition !== null;
+
+  const closeDropdown = useCallback(() => {
+    if (optionsContainerRef.current?.contains(document.activeElement)) {
+      headerRef.current?.focus({ preventScroll: true });
+    }
+    setIsOpen(false);
+    setDropdownPosition(null);
+  }, []);
+
+  const handleDropdownKeyDown = useDropdownFocus({
+    ready: dropdownReady,
+    containerRef: optionsContainerRef,
+    triggerRef: headerRef,
+    close: closeDropdown,
+  });
 
   const checkboxHeight = cssVar("--opportunities-filters-content-accordion-options-checkbox-height", "18px");
 
@@ -83,19 +100,18 @@ export default function AccordionFilter({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (!openContainerRef.current?.contains(target) && !optionsContainerRef.current?.contains(target)) {
-        setIsOpen(false);
+        closeDropdown();
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  }, [isOpen, closeDropdown]);
 
   useEffect(() => {
     if (!isOpen || !isDropdownFilter) return;
 
     updateDropdownPosition();
-    const closeDropdown = () => setIsOpen(false);
     const scrollContainer = findHorizontalScrollParent(headerRef.current);
 
     scrollContainer?.addEventListener("scroll", closeDropdown);
@@ -106,7 +122,7 @@ export default function AccordionFilter({
       window.removeEventListener("scroll", closeDropdown);
       window.removeEventListener("resize", closeDropdown);
     };
-  }, [isDropdownFilter, isOpen, updateDropdownPosition]);
+  }, [isDropdownFilter, isOpen, updateDropdownPosition, closeDropdown]);
 
   const itemOptions =
     isOpen && items ? (
@@ -114,6 +130,7 @@ export default function AccordionFilter({
         ref={optionsContainerRef}
         $isDropdownFilter={isDropdownFilter}
         $dropdownPosition={dropdownPosition}
+        onKeyDown={handleDropdownKeyDown}
       >
         {items.map((item) => (
           <Checkbox
@@ -135,7 +152,7 @@ export default function AccordionFilter({
         type="button"
         aria-expanded={isOpen}
         disabled={isDropdownFilter && !items?.length}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => (isOpen ? closeDropdown() : setIsOpen(true))}
         $isDropdownFilter={isDropdownFilter}
       >
         <ButtonSpan color="var(--color-midnight)" fontSize="20px" fontWeight={600}>

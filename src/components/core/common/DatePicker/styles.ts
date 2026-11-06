@@ -36,7 +36,7 @@ export const DateInputContainer = styled.div<{ $hasLabel?: boolean }>`
   ${(props) => props.$hasLabel && `margin-top: var(--date-picker-input-margin-top);`}
 `;
 
-export const FloatingLabel = styled.span`
+export const FloatingLabel = styled.label`
   position: absolute;
   top: var(--date-picker-floating-label-top);
   left: var(--date-picker-floating-label-left);
@@ -51,14 +51,28 @@ export const FloatingLabel = styled.span`
   z-index: 1;
 `;
 
-export const DateInputIcon = styled(Calendar)`
+export const DateInputIconButton = styled.button`
   position: absolute;
   left: var(--spacing-16);
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  padding: 0;
+  border: none;
+  background: none;
   color: var(--color-midnight);
   cursor: pointer;
   z-index: 1;
+`;
+
+export const DateInputIcon = styled(Calendar)`
+  display: block;
+`;
+
+export const DateError = styled.p`
+  margin: var(--spacing-4) 0 0;
+  font-size: var(--font-size-14);
+  color: var(--color-red-600);
 `;
 
 export const DateInput = styled.input<{ $hasError?: boolean }>`

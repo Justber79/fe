@@ -25,7 +25,7 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthorized, isOwnProfile } = useAuth(opportunity?.agent?.id);
+  const { isAuthorized, isOwnProfile, isUserLoaded } = useAuth(opportunity?.agent?.id);
   const hasEditingRights = isAuthorized || isOwnProfile;
 
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
@@ -144,7 +144,12 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
           }),
         subComponent: (
           <>
-            <OpportunityVolunteers opportunityId={opportunity.id} hasEditingRights={hasEditingRights} />
+            <OpportunityVolunteers
+              opportunityId={opportunity.id}
+              hasEditingRights={hasEditingRights}
+              isStaff={isAuthorized}
+              isUserLoaded={isUserLoaded}
+            />
             {isSuggestDialogOpen && (
               <SuggestDialog
                 opportunityName={opportunity.title}
