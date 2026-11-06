@@ -1859,7 +1859,47 @@
         "removeMessage": "People with an email on {{domain}} will no longer be able to register as an NGO, unless the NGO already has a contact on that domain."
       },
       "stats": {
-        "comingSoon": "Coming soon"
+        "metricLabel": "Metric",
+        "metric": {
+          "newVolunteers": "New volunteers",
+          "requests": "Requests",
+          "leadFrom": "Where did you hear about us"
+        },
+        "granularityLabel": "Period",
+        "granularity": {
+          "month": "Month",
+          "quarter": "Quarter",
+          "year": "Year"
+        },
+        "rangeLabel": "Date range",
+        "from": "From",
+        "to": "To",
+        "clearRange": "Clear dates",
+        "invalidRange": "The start date must be on or before the end date.",
+        "groupByLabel": "Split by",
+        "groupBy": {
+          "none": "No split",
+          "district": "District",
+          "opportunityType": "Request type",
+          "volunteerType": "Volunteer type",
+          "leadFrom": "Source"
+        },
+        "titleBy": "{{metric}} by {{groupBy}}",
+        "total": "Total",
+        "other": "Other",
+        "period": "Period",
+        "legend": "Legend",
+        "showTable": "Show as table",
+        "hideTable": "Hide table",
+        "empty": "No data for this period.",
+        "loadError": "Could not load the statistics. Please reload the page.",
+        "overlapNote": "Some entries count towards more than one group, so the segments can add up to more than the total.",
+        "allTime": {
+          "title": "All-time totals",
+          "tracked": "Since tracking started",
+          "beforeTracking": "Before tracking started",
+          "beforeTrackingNote": "\"Before tracking started\" counts answers collected before we recorded when they were given, so they are not part of the chart above."
+        }
       },
       "nav": {
         "domains": "Domains",
@@ -2532,5 +2572,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Open calendar",
+    "invalidDate": "Enter a valid date (dd.mm.yyyy).",
+    "beforeMinYear": "Dates before {{year}} are not supported."
   }
 }
