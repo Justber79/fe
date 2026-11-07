@@ -12,7 +12,6 @@ export const useRecommendedVolunteers = (opportunityId: Id, enabled: boolean) =>
     params: { limit: RECOMMENDED_MATCHES_DEFAULT_LIMIT },
     staleTime: cacheTTL,
     enabled,
-    toastOnError: false,
   });
 
 export const useRecommendedOpportunities = (volunteerId: Id, enabled: boolean) =>
@@ -22,5 +21,4 @@ export const useRecommendedOpportunities = (volunteerId: Id, enabled: boolean) =
     params: { limit: RECOMMENDED_MATCHES_DEFAULT_LIMIT },
     staleTime: cacheTTL,
     enabled,
-    toastOnError: false,
   });
