@@ -1,4 +1,4 @@
-import { ItemText, Menu } from "@/components/core/menu";
+import { ItemContentWrapper, ItemText, Menu } from "@/components/core/menu";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLinked";
@@ -36,8 +36,10 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
           )}
           {opportunities.map((opp) => (
             <Menu.Item key={opp.id} onSelect={() => onSelect(opp.title)}>
-              <ItemText>{opp.title}</ItemText>
-              <CommuteBadge min={25} max={35} />
+              <ItemContentWrapper>
+                <ItemText>{opp.title}</ItemText>
+                <CommuteBadge min={25} max={35} />
+              </ItemContentWrapper>
             </Menu.Item>
           ))}
         </Menu.Dropdown>

@@ -6,8 +6,6 @@ import { Accordion } from "../shared/Accordion";
 import { getDatePrefixKey } from "../shared/getDatePrefixKey";
 import { AccordionActionProps } from "../shared/types";
 import OpportunityDetail from "./OpportunityDetail";
-import { CommuteBadge } from "../../common/CommuteBadge";
-import { HeaderLeftWrapper } from "../shared/accordionStyles";
 
 type Props = {
   opportunity: ApiOpportunityVolunteerGet;
@@ -23,12 +21,9 @@ export default function AccordionOpportunity({ opportunity, currentStatus, ...ac
   };
 
   const headerLeft = (
-    <HeaderLeftWrapper>
-      <Heading4 margin={0} color="var(--color-midnight)">
-        {opportunity.title}
-      </Heading4>
-      <CommuteBadge min={25} max={35} />
-    </HeaderLeftWrapper>
+    <Heading4 margin={0} color="var(--color-midnight)">
+      {opportunity.title}
+    </Heading4>
   );
 
   const hasActions = !!actionProps.onMatch;

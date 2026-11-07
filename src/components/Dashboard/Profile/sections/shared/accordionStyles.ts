@@ -23,12 +23,6 @@ export const HeaderContainer = styled.div`
   }
 `;
 
-export const HeaderLeftWrapper = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-`;
-
 export const HeaderInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
