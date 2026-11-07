@@ -1,7 +1,9 @@
 import { EntityType } from "@/components/Dashboard/Profile/types";
-import { Endpoint, Lang } from "need4deed-sdk";
+import { Endpoint, EntityTableName, Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
+
+type DistrictMapEntity = EntityTableName.AGENT | EntityTableName.OPPORTUNITY | EntityTableName.VOLUNTEER;
 
 export const apiPrefix = "api";
 export const apiPathVolunteer = `/${apiPrefix}/volunteer`;
@@ -33,6 +35,8 @@ export const apiPathTrustedDomain = `/${apiPrefix}/trusted-domain`;
 export const apiPathStatistics = `/${apiPrefix}${Endpoint.STATISTICS}`;
 export const apiPathDistrictGeometry = `/${apiPrefix}/district-geometry`;
 export const apiPathCommute = (entityId: number, entity: EntityType) => `/${apiPrefix}/${entity}/${entityId}/commute`;
+export const apiPathAggregateDistrict = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/districts`;
+export const apiPathDistrictMarker = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/map`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL ?? "https://cdn.need4deed.org/data";
 export const cacheTTL = 1000 * 60 * 5;
 

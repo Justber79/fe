@@ -1,13 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import {
-  apiPathOpportunity,
-  AUTH_HINT_COOKIE_NAME,
-  cacheTTL,
-  CARD_LIMIT,
-  MAP_LIMIT,
-  TABLE_LIMIT,
-} from "@/config/constants";
+import { apiPathOpportunity, AUTH_HINT_COOKIE_NAME, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getCookie } from "@/utils/helpers";
@@ -22,9 +15,10 @@ import { createOpportunityFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
-import { createOpportunityMarkers, createSingleVolunteerMarker } from "../common/MapView/helpers";
+import { createSingleVolunteerMarker } from "../common/MapView/helpers";
 import { SingleFilter } from "../common/MapView/types";
 import { OpportunityMapView } from "./OpportunityMapView";
+import { hasUnsupportedDistrictMapFilter } from "../common/MapView/helpers";
 
 type OpportunityWithAccompanying = ApiVolunteerOpportunityGetList & {
   accompanyingDetails?: { appointmentDate?: string };
@@ -80,7 +74,9 @@ function OpportunityListControllerContent({
   const isRoleKnown = Boolean(user) || getCookie(AUTH_HINT_COOKIE_NAME) !== "true";
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
-  const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
+  const hasUnsupportedMapFilters =
+    isMapView && (Boolean(filter.search) || hasUnsupportedDistrictMapFilter(filter.district));
+  const limit = isListView ? TABLE_LIMIT : isMapView ? 1 : CARD_LIMIT;
 
   const serializedFilter = serializeOpportunityFilters(filter, undefined, false, {
     serializeToIDs: true,
@@ -111,7 +107,7 @@ function OpportunityListControllerContent({
       filter: serializedFilter,
     },
     staleTime: cacheTTL,
-    enabled: isRoleKnown,
+    enabled: isRoleKnown && (!isMapView || hasUnsupportedMapFilters),
     keepPreviousData: isMapView,
   });
 
@@ -125,16 +121,11 @@ function OpportunityListControllerContent({
     ? sortByAppointmentDate(rawOpportunities, sortOrder)
     : rawOpportunities;
 
-  const markers = useMemo(
-    () => createOpportunityMarkers(opportunities, t, i18n.language, volunteerId),
-    [opportunities, i18n.language],
-  );
-
   const volunteerMarker = createSingleVolunteerMarker(volunteerFilter, t, i18n.language);
 
   useEffect(() => {
-    setNumOfOpps(count);
-  }, [count, setNumOfOpps]);
+    if (!isMapView || hasUnsupportedMapFilters) setNumOfOpps(count);
+  }, [count, hasUnsupportedMapFilters, isMapView, setNumOfOpps]);
 
   const isPending = isLoading || !isRoleKnown;
   if (isPending && isMapView) return <LoadingMapView />;
@@ -158,14 +149,7 @@ function OpportunityListControllerContent({
 
   if (isMapView) {
     return (
-      <OpportunityMapView
-        markers={markers}
-        volunteerMarker={volunteerMarker}
-        count={count}
-        itemsPerPage={limit}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <OpportunityMapView filter={serializedFilter} onCountChange={setNumOfOpps} volunteerMarker={volunteerMarker} />
     );
   }
 

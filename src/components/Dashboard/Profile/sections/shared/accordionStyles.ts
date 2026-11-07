@@ -1,3 +1,4 @@
+import { fieldStackingMedia } from "@/components/styled/mixins";
 import styled from "styled-components";
 
 export const AccordionContainer = styled.div`
@@ -16,6 +17,10 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media ${fieldStackingMedia} {
+    flex-wrap: wrap;
+  }
 `;
 
 export const HeaderLeftWrapper = styled.div`
@@ -29,6 +34,11 @@ export const HeaderInfoContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: var(--volunteer-profile-opportunities-accordion-header-info-gap);
+
+  @media ${fieldStackingMedia} {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
 `;
 
 export const HeaderInfoAvatarNameContainer = styled.div`
@@ -36,6 +46,16 @@ export const HeaderInfoAvatarNameContainer = styled.div`
   align-items: center;
   gap: var(--volunteer-profile-opportunities-accordion-header-avatar-name-gap);
   align-self: stretch;
+
+  @media ${fieldStackingMedia} {
+    flex-wrap: wrap;
+    min-width: 0;
+
+    > h4 {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
 `;
 
 export const HeaderButtonsContainer = styled.div`
@@ -43,6 +63,17 @@ export const HeaderButtonsContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: var(--volunteer-profile-opportunities-accordion-header-buttons-gap);
+
+  @media ${fieldStackingMedia} {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    min-width: 0;
+
+    > h4 {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
 `;
 
 export const DetailContainer = styled.div`

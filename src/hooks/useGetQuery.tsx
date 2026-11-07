@@ -33,6 +33,7 @@ interface ApiResponse<T> {
 
 type FilterParam = URLSearchParams | Record<string, unknown>;
 interface Params {
+  districtId?: number;
   language?: Lang;
   page?: number;
   limit?: number;
