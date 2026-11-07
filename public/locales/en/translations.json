@@ -623,6 +623,7 @@
         "rac": "Refugee Accommodation Center",
         "otherRac": "Other Refugee Accommodation Centers",
         "volunteer": "Volunteer",
+        "cluster": "Grouped markers",
         "numberOfEntities": "Number of opportunities or volunteers"
       },
       "scrollZoom": "Toggle Scroll Zoom",

@@ -287,15 +287,22 @@ export const IconSlot = styled.div`
       filter: hue-rotate(90deg) saturate(0.8);
     }
 
-    &.custom-icon {
-      border-radius: 50%;
-      object-fit: contain;
-    }
-
     &.custom-other-rac-icon {
       filter: hue-rotate(150deg);
     }
   }
+`;
+
+export const ClusterLegendIcon = styled.span`
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-aubergine);
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
 `;
 
 export const ScrollZoomContainer = styled.div`
