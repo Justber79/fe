@@ -2,11 +2,12 @@ import { ApiOptionLists } from "need4deed-sdk";
 import { SelectionMap, SetFilter } from "./types";
 
 export const getClearFilter = <T extends object>(filter: T): T => {
-  const newFilter: Record<string, string | boolean | object> = {};
+  const newFilter: Record<string, string | boolean | number | object> = {};
 
   for (const [key, val] of Object.entries(filter)) {
     if (typeof val === "boolean") newFilter[key] = false;
     else if (typeof val === "string") newFilter[key] = "";
+    else if (typeof val === "number") newFilter[key] = 0;
     else if (typeof val === "object") newFilter[key] = getClearFilter(val);
     else throw new Error("Unsupported type to clear the filter");
   }
@@ -15,7 +16,7 @@ export const getClearFilter = <T extends object>(filter: T): T => {
 };
 
 export const getClearSingleFilter = <T extends object>(filter: T, targetKey: string, parentKey?: string): T => {
-  const newFilter: Record<string, string | boolean | object> = {};
+  const newFilter: Record<string, string | boolean | number | object> = {};
   const normalizedTarget = targetKey.toLowerCase().trim();
   const normalizedParent = parentKey?.toLowerCase().trim();
 
@@ -30,6 +31,7 @@ export const getClearSingleFilter = <T extends object>(filter: T, targetKey: str
     if (isKeyMatch && isParentMatch) {
       if (typeof val === "boolean") newFilter[key] = false;
       else if (typeof val === "string") newFilter[key] = "";
+      else if (typeof val === "number") newFilter[key] = 0;
       else if (typeof val === "object" && val !== null) newFilter[key] = getClearFilter(val);
       else newFilter[key] = val;
     } else if (typeof val === "object" && val !== null) {

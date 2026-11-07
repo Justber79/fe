@@ -9,6 +9,7 @@ import {
 } from "need4deed-sdk";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { deserializeSelectionFilters, serializeSelectionFilters } from "../common/CardsFilter/selectionFilters";
+import { deserializeCommutePrefill, serializeCommutePrefill } from "../common/CardsFilter/matchingPrefill";
 import { AvailabilityKeys, AvailabilitySubKeys, SEPARATOR } from "./Filters/constants";
 import { opportunityFilterConfigs } from "./Filters/config";
 import { OpportunityCardsFilter } from "./Filters/types";
@@ -22,6 +23,7 @@ type Availability = ApiVolunteerOpportunityGetList["availability"];
 interface SerializeFiltersOptions {
   serializeToIDs?: boolean;
   apiFilterOptions?: ApiOptionLists;
+  commuteSourceId?: string;
 }
 
 export const SORT_PARAM = "sort";
@@ -65,6 +67,7 @@ export function serializeOpportunityFilters(
   else params.delete(QueryParamsKeys.SEARCH);
 
   serializeSelectionFilters(opportunityFilterConfigs, filter, params, options);
+  serializeCommutePrefill(filter, params, QueryParamsKeys.COMMUTE_VOLUNTEER_ID, options?.commuteSourceId);
 
   params.delete(QueryParamsKeys.AVAILABILITY);
   Object.entries(filter.availability).forEach(([key, subSlot]) => {
@@ -89,6 +92,7 @@ export function deserializeOpportunityFilters(
   if (search !== null) newFilter.search = search;
 
   deserializeSelectionFilters(opportunityFilterConfigs, newFilter, searchParams);
+  deserializeCommutePrefill(newFilter, searchParams, QueryParamsKeys.COMMUTE_VOLUNTEER_ID);
 
   const queryAvailability = searchParams.getAll(QueryParamsKeys.AVAILABILITY);
   queryAvailability.forEach((item) => {

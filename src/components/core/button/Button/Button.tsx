@@ -73,7 +73,6 @@ const StyledButton = styled.button<StyledButtonProps>`
 export interface ButtonProps {
   children?: React.ReactNode;
   className?: string;
-  ["aria-expanded"]?: boolean;
   ["aria-controls"]?: string;
   text?: string;
   textFontSize?: string;
@@ -95,12 +94,12 @@ export interface ButtonProps {
   ["aria-describedby"]?: string;
   ["aria-label"]?: string;
   ["aria-pressed"]?: boolean;
+  ["aria-expanded"]?: boolean;
 }
 
 export function Button({
   children,
   className,
-  ["aria-expanded"]: ariaExpanded,
   ["aria-controls"]: ariaControls,
   text,
   textFontSize,
@@ -122,11 +121,11 @@ export function Button({
   ["aria-describedby"]: ariaDescribedBy,
   ["aria-label"]: ariaLabel,
   ["aria-pressed"]: ariaPressed,
+  ["aria-expanded"]: ariaExpanded,
 }: ButtonProps) {
   return (
     <StyledButton
       className={className}
-      aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
       type={type}
       disabled={disabled}
@@ -142,6 +141,7 @@ export function Button({
       aria-describedby={ariaDescribedBy}
       aria-label={ariaLabel}
       aria-pressed={ariaPressed}
+      aria-expanded={ariaExpanded}
     >
       {iconName && (
         <IconDiv color={iconColor} size={iconSize}>

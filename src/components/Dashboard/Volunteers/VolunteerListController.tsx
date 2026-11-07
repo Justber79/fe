@@ -1,9 +1,16 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import { DashboardListLoading } from "@/components/Dashboard/common/DashboardListLoading";
-import { apiPathVolunteer, cacheTTL, CARD_LIMIT, MAP_LIMIT, TABLE_LIMIT } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, CARD_LIMIT, TABLE_LIMIT } from "@/config/constants";
 import { useGetQuery, usePageParam } from "@/hooks";
-import { ApiOptionLists, ApiVolunteerGetList, QueryParamsKeys, SortOrder, UserRole } from "need4deed-sdk";
+import {
+  ApiOptionLists,
+  ApiVolunteerGetList,
+  QueryParamsKeys,
+  SortOrder,
+  UserRole,
+  VolunteerStateEngagementType,
+} from "need4deed-sdk";
 import { VolunteerCardsFilter } from "./Filters/types";
 import { getCheckedOptionIds, serializeFilters } from "./helpers";
 import { VolunteerCardList } from "./VolunteerCardList";
@@ -11,13 +18,12 @@ import { VolunteerTableList } from "./VolunteerTableList";
 import { ViewMode } from "../common/types";
 import { useCopyEmails } from "@/hooks/useCopyEmails";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { DEFAULT_VOLUNTEER_ENGAGEMENTS } from "./Filters/constants";
 import { createVolunteerFilterSections } from "./Filters/helpers";
 import { getSectionItems } from "../common/CardsFilter/selectionFilters";
 import { useTranslation } from "react-i18next";
 import { LoadingMapView } from "../common/MapView/LoadingMapView";
 import { VolunteerMapView } from "./VolunteerMapView";
-import { createSingleOpportunityMarker, createVolunteerMarkers } from "../common/MapView/helpers";
+import { createSingleOpportunityMarker, hasUnsupportedDistrictMapFilter } from "../common/MapView/helpers";
 import { SingleFilter } from "../common/MapView/types";
 
 interface VolunteerListControllerProps {
@@ -29,6 +35,7 @@ interface VolunteerListControllerProps {
   opportunityId?: string;
   viewMode: ViewMode;
   opportunityFilter: SingleFilter | undefined;
+  defaultEngagements: VolunteerStateEngagementType[];
 }
 
 export function VolunteerListController(props: VolunteerListControllerProps) {
@@ -44,15 +51,20 @@ function VolunteerListControllerContent({
   opportunityId,
   viewMode,
   opportunityFilter,
+  defaultEngagements,
 }: VolunteerListControllerProps) {
+  const user = useCurrentUser();
   const isListView = viewMode === ViewMode.LIST;
   const isMapView = viewMode === ViewMode.MAP;
-  const limit = isListView ? TABLE_LIMIT : isMapView ? MAP_LIMIT : CARD_LIMIT;
+  const hasUnsupportedMapFilters =
+    isMapView && (Boolean(filter.search) || hasUnsupportedDistrictMapFilter(filter.district));
+  const limit = isListView ? TABLE_LIMIT : isMapView ? 1 : CARD_LIMIT;
   const { currentPage, setCurrentPage } = usePageParam();
   const { t, i18n } = useTranslation();
   const serializedFilter = serializeFilters(filter, undefined, false, {
     serializeToIDs: true,
     apiFilterOptions,
+    commuteSourceId: opportunityId,
   }) as URLSearchParams;
   const filterSections = createVolunteerFilterSections(filter, setFilter, t);
   const dropdownFilters = {
@@ -71,7 +83,7 @@ function VolunteerListControllerContent({
   const emailsFilter = new URLSearchParams(serializedFilter);
 
   if (!serializedFilter.has(QueryParamsKeys.ENGAGEMENT)) {
-    DEFAULT_VOLUNTEER_ENGAGEMENTS.forEach((defaultEngagement) =>
+    defaultEngagements.forEach((defaultEngagement) =>
       serializedFilter.append(QueryParamsKeys.ENGAGEMENT, defaultEngagement.replace(/^vol-/, "")),
     );
   }
@@ -88,22 +100,18 @@ function VolunteerListControllerContent({
     apiPath: apiPathVolunteer,
     params,
     staleTime: cacheTTL,
+    enabled: !isMapView || hasUnsupportedMapFilters,
     keepPreviousData: isMapView,
   });
   const volunteers = data || [];
   const { handleCopyEmails, isCopying } = useCopyEmails(apiPathVolunteer, "volunteer-emails", emailsFilter);
-  const user = useCurrentUser();
   const canSeeContactColumns = user?.role === UserRole.COORDINATOR || user?.role === UserRole.ADMIN;
 
-  const markers = useMemo(
-    () => createVolunteerMarkers(volunteers, t, i18n.language, opportunityId),
-    [volunteers, t, i18n.language, opportunityId],
-  );
   const opportunityMarker = createSingleOpportunityMarker(opportunityFilter, t, i18n.language);
 
   useEffect(() => {
-    setNumOfVols(count);
-  }, [setNumOfVols, count]);
+    if (!isMapView || hasUnsupportedMapFilters) setNumOfVols(count);
+  }, [count, hasUnsupportedMapFilters, isMapView, setNumOfVols]);
 
   if (isLoading && isMapView) return <LoadingMapView />;
   if (isLoading && !isListView) return <DashboardListLoading />;
@@ -129,14 +137,7 @@ function VolunteerListControllerContent({
 
   if (isMapView) {
     return (
-      <VolunteerMapView
-        markers={markers}
-        itemsPerPage={limit}
-        count={count}
-        opportunityMarker={opportunityMarker}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <VolunteerMapView filter={serializedFilter} onCountChange={setNumOfVols} opportunityMarker={opportunityMarker} />
     );
   }
 

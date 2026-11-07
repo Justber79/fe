@@ -1,52 +1,54 @@
-import { ApiAgentGetList, ApiVolunteerGetList } from "need4deed-sdk";
+import {
+  ApiDistrictMarker,
+  ApiDistrictMarkerChild,
+  ApiOpportunityGetList,
+  ApiVolunteerGetList,
+  EntityTableName,
+} from "need4deed-sdk";
 
-export const EntityType = {
-  VOLUNTEER: "volunteer",
-  OPPORTUNITY: "opportunity",
-  AGENT: "agent",
+export const MapEntity = {
+  AGENT: EntityTableName.AGENT,
+  OPPORTUNITY: EntityTableName.OPPORTUNITY,
+  VOLUNTEER: EntityTableName.VOLUNTEER,
 } as const;
 
-export type EntityType = (typeof EntityType)[keyof typeof EntityType];
+export type MapEntity = (typeof MapEntity)[keyof typeof MapEntity];
 
 export type SingleFilter = {
-  id: number | string;
+  id: ApiVolunteerGetList["id"] | ApiOpportunityGetList["id"];
   name: string;
-  latitude: number | null;
-  longitude: number | null;
-  languages: ApiVolunteerGetList["languages"];
-  availability: ApiVolunteerGetList["availability"];
+  latitude: ApiVolunteerGetList["lat"];
+  longitude: ApiVolunteerGetList["lon"];
+  languages: ApiVolunteerGetList["languages"] | ApiOpportunityGetList["languages"];
+  availability: ApiVolunteerGetList["availability"] | ApiOpportunityGetList["availability"];
   avatarUrl?: string;
 };
 
-export type EntityMarker = {
-  lat: number;
-  lon: number;
+export type EntityMarker = Omit<ApiDistrictMarker, "lat" | "lon" | "children"> & {
+  lat: NonNullable<ApiDistrictMarker["lat"]>;
+  lon: NonNullable<ApiDistrictMarker["lon"]>;
   label: string;
-  children?: Array<{
-    title: string;
-    link: string;
-    language?: string;
-    availability?: string;
-    type?: string;
-    district?: string;
-    agent?: ApiAgentGetList;
-  }>;
-  onClick: () => null;
-  entity: EntityType;
-  avatarUrl?: string;
+  children: Array<
+    Omit<ApiDistrictMarkerChild, "languages" | "availability" | "type" | "district"> & {
+      link: string;
+      language?: string;
+      availability?: string;
+      type?: string;
+      district?: string;
+    }
+  >;
 };
 
 export type SingleMarker = {
-  lat: number;
-  lon: number;
+  lat: NonNullable<ApiVolunteerGetList["lat"]>;
+  lon: NonNullable<ApiVolunteerGetList["lon"]>;
   label: string;
-  title: string;
+  title: ApiVolunteerGetList["name"] | ApiOpportunityGetList["title"];
   link: string;
   language: string;
   availability: string;
-  onClick: () => null;
-  entity: EntityType;
-  avatarUrl?: string;
+  entity: typeof MapEntity.OPPORTUNITY | typeof MapEntity.VOLUNTEER;
+  avatarUrl?: ApiVolunteerGetList["avatarUrl"];
 };
 
 export type BerlinRacMarker = {

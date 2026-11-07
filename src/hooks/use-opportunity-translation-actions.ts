@@ -1,37 +1,68 @@
 import { apiPathOpportunity, apiPathTranslation } from "@/config/constants";
-import { useMutationQuery } from "@/hooks/useMutationQuery";
+import { mutateData, useMutationQuery } from "@/hooks/useMutationQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { getOpportunityTranslationsKey } from "@/hooks/use-opportunity-translations";
-import axios from "axios";
-import { ApiOpportunityPatch, ApiOriginalLanguagePut, EntityTableName, Id, Lang } from "need4deed-sdk";
+import {
+  ApiFieldTranslation,
+  ApiFieldTranslationPatch,
+  ApiFieldTranslationPost,
+  ApiOpportunityPatch,
+  EntityTableName,
+  Id,
+  Lang,
+  TranslationFieldsByEntity,
+} from "need4deed-sdk";
+
+export type TranslationWrite = ApiFieldTranslationPatch & {
+  fieldName: TranslationFieldsByEntity[EntityTableName.OPPORTUNITY];
+  id?: number;
+};
+
+export type TranslationReset = Pick<TranslationWrite, "fieldName"> & Pick<ApiFieldTranslation, "id">;
+
+async function settleTranslations<T>(fields: T[], write: (field: T) => Promise<unknown>) {
+  const results = await Promise.allSettled(fields.map(write));
+  return fields.map((field, index) => ({ field, result: results[index] }));
+}
 
 export function useOpportunityTranslationActions(opportunityId: Id, language: Lang) {
   const client = useQueryClient();
-  const opportunityKey = ["opportunity", String(opportunityId)];
   const refresh = () => {
     void client.invalidateQueries({ queryKey: getOpportunityTranslationsKey(opportunityId) });
-    void client.invalidateQueries({ queryKey: opportunityKey });
+    void client.invalidateQueries({ queryKey: ["opportunity", String(opportunityId)] });
   };
-  const save = useMutationQuery<ApiOpportunityPatch, unknown>({
-    mutationFn: (patch) => axios.patch(`${apiPathOpportunity}/${opportunityId}`, patch, { params: { language } }),
-    successMessage: "opportunityTranslations.saved",
+  const write = (fields: TranslationWrite[]) =>
+    settleTranslations(fields, ({ id, fieldName, text, original }) =>
+      id !== undefined
+        ? mutateData<ApiFieldTranslationPatch, unknown>(`${apiPathTranslation}/${id}`, "patch", { text, original })
+        : mutateData<ApiFieldTranslationPost, unknown>(apiPathTranslation, "post", {
+            entityType: EntityTableName.OPPORTUNITY,
+            entityId: Number(opportunityId),
+            fieldName,
+            language,
+            text,
+            original,
+          }),
+    );
+  const regenerate = (fields: TranslationReset[]) =>
+    settleTranslations(fields, ({ id }) =>
+      mutateData<undefined, unknown>(`${apiPathTranslation}/${id}`, "delete", undefined),
+    );
+  const resetTranslation = useMutationQuery<TranslationReset[], Awaited<ReturnType<typeof regenerate>>>({
+    mutationFn: regenerate,
+    noToast: true,
     onSuccessCallback: refresh,
   });
-  const confirm = useMutationQuery<number[], unknown>({
-    mutationFn: async (ids) => {
-      const results = await Promise.allSettled(ids.map((id) => axios.post(`${apiPathTranslation}/${id}/confirm`)));
-      const failure = results.find((result) => result.status === "rejected");
-      if (failure?.status === "rejected") throw failure.reason;
-    },
-    successMessage: "opportunityTranslations.confirmed",
+  const save = useMutationQuery<TranslationWrite[], Awaited<ReturnType<typeof write>>>({
+    mutationFn: write,
+    noToast: true,
     onSuccessCallback: refresh,
-    onFailure: refresh,
   });
-  const changeLanguage = useMutationQuery<ApiOriginalLanguagePut, unknown>({
-    apiPath: `${apiPathTranslation}/${EntityTableName.OPPORTUNITY}/${opportunityId}/original-language`,
-    method: "put",
+  const changeLanguage = useMutationQuery<Pick<ApiOpportunityPatch, "originalLanguage">, unknown>({
+    apiPath: `${apiPathOpportunity}/${opportunityId}`,
+    method: "patch",
     successMessage: "opportunityTranslations.languageChanged",
     onSuccessCallback: refresh,
   });
-  return { save, confirm, changeLanguage };
+  return { save, changeLanguage, resetTranslation };
 }

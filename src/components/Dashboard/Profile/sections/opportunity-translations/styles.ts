@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "@/components/core/button/Button/Button";
 
 export const Review = styled.div`
-  --translation-action-height: 56px;
+  --translation-action-height: var(--button-height);
   --translation-action-font-size: var(--font-size-lg);
   --translation-action-padding: var(--spacing-12) var(--spacing-24);
   width: 100%;
@@ -43,7 +43,7 @@ export const ReviewButton = styled(Button).attrs({
   color: var(--color-aubergine);
   font: inherit;
   font-size: var(--translation-action-font-size);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semi-bold);
   line-height: var(--line-height-24);
   text-align: center;
   flex-shrink: 0;
@@ -128,7 +128,7 @@ export const Status = styled.span<{ $attention?: boolean }>`
 `;
 export const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: var(--spacing-16);
   margin-top: var(--spacing-24);
@@ -151,4 +151,16 @@ export const Footer = styled.div`
   border-top: 1px solid var(--color-grey-200);
   margin-top: var(--spacing-24);
   padding-top: var(--spacing-16);
+`;
+
+export const TextAction = styled(ReviewButton)`
+  border: 0;
+  background: transparent;
+  padding: var(--spacing-8) 0;
+  min-height: var(--spacing-48);
+  text-decoration: underline;
+  &:hover,
+  &:disabled {
+    background: transparent;
+  }
 `;

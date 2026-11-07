@@ -25,7 +25,11 @@ type DataMutationOptions<TResponse, TData> = {
     }
 );
 
-async function mutateData<TData, TResponse>(apiPath: string, method: HttpMethod, data: TData): Promise<TResponse> {
+export async function mutateData<TData, TResponse>(
+  apiPath: string,
+  method: HttpMethod,
+  data: TData,
+): Promise<TResponse> {
   if (method === "delete") {
     const response = await axios.delete(apiPath);
     return response.data;

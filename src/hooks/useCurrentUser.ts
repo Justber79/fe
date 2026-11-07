@@ -3,15 +3,15 @@ import { useGetQuery } from "@/hooks";
 import { getCookie } from "@/utils/helpers";
 import { ApiUserGet } from "need4deed-sdk";
 
-export const useCurrentUser = (enabled?: boolean) => {
+export const useCurrentUserQuery = (enabled?: boolean, requireAuthHint = true) => {
   const hasAuthHint = getCookie(AUTH_HINT_COOKIE_NAME) === "true";
 
-  const { data } = useGetQuery<ApiUserGet>({
+  return useGetQuery<ApiUserGet>({
     queryKey: USER_QUERY_KEY,
     apiPath: apiPathMe,
     staleTime: cacheTTL,
-    enabled: hasAuthHint && enabled,
+    enabled: requireAuthHint ? hasAuthHint && enabled : enabled,
   });
-
-  return data;
 };
+
+export const useCurrentUser = (enabled?: boolean) => useCurrentUserQuery(enabled).data;

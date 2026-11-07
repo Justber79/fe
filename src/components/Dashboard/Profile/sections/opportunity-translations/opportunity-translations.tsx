@@ -9,19 +9,18 @@ import { Heading3 } from "@/components/styled/text";
 import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useAuth } from "@/hooks/useAuth";
 import { useOpportunityTranslations } from "@/hooks/use-opportunity-translations";
-import { useOpportunityTranslationActions } from "@/hooks/use-opportunity-translation-actions";
-import { CaretDownIcon } from "@phosphor-icons/react";
 import {
-  ApiFieldTranslationGet,
-  ApiOpportunityPatch,
-  Id,
-  Lang,
-  TranslationOrigin,
-  TranslationStatus,
-} from "need4deed-sdk";
+  TranslationReset,
+  TranslationWrite,
+  useOpportunityTranslationActions,
+} from "@/hooks/use-opportunity-translation-actions";
+import { CaretDownIcon } from "@phosphor-icons/react";
+import { ApiFieldTranslationGet, Id, Lang, TranslationOrigin, TranslationStatus } from "need4deed-sdk";
 import { useCallback, useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import { SectionEmptyState } from "../shared/styles";
 import { getTranslationReviewStatus, getTranslationSnapshot, hasEditedTranslationChanged } from "./helpers";
 import {
@@ -35,6 +34,7 @@ import {
   ReviewButton,
   Status,
   Summary,
+  TextAction,
 } from "./styles";
 
 const actionProps = {
@@ -67,57 +67,107 @@ function TranslationReview({
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editSnapshot, setEditSnapshot] = useState<Record<string, string>>({});
+  const [editFields, setEditFields] = useState<ApiFieldTranslationGet[]>([]);
+  const [writeFailed, setWriteFailed] = useState(false);
   const [dialog, setDialog] = useState(false);
+  const [resetDialog, setResetDialog] = useState<TranslationReset[] | null>(null);
+  const [resetSnapshot, setResetSnapshot] = useState("");
+  const [resetFailed, setResetFailed] = useState(false);
+  const [resetRetryIds, setResetRetryIds] = useState<number[]>([]);
   const [originalLanguage, setOriginalLanguage] = useState<Lang>(fields[0]?.originalLanguage ?? Lang.DE);
-  const { save, confirm, changeLanguage } = useOpportunityTranslationActions(opportunityId, language);
+  const { save, changeLanguage, resetTranslation } = useOpportunityTranslationActions(opportunityId, language);
   const {
     control,
     handleSubmit,
     reset,
+    resetField,
     formState: { errors, dirtyFields },
   } = useForm<Draft>();
-  const busy = save.isPending || confirm.isPending || changeLanguage.isPending;
+  const busy = save.isPending || changeLanguage.isPending || resetTranslation.isPending;
   const targetFields = fields.filter((field) => field.originalLanguage !== language);
   const editableFields = targetFields.filter(
     (field) => field.originalLanguage && (field.fieldName === "title" || field.fieldName === "info"),
   );
-  const machineIds = targetFields.flatMap((field) => {
+  const machineWrites = targetFields.flatMap((field): TranslationWrite[] => {
     const value = field.translations[language];
-    return value?.status === TranslationStatus.DONE && value.origin === TranslationOrigin.MACHINE && value.text
-      ? [value.id]
+    return (field.fieldName === "title" || field.fieldName === "info") &&
+      value?.status === TranslationStatus.DONE &&
+      value.origin === TranslationOrigin.MACHINE &&
+      value.text
+      ? [{ fieldName: field.fieldName, id: value.id, text: value.text, original: field.original }]
+      : [];
+  });
+  const regenerationFields = targetFields.flatMap((field): TranslationReset[] => {
+    const value = field.translations[language];
+    return (field.fieldName === "title" || field.fieldName === "info") &&
+      value &&
+      (!resetRetryIds.length || resetRetryIds.includes(value.id)) &&
+      value.status !== TranslationStatus.PENDING
+      ? [{ fieldName: field.fieldName, id: value.id }]
       : [];
   });
   const hasFailed = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.FAILED);
   const hasPending = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.PENDING);
   const snapshot = getTranslationSnapshot(targetFields, language);
+  const changedBeforeReset = Boolean(resetDialog) && resetSnapshot !== JSON.stringify(snapshot);
   const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, dirtyFields);
   const summary = getTranslationReviewStatus(targetFields, language);
   useEffect(() => {
-    if (!open || !hasPending || editing || busy || dialog || loadError) return;
+    if (!open || !hasPending || editing || busy || dialog || resetDialog || loadError) return;
     const interval = window.setInterval(() => {
       if (document.visibilityState === "visible") refresh();
     }, 5000);
     return () => window.clearInterval(interval);
-  }, [open, hasPending, editing, busy, dialog, loadError, language, refresh]);
+  }, [open, hasPending, editing, busy, dialog, resetDialog, loadError, language, refresh]);
   const startEdit = () => {
+    setResetFailed(false);
+    setResetRetryIds([]);
     reset({
       title: fields.find((field) => field.fieldName === "title")?.translations[language]?.text ?? "",
       info: fields.find((field) => field.fieldName === "info")?.translations[language]?.text ?? "",
     });
     setEditSnapshot(snapshot);
+    setEditFields(structuredClone(editableFields));
+    setWriteFailed(false);
     setEditing(true);
   };
   const submit = handleSubmit((draft) => {
     if (changedDuringEdit || loadError) return;
-    const patch: ApiOpportunityPatch = {};
-    if (dirtyFields.title && editableFields.some((field) => field.fieldName === "title")) patch.title = draft.title;
-    if (dirtyFields.info && editableFields.some((field) => field.fieldName === "info")) patch.description = draft.info;
-    if (!Object.keys(patch).length) {
+    const writes = editFields.flatMap((field): TranslationWrite[] => {
+      const fieldName = field.fieldName;
+      if ((fieldName !== "title" && fieldName !== "info") || !dirtyFields[fieldName]) return [];
+      return [{ fieldName, id: field.translations[language]?.id, text: draft[fieldName], original: field.original }];
+    });
+    if (!writes.length) {
       setEditing(false);
       return;
     }
-    save.mutate(patch, { onSuccess: () => setEditing(false) });
+    writeTranslations(writes, false);
   });
+  const writeTranslations = (writes: TranslationWrite[], confirming: boolean) => {
+    setWriteFailed(false);
+    save.mutate(writes, {
+      onSuccess: (results) => {
+        const failed = results.filter(({ result }) => result.status === "rejected");
+        if (!confirming) {
+          results.forEach(({ field, result }) => {
+            if (result.status === "fulfilled") resetField(field.fieldName, { defaultValue: field.text.trim() });
+          });
+        }
+        if (failed.length) {
+          setWriteFailed(true);
+          const failure = failed[0].result;
+          if (failure.status === "rejected") toast.error(getLocalizedErrorMessage(failure.reason, t));
+          return;
+        }
+        setEditing(false);
+        toast.success(t(confirming ? "opportunityTranslations.confirmed" : "opportunityTranslations.saved"));
+      },
+    });
+  };
+  const closeResetDialog = useCallback(() => {
+    if (!resetTranslation.isPending) setResetDialog(null);
+  }, [resetTranslation.isPending]);
   const closeDialog = useCallback(() => {
     if (!changeLanguage.isPending) setDialog(false);
   }, [changeLanguage.isPending]);
@@ -137,10 +187,11 @@ function TranslationReview({
           <Heading3>
             {t("opportunityTranslations.target", { language: t(`opportunityTranslations.languages.${language}`) })}
           </Heading3>
-          <Metadata>{t("opportunityTranslations.summary")}</Metadata>
-          <Status $attention={hasFailed || hasPending} role="status">
-            {t(`opportunityTranslations.reviewStatus.${summary}`)}
-          </Status>
+          {!open && summary !== "ready" && summary !== "reviewed" && (
+            <Status $attention={hasFailed || hasPending} role="status">
+              {t(`opportunityTranslations.reviewStatus.${summary}`)}
+            </Status>
+          )}
         </div>
         <ReviewButton
           type="button"
@@ -162,7 +213,11 @@ function TranslationReview({
                 id={`${id}-language`}
                 value={language}
                 disabled={editing || busy || loadError}
-                onChange={(event) => setRequestedLanguage(event.target.value as Lang)}
+                onChange={(event) => {
+                  setResetFailed(false);
+                  setResetRetryIds([]);
+                  setRequestedLanguage(event.target.value as Lang);
+                }}
               >
                 {languages.map((value) => (
                   <option key={value} value={value}>
@@ -171,24 +226,18 @@ function TranslationReview({
                 ))}
               </Select>
             </>
-          ) : (
-            <Metadata>
-              {t("opportunityTranslations.targetLanguage")}: {t(`opportunityTranslations.languages.${language}`)}
-            </Metadata>
-          )}
-          <Metadata>{t("opportunityTranslations.originalNote")}</Metadata>
+          ) : null}
           <form onSubmit={submit} aria-busy={busy}>
             <Comparison>
               <section aria-labelledby={`${id}-original`}>
-                <Heading3 id={`${id}-original`}>{t("opportunityTranslations.original")}</Heading3>
+                <Heading3 id={`${id}-original`}>
+                  {t("opportunityTranslations.original")}
+                  {fields[0]?.originalLanguage &&
+                    ` · ${t(`opportunityTranslations.languages.${fields[0].originalLanguage}`)}`}
+                </Heading3>
                 {fields.map((field) => (
                   <Field key={field.fieldName}>
                     <h4>{t(`opportunityTranslations.fields.${field.fieldName}`, { defaultValue: field.fieldName })}</h4>
-                    <Metadata>
-                      {field.originalLanguage
-                        ? t(`opportunityTranslations.languages.${field.originalLanguage}`)
-                        : t("opportunityTranslations.unknownLanguage")}
-                    </Metadata>
                     <p lang={field.originalLanguage}>{field.original}</p>
                   </Field>
                 ))}
@@ -249,14 +298,11 @@ function TranslationReview({
                         <Metadata>{t("opportunityTranslations.sameAsOriginal")}</Metadata>
                       ) : (
                         <>
-                          {value && (
-                            <Metadata>
-                              <Status $attention={value.status !== TranslationStatus.DONE}>
-                                {t(`opportunityTranslations.status.${value.status}`)}
-                              </Status>
-                              {" · "}
-                              {t(`opportunityTranslations.origin.${value.origin}`)}
-                            </Metadata>
+                          {value?.status === TranslationStatus.FAILED && (
+                            <Metadata role="status">{t("opportunityTranslations.reviewStatus.failed")}</Metadata>
+                          )}
+                          {value?.status === TranslationStatus.PENDING && (
+                            <Metadata role="status">{t("opportunityTranslations.reviewStatus.pending")}</Metadata>
                           )}
                           {!canEdit &&
                             ((value?.status === TranslationStatus.DONE || value?.status === TranslationStatus.FAILED) &&
@@ -286,6 +332,8 @@ function TranslationReview({
                 {changedDuringEdit && (
                   <Metadata role="alert">{t("opportunityTranslations.changedDuringEdit")}</Metadata>
                 )}
+                {writeFailed && <Metadata role="alert">{t("opportunityTranslations.writeFailed")}</Metadata>}
+                {resetFailed && <Metadata role="alert">{t("opportunityTranslations.regenerateFailed")}</Metadata>}
                 <Actions>
                   {editing ? (
                     <>
@@ -306,22 +354,41 @@ function TranslationReview({
                           {t("opportunityTranslations.edit")}
                         </ReviewButton>
                       )}
-                      {machineIds.length > 0 && (
+                      {machineWrites.length > 0 && (
                         <Button
                           {...actionProps}
                           text={t("opportunityTranslations.confirm")}
                           disabled={busy || loadError}
-                          onClick={() => confirm.mutate(machineIds)}
+                          onClick={() => writeTranslations(machineWrites, true)}
                         />
                       )}
                     </>
                   )}
                 </Actions>
+                {!editing && regenerationFields.length > 0 && (
+                  <TextAction
+                    type="button"
+                    disabled={busy || loadError}
+                    onClick={() => {
+                      setResetFailed(false);
+                      setResetSnapshot(JSON.stringify(snapshot));
+                      setResetDialog(regenerationFields);
+                    }}
+                  >
+                    {t("opportunityTranslations.regenerate")}
+                  </TextAction>
+                )}
               </section>
             </Comparison>
           </form>
           <Footer>
-            <ReviewButton
+            <Metadata>
+              {t("opportunityTranslations.originalLanguage")}:{" "}
+              {fields[0]?.originalLanguage
+                ? t(`opportunityTranslations.languages.${fields[0].originalLanguage}`)
+                : t("opportunityTranslations.unknownLanguage")}
+            </Metadata>
+            <TextAction
               type="button"
               disabled={editing || busy || loadError}
               onClick={() => {
@@ -330,9 +397,44 @@ function TranslationReview({
               }}
             >
               {t("opportunityTranslations.changeOriginal")}
-            </ReviewButton>
+            </TextAction>
           </Footer>
         </Expanded>
+      )}
+      {resetDialog && (
+        <ConfirmationDialog
+          title={t("opportunityTranslations.regenerateTitle")}
+          message={t("opportunityTranslations.regenerateBody", {
+            language: t(`opportunityTranslations.languages.${language}`),
+            fields: resetDialog.map(({ fieldName }) => t(`opportunityTranslations.fields.${fieldName}`)).join(", "),
+          })}
+          cancelText={t("opportunityTranslations.cancel")}
+          confirmText={t("opportunityTranslations.regenerate")}
+          onCancel={closeResetDialog}
+          cancelDisabled={resetTranslation.isPending}
+          confirmDisabled={busy || loadError || changedBeforeReset}
+          onConfirm={() => {
+            if (busy || loadError || changedBeforeReset) return;
+            resetTranslation.mutate(resetDialog, {
+              onSuccess: (results) => {
+                const failed = results.filter(({ result }) => result.status === "rejected");
+                setResetDialog(null);
+                if (failed.length) {
+                  setResetRetryIds(failed.map(({ field }) => field.id));
+                  setResetFailed(true);
+                  toast.error(t("opportunityTranslations.regenerateFailed"));
+                } else {
+                  setResetRetryIds([]);
+                  toast.success(t("opportunityTranslations.regenerateRequested"));
+                }
+              },
+            });
+          }}
+        >
+          {changedBeforeReset && (
+            <Metadata role="alert">{t("opportunityTranslations.changedBeforeRegeneration")}</Metadata>
+          )}
+        </ConfirmationDialog>
       )}
       {dialog && (
         <ConfirmationDialog
@@ -349,7 +451,7 @@ function TranslationReview({
           }
           onConfirm={() =>
             changeLanguage.mutate(
-              { language: originalLanguage },
+              { originalLanguage },
               {
                 onSuccess: () => {
                   setDialog(false);

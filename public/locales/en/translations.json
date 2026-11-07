@@ -40,9 +40,19 @@
     "originalStillShown": "No completed translation is available. The opportunity displays the original text instead.",
     "missing": "No translation is available. The opportunity displays the original text instead.",
     "unknownError": "The translation could not be completed.",
-    "fields": { "title": "Title", "info": "Description" },
-    "languages": { "en": "English", "de": "German" },
-    "status": { "pending": "Pending", "done": "Completed", "failed": "Failed" },
+    "fields": {
+      "title": "Title",
+      "info": "Description"
+    },
+    "languages": {
+      "en": "English",
+      "de": "German"
+    },
+    "status": {
+      "pending": "Pending",
+      "done": "Completed",
+      "failed": "Failed"
+    },
     "origin": {
       "reference": "Reference translation",
       "machine": "Automatic translation",
@@ -63,7 +73,14 @@
       "wrong_language": "The translation is not in the expected language.",
       "bad_response": "The translation service returned an invalid response.",
       "provider_unavailable": "The translation service was unavailable."
-    }
+    },
+    "writeFailed": "Some changes could not be saved. Successful changes are kept, and unsaved text remains in the editor. Check the error before trying again.",
+    "regenerate": "Regenerate translation",
+    "regenerateTitle": "Regenerate this translation?",
+    "regenerateBody": "New automatic translations will replace {{fields}} in {{language}}, including any manual edits. The original text stays unchanged.",
+    "regenerateFailed": "Some translations could not be regenerated. Successful requests are kept. Check the latest translation state before trying again.",
+    "regenerateRequested": "Translation regeneration requested",
+    "changedBeforeRegeneration": "The source or translation changed. Close this dialog and review the latest text before trying again."
   },
   "homepage": {
     "heroSection": {
@@ -599,6 +616,8 @@
           "regular-accompanying": "Regular + Accompanying"
         }
       },
+      "retry": "Try again",
+      "agentHeadline": "Volunteers you can ask us to contact",
       "volunteers": "Volunteers",
       "languages": "Languages",
       "activities": "Activities",
@@ -664,6 +683,23 @@
         "agents": "*NGOs without a certified address are not shown on the map.",
         "volunteers": "*Volunteers without a certified address are not shown on the map."
       },
+      "districtList": "Districts",
+      "densityLegend": "Higher shading means more results",
+      "additionalCounts": "Results outside the districts",
+      "unassignedBerlin": "Unassigned in Berlin",
+      "outsideBerlin": "Outside Berlin",
+      "remote": "Remote",
+      "backToOverview": "Back to all Berlin",
+      "selectedDistrictCount": "{{count}} results in this district",
+      "loading": "Loading district results…",
+      "loadError": "District map data could not be loaded. Please try again.",
+      "unsupportedFilters": "District maps cannot apply search or linked-profile filters yet. Clear those filters to see matching district results.",
+      "emptyDistrict": "No results match this district and the active filters.",
+      "emptyOverview": "No results match the active filters in Berlin.",
+      "truncated": "Showing only the first {{max}} matching results.",
+      "viewAllResults": "View all results in Cards",
+      "volunteersInterested": "Volunteers interested in {{district}}",
+      "volunteersInterestedExplainer": "Volunteer counts show preferred districts and may overlap. Pins show approximate locations and may overlap.",
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
@@ -810,7 +846,10 @@
     "filters": {
       "button": "FILTERS",
       "closeFilters": "CLOSE FILTERS",
-      "clearAll": "Clear all"
+      "clearAll": "Clear all",
+      "commute": "Max Commute: {{minutes}} min",
+      "commuteMinutesHeader": "Maximum commute time",
+      "commuteMinutesOption": "{{minutes}} min"
     },
     "volunteerProfile": {
       "backToDashboard": "Back to Dashboard",
@@ -1920,7 +1959,47 @@
         "removeMessage": "People with an email on {{domain}} will no longer be able to register as an NGO, unless the NGO already has a contact on that domain."
       },
       "stats": {
-        "comingSoon": "Coming soon"
+        "metricLabel": "Metric",
+        "metric": {
+          "newVolunteers": "New volunteers",
+          "requests": "Requests",
+          "leadFrom": "Where did you hear about us"
+        },
+        "granularityLabel": "Period",
+        "granularity": {
+          "month": "Month",
+          "quarter": "Quarter",
+          "year": "Year"
+        },
+        "rangeLabel": "Date range",
+        "from": "From",
+        "to": "To",
+        "clearRange": "Clear dates",
+        "invalidRange": "The start date must be on or before the end date.",
+        "groupByLabel": "Split by",
+        "groupBy": {
+          "none": "No split",
+          "district": "District",
+          "opportunityType": "Request type",
+          "volunteerType": "Volunteer type",
+          "leadFrom": "Source"
+        },
+        "titleBy": "{{metric}} by {{groupBy}}",
+        "total": "Total",
+        "other": "Other",
+        "period": "Period",
+        "legend": "Legend",
+        "showTable": "Show as table",
+        "hideTable": "Hide table",
+        "empty": "No data for this period.",
+        "loadError": "Could not load the statistics. Please reload the page.",
+        "overlapNote": "Some entries count towards more than one group, so the segments can add up to more than the total.",
+        "allTime": {
+          "title": "All-time totals",
+          "tracked": "Since tracking started",
+          "beforeTracking": "Before tracking started",
+          "beforeTrackingNote": "\"Before tracking started\" counts answers collected before we recorded when they were given, so they are not part of the chart above."
+        }
       },
       "nav": {
         "domains": "Domains",
@@ -2593,5 +2672,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Open calendar",
+    "invalidDate": "Enter a valid date (dd.mm.yyyy).",
+    "beforeMinYear": "Dates before {{year}} are not supported."
   }
 }

@@ -4,6 +4,12 @@
   }
 }
 
+.leaflet-container.map-popup-open .map-scroll-control,
+.leaflet-container.map-popup-open .map-other-racs-control,
+.leaflet-container.map-popup-open .map-legend-control {
+  visibility: hidden;
+}
+
 .leaflet-marker-icon.need4deed-icon,
 .grouped-marker-icon__image--opportunity {
   filter: hue-rotate(90deg) saturate(0.8);
@@ -17,7 +23,7 @@
 }
 
 .leaflet-marker-icon.berlin-rac-marker-icon {
-  filter: grayScale(1);
+  filter: hue-rotate(150deg);
 }
 
 .grouped-marker-icon__image {
@@ -65,4 +71,30 @@
 
 .leaflet-pane > svg path.leaflet-interactive:focus:not(:focus-visible) {
   outline: none;
+}
+
+.leaflet-pane > svg path.leaflet-interactive:focus-visible {
+  outline: 3px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.district-count-tooltip {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.district-count-tooltip::before {
+  display: none;
+}
+
+.district-map-popup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
 }
