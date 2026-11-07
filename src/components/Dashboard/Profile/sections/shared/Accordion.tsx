@@ -15,13 +15,21 @@ import {
 
 type AccordionProps = {
   headerLeft: ReactNode;
+  headerAction?: ReactNode;
   subtitle: string;
   onGoToProfile: () => void;
   children?: ReactNode;
   "data-testid"?: string;
 };
 
-export const Accordion = ({ headerLeft, subtitle, onGoToProfile, children, "data-testid": testId }: AccordionProps) => {
+export const Accordion = ({
+  headerLeft,
+  headerAction,
+  subtitle,
+  onGoToProfile,
+  children,
+  "data-testid": testId,
+}: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const CaretIcon = isOpen ? CaretUpIcon : CaretDownIcon;
@@ -43,6 +51,7 @@ export const Accordion = ({ headerLeft, subtitle, onGoToProfile, children, "data
           >
             {t("dashboard.opportunities.goToProfile")}
           </Heading4>
+          {headerAction}
           {children && (
             <CaretIcon
               size={24}
