@@ -17,7 +17,7 @@ export const MapLegendControl = () => {
     const legendControl = new L.Control({ position: "topright" });
 
     legendControl.onAdd = () => {
-      const div = L.DomUtil.create("div", "leaflet-legend-control");
+      const div = L.DomUtil.create("div", "leaflet-legend-control map-legend-control");
 
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
