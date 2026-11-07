@@ -600,6 +600,23 @@
         "agents": "*NGOs without a certified address are not shown on the map.",
         "volunteers": "*Volunteers without a certified address are not shown on the map."
       },
+      "districtList": "Districts",
+      "densityLegend": "Higher shading means more results",
+      "additionalCounts": "Results outside the districts",
+      "unassignedBerlin": "Unassigned in Berlin",
+      "outsideBerlin": "Outside Berlin",
+      "remote": "Remote",
+      "backToOverview": "Back to all Berlin",
+      "selectedDistrictCount": "{{count}} results in this district",
+      "loading": "Loading district results…",
+      "loadError": "District map data could not be loaded. Please try again.",
+      "unsupportedFilters": "District maps cannot apply search or linked-profile filters yet. Clear those filters to see matching district results.",
+      "emptyDistrict": "No results match this district and the active filters.",
+      "emptyOverview": "No results match the active filters in Berlin.",
+      "truncated": "Showing only the first {{max}} matching results.",
+      "viewAllResults": "View all results in Cards",
+      "volunteersInterested": "Volunteers interested in {{district}}",
+      "volunteersInterestedExplainer": "Volunteer counts show preferred districts and may overlap. Pins show approximate locations and may overlap.",
       "legend": {
         "title": "Legend",
         "opportunity": "Opportunity",
@@ -1859,7 +1876,47 @@
         "removeMessage": "People with an email on {{domain}} will no longer be able to register as an NGO, unless the NGO already has a contact on that domain."
       },
       "stats": {
-        "comingSoon": "Coming soon"
+        "metricLabel": "Metric",
+        "metric": {
+          "newVolunteers": "New volunteers",
+          "requests": "Requests",
+          "leadFrom": "Where did you hear about us"
+        },
+        "granularityLabel": "Period",
+        "granularity": {
+          "month": "Month",
+          "quarter": "Quarter",
+          "year": "Year"
+        },
+        "rangeLabel": "Date range",
+        "from": "From",
+        "to": "To",
+        "clearRange": "Clear dates",
+        "invalidRange": "The start date must be on or before the end date.",
+        "groupByLabel": "Split by",
+        "groupBy": {
+          "none": "No split",
+          "district": "District",
+          "opportunityType": "Request type",
+          "volunteerType": "Volunteer type",
+          "leadFrom": "Source"
+        },
+        "titleBy": "{{metric}} by {{groupBy}}",
+        "total": "Total",
+        "other": "Other",
+        "period": "Period",
+        "legend": "Legend",
+        "showTable": "Show as table",
+        "hideTable": "Hide table",
+        "empty": "No data for this period.",
+        "loadError": "Could not load the statistics. Please reload the page.",
+        "overlapNote": "Some entries count towards more than one group, so the segments can add up to more than the total.",
+        "allTime": {
+          "title": "All-time totals",
+          "tracked": "Since tracking started",
+          "beforeTracking": "Before tracking started",
+          "beforeTrackingNote": "\"Before tracking started\" counts answers collected before we recorded when they were given, so they are not part of the chart above."
+        }
       },
       "nav": {
         "domains": "Domains",
@@ -2536,5 +2593,10 @@
         }
       }
     }
+  },
+  "datePicker": {
+    "openCalendar": "Open calendar",
+    "invalidDate": "Enter a valid date (dd.mm.yyyy).",
+    "beforeMinYear": "Dates before {{year}} are not supported."
   }
 }

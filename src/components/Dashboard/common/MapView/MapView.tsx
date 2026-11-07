@@ -2,13 +2,15 @@
 
 import dynamic from "next/dynamic";
 import { LoadingMapView } from "./LoadingMapView";
-import { EntityMarker, SingleMarker } from "./types";
+import { EntityMarker, MapEntity, SingleMarker } from "./types";
 
 interface Props {
-  markers?: EntityMarker[];
+  entity: MapEntity;
+  filter: URLSearchParams;
   renderPopupContent: (marker: EntityMarker) => React.ReactNode;
   filterMarker?: SingleMarker | null;
   renderSinglePopupContent?: (marker: SingleMarker) => React.ReactNode;
+  onCountChange: (count: number) => void;
 }
 
 const MapCard = dynamic(() => import("./MapCard"), {
@@ -16,13 +18,22 @@ const MapCard = dynamic(() => import("./MapCard"), {
   loading: () => <LoadingMapView />,
 });
 
-export const MapView = ({ markers, renderPopupContent, filterMarker, renderSinglePopupContent }: Props) => {
+export const MapView = ({
+  entity,
+  filter,
+  renderPopupContent,
+  filterMarker,
+  renderSinglePopupContent,
+  onCountChange,
+}: Props) => {
   return (
     <MapCard
-      markers={markers}
+      entity={entity}
+      filter={filter}
       renderPopupContent={renderPopupContent}
       filterMarker={filterMarker}
       renderSinglePopupContent={renderSinglePopupContent}
+      onCountChange={onCountChange}
     />
   );
 };
