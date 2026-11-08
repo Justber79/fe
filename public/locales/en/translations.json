@@ -793,7 +793,9 @@
         "messageEnd": "to them. It will appear in their profile under \"pending\" opportunities.",
         "confirm": "Suggest",
         "cancel": "Cancel",
-        "success": "Suggestion sent successfully"
+        "success": "Suggestion sent successfully",
+        "ngoSuggestTitle": "Suggest {{volunteer}} for {{opportunity}}?",
+        "ngoSuggestDescription": "The volunteer will see the suggestion as pending."
       },
       "activities": "Activities",
       "volunteerHeader": {
@@ -900,7 +902,11 @@
         "markAsPastSuccess": "Marked as past",
         "emptyState": "No items in this category yet",
         "unmatchDialogTitle": "Confirm Unmatch",
-        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?"
+        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?",
+        "withdraw": "Withdraw suggestion",
+        "withdrawDialogTitle": "Withdraw this suggestion?",
+        "withdrawDialogDescription": "The pending suggestion is removed from the volunteer and the opportunity.",
+        "withdrawSuccess": "Suggestion withdrawn"
       },
       "contactDetails": {
         "title": "Contact details",
