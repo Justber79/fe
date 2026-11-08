@@ -871,6 +871,16 @@
         "certificateGC_options": {
           "uploaded": "Uploaded",
           "missing": "Missing"
+        },
+        "owner_title": "NGO",
+        "owner_none": "need4deed (platform)",
+        "change_owner": "Change NGO",
+        "ownerModal": {
+          "title": "Volunteer's NGO",
+          "search": "Search NGOs",
+          "none": "No NGO: platform volunteer",
+          "save": "Save",
+          "cancel": "Cancel"
         }
       },
       "opportunitiesSec": {

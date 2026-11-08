@@ -878,6 +878,16 @@
         "certificateGC_options": {
           "uploaded": "Hochgeladen",
           "missing": "Fehlend"
+        },
+        "owner_title": "Einrichtung",
+        "owner_none": "need4deed (Plattform)",
+        "change_owner": "Einrichtung ändern",
+        "ownerModal": {
+          "title": "Einrichtung der freiwilligen Person",
+          "search": "Einrichtungen suchen",
+          "none": "Keine Einrichtung: Plattform-Freiwillige*r",
+          "save": "Speichern",
+          "cancel": "Abbrechen"
         }
       },
       "opportunitiesSec": {
