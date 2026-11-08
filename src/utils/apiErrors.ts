@@ -1,5 +1,6 @@
 import axios from "axios";
 import { TFunction } from "i18next";
+import { ApiVolunteerApplicationEmailError, ApplicationEmailFailureReason } from "need4deed-sdk";
 
 type ApiErrorBody = { error?: string; message?: string };
 
@@ -60,10 +61,33 @@ export function isSilentError(error: unknown): boolean {
   return isLeavingPage && axios.isAxiosError(error) && !error.response;
 }
 
+function getEmailNotSentBody(error: unknown): ApiErrorBody | undefined {
+  if (!axios.isAxiosError(error) || error.response?.status !== 502) return undefined;
+  const data: unknown = error.response.data;
+  if (typeof data !== "object" || data === null) return undefined;
+  const body = data as ApiErrorBody;
+  return body.error === "EmailNotSentError" ? body : undefined;
+}
+
 export function isEmailNoteNotSent(error: unknown): boolean {
-  if (!axios.isAxiosError(error) || error.response?.status !== 502) return false;
-  const data = error.response.data as ApiErrorBody | undefined;
-  return data?.error === "EmailNotSentError";
+  return getEmailNotSentBody(error) !== undefined;
+}
+
+const applicationEmailFailureKeys: Record<ApplicationEmailFailureReason, string> = {
+  "attachment-unavailable": "message.applicationEmailNotSentAttachment",
+  "email-invalid": "message.applicationEmailNotSentInvalid",
+  "render-failed": "message.applicationEmailNotSentRender",
+  "send-failed": "message.applicationEmailNotSentSend",
+};
+
+const isApplicationEmailFailureReason = (reason: unknown): reason is ApplicationEmailFailureReason =>
+  typeof reason === "string" && Object.prototype.hasOwnProperty.call(applicationEmailFailureKeys, reason);
+
+export function getApplicationEmailFailureKey(error: unknown): string {
+  const reason = (getEmailNotSentBody(error) as Partial<ApiVolunteerApplicationEmailError> | undefined)?.reason;
+  return isApplicationEmailFailureReason(reason)
+    ? applicationEmailFailureKeys[reason]
+    : "message.applicationEmailNotSent";
 }
 
 export function withEmailNote<T extends { emailNote?: string }>(payload: T): T {
