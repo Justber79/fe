@@ -1355,6 +1355,15 @@
       "deleteConfirmTitle": "Eintrag löschen?",
       "deleteConfirmText": "Der Eintrag vom {{date}} wird dauerhaft gelöscht."
     },
+    "volunteerActivityLog": {
+      "emptyState": "Noch keine Aktivitäten",
+      "linked": "Verknüpft mit „{{title}}“",
+      "linkedAs": "Verknüpft mit „{{title}}“ als {{status}}",
+      "removed": "Entfernt aus „{{title}}“ (war {{from}})",
+      "statusChanged": "„{{title}}“: Status geändert zu {{to}}",
+      "statusChangedFrom": "„{{title}}“: {{from}} → {{to}}",
+      "imported": "{{entry}} (importiert, Datum ungefähr)"
+    },
     "profile": {
       "loading": "Profil wird geladen...",
       "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",

@@ -18,7 +18,7 @@ Need4Deed frontend — a Next.js 15 PWA for a Berlin NGO connecting volunteers w
 
 ## Commands
 
-`package.json`'s `scripts` has the standard ones (dev, build, lint, typecheck, dev:docker). No test framework is configured.
+`package.json`'s `scripts` has the standard ones (dev, build, lint, typecheck, test, dev:docker). No test framework is configured: `yarn test` runs `tests/*.test.mjs` with `node:test`, transpiling the TS modules under test on load (see `tests/opportunity-volunteer-tabs.test.mjs`).
 
 ## Local setup
 

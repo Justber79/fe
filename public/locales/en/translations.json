@@ -1343,6 +1343,15 @@
       "deleteConfirmTitle": "Delete entry?",
       "deleteConfirmText": "The entry for {{date}} will be permanently deleted."
     },
+    "volunteerActivityLog": {
+      "emptyState": "No activity yet",
+      "linked": "Linked to \"{{title}}\"",
+      "linkedAs": "Linked to \"{{title}}\" as {{status}}",
+      "removed": "Removed from \"{{title}}\" (was {{from}})",
+      "statusChanged": "\"{{title}}\": status changed to {{to}}",
+      "statusChangedFrom": "\"{{title}}\": {{from}} → {{to}}",
+      "imported": "{{entry}} (imported, date approximate)"
+    },
     "profile": {
       "loading": "Loading profile...",
       "notVolProfSetUp": "Your volunteer profile is not set up yet — please complete registration.",
