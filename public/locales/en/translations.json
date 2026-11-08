@@ -1973,7 +1973,43 @@
           "expires": "Valid until {{date}}",
           "copyFailed": "Could not copy the link. Please select and copy it."
         },
-        "inactive": "{{title}} (inactive)"
+        "inactive": "{{title}} (inactive)",
+        "import": {
+          "title": "Import existing volunteers",
+          "helper": "Load a CSV file with the columns firstName, lastName, email, phone and postcode (comma or semicolon separated). Preview first: nothing is written until the preview has no invalid rows. Existing volunteers are skipped.",
+          "file": "CSV file",
+          "tooMany": "At most {{max}} rows per import.",
+          "missingColumns": "Missing columns: {{columns}}",
+          "empty": "The file has no data rows.",
+          "preview": "Preview",
+          "import": "Import",
+          "summary": "{{created}} to create, {{skipped}} skipped, {{invalid}} invalid",
+          "imported": "{{created}} imported, {{skipped}} skipped",
+          "line": "Line",
+          "email": "Email",
+          "outcome": "Result",
+          "details": "Details",
+          "outcomes": {
+            "created": "Create",
+            "skipped": "Skip",
+            "invalid": "Invalid"
+          },
+          "skipReasons": {
+            "already-volunteer": "Already a volunteer",
+            "duplicate-in-import": "Repeated in this file"
+          },
+          "rowsLoaded_one": "{{count}} row loaded",
+          "rowsLoaded_other": "{{count}} rows loaded",
+          "duplicateColumns": "Repeated columns: {{columns}}",
+          "rejected": "Nothing was imported: {{invalid}} invalid, {{created}} would be created, {{skipped}} skipped",
+          "rowErrors": {
+            "firstName": "First name is missing",
+            "email": "Email address is not valid",
+            "postcode": "Postcode is unknown",
+            "registered": "Email belongs to a registered account",
+            "otherPerson": "Email belongs to a different person"
+          }
+        }
       }
     }
   },

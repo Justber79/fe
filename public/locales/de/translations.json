@@ -1985,7 +1985,43 @@
           "expires": "Gültig bis {{date}}",
           "copyFailed": "Der Link konnte nicht kopiert werden. Bitte markieren und kopieren Sie ihn."
         },
-        "inactive": "{{title}} (inaktiv)"
+        "inactive": "{{title}} (inaktiv)",
+        "import": {
+          "title": "Bestehende Freiwillige importieren",
+          "helper": "Laden Sie eine CSV-Datei mit den Spalten firstName, lastName, email, phone und postcode (Komma oder Semikolon getrennt). Zuerst die Vorschau: Es wird nichts gespeichert, solange die Vorschau ungültige Zeilen hat. Bestehende Freiwillige werden übersprungen.",
+          "file": "CSV-Datei",
+          "tooMany": "Höchstens {{max}} Zeilen pro Import.",
+          "missingColumns": "Fehlende Spalten: {{columns}}",
+          "empty": "Die Datei enthält keine Datenzeilen.",
+          "preview": "Vorschau",
+          "import": "Importieren",
+          "summary": "{{created}} anlegen, {{skipped}} übersprungen, {{invalid}} ungültig",
+          "imported": "{{created}} importiert, {{skipped}} übersprungen",
+          "line": "Zeile",
+          "email": "E-Mail",
+          "outcome": "Ergebnis",
+          "details": "Details",
+          "outcomes": {
+            "created": "Anlegen",
+            "skipped": "Überspringen",
+            "invalid": "Ungültig"
+          },
+          "skipReasons": {
+            "already-volunteer": "Bereits freiwillig registriert",
+            "duplicate-in-import": "Doppelt in dieser Datei"
+          },
+          "rowsLoaded_one": "{{count}} Zeile geladen",
+          "rowsLoaded_other": "{{count}} Zeilen geladen",
+          "duplicateColumns": "Doppelte Spalten: {{columns}}",
+          "rejected": "Es wurde nichts importiert: {{invalid}} ungültig, {{created}} würden angelegt, {{skipped}} übersprungen",
+          "rowErrors": {
+            "firstName": "Vorname fehlt",
+            "email": "E-Mail-Adresse ist ungültig",
+            "postcode": "Postleitzahl ist unbekannt",
+            "registered": "E-Mail gehört zu einem registrierten Konto",
+            "otherPerson": "E-Mail gehört zu einer anderen Person"
+          }
+        }
       }
     }
   },

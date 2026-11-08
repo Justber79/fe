@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AgentPicker } from "./AgentPicker";
 import { RegistrationLink } from "./RegistrationLink";
+import { VolunteerImport } from "./VolunteerImport";
 import { Container, Section } from "./styles";
 
 export function NgoVolunteers() {
@@ -18,7 +19,8 @@ export function NgoVolunteers() {
       <Section>
         <AgentPicker selected={agent} onSelect={setAgent} />
       </Section>
-      {agent && <RegistrationLink key={agent.id} agentId={agent.id} />}
+      {agent && <RegistrationLink key={`link-${agent.id}`} agentId={agent.id} />}
+      {agent && <VolunteerImport key={`import-${agent.id}`} agentId={agent.id} />}
     </Container>
   );
 }
