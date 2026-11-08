@@ -1956,7 +1956,24 @@
       },
       "nav": {
         "domains": "Domains",
-        "stats": "Statistics"
+        "stats": "Statistics",
+        "ngoVolunteers": "NGO volunteers"
+      },
+      "ngoVolunteers": {
+        "helper": "Pick an NGO to give its volunteers a registration link or to import its existing volunteers.",
+        "search": "Search NGOs",
+        "noResults": "No NGO found",
+        "change": "Change NGO",
+        "link": {
+          "title": "Registration link",
+          "helper": "Volunteers who sign up through this link belong to the NGO. A link is valid for 90 days; a new link doesn't cancel older ones. Marking the NGO inactive stops all its links.",
+          "create": "Create link",
+          "copy": "Copy link",
+          "copied": "Link copied",
+          "expires": "Valid until {{date}}",
+          "copyFailed": "Could not copy the link. Please select and copy it."
+        },
+        "inactive": "{{title}} (inactive)"
       }
     }
   },
@@ -2500,7 +2517,11 @@
     "checkEmail": {
       "title": "Check your email",
       "description": "We sent a confirmation link to your email address. Click it to continue setting up your account."
-    }
+    },
+    "ngoLinkNotice": "You're signing up through an NGO's link: your new account will belong to that NGO.",
+    "ngoLinkExpired": "This registration link is no longer valid. Please ask the NGO for a new one.",
+    "ngoLinkSignedIn": "You're already signed in. NGO registration links are for new accounts only.",
+    "toDashboard": "Go to your dashboard"
   },
   "formInput": {
     "showPassword": "Show password",

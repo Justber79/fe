@@ -1,18 +1,11 @@
 "use client";
-import { apiPathAgent } from "@/config/constants";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useGetQuery } from "@/hooks/useGetQuery";
-import { ApiAgentGetList } from "need4deed-sdk";
+import { AgentOption, useAgentSearch } from "@/hooks/useAgentSearch";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChangeStatusDialog, DialogSearchInput } from "../common";
 import { NO_OWNER, UseVolunteerOwnerDialogReturn } from "./useVolunteerOwnerDialog";
 
-const SEARCH_LIMIT = 20;
-const SEARCH_DEBOUNCE_MS = 300;
 const i18nPrefix = "dashboard.volunteerProfile.volunteerHeader.ownerModal";
-
-type AgentOption = { id: number; title: string };
 
 type Props = {
   dialog: UseVolunteerOwnerDialogReturn;
@@ -23,7 +16,6 @@ export const ChangeVolunteerOwnerDialog = ({ dialog, currentOwner }: Props) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [picked, setPicked] = useState<AgentOption>();
-  const query = useDebounce(search.trim(), SEARCH_DEBOUNCE_MS);
   const { isOpen, closeDialog, selected, setSelected, saveDialog, isSaveDisabled } = dialog;
 
   useEffect(() => {
@@ -33,15 +25,10 @@ export const ChangeVolunteerOwnerDialog = ({ dialog, currentOwner }: Props) => {
     }
   }, [isOpen]);
 
-  const { data: agents = [] } = useGetQuery<ApiAgentGetList[]>({
-    queryKey: ["agents", "owner-search", query],
-    apiPath: `${apiPathAgent}/`,
-    params: { limit: SEARCH_LIMIT, filter: { search: query } },
-    enabled: isOpen && query.length >= 2,
-  });
+  const { agents } = useAgentSearch(search, isOpen);
 
   const pinned = [currentOwner, picked].filter((agent): agent is AgentOption => Boolean(agent));
-  const listed = [...pinned, ...agents.map(({ id, title }) => ({ id, title }))].filter(
+  const listed = [...pinned, ...agents].filter(
     (agent, index, all) => all.findIndex(({ id }) => id === agent.id) === index,
   );
   const options = [

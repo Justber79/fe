@@ -1968,7 +1968,24 @@
       },
       "nav": {
         "domains": "Domains",
-        "stats": "Statistiken"
+        "stats": "Statistiken",
+        "ngoVolunteers": "Freiwillige der NGOs"
+      },
+      "ngoVolunteers": {
+        "helper": "Wählen Sie eine NGO, um ihren Freiwilligen einen Registrierungslink zu geben oder ihre bestehenden Freiwilligen zu importieren.",
+        "search": "NGOs suchen",
+        "noResults": "Keine NGO gefunden",
+        "change": "NGO ändern",
+        "link": {
+          "title": "Registrierungslink",
+          "helper": "Freiwillige, die sich über diesen Link registrieren, gehören zur NGO. Ein Link gilt 90 Tage; ein neuer Link hebt ältere nicht auf. Wird die NGO inaktiv gesetzt, funktionieren alle ihre Links nicht mehr.",
+          "create": "Link erstellen",
+          "copy": "Link kopieren",
+          "copied": "Link kopiert",
+          "expires": "Gültig bis {{date}}",
+          "copyFailed": "Der Link konnte nicht kopiert werden. Bitte markieren und kopieren Sie ihn."
+        },
+        "inactive": "{{title}} (inaktiv)"
       }
     }
   },
@@ -2855,7 +2872,11 @@
     "checkEmail": {
       "title": "Prüfen Sie Ihre E-Mail",
       "description": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Klicken Sie darauf, um die Einrichtung Ihres Kontos fortzusetzen."
-    }
+    },
+    "ngoLinkNotice": "Sie registrieren sich über den Link einer NGO: Ihr neues Konto gehört dann zu dieser NGO.",
+    "ngoLinkExpired": "Dieser Registrierungslink ist nicht mehr gültig. Bitte fragen Sie die NGO nach einem neuen Link.",
+    "ngoLinkSignedIn": "Sie sind bereits angemeldet. Registrierungslinks von NGOs gelten nur für neue Konten.",
+    "toDashboard": "Zum Dashboard"
   },
   "formInput": {
     "showPassword": "Passwort anzeigen",
