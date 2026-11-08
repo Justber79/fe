@@ -791,7 +791,14 @@
         "commentText": "Angefragt für {{opportunity}}",
         "contactMissing": "Anfrage konnte nicht gesendet werden: need4deed-Kontakt nicht gefunden",
         "success": "Anfrage gesendet",
-        "noOpportunities": "Du hast noch keine ehrenamtlichen Tätigkeiten"
+        "noOpportunities": "Du hast noch keine ehrenamtlichen Tätigkeiten",
+        "ownerSuccess": "Anfrage an die Einrichtung der freiwilligen Person gesendet",
+        "errors": {
+          "alreadyRequested": "Diese freiwillige Person wurde für das Gesuch bereits angefragt oder verknüpft.",
+          "noOwnerMembers": "Die Einrichtung der freiwilligen Person hat keine aktiven Mitglieder. Bitte frag stattdessen need4deed.",
+          "notOpen": "Das Gesuch ist nicht mehr offen.",
+          "ngoInactive": "Eure Einrichtung ist inaktiv."
+        }
       },
       "suggestDialog": {
         "title": "Diesem*r Ehrenamtlichen vorschlagen?",

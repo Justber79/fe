@@ -23,6 +23,7 @@ import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLink
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useGetOpportunity } from "@/hooks/useGetOpportunity";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useRequestOwnerSuggestion } from "@/hooks/useRequestOwnerSuggestion";
 import { useRequestVolunteerSuggestion } from "@/hooks/useRequestVolunteerSuggestion";
 import { useSuggestVolunteerOpportunity } from "@/hooks/useSuggestVolunteerOpportunity";
 import {
@@ -46,10 +47,18 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const hasEditingRights = isAuthorized || isOwnProfile;
   const isAgent = useCurrentUser()?.role === UserRole.AGENT;
   const { agentIds, isLoading: isAgentLoading } = useGetCurrentAgent();
-  const ownsVolunteer = isAgent && !!volunteer?.ownerAgentId && agentIds.includes(volunteer.ownerAgentId);
+  const requestMode: "own" | "other" | "platform" | undefined =
+    !isAgent || isAgentLoading || !volunteer
+      ? undefined
+      : !volunteer.ownerAgentId
+        ? "platform"
+        : agentIds.includes(volunteer.ownerAgentId)
+          ? "own"
+          : "other";
+  const ownsVolunteer = requestMode === "own";
   const { allLinkedOpportunities } = useGetMultiOpportunityLinked(ownsVolunteer ? agentIds : []);
   const ownOpportunityIds = (allLinkedOpportunities as ApiOpportunityGetList[]).map(({ id }) => Number(id));
-  const { data: volunteerMatches = [] } = useGetQuery<ApiOpportunityVolunteerGet[]>({
+  const { data: volunteerMatches = [], isLoading: isMatchesLoading } = useGetQuery<ApiOpportunityVolunteerGet[]>({
     queryKey: ["volunteer-opportunities", String(volunteer?.id)],
     apiPath: `${apiPathVolunteer}/${volunteer?.id}/opportunity-linked`,
     staleTime: cacheTTL,
@@ -88,7 +97,10 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
     requestSuggestion,
     isPending: isRequestPending,
     isContactLoading,
-  } = useRequestVolunteerSuggestion(volunteer?.id ?? 0, isAgent && !ownsVolunteer && !!volunteer);
+  } = useRequestVolunteerSuggestion(volunteer?.id ?? 0, requestMode === "platform");
+  const { mutate: requestOwnerSuggestion, isPending: isOwnerRequestPending } = useRequestOwnerSuggestion(
+    volunteer?.id ?? 0,
+  );
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteVolunteer(volunteer?.id ?? 0, () => {
@@ -102,6 +114,10 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
   const handleRequestSelect = (opportunity: Pick<ApiOpportunityGetList, "id" | "title">) => {
     if (ownsVolunteer) {
       setPendingSuggestion(opportunity);
+      return;
+    }
+    if (requestMode === "other") {
+      requestOwnerSuggestion({ opportunityId: Number(opportunity.id) });
       return;
     }
     requestSuggestion(opportunity.title);
@@ -160,7 +176,10 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
           ? t("dashboard.volunteerProfile.suggestButtonName")
           : t("dashboard.volunteerProfile.requestSuggest.button"),
         headerButtonDisabled:
-          isAgentLoading || (ownsVolunteer ? isNgoSuggesting : isContactLoading || isRequestPending),
+          !requestMode ||
+          (requestMode === "own" && (isNgoSuggesting || isMatchesLoading)) ||
+          (requestMode === "other" && isOwnerRequestPending) ||
+          (requestMode === "platform" && (isContactLoading || isRequestPending)),
         onHeaderButtonClick: () => setIsRequestMenuOpen(true),
       }),
       subComponent: (
@@ -171,7 +190,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
               onClose={() => setIsRequestMenuOpen(false)}
               onSelect={handleRequestSelect}
               excludeOpportunityIds={ownsVolunteer ? linkedOpportunityIds : []}
-              openOnly={ownsVolunteer}
+              openOnly={requestMode === "own" || requestMode === "other"}
             />
           )}
           {pendingSuggestion && (

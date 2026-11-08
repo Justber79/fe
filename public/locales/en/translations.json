@@ -785,7 +785,14 @@
         "commentText": "Requested for {{opportunity}}",
         "contactMissing": "Request could not be sent: need4deed contact not found",
         "success": "Request sent",
-        "noOpportunities": "You have no opportunities yet"
+        "noOpportunities": "You have no opportunities yet",
+        "ownerSuccess": "Request sent to the volunteer's NGO",
+        "errors": {
+          "alreadyRequested": "This volunteer was already requested or linked for that opportunity.",
+          "noOwnerMembers": "The volunteer's NGO has no active members to ask. Please ask need4deed instead.",
+          "notOpen": "That opportunity is no longer open.",
+          "ngoInactive": "Your NGO is inactive."
+        }
       },
       "suggestDialog": {
         "title": "Suggest to this volunteer?",
