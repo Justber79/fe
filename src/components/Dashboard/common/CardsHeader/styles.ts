@@ -50,15 +50,17 @@ export const TabsSearchBarContainer = styled.div`
 export const TabsSectionContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
-  width: var(--filters-search-bar-width);
+  gap: var(--spacing-12) var(--spacing-24);
+  width: fit-content;
+  min-width: var(--filters-search-bar-width);
+  max-width: 100%;
 
   @media (max-width: 767px) {
     align-items: stretch;
     flex-direction: column;
-    gap: 12px;
     width: 100%;
   }
 `;
@@ -66,10 +68,12 @@ export const TabsSectionContainer = styled.div`
 export const Tabs = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--opportunities-header-tabs-gap);
   min-width: 0;
 
   @media (max-width: 767px) {
+    flex-wrap: nowrap;
     width: 100%;
     overflow-x: auto;
     padding-bottom: 4px;
