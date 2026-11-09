@@ -78,6 +78,8 @@ export const maxPLZGermany = 99998;
 export const minPLZBerlin = 10115;
 export const maxPLZBerlin = 14199;
 
+export const COMMUTE_BATCH_SIZE = 20;
+
 export const defaultAvatarURL = "head-silhouette.webp";
 export const defaultAvatarVolunteerProfile = "all_genders_avatar.png";
 

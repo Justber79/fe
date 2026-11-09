@@ -1,9 +1,7 @@
-import { apiPathVolunteer, cacheTTL } from "@/config/constants";
+import { apiPathVolunteer, cacheTTL, COMMUTE_BATCH_SIZE } from "@/config/constants";
 import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiVolunteerCommute } from "need4deed-sdk";
-
-const COMMUTE_BATCH_SIZE = 20;
 
 export const useGetVolunteerLinkedCommute = (volunteerId: number, opportunityIds: number[], enabled: boolean) => {
   const opportunityIdBatches = Array.from({ length: Math.ceil(opportunityIds.length / COMMUTE_BATCH_SIZE) }, (_, i) =>
