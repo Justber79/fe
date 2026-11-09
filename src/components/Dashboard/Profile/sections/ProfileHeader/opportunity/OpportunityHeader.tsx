@@ -9,11 +9,17 @@ import { EMPTY_PLACEHOLDER_VALUE } from "@/config/constants";
 import { formatDateTime } from "@/utils";
 import { QuestionIcon, ShootingStarIcon } from "@phosphor-icons/react";
 import { ApiOpportunityGet, UserRole } from "need4deed-sdk";
-import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { createVolunteerTypeLabelMap, EditButton, HeaderCard, IconContainer, StatusRowField } from "../common";
+import {
+  AgentLink,
+  createVolunteerTypeLabelMap,
+  EditButton,
+  HeaderCard,
+  IconContainer,
+  StatusRowField,
+} from "../common";
 import { ChangeOpportunityStatusDialog } from "./ChangeOpportunityStatusDialog";
 import { ChangeOpportunityTypeDialog } from "./ChangeOpportunityTypeDialog/ChangeOpportunityTypeDialog";
 import { createOpportunityStatusLabelMap, OpportunityManualStatusType } from "./constants";
@@ -187,14 +193,4 @@ const MatchStatusBadge = styled.div<{ $color: string }>`
   width: fit-content;
   background-color: var(--color-grey-50);
   color: ${({ $color }) => $color};
-`;
-
-const AgentLink = styled(Link)`
-  color: var(--color-blue-700);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
 `;

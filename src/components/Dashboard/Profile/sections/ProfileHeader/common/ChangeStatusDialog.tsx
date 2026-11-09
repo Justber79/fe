@@ -36,6 +36,7 @@ type Props<T extends string | number> = {
   radioName: string;
   saveLabel: string;
   cancelLabel: string;
+  beforeOptions?: ReactNode;
 };
 
 export const ChangeStatusDialog = <T extends string | number>({
@@ -51,11 +52,13 @@ export const ChangeStatusDialog = <T extends string | number>({
   radioName,
   saveLabel,
   cancelLabel,
+  beforeOptions,
 }: Props<T>) => {
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>
       <ModalContainer data-testid={testId}>
         <ModalTitle>{title}</ModalTitle>
+        {beforeOptions}
 
         <OptionsContainer>
           {options.map(({ value, label, description, extra }) => (

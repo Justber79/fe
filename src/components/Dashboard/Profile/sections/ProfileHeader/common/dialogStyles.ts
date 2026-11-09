@@ -88,3 +88,12 @@ export const OptionDescription = styled.p`
 export const DateFieldContainer = styled.div`
   margin-top: var(--spacing-8);
 `;
+
+export const DialogSearchInput = styled.input`
+  width: 100%;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--spacing-8);
+  font: inherit;
+  color: var(--color-midnight);
+`;

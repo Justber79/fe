@@ -874,7 +874,14 @@
         "commentText": "Angefragt für {{opportunity}}",
         "contactMissing": "Anfrage konnte nicht gesendet werden: need4deed-Kontakt nicht gefunden",
         "success": "Anfrage gesendet",
-        "noOpportunities": "Du hast noch keine ehrenamtlichen Tätigkeiten"
+        "noOpportunities": "Du hast noch keine ehrenamtlichen Tätigkeiten",
+        "ownerSuccess": "Anfrage an die Einrichtung der freiwilligen Person gesendet",
+        "errors": {
+          "alreadyRequested": "Diese freiwillige Person wurde für das Gesuch bereits angefragt oder verknüpft.",
+          "noOwnerMembers": "Die Einrichtung der freiwilligen Person hat keine aktiven Mitglieder. Bitte frag stattdessen need4deed.",
+          "notOpen": "Das Gesuch ist nicht mehr offen.",
+          "ngoInactive": "Eure Einrichtung ist inaktiv."
+        }
       },
       "suggestDialog": {
         "title": "Diesem*r Ehrenamtlichen vorschlagen?",
@@ -882,7 +889,9 @@
         "messageEnd": "vorgeschlagen haben. Es erscheint in seinem*ihrem Profil unter \"Angefragt\".",
         "confirm": "Vorschlagen",
         "cancel": "Abbrechen",
-        "success": "Vorschlag erfolgreich gesendet"
+        "success": "Vorschlag erfolgreich gesendet",
+        "ngoSuggestTitle": "{{volunteer}} für {{opportunity}} vorschlagen?",
+        "ngoSuggestDescription": "Die freiwillige Person sieht den Vorschlag als offen."
       },
       "activities": "Aktivitäten",
       "volunteerHeader": {
@@ -961,6 +970,16 @@
         "certificateGC_options": {
           "uploaded": "Hochgeladen",
           "missing": "Fehlend"
+        },
+        "owner_title": "Einrichtung",
+        "owner_none": "need4deed (Plattform)",
+        "change_owner": "Einrichtung ändern",
+        "ownerModal": {
+          "title": "Einrichtung der freiwilligen Person",
+          "search": "Einrichtungen suchen",
+          "none": "Keine Einrichtung: Plattform-Freiwillige*r",
+          "save": "Speichern",
+          "cancel": "Abbrechen"
         }
       },
       "opportunitiesSec": {
@@ -980,7 +999,11 @@
         "markAsPastSuccess": "Als vergangen markiert",
         "emptyState": "Noch keine Einträge in dieser Kategorie",
         "unmatchDialogTitle": "Zuordnung aufheben",
-        "unmatchDialogDescription": "Möchten Sie die Zuordnung für diese Person wirklich aufheben?"
+        "unmatchDialogDescription": "Möchten Sie die Zuordnung für diese Person wirklich aufheben?",
+        "withdraw": "Vorschlag zurückziehen",
+        "withdrawDialogTitle": "Diesen Vorschlag zurückziehen?",
+        "withdrawDialogDescription": "Der offene Vorschlag wird bei der freiwilligen Person und beim Gesuch entfernt.",
+        "withdrawSuccess": "Vorschlag zurückgezogen"
       },
       "contactDetails": {
         "title": "Kontaktdaten",
@@ -1438,6 +1461,15 @@
       "deleteConfirmTitle": "Eintrag löschen?",
       "deleteConfirmText": "Der Eintrag vom {{date}} wird dauerhaft gelöscht."
     },
+    "volunteerActivityLog": {
+      "emptyState": "Noch keine Aktivitäten",
+      "linked": "Verknüpft mit „{{title}}“",
+      "linkedAs": "Verknüpft mit „{{title}}“ als {{status}}",
+      "removed": "Entfernt aus „{{title}}“ (war {{from}})",
+      "statusChanged": "„{{title}}“: Status geändert zu {{to}}",
+      "statusChangedFrom": "„{{title}}“: {{from}} → {{to}}",
+      "imported": "{{entry}} (importiert, Datum ungefähr)"
+    },
     "profile": {
       "loading": "Profil wird geladen...",
       "notSetUp": "Ihr Organisationsprofil ist noch nicht eingerichtet — bitte schließen Sie die Registrierung ab.",
@@ -1568,6 +1600,10 @@
         "operator": "Träger",
         "services": "Leistungen",
         "clientLanguages": "Sprachen des*der Klienten*in",
+        "sharesVolunteers": "Teilt Freiwillige",
+        "sharesVolunteersYes": "Ja",
+        "sharesVolunteersNo": "Nein",
+        "sharesVolunteersHint": "Andere Einrichtungen, die ebenfalls teilen, sehen die Freiwilligen eurer Einrichtung und können sie für ihre Gesuche vorschlagen.",
         "cancel": "Abbrechen",
         "saveChanges": "Änderungen speichern",
         "saveSuccess": "Organisationsdetails erfolgreich aktualisiert",
@@ -2015,7 +2051,60 @@
       },
       "nav": {
         "domains": "Domains",
-        "stats": "Statistiken"
+        "stats": "Statistiken",
+        "ngoVolunteers": "Freiwillige der NGOs"
+      },
+      "ngoVolunteers": {
+        "helper": "Wählen Sie eine NGO, um ihren Freiwilligen einen Registrierungslink zu geben oder ihre bestehenden Freiwilligen zu importieren.",
+        "search": "NGOs suchen",
+        "noResults": "Keine NGO gefunden",
+        "change": "NGO ändern",
+        "link": {
+          "title": "Registrierungslink",
+          "helper": "Freiwillige, die sich über diesen Link registrieren, gehören zur NGO. Ein Link gilt 90 Tage; ein neuer Link hebt ältere nicht auf. Wird die NGO inaktiv gesetzt, funktionieren alle ihre Links nicht mehr.",
+          "create": "Link erstellen",
+          "copy": "Link kopieren",
+          "copied": "Link kopiert",
+          "expires": "Gültig bis {{date}}",
+          "copyFailed": "Der Link konnte nicht kopiert werden. Bitte markieren und kopieren Sie ihn."
+        },
+        "inactive": "{{title}} (inaktiv)",
+        "import": {
+          "title": "Bestehende Freiwillige importieren",
+          "helper": "Laden Sie eine CSV-Datei mit den Spalten firstName, lastName, email, phone und postcode (Komma oder Semikolon getrennt). Zuerst die Vorschau: Es wird nichts gespeichert, solange die Vorschau ungültige Zeilen hat. Bestehende Freiwillige werden übersprungen.",
+          "file": "CSV-Datei",
+          "tooMany": "Höchstens {{max}} Zeilen pro Import.",
+          "missingColumns": "Fehlende Spalten: {{columns}}",
+          "empty": "Die Datei enthält keine Datenzeilen.",
+          "preview": "Vorschau",
+          "import": "Importieren",
+          "summary": "{{created}} anlegen, {{skipped}} übersprungen, {{invalid}} ungültig",
+          "imported": "{{created}} importiert, {{skipped}} übersprungen",
+          "line": "Zeile",
+          "email": "E-Mail",
+          "outcome": "Ergebnis",
+          "details": "Details",
+          "outcomes": {
+            "created": "Anlegen",
+            "skipped": "Überspringen",
+            "invalid": "Ungültig"
+          },
+          "skipReasons": {
+            "already-volunteer": "Bereits freiwillig registriert",
+            "duplicate-in-import": "Doppelt in dieser Datei"
+          },
+          "rowsLoaded_one": "{{count}} Zeile geladen",
+          "rowsLoaded_other": "{{count}} Zeilen geladen",
+          "duplicateColumns": "Doppelte Spalten: {{columns}}",
+          "rejected": "Es wurde nichts importiert: {{invalid}} ungültig, {{created}} würden angelegt, {{skipped}} übersprungen",
+          "rowErrors": {
+            "firstName": "Vorname fehlt",
+            "email": "E-Mail-Adresse ist ungültig",
+            "postcode": "Postleitzahl ist unbekannt",
+            "registered": "E-Mail gehört zu einem registrierten Konto",
+            "otherPerson": "E-Mail gehört zu einer anderen Person"
+          }
+        }
       }
     }
   },
@@ -2583,6 +2672,10 @@
     "applicationEmailSent": "E-Mail mit Antrag gesendet!",
     "applicationEmailJustSent": "Die E-Mail mit Antrag wurde gerade gesendet. Bitte versuchen Sie es in einer Minute erneut.",
     "applicationEmailNotSent": "Die E-Mail mit Antrag konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "applicationEmailNotSentAttachment": "Die E-Mail mit Antrag konnte nicht gesendet werden: Das Antragsformular konnte nicht geladen werden. Bitte versuchen Sie es später erneut; wenn es weiterhin passiert, informieren Sie das Tech-Team.",
+    "applicationEmailNotSentInvalid": "Die E-Mail mit Antrag konnte nicht gesendet werden: Sie hat die Inhaltsprüfung nicht bestanden. Bitte informieren Sie das Tech-Team.",
+    "applicationEmailNotSentRender": "Die E-Mail mit Antrag konnte nicht gesendet werden: Beim Erstellen ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut; wenn es weiterhin passiert, informieren Sie das Tech-Team.",
+    "applicationEmailNotSentSend": "Die E-Mail mit Antrag konnte nicht gesendet werden: Der Mailserver hat sie nicht angenommen. Bitte versuchen Sie es später erneut.",
     "uploadError": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "deleteError": "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "previewError": "Vorschau fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -2898,7 +2991,11 @@
     "checkEmail": {
       "title": "Prüfen Sie Ihre E-Mail",
       "description": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Klicken Sie darauf, um die Einrichtung Ihres Kontos fortzusetzen."
-    }
+    },
+    "ngoLinkNotice": "Sie registrieren sich über den Link einer NGO: Ihr neues Konto gehört dann zu dieser NGO.",
+    "ngoLinkExpired": "Dieser Registrierungslink ist nicht mehr gültig. Bitte fragen Sie die NGO nach einem neuen Link.",
+    "ngoLinkSignedIn": "Sie sind bereits angemeldet. Registrierungslinks von NGOs gelten nur für neue Konten.",
+    "toDashboard": "Zum Dashboard"
   },
   "formInput": {
     "showPassword": "Passwort anzeigen",

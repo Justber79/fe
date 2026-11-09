@@ -74,6 +74,13 @@ export const OrganisationDetailsDisplay = ({ rawClientLanguages, address }: Prop
         value={clientLanguagesToDisplay(rawClientLanguages)}
         setValue={() => {}}
       />
+      <EditableField
+        mode="display"
+        type="text"
+        label={t(`${i18nPrefix}.sharesVolunteers`)}
+        value={t(`${i18nPrefix}.${values.sharesVolunteers ? "sharesVolunteersYes" : "sharesVolunteersNo"}`)}
+        setValue={() => {}}
+      />
     </FormDetails>
   );
 };

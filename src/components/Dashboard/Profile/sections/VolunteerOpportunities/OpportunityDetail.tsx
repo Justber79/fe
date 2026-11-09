@@ -1,13 +1,14 @@
 import { ApiOpportunityVolunteerGet, OpportunityVolunteerStatusType } from "need4deed-sdk";
 
 import { ActivityLog } from "../ActivityLog";
-import { StatusAccordionActions } from "../shared/AccordionActions";
+import { StatusAccordionActions, WithdrawSuggestionAction } from "../shared/AccordionActions";
 import { DetailContainer } from "../shared/accordionStyles";
 import { AccordionActionProps } from "../shared/types";
 
 type Props = {
   opportunity: ApiOpportunityVolunteerGet;
   currentStatus: OpportunityVolunteerStatusType;
+  onWithdraw?: () => void;
 } & AccordionActionProps;
 
 export default function OpportunityDetail({
@@ -18,6 +19,7 @@ export default function OpportunityDetail({
   onNotAMatch,
   onMarkAsActive,
   onMarkAsPast,
+  onWithdraw,
 }: Props) {
   const canShowActions = onMatch;
   return (
@@ -36,6 +38,7 @@ export default function OpportunityDetail({
           onMarkAsPast={onMarkAsPast}
         />
       )}
+      {onWithdraw && <WithdrawSuggestionAction onWithdraw={onWithdraw} />}
     </DetailContainer>
   );
 }
