@@ -15,7 +15,12 @@ import { useMatchWithEmailNote } from "../shared/useMatchWithEmailNote";
 import { ITEM_STATUS_REMOVED, TAB_STATUS_ORDER, useTabTransitions } from "../shared/useTabTransitions";
 import AccordionOpportunity from "./AccordionOpportunity";
 
-export default function VolunteerOpportunities({ volunteerId }: { volunteerId: Id }) {
+type Props = {
+  volunteerId: Id;
+  withdrawableOpportunityIds?: number[];
+};
+
+export default function VolunteerOpportunities({ volunteerId, withdrawableOpportunityIds = [] }: Props) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
 
@@ -48,6 +53,16 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
   const { mutate: deleteLink } = useDeleteOpportunityVolunteer(queryKey, ({ m2mId }) =>
     clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
   );
+  const { mutate: withdrawLink } = useDeleteOpportunityVolunteer(
+    queryKey,
+    ({ m2mId }) => clearItemStatus(m2mId, ITEM_STATUS_REMOVED),
+    "dashboard.volunteerProfile.opportunitiesSec.withdrawSuccess",
+  );
+
+  const handleWithdraw = (m2mId: number) => {
+    setItemStatus(m2mId, ITEM_STATUS_REMOVED);
+    withdrawLink({ m2mId });
+  };
 
   const tabs = TAB_STATUS_ORDER.map((key, index) => ({
     label: t(`dashboard.volunteerProfile.opportunitiesSec.tabs.${key}`),
@@ -93,7 +108,17 @@ export default function VolunteerOpportunities({ volunteerId }: { volunteerId: I
                 onMarkAsPast={() => handleMarkAsPast(opportunity.id)}
               />
             ) : (
-              <AccordionOpportunity key={opportunity.id} opportunity={opportunity} currentStatus={currentTabStatus} />
+              <AccordionOpportunity
+                key={opportunity.id}
+                opportunity={opportunity}
+                currentStatus={currentTabStatus}
+                onWithdraw={
+                  currentTabStatus === OpportunityVolunteerStatusType.PENDING &&
+                  withdrawableOpportunityIds.includes(Number(opportunity.opportunityId))
+                    ? () => handleWithdraw(opportunity.id)
+                    : undefined
+                }
+              />
             ),
           )
         )}

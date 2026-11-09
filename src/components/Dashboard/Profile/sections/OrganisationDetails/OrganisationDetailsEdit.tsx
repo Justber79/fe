@@ -151,6 +151,23 @@ export const OrganisationDetailsEdit = ({
           )}
         />
         <Controller
+          name="sharesVolunteers"
+          control={control}
+          render={({ field }) => (
+            <EditableField
+              mode="edit"
+              type="radio-list"
+              label={t(`${i18nPrefix}.sharesVolunteers`)}
+              value={field.value ? "yes" : "no"}
+              setValue={(value) => field.onChange(value === "yes")}
+              options={["yes", "no"]}
+              labels={[t(`${i18nPrefix}.sharesVolunteersYes`), t(`${i18nPrefix}.sharesVolunteersNo`)]}
+              hint={t(`${i18nPrefix}.sharesVolunteersHint`)}
+              displayValue={t(`${i18nPrefix}.${field.value ? "sharesVolunteersYes" : "sharesVolunteersNo"}`)}
+            />
+          )}
+        />
+        <Controller
           name="services"
           control={control}
           render={({ field }) => (

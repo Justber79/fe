@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export const Card = styled.div`
@@ -137,4 +138,14 @@ export const IconWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const AgentLink = styled(Link)`
+  color: var(--color-blue-700);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;

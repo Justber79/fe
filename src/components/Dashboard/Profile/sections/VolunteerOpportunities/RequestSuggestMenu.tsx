@@ -2,26 +2,33 @@ import { ItemText, Menu } from "@/components/core/menu";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLinked";
-import { ApiOpportunityGetList } from "need4deed-sdk";
+import { ApiOpportunityGetList, OpportunityStatusType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onSelect: (opportunityTitle: string) => void;
+  onSelect: (opportunity: Pick<ApiOpportunityGetList, "id" | "title">) => void;
+  excludeOpportunityIds?: number[];
+  openOnly?: boolean;
 };
+
+const OPEN_STATUSES = [OpportunityStatusType.NEW, OpportunityStatusType.SEARCHING, OpportunityStatusType.ACTIVE];
 
 const MenuAnchor = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
-export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
+export function RequestSuggestMenu({ isOpen, onClose, onSelect, excludeOpportunityIds = [], openOnly = false }: Props) {
   const { t } = useTranslation();
   const { agentIds } = useGetCurrentAgent();
   const { allLinkedOpportunities, isLoading } = useGetMultiOpportunityLinked(agentIds);
-  const opportunities = allLinkedOpportunities as ApiOpportunityGetList[];
+  const opportunities = (allLinkedOpportunities as ApiOpportunityGetList[]).filter(
+    (opp) =>
+      !excludeOpportunityIds.includes(Number(opp.id)) && (!openOnly || OPEN_STATUSES.includes(opp.statusOpportunity)),
+  );
 
   return (
     <MenuAnchor>
@@ -34,7 +41,7 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect }: Props) {
             </Paragraph>
           )}
           {opportunities.map((opp) => (
-            <Menu.Item key={opp.id} onSelect={() => onSelect(opp.title)}>
+            <Menu.Item key={opp.id} onSelect={() => onSelect(opp)}>
               <ItemText>{opp.title}</ItemText>
             </Menu.Item>
           ))}

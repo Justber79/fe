@@ -8,9 +8,10 @@ export const useAuth = (compareId?: Id) => {
   const isAgent = user?.role === UserRole.AGENT;
   const isVolunteer = user?.role === UserRole.VOLUNTEER;
 
-  const isAuthorized = user?.role === UserRole.ADMIN || user?.role === UserRole.COORDINATOR;
+  const isAdmin = user?.role === UserRole.ADMIN;
+  const isAuthorized = isAdmin || user?.role === UserRole.COORDINATOR;
   const isOwnProfile =
     (user?.role === UserRole.VOLUNTEER && personId === compareId) || (isAgent && agentId === compareId);
 
-  return { isAuthorized, isOwnProfile, isAgent, isVolunteer, isUserLoaded: Boolean(user) };
+  return { isAdmin, isAuthorized, isOwnProfile, isAgent, isVolunteer, isUserLoaded: Boolean(user) };
 };
