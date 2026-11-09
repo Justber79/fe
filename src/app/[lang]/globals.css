@@ -559,7 +559,7 @@ html {
   --dashboard-base-container-width: 1600px;
   --dashboard-base-container-padding-top: 48px;
   --dashboard-base-container-padding-bottom: 100px;
-  --dashboard-navigation-bar-container-width: 110px;
+  --dashboard-navigation-bar-container-width: 160px;
   --dashboard-navigation-bar-gap: 20px;
   --dashboard-navigation-bar-border-radius: 12px;
   --dashboard-navigation-bar-padding: 40px 16px 40px 16px;
