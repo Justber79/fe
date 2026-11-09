@@ -3,7 +3,7 @@ import { EMPTY_PLACEHOLDER_VALUE, screenSizeThresholds } from "@/config/constant
 import { fieldSupportingTextStyles, stackedFieldStyles } from "@/components/styled/mixins";
 import { HasError, HasHint } from "@/types";
 import { MinusIcon, PlusIcon, XCircleIcon } from "@phosphor-icons/react";
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState, useId } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
@@ -374,6 +374,8 @@ export const EditableField = forwardRef(function EditableField<T extends string 
   };
 
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const fieldId = useId();
+  const errorId = `${fieldId}-error`;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -407,12 +409,15 @@ export const EditableField = forwardRef(function EditableField<T extends string 
   return (
     <EditModeWrapper>
       <FieldWrapper $hasError={!!errorMessage} $hasHint={!!hint} $stacked={stacked} $stackAt={stackAt}>
-        {label && <label>{label}</label>}
+        {label && <label htmlFor={type === "text" ? fieldId : undefined}>{label}</label>}
 
         {type === "text" && (
           <InputWrapper $hasError={!!errorMessage}>
             <input
+              id={fieldId}
               type="text"
+              aria-invalid={!!errorMessage}
+              aria-describedby={errorMessage ? errorId : undefined}
               value={localValue}
               placeholder={placeholder}
               onChange={(e) => {
@@ -622,7 +627,7 @@ export const EditableField = forwardRef(function EditableField<T extends string 
         </FieldError>
       )}
       {errorMessage && (
-        <FieldError $stacked={stacked} $stackAt={stackAt}>
+        <FieldError id={errorId} $stacked={stacked} $stackAt={stackAt}>
           <ErrorMessage message={errorMessage} />
         </FieldError>
       )}

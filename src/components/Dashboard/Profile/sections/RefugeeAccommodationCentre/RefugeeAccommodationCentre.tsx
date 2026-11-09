@@ -40,7 +40,7 @@ export const RefugeeAccommodationCentre = forwardRef<EditableSectionRef, Props>(
     const { mutate, isPending } = useMutationQuery<Pick<ApiOpportunityPatch, "address">, unknown>({
       apiPath: `${apiPathOpportunity}/${opportunity.id}`,
       method: "patch",
-      queryKeyToInvalidate: ["opportunity", String(opportunity.id)],
+      queryKeyToInvalidate: [["opportunity", String(opportunity.id)], ["opportunities"], ["agent-opportunities"]],
       onSuccessCallback: () => setEditing(false),
     });
 
@@ -87,7 +87,7 @@ export const RefugeeAccommodationCentre = forwardRef<EditableSectionRef, Props>(
       <RefugeeAccommodationCentreDisplay
         name={opportunity.agent.name}
         address={opportunity.address ? formatAddress(opportunity.address) : opportunity.agent.address}
-        district={districtTitle}
+        district={opportunity.address ? undefined : districtTitle}
       />
     );
   },

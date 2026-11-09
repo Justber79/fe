@@ -16,7 +16,7 @@ export const createOpportunityAddressSchema = (t: TFunction) =>
       if (!data.notMyLocation) return;
       if (!data.street.trim()) ctx.addIssue({ code: "custom", path: ["street"], message: t(`${i18nPrefix}.required`) });
       if (!data.city.trim()) ctx.addIssue({ code: "custom", path: ["city"], message: t(`${i18nPrefix}.required`) });
-      if (!/^\d{5}$/.test(data.postcode.trim()))
+      if (!/^(?!00)\d{5}$/.test(data.postcode.trim()))
         ctx.addIssue({ code: "custom", path: ["postcode"], message: t(`${i18nPrefix}.postcodeInvalid`) });
     });
 
