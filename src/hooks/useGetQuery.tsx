@@ -50,6 +50,7 @@ interface UseGetQuery {
   enabled?: boolean;
   toastOnError?: boolean;
   keepPreviousData?: boolean;
+  localeIndependent?: boolean;
 }
 
 export const useGetQuery = <T,>({
@@ -60,12 +61,13 @@ export const useGetQuery = <T,>({
   enabled,
   toastOnError = true,
   keepPreviousData = false,
+  localeIndependent = false,
 }: UseGetQuery) => {
   const { lang } = useParams<{ lang: Lang }>();
   const normalizedParams = { ...params, filter: getReducedFilter(params.filter) };
 
-  const { data, isLoading, isError, error, isPlaceholderData } = useQuery<ApiResponse<T>, Error>({
-    queryKey: [...queryKey, lang, normalizedParams],
+  const { data, isLoading, isError, error, isPlaceholderData, refetch } = useQuery<ApiResponse<T>, Error>({
+    queryKey: localeIndependent ? [...queryKey, normalizedParams] : [...queryKey, lang, normalizedParams],
     queryFn: () => fetchData<T>(apiPath, normalizedParams),
     staleTime,
     enabled,
@@ -81,5 +83,6 @@ export const useGetQuery = <T,>({
     isError,
     error,
     isPlaceholderData,
+    refetch,
   };
 };

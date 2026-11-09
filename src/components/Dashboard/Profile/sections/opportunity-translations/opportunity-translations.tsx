@@ -8,20 +8,22 @@ import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog"
 import { Heading3 } from "@/components/styled/text";
 import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
 import { useAuth } from "@/hooks/useAuth";
-import { useOpportunityTranslations } from "@/hooks/use-opportunity-translations";
+import { useOpportunityTranslations, type OpportunityTranslation } from "@/hooks/use-opportunity-translations";
 import {
   TranslationReset,
   TranslationWrite,
   useOpportunityTranslationActions,
 } from "@/hooks/use-opportunity-translation-actions";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
 import { CaretDownIcon } from "@phosphor-icons/react";
-import { ApiFieldTranslationGet, Id, Lang, TranslationOrigin, TranslationStatus } from "need4deed-sdk";
+import { Id, Lang, TranslationOrigin, TranslationStatus } from "need4deed-sdk";
 import { useCallback, useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { getLocalizedErrorMessage } from "@/utils/apiErrors";
+import { z } from "zod";
+import { getLocalizedErrorMessage, isSilentError } from "@/utils/apiErrors";
 import { SectionEmptyState } from "../shared/styles";
 import {
   getRegenerationState,
@@ -58,11 +60,13 @@ function TranslationReview({
   opportunityId,
   loadError,
   refresh,
+  readLatest,
 }: {
-  fields: ApiFieldTranslationGet[];
+  fields: OpportunityTranslation[];
   opportunityId: Id;
   loadError: boolean;
   refresh: () => void;
+  readLatest: () => Promise<OpportunityTranslation[] | undefined>;
 }) {
   const { t } = useTranslation();
   const id = useId();
@@ -70,46 +74,68 @@ function TranslationReview({
   const languages = [Lang.EN, Lang.DE].filter((language) =>
     fields.some((field) => field.originalLanguage !== language),
   );
-  const language = languages.includes(requestedLanguage) ? requestedLanguage : languages[0];
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState(false);
+  const [editLanguage, setEditLanguage] = useState<Lang | null>(null);
+  const editing = editLanguage !== null;
+  const language = editLanguage ?? (languages.includes(requestedLanguage) ? requestedLanguage : languages[0]);
   const [editSnapshot, setEditSnapshot] = useState<Record<string, string>>({});
-  const [editFields, setEditFields] = useState<ApiFieldTranslationGet[]>([]);
-  const [writeFailed, setWriteFailed] = useState(false);
+  const [editFields, setEditFields] = useState<OpportunityTranslation[]>([]);
+  const [writeFailure, setWriteFailure] = useState<"save" | "confirm" | null>(null);
   const [dialog, setDialog] = useState(false);
   const [resetDialog, setResetDialog] = useState<TranslationReset[] | null>(null);
   const [resetSnapshot, setResetSnapshot] = useState("");
   const [regenerationFailures, setRegenerationFailures] = useState<RegenerationFailure[]>([]);
-  const [originalLanguage, setOriginalLanguage] = useState<Lang>(fields[0]?.originalLanguage ?? Lang.DE);
+  const sourceLanguages = new Set(fields.flatMap(({ originalLanguage }) => originalLanguage ?? []));
+  const sourceLanguage = fields.find((field) => field.originalLanguage)?.originalLanguage;
+  const sourceLanguageLabel =
+    sourceLanguages.size > 1
+      ? t("opportunityTranslations.mixedLanguages")
+      : sourceLanguage
+        ? t(`opportunityTranslations.languages.${sourceLanguage}`)
+        : t("opportunityTranslations.unknownLanguage");
+  const [originalLanguage, setOriginalLanguage] = useState<Lang>(sourceLanguage ?? Lang.DE);
   const { save, changeLanguage, resetTranslation } = useOpportunityTranslationActions(opportunityId, language);
   const {
     control,
     handleSubmit,
     reset,
     resetField,
-    formState: { errors, dirtyFields },
-  } = useForm<Draft>();
-  const busy = save.isPending || changeLanguage.isPending || resetTranslation.isPending;
+    formState: { defaultValues, errors, dirtyFields, isSubmitting },
+  } = useForm<Draft>({
+    resolver: zodResolver(
+      z
+        .object({
+          title: z.string(),
+          info: z.string(),
+        })
+        .superRefine((draft, context) => {
+          const required = z.string().trim().min(1, t("opportunityTranslations.required"));
+          const description = required.max(
+            MAX_DESCRIPTION_LENGTH,
+            t("opportunityTranslations.tooLong", { count: MAX_DESCRIPTION_LENGTH }),
+          );
+          for (const field of ["title", "info"] as const) {
+            if (draft[field] === defaultValues?.[field]) continue;
+            const result = (field === "title" ? required : description).safeParse(draft[field]);
+            if (!result.success) {
+              context.addIssue({ code: "custom", path: [field], message: result.error.issues[0].message });
+            }
+          }
+        }),
+    ),
+  });
+  const busy = isSubmitting || save.isPending || changeLanguage.isPending || resetTranslation.isPending;
   const targetFields = fields.filter((field) => field.originalLanguage !== language);
-  const editableFields = targetFields.filter(
-    (field) => field.originalLanguage && (field.fieldName === "title" || field.fieldName === "info"),
-  );
+  const editableFields = targetFields.filter((field) => field.originalLanguage);
   const machineWrites = targetFields.flatMap((field): TranslationWrite[] => {
     const value = field.translations[language];
-    return (field.fieldName === "title" || field.fieldName === "info") &&
-      value?.status === TranslationStatus.DONE &&
-      value.origin === TranslationOrigin.MACHINE &&
-      value.text
+    return value?.status === TranslationStatus.DONE && value.origin === TranslationOrigin.MACHINE && value.text
       ? [{ fieldName: field.fieldName, id: value.id, text: value.text, original: field.original }]
       : [];
   });
   const eligibleRegenerationFields = targetFields.flatMap((field): TranslationReset[] => {
     const value = field.translations[language];
-    return (field.fieldName === "title" || field.fieldName === "info") &&
-      value &&
-      value.status !== TranslationStatus.PENDING
-      ? [{ fieldName: field.fieldName, id: value.id }]
-      : [];
+    return value && value.status !== TranslationStatus.PENDING ? [{ fieldName: field.fieldName, id: value.id }] : [];
   });
   const hasFailed = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.FAILED);
   const hasPending = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.PENDING);
@@ -124,10 +150,13 @@ function TranslationReview({
   const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, dirtyFields);
   const summary = getTranslationReviewStatus(targetFields, language);
   useEffect(() => {
-    if (!open || !hasPending || editing || busy || dialog || resetDialog || loadError) return;
-    const interval = window.setInterval(() => {
-      if (document.visibilityState === "visible") refresh();
-    }, 5000);
+    if ((!hasPending && !editing) || busy || dialog || resetDialog || loadError) return;
+    const interval = window.setInterval(
+      () => {
+        if (document.visibilityState === "visible") refresh();
+      },
+      open ? 5000 : 10000,
+    );
     return () => window.clearInterval(interval);
   }, [open, hasPending, editing, busy, dialog, resetDialog, loadError, language, refresh]);
   const startEdit = () => {
@@ -137,24 +166,31 @@ function TranslationReview({
     });
     setEditSnapshot(snapshot);
     setEditFields(structuredClone(editableFields));
-    setWriteFailed(false);
-    setEditing(true);
+    setWriteFailure(null);
+    setEditLanguage(language);
   };
-  const submit = handleSubmit((draft) => {
+  const submit = handleSubmit(async (draft) => {
     if (changedDuringEdit || loadError) return;
     const writes = editFields.flatMap((field): TranslationWrite[] => {
       const fieldName = field.fieldName;
-      if ((fieldName !== "title" && fieldName !== "info") || !dirtyFields[fieldName]) return [];
-      return [{ fieldName, id: field.translations[language]?.id, text: draft[fieldName], original: field.original }];
+      if (!dirtyFields[fieldName]) return [];
+      return [
+        { fieldName, id: field.translations[language]?.id, text: draft[fieldName].trim(), original: field.original },
+      ];
     });
     if (!writes.length) {
-      setEditing(false);
+      setWriteFailure(null);
+      setEditLanguage(null);
+      return;
+    }
+    const latest = await readLatest();
+    if (!latest || hasEditedTranslationChanged(editSnapshot, getTranslationSnapshot(latest, language), dirtyFields)) {
       return;
     }
     writeTranslations(writes, false);
   });
   const writeTranslations = (writes: TranslationWrite[], confirming: boolean) => {
-    setWriteFailed(false);
+    setWriteFailure(null);
     save.mutate(writes, {
       onSuccess: (results) => {
         const failed = results.filter(({ result }) => result.status === "rejected");
@@ -164,12 +200,14 @@ function TranslationReview({
           });
         }
         if (failed.length) {
-          setWriteFailed(true);
-          const failure = failed[0].result;
-          if (failure.status === "rejected") toast.error(getLocalizedErrorMessage(failure.reason, t));
+          const failure = failed.find(({ result }) => result.status === "rejected" && !isSilentError(result.reason));
+          if (failure?.result.status === "rejected") {
+            setWriteFailure(confirming ? "confirm" : "save");
+            toast.error(getLocalizedErrorMessage(failure.result.reason, t));
+          }
           return;
         }
-        setEditing(false);
+        setEditLanguage(null);
         toast.success(t(confirming ? "opportunityTranslations.confirmed" : "opportunityTranslations.saved"));
       },
     });
@@ -180,6 +218,8 @@ function TranslationReview({
   const closeDialog = useCallback(() => {
     if (!changeLanguage.isPending) setDialog(false);
   }, [changeLanguage.isPending]);
+
+  if (!fields.length && !editing) return <SectionEmptyState>{t("opportunityTranslations.empty")}</SectionEmptyState>;
 
   return (
     <Review>
@@ -237,8 +277,7 @@ function TranslationReview({
               <section aria-labelledby={`${id}-original`}>
                 <Heading3 id={`${id}-original`}>
                   {t("opportunityTranslations.original")}
-                  {fields[0]?.originalLanguage &&
-                    ` · ${t(`opportunityTranslations.languages.${fields[0].originalLanguage}`)}`}
+                  {sourceLanguage && ` · ${sourceLanguageLabel}`}
                 </Heading3>
                 {fields.map((field) => (
                   <Field key={field.fieldName}>
@@ -249,11 +288,11 @@ function TranslationReview({
               </section>
               <section aria-labelledby={`${id}-target`}>
                 <Heading3 id={`${id}-target`}>{t(`opportunityTranslations.languages.${language}`)}</Heading3>
-                {fields.map((field) => {
+                {(editing ? editFields : fields).map((field) => {
                   const value = field.translations[language];
                   const isOriginal = field.originalLanguage === language;
-                  const draftKey = field.fieldName === "title" ? "title" : "info";
-                  const canEdit = editing && editableFields.includes(field);
+                  const draftKey = field.fieldName;
+                  const canEdit = editing;
                   const label = t(`opportunityTranslations.fields.${field.fieldName}`, {
                     defaultValue: field.fieldName,
                   });
@@ -265,16 +304,6 @@ function TranslationReview({
                           <Controller
                             name={draftKey}
                             control={control}
-                            rules={{
-                              validate: (text) => {
-                                if (!dirtyFields[draftKey]) return true;
-                                if (!text.trim()) return t("opportunityTranslations.required");
-                                if (draftKey === "info" && text.length > MAX_DESCRIPTION_LENGTH) {
-                                  return t("opportunityTranslations.tooLong", { count: MAX_DESCRIPTION_LENGTH });
-                                }
-                                return true;
-                              },
-                            }}
                             render={({ field: { value, onChange, onBlur, name } }) => (
                               <TextArea
                                 id={`${id}-${draftKey}`}
@@ -337,7 +366,15 @@ function TranslationReview({
                 {changedDuringEdit && (
                   <Metadata role="alert">{t("opportunityTranslations.changedDuringEdit")}</Metadata>
                 )}
-                {writeFailed && <Metadata role="alert">{t("opportunityTranslations.writeFailed")}</Metadata>}
+                {writeFailure && (
+                  <Metadata role="alert">
+                    {t(
+                      writeFailure === "save"
+                        ? "opportunityTranslations.writeFailed"
+                        : "opportunityTranslations.confirmFailed",
+                    )}
+                  </Metadata>
+                )}
                 {!editing &&
                   currentFailures.map(({ fieldName, id, reason, retryLimitReached }) => (
                     <Metadata key={id} role="alert">
@@ -352,7 +389,15 @@ function TranslationReview({
                 <Actions>
                   {editing ? (
                     <>
-                      <ReviewButton type="button" disabled={busy} onClick={() => setEditing(false)}>
+                      <ReviewButton
+                        type="button"
+                        disabled={busy}
+                        onClick={() => {
+                          reset();
+                          setWriteFailure(null);
+                          setEditLanguage(null);
+                        }}
+                      >
                         {t("opportunityTranslations.cancel")}
                       </ReviewButton>
                       <Button
@@ -397,16 +442,13 @@ function TranslationReview({
           </form>
           <Footer>
             <Metadata>
-              {t("opportunityTranslations.originalLanguage")}:{" "}
-              {fields[0]?.originalLanguage
-                ? t(`opportunityTranslations.languages.${fields[0].originalLanguage}`)
-                : t("opportunityTranslations.unknownLanguage")}
+              {t("opportunityTranslations.originalLanguage")}: {sourceLanguageLabel}
             </Metadata>
             <TextAction
               type="button"
               disabled={editing || busy || loadError}
               onClick={() => {
-                setOriginalLanguage(fields[0]?.originalLanguage ?? Lang.DE);
+                setOriginalLanguage(sourceLanguage ?? Lang.DE);
                 setDialog(true);
               }}
             >
@@ -432,7 +474,7 @@ function TranslationReview({
             resetTranslation.mutate(resetDialog, {
               onSuccess: (results) => {
                 const failures = results.flatMap(({ field, result }): RegenerationFailure[] =>
-                  result.status === "rejected"
+                  result.status === "rejected" && !isSilentError(result.reason)
                     ? [
                         {
                           ...field,
@@ -453,7 +495,9 @@ function TranslationReview({
                   ...failures,
                 ]);
                 setResetDialog(null);
-                if (!failures.length) toast.success(t("opportunityTranslations.regenerateRequested"));
+                if (results.every(({ result }) => result.status === "fulfilled")) {
+                  toast.success(t("opportunityTranslations.regenerateRequested"));
+                }
               },
             });
           }}
@@ -482,7 +526,7 @@ function TranslationReview({
               {
                 onSuccess: () => {
                   setDialog(false);
-                  setEditing(false);
+                  setEditLanguage(null);
                 },
               },
             )
@@ -512,10 +556,10 @@ function TranslationReview({
 export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }) {
   const { t } = useTranslation();
   const { isAuthorized } = useAuth();
-  const { data, isLoading, isError, refresh } = useOpportunityTranslations(opportunityId, isAuthorized);
+  const { data, isLoading, isError, refresh, readLatest } = useOpportunityTranslations(opportunityId, isAuthorized);
   if (!isAuthorized) return null;
   if (isLoading) return <SectionEmptyState role="status">{t("opportunityTranslations.loading")}</SectionEmptyState>;
-  if (isError && !data?.length)
+  if (isError && !data)
     return (
       <Review>
         <SectionEmptyState role="alert">
@@ -526,7 +570,7 @@ export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }
         </SectionEmptyState>
       </Review>
     );
-  if (!data?.length) return <SectionEmptyState>{t("opportunityTranslations.empty")}</SectionEmptyState>;
+  if (!data) return <SectionEmptyState>{t("opportunityTranslations.empty")}</SectionEmptyState>;
   return (
     <TranslationReview
       key={String(opportunityId)}
@@ -534,6 +578,7 @@ export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }
       opportunityId={opportunityId}
       loadError={isError}
       refresh={refresh}
+      readLatest={readLatest}
     />
   );
 }

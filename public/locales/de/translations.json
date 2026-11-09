@@ -1,11 +1,9 @@
 {
   "opportunityTranslations": {
     "target": "Übersetzung: {{language}}",
-    "summary": "Prüfen Sie den übersetzten Titel und die Beschreibung dieses Angebots.",
     "review": "Übersetzung prüfen",
     "close": "Prüfung schließen",
     "targetLanguage": "Übersetzungssprache",
-    "originalNote": "Wenn Sie eine Übersetzung bearbeiten, bleibt der Originaltext unverändert.",
     "edit": "Übersetzung bearbeiten",
     "save": "Übersetzung speichern",
     "confirm": "Übersetzung bestätigen",
@@ -25,16 +23,15 @@
     "languageChanged": "Originalsprache aktualisiert; Übersetzungen werden neu erstellt",
     "reviewStatus": {
       "missing": "Übersetzung nicht verfügbar",
-      "ready": "Bereit zur Prüfung",
       "pending": "Übersetzung wird erstellt",
-      "failed": "Übersetzung prüfen",
-      "reviewed": "Geprüfte Übersetzung"
+      "failed": "Übersetzung prüfen"
     },
     "title": "Übersetzungen",
     "loading": "Übersetzungen werden geladen…",
     "error": "Die Übersetzungen konnten nicht geladen werden. Wählen Sie „Erneut versuchen“.",
     "empty": "Für dieses Angebot ist kein übersetzbarer Text vorhanden.",
     "original": "Original",
+    "mixedLanguages": "Mehrere Sprachen",
     "unknownLanguage": "Sprache nicht erfasst",
     "sameAsOriginal": "Dies ist die Originalsprache; siehe Originaltext.",
     "originalStillShown": "Es liegt keine fertige Übersetzung vor. Im Angebot wird stattdessen der Originaltext angezeigt.",
@@ -47,16 +44,6 @@
     "languages": {
       "en": "Englisch",
       "de": "Deutsch"
-    },
-    "status": {
-      "pending": "Ausstehend",
-      "done": "Abgeschlossen",
-      "failed": "Fehlgeschlagen"
-    },
-    "origin": {
-      "reference": "Referenzübersetzung",
-      "machine": "Automatische Übersetzung",
-      "human": "Geprüfte Übersetzung"
     },
     "reasons": {
       "empty": "Die Übersetzung war leer.",
@@ -74,6 +61,7 @@
       "bad_response": "Der Übersetzungsdienst hat eine ungültige Antwort geliefert.",
       "provider_unavailable": "Der Übersetzungsdienst war nicht verfügbar."
     },
+    "confirmFailed": "Einige Übersetzungen konnten nicht bestätigt werden. Erfolgreiche Bestätigungen bleiben erhalten. Prüfen Sie den Fehler, bevor Sie es erneut versuchen.",
     "writeFailed": "Einige Änderungen konnten nicht gespeichert werden. Erfolgreiche Änderungen bleiben erhalten, nicht gespeicherter Text bleibt im Editor. Prüfen Sie den Fehler, bevor Sie es erneut versuchen.",
     "regenerate": "Übersetzung neu erstellen",
     "regenerateTitle": "Diese Übersetzung neu erstellen?",
