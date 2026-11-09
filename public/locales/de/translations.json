@@ -435,6 +435,7 @@
       "loading": "Wird geladen...",
       "selectOption": "Option auswählen...",
       "selectOptions": "Optionen auswählen...",
+      "commuteRange": "{{min}}-{{max}} Min.",
       "datePrefix": {
         "appliedOn": "Beworben am",
         "matchedOn": "Zugeordnet am",

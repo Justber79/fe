@@ -429,6 +429,7 @@
       "loading": "Loading...",
       "selectOption": "Select option...",
       "selectOptions": "Select options...",
+      "commuteRange": "{{min}}-{{max}} min",
       "datePrefix": {
         "appliedOn": "Applied on",
         "matchedOn": "Matched on",

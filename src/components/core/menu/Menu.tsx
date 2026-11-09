@@ -103,6 +103,18 @@ function ItemText({
   );
 }
 
+const ItemContentStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-8);
+  width: 100%;
+`;
+
+function ItemContentWrapper({ children }: { children: ReactNode }) {
+  return <ItemContentStyled>{children}</ItemContentStyled>;
+}
+
 interface MenuProps {
   children: ReactNode;
   closeOnSelect?: boolean;
@@ -221,4 +233,4 @@ Menu.Target = Target;
 Menu.Dropdown = Dropdown;
 Menu.Item = Item;
 
-export { Menu, ItemText };
+export { Menu, ItemText, ItemContentWrapper };
