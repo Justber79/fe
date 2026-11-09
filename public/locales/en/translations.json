@@ -1718,6 +1718,14 @@
         "confirmTitle": "Delete this opportunity?",
         "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
         "deleteSuccess": "Opportunity deleted successfully"
+      },
+      "opportunityAddress": {
+        "notMyLocation": "Not my location",
+        "street": "Street and number",
+        "postcode": "Postcode",
+        "city": "City",
+        "required": "Required",
+        "postcodeInvalid": "Enter a 5-digit German postcode"
       }
     },
     "racTitle": "Refugee accommodation centre",

@@ -1730,6 +1730,14 @@
         "confirmTitle": "Diese Möglichkeit löschen?",
         "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
         "deleteSuccess": "Möglichkeit erfolgreich gelöscht"
+      },
+      "opportunityAddress": {
+        "notMyLocation": "Nicht mein Standort",
+        "street": "Straße und Hausnummer",
+        "postcode": "PLZ",
+        "city": "Stadt",
+        "required": "Pflichtfeld",
+        "postcodeInvalid": "Bitte eine 5-stellige deutsche PLZ eingeben"
       }
     },
     "racTitle": "Geflüchtetenunterkunft",

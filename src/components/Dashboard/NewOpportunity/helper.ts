@@ -7,6 +7,7 @@ import {
   VolunteerStateTypeType,
   OpportunityLegacyType,
   OpportunityFormDataWithAgentSubmitter,
+  ApiOpportunityAddress,
 } from "need4deed-sdk";
 import { HeaderFormData } from "./headerSchema";
 import { AccompanyingDetailsFormData } from "../Profile/sections/AccompanyingDetails/createAccompanyingDetailsSchema";
@@ -56,6 +57,7 @@ export function buildCreatePayload(
   lang: string,
   t: TFunction,
   agentId: number,
+  address: ApiOpportunityAddress | null = null,
 ): OpportunityFormDataWithAgentSubmitter {
   const isEvent = headerData.volunteerType === VolunteerStateTypeType.EVENTS;
   const isAccompanying = headerData.volunteerType === VolunteerStateTypeType.ACCOMPANYING;
@@ -97,6 +99,7 @@ export function buildCreatePayload(
     accomp_information: undefined,
     accomp_translation: isAccompanying ? accompData?.appointmentLanguage || undefined : undefined,
     districtIds: undefined,
+    address: address ?? undefined,
     category: "",
     category_id: "",
     language: lang as `${Lang}`,
