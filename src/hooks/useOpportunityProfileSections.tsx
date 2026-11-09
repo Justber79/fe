@@ -32,6 +32,8 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
   const accompanyingDetailsRef = useRef<EditableSectionRef>(null);
   const opportunityDetailsRef = useRef<EditableSectionRef>(null);
+  const locationRef = useRef<EditableSectionRef>(null);
+  const [isLocationEditing, setIsLocationEditing] = useState(false);
 
   const [isOppDetailsEditing, setIsOppDetailsEditing] = useState(false);
   const [isContactEditing, setIsContactEditing] = useState(false);
@@ -93,7 +95,19 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     {
       iconName: IconName.House,
       title: t("dashboard.opportunityProfile.racTitle"),
-      subComponent: <RefugeeAccommodationCentre opportunity={opportunity} />,
+      ...(hasEditingRights &&
+        !isAccompanyingType &&
+        !isLocationEditing && {
+          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+          onHeaderButtonClick: () => locationRef.current?.handleEditClick(),
+        }),
+      subComponent: (
+        <RefugeeAccommodationCentre
+          ref={locationRef}
+          opportunity={opportunity}
+          onEditingChange={setIsLocationEditing}
+        />
+      ),
     },
   ];
 
