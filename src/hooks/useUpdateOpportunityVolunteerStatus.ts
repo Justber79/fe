@@ -23,7 +23,7 @@ function getComplementaryPrefixes(queryKey: string[]): string[] {
   return COMPLEMENTARY_PREFIXES[queryKey[0]] ?? ["opportunity-volunteers"];
 }
 
-const useInvalidateMatchLists = (queryKeyToInvalidate: string[]) => {
+export const useInvalidateMatchLists = (queryKeyToInvalidate: string[]) => {
   const queryClient = useQueryClient();
   return () =>
     [queryKeyToInvalidate[0], ...getComplementaryPrefixes(queryKeyToInvalidate), ...VOLUNTEER_QUERY_PREFIXES].forEach(
@@ -61,6 +61,7 @@ export const useUpdateOpportunityVolunteerStatus = (
 export const useDeleteOpportunityVolunteer = (
   queryKeyToInvalidate: string[],
   onFailed?: (payload: DeletePayload) => void,
+  successMessage = "dashboard.opportunityProfile.volunteersSec.removeSuccess",
 ) => {
   const invalidateLists = useInvalidateMatchLists(queryKeyToInvalidate);
 
@@ -69,7 +70,7 @@ export const useDeleteOpportunityVolunteer = (
       const response = await axios.delete(`${apiPathOpportunityVolunteer}/${m2mId}`);
       return response.data;
     },
-    successMessage: "dashboard.opportunityProfile.volunteersSec.removeSuccess",
+    successMessage,
     onFailure: (payload) => {
       onFailed?.(payload);
       invalidateLists();

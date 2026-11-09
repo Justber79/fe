@@ -6,7 +6,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validateStep } from "@/components/AgentRegistration/helpers";
@@ -27,9 +27,19 @@ import {
 import { AccountRegistrationData, defaultAccountRegistrationData } from "@/components/AgentRegistration/types";
 import Link from "next/link";
 
+const isLinkTokenExpired = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    return typeof payload.exp !== "number" || payload.exp * 1000 <= Date.now();
+  } catch {
+    return true;
+  }
+};
+
 export function VolunteerRegistration() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const ngoToken = useSearchParams().get("ngo") || undefined;
   const user = useCurrentUser(true);
   const [formData, setFormData] = useState<AccountRegistrationData>(defaultAccountRegistrationData);
   const [errors, setErrors] = useState<Partial<Record<keyof AccountRegistrationData, string>>>({});
@@ -38,9 +48,9 @@ export function VolunteerRegistration() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || ngoToken) return;
     router.push(`/${i18n.language}${DashboardRoutes.Home}`);
-  }, [user, i18n.language, router]);
+  }, [user, ngoToken, i18n.language, router]);
 
   const update = (fields: Partial<AccountRegistrationData>) => {
     setFormData((prev) => ({ ...prev, ...fields }));
@@ -74,6 +84,7 @@ export function VolunteerRegistration() {
           lastName: formData.lastName,
           phone: formData.phone,
         },
+        ...(ngoToken && { ngoToken }),
       });
 
       setIsSuccess(true);
@@ -83,6 +94,31 @@ export function VolunteerRegistration() {
       setIsSubmitting(false);
     }
   };
+
+  const ngoLinkMessage = ngoToken
+    ? user
+      ? t("volunteerRegistration.ngoLinkSignedIn")
+      : isLinkTokenExpired(ngoToken)
+        ? t("volunteerRegistration.ngoLinkExpired")
+        : undefined
+    : undefined;
+
+  if (ngoLinkMessage) {
+    return (
+      <PageLayout>
+        <PageWrapper>
+          <Card>
+            <SuccessWrapper>
+              <SuccessText>{ngoLinkMessage}</SuccessText>
+              {user && (
+                <Link href={`/${i18n.language}${DashboardRoutes.Home}`}>{t("volunteerRegistration.toDashboard")}</Link>
+              )}
+            </SuccessWrapper>
+          </Card>
+        </PageWrapper>
+      </PageLayout>
+    );
+  }
 
   if (user) {
     return null;
@@ -109,6 +145,7 @@ export function VolunteerRegistration() {
         <Card>
           <PageTitle>{t("volunteerRegistration.title")}</PageTitle>
           <PageSubtitle>{t("volunteerRegistration.subtitle")}</PageSubtitle>
+          {ngoToken && <PageSubtitle>{t("volunteerRegistration.ngoLinkNotice")}</PageSubtitle>}
 
           <ExistingUserWrapper>
             <ExistingUserText>{t("volunteerRegistration.alreadyUser")}</ExistingUserText>

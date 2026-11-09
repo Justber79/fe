@@ -2,6 +2,7 @@ import { apiPathVolunteer } from "@/config/constants";
 import { communicationsQuery } from "@/hooks/useCommunicationTracker";
 import { useGetQuery } from "@/hooks/useGetQuery";
 import { useMutationQuery } from "@/hooks/useMutationQuery";
+import { getApplicationEmailFailureKey } from "@/utils/apiErrors";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
@@ -117,7 +118,7 @@ export const useSendApplicationEmail = (volunteerId: number) => {
           toast.error(t("message.applicationEmailJustSent"));
           return true;
         case 502:
-          toast.error(t("message.applicationEmailNotSent"));
+          toast.error(t(getApplicationEmailFailureKey(error)));
           return true;
         default:
           return false;

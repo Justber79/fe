@@ -6,7 +6,7 @@ import { DeepPartial } from "ts-type-safe";
 type VolunteerProfileUpdateData = DeepPartial<
   Pick<
     ApiVolunteerGet,
-    "languages" | "availability" | "activities" | "skills" | "locations" | "statusType" | "comments"
+    "languages" | "availability" | "activities" | "skills" | "locations" | "statusType" | "comments" | "ownerAgentId"
   >
 >;
 

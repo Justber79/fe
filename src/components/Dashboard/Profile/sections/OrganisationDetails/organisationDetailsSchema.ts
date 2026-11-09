@@ -30,6 +30,7 @@ export const createOrganisationDetailsSchema = (t: (key: string) => string, vali
       .refine((val) => validOperators.includes(val), { message: t(`${i18nPrefix}.operatorInvalid`) }),
     services: z.array(z.string()).min(1, required),
     clientLanguages: z.array(languageObjectSchema).min(1, t(`${i18nPrefix}.clientLanguagesRequired`)),
+    sharesVolunteers: z.boolean(),
   });
 };
 
