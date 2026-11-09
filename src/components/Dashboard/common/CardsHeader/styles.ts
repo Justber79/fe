@@ -54,9 +54,7 @@ export const TabsSectionContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: var(--spacing-12) var(--spacing-24);
-  width: fit-content;
-  min-width: var(--filters-search-bar-width);
-  max-width: 100%;
+  width: var(--filters-search-bar-width);
 
   @media (max-width: 767px) {
     align-items: stretch;
@@ -68,12 +66,14 @@ export const TabsSectionContainer = styled.div`
 export const Tabs = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: var(--opportunities-header-tabs-gap);
   min-width: 0;
 
+  @media (min-width: 768px) {
+    flex-wrap: wrap;
+  }
+
   @media (max-width: 767px) {
-    flex-wrap: nowrap;
     width: 100%;
     overflow-x: auto;
     padding-bottom: 4px;

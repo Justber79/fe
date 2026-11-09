@@ -12,10 +12,7 @@ const SortByContainer = styled.div`
   align-items: center;
   gap: var(--dashboard-cards-header-sortBy-container-gap);
   flex-shrink: 0;
-
-  @media (max-width: 767px) {
-    align-self: flex-end;
-  }
+  margin-inline-start: auto;
 `;
 
 const SortBySwitcherContainer = styled.div`
