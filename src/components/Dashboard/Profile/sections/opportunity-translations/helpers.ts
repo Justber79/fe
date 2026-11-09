@@ -1,3 +1,4 @@
+import type { TranslationReset } from "@/hooks/use-opportunity-translation-actions";
 import { ApiFieldTranslationGet, Lang, TranslationOrigin, TranslationStatus } from "need4deed-sdk";
 
 export function getTranslationSnapshot(fields: ApiFieldTranslationGet[], language: Lang) {
@@ -38,4 +39,31 @@ export function getTranslationReviewStatus(fields: ApiFieldTranslationGet[], lan
   )
     return "reviewed";
   return "ready";
+}
+
+export type RegenerationFailure = TranslationReset & {
+  language: Lang;
+  snapshot: string;
+  reason: unknown;
+  retryLimitReached: boolean;
+};
+
+export function getRegenerationState(
+  eligibleFields: TranslationReset[],
+  failures: RegenerationFailure[],
+  language: Lang,
+  snapshot: Record<string, string>,
+) {
+  const currentFailures = failures.filter(
+    (failure) =>
+      failure.language === language &&
+      failure.snapshot === snapshot[failure.fieldName] &&
+      eligibleFields.some(({ id }) => id === failure.id),
+  );
+  const retryableFields = eligibleFields.filter(
+    ({ id }) => !currentFailures.some((failure) => failure.id === id && failure.retryLimitReached),
+  );
+  const retryFields = retryableFields.filter(({ id }) => currentFailures.some((failure) => failure.id === id));
+
+  return { currentFailures, regenerationFields: retryFields.length ? retryFields : retryableFields };
 }

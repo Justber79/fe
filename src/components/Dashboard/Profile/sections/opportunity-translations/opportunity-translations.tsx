@@ -14,6 +14,7 @@ import {
   TranslationWrite,
   useOpportunityTranslationActions,
 } from "@/hooks/use-opportunity-translation-actions";
+import { isAxiosError } from "axios";
 import { CaretDownIcon } from "@phosphor-icons/react";
 import { ApiFieldTranslationGet, Id, Lang, TranslationOrigin, TranslationStatus } from "need4deed-sdk";
 import { useCallback, useEffect, useId, useState } from "react";
@@ -22,7 +23,13 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import { SectionEmptyState } from "../shared/styles";
-import { getTranslationReviewStatus, getTranslationSnapshot, hasEditedTranslationChanged } from "./helpers";
+import {
+  getRegenerationState,
+  getTranslationReviewStatus,
+  getTranslationSnapshot,
+  hasEditedTranslationChanged,
+  type RegenerationFailure,
+} from "./helpers";
 import {
   Actions,
   Comparison,
@@ -72,8 +79,7 @@ function TranslationReview({
   const [dialog, setDialog] = useState(false);
   const [resetDialog, setResetDialog] = useState<TranslationReset[] | null>(null);
   const [resetSnapshot, setResetSnapshot] = useState("");
-  const [resetFailed, setResetFailed] = useState(false);
-  const [resetRetryIds, setResetRetryIds] = useState<number[]>([]);
+  const [regenerationFailures, setRegenerationFailures] = useState<RegenerationFailure[]>([]);
   const [originalLanguage, setOriginalLanguage] = useState<Lang>(fields[0]?.originalLanguage ?? Lang.DE);
   const { save, changeLanguage, resetTranslation } = useOpportunityTranslationActions(opportunityId, language);
   const {
@@ -97,11 +103,10 @@ function TranslationReview({
       ? [{ fieldName: field.fieldName, id: value.id, text: value.text, original: field.original }]
       : [];
   });
-  const regenerationFields = targetFields.flatMap((field): TranslationReset[] => {
+  const eligibleRegenerationFields = targetFields.flatMap((field): TranslationReset[] => {
     const value = field.translations[language];
     return (field.fieldName === "title" || field.fieldName === "info") &&
       value &&
-      (!resetRetryIds.length || resetRetryIds.includes(value.id)) &&
       value.status !== TranslationStatus.PENDING
       ? [{ fieldName: field.fieldName, id: value.id }]
       : [];
@@ -109,6 +114,12 @@ function TranslationReview({
   const hasFailed = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.FAILED);
   const hasPending = targetFields.some((field) => field.translations[language]?.status === TranslationStatus.PENDING);
   const snapshot = getTranslationSnapshot(targetFields, language);
+  const { currentFailures, regenerationFields } = getRegenerationState(
+    eligibleRegenerationFields,
+    regenerationFailures,
+    language,
+    snapshot,
+  );
   const changedBeforeReset = Boolean(resetDialog) && resetSnapshot !== JSON.stringify(snapshot);
   const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, dirtyFields);
   const summary = getTranslationReviewStatus(targetFields, language);
@@ -120,8 +131,6 @@ function TranslationReview({
     return () => window.clearInterval(interval);
   }, [open, hasPending, editing, busy, dialog, resetDialog, loadError, language, refresh]);
   const startEdit = () => {
-    setResetFailed(false);
-    setResetRetryIds([]);
     reset({
       title: fields.find((field) => field.fieldName === "title")?.translations[language]?.text ?? "",
       info: fields.find((field) => field.fieldName === "info")?.translations[language]?.text ?? "",
@@ -213,11 +222,7 @@ function TranslationReview({
                 id={`${id}-language`}
                 value={language}
                 disabled={editing || busy || loadError}
-                onChange={(event) => {
-                  setResetFailed(false);
-                  setResetRetryIds([]);
-                  setRequestedLanguage(event.target.value as Lang);
-                }}
+                onChange={(event) => setRequestedLanguage(event.target.value as Lang)}
               >
                 {languages.map((value) => (
                   <option key={value} value={value}>
@@ -333,7 +338,17 @@ function TranslationReview({
                   <Metadata role="alert">{t("opportunityTranslations.changedDuringEdit")}</Metadata>
                 )}
                 {writeFailed && <Metadata role="alert">{t("opportunityTranslations.writeFailed")}</Metadata>}
-                {resetFailed && <Metadata role="alert">{t("opportunityTranslations.regenerateFailed")}</Metadata>}
+                {!editing &&
+                  currentFailures.map(({ fieldName, id, reason, retryLimitReached }) => (
+                    <Metadata key={id} role="alert">
+                      {t("opportunityTranslations.regenerateFieldFailed", {
+                        field: t(`opportunityTranslations.fields.${fieldName}`),
+                        reason: retryLimitReached
+                          ? t("opportunityTranslations.retryLimitReached")
+                          : getLocalizedErrorMessage(reason, t),
+                      })}
+                    </Metadata>
+                  ))}
                 <Actions>
                   {editing ? (
                     <>
@@ -370,7 +385,6 @@ function TranslationReview({
                     type="button"
                     disabled={busy || loadError}
                     onClick={() => {
-                      setResetFailed(false);
                       setResetSnapshot(JSON.stringify(snapshot));
                       setResetDialog(regenerationFields);
                     }}
@@ -417,16 +431,29 @@ function TranslationReview({
             if (busy || loadError || changedBeforeReset) return;
             resetTranslation.mutate(resetDialog, {
               onSuccess: (results) => {
-                const failed = results.filter(({ result }) => result.status === "rejected");
+                const failures = results.flatMap(({ field, result }): RegenerationFailure[] =>
+                  result.status === "rejected"
+                    ? [
+                        {
+                          ...field,
+                          language,
+                          snapshot: snapshot[field.fieldName],
+                          reason: result.reason,
+                          retryLimitReached: isAxiosError(result.reason) && result.reason.response?.status === 409,
+                        },
+                      ]
+                    : [],
+                );
+                setRegenerationFailures((previous) => [
+                  ...previous.filter(
+                    (failure) =>
+                      failure.language !== language ||
+                      (currentFailures.includes(failure) && !results.some(({ field }) => field.id === failure.id)),
+                  ),
+                  ...failures,
+                ]);
                 setResetDialog(null);
-                if (failed.length) {
-                  setResetRetryIds(failed.map(({ field }) => field.id));
-                  setResetFailed(true);
-                  toast.error(t("opportunityTranslations.regenerateFailed"));
-                } else {
-                  setResetRetryIds([]);
-                  toast.success(t("opportunityTranslations.regenerateRequested"));
-                }
+                if (!failures.length) toast.success(t("opportunityTranslations.regenerateRequested"));
               },
             });
           }}

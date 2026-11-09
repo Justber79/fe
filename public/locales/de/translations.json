@@ -78,7 +78,8 @@
     "regenerate": "Übersetzung neu erstellen",
     "regenerateTitle": "Diese Übersetzung neu erstellen?",
     "regenerateBody": "Neue automatische Übersetzungen ersetzen {{fields}} auf {{language}}, einschließlich manueller Änderungen. Der Originaltext bleibt unverändert.",
-    "regenerateFailed": "Einige Übersetzungen konnten nicht neu erstellt werden. Erfolgreiche Anfragen bleiben erhalten. Prüfen Sie den aktuellen Stand, bevor Sie es erneut versuchen.",
+    "regenerateFieldFailed": "{{field}} konnte nicht neu erstellt werden. {{reason}}",
+    "retryLimitReached": "Die maximale Anzahl automatischer Übersetzungsversuche wurde erreicht. Sie können die Übersetzung weiterhin manuell bearbeiten.",
     "regenerateRequested": "Neuerstellung der Übersetzung angefordert",
     "changedBeforeRegeneration": "Das Original oder die Übersetzung wurde geändert. Schließen Sie diesen Dialog und prüfen Sie den aktuellen Text, bevor Sie es erneut versuchen."
   },

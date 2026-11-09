@@ -78,7 +78,8 @@
     "regenerate": "Regenerate translation",
     "regenerateTitle": "Regenerate this translation?",
     "regenerateBody": "New automatic translations will replace {{fields}} in {{language}}, including any manual edits. The original text stays unchanged.",
-    "regenerateFailed": "Some translations could not be regenerated. Successful requests are kept. Check the latest translation state before trying again.",
+    "regenerateFieldFailed": "{{field}} could not be regenerated. {{reason}}",
+    "retryLimitReached": "The automatic translation retry limit was reached. You can still edit the translation manually.",
     "regenerateRequested": "Translation regeneration requested",
     "changedBeforeRegeneration": "The source or translation changed. Close this dialog and review the latest text before trying again."
   },

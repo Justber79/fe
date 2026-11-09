@@ -28,8 +28,8 @@ async function settleTranslations<T>(fields: T[], write: (field: T) => Promise<u
 export function useOpportunityTranslationActions(opportunityId: Id, language: Lang) {
   const client = useQueryClient();
   const refresh = () => {
-    void client.invalidateQueries({ queryKey: getOpportunityTranslationsKey(opportunityId) });
     void client.invalidateQueries({ queryKey: ["opportunity", String(opportunityId)] });
+    return client.invalidateQueries({ queryKey: getOpportunityTranslationsKey(opportunityId) });
   };
   const write = (fields: TranslationWrite[]) =>
     settleTranslations(fields, ({ id, fieldName, text, original }) =>
@@ -44,14 +44,16 @@ export function useOpportunityTranslationActions(opportunityId: Id, language: La
             original,
           }),
     );
-  const regenerate = (fields: TranslationReset[]) =>
-    settleTranslations(fields, ({ id }) =>
+  const regenerate = async (fields: TranslationReset[]) => {
+    const results = await settleTranslations(fields, ({ id }) =>
       mutateData<undefined, unknown>(`${apiPathTranslation}/${id}`, "delete", undefined),
     );
+    await refresh();
+    return results;
+  };
   const resetTranslation = useMutationQuery<TranslationReset[], Awaited<ReturnType<typeof regenerate>>>({
     mutationFn: regenerate,
     noToast: true,
-    onSuccessCallback: refresh,
   });
   const save = useMutationQuery<TranslationWrite[], Awaited<ReturnType<typeof write>>>({
     mutationFn: write,
