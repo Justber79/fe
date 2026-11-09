@@ -2011,6 +2011,10 @@
           }
         }
       }
+    },
+    "recommended": {
+      "volunteersTitle": "Recommended volunteers",
+      "opportunitiesTitle": "Recommended opportunities"
     }
   },
   "aboutus": {
