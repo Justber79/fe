@@ -786,7 +786,14 @@
         "commentText": "Requested for {{opportunity}}",
         "contactMissing": "Request could not be sent: need4deed contact not found",
         "success": "Request sent",
-        "noOpportunities": "You have no opportunities yet"
+        "noOpportunities": "You have no opportunities yet",
+        "ownerSuccess": "Request sent to the volunteer's NGO",
+        "errors": {
+          "alreadyRequested": "This volunteer was already requested or linked for that opportunity.",
+          "noOwnerMembers": "The volunteer's NGO has no active members to ask. Please ask need4deed instead.",
+          "notOpen": "That opportunity is no longer open.",
+          "ngoInactive": "Your NGO is inactive."
+        }
       },
       "suggestDialog": {
         "title": "Suggest to this volunteer?",
@@ -794,7 +801,9 @@
         "messageEnd": "to them. It will appear in their profile under \"pending\" opportunities.",
         "confirm": "Suggest",
         "cancel": "Cancel",
-        "success": "Suggestion sent successfully"
+        "success": "Suggestion sent successfully",
+        "ngoSuggestTitle": "Suggest {{volunteer}} for {{opportunity}}?",
+        "ngoSuggestDescription": "The volunteer will see the suggestion as pending."
       },
       "activities": "Activities",
       "volunteerHeader": {
@@ -872,6 +881,16 @@
         "certificateGC_options": {
           "uploaded": "Uploaded",
           "missing": "Missing"
+        },
+        "owner_title": "NGO",
+        "owner_none": "need4deed (platform)",
+        "change_owner": "Change NGO",
+        "ownerModal": {
+          "title": "Volunteer's NGO",
+          "search": "Search NGOs",
+          "none": "No NGO: platform volunteer",
+          "save": "Save",
+          "cancel": "Cancel"
         }
       },
       "opportunitiesSec": {
@@ -891,7 +910,11 @@
         "markAsPastSuccess": "Marked as past",
         "emptyState": "No items in this category yet",
         "unmatchDialogTitle": "Confirm Unmatch",
-        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?"
+        "unmatchDialogDescription": "Are you sure you want to unmatch this volunteer?",
+        "withdraw": "Withdraw suggestion",
+        "withdrawDialogTitle": "Withdraw this suggestion?",
+        "withdrawDialogDescription": "The pending suggestion is removed from the volunteer and the opportunity.",
+        "withdrawSuccess": "Suggestion withdrawn"
       },
       "contactDetails": {
         "title": "Contact details",
@@ -1344,6 +1367,15 @@
       "deleteConfirmTitle": "Delete entry?",
       "deleteConfirmText": "The entry for {{date}} will be permanently deleted."
     },
+    "volunteerActivityLog": {
+      "emptyState": "No activity yet",
+      "linked": "Linked to \"{{title}}\"",
+      "linkedAs": "Linked to \"{{title}}\" as {{status}}",
+      "removed": "Removed from \"{{title}}\" (was {{from}})",
+      "statusChanged": "\"{{title}}\": status changed to {{to}}",
+      "statusChangedFrom": "\"{{title}}\": {{from}} → {{to}}",
+      "imported": "{{entry}} (imported, date approximate)"
+    },
     "profile": {
       "loading": "Loading profile...",
       "notVolProfSetUp": "Your volunteer profile is not set up yet — please complete registration.",
@@ -1474,6 +1506,10 @@
         "operator": "Operator / Träger",
         "services": "Services",
         "clientLanguages": "Client languages",
+        "sharesVolunteers": "Shares volunteers",
+        "sharesVolunteersYes": "Yes",
+        "sharesVolunteersNo": "No",
+        "sharesVolunteersHint": "Other NGOs that also share can see your NGO's volunteers and suggest them for their opportunities.",
         "cancel": "Cancel",
         "saveChanges": "Save changes",
         "saveSuccess": "Organisation details updated successfully",
@@ -1921,7 +1957,60 @@
       },
       "nav": {
         "domains": "Domains",
-        "stats": "Statistics"
+        "stats": "Statistics",
+        "ngoVolunteers": "NGO volunteers"
+      },
+      "ngoVolunteers": {
+        "helper": "Pick an NGO to give its volunteers a registration link or to import its existing volunteers.",
+        "search": "Search NGOs",
+        "noResults": "No NGO found",
+        "change": "Change NGO",
+        "link": {
+          "title": "Registration link",
+          "helper": "Volunteers who sign up through this link belong to the NGO. A link is valid for 90 days; a new link doesn't cancel older ones. Marking the NGO inactive stops all its links.",
+          "create": "Create link",
+          "copy": "Copy link",
+          "copied": "Link copied",
+          "expires": "Valid until {{date}}",
+          "copyFailed": "Could not copy the link. Please select and copy it."
+        },
+        "inactive": "{{title}} (inactive)",
+        "import": {
+          "title": "Import existing volunteers",
+          "helper": "Load a CSV file with the columns firstName, lastName, email, phone and postcode (comma or semicolon separated). Preview first: nothing is written until the preview has no invalid rows. Existing volunteers are skipped.",
+          "file": "CSV file",
+          "tooMany": "At most {{max}} rows per import.",
+          "missingColumns": "Missing columns: {{columns}}",
+          "empty": "The file has no data rows.",
+          "preview": "Preview",
+          "import": "Import",
+          "summary": "{{created}} to create, {{skipped}} skipped, {{invalid}} invalid",
+          "imported": "{{created}} imported, {{skipped}} skipped",
+          "line": "Line",
+          "email": "Email",
+          "outcome": "Result",
+          "details": "Details",
+          "outcomes": {
+            "created": "Create",
+            "skipped": "Skip",
+            "invalid": "Invalid"
+          },
+          "skipReasons": {
+            "already-volunteer": "Already a volunteer",
+            "duplicate-in-import": "Repeated in this file"
+          },
+          "rowsLoaded_one": "{{count}} row loaded",
+          "rowsLoaded_other": "{{count}} rows loaded",
+          "duplicateColumns": "Repeated columns: {{columns}}",
+          "rejected": "Nothing was imported: {{invalid}} invalid, {{created}} would be created, {{skipped}} skipped",
+          "rowErrors": {
+            "firstName": "First name is missing",
+            "email": "Email address is not valid",
+            "postcode": "Postcode is unknown",
+            "registered": "Email belongs to a registered account",
+            "otherPerson": "Email belongs to a different person"
+          }
+        }
       }
     }
   },
@@ -2157,6 +2246,10 @@
     "applicationEmailSent": "Email with application sent!",
     "applicationEmailJustSent": "The email with application was just sent. Please try again in a minute.",
     "applicationEmailNotSent": "The email with application could not be sent. Please try again later.",
+    "applicationEmailNotSentAttachment": "The email with application could not be sent: the application form could not be loaded. Please try again later; if it keeps happening, tell the tech team.",
+    "applicationEmailNotSentInvalid": "The email with application could not be sent: it failed the content checks. Please tell the tech team.",
+    "applicationEmailNotSentRender": "The email with application could not be sent: something went wrong while preparing it. Please try again later; if it keeps happening, tell the tech team.",
+    "applicationEmailNotSentSend": "The email with application could not be sent: the mail server did not accept it. Please try again later.",
     "uploadError": "Upload failed. Please try again.",
     "deleteError": "Delete failed. Please try again.",
     "previewError": "Preview failed. Please try again.",
@@ -2461,7 +2554,11 @@
     "checkEmail": {
       "title": "Check your email",
       "description": "We sent a confirmation link to your email address. Click it to continue setting up your account."
-    }
+    },
+    "ngoLinkNotice": "You're signing up through an NGO's link: your new account will belong to that NGO.",
+    "ngoLinkExpired": "This registration link is no longer valid. Please ask the NGO for a new one.",
+    "ngoLinkSignedIn": "You're already signed in. NGO registration links are for new accounts only.",
+    "toDashboard": "Go to your dashboard"
   },
   "formInput": {
     "showPassword": "Show password",

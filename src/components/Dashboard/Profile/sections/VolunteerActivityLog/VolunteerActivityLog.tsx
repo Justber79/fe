@@ -6,6 +6,7 @@ import { VolunteerActivityLogTableContainer } from "./styles";
 import { Table, TableHeaderCell, TableBody, TableCell } from "@/components/core/common/Table";
 import { TableHeader, TableRow } from "../VolunteerProfileDocument/styles";
 import { formatDateTime } from "../shared/utils/formatDateTime";
+import { formatActivityDetail } from "./format-activity-detail";
 
 type VolunteerActivityLogProps = {
   volunteer: ApiVolunteerGet;
@@ -18,7 +19,7 @@ export const VolunteerActivityLog = ({ volunteer }: VolunteerActivityLogProps) =
   return (
     <SectionWrapper>
       {activities.length === 0 ? (
-        <SectionEmptyState>{t("dashboard.activityLog.emptyState")}</SectionEmptyState>
+        <SectionEmptyState>{t("dashboard.volunteerActivityLog.emptyState")}</SectionEmptyState>
       ) : (
         <VolunteerActivityLogTableContainer>
           <Table>
@@ -29,7 +30,7 @@ export const VolunteerActivityLog = ({ volunteer }: VolunteerActivityLogProps) =
             <TableBody>
               {activities.map((activity, index) => (
                 <TableRow key={activity.id} $isLast={index === activities.length - 1}>
-                  <TableCell>{activity.detail}</TableCell>
+                  <TableCell>{formatActivityDetail(activity, t)}</TableCell>
                   <TableCell $width="185px" $noWrap>
                     {formatDateTime(activity.occurredAt)}
                   </TableCell>

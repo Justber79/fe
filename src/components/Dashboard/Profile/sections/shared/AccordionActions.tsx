@@ -26,29 +26,13 @@ export const AccordionActions = ({
   onMarkAsPast,
 }: AccordionActionsProps) => {
   const { t } = useTranslation();
-  const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
-
   return (
     <Actions>
-      {showConfirmDialog && (
-        <ConfirmationDialog
-          title={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogTitle")}
-          message={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogDescription")}
-          onCancel={() => setShowConfirmDialog(false)}
-          onConfirm={() => {
-            onNotAMatch();
-            setShowConfirmDialog(false);
-          }}
-        />
-      )}
-      <Button
-        onClick={() => setShowConfirmDialog(true)}
+      <ConfirmActionButton
         text={t("dashboard.volunteerProfile.opportunitiesSec.notAMatch")}
-        height="var(--volunteer-profile-opportunities-accordion-actions-button-height)"
-        textFontSize="var(--volunteer-profile-opportunities-accordion-actions-button-textFontSize)"
-        textColor="var(--color-aubergine)"
-        backgroundcolor="var(--color-white)"
-        border="var(--volunteer-profile-opportunities-accordion-actions-button-border)"
+        confirmTitle={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogTitle")}
+        confirmMessage={t("dashboard.volunteerProfile.opportunitiesSec.unmatchDialogDescription")}
+        onConfirm={onNotAMatch}
       />
       {onMatch && (
         <Button
@@ -75,6 +59,56 @@ export const AccordionActions = ({
           textFontSize="var(--volunteer-profile-opportunities-accordion-actions-button-textFontSize)"
         />
       )}
+    </Actions>
+  );
+};
+
+type ConfirmActionButtonProps = {
+  text: string;
+  confirmTitle: string;
+  confirmMessage: string;
+  onConfirm: () => void;
+};
+
+const ConfirmActionButton = ({ text, confirmTitle, confirmMessage, onConfirm }: ConfirmActionButtonProps) => {
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  return (
+    <>
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          title={confirmTitle}
+          message={confirmMessage}
+          onCancel={() => setShowConfirmDialog(false)}
+          onConfirm={() => {
+            onConfirm();
+            setShowConfirmDialog(false);
+          }}
+        />
+      )}
+      <Button
+        onClick={() => setShowConfirmDialog(true)}
+        text={text}
+        height="var(--volunteer-profile-opportunities-accordion-actions-button-height)"
+        textFontSize="var(--volunteer-profile-opportunities-accordion-actions-button-textFontSize)"
+        textColor="var(--color-aubergine)"
+        backgroundcolor="var(--color-white)"
+        border="var(--volunteer-profile-opportunities-accordion-actions-button-border)"
+      />
+    </>
+  );
+};
+
+export const WithdrawSuggestionAction = ({ onWithdraw }: { onWithdraw: () => void }) => {
+  const { t } = useTranslation();
+  return (
+    <Actions>
+      <ConfirmActionButton
+        text={t("dashboard.volunteerProfile.opportunitiesSec.withdraw")}
+        confirmTitle={t("dashboard.volunteerProfile.opportunitiesSec.withdrawDialogTitle")}
+        confirmMessage={t("dashboard.volunteerProfile.opportunitiesSec.withdrawDialogDescription")}
+        onConfirm={onWithdraw}
+      />
     </Actions>
   );
 };

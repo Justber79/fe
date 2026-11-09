@@ -9,6 +9,7 @@ import styled from "styled-components";
 const NAV_ITEMS = [
   { route: DashboardRoutes.AdminDomains, labelKey: "dashboard.admin.nav.domains" },
   { route: DashboardRoutes.AdminStatistics, labelKey: "dashboard.admin.nav.stats" },
+  { route: DashboardRoutes.AdminNgoVolunteers, labelKey: "dashboard.admin.nav.ngoVolunteers" },
 ];
 
 export function AdminNav() {

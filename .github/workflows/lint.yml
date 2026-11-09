@@ -13,8 +13,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'yarn'
+          node-version: "22"
+          cache: "yarn"
 
       - name: restore yarn cache
         id: yarn-cache
@@ -30,3 +30,4 @@ jobs:
 
       - run: yarn lint
       - run: yarn typecheck
+      - run: yarn test
