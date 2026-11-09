@@ -20,7 +20,7 @@ export type TranslationWrite = ApiFieldTranslationPatch & {
 
 export type TranslationReset = Pick<TranslationWrite, "fieldName"> & Pick<ApiFieldTranslation, "id">;
 
-async function settleTranslations<T>(fields: T[], write: (field: T) => Promise<unknown>) {
+async function settleTranslations<T, Result>(fields: T[], write: (field: T) => Promise<Result>) {
   const results = await Promise.allSettled(fields.map(write));
   return fields.map((field, index) => ({ field, result: results[index] }));
 }
@@ -31,11 +31,14 @@ export function useOpportunityTranslationActions(opportunityId: Id, language: La
     void client.invalidateQueries({ queryKey: ["opportunity", String(opportunityId)] });
     return client.invalidateQueries({ queryKey: getOpportunityTranslationsKey(opportunityId) });
   };
-  const write = (fields: TranslationWrite[]) =>
-    settleTranslations(fields, ({ id, fieldName, text, original }) =>
+  const write = async (fields: TranslationWrite[]) => {
+    const results = await settleTranslations(fields, ({ id, fieldName, text, original }) =>
       id !== undefined
-        ? mutateData<ApiFieldTranslationPatch, unknown>(`${apiPathTranslation}/${id}`, "patch", { text, original })
-        : mutateData<ApiFieldTranslationPost, unknown>(apiPathTranslation, "post", {
+        ? mutateData<ApiFieldTranslationPatch, { data: ApiFieldTranslation }>(`${apiPathTranslation}/${id}`, "patch", {
+            text,
+            original,
+          })
+        : mutateData<ApiFieldTranslationPost, { data: ApiFieldTranslation }>(apiPathTranslation, "post", {
             entityType: EntityTableName.OPPORTUNITY,
             entityId: Number(opportunityId),
             fieldName,
@@ -44,6 +47,9 @@ export function useOpportunityTranslationActions(opportunityId: Id, language: La
             original,
           }),
     );
+    await refresh();
+    return results;
+  };
   const regenerate = async (fields: TranslationReset[]) => {
     const results = await settleTranslations(fields, ({ id }) =>
       mutateData<undefined, unknown>(`${apiPathTranslation}/${id}`, "delete", undefined),
@@ -58,7 +64,6 @@ export function useOpportunityTranslationActions(opportunityId: Id, language: La
   const save = useMutationQuery<TranslationWrite[], Awaited<ReturnType<typeof write>>>({
     mutationFn: write,
     noToast: true,
-    onSuccessCallback: refresh,
   });
   const changeLanguage = useMutationQuery<Pick<ApiOpportunityPatch, "originalLanguage">, unknown>({
     apiPath: `${apiPathOpportunity}/${opportunityId}`,

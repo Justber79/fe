@@ -80,7 +80,10 @@ function TranslationReview({
   const language = editLanguage ?? (languages.includes(requestedLanguage) ? requestedLanguage : languages[0]);
   const [editSnapshot, setEditSnapshot] = useState<Record<string, string>>({});
   const [editFields, setEditFields] = useState<OpportunityTranslation[]>([]);
-  const [writeFailure, setWriteFailure] = useState<"save" | "confirm" | null>(null);
+  const [writeFailure, setWriteFailure] = useState<"writeFailed" | "confirmFailed" | "changedBeforeConfirm" | null>(
+    null,
+  );
+  const [checkingConfirmation, setCheckingConfirmation] = useState(false);
   const [dialog, setDialog] = useState(false);
   const [resetDialog, setResetDialog] = useState<TranslationReset[] | null>(null);
   const [resetSnapshot, setResetSnapshot] = useState("");
@@ -124,7 +127,8 @@ function TranslationReview({
         }),
     ),
   });
-  const busy = isSubmitting || save.isPending || changeLanguage.isPending || resetTranslation.isPending;
+  const busy =
+    isSubmitting || checkingConfirmation || save.isPending || changeLanguage.isPending || resetTranslation.isPending;
   const targetFields = fields.filter((field) => field.originalLanguage !== language);
   const editableFields = targetFields.filter((field) => field.originalLanguage);
   const machineWrites = targetFields.flatMap((field): TranslationWrite[] => {
@@ -194,15 +198,21 @@ function TranslationReview({
     save.mutate(writes, {
       onSuccess: (results) => {
         const failed = results.filter(({ result }) => result.status === "rejected");
-        if (!confirming) {
-          results.forEach(({ field, result }) => {
-            if (result.status === "fulfilled") resetField(field.fieldName, { defaultValue: field.text.trim() });
-          });
-        }
         if (failed.length) {
+          if (!confirming) {
+            const updatedFields = editFields.map((field) => {
+              const saved = results.find((entry) => entry.field.fieldName === field.fieldName);
+              if (saved?.result.status !== "fulfilled") return field;
+              const translation = saved.result.value.data;
+              resetField(field.fieldName, { defaultValue: translation.text ?? saved.field.text });
+              return { ...field, translations: { ...field.translations, [language]: translation } };
+            });
+            setEditFields(updatedFields);
+            setEditSnapshot(getTranslationSnapshot(updatedFields, language));
+          }
           const failure = failed.find(({ result }) => result.status === "rejected" && !isSilentError(result.reason));
           if (failure?.result.status === "rejected") {
-            setWriteFailure(confirming ? "confirm" : "save");
+            setWriteFailure(confirming ? "confirmFailed" : "writeFailed");
             toast.error(getLocalizedErrorMessage(failure.result.reason, t));
           }
           return;
@@ -211,6 +221,23 @@ function TranslationReview({
         toast.success(t(confirming ? "opportunityTranslations.confirmed" : "opportunityTranslations.saved"));
       },
     });
+  };
+  const confirmTranslations = async () => {
+    if (busy || loadError || !machineWrites.length) return;
+    setWriteFailure(null);
+    setCheckingConfirmation(true);
+    try {
+      const latest = await readLatest();
+      if (!latest) return;
+      const latestSnapshot = getTranslationSnapshot(latest, language);
+      if (machineWrites.some(({ fieldName }) => snapshot[fieldName] !== latestSnapshot[fieldName])) {
+        setWriteFailure("changedBeforeConfirm");
+        return;
+      }
+      writeTranslations(machineWrites, true);
+    } finally {
+      setCheckingConfirmation(false);
+    }
   };
   const closeResetDialog = useCallback(() => {
     if (!resetTranslation.isPending) setResetDialog(null);
@@ -366,15 +393,7 @@ function TranslationReview({
                 {changedDuringEdit && (
                   <Metadata role="alert">{t("opportunityTranslations.changedDuringEdit")}</Metadata>
                 )}
-                {writeFailure && (
-                  <Metadata role="alert">
-                    {t(
-                      writeFailure === "save"
-                        ? "opportunityTranslations.writeFailed"
-                        : "opportunityTranslations.confirmFailed",
-                    )}
-                  </Metadata>
-                )}
+                {writeFailure && <Metadata role="alert">{t(`opportunityTranslations.${writeFailure}`)}</Metadata>}
                 {!editing &&
                   currentFailures.map(({ fieldName, id, reason, retryLimitReached }) => (
                     <Metadata key={id} role="alert">
@@ -419,7 +438,7 @@ function TranslationReview({
                           {...actionProps}
                           text={t("opportunityTranslations.confirm")}
                           disabled={busy || loadError}
-                          onClick={() => writeTranslations(machineWrites, true)}
+                          onClick={confirmTranslations}
                         />
                       )}
                     </>

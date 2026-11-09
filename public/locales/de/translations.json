@@ -16,6 +16,7 @@
     "replaceWarning": "Alle Übersetzungen, auch von Menschen bearbeitete, werden neu erstellt. Prüfen Sie sie anschließend erneut.",
     "required": "Bitte geben Sie eine Übersetzung ein.",
     "tooLong": "Verwenden Sie höchstens {{count}} Zeichen.",
+    "changedBeforeConfirm": "Seit dem Öffnen der Prüfung wurde eine Übersetzung geändert. Prüfen Sie den aktuellen Text vor dem Bestätigen.",
     "changedDuringEdit": "Das Original oder die Übersetzung wurde während Ihrer Bearbeitung geändert. Brechen Sie ab und prüfen Sie den aktuellen Text vor dem Speichern.",
     "staleError": "Die Übersetzungen konnten nicht aktualisiert werden. Der angezeigte Text ist möglicherweise veraltet. Ihre ungespeicherten Änderungen bleiben erhalten; versuchen Sie es vor dem Speichern oder Bestätigen erneut.",
     "saved": "Übersetzung gespeichert",

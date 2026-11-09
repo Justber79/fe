@@ -16,6 +16,7 @@
     "replaceWarning": "All translations, including human-edited ones, will be regenerated. Review them again afterwards.",
     "required": "Please enter a translation.",
     "tooLong": "Use no more than {{count}} characters.",
+    "changedBeforeConfirm": "A translation changed since you opened the review. Check the updated text before confirming.",
     "changedDuringEdit": "The source or translation changed while you were editing. Cancel and review the latest text before saving.",
     "staleError": "Translations could not be refreshed. The text below may be out of date. Your unsaved edits are kept; try again before saving or confirming.",
     "saved": "Translation saved",
