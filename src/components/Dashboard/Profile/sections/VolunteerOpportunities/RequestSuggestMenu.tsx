@@ -2,6 +2,7 @@ import { ItemContentWrapper, ItemText, Menu } from "@/components/core/menu";
 import { Paragraph } from "@/components/styled/text";
 import { useGetCurrentAgent } from "@/hooks/useGetCurrentAgent";
 import { useGetMultiOpportunityLinked } from "@/hooks/useGetMultiOpportunityLinked";
+import { useGetVolunteerLinkedCommute } from "@/hooks/useGetVolunteerLinkedCommute";
 import { ApiOpportunityGetList, OpportunityStatusType } from "need4deed-sdk";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -9,6 +10,7 @@ import { CommuteBadge } from "../../common/CommuteBadge";
 
 type Props = {
   isOpen: boolean;
+  volunteerId: number;
   onClose: () => void;
   onSelect: (opportunity: Pick<ApiOpportunityGetList, "id" | "title">) => void;
   excludeOpportunityIds?: number[];
@@ -22,7 +24,14 @@ const MenuAnchor = styled.div`
   justify-content: flex-end;
 `;
 
-export function RequestSuggestMenu({ isOpen, onClose, onSelect, excludeOpportunityIds = [], openOnly = false }: Props) {
+export function RequestSuggestMenu({
+  isOpen,
+  volunteerId,
+  onClose,
+  onSelect,
+  excludeOpportunityIds = [],
+  openOnly = false,
+}: Props) {
   const { t } = useTranslation();
   const { agentIds } = useGetCurrentAgent();
   const { allLinkedOpportunities, isLoading } = useGetMultiOpportunityLinked(agentIds);
@@ -30,6 +39,8 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect, excludeOpportuni
     (opp) =>
       !excludeOpportunityIds.includes(Number(opp.id)) && (!openOnly || OPEN_STATUSES.includes(opp.statusOpportunity)),
   );
+  const opportunityIds = opportunities.map(({ id }) => Number(id));
+  const commutesByOpportunityId = useGetVolunteerLinkedCommute(volunteerId, opportunityIds, isOpen);
 
   return (
     <MenuAnchor>
@@ -45,7 +56,10 @@ export function RequestSuggestMenu({ isOpen, onClose, onSelect, excludeOpportuni
             <Menu.Item key={opp.id} onSelect={() => onSelect(opp)}>
               <ItemContentWrapper>
                 <ItemText>{opp.title}</ItemText>
-                <CommuteBadge min={25} max={35} />
+                <CommuteBadge
+                  min={commutesByOpportunityId.get(Number(opp.id))?.min ?? null}
+                  max={commutesByOpportunityId.get(Number(opp.id))?.max ?? null}
+                />
               </ItemContentWrapper>
             </Menu.Item>
           ))}

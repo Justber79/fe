@@ -188,6 +188,7 @@ export const useVolunteerProfileSections = (volunteer: ApiVolunteerGet | undefin
           {isAgent && (
             <RequestSuggestMenu
               isOpen={isRequestMenuOpen}
+              volunteerId={volunteer.id}
               onClose={() => setIsRequestMenuOpen(false)}
               onSelect={handleRequestSelect}
               excludeOpportunityIds={ownsVolunteer ? linkedOpportunityIds : []}
