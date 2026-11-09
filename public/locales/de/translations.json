@@ -2024,6 +2024,10 @@
           }
         }
       }
+    },
+    "recommended": {
+      "volunteersTitle": "Empfohlene Ehrenamtliche",
+      "opportunitiesTitle": "Empfohlene Ehrenamtsbedarfe"
     }
   },
   "aboutus": {
