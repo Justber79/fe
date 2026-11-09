@@ -629,6 +629,7 @@
         "rac": "Unterkunft für Geflüchtete",
         "otherRac": "Weitere Berliner Unterkünfte für Geflüchtete",
         "volunteer": "Ehrenamtliche",
+        "cluster": "Gebündelte Markierungen",
         "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
       "scrollZoom": "Scroll-Zoom umschalten",
