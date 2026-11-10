@@ -119,7 +119,7 @@ function TranslationReview({
             t("opportunityTranslations.tooLong", { count: MAX_DESCRIPTION_LENGTH }),
           );
           for (const field of ["title", "info"] as const) {
-            if (draft[field] === defaultValues?.[field]) continue;
+            if (draft[field].trim() === (defaultValues?.[field] ?? "").trim()) continue;
             const result = (field === "title" ? required : description).safeParse(draft[field]);
             if (!result.success) {
               context.addIssue({ code: "custom", path: [field], message: result.error.issues[0].message });
@@ -164,6 +164,9 @@ function TranslationReview({
   const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, editedFields);
   const summary = getTranslationReviewStatus(targetFields, language);
   useEffect(() => {
+    setWriteFailure((failure) => (failure?.language === language ? failure : null));
+  }, [language]);
+  useEffect(() => {
     if ((!hasPending && !editing) || busy || dialog || resetDialog) return;
     const interval = window.setInterval(
       () => {
@@ -187,7 +190,7 @@ function TranslationReview({
     if (changedDuringEdit || loadError) return;
     const writes = editFields.flatMap((field): TranslationWrite[] => {
       const fieldName = field.fieldName;
-      if (!editedFields[fieldName] || !targetFields.some((target) => target.fieldName === fieldName)) return [];
+      if (!editedFields[fieldName]) return [];
       return [
         { fieldName, id: field.translations[language]?.id, text: values[fieldName].trim(), original: field.original },
       ];
