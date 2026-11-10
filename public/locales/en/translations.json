@@ -502,6 +502,7 @@
       "loading": "Loading...",
       "selectOption": "Select option...",
       "selectOptions": "Select options...",
+      "commuteRange": "{{min}}-{{max}} min",
       "datePrefix": {
         "appliedOn": "Applied on",
         "matchedOn": "Matched on",
@@ -696,6 +697,7 @@
         "rac": "Refugee Accommodation Center",
         "otherRac": "Other Refugee Accommodation Centers",
         "volunteer": "Volunteer",
+        "cluster": "Grouped markers",
         "numberOfEntities": "Number of opportunities or volunteers"
       },
       "scrollZoom": "Toggle Scroll Zoom",
@@ -1791,6 +1793,14 @@
         "confirmTitle": "Delete this opportunity?",
         "confirmMessage": "This will permanently delete \"{{name}}\" and cannot be undone.",
         "deleteSuccess": "Opportunity deleted successfully"
+      },
+      "opportunityAddress": {
+        "notMyLocation": "Not my location",
+        "street": "Street and number",
+        "postcode": "Postcode",
+        "city": "City",
+        "required": "Required",
+        "postcodeInvalid": "Enter a 5-digit German postcode"
       }
     },
     "racTitle": "Refugee accommodation centre",
@@ -2084,6 +2094,10 @@
           }
         }
       }
+    },
+    "recommended": {
+      "volunteersTitle": "Recommended volunteers",
+      "opportunitiesTitle": "Recommended opportunities"
     }
   },
   "aboutus": {

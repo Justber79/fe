@@ -508,6 +508,7 @@
       "loading": "Wird geladen...",
       "selectOption": "Option auswählen...",
       "selectOptions": "Optionen auswählen...",
+      "commuteRange": "{{min}}-{{max}} Min.",
       "datePrefix": {
         "appliedOn": "Beworben am",
         "matchedOn": "Zugeordnet am",
@@ -654,7 +655,7 @@
         "home": "Startseite",
         "volunteers": "Ehrenamtliche",
         "opportunities": "Ehrenamtsbedarfe",
-        "agents": "Einrichtungen/Projekte",
+        "agents": "Einrichtungen / Projekte",
         "racs": "RACs",
         "posts": "Beiträge",
         "calendar": "Kalender",
@@ -702,6 +703,7 @@
         "rac": "Unterkunft für Geflüchtete",
         "otherRac": "Weitere Berliner Unterkünfte für Geflüchtete",
         "volunteer": "Ehrenamtliche",
+        "cluster": "Gebündelte Markierungen",
         "numberOfEntities": "Anzahl der Ehrenamtliche oder Ehrenamtsbedarfe"
       },
       "scrollZoom": "Scroll-Zoom umschalten",
@@ -1803,6 +1805,14 @@
         "confirmTitle": "Diese Möglichkeit löschen?",
         "confirmMessage": "Dadurch wird \"{{name}}\" dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
         "deleteSuccess": "Möglichkeit erfolgreich gelöscht"
+      },
+      "opportunityAddress": {
+        "notMyLocation": "Nicht mein Standort",
+        "street": "Straße und Hausnummer",
+        "postcode": "PLZ",
+        "city": "Stadt",
+        "required": "Pflichtfeld",
+        "postcodeInvalid": "Bitte eine 5-stellige deutsche PLZ eingeben"
       }
     },
     "racTitle": "Geflüchtetenunterkunft",
@@ -2096,6 +2106,10 @@
           }
         }
       }
+    },
+    "recommended": {
+      "volunteersTitle": "Empfohlene Ehrenamtliche",
+      "opportunitiesTitle": "Empfohlene Ehrenamtsbedarfe"
     }
   },
   "aboutus": {

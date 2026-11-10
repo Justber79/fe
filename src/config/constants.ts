@@ -1,3 +1,4 @@
+import { EntityType } from "@/components/Dashboard/Profile/types";
 import { Endpoint, EntityTableName, Lang } from "need4deed-sdk";
 export { AgentRoleType as AgentRoles } from "need4deed-sdk";
 export const tokenKey = "token";
@@ -34,7 +35,7 @@ export const apiPathPasswordReset = `/${apiPrefix}/auth/password-reset`;
 export const apiPathTrustedDomain = `/${apiPrefix}/trusted-domain`;
 export const apiPathStatistics = `/${apiPrefix}${Endpoint.STATISTICS}`;
 export const apiPathDistrictGeometry = `/${apiPrefix}/district-geometry`;
-
+export const apiPathCommute = (entityId: number, entity: EntityType) => `/${apiPrefix}/${entity}/${entityId}/commute`;
 export const apiPathAggregateDistrict = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/districts`;
 export const apiPathDistrictMarker = (entity: DistrictMapEntity) => `/${apiPrefix}/${entity}/map`;
 export const cloudfrontDataURL = process.env.NEXT_PUBLIC_CLOUDFRONT_DATA_URL ?? "https://cdn.need4deed.org/data";
@@ -77,6 +78,8 @@ export const maxPLZGermany = 99998;
 
 export const minPLZBerlin = 10115;
 export const maxPLZBerlin = 14199;
+
+export const COMMUTE_BATCH_SIZE = 20;
 
 export const defaultAvatarURL = "head-silhouette.webp";
 export const defaultAvatarVolunteerProfile = "all_genders_avatar.png";

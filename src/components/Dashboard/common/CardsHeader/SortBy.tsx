@@ -12,10 +12,7 @@ const SortByContainer = styled.div`
   align-items: center;
   gap: var(--dashboard-cards-header-sortBy-container-gap);
   flex-shrink: 0;
-
-  @media (max-width: 767px) {
-    align-self: flex-end;
-  }
+  margin-inline-start: auto;
 `;
 
 const SortBySwitcherContainer = styled.div`
@@ -48,7 +45,7 @@ const OptionsDiv = styled.div`
   border-radius: var(--dashboard-cards-header-sortBy-option-button-border-radius);
   position: absolute;
   top: 100%;
-  left: 0;
+  inset-inline-end: 0;
   z-index: 1;
 `;
 

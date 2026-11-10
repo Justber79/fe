@@ -4,7 +4,7 @@ import { useMap } from "react-leaflet";
 import L from "leaflet";
 import { DEFAULT_LEAFLET_ICON_URL, defaultAvatarURL } from "@/config/constants";
 import { getImageUrl } from "@/utils";
-import { LegendCard, LegendTitle, LegendRow, IconSlot, LegendTitleNoContent } from "../styles";
+import { ClusterLegendIcon, LegendCard, LegendTitle, LegendRow, IconSlot, LegendTitleNoContent } from "../styles";
 import { useTranslation } from "react-i18next";
 
 export const MapLegendControl = () => {
@@ -78,6 +78,13 @@ export const MapLegendControl = () => {
             />
           </IconSlot>
           <span>{t("dashboard.map.legend.otherRac")}</span>
+        </LegendRow>
+
+        <LegendRow>
+          <IconSlot>
+            <ClusterLegendIcon aria-hidden="true">3</ClusterLegendIcon>
+          </IconSlot>
+          <span>{t("dashboard.map.legend.cluster")}</span>
         </LegendRow>
       </LegendCard>
     ) : (

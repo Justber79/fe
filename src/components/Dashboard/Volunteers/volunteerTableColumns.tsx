@@ -8,7 +8,7 @@ import { FilterItem } from "../common/CardsFilter/types";
 const FULL_WIDTHS = {
   name: COLUMN_WIDTH.SM,
   type: COLUMN_WIDTH.LG,
-  engagement: COLUMN_WIDTH.LG,
+  engagement: COLUMN_WIDTH.XXXL,
   matching: COLUMN_WIDTH.SM,
   language: COLUMN_WIDTH.MD,
   district: COLUMN_WIDTH.SM,
@@ -18,7 +18,6 @@ const RESTRICTED_WIDTHS = {
   ...FULL_WIDTHS,
   name: COLUMN_WIDTH.LG,
   type: COLUMN_WIDTH.XXXL,
-  engagement: COLUMN_WIDTH.XXXL,
   matching: COLUMN_WIDTH.XXL,
   language: COLUMN_WIDTH.LG,
 };

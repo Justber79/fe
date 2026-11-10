@@ -5,6 +5,7 @@ import { ContactDetails } from "@/components/Dashboard/Profile/sections/ContactD
 import { OpportunityDetails } from "@/components/Dashboard/Profile/sections/OpportunityDetails";
 import { OpportunityTranslations } from "@/components/Dashboard/Profile/sections/opportunity-translations/opportunity-translations";
 import { OpportunityVolunteers } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers";
+import { RecommendedVolunteers } from "@/components/Dashboard/Profile/sections/RecommendedMatches";
 import { SuggestDialog } from "@/components/Dashboard/Profile/sections/OpportunityVolunteers/SuggestDialog";
 import { ProfileHeader } from "@/components/Dashboard/Profile/sections/ProfileHeader";
 import { RefugeeAccommodationCentre } from "@/components/Dashboard/Profile/sections/RefugeeAccommodationCentre";
@@ -32,6 +33,8 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
   const opportunityContactDetailsRef = useRef<EditableSectionRef>(null);
   const accompanyingDetailsRef = useRef<EditableSectionRef>(null);
   const opportunityDetailsRef = useRef<EditableSectionRef>(null);
+  const locationRef = useRef<EditableSectionRef>(null);
+  const [isLocationEditing, setIsLocationEditing] = useState(false);
 
   const [isOppDetailsEditing, setIsOppDetailsEditing] = useState(false);
   const [isContactEditing, setIsContactEditing] = useState(false);
@@ -93,7 +96,19 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
     {
       iconName: IconName.House,
       title: t("dashboard.opportunityProfile.racTitle"),
-      subComponent: <RefugeeAccommodationCentre opportunity={opportunity} />,
+      ...(hasEditingRights &&
+        !isAccompanyingType &&
+        !isLocationEditing && {
+          headerButtonName: t("dashboard.opportunityProfile.editButtonName"),
+          onHeaderButtonClick: () => locationRef.current?.handleEditClick(),
+        }),
+      subComponent: (
+        <RefugeeAccommodationCentre
+          ref={locationRef}
+          opportunity={opportunity}
+          onEditingChange={setIsLocationEditing}
+        />
+      ),
     },
   ];
 
@@ -151,6 +166,13 @@ export const useOpportunityProfileSections = (opportunity: ApiOpportunityGet | u
               isStaff={isAuthorized}
               isUserLoaded={isUserLoaded}
             />
+            {isUserLoaded && (
+              <RecommendedVolunteers
+                opportunityId={opportunity.id}
+                opportunityTitle={opportunity.title}
+                canSuggest={isAuthorized}
+              />
+            )}
             {isSuggestDialogOpen && (
               <SuggestDialog
                 opportunityName={opportunity.title}

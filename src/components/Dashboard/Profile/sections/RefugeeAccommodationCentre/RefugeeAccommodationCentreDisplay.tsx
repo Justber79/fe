@@ -5,7 +5,7 @@ import { FormDetails } from "../shared/styles";
 type RefugeeAccommodationCentreDisplayProps = {
   name: string;
   address: string;
-  district: string;
+  district?: string;
 };
 
 export const RefugeeAccommodationCentreDisplay = ({
@@ -31,13 +31,15 @@ export const RefugeeAccommodationCentreDisplay = ({
         value={address}
         setValue={() => {}}
       />
-      <EditableField
-        mode="display"
-        type="text"
-        label={t("dashboard.opportunityProfile.rac.district")}
-        value={district}
-        setValue={() => {}}
-      />
+      {district !== undefined && (
+        <EditableField
+          mode="display"
+          type="text"
+          label={t("dashboard.opportunityProfile.rac.district")}
+          value={district}
+          setValue={() => {}}
+        />
+      )}
     </FormDetails>
   );
 };
