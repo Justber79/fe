@@ -8,12 +8,11 @@ export type OpportunityTranslation = ApiFieldTranslationGet<EntityTableName.OPPO
 
 export const getOpportunityTranslationsKey = (opportunityId: Id) => ["opportunity-translations", String(opportunityId)];
 
-export function useOpportunityTranslations(opportunityId: Id, enabled: boolean) {
+export function useOpportunityTranslations(opportunityId: Id) {
   const client = useQueryClient();
   const query = useGetQuery<OpportunityTranslation[]>({
     queryKey: getOpportunityTranslationsKey(opportunityId),
     apiPath: `${apiPathTranslation}/${EntityTableName.OPPORTUNITY}/${opportunityId}`,
-    enabled,
     toastOnError: false,
     localeIndependent: true,
   });

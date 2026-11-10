@@ -7,7 +7,6 @@ import { ErrorMessage } from "@/components/core/common/ErrorMessage";
 import { ConfirmationDialog } from "@/components/core/common/ConfirmationDialog";
 import { Heading3 } from "@/components/styled/text";
 import { MAX_DESCRIPTION_LENGTH } from "@/config/constants";
-import { useAuth } from "@/hooks/useAuth";
 import { useOpportunityTranslations, type OpportunityTranslation } from "@/hooks/use-opportunity-translations";
 import {
   TranslationReset,
@@ -154,15 +153,15 @@ function TranslationReview({
   const changedDuringEdit = editing && hasEditedTranslationChanged(editSnapshot, snapshot, dirtyFields);
   const summary = getTranslationReviewStatus(targetFields, language);
   useEffect(() => {
-    if ((!hasPending && !editing) || busy || dialog || resetDialog || loadError) return;
+    if ((!hasPending && !editing) || busy || dialog || resetDialog) return;
     const interval = window.setInterval(
       () => {
         if (document.visibilityState === "visible") refresh();
       },
-      open ? 5000 : 10000,
+      hasPending && open ? 5000 : 15000,
     );
     return () => window.clearInterval(interval);
-  }, [open, hasPending, editing, busy, dialog, resetDialog, loadError, language, refresh]);
+  }, [open, hasPending, editing, busy, dialog, resetDialog, refresh]);
   const startEdit = () => {
     reset({
       title: fields.find((field) => field.fieldName === "title")?.translations[language]?.text ?? "",
@@ -177,10 +176,9 @@ function TranslationReview({
     if (changedDuringEdit || loadError) return;
     const writes = editFields.flatMap((field): TranslationWrite[] => {
       const fieldName = field.fieldName;
-      if (!dirtyFields[fieldName]) return [];
-      return [
-        { fieldName, id: field.translations[language]?.id, text: draft[fieldName].trim(), original: field.original },
-      ];
+      const text = draft[fieldName].trim();
+      if (!dirtyFields[fieldName] || text === (defaultValues?.[fieldName] ?? "").trim()) return [];
+      return [{ fieldName, id: field.translations[language]?.id, text, original: field.original }];
     });
     if (!writes.length) {
       setWriteFailure(null);
@@ -274,7 +272,10 @@ function TranslationReview({
           aria-expanded={open}
           aria-controls={`${id}-content`}
           disabled={busy || editing}
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            setWriteFailure(null);
+            setOpen(!open);
+          }}
         >
           {t(open ? "opportunityTranslations.close" : "opportunityTranslations.review")}
           <CaretDownIcon size={20} aria-hidden style={{ transform: open ? "rotate(180deg)" : undefined }} />
@@ -289,7 +290,10 @@ function TranslationReview({
                 id={`${id}-language`}
                 value={language}
                 disabled={editing || busy || loadError}
-                onChange={(event) => setRequestedLanguage(event.target.value as Lang)}
+                onChange={(event) => {
+                  setWriteFailure(null);
+                  setRequestedLanguage(event.target.value as Lang);
+                }}
               >
                 {languages.map((value) => (
                   <option key={value} value={value}>
@@ -315,11 +319,11 @@ function TranslationReview({
               </section>
               <section aria-labelledby={`${id}-target`}>
                 <Heading3 id={`${id}-target`}>{t(`opportunityTranslations.languages.${language}`)}</Heading3>
-                {(editing ? editFields : fields).map((field) => {
+                {fields.map((field) => {
                   const value = field.translations[language];
                   const isOriginal = field.originalLanguage === language;
                   const draftKey = field.fieldName;
-                  const canEdit = editing;
+                  const canEdit = editing && editFields.some(({ fieldName }) => fieldName === draftKey);
                   const label = t(`opportunityTranslations.fields.${field.fieldName}`, {
                     defaultValue: field.fieldName,
                   });
@@ -539,17 +543,7 @@ function TranslationReview({
             loadError ||
             fields.every((field) => field.originalLanguage === originalLanguage)
           }
-          onConfirm={() =>
-            changeLanguage.mutate(
-              { originalLanguage },
-              {
-                onSuccess: () => {
-                  setDialog(false);
-                  setEditLanguage(null);
-                },
-              },
-            )
-          }
+          onConfirm={() => changeLanguage.mutate({ originalLanguage }, { onSuccess: () => setDialog(false) })}
         >
           <div>
             <label htmlFor={`${id}-original-language`}>{t("opportunityTranslations.originalLanguage")}</label>{" "}
@@ -574,9 +568,7 @@ function TranslationReview({
 
 export function OpportunityTranslations({ opportunityId }: { opportunityId: Id }) {
   const { t } = useTranslation();
-  const { isAuthorized } = useAuth();
-  const { data, isLoading, isError, refresh, readLatest } = useOpportunityTranslations(opportunityId, isAuthorized);
-  if (!isAuthorized) return null;
+  const { data, isLoading, isError, refresh, readLatest } = useOpportunityTranslations(opportunityId);
   if (isLoading) return <SectionEmptyState role="status">{t("opportunityTranslations.loading")}</SectionEmptyState>;
   if (isError && !data)
     return (

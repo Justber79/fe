@@ -6,3 +6,4 @@ export { default as CenteredWrapper } from "./CenteredWrapper";
 export * from "./Activities";
 export * from "./TextArea";
 export * from "./VisuallyHiddenInput";
+export * from "./select";
