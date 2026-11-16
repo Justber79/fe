@@ -3,7 +3,7 @@ import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
 import { toast } from "react-toastify";
 import { getLocalizedErrorMessage, markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
-import { clearAuthHint, setAuthHint } from "@/utils/helpers";
+import { clearAuthHint, getLoginPath, getPathLanguage, setAuthHint } from "@/utils/helpers";
 import {
   apiPathAuthRefresh,
   apiPathLogin,
@@ -60,8 +60,8 @@ const isSessionRejected = (refreshError: unknown) =>
 
 const getActiveLanguage = (): Lang => {
   if (typeof window !== "undefined") {
-    const routeLanguage = window.location.pathname.split("/")[1];
-    if (supportedLangs.includes(routeLanguage)) return routeLanguage as Lang;
+    const routeLanguage = getPathLanguage(window.location.pathname);
+    if (routeLanguage) return routeLanguage as Lang;
   }
 
   const i18nLanguage = (i18next.resolvedLanguage ?? i18next.language)?.split("-")[0];
@@ -129,7 +129,7 @@ axios.interceptors.response.use(
         if (isRedirecting) {
           rememberSessionExpired();
           markSessionExpired(error);
-          window.location.href = "/login";
+          window.location.href = getLoginPath(window.location.pathname);
         }
 
         return Promise.reject(error);

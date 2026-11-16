@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { userAgent } from "next/server";
 import { supportedLangs } from "./config/constants";
 import { Lang, UserRole } from "need4deed-sdk";
-import { decodeJwtPayload } from "./utils";
+import { decodeJwtPayload, getLoginPath } from "./utils/helpers";
 
 const DEFAULT_LOCALE = Lang.EN;
 const DEFAULT_DEVICE_TYPE = "desktop";
@@ -11,10 +11,10 @@ const DEVICE_HEADER_NAME = "x-device-type";
 const LANG_COOKIE = "preferred-lang";
 const REFRESH = "refresh";
 
-const authorizedRoutes: Record<string, { regex: RegExp; redirect: string }> = {
+const authorizedRoutes = {
   AGENT: { regex: /^(?:\/[a-z]{2})?\/dashboard\/agents\/([0-9]+)$/, redirect: "/dashboard/agents" },
-  NEW_OPPORTUNITIES: { regex: /^(?:\/[a-z]{2})?\/forms\/opportunity(?:\/|$)/, redirect: "/login" },
-  DASHBOARD: { regex: /^(?:\/[a-z]{2})?\/dashboard(?:\/|$)/, redirect: "/login" },
+  NEW_OPPORTUNITIES: { regex: /^(?:\/[a-z]{2})?\/forms\/opportunity(?:\/|$)/ },
+  DASHBOARD: { regex: /^(?:\/[a-z]{2})?\/dashboard(?:\/|$)/ },
 };
 
 export function middleware(request: NextRequest) {
@@ -28,11 +28,11 @@ export function middleware(request: NextRequest) {
     const newOppMatch = pathname.match(authorizedRoutes.NEW_OPPORTUNITIES.regex);
     if (dashboardMatch) {
       url.search = "";
-      url.pathname = authorizedRoutes.DASHBOARD.redirect;
+      url.pathname = getLoginPath(pathname);
       return NextResponse.redirect(url);
     }
     if (newOppMatch) {
-      url.pathname = authorizedRoutes.DASHBOARD.redirect;
+      url.pathname = getLoginPath(pathname);
       return NextResponse.redirect(url);
     }
   }

@@ -6,7 +6,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validateStep } from "@/components/AgentRegistration/helpers";
@@ -38,6 +38,7 @@ const isLinkTokenExpired = (token: string): boolean => {
 
 export function VolunteerRegistration() {
   const { t, i18n } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   const router = useRouter();
   const ngoToken = useSearchParams().get("ngo") || undefined;
   const user = useCurrentUser(true);
@@ -149,7 +150,7 @@ export function VolunteerRegistration() {
 
           <ExistingUserWrapper>
             <ExistingUserText>{t("volunteerRegistration.alreadyUser")}</ExistingUserText>
-            <Link href="/login">{t("volunteerRegistration.loginLink")}</Link>
+            <Link href={`/${lang}/login`}>{t("volunteerRegistration.loginLink")}</Link>
           </ExistingUserWrapper>
 
           {submitError && <ErrorBanner>{submitError}</ErrorBanner>}

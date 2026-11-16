@@ -2,7 +2,7 @@ import axios from "axios";
 import { cancelLogout, startLogout } from "@/config/axios";
 import { apiPathAuthLogout } from "@/config/constants";
 import { useMutationQuery } from "@/hooks";
-import { clearAuthHint } from "@/utils/helpers";
+import { clearAuthHint, getLoginPath } from "@/utils/helpers";
 
 export const useLogout = () => {
   return useMutationQuery<void, unknown>({
@@ -19,7 +19,7 @@ export const useLogout = () => {
     noToast: true,
     onSuccessCallback: () => {
       clearAuthHint();
-      window.location.href = "/login";
+      window.location.href = getLoginPath(window.location.pathname);
     },
   });
 };

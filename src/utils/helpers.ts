@@ -27,6 +27,16 @@ export const isValidLanguage = (language: string) => {
   return supportedLangs.includes(language);
 };
 
+export const getPathLanguage = (pathname: string): string | undefined => {
+  const language = pathname.split("/")[1];
+  return isValidLanguage(language) ? language : undefined;
+};
+
+export const getLoginPath = (pathname: string): string => {
+  const language = getPathLanguage(pathname);
+  return language ? `/${language}/login` : "/login";
+};
+
 export const getCookie = (name: string): string | undefined => {
   if (typeof document === "undefined") return undefined;
   const value = `; ${document.cookie}`;

@@ -6,7 +6,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getLocalizedErrorMessage } from "@/utils/apiErrors";
 import axios from "axios";
 import { UserRole } from "need4deed-sdk";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { validateRACEmail } from "@/components/forms/validators";
@@ -32,6 +32,7 @@ const PENDING_ROLE_COOKIE = "n4d_pending_role=agent; path=/; max-age=86400; Same
 
 export function AgentRegistration() {
   const { t, i18n } = useTranslation();
+  const { lang } = useParams<{ lang: string }>();
   const router = useRouter();
   const user = useCurrentUser(true);
   const [formData, setFormData] = useState<AgentRegistrationData>(defaultAgentRegistrationData);
@@ -123,7 +124,7 @@ export function AgentRegistration() {
 
           <ExistingUserWrapper>
             <ExistingUserText>{t("agentRegistration.alreadyUser")}</ExistingUserText>
-            <Link href="/login">{t("agentRegistration.loginLink")}</Link>
+            <Link href={`/${lang}/login`}>{t("agentRegistration.loginLink")}</Link>
           </ExistingUserWrapper>
 
           {submitError && <ErrorBanner>{submitError}</ErrorBanner>}
