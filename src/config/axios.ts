@@ -3,14 +3,8 @@ import i18next from "i18next";
 import { Lang } from "need4deed-sdk";
 import { toast } from "react-toastify";
 import { getLocalizedErrorMessage, markSessionExpired, rememberSessionExpired } from "@/utils/apiErrors";
-import { clearAuthHint, getLoginPath, getPathLanguage, setAuthHint } from "@/utils/helpers";
-import {
-  apiPathAuthRefresh,
-  apiPathLogin,
-  apiPathPasswordReset,
-  apiPathRequestPasswordReset,
-  supportedLangs,
-} from "./constants";
+import { clearAuthHint, getLoginPath, getPathLanguage, isValidLanguage, setAuthHint } from "@/utils/helpers";
+import { apiPathAuthRefresh, apiPathLogin, apiPathPasswordReset, apiPathRequestPasswordReset } from "./constants";
 
 const noRefreshPaths = [apiPathAuthRefresh, apiPathLogin, apiPathRequestPasswordReset, apiPathPasswordReset];
 
@@ -61,11 +55,11 @@ const isSessionRejected = (refreshError: unknown) =>
 const getActiveLanguage = (): Lang => {
   if (typeof window !== "undefined") {
     const routeLanguage = getPathLanguage(window.location.pathname);
-    if (routeLanguage) return routeLanguage as Lang;
+    if (routeLanguage) return routeLanguage;
   }
 
   const i18nLanguage = (i18next.resolvedLanguage ?? i18next.language)?.split("-")[0];
-  return supportedLangs.includes(i18nLanguage) ? (i18nLanguage as Lang) : Lang.EN;
+  return isValidLanguage(i18nLanguage) ? i18nLanguage : Lang.EN;
 };
 
 axios.interceptors.request.use((config) => {

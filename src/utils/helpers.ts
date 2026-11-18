@@ -1,3 +1,4 @@
+import type { Lang } from "need4deed-sdk";
 import {
   AUTH_HINT_COOKIE_ATTRS,
   AUTH_HINT_COOKIE_NAME,
@@ -23,19 +24,21 @@ export function capitalizeFirstLetter(str: string): string {
   return firstLetter + restOfString;
 }
 
-export const isValidLanguage = (language: string) => {
-  return supportedLangs.includes(language);
-};
+export const isValidLanguage = (language: string | undefined): language is Lang =>
+  language !== undefined && supportedLangs.includes(language);
 
-export const getPathLanguage = (pathname: string): string | undefined => {
-  const language = pathname.split("/")[1];
+export const getPathLanguagePrefix = (pathname: string): string | undefined =>
+  pathname.match(/^\/([a-z]{2})(?:\/|$)/i)?.[1];
+
+export const getPathLanguage = (pathname: string): Lang | undefined => {
+  const language = getPathLanguagePrefix(pathname);
   return isValidLanguage(language) ? language : undefined;
 };
 
-export const getLoginPath = (pathname: string): string => {
-  const language = getPathLanguage(pathname);
-  return language ? `/${language}/login` : "/login";
-};
+export const localizedPath = (language: Lang | undefined, path: string): string =>
+  language ? `/${language}${path}` : path;
+
+export const getLoginPath = (pathname: string): string => localizedPath(getPathLanguage(pathname), "/login");
 
 export const getCookie = (name: string): string | undefined => {
   if (typeof document === "undefined") return undefined;
